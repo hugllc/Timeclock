@@ -4,7 +4,7 @@
 
 ROOT_DIR=`pwd`
 
-SVN_SERVER=doctorteeth
+SVN_SERVER=https://webdav.hugllc.com/svn
 
 COM_NAME=$1
 COM_VERSION=$2
@@ -16,7 +16,7 @@ fi
 
 svn commit ./$COM_NAME
 echo Tagging the version
-svn -m "Release $COM_VERSOIN" copy ./$COM_NAME svn://${SVN_SERVER}/0007/tags/${COM_NAME}/${COM_VERSION}
+svn -m "Release $COM_VERSOIN" copy ./$COM_NAME ${SVN_SERVER}/0007/tags/${COM_NAME}/${COM_VERSION}
 
 
 mkdir -p rel
@@ -25,7 +25,7 @@ cd rel
 rm -Rf ${COM_NAME}-${COM_VERSION}*
 
 echo Exporting ${COM_NAME} version ${COM_VERSION}
-svn export svn://${SVN_SERVER}/0007/tags/${COM_NAME}/${COM_VERSION} ${COM_NAME}-$COM_VERSION
+svn export ${SVN_SERVER}/0007/tags/${COM_NAME}/${COM_VERSION} ${COM_NAME}-$COM_VERSION
 
 
 cd $ROOT_DIR/rel
