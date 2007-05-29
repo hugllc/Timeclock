@@ -1,0 +1,16 @@
+.error
+{
+    color: #CC0000;
+    font-weight: bold;
+}
+
+.success
+{
+    color: #00AA00;
+    font-weight: bold;
+}
+
+.today
+{
+    background: #00CC00;
+}

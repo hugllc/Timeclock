@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<mosinstall type="component">
+    <name>DFProject Timeclock</name>
+    <creationDate>October 2005</creationDate>
+    <author>Scott Price</author>
+    <copyright>2005-2007 Hunt Utilities Group, LLC</copyright>
+    <authorEmail>prices@dflytech.com</authorEmail>
+    <authorUrl>www.dflytech.com</authorUrl>
+    <version>0.1.19</version>
+    <files>
+        <filename>dfprojecttimeclock.php</filename>
+        <filename>dfprojecttimeclock.html.php</filename>
+        <filename>dfprojecttimeclock.class.php</filename>
+        <filename>images/go-next.png</filename>
+        <filename>images/go-previous.png</filename>
+        <filename>images/paysummary.png</filename>
+        <filename>images/summary.png</filename>
+        <filename>images/timeclock.png</filename>
+        <filename>images/timesheet.png</filename>
+        <filename>include/timeclock.css</filename>
+                    </files>
+    <install>
+        <queries>
+            <query>
+                CREATE TABLE IF NOT EXISTS `#__dfproject_timesheet` (
+                  `id` int(11) NOT NULL auto_increment,
+                  `project_id` int(11) NOT NULL default '0',
+                  `user_id` int(11) NOT NULL default '0',
+                  `hours` float NOT NULL default '0',
+                  `Date` date NOT NULL default '0000-00-00',
+                  `insertDate` datetime NOT NULL default '0000-00-00 00:00:00',
+                  `Notes` text character set utf8 NOT NULL,
+                  PRIMARY KEY  (`id`),
+                  UNIQUE KEY `project_id` (`project_id`,`user_id`,`Date`)
+                );
+            </query>
+       </queries>
+    </install>
+    <uninstall>
+        <queries>
+         </queries>
+    </uninstall>
+    <installfile>
+        <filename>install.dfprojecttimeclock.php</filename>
+    </installfile>
+    <uninstallfile>
+        <filename>uninstall.dfprojecttimeclock.php</filename>
+    </uninstallfile>
+    <administration>
+        <menu>DFProject Timeclock</menu>
+        <submenu>
+            <menu task="userpref">User Preferences</menu>
+            <menu task="install">Check Installation</menu>
+            <menu task="config">Config</menu>
+            <menu task="about">About</menu>
+        </submenu>
+        <files>
+            <filename>admin.dfprojecttimeclock.php</filename>
+            <filename>admin.dfprojecttimeclock.html.php</filename>
+            <filename>toolbar.dfprojecttimeclock.php</filename>
+            <filename>toolbar.dfprojecttimeclock.html.php</filename>
+            <filename>help/dfprojecttimeclock.html</filename>
+            <filename>help/dfprojecttimeclock_edit.html</filename>
+        </files>
+    </administration>
+</mosinstall>

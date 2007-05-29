@@ -1,0 +1,163 @@
+<?xml version="1.0" ?>
+<mosinstall type="component">
+    <name>dfprefs</name>
+    <creationDate>October 2005</creationDate>
+    <author>Scott Price</author>
+    <copyright>2005-2007 Hunt Utilities Group, LLC</copyright>
+    <authorEmail>prices@dflytech.com</authorEmail>
+    <authorUrl>www.dflytech.com</authorUrl>
+    <version>0.1.2</version>
+    <files>
+        <filename>dfprefs.php</filename>
+        <filename>dfprefs.html.php</filename>
+    </files>
+    <install>
+        <queries>
+            <query>
+                CREATE TABLE IF NOT EXISTS `#__dfprefs` (
+                  `id` int(11) NOT NULL default '0',
+                  `name` varchar(128) NOT NULL default '',
+                  `value` text NOT NULL,
+                  `area` varchar(128) NOT NULL default '',
+                  `type` varchar(32) NOT NULL default 'USER',
+                  `visible` tinyint(4) NOT NULL default '0',
+                  PRIMARY KEY  (`id`,`name`,`area`,`type`)
+                );
+            </query>
+            <query>
+                CREATE TABLE IF NOT EXISTS `#__dfprefs_define` (
+                  `id` int(11) NOT NULL auto_increment,
+                  `name` varchar(128) NOT NULL,
+                  `type` varchar(32) NOT NULL,
+                  `preftype` varchar(32) NOT NULL,
+                  `area` varchar(128) NOT NULL,
+                  `default` text NOT NULL,
+                  `help` text NOT NULL,
+                  `parameters` text NOT NULL,
+                  PRIMARY KEY  (`id`),
+                  UNIQUE KEY `name` (`name`,`area`)
+                );
+            </query>
+        </queries>
+    </install>
+    <uninstall>
+    </uninstall>
+    <installfile>
+        <filename>install.dfprefs.php</filename>
+    </installfile>
+    <uninstallfile>
+        <filename>uninstall.dfprefs.php</filename>
+    </uninstallfile>
+    <administration>
+        <menu>dfPrefs</menu>
+        <submenu>
+            <menu task="config">Configuration</menu>
+            <menu task="prefs">Define Preferences</menu>
+            <menu task="users">Set User Preferences</menu>
+            <menu task="system">Set System Preferences</menu>
+            <menu task="install">Check Installation</menu>
+            <menu task="about">About</menu>
+        </submenu>
+        <files>
+            <filename>admin.dfprefs.php</filename>
+            <filename>admin.dfprefs.html.php</filename>
+            <filename>toolbar.dfprefs.php</filename>
+            <filename>toolbar.dfprefs.html.php</filename>
+            <filename>help/dfprefs.html</filename>
+            <filename>help/dfprefs_edit.html</filename>
+            <filename>dfprefs.class.php</filename>
+            <filename>include/extra.inc.php</filename>
+            <filename>include/tables.inc.php</filename>
+            <filename>include/tables.css</filename>
+            <filename>include/tabs.css</filename>
+            <filename>include/HTML/CSS.php</filename>
+            <filename>include/HTML/Common.php</filename>
+            <filename>include/HTML/Form.php</filename>
+            <filename>include/HTML/Javascript/Convert.php</filename>
+            <filename>include/HTML/Javascript.php</filename>
+            <filename>include/HTML/Menu/ArrayRenderer.php</filename>
+            <filename>include/HTML/Menu/DirectRenderer.php</filename>
+            <filename>include/HTML/Menu/DirectTreeRenderer.php</filename>
+            <filename>include/HTML/Menu/Renderer.php</filename>
+            <filename>include/HTML/Menu/SigmaRenderer.php</filename>
+            <filename>include/HTML/Menu/SigmaTreeRenderer.php</filename>
+            <filename>include/HTML/Menu.php</filename>
+            <filename>include/HTML/MenuBrowser.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/Array.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/ArraySmarty.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/Default.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/ITDynamic.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/ITStatic.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/Object.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/ObjectFlexy.php</filename>
+            <filename>include/HTML/QuickForm/Renderer/QuickHtml.php</filename>
+            <filename>include/HTML/QuickForm/Renderer.php</filename>
+            <filename>include/HTML/QuickForm/Rule/Callback.php</filename>
+            <filename>include/HTML/QuickForm/Rule/Compare.php</filename>
+            <filename>include/HTML/QuickForm/Rule/Email.php</filename>
+            <filename>include/HTML/QuickForm/Rule/Range.php</filename>
+            <filename>include/HTML/QuickForm/Rule/Regex.php</filename>
+            <filename>include/HTML/QuickForm/Rule/Required.php</filename>
+            <filename>include/HTML/QuickForm/Rule.php</filename>
+            <filename>include/HTML/QuickForm/RuleRegistry.php</filename>
+            <filename>include/HTML/QuickForm/advcheckbox.php</filename>
+            <filename>include/HTML/QuickForm/autocomplete.php</filename>
+            <filename>include/HTML/QuickForm/button.php</filename>
+            <filename>include/HTML/QuickForm/checkbox.php</filename>
+            <filename>include/HTML/QuickForm/date.php</filename>
+            <filename>include/HTML/QuickForm/element.php</filename>
+            <filename>include/HTML/QuickForm/file.php</filename>
+            <filename>include/HTML/QuickForm/group.php</filename>
+            <filename>include/HTML/QuickForm/header.php</filename>
+            <filename>include/HTML/QuickForm/hidden.php</filename>
+            <filename>include/HTML/QuickForm/hiddenselect.php</filename>
+            <filename>include/HTML/QuickForm/hierselect.php</filename>
+            <filename>include/HTML/QuickForm/html.php</filename>
+            <filename>include/HTML/QuickForm/image.php</filename>
+            <filename>include/HTML/QuickForm/input.php</filename>
+            <filename>include/HTML/QuickForm/link.php</filename>
+            <filename>include/HTML/QuickForm/password.php</filename>
+            <filename>include/HTML/QuickForm/radio.php</filename>
+            <filename>include/HTML/QuickForm/reset.php</filename>
+            <filename>include/HTML/QuickForm/select.php</filename>
+            <filename>include/HTML/QuickForm/static.php</filename>
+            <filename>include/HTML/QuickForm/submit.php</filename>
+            <filename>include/HTML/QuickForm/text.php</filename>
+            <filename>include/HTML/QuickForm/textarea.php</filename>
+            <filename>include/HTML/QuickForm/xbutton.php</filename>
+            <filename>include/HTML/QuickForm.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/BTLR.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/BTRL.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/InC.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/InCC.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/LRBT.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/LRTB.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/OutC.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/OutCC.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/RLBT.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/RLTB.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/Random.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/TBLR.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler/TBRL.php</filename>
+            <filename>include/HTML/Table/Matrix/Filler.php</filename>
+            <filename>include/HTML/Table/Matrix.php</filename>
+            <filename>include/HTML/Table/Storage.php</filename>
+            <filename>include/HTML/Table.php</filename>
+            <filename>include/HTML/TreeMenu.php</filename>
+            <filename>include/HTML/docs/example.php</filename>
+            <filename>include/HTML/docs/map_fs.php</filename>
+            <filename>include/Spreadsheet/Excel/Writer/BIFFwriter.php</filename>
+            <filename>include/Spreadsheet/Excel/Writer/Format.php</filename>
+            <filename>include/Spreadsheet/Excel/Writer/Parser.php</filename>
+            <filename>include/Spreadsheet/Excel/Writer/Validator.php</filename>
+            <filename>include/Spreadsheet/Excel/Writer/Workbook.php</filename>
+            <filename>include/Spreadsheet/Excel/Writer/Worksheet.php</filename>
+            <filename>include/Spreadsheet/Excel/Writer.php</filename>
+            <filename>include/OLE/PPS/File.php</filename>
+            <filename>include/OLE/PPS/Root.php</filename>
+            <filename>include/OLE/PPS.php</filename>
+            <filename>include/PEAR.php</filename>
+            <filename>include/OLE.php</filename>
+        </files>
+    </administration>
+</mosinstall>

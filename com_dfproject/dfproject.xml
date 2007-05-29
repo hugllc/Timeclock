@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<mosinstall type="component">
+    <name>DFProject</name>
+    <creationDate>October 2005</creationDate>
+    <author>Scott Price</author>
+    <copyright>2005-2007 Hunt Utilities Group, LLC</copyright>
+    <authorEmail>prices@dflytech.com</authorEmail>
+    <authorUrl>www.dflytech.com</authorUrl>
+    <version>0.1.7</version>
+    <files>
+        <filename>dfproject.php</filename>
+        <filename>dfproject.html.php</filename>
+        <filename>dfproject.class.php</filename>
+        <filename>images/accessories-text-editor.png</filename>
+        <filename>images/accessories-text-editor48.png</filename>
+        <filename>images/document-new.png</filename>
+        <filename>images/document-open.png</filename>
+        <filename>images/document-open48.png</filename>
+        <filename>images/document-properties.png</filename>
+        <filename>images/document.png</filename>
+        <filename>images/edit-delete.png</filename>
+        <filename>images/go-previous48.png</filename>
+        <filename>images/project.png</filename>
+        <filename>images/help.png</filename>
+        <filename>images/text-x-generic.png</filename>
+        <filename>images/wc.png</filename>
+    </files>
+    <install>
+        <queries>
+            <query>CREATE TABLE IF NOT EXISTS `#__dfproject` (
+                  `id` int(11) NOT NULL auto_increment,
+                  `name` varchar(64) NOT NULL default '',
+                  `description` text NOT NULL,
+                  `user_id` int(11) default NULL,
+                  `date` date NOT NULL default '0000-00-00',
+                  `research` enum('NO','YES') NOT NULL default 'NO',
+                  `status` enum('ACTIVE','DONE','HOLD','SPECIAL') NOT NULL default 'ACTIVE',
+                  `type` enum('PROJECT','UMBRELLA','VACATION','SICK','HOLIDAY','UNPAID') NOT NULL default 'PROJECT',
+                  `parent_id` int(11) NOT NULL default '0',
+                  `wcCode` varchar(10) NOT NULL default '8803',
+                  `customer` int(11) NOT NULL default '0',
+                  PRIMARY KEY  (`id`),  
+                  UNIQUE KEY `ProjectName` (`name`,`parent_id`)
+                );
+            </query>
+            <query>
+                CREATE TABLE IF NOT EXISTS `#__dfproject_users` (
+                  `id` int(11) NOT NULL default '0',
+                  `user_id` int(11) NOT NULL default '0',
+                  UNIQUE KEY `UNIQUE` (`id`,`user_id`)
+                );
+            </query>
+       </queries>
+    </install>
+    <uninstall>
+        <queries>
+         </queries>
+    </uninstall>
+    <installfile>
+        <filename>install.dfproject.php</filename>
+    </installfile>
+    <uninstallfile>
+        <filename>uninstall.dfproject.php</filename>
+    </uninstallfile>
+    <administration>
+        <menu>DFProject</menu>
+        <submenu>
+            <menu task="userprefs">Set User Preferences</menu>
+            <menu task="install">Check Installation</menu>
+            <menu task="config">Configuration</menu>
+            <menu task="about">About</menu>
+        </submenu>
+        <files>
+            <filename>admin.dfproject.php</filename>
+            <filename>admin.dfproject.html.php</filename>
+            <filename>toolbar.dfproject.php</filename>
+            <filename>toolbar.dfproject.html.php</filename>
+            <filename>help/dfproject.html</filename>
+            <filename>help/dfproject_edit.html</filename>
+            <filename>dfproject.class.php</filename>
+        </files>
+    </administration>
+</mosinstall>
