@@ -4,7 +4,7 @@
 
 ROOT_DIR=`pwd`
 
-SVN_SERVER=https://webdav.hugllc.com/svn
+SVN_SERVER=https://svn.hugllc.com/
 
 COM_NAME=$1
 COM_VERSION=$2
