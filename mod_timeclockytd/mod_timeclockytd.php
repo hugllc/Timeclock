@@ -27,8 +27,8 @@ $form_submit_loc .= sefRelToAbs( 'index.php' );
 if (dfprefs::checkAccess('Timeclock', "com_dfprojecttimeclock") && ($my->id > 0)) {
     $timesheet = new timesheet();
 	$startdate = dfprefs::getUser("startDate", "com_dfprojecttimeclock");
-    $types = array("Hours" => NULL, "Vacation" => "VACATION", "Sick Time" => "SICK");
-    $typesMax = array("Hours" => NULL, "Vacation" => "vacationHours", "Sick Time" => "sickHours");
+    $types = array("Hours" => NULL, "Paid Time Off" => "VACATION", "Sick Time" => "SICK");
+    $typesMax = array("Hours" => NULL, "Paid Time Off" => "vacationHours", "Sick Time" => "sickHours");
     foreach($types as $label => $type) {
         $query = " FROM #__dfproject_timesheet "
                 . " LEFT JOIN #__dfproject on #__dfproject.id = #__dfproject_timesheet.project_id "
