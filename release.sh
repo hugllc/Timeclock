@@ -19,16 +19,4 @@ echo Tagging the version
 svn -m "Release $COM_VERSOIN" copy ./$COM_NAME ${SVN_SERVER}/0007/tags/${COM_NAME}/${COM_VERSION}
 
 
-mkdir -p rel
-cd rel
-
-rm -Rf ${COM_NAME}-${COM_VERSION}*
-
-echo Exporting ${COM_NAME} version ${COM_VERSION}
-svn export ${SVN_SERVER}/0007/tags/${COM_NAME}/${COM_VERSION} ${COM_NAME}-$COM_VERSION
-
-
-cd $ROOT_DIR/rel
-zip -r ${COM_NAME}-${COM_VERSION}.zip ${COM_NAME}-$COM_VERSION
-
-rm -Rf ${COM_NAME}-${COM_VERSION}
+./build.sh $1 $2
