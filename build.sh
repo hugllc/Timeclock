@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #  $Id: com_hugnet.sh 279 2006-10-13 21:14:00Z prices $
 
