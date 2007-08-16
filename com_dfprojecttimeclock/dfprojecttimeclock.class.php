@@ -538,6 +538,7 @@ class timesheet extends mosDBTable{
         $query .= ", #__dfproject_timesheet.user_id as user_id";
         $query .= ", #__dfproject_timesheet.Date as date";
         $query .= ", #__dfproject_timesheet.Notes as note";
+        $query .= ", #__dfproject_timesheet.hours as hours";
         $query .= ", #__users.name as user_name";
         $query .= " from #__dfproject_timesheet";
         $query .= " LEFT JOIN #__dfproject on #__dfproject.id=#__dfproject_timesheet.project_id ";
@@ -622,16 +623,17 @@ class timesheet extends mosDBTable{
         }
         
         // Holidays have to be done last so we have all the users
-        foreach($holiday as $ts) {
-            foreach($users as $user_id => $name) {
-                if (dfprefs::checkAccess('HolidayHours', NULL, $user_id)) {
-                    if ($this->checkUserStartDate($ts->date, $user_id)) {
-                        $sheet[$ts->project_id][$user_id] += round($ts->hours, $this->_decimalPlaces);
+        if (is_array($holiday)) {
+            foreach($holiday as $ts) {
+                foreach($users as $user_id => $name) {
+                    if (dfprefs::checkAccess('HolidayHours', NULL, $user_id)) {
+                        if ($this->checkUserStartDate($ts->date, $user_id)) {
+                            $sheet[$ts->project_id][$user_id] += round($ts->hours, $this->_decimalPlaces);
+                        }
                     }
                 }
             }
         }
-
 
         $days = 1;
         $week = 1;

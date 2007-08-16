@@ -637,7 +637,8 @@ class HTML_DragonflyProject_Timeclock {
         $res = $this->_timesheet->prepare_notes();
         $notes = array();
         foreach($res as $note) {
-            $notes[$note->user_name][$note->project_name][$note->date] .= $note->note;
+            $notes[$note->user_name][$note->project_name][$note->date]['Note'] .= $note->note;
+            $notes[$note->user_name][$note->project_name][$note->date]['Hours'] .= $note->hours;
         }
         
         $this->_tableHTML .= "<h2>Notes</h2>\n";
@@ -649,8 +650,8 @@ class HTML_DragonflyProject_Timeclock {
                 $this->_tableHTML .= "<dt style=\"font-weight: bold;\">".$project."</dt>\n";
                 $this->_tableHTML .= "<dd>\n<dl>\n";
                 foreach($dates as $date => $note) {
-                    $this->_tableHTML .= "<dt>".$date."</dt>\n";
-                    $this->_tableHTML .= "<dd>".$note."</dd>\n";
+                    $this->_tableHTML .= "<dt>".$date." (".$note['Hours']." h)</dt>\n";
+                    $this->_tableHTML .= "<dd>".$note['Note']."</dd>\n";
                 }
                 $this->_tableHTML .= "</dl>\n<dd>\n";
             }
