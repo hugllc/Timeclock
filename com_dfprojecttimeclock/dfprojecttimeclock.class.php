@@ -613,9 +613,8 @@ class timesheet extends mosDBTable{
             foreach($res as $row) {
                 $this->check_user($row);
                 if (!isset($users[$row->user_id])) $users[$row->user_id] = $row->user_name;
-                $temp[$row->user_name][$row->date] += round($row->hours, $this->_decimalPlaces);
                 if ($row->project_type == "HOLIDAY") {
-                    $holiday[] = $ts;
+                    $holiday[] = $row;
                 } else {
                     $temp[$row->user_name][$row->date] += round($row->hours, $this->_decimalPlaces);
                 }
@@ -624,11 +623,11 @@ class timesheet extends mosDBTable{
         
         // Holidays have to be done last so we have all the users
         if (is_array($holiday)) {
-            foreach($holiday as $ts) {
+            foreach($holiday as $row) {
                 foreach($users as $user_id => $name) {
                     if (dfprefs::checkAccess('HolidayHours', NULL, $user_id)) {
-                        if ($this->checkUserStartDate($ts->date, $user_id)) {
-                            $sheet[$ts->project_id][$user_id] += round($ts->hours, $this->_decimalPlaces);
+                        if ($this->checkUserStartDate($row->date, $user_id)) {
+                            $temp[$name][$row->date] += round($row->hours, $this->_decimalPlaces);
                         }
                     }
                 }
