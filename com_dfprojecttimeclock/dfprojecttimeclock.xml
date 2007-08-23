@@ -6,7 +6,7 @@
     <copyright>2005-2007 Hunt Utilities Group, LLC</copyright>
     <authorEmail>prices@dflytech.com</authorEmail>
     <authorUrl>www.dflytech.com</authorUrl>
-    <version>0.1.20</version>
+    <version>0.1.21</version>
     <files>
         <filename>dfprojecttimeclock.php</filename>
         <filename>dfprojecttimeclock.html.php</filename>
