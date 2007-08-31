@@ -54,8 +54,8 @@ if (dfprefs::checkAccess('Timeclock', "com_dfprojecttimeclock") && ($my->id > 0)
 
         $hours = ($res[0]['Hours'] > 0) ? $res[0]['Hours'] : 0;
         if (is_null($type)) {
-            print "<div style=\"text-align: left;\"><b>".$label.":</b> ".$hours."</div>\n";
-            print "<div style=\"text-align: left;\"><b>".$label."/week:</b> ".round($hours / (date("z")/7), 2)."</div>\n";
+            print "<div style=\"text-align: left;\"><b>".$label.":</b> ".$hours." h</div>\n";
+            print "<div style=\"text-align: left;\"><b>".$label."/week:</b> ".round($hours / (date("z")/7), 2)." h</div>\n";
         } else {
             $database->setQuery("SELECT #__dfproject.id as id ".$query);
             $idres = $database->loadAssocList();
@@ -69,13 +69,29 @@ if (dfprefs::checkAccess('Timeclock', "com_dfprojecttimeclock") && ($my->id > 0)
                 			$hours .= " / ".$max;
                 		}
 */
-                        print "<div style=\"text-align: left;\"><b>".$label.":</b> ".$hours."</div>\n";
+                        print "<div style=\"text-align: left;\"><b>".$label.":</b> ";
+                        if ($type == "VACATION") {
+                            $vh = $timesheet->getVacation();
+                            if ($vh > 0) {
+                                if ($hours < $vh) {
+                                    print $hours."/".$vh;
+                                } else {
+                                    print '<span style="color:black; background: red;">'.$hours."/".$vh."</span>";
+                                }
+                            } else {
+                                print $hours;
+                            }
+                        } else {
+                            print $hours;                        
+                        }
+                        print " h</div>\n";
                         break;
                     }
                 }
             }
         }
     }
-    
+    $service = $timesheet->getServiceLength(time(), $my->id, "y");
+    print "<div style=\"text-align: left;\"><b>Service Length:</b> ".round($service, 2)." y</div>\n";
 }
 ?>
