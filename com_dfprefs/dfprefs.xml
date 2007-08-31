@@ -6,7 +6,7 @@
     <copyright>2005-2007 Hunt Utilities Group, LLC</copyright>
     <authorEmail>prices@dflytech.com</authorEmail>
     <authorUrl>www.dflytech.com</authorUrl>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <files>
         <filename>dfprefs.php</filename>
         <filename>dfprefs.html.php</filename>
