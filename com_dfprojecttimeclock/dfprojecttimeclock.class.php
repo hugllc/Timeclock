@@ -79,13 +79,21 @@ class timesheet extends mosDBTable{
         
     }
 
+    function getUserStartDate($id = NULL) {
+        global $my;
+        if (is_null($id)) $id = $my->id;    
+
+        $startdate = dfprefs::getUser("startDate", NULL, $id);
+        $startdate = strtotime($startdate);
+        return $startdate;
+    }
+
     function checkUserStartDate($date, $id = NULL) {
         global $my;
         if (is_string($date)) $date = strtotime($date);
         if (is_null($id)) $id = $my->id;
         
-        $startdate = dfprefs::getUser("startDate", NULL, $id);
-        $startdate = strtotime($startdate);
+        $startdate = $this->getUserStartDate($id);
         return ($date >= $startdate);
     }
 
@@ -810,7 +818,68 @@ class timesheet extends mosDBTable{
             return true;
     }
 
+    function getVacation($id = NULL) {
+        global $my;
+        if (is_null($id)) $id = $my->id;    
 
+        $accrual = $this->getVAccrual($id);
+        switch (trim(strtolower($this->_config['vacationAccrual']))) {
+            default:
+            case "weekly":
+                $vh = $accrual * (int) date('W');
+                break;
+        }
+        return $vh;
+    }
+    
+    function getVAccrual($id = NULL) {
+        global $my;
+        if (is_null($id)) $id = $my->id;    
+        $table = $this->_config['vacationAccrualTable'];
+        $temp = explode("\n", $table);
+        $service = $this->getServiceLength(time(), $id, "y");
+        $etype = dfprefs::getUser("employeeType", NULL, $id);
+        foreach ($temp as $line) {
+            $row = explode(",", $line);
+            if ((int)$row[0] > (int)$service) {
+                switch(trim(strtoupper($etype))) {
+                    case "FULLTIME":
+                        $accrual = $row[1];
+                        break;
+                    case "PARTTIME":
+                        $accrual = $row[2];
+                        break;
+                    default:
+                        $accrual = 0;
+                        break;
+                }
+                break;
+            }
+        }
+        return $accrual;
+    }
+    
+    function getServiceLength($date, $id = NULL, $units="s") {
+        global $my;
+        if (is_string($date)) $date = strtotime($date);
+        if (is_null($id)) $id = $my->id;
+        $startdate = $this->getUserStartDate($id);
+        $time = $date - $startdate;
+        switch(trim(strtolower($units))) {
+            case "y":
+                $time /= 365.25;
+            case "d":
+                $time /= 24;
+            case "h":
+                $time /= 60;
+            case "m":
+                $time /= 60;
+            case "s":
+            default:
+                break;
+        }
+        return $time;
+    }
 }
 
 

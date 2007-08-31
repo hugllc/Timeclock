@@ -39,6 +39,22 @@ function com_install() {
 			),
 		),
 		array(
+			'name' => 'employeeType',
+			'type' => 'SELECT',
+			'preftype' => 'ADMINUSER',
+			'default' => 'FULLTIME',
+			'help' => 'Type of employee',
+			'parameters' => array(
+				'title' => "Employee Type",
+				'options' => array(
+				    'FULLTIME' => "Full Time",
+				    'PARTTIME' => "Part Time",
+				    'TEMPORARY' => "Temporary",
+				    'CONTRACTOR' => "Contractor",
+				),
+			),
+		),
+		array(
 			'name' => 'vacationHours',
 			'type' => 'TEXT',
 			'preftype' => 'ADMINUSER',
@@ -110,6 +126,36 @@ function com_install() {
 			'help' => 'Does this person get access to other peoples timecards?',
 			'parameters' => array(
 				'title' => "Acess to Others Timecards",
+			),
+		),
+		array(
+			'name' => 'vacationType',
+			'type' => 'HIDDEN',
+			'preftype' => 'SYSTEM',
+			'default' => 'ACRUAL',
+			'help' => '',
+			'parameters' => array(
+				'visible' => FALSE,
+			),
+		),
+		array(
+			'name' => 'vacationAccrual',
+			'type' => 'HIDDEN',
+			'preftype' => 'SYSTEM',
+			'default' => 'WEEKLY',
+			'help' => 'How often vacation is accrued',
+			'parameters' => array(
+				'visible' => FALSE,
+			),
+		),
+		array(
+			'name' => 'vacationAccrualTable',
+			'type' => 'HIDDEN',
+			'preftype' => 'SYSTEM',
+			'default' => '',
+			'help' => '',
+			'parameters' => array(
+				'visible' => FALSE,
 			),
 		),
 		array(

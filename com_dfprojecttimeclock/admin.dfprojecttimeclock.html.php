@@ -37,6 +37,14 @@ class HTML_dfprojecttimeclock {
             mosHTML::makeOption( 'FIXED', 'Fixed' ),
         );
 
+        $vacationAccrual = array(
+            mosHTML::makeOption( 'WEEKLY', 'Weekly' ),
+        );
+        $vacationType = array(
+            mosHTML::makeOption( 'ACRUAL', 'Acrual' ),
+            mosHTML::makeOption( 'FIXED', 'FIXED' ),
+        );
+
         $debugsel = mosHTML::yesnoRadioList( 'df_config[debug]', 'class="inputbox"', $config['debug'] );
 
         $query = "SELECT id AS value, name AS text"
@@ -134,10 +142,10 @@ class HTML_dfprojecttimeclock {
       </tr>
    </table>
 <?php $tab->endTab(); ?>
-<?php $tab->startTab("User Settings", "userSettings"); ?>
+<?php $tab->startTab("Users", "userSettings"); ?>
     <table cellpadding="4" cellspacing="1" border="0" class="adminform">
       <tr>
-        <td valign="middle" align="right">Max Daily Hours:</td>
+        <td valign="middle" align="right" style="white-space: nowrap;">Max Daily Hours:</td>
         <td>
           <?php print mosHTML::integerSelectList( 1, 24, 1, 'df_config[maxhours]','class="inputbox"' , $config['maxhours']); ?>
         </td>
@@ -146,7 +154,39 @@ class HTML_dfprojecttimeclock {
         </td>
       </tr>
       <tr>
-        <td valign="middle" align="right">Max Decimal Places:</td>
+        <td valign="middle" align="right" style="white-space: nowrap;">Vacation Calculation Method:</td>
+        <td>
+            <?php print mosHTML::selectList( $vacationType, 'df_config[vacationType]', 'class="inputbox"', 'value', 'text', $config['vacationType'] ); ?>
+        </td>
+        <td>
+            How vacation is calculated.
+        </td>
+      </tr>
+      <tr>
+        <td valign="middle" align="right" style="white-space: nowrap;">Vacation Accrual Period:</td>
+        <td>
+            <?php print mosHTML::selectList( $vacationAccrual, 'df_config[vacationAccrual]', 'class="inputbox"', 'value', 'text', $config['vacationAccrual'] ); ?>
+        </td>
+        <td>
+            How often vacation is accrued.
+        </td>
+      </tr>
+      <tr>
+        <td valign="middle" align="right">Vacation Accrual Table:</td>
+        <td>
+            <textarea name="df_config[vacationAccrualTable]" class="inputbox"><?=$config['vacationAccrualTable'];?></textarea>
+        </td>
+        <td>
+            Format is comma separated as follows:
+<pre>
+[Years of employment],[Full Time Hours],[Part Time Hours]
+</pre>
+The table is read top to bottom, with the first entry being taken that is less than the
+number of years the employee has worked.  That means put the smaller number of years first.
+        </td>
+      </tr>
+      <tr>
+        <td valign="middle" align="right" style="white-space: nowrap;">Max Decimal Places:</td>
         <td>
           <?php print mosHTML::integerSelectList( 1, 6, 1, 'df_config[decimalPlaces]','class="inputbox"' , $config['decimalPlaces']); ?>
         </td>
