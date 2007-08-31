@@ -282,6 +282,13 @@ class HTML_dfprefs {
 					case 'YESNO':
 				        $up['input'] = mosHTML::selectList( $yesno, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value );
 						break;
+					case 'SELECT':
+					    $options = array();
+					    foreach($p->parameters['options'] as $key => $value) {
+                            $options[] = mosHTML::makeOption( $key, $value );
+                        }
+				        $up['input'] = mosHTML::selectList( $options, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value );
+						break;
 					case 'DATE':
         				mosCommonHTML::loadCalendar();
 						$size = ($p->parameters['size'] > 0) ? $p->parameters['size'] : 13;
