@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>prices@dflytech.com</authorEmail>
 	<authorUrl>www.dflytech.com</authorUrl>
-	<version>0.0.6</version>
+	<version>0.0.7</version>
 	<description>This module displays the year-to-date totals for the timeclock.</description>
 	<files>
 		<filename module="mod_timeclockytd">mod_timeclockytd.php</filename>
