@@ -227,7 +227,7 @@ class billing  extends mosDBTable {
         // Holidays have to be done last so we have all the users
         foreach($holiday as $ts) {
             foreach($users as $user_id => $name) {
-                if ($dfconfig->checkAccess('timeclockholiday', $user_id)) {
+                if (dfprefs::checkAccess('HolidayHours', NULL, $user_id)) {
                     $sheet[$ts->project_id][$user_id] += $ts->totalHours;
                 }
             }
