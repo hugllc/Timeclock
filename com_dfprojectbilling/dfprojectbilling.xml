@@ -6,7 +6,7 @@
     <copyright>2006-2007 Scott Price</copyright>
     <authorEmail>prices@dflytech.com</authorEmail>
     <authorUrl>www.hugllc.com</authorUrl>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <files>
         <filename>dfprojectbilling.php</filename>
         <filename>dfprojectbilling.html.php</filename>
