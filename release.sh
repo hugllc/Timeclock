@@ -16,7 +16,7 @@ fi
 
 svn commit ./$COM_NAME
 echo Tagging the version
-svn -m "Release $COM_VERSOIN" copy ./$COM_NAME ${SVN_SERVER}/0007/tags/${COM_NAME}/${COM_VERSION}
+svn -m "Release $COM_VERSOIN" copy ./$COM_NAME ${SVN_SERVER}/Timeclock/tags/${COM_NAME}/${COM_VERSION}
 
 
 ./build.sh $1 $2
