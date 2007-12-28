@@ -84,6 +84,7 @@ class AllTests
     public static function suite()
     {
         PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__)."/test", '.php');
+        PHPUnit_Util_Filter::addFileToFilter(__FILE__);
         $suite = new PHPUnit_Framework_TestSuite('Timeclock');
 
 //        $suite->addTestSuite('otherTest');

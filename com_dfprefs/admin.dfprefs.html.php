@@ -236,7 +236,6 @@ class HTML_DfPrefs
         $k = 0;
         for ($i=0, $n=count($rows); $i < $n; $i++) {
             $row     =& $rows[$i];
-
             $row->parameters = unserialize($row->parameters);
             $editable = ($row->parameters['editable'] !== false);
             $img     = ($editable) ? 'tick.png' : 'publish_x.png';

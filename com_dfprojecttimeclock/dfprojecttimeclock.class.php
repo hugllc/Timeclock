@@ -34,10 +34,10 @@
  */
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-
 if (!include_once $mainframe->getPath('class', 'com_dfproject')) {
     die('com_dfproject is required for com_dfprojecttimeclock');
 }
+
 include_once $mainframe->getPath('class', 'com_dfprojectwcomp');
 require_once($mosConfig_absolute_path."/includes/sef.php");
 
@@ -91,9 +91,10 @@ class timesheet extends mosDBTable
      */    
     function __construct($config = null)
     {
+
         global $database;
         $this->_db =& $database;
-        if (is_null($config)) $config = dfprefs::getSystem();
+//        if (is_null($config)) $config = dfprefs::getSystem();
         $this->_config = $config;
 
         $this->_maxDailyHours = $config['maxhours'];
@@ -160,9 +161,9 @@ class timesheet extends mosDBTable
      *
      * @param mixed $date The date to fix.
      *
-     * @return int
+     * @return none
      */
-    function fixDate($date)
+    function fixDate(&$date)
     {
         if (empty($date)) {
             $date = time();
@@ -170,7 +171,7 @@ class timesheet extends mosDBTable
             $date = strtotime($date);
         }
         // This makes sure daylight savings time doesn't effect us.
-        return strtotime(date('Y-m-d 06:00:00', $date));
+        $date = strtotime(date('Y-m-d 06:00:00', $date));
     }
     
     /**
@@ -180,16 +181,9 @@ class timesheet extends mosDBTable
      */    
     function getPeriod($Start, $End)
     {
-        foreach (array('Start', 'End') as $Date) {
-            if (empty($$Date)) {
-                $$Date = time();
-            } else if (is_string($$Date)) {
-                $$Date = strtotime($$Date);
-            }
-            // This makes sure daylight savings time doesn't effect us.
-            $$Date = strtotime(date('Y-m-d 06:00:00', $$Date));
-        }
-        $periodLength = round(abs($End - $Start)/86400)+1;
+        $this->fixDate($Start);
+        $this->fixDate($End);
+        $periodLength = (int) round(abs($End - $Start)/86400)+1;
 
         $startDay = date('d', $Start);
         $prevDay = $startDay - $periodLength;
@@ -219,9 +213,6 @@ class timesheet extends mosDBTable
     {
     
         $period = timesheet::getPeriod($Start, $End);
-        // Add where fields
-//        $this->addWhere($this->table.".".$this->_dateField.">='".date("Y-m-d", $period['start'])."'");
-//        $this->addWhere($this->_dateField."<='".date("Y-m-d", $period['end'])."'");    
     }
     
     /**
@@ -233,10 +224,7 @@ class timesheet extends mosDBTable
     {
         
         $period = timesheet::getPayPeriod($Date);
-        // Add where fields
-//        $this->addWhere($this->_dateField.">='".date("Y-m-d", $period['start'])."'");
-//        $this->addWhere($this->_dateField."<='".date("Y-m-d", $period['end'])."'");    
-        $where = " (".$this->_tbl.".".$this->_dateField.">='".date("Y-m-d", $period['start'])."' ";
+        $where = " (".$this->_tbl.".".$this->_dateField.">='".date("Y-m-d", $period['start'])."'";
         $where .= " AND ";
         $where .= $this->_tbl.".".$this->_dateField."<='".date("Y-m-d", $period['end'])."') ";
         return $where;
@@ -265,14 +253,7 @@ class timesheet extends mosDBTable
     {
         global $prefs;
 
-        if (empty($Date)) {
-            $Date = time();
-        } else if (is_string($Date)) {
-            $Date = strtotime($Date);
-        }
-        // This makes sure daylight savings time doesn't effect us.
-        $this->Date = strtotime(date('Y-m-d', $Date));
-        $Date = strtotime(date('Y-m-d 06:00:00', $Date));
+        $this->fixDate($Date);
         $return = array();
 
         switch($this->_periodType) {
@@ -291,28 +272,13 @@ class timesheet extends mosDBTable
                 // Get the offset to the end of the payperiod
                 $timeDiff = ($timeDiff % $payPeriodLengthSec);
 
-//                $startDay = date('d', $Date - $timeDiff);
-//                $prevDay = $startDay-$payPeriodLength;
-//                $nextDay = $startDay + $payPeriodLength;
-//                $endDay = $nextDay - 1;
-//                // Get the start and end
-//                $return['start'] = mktime(6,0,0, date("m", $Date), $startDay, date('Y', $Date));
-//                $return['end'] = mktime(6,0,0, date("m", $Date), $endDay, date('Y', $Date));
-//                $return['prev'] = mktime(6,0,0, date("m", $Date), $prevDay, date('Y', $Date));
-//                $return['next'] = mktime(6,0,0, date("m", $Date), $nextDay, date('Y', $Date));
 
                 $start = strtotime(date("Y-m-d H:i:s", $Date - $timeDiff));
                 $end = strtotime(date("Y-m-d H:i:s", $start+$payPeriodLengthSec-DAY_SECONDS));
                 
-/*
-                $return['start'] = strtotime(date("Y-m-d H:i:s", $Date - $timeDiff));
-                $return['next'] = strtotime(date("Y-m-d H:i:s", $return['start']+$payPeriodLengthSec));
-                $return['prev'] = strtotime(date("Y-m-d H:i:s", $return['start']-$payPeriodLengthSec));
-                $return['end'] = strtotime(date("Y-m-d H:i:s", $return['next']-DAY_SECONDS));
-*/
                 break;
         }
-        $this->period = $this->getPeriod($start, $end);
+        $this->getPeriod($start, $end);
         return($this->period);
     }
     
@@ -463,6 +429,9 @@ class timesheet extends mosDBTable
 
     /**
      * Function
+     *
+     * @param string $text   Text to link
+     * @param string $note   Note to popup over link
      *
      * @return array
      */    

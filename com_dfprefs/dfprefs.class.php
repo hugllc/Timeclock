@@ -60,10 +60,10 @@ class dfPrefs extends mosDBTable {
     );
     
 
-    function dfPrefs(&$db, $cache = true) {
+    function __construct(&$db, $cache = true) {
 
-        $this->mosDBTable('#__dfprefs', 'id', $db);
-        $this->_db =& $db;
+//        parent::mosDBTable('#__dfprefs', 'id', $db);
+//        $this->_db =& $db;
         $this->_cache = $cache;
         $this->_area = mosGetParam($_REQUEST, 'option', 'unknown');
     }
@@ -99,7 +99,6 @@ class dfPrefs extends mosDBTable {
         if (dfprefs::cache() && ($_SESSION['dfprefs'][$type][$id][$area][$name] == $value)) {
             return true;
         } else {
-        
             $query = "REPLACE into #__dfprefs "
                . " SET "
                . " id = ".(int)$id
@@ -234,6 +233,7 @@ class dfPrefs extends mosDBTable {
     }
 }
 
+
 class dfPrefs_define extends mosDBTable {
     /** @var mosDatabase Database connector */
     var $_db = null;
@@ -248,8 +248,8 @@ class dfPrefs_define extends mosDBTable {
     function dfPrefs_define() {
         global $database;
 
-        $this->mosDBTable('#__dfprefs_define', 'id', $database);
-        $this->_db =& $db;
+        parent::mosDBTable('#__dfprefs_define', 'id', $database);
+//        $this->_db =& $database;
         $this->_area = dfPrefs::getArea();
     }
 
@@ -285,7 +285,6 @@ class dfPrefs_define extends mosDBTable {
 
         if (is_null($area)) $area = dfPrefs::getArea();        
         if (empty($id)) unset($id);        
-
         $basequery = " name = '".(string)$name."'"
            . ", area = '".(string)$area."'"
            . ", type = '".(string)$type."'"
@@ -362,7 +361,6 @@ class dfPrefs_define extends mosDBTable {
         }
         if (is_array($ret)) {
             foreach ($ret as $key => $val) {
-        
                 $ret[$key]->default = unserialize($ret[$key]->default);
                 $ret[$key]->parameters = unserialize($ret[$key]->parameters);
             }
@@ -394,7 +392,7 @@ class dfFileConfig {
     }
 
     function getConfig()
-{
+    {
 
         @include($this->path.DIRECTORY_SEPARATOR.$this->file);
         $df_config = $this->mergeConfig($this->default_config, $df_config);
