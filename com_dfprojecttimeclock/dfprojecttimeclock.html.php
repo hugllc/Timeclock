@@ -342,16 +342,16 @@ class HTML_DragonflyProject_Timeclock {
     $research = (bool) mosGetParam($_REQUEST, "research");
 
 ?>
-    <form method="get" action="<?=$_SERVER['REQUEST_URI']?>">
-    <input type="hidden" name="option" value="<?=$option?>" />
-    <input type="hidden" name="Itemid" value="<?=$Itemid?>" />
-    <input type="hidden" name="user_id" value="<?=$user_id?>" />
-    <input type="hidden" name="task" value="<?=$task?>" />
-    <input type="hidden" name="reporttask" value="<?=$reporttask?>" />
-        Dates: <input class="inputbox" type="text" name="StartDate" id="StartDate" size="20" maxlength="19" value="<?=$this->StartDate?>" />
+    <form method="get" action="<?php echo $_SERVER['REQUEST_URI']?>">
+    <input type="hidden" name="option" value="<?php echo $option?>" />
+    <input type="hidden" name="Itemid" value="<?php echo $Itemid?>" />
+    <input type="hidden" name="user_id" value="<?php echo $user_id?>" />
+    <input type="hidden" name="task" value="<?php echo $task?>" />
+    <input type="hidden" name="reporttask" value="<?php echo $reporttask?>" />
+        Dates: <input class="inputbox" type="text" name="StartDate" id="StartDate" size="20" maxlength="19" value="<?php echo $this->StartDate?>" />
                <input type="reset" class="button" value="..." onClick="return showCalendar('StartDate', 'y-mm-dd');">
                 to
-        <input class="inputbox" type="text" name="EndDate" id="EndDate" size="20" maxlength="19" value="<?=$this->EndDate?>" />
+        <input class="inputbox" type="text" name="EndDate" id="EndDate" size="20" maxlength="19" value="<?php echo $this->EndDate?>" />
                <input type="reset" class="button" value="..." onClick="return showCalendar('EndDate', 'y-mm-dd');">
                 Date Format: YYYY-MM-DD
                 <br />

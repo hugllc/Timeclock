@@ -126,14 +126,14 @@ class HTML_dfprefs {
 
     <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-    <div class="componentheading">Preferences for <?=$row->name?></div>
+    <div class="componentheading">Preferences for <?php echo $row->name?></div>
     <table cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" id="prefstable">
     <tr>
         <th style="white-space: nowrap; text-align: right;">
         Area Filter: 
         </th>
         <td>
-            <?=$areaselect?>
+            <?php echo $areaselect?>
         </td>
         <td>This cuts down the display to only one area.  
         </td>
@@ -147,22 +147,22 @@ class HTML_dfprefs {
             $areaDisplay = "none";
         }
 ?>
-      <tbody id="<?=$theArea?>" style="display:<?=$areaDisplay?>;">
+      <tbody id="<?php echo $theArea?>" style="display:<?php echo $areaDisplay?>;">
       <tr>
         <td colspan="3" class="title" >
-          <h2><?=$areaName[$theArea]?></h2>
+          <h2><?php echo $areaName[$theArea]?></h2>
         </td>
       </tr>
 
 <?php   foreach ($parea as $pref) { ?>
       <tr>
-        <th style="white-space: nowrap; text-align: right; vertical-align:top;"><?=$pref['title']?>:</th>
+        <th style="white-space: nowrap; text-align: right; vertical-align:top;"><?php echo $pref['title']?>:</th>
         <td style="white-space: nowrap; text-align: left; vertical-align:top;">
-          <?=$pref['input']?>
+          <?php echo $pref['input']?>
 
         </td>
         <td style="width: 50%; text-align: left; vertical-align: top;">
-            <?=$pref['help']?>
+            <?php echo $pref['help']?>
 
         </td>
       </tr>

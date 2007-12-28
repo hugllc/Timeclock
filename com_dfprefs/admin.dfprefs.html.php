@@ -348,7 +348,7 @@ class HTML_dfprefs {
     <table class="adminheading">
     <tr>
         <th class="user">
-        Preferences for <?=$row->name?>
+        Preferences for <?php echo $row->name?>
         </th>
     </tr>
     </table>
@@ -365,13 +365,13 @@ class HTML_dfprefs {
     <table cellpadding="4" cellspacing="1" border="0" width="100%" class="adminform" id="prefstable">
 <?php   foreach ($parea as $pref) { ?>
       <tr>
-        <td valign="top" align="right"><?=$pref['title']?>:</td>
+        <td valign="top" align="right"><?php echo $pref['title']?>:</td>
         <td valign="top" align="right">
-          <?=$pref['input']?>
+          <?php echo $pref['input']?>
 
         </td>
         <td valign="top" align="right">
-            <?=$pref['help']?>
+            <?php echo $pref['help']?>
 
         </td>
       </tr>
@@ -445,7 +445,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Name:</td>
         <td>
-          <input type="text" name="dfprefs_define[name]" value="<?=$row->name?>">
+          <input type="text" name="dfprefs_define[name]" value="<?php echo $row->name?>">
         </td>
         <td>
             The name of the variable
@@ -454,7 +454,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Title:</td>
         <td>
-          <input type="text" name="dfprefs_define[parameters][title]" value="<?=$row->parameter['title']?>"/>
+          <input type="text" name="dfprefs_define[parameters][title]" value="<?php echo $row->parameter['title']?>"/>
         </td>
         <td>
             The title that will show up in the edit preferences dialog.
@@ -463,7 +463,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Preference Type:</td>
         <td>
-            <?=$preftypelist?>
+            <?php echo $preftypelist?>
         </td>
         <td>
             The type of preference
@@ -472,7 +472,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Variable Type:</td>
         <td>
-            <?=$typelist?>
+            <?php echo $typelist?>
         </td>
         <td>
             The type of variable
@@ -481,7 +481,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Help Message:</td>
         <td>
-          <textarea type="text" name="dfprefs_define[help]" cols="40" rows="5"><?=$row->help?></textarea>
+          <textarea type="text" name="dfprefs_define[help]" cols="40" rows="5"><?php echo $row->help?></textarea>
         </td>
         <td>
             The help text for this input
@@ -501,7 +501,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Size:</td>
         <td>
-          <input type="text" name="dfprefs_define_text[size]" value="<?=$row->parameters['size']?>" size="5" maxlength="5">
+          <input type="text" name="dfprefs_define_text[size]" value="<?php echo $row->parameters['size']?>" size="5" maxlength="5">
         </td>
         <td>
             The size of the text field
@@ -510,7 +510,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Max Length:</td>
         <td>
-          <input type="text" name="dfprefs_define_text[maxlength]" value="<?=$row->parameters['maxlength']?>" size="5" maxlength="5">
+          <input type="text" name="dfprefs_define_text[maxlength]" value="<?php echo $row->parameters['maxlength']?>" size="5" maxlength="5">
         </td>
         <td>
             The maximum length of the text field
@@ -519,7 +519,7 @@ class HTML_dfprefs {
       <tr>
         <td style="vertical-align: top; text-align: right;">Default:</td>
         <td>
-          <input type="text" name="dfprefs_define[default]" value="<?=$row->default?>" size="50">
+          <input type="text" name="dfprefs_define[default]" value="<?php echo $row->default?>" size="50">
         </td>
         <td>
             The default value

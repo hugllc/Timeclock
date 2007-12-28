@@ -183,7 +183,7 @@ class HTML_dfprojecttimeclock {
       <tr>
         <td valign="middle" align="right">Vacation Accrual Table:</td>
         <td>
-            <textarea name="df_config[vacationAccrualTable]" class="inputbox"><?=$config['vacationAccrualTable'];?></textarea>
+            <textarea name="df_config[vacationAccrualTable]" class="inputbox"><?php echo $config['vacationAccrualTable'];?></textarea>
         </td>
         <td>
             Format is comma separated as follows:
@@ -211,7 +211,7 @@ number of years the employee has worked.  That means put the smaller number of y
       <tr>
         <td valign="middle" align="right">First Pay Period Start:</td>
         <td>
-            <input class="inputbox" type="text" name="df_config[periodstart]" id="periodstart" size="25" maxlength="19" value="<?=$config['periodstart']?>" />
+            <input class="inputbox" type="text" name="df_config[periodstart]" id="periodstart" size="25" maxlength="19" value="<?php echo $config['periodstart']?>" />
             <input type="reset" class="button" value="..." onClick="return showCalendar('periodstart', 'y-mm-dd');">
         </td>
         <td>

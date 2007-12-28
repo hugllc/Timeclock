@@ -312,19 +312,19 @@ class HTML_DragonflyProject_Billing {
 //        echo '<div style="clear:both;"></div>';
         if ($dateform) {
 ?>
-    <form method="get" action="<?=$_SERVER['SCRIPT_URL']?>">
-        From: <input class="inputbox" type="text" name="StartDate" id="StartDate" size="25" maxlength="19" value="<?=date("Y-m-d", $this->period['start'])?>" />
+    <form method="get" action="<?php echo $_SERVER['SCRIPT_URL']?>">
+        From: <input class="inputbox" type="text" name="StartDate" id="StartDate" size="25" maxlength="19" value="<?php echo date("Y-m-d", $this->period['start'])?>" />
                <input type="reset" class="button" value="..." onClick="return showCalendar('StartDate', 'y-mm-dd');">
                 Date Format: YYYY-MM-DD
         <br />
-        To: <input class="inputbox" type="text" name="EndDate" id="EndDate" size="25" maxlength="19" value="<?=date("Y-m-d", $this->period['end'])?>" />
+        To: <input class="inputbox" type="text" name="EndDate" id="EndDate" size="25" maxlength="19" value="<?php echo date("Y-m-d", $this->period['end'])?>" />
                <input type="reset" class="button" value="..." onClick="return showCalendar('EndDate', 'y-mm-dd');">
                 Date Format: YYYY-MM-DD
         <br />
-        <input type="hidden" name="option" value="<?=$option?>">
-        <input type="hidden" name="task" value="<?=$task?>">
-        <input type="hidden" name="report" value="<?=$report?>">
-        <input type="hidden" name="id" value="<?=$id?>">
+        <input type="hidden" name="option" value="<?php echo $option?>">
+        <input type="hidden" name="task" value="<?php echo $task?>">
+        <input type="hidden" name="report" value="<?php echo $report?>">
+        <input type="hidden" name="id" value="<?php echo $id?>">
         <input type="submit" value="Go">
     </form>
 <?php
