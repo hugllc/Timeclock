@@ -166,5 +166,5 @@ global $mainframe;
 global $mosConfig_absolute_path;
 $database                = new MosDatabase();
 $mainframe               = new JoomlaMainFrame();
-$mosConfig_absolute_path = dirname(__FILE__);
+$mosConfig_absolute_path = str_replace(dirname(__FILE__);
 ?>
