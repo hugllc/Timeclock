@@ -127,7 +127,7 @@ class OLE_PPS_Root extends OLE_PPS
         // Write Big Block Depot and BDList and Adding Header informations
         $this->_saveBbd($iSBDcnt, $iBBcnt, $iPPScnt);
         // Close File, send it to stdout if necessary
-        if(($filename == '-') or ($filename == ''))
+        if (($filename == '-') or ($filename == ''))
         {
             fseek($this->_FILEH_, 0);
             fpassthru($this->_FILEH_);
@@ -155,9 +155,9 @@ class OLE_PPS_Root extends OLE_PPS
         $iSmallLen = 0;
         $iSBcnt = 0;
         for ($i = 0; $i < count($raList); $i++) {
-            if($raList[$i]->Type == OLE_PPS_TYPE_FILE) {
+            if ($raList[$i]->Type == OLE_PPS_TYPE_FILE) {
                 $raList[$i]->Size = $raList[$i]->_DataLen();
-                if($raList[$i]->Size < OLE_DATA_SIZE_SMALL) {
+                if ($raList[$i]->Size < OLE_DATA_SIZE_SMALL) {
                     $iSBcnt += floor($raList[$i]->Size / $this->_SMALL_BLOCK_SIZE)
                                   + (($raList[$i]->Size % $this->_SMALL_BLOCK_SIZE)? 1: 0);
                 }
@@ -291,14 +291,14 @@ class OLE_PPS_Root extends OLE_PPS
         // cycle through PPS's
         for ($i = 0; $i < count($raList); $i++)
         {
-            if($raList[$i]->Type != OLE_PPS_TYPE_DIR)
+            if ($raList[$i]->Type != OLE_PPS_TYPE_DIR)
             {
                 $raList[$i]->Size = $raList[$i]->_DataLen();
-                if(($raList[$i]->Size >= OLE_DATA_SIZE_SMALL) or
+                if (($raList[$i]->Size >= OLE_DATA_SIZE_SMALL) or
                     (($raList[$i]->Type == OLE_PPS_TYPE_ROOT) and isset($raList[$i]->_data)))
                 {
                     // Write Data
-                    if(isset($raList[$i]->_PPS_FILE))
+                    if (isset($raList[$i]->_PPS_FILE))
                     {
                         $iLen = 0;
                         fseek($raList[$i]->_PPS_FILE, 0); // To The Top
@@ -376,7 +376,7 @@ class OLE_PPS_Root extends OLE_PPS
                     else {
                         $sRes .= $raList[$i]->_data;
                     }
-                    if($raList[$i]->Size % $this->_SMALL_BLOCK_SIZE)
+                    if ($raList[$i]->Size % $this->_SMALL_BLOCK_SIZE)
                     {
                         for ($j = 0; $j < ($this->_SMALL_BLOCK_SIZE - ($raList[$i]->Size % $this->_SMALL_BLOCK_SIZE)); $j++) {
                             $sRes .= "\x00";
@@ -389,7 +389,7 @@ class OLE_PPS_Root extends OLE_PPS
             }
         }
         $iSbCnt = floor($this->_BIG_BLOCK_SIZE / OLE_LONG_INT_SIZE);
-        if($iSmBlk % $iSbCnt)
+        if ($iSmBlk % $iSbCnt)
         {
             for ($i = 0; $i < ($iSbCnt - ($iSmBlk % $iSbCnt)); $i++) {
                 fwrite($FILE, pack("V", -1));

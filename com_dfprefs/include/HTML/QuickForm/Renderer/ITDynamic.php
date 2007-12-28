@@ -138,7 +138,7 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
             }
             $this->_groupElementIdx++;
 
-        } elseif(!empty($error)) {
+        } elseif (!empty($error)) {
             // show the error message or keep it for later use
             if ($this->_tpl->blockExists($blockName . '_error')) {
                 $this->_tpl->setVariable('qf_error', $error);
@@ -167,7 +167,7 @@ class HTML_QuickForm_Renderer_ITDynamic extends HTML_QuickForm_Renderer
         }
         // render extra labels, if any
         if (is_array($labels)) {
-            foreach($labels as $key => $label) {
+            foreach ($labels as $key => $label) {
                 $key = is_int($key)? $key + 2: $key;
                 if ($this->_tpl->blockExists($blockName . '_label_' . $key)) {
                     $this->_tpl->setVariable('qf_label_' . $key, $label);

@@ -144,24 +144,24 @@ function setCaretToPosition(input, position) {
 }
 
 function replaceSelection (input, replaceString) {
-	var len = replaceString.length;
+    var len = replaceString.length;
     if (input.setSelectionRange) {
         var selectionStart = input.selectionStart;
         var selectionEnd = input.selectionEnd;
 
         input.value = input.value.substring(0, selectionStart) + replaceString + input.value.substring(selectionEnd);
-		input.selectionStart  = selectionStart + len;
-		input.selectionEnd  = selectionStart + len;
+        input.selectionStart  = selectionStart + len;
+        input.selectionEnd  = selectionStart + len;
     }
     else if (document.selection) {
         var range = document.selection.createRange();
-		var saved_range = range.duplicate();
+        var saved_range = range.duplicate();
 
         if (range.parentElement() == input) {
             range.text = replaceString;
-			range.moveEnd("character", saved_range.selectionStart + len);
-			range.moveStart("character", saved_range.selectionStart + len);
-			range.select();
+            range.moveEnd("character", saved_range.selectionStart + len);
+            range.moveStart("character", saved_range.selectionStart + len);
+            range.select();
         }
     }
     input.focus();
@@ -208,7 +208,7 @@ function autocomplete(textbox, event, values) {
                 replaceSelection(textbox, c);
                 sMatch = autocompleteMatch(textbox.value, values);
                 var len = textbox.value.length;
-				
+                
                 if (sMatch != null) {
                     textbox.value = sMatch;
                     setSelectionRange(textbox, len, textbox.value.length);

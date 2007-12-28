@@ -1,5 +1,36 @@
 <?php
-
+/**
+ *
+ * PHP Version 5
+ *
+ * <pre>
+ * Timeclock is a Joomla application to keep track of employee time
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_dfprefs
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2005-2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ */
 defined( '_VALID_MOS' ) or die( 'Restricted access' );
 //die("GOTHERE");
 
@@ -10,15 +41,15 @@ require_once( $mainframe->getPath( 'class' , 'com_dfprojecttimeclock' ) );
 // converts & to &amp; for xtml compliance
 //$return = str_replace( '&', '&amp;', $return );
 /*
-$registration_enabled 	= $mainframe->getCfg( 'allowUserRegistration' );
-$message_login 			= $params->def( 'login_message', 0 );
-$message_logout 		= $params->def( 'logout_message', 0 );
-$pretext 				= $params->get( 'pretext' );
-$posttext 				= $params->get( 'posttext' );
-$login 					= $params->def( 'login', $return );
-$logout 				= $params->def( 'logout', $return );
-$name 					= $params->def( 'name', 1 );
-$greeting 				= $params->def( 'greeting', 1 );
+$registration_enabled     = $mainframe->getCfg( 'allowUserRegistration' );
+$message_login             = $params->def( 'login_message', 0 );
+$message_logout         = $params->def( 'logout_message', 0 );
+$pretext                 = $params->get( 'pretext' );
+$posttext                 = $params->get( 'posttext' );
+$login                     = $params->def( 'login', $return );
+$logout                 = $params->def( 'logout', $return );
+$name                     = $params->def( 'name', 1 );
+$greeting                 = $params->def( 'greeting', 1 );
 
 $form_submit_loc = str_replace("http://", "https://", $mosConfig_live_site)."/";
 $form_submit_loc .= sefRelToAbs( 'index.php' );
@@ -26,10 +57,10 @@ $form_submit_loc .= sefRelToAbs( 'index.php' );
 
 if (dfprefs::checkAccess('Timeclock', "com_dfprojecttimeclock") && ($my->id > 0)) {
     $timesheet = new timesheet();
-	$startdate = dfprefs::getUser("startDate", "com_dfprojecttimeclock");
-    $types = array("Hours" => NULL, "Paid Time Off" => "VACATION", "Sick Time" => "SICK");
-    $typesMax = array("Hours" => NULL, "Paid Time Off" => "vacationHours", "Sick Time" => "sickHours");
-    foreach($types as $label => $type) {
+    $startdate = dfprefs::getUser("startDate", "com_dfprojecttimeclock");
+    $types = array("Hours" => null, "Paid Time Off" => "VACATION", "Sick Time" => "SICK");
+    $typesMax = array("Hours" => null, "Paid Time Off" => "vacationHours", "Sick Time" => "sickHours");
+    foreach ($types as $label => $type) {
         $query = " FROM #__dfproject_timesheet "
                 . " LEFT JOIN #__dfproject on #__dfproject.id = #__dfproject_timesheet.project_id "
                 . " WHERE "
@@ -60,14 +91,14 @@ if (dfprefs::checkAccess('Timeclock', "com_dfprojecttimeclock") && ($my->id > 0)
             $database->setQuery("SELECT #__dfproject.id as id ".$query);
             $idres = $database->loadAssocList();
             if (is_array($idres)) {
-                foreach($idres as $id) {
+                foreach ($idres as $id) {
                     if (project::userOnProject($my->id, $id['id'])) {
 /*
                         if (!is_null($typesMax[$label])) {
-                			$max = dfprefs::getUser($typesMax[$label], "com_dfprojecttimeclock");
-                			if (empty($max)) continue;
-                			$hours .= " / ".$max;
-                		}
+                            $max = dfprefs::getUser($typesMax[$label], "com_dfprojecttimeclock");
+                            if (empty($max)) continue;
+                            $hours .= " / ".$max;
+                        }
 */
                         print "<div style=\"text-align: left;\"><b>".$label.":</b> ";
                         if ($type == "VACATION") {

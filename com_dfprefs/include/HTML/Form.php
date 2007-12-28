@@ -261,10 +261,10 @@ class HTML_Form
      * Enables/Disables $_GET/$_POST user input data showing up in fields
      * when a $default hasn't been set
      *
-     * The default is TRUE.
+     * The default is true.
      *
-     * @param boolean $bool  TRUE to use $_GET/$_POST for the default,
-     *                        FALSE to default to an empty string
+     * @param boolean $bool  true to use $_GET/$_POST for the default,
+     *                        false to default to an empty string
      *
      * @return void
      *
@@ -279,11 +279,11 @@ class HTML_Form
      * Enables/Disables escaping of the $_GET/$_POST data that shows up in
      * fields when a $default hasn't been set
      *
-     * The default is TRUE.
+     * The default is true.
      *
      * Uses htmlspecialchars() for the escaping.
      *
-     * @param boolean $bool  TRUE to escape, FALSE to disable escaping
+     * @param boolean $bool  true to escape, false to disable escaping
      *
      * @return void
      *
@@ -2421,7 +2421,7 @@ class HTML_Form
         $str  = '<input type="hidden" name="MAX_FILE_SIZE" value="';
         $str .= $maxsize . "\" />\n";
 
-        for($i=0; $i < $files; $i++) {
+        for ($i=0; $i < $files; $i++) {
             $str .= '<input type="file" name="' . $name . '"';
             $str .= ' size="' . $size . '" ';
             if ($accept) {

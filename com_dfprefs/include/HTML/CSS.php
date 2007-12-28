@@ -329,7 +329,7 @@ class HTML_CSS extends HTML_Common {
         
         $lnEnd = $this->_getLineEnd();
         
-        if(! $this->_cache) {
+        if (! $this->_cache) {
             header("Expires: Tue, 1 Jan 1980 12:00:00 GMT");
             header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
             header("Cache-Control: no-cache");

@@ -552,7 +552,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
         $value = $this->_findValue($submitValues);
         if (is_null($value)) {
             $value = $this->getValue();
-        } elseif(!is_array($value)) {
+        } elseif (!is_array($value)) {
             $value = array($value);
         }
         if (is_array($value) && !empty($this->_options)) {

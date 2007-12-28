@@ -296,9 +296,9 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         $this->_diag_color     = 0x40;
     
         // Set properties passed to Spreadsheet_Excel_Writer_Workbook::addFormat()
-        foreach($properties as $property => $value)
+        foreach ($properties as $property => $value)
         {
-            if(method_exists($this,'set'.ucwords($property)))
+            if (method_exists($this,'set'.ucwords($property)))
             {
                 $method_name = 'set'.ucwords($property);
                 $this->$method_name($value);
@@ -561,27 +561,27 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
                        );
     
         // Return the default color, 0x7FFF, if undef,
-        if($name_color == '') {
+        if ($name_color == '') {
             return(0x7FFF);
         }
     
         // or the color string converted to an integer,
-        if(isset($colors[$name_color])) {
+        if (isset($colors[$name_color])) {
             return($colors[$name_color]);
         }
     
         // or the default color if string is unrecognised,
-        if(preg_match("/\D/",$name_color)) {
+        if (preg_match("/\D/",$name_color)) {
             return(0x7FFF);
         }
     
         // or an index < 8 mapped into the correct range,
-        if($name_color < 8) {
+        if ($name_color < 8) {
             return($name_color + 8);
         }
     
         // or the default color if arg is outside range,
-        if($name_color > 63) {
+        if ($name_color > 63) {
             return(0x7FFF);
         }
     
@@ -669,16 +669,16 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
     */
     function setBold($weight = 1)
     {
-        if($weight == 1) {
+        if ($weight == 1) {
             $weight = 0x2BC;  // Bold text
         }
-        if($weight == 0) {
+        if ($weight == 0) {
             $weight = 0x190;  // Normal text
         }
-        if($weight <  0x064) {
+        if ($weight <  0x064) {
             $weight = 0x190;  // Lower bound
         }
-        if($weight >  0x3E8) {
+        if ($weight >  0x3E8) {
             $weight = 0x190;  // Upper bound
         }
         $this->_bold = $weight;

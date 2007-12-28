@@ -305,8 +305,8 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
    /**
     * Process an template sourced in a string with Smarty
     *
-    * Smarty has no core function to render	a template given as a string.
-    * So we use the smarty eval plugin function	to do this.
+    * Smarty has no core function to render    a template given as a string.
+    * So we use the smarty eval plugin function    to do this.
     *
     * @param    string      The template source
     * @access   private
@@ -325,7 +325,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
     *
     * You can use {$label} or {$html} placeholders to let the renderer know where
     * where the element label or the element html are positionned according to the
-    * required tag. They will be replaced accordingly with the right value.	You
+    * required tag. They will be replaced accordingly with the right value.    You
     * can use the full smarty syntax here, especially a custom modifier for I18N.
     * For example:
     * {if $required}<span style="color: red;">*</span>{/if}{$label|translate}

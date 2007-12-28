@@ -98,7 +98,7 @@ class HTML_QuickForm_Renderer_ObjectFlexy extends HTML_QuickForm_Renderer_Object
 
     function renderHeader(&$header)
     {
-        if($name = $header->getName()) {
+        if ($name = $header->getName()) {
             $this->_obj->header->$name = $header->toHtml();
         } else {
             $this->_obj->header[$this->_sectionCount] = $header->toHtml();
@@ -125,15 +125,15 @@ class HTML_QuickForm_Renderer_ObjectFlexy extends HTML_QuickForm_Renderer_Object
     function _elementToObject(&$element, $required, $error)
     {
         $ret = parent::_elementToObject($element, $required, $error);
-        if($ret->type == 'group') {
+        if ($ret->type == 'group') {
             $ret->html = $element->toHtml();
             unset($ret->elements);
         }
-        if(!empty($this->_label)) {
+        if (!empty($this->_label)) {
             $this->_renderLabel($ret);
         }
 
-        if(!empty($this->_html)) {
+        if (!empty($this->_html)) {
             $this->_renderHtml($ret);
             $ret->error = $error;
         }
@@ -184,7 +184,7 @@ class HTML_QuickForm_Renderer_ObjectFlexy extends HTML_QuickForm_Renderer_Object
         if ($elObj) {
             $keys = $elObj->keys;
             unset($elObj->keys);
-            if(is_object($this->_currentGroup) && ('group' != $elObj->type)) {
+            if (is_object($this->_currentGroup) && ('group' != $elObj->type)) {
                 $code = '$this->_currentGroup' . $keys . ' = $elObj;';
             } else {
                 $code = '$this->_obj' . $keys . ' = $elObj;';

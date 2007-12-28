@@ -1,37 +1,45 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-    $Id: dfprojectbilling.class.php 416 2006-12-31 16:06:17Z prices $
-    @file dfproject.class.php
-    
-    @verbatim
-    Copyright 2005 Hunt Utilities Group, LLC (www.hugllc.com)
-    
-    dfproject.class.php is part of com_dfproject.
-
-    com_dfproject is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    com_dfproject is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Foobar; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-    @endverbatim
-*/
+ *
+ * PHP Version 5
+ *
+ * <pre>
+ * Timeclock is a Joomla application to keep track of employee time
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_dfprefs
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2005-2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ */
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 // This requires that the session be started.
 @session_start();
 
-if(!@include_once $mainframe->getPath( 'class', 'com_dfproject' )) {
+if (!@include_once $mainframe->getPath( 'class', 'com_dfproject' )) {
     die('com_dfproject is required for com_dfprojecttimeclock');
 }
 
-define("_HAVE_DFPROJECT_BILLING", TRUE);
+define("_HAVE_DFPROJECT_BILLING", true);
 
 define("DFPROJECT_CONFIG_FILE", "config.inc.php");
 require_once( $mainframe->getPath( 'class', 'com_dfprefs' ) );
@@ -41,10 +49,10 @@ define("PLUGIN_BILLING_TABLE", '#__dfproject_billing');
 define("PROJECT_AREA_NAME", 'dfProject');
 
 class billing  extends mosDBTable {
-	var $_tbl = '#__dfproject_billing';
+    var $_tbl = '#__dfproject_billing';
     var $_tbl_key = "id";
 
-    var $_period = NULL;
+    var $_period = null;
 
     var $id;
     var $company;
@@ -57,7 +65,7 @@ class billing  extends mosDBTable {
     var $country;
     var $notes;
 
-    function billing(&$db, $config = NULL) {
+    function billing(&$db, $config = null) {
         $this->_db =& $db;
         if (!is_null($config)) $this->_config = $config;
     }
@@ -95,7 +103,8 @@ class billing  extends mosDBTable {
         return true;
     }
 
-    function prevnext() {
+    function prevnext()
+{
 
         if (!empty($this->_period['prev']) && !empty($this->_period['next'])) {
             $pnTable = new HTML_Table(array('style' => 'width: 100%'));
@@ -121,55 +130,56 @@ class billing  extends mosDBTable {
 
     }
 
-    function setPeriod($Date=NULL) {
-		global $prefs;
+    function setPeriod($Date=null) {
+        global $prefs;
 
-        if (is_null($Date)) $Date = mosGetParam($_REQUEST, "Date", NULL);
+        if (is_null($Date)) $Date = mosGetParam($_REQUEST, "Date", null);
 
-		if (is_null($Date)) {
-			$Date = time();
-		} else if (is_string($Date)) {
-			$Date = strtotime($Date);
-		}
+        if (is_null($Date)) {
+            $Date = time();
+        } else if (is_string($Date)) {
+            $Date = strtotime($Date);
+        }
 
-        $StartDate = mosGetParam($_REQUEST, "StartDate", NULL);
-        $EndDate = mosGetParam($_REQUEST, "EndDate", NULL);
+        $StartDate = mosGetParam($_REQUEST, "StartDate", null);
+        $EndDate = mosGetParam($_REQUEST, "EndDate", null);
 
         if (!is_null($StartDate) && !is_null($EndDate)) $this->_periodType = "CUSTOM";
 
 
-		// This makes sure daylight savings time doesn't effect us.
-		$this->_Date = strtotime(date('Y-m-d', $Date));
-		$Date = strtotime(date('Y-m-d 06:00:00', $Date));
-		$return = array();
+        // This makes sure daylight savings time doesn't effect us.
+        $this->_Date = strtotime(date('Y-m-d', $Date));
+        $Date = strtotime(date('Y-m-d 06:00:00', $Date));
+        $return = array();
 
         $d['Y'] = date('Y', $Date);
         $d['m'] = date('m', $Date);
         $d['d'] = date('d', $Date);
         $d['t'] = date('t', $Date);
         
-		switch($this->_periodType) {
-			case 'CUSTOM':
-				$return['start'] = strtotime($StartDate);
-				$return['end'] = strtotime($EndDate);
-				$return['prev'] = FALSE;
-				$return['next'] = FALSE;
+        switch($this->_periodType) {
+            case 'CUSTOM':
+                $return['start'] = strtotime($StartDate);
+                $return['end'] = strtotime($EndDate);
+                $return['prev'] = false;
+                $return['next'] = false;
                 break;
-			case 'MONTHLY':
-			default:
-				$return['start'] = mktime(6,0,0, $d['m'], 1, $d['Y']);
-				$return['end'] = mktime(6,0,0, $d['m'], $d['t'], $d['Y']);
-				$return['prev'] = mktime(6,0,0, ($d['m'] - 1), 15, $d['Y']);
-				$return['next'] = mktime(6,0,0, ($d['m'] + 1), 15, $d['Y']);
+            case 'MONTHLY':
+            default:
+                $return['start'] = mktime(6,0,0, $d['m'], 1, $d['Y']);
+                $return['end'] = mktime(6,0,0, $d['m'], $d['t'], $d['Y']);
+                $return['prev'] = mktime(6,0,0, ($d['m'] - 1), 15, $d['Y']);
+                $return['next'] = mktime(6,0,0, ($d['m'] + 1), 15, $d['Y']);
 
-				break;
-		}
-		$this->_period = $return;
-		return($return);
+                break;
+        }
+        $this->_period = $return;
+        return($return);
         
     }
 
-    function getPeriod() {
+    function getPeriod()
+{
         if (is_null($this->_period)) $this->setPeriod();
         return($this->_period);
     }
@@ -197,7 +207,7 @@ class billing  extends mosDBTable {
         if (isset($_REQUEST['research'])) {
         // Mark this as research only
             $query .= " AND ";
-        	$query .= " #__dfproject.research='YES'";
+            $query .= " #__dfproject.research='YES'";
         }
         $query .= " AND #__dfproject.customer = '".$customer."' ";
         $query .= " GROUP BY #__dfproject.id, #__dfproject_timesheet.user_id ";
@@ -212,7 +222,7 @@ class billing  extends mosDBTable {
         $users = array();
         $holiday = array();
         if (!is_array($res)) $res = array();
-        foreach($res as $ts) {
+        foreach ($res as $ts) {
             if (!isset($sheet[$ts->project_id])) {
                 $sheet[$ts->project_id]['project_name'] = $ts->project_name;
             }
@@ -225,9 +235,9 @@ class billing  extends mosDBTable {
         }
         
         // Holidays have to be done last so we have all the users
-        foreach($holiday as $ts) {
-            foreach($users as $user_id => $name) {
-                if (dfprefs::checkAccess('HolidayHours', NULL, $user_id)) {
+        foreach ($holiday as $ts) {
+            foreach ($users as $user_id => $name) {
+                if (dfprefs::checkAccess('HolidayHours', null, $user_id)) {
                     $sheet[$ts->project_id][$user_id] += $ts->totalHours;
                 }
             }

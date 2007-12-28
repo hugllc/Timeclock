@@ -1,29 +1,37 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-    $Id: dfprojectbilling.html.php 602 2007-02-12 21:03:22Z prices $
-    @file dfproject.html.php
-    
-    @verbatim
-    Copyright 2005 Hunt Utilities Group, LLC (www.hugllc.com)
-    
-    dfprojectbilling.html.php is part of com_dfprojectbilling.
-
-    com_dfproject is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    com_dfproject is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Foobar; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-    @endverbatim
-*/
+ *
+ * PHP Version 5
+ *
+ * <pre>
+ * Timeclock is a Joomla application to keep track of employee time
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_dfprefs
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2005-2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ */
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 
 require_once( $mainframe->getPath( 'class' ) );
 require_once( $mainframe->getPath( 'class' , 'com_dfprojecttimeclock') );
@@ -40,40 +48,40 @@ require_once( _PROJ_BASEPATH."/include/extra.inc.php" );
 
 class HTML_DragonflyProject_Billing {
 
-	var $_listHeader = array(
+    var $_listHeader = array(
         'default' => array(
-    		'action' => '',
-	    	'id' => 'Id',
-	    	'name' => 'Name',
-	    	'company' => 'Company',
-	    ),
+            'action' => '',
+            'id' => 'Id',
+            'name' => 'Name',
+            'company' => 'Company',
+        ),
         'fulllist' => array(
-    		'action' => '',
-	    	'id' => 'Id',
-	    	'name' => 'Name',
-	    	'company' => 'Company',
-	    ),
-	);
-	var $_listAttrib = array(
+            'action' => '',
+            'id' => 'Id',
+            'name' => 'Name',
+            'company' => 'Company',
+        ),
+    );
+    var $_listAttrib = array(
         'default' => array(
-    		'action' => array('style' => 'text-align: center; white-space: nowrap;'),
-	    	'id' => array('style' => 'text-align: center;'),
-	    ),
-	);
+            'action' => array('style' => 'text-align: center; white-space: nowrap;'),
+            'id' => array('style' => 'text-align: center;'),
+        ),
+    );
 
     var $_viewCols = array(
-		'default' => array(
-			'id' => 'Id',
-			'name' => 'Name',
-			'company' => 'Company',
-			'address1' => 'Address1',
-			'address2' => 'Address2',
-			'city' => 'City',
-			'state' => 'State',
-			'zip' => 'Zip',
-			'country' => 'Country',
-			'notes' => 'Notes',
-		),
+        'default' => array(
+            'id' => 'Id',
+            'name' => 'Name',
+            'company' => 'Company',
+            'address1' => 'Address1',
+            'address2' => 'Address2',
+            'city' => 'City',
+            'state' => 'State',
+            'zip' => 'Zip',
+            'country' => 'Country',
+            'notes' => 'Notes',
+        ),
     );
 
     function HTML_DragonflyProject_Billing(&$db) {
@@ -84,46 +92,46 @@ class HTML_DragonflyProject_Billing {
         $this->_table = new dfTable();
     }
 
-	function edit($id) {
-		$this->_customer = array();
-		$this->_customer['info'] = $this->_billing->getRecord($id);
+    function edit($id) {
+        $this->_customer = array();
+        $this->_customer['info'] = $this->_billing->getRecord($id);
         $this->add("edit");
     }
-	function add($mode="add") {    
+    function add($mode="add") {    
 
-		$this->_form->addElement('hidden', 'mode', $mode);
-		$this->_form->addElement('text', 'info[name]', 'Name', array('size' => 50, 'maxlength' => 64));
-		$this->_form->addElement('text', 'info[company]', "Company",array('size' => 50, 'maxlength' => 64));
-		$this->_form->addElement('text', 'info[address1]', "Address1",array('size' => 50, 'maxlength' => 64));
-		$this->_form->addElement('text', 'info[address2]', 'Address2', array('size' => 50, 'maxlength' => 64));
-		$this->_form->addElement('text', 'info[city]', 'City', array('size' => 30, 'maxlength' => 64));
-		$this->_form->addElement('text', 'info[state]', 'State', array('size' => 20, 'maxlength' => 64));
-		$this->_form->addElement('text', 'info[zip]', 'Zipcode', array('size' => 10, 'maxlength' => 10));
-		$this->_form->addElement('text', 'info[country]', 'Country', array('size' => 10, 'maxlength' => 64));
-		$this->_form->addElement('textarea', 'info[notes]', 'Notes', array('rows' => 10, 'cols' => 50));
+        $this->_form->addElement('hidden', 'mode', $mode);
+        $this->_form->addElement('text', 'info[name]', 'Name', array('size' => 50, 'maxlength' => 64));
+        $this->_form->addElement('text', 'info[company]', "Company",array('size' => 50, 'maxlength' => 64));
+        $this->_form->addElement('text', 'info[address1]', "Address1",array('size' => 50, 'maxlength' => 64));
+        $this->_form->addElement('text', 'info[address2]', 'Address2', array('size' => 50, 'maxlength' => 64));
+        $this->_form->addElement('text', 'info[city]', 'City', array('size' => 30, 'maxlength' => 64));
+        $this->_form->addElement('text', 'info[state]', 'State', array('size' => 20, 'maxlength' => 64));
+        $this->_form->addElement('text', 'info[zip]', 'Zipcode', array('size' => 10, 'maxlength' => 10));
+        $this->_form->addElement('text', 'info[country]', 'Country', array('size' => 10, 'maxlength' => 64));
+        $this->_form->addElement('textarea', 'info[notes]', 'Notes', array('rows' => 10, 'cols' => 50));
 
-		$this->_form->addElement('submit', 'postbilling', 'Save');
-		$this->_form->addRule('info[name]', 'Name can not be blank', 'required', NULL, 'client');
-		$this->_form->addRule('info[address1]', 'Address1 can not be blank', 'required', NULL, 'client');
-		$this->_form->addRule('info[city]', 'City can not be blank', 'required', NULL, 'client');
-		$this->_form->addRule('info[state]', 'State can not be blank', 'required', NULL, 'client');
-		$this->_form->addRule('info[zip]', 'Zipcode must be a number', 'numeric', NULL, 'client');
-		$this->_form->addRule('info[zip]', 'Zipcode can not be blank', 'required', NULL, 'client');
-	
-		$this->_form->setDefaults($this->_customer);
+        $this->_form->addElement('submit', 'postbilling', 'Save');
+        $this->_form->addRule('info[name]', 'Name can not be blank', 'required', null, 'client');
+        $this->_form->addRule('info[address1]', 'Address1 can not be blank', 'required', null, 'client');
+        $this->_form->addRule('info[city]', 'City can not be blank', 'required', null, 'client');
+        $this->_form->addRule('info[state]', 'State can not be blank', 'required', null, 'client');
+        $this->_form->addRule('info[zip]', 'Zipcode must be a number', 'numeric', null, 'client');
+        $this->_form->addRule('info[zip]', 'Zipcode can not be blank', 'required', null, 'client');
+    
+        $this->_form->setDefaults($this->_customer);
 
-		if (isset($_REQUEST['postbilling']) && $this->_form->validate()) {
-			$info = mosGetParam($_REQUEST, 'info', array( ) );
+        if (isset($_REQUEST['postbilling']) && $this->_form->validate()) {
+            $info = mosGetParam($_REQUEST, 'info', array( ) );
 
             $return = $this->_billing->save($info);
-			if ($return) {
-				mosRedirect(getMyURL(array('task','id')).'task=view&id='.$this->_billing->id, "Successfully Saved");
-			} else {
-				$this->_form->addElement('static', NULL, '<span class="error">Error:</span>', '<span class="error">'.$this->_workersComp->Error.'</span>');
-			}
-		}
+            if ($return) {
+                mosRedirect(getMyURL(array('task','id')).'task=view&id='.$this->_billing->id, "Successfully Saved");
+            } else {
+                $this->_form->addElement('static', null, '<span class="error">Error:</span>', '<span class="error">'.$this->_workersComp->Error.'</span>');
+            }
+        }
         if ($mode == 'edit') {
-     		$title = $this->format_customer($this->_customer['info']['id'])." ".$this->_customer['info']['title'];		
+             $title = $this->format_customer($this->_customer['info']['id'])." ".$this->_customer['info']['title'];        
         } else {
             $title = _E_ADD;        
         }
@@ -140,19 +148,19 @@ class HTML_DragonflyProject_Billing {
             $viewCols = &$this->_viewCols['default'];
         }
 
-		$attrib = array();
-				
-		$code = $this->_billing->getRecord($id);
+        $attrib = array();
+                
+        $code = $this->_billing->getRecord($id);
 
-        foreach($code as $k => $v) if (is_string($v)) $code[$k] = htmlentities($v);
+        foreach ($code as $k => $v) if (is_string($v)) $code[$k] = htmlentities($v);
 
-		$code['id'] = $this->format_customer($code["id"]);
+        $code['id'] = $this->format_customer($code["id"]);
 
-		$this->_table->createInfo($viewCols, $code);
-		$this->_table->finishInfo($attrib);
+        $this->_table->createInfo($viewCols, $code);
+        $this->_table->finishInfo($attrib);
 
-		$title = $code['company']." (".$code['name'].") ";
-		
+        $title = $code['company']." (".$code['name'].") ";
+        
         if (dfprefs::checkAccess('Write')) {
            $edit = '<td><a href="'.getMyURL(array('task', 'mosmsg')).'task=edit">'.HTML_DragonflyProject::caption(sefRelToAbs('images/edit_f2.png'), 'Edit', 'Edit').'</a></td>';
         }
@@ -165,34 +173,34 @@ class HTML_DragonflyProject_Billing {
     
     function reports($id, $report="default") {
         mosCommonHTML::loadCalendar();
- 		switch($this->_periodType) {
-			default:
+         switch($this->_periodType) {
+            default:
                 $HTML = $this->summary($id);
         }
-        $this->output("Reports", "", $HTML, TRUE);
+        $this->output("Reports", "", $HTML, true);
 
     }
 
-    function summary($customer, $printheader = TRUE) {
+    function summary($customer, $printheader = true) {
 
 
-		$cs = $this->_billing->getRecord($customer);
+        $cs = $this->_billing->getRecord($customer);
 
         $header = array(
-        	'projectName' => "Project",
+            'projectName' => "Project",
         );
         
         $this->_format = array(
-        	'projectName' => array(),
+            'projectName' => array(),
         );
         
         $this->period = $this->_billing->getPeriod();        
 
-        for($d = $this->period['start']; $d <= $this->period['end']; $d += 86400) {
-        	$mDate = date($this->dateFormat, $d);
-        	$header[date('Y-m-d', $d)] = $mDate;
-        	$subtotal[date('Y-m-d', $d)] = TRUE;
-        	$this->_format[date('Y-m-d', $d)] = array('style' => 'text-align: center;');
+        for ($d = $this->period['start']; $d <= $this->period['end']; $d += 86400) {
+            $mDate = date($this->dateFormat, $d);
+            $header[date('Y-m-d', $d)] = $mDate;
+            $subtotal[date('Y-m-d', $d)] = true;
+            $this->_format[date('Y-m-d', $d)] = array('style' => 'text-align: center;');
         }
         $header['subTotal'] = 'Subtotal';
         $this->_format['subTotal'] = array('style' => 'text-align: center;');
@@ -200,37 +208,37 @@ class HTML_DragonflyProject_Billing {
         $res = $this->_billing->setup_billing_report($customer);
 
        // If we don't get any data, don't build the table.
-    	$summary = array();
-    	$header = array(
-    		'project_name' => "Project",
-    	);
-        foreach($res['users'] as $key => $name) {
-    	    if (empty($name)) $name = "#".$key;
+        $summary = array();
+        $header = array(
+            'project_name' => "Project",
+        );
+        foreach ($res['users'] as $key => $name) {
+            if (empty($name)) $name = "#".$key;
 
             $header[$key] = wordwrap($name, 10, "<br/>"); //$name;
             $this->_format[$key] = array('style' => 'text-align: center;');
-    		$subtotal[$key] = TRUE;
+            $subtotal[$key] = true;
         }
-    	$header['subTotal'] = 'Subtotal';
+        $header['subTotal'] = 'Subtotal';
 
         $summary = $res['sheet'];
 
-    	$this->_table->createList($header, NULL, 0, FALSE);
-    	$this->_table->addListSubTotalCol('subTotal', $subtotal);
-    	$dateStr = date("Y-m-d", $this->period['start'])." to ".date("Y-m-d", $this->period['end']);
-    	$this->_table->addListDividerRow("".$cs['name']." (".$cs['company'].")", array('class' => 'sectiontableheader'));
+        $this->_table->createList($header, null, 0, false);
+        $this->_table->addListSubTotalCol('subTotal', $subtotal);
+        $dateStr = date("Y-m-d", $this->period['start'])." to ".date("Y-m-d", $this->period['end']);
+        $this->_table->addListDividerRow("".$cs['name']." (".$cs['company'].")", array('class' => 'sectiontableheader'));
         $this->_table->addListDividerRow('<div style="font-weight: bold;">'.$dateStr.'</div>', array('class' => 'sectiontableheader'), "Partial");
-    	$this->_table->addListHeaderRow();
+        $this->_table->addListHeaderRow();
     
-    	$st = $subtotal;
-    	foreach($summary as $sum) {
-    		$this->_table->addListRow($sum, NULL, 'data');	
-    	}
-      	$st['project_name'] = 'User Totals';
-    	$this->_table->addListSubTotalRow($st, 'data');
-    	$this->_table->addListSubTotalRow(array('project_name' => 'Total', 'subTotal' => TRUE), 'data');
+        $st = $subtotal;
+        foreach ($summary as $sum) {
+            $this->_table->addListRow($sum, null, 'data');    
+        }
+          $st['project_name'] = 'User Totals';
+        $this->_table->addListSubTotalRow($st, 'data');
+        $this->_table->addListSubTotalRow(array('project_name' => 'Total', 'subTotal' => true), 'data');
     
-    	$this->_table->finishList($this->_format);
+        $this->_table->finishList($this->_format);
 
         $return = "";
         if ($printheader) $return .= "<h2>Time Summary for ".$cs['name']." - ".$cs['company']."</h2>";
@@ -240,7 +248,7 @@ class HTML_DragonflyProject_Billing {
         return $return;
     }
 
-    function setPeriod($Date = NULL) {
+    function setPeriod($Date = null) {
         return $this->_billing->setPeriod($Date);
     }
 
@@ -253,18 +261,18 @@ class HTML_DragonflyProject_Billing {
             $header = &$this->_listHeader['default'];
         }
 
-		if (!isset($parentKey)) $parentKey = 0;
- 		$query = "SELECT * FROM ".PLUGIN_BILLING_TABLE." ORDER BY id ASC";
+        if (!isset($parentKey)) $parentKey = 0;
+         $query = "SELECT * FROM ".PLUGIN_BILLING_TABLE." ORDER BY id ASC";
 
         $this->_db->setQuery($query);
         $codes = $this->_db->loadAssocList();
 
-		if (is_array($codes)) {
-			$this->_table->setFilter(TRUE, TRUE);
-			$this->_table->createList($header);		
-			foreach($codes as $key => $val) {
+        if (is_array($codes)) {
+            $this->_table->setFilter(true, true);
+            $this->_table->createList($header);        
+            foreach ($codes as $key => $val) {
 
-                foreach($val as $k => $v) if (is_string($v)) $val[$k] = htmlentities($v);
+                foreach ($val as $k => $v) if (is_string($v)) $val[$k] = htmlentities($v);
                 $link = getMyURL(array('task','id')).'id='.$val['id'].'&';
                 $val['action'] = "";
                 if (dfprefs::checkAccess('Write')) {
@@ -274,16 +282,16 @@ class HTML_DragonflyProject_Billing {
                 if (dfprefs::checkAccess('Reports')) {
                     $val['action'] .= '<a href="'.$link.'task=reports"><img src="'._PROJ_IMGPATH.'text-x-generic.png" alt=" [reports] " title="reports" width="16" height="16" style="border: none;" /></a>';
                 }
-				$val['billing'] = str_pad($val["id"], 4, "0", STR_PAD_LEFT);
-				$this->_table->addListRow($val);
-	
-			}
-			$this->_table->finishList($attrib);
-		}
+                $val['billing'] = str_pad($val["id"], 4, "0", STR_PAD_LEFT);
+                $this->_table->addListRow($val);
+    
+            }
+            $this->_table->finishList($attrib);
+        }
 
         $this->output();
     }
-    function output($name = "", $extratools="", $extraHTML="", $dateform = FALSE) {
+    function output($name = "", $extratools="", $extraHTML="", $dateform = false) {
         global $my, $dfconfig, $task;
         if (empty($name)) $name = "Customers";
         $link = getMyURL(array('task','id'));
@@ -300,16 +308,16 @@ class HTML_DragonflyProject_Billing {
         $task = mosGetParam($_REQUEST, 'task', 'reports');
         $report = mosGetParam($_REQUEST, 'report', 'default');
         $id = mosGetParam($_REQUEST, 'id');
-//		echo '<div style="clear:both;"></div>';
+//        echo '<div style="clear:both;"></div>';
         if ($dateform) {
 ?>
     <form method="get" action="<?=$_SERVER['SCRIPT_URL']?>">
         From: <input class="inputbox" type="text" name="StartDate" id="StartDate" size="25" maxlength="19" value="<?=date("Y-m-d", $this->period['start'])?>" />
-	           <input type="reset" class="button" value="..." onClick="return showCalendar('StartDate', 'y-mm-dd');">
+               <input type="reset" class="button" value="..." onClick="return showCalendar('StartDate', 'y-mm-dd');">
                 Date Format: YYYY-MM-DD
         <br />
         To: <input class="inputbox" type="text" name="EndDate" id="EndDate" size="25" maxlength="19" value="<?=date("Y-m-d", $this->period['end'])?>" />
-	           <input type="reset" class="button" value="..." onClick="return showCalendar('EndDate', 'y-mm-dd');">
+               <input type="reset" class="button" value="..." onClick="return showCalendar('EndDate', 'y-mm-dd');">
                 Date Format: YYYY-MM-DD
         <br />
         <input type="hidden" name="option" value="<?=$option?>">
@@ -329,7 +337,7 @@ class HTML_DragonflyProject_Billing {
     
      function help($task) {
 
-        $this->output("Help", "", FALSE);
+        $this->output("Help", "", false);
         switch ($task) {
         default:
             HTML_DragonflyProject_Billing::help_about();  
@@ -337,7 +345,8 @@ class HTML_DragonflyProject_Billing {
         }    
     }
     
-    function help_about() {
+    function help_about()
+{
 ?>
 <h1>About Dragonfly Project Billing</h1>
 <h2>Introduction</h2>
@@ -355,7 +364,8 @@ Everything else is released under the GNU <a href="http://www.gnu.org/licenses/g
 <?php
     }
 
-    function copyright() {
+    function copyright()
+{
         echo '<div>com_dfprojectbilling &copy; 2005-2006 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a></div>';
     }
 

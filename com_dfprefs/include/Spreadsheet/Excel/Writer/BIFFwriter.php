@@ -224,7 +224,7 @@ class Spreadsheet_Excel_Writer_BIFFwriter extends PEAR
         $header = pack("vv", $record, $limit);  // Headers for continue records
  
         // Retrieve chunks of 2080/8224 bytes +4 for the header.
-        for($i = $limit; $i < strlen($data) - $limit; $i += $limit)
+        for ($i = $limit; $i < strlen($data) - $limit; $i += $limit)
         {
             $tmp .= $header;
             $tmp .= substr($data, $i, $limit);

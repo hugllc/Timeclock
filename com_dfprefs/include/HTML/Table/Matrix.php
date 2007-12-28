@@ -111,7 +111,7 @@ class HTML_Table_Matrix extends HTML_Table {
      * @access private
      * @var boolean
      */
-    var $_isFilled = FALSE;
+    var $_isFilled = false;
 
     /**
      * Data to fill table with
@@ -248,7 +248,7 @@ class HTML_Table_Matrix extends HTML_Table {
             $this->_fillCell($row, $col);
         }
 
-        $this->_isFilled = TRUE;
+        $this->_isFilled = true;
         return true;
     }
 

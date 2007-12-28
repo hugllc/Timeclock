@@ -373,7 +373,8 @@ function _hs_onReset(form, groupNames)
 
 function _hs_setupOnReset(form, groupNames)
 {
-    setTimeout(function() { _hs_onReset(form, groupNames); }, 25);
+    setTimeout(function()
+{ _hs_onReset(form, groupNames); }, 25);
 }
 
 function _hs_onReload()
@@ -471,7 +472,8 @@ JAVASCRIPT;
                     if (strpos($onReset, '_hs_setupOnReset')) {
                         $caller->updateAttributes(array('onreset' => str_replace('_hs_setupOnReset(this, [', "_hs_setupOnReset(this, ['" . $this->_escapeString($this->getName()) . "', ", $onReset)));
                     } else {
-                        $caller->updateAttributes(array('onreset' => "var temp = function() { {$onReset} } ; if (!temp()) { return false; } ; if (typeof _hs_setupOnReset != 'undefined') { return _hs_setupOnReset(this, ['" . $this->_escapeString($this->getName()) . "']); } "));
+                        $caller->updateAttributes(array('onreset' => "var temp = function()
+{ {$onReset} } ; if (!temp()) { return false; } ; if (typeof _hs_setupOnReset != 'undefined') { return _hs_setupOnReset(this, ['" . $this->_escapeString($this->getName()) . "']); } "));
                     }
                 } else {
                     $caller->updateAttributes(array('onreset' => "if (typeof _hs_setupOnReset != 'undefined') { return _hs_setupOnReset(this, ['" . $this->_escapeString($this->getName()) . "']); } "));

@@ -91,7 +91,7 @@ define('HTML_JAVASCRIPT_OUTPUT_ECHO', 2);
  */
 define('HTML_JAVASCRIPT_OUTPUT_FILE', 3);
 
-if(!defined('HTML_JAVASCRIPT_NL')){
+if (!defined('HTML_JAVASCRIPT_NL')){
     /** Linefeed to use, default set to Unix linefeed.
      * Define it before the include/require if you want to
      * override it.
@@ -151,10 +151,10 @@ class HTML_Javascript
      * @access public
      * @return mixed    PEAR_Error or true
      */
-    function setOutputMode($mode = HTML_JAVASCRIPT_OUTPUT_RETURN, $file = NULL)
+    function setOutputMode($mode = HTML_JAVASCRIPT_OUTPUT_RETURN, $file = null)
     {
-        if($mode == HTML_JAVASCRIPT_OUTPUT_FILE ) {
-            if(isset($file)) {
+        if ($mode == HTML_JAVASCRIPT_OUTPUT_FILE ) {
+            if (isset($file)) {
                 $this->_file = $file;
             } else {
                 $this->raiseError(HTML_JAVASCRIPT_ERROR_NOFILE);
@@ -287,7 +287,7 @@ class HTML_Javascript
     function _out($str)
     {
         static $fp;
-        if( isset($this) ){
+        if ( isset($this) ){
             $mode = $this->_mode;
             $file = $this->_file;
         } else {
@@ -413,7 +413,7 @@ class HTML_Javascript
      */
     function confirm($str,$assign, $var = false)
     {
-        if($var) {
+        if ($var) {
             $confirm = 'confirm(' . $str . ')' . HTML_JAVASCRIPT_NL;
         } else {
             $confirm = 'confirm("' .
@@ -478,11 +478,11 @@ class HTML_Javascript
         $assign, $file, $title, $width, $height, $attr, $top = 300, $left = 300
     )
     {
-        if(!is_array($attr)) {
-            if(!is_bool($attr)) {
+        if (!is_array($attr)) {
+            if (!is_bool($attr)) {
                 PEAR::raiseError('$attr should be either an array or a boolean');
             } else {
-                if($attr) {
+                if ($attr) {
                     $attr = array('yes', 'yes', 'yes', 'yes', 'yes', 'yes', $top, $left);
                 } else {
                     $attr = array('no', 'no', 'no', 'no', 'no', 'no', $top, $left);
@@ -528,7 +528,7 @@ class HTML_Javascript
         $str        = HTML_Javascript_Convert::escapeString($str);
         $assign     = strlen($assign)==0?'pearpopup'.$cnt_popup++:$assign;
 
-        if($attr) {
+        if ($attr) {
             $attr = array('yes', 'yes', 'yes', 'yes', 'yes', 'yes', $top, $left);
         } else {
             $attr = array('no', 'no', 'no', 'no', 'no', 'no', $top, $height);

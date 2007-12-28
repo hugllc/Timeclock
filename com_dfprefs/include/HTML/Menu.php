@@ -252,7 +252,7 @@ class HTML_Menu
         switch ($this->_menuType) {
             case 'rows': 
                 $this->_renderRows($this->_menu);
-        		break;
+                break;
 
             case 'prevnext': 
                 $this->_renderPrevNext($this->_menu);

@@ -46,7 +46,7 @@
  */
 define('HTML_JAVASCRIPT_CONVERT_ERROR_INVVAR', 502, true);
 
-if(!defined('HTML_JAVASCRIPT_NL')){
+if (!defined('HTML_JAVASCRIPT_NL')){
     /** Linefeed to use, default set to Unix linefeed.
      * Define it before the include/require if you want to
      * override it.
@@ -133,7 +133,7 @@ class HTML_Javascript_Convert
                             $var, $varname, $global
                         );
                         
-            case 'NULL':
+            case 'null':
                 return HTML_Javascript_Convert::convertNull(
                             $varname, $global
                         );
@@ -235,7 +235,7 @@ class HTML_Javascript_Convert
     function convertNull($varname, $global = false)
     {
         $var = '';
-        if($global) {
+        if ($global) {
             $var = 'var ';
         }
         return $varname.' = null;'.HTML_JAVASCRIPT_NL;
@@ -312,15 +312,15 @@ class HTML_Javascript_Convert
      */
     function convertArrayToProperties( $array, $varname, $global=false, $new=true )
     {
-        if(is_array($array)){
+        if (is_array($array)){
             $cnt = sizeof($array)-1;
             $i  = 0;
             $convert = $global?'var ':'';
             $convert .= $new?$varname.'={'.HTML_JAVASCRIPT_NL:'{';
-            foreach( $array as $key=>$val) {
+            foreach ( $array as $key=>$val) {
                 $key = $key?'"'.$key.'"':"'0'";
                 $convert .= $key.':';
-                if(is_array($val)){
+                if (is_array($val)){
                     $convert .= HTML_Javascript_Convert::convertArrayToProperties($val,'',false, false);
                     $convert .= $i++<$cnt?','.HTML_JAVASCRIPT_NL:'';
                 } else {
@@ -330,7 +330,7 @@ class HTML_Javascript_Convert
             }
             $convert .= HTML_JAVASCRIPT_NL.'}';
         }
-        if($new){
+        if ($new){
             $convert .= ';';
         }
         return $convert;
@@ -365,7 +365,7 @@ class HTML_Javascript_Convert
                             $val, $varname, $global
                         );
                         
-            case 'NULL':
+            case 'null':
                 return 'null';
                 
             default:

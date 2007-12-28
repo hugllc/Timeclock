@@ -1,29 +1,37 @@
 <?php
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
-    $Id: admin.dfprojectbilling.html.php 403 2006-12-29 21:15:24Z prices $
-    @file admin.dfproject.html.php
-    
-    @verbatim
-    Copyright 2005 Hunt Utilities Group, LLC (www.hugllc.com)
-    
-    admin.dfproject.html.php is part of com_dfproject.
-
-    com_dfproject is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    com_dfproject is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Foobar; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-    @endverbatim
-*/
+ *
+ * PHP Version 5
+ *
+ * <pre>
+ * Timeclock is a Joomla application to keep track of employee time
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_dfprefs
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2005-2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ */
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 require_once( $mainframe->getPath( 'class' ) );
 
 class HTML_dfprojectbilling {
@@ -73,13 +81,13 @@ class HTML_dfprojectbilling {
     </script>
 
     <form action="index2.php" method="post" name="adminForm" id="adminForm">
-		<table class="adminheading">
-		<tr>
-			<th>
-			dfProjectbilling Configuration
-			</th>
-		</tr>
-		</table>
+        <table class="adminheading">
+        <tr>
+            <th>
+            dfProjectbilling Configuration
+            </th>
+        </tr>
+        </table>
 <?php $tab->startPane("config-pane"); ?>
 
 <?php $tab->startTab("Group Access", "groupAccess"); ?>
@@ -147,17 +155,18 @@ class HTML_dfprojectbilling {
            
     }
 
-    function showAbout() {
+    function showAbout()
+{
 ?>
 <div style="text-align: left;">
-	<table class="adminheading">
-	<tr>
-		<th class="about">
-		About dfProject Billing
-		</th>
-	</tr>
-	</table>
-	dfProjectbilling allows projects to be billed to customers.
+    <table class="adminheading">
+    <tr>
+        <th class="about">
+        About dfProject Billing
+        </th>
+    </tr>
+    </table>
+    dfProjectbilling allows projects to be billed to customers.
 
     <div>com_dfprojectbilling by Scott Price (prices@hugllc.com)</div>
     <div><a href="http://www.hugllc.com/">www.hugllc.com</a></div>

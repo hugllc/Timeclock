@@ -253,7 +253,7 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         // render label(s)
         $labels = $element->getLabel();
         if (is_array($labels) && $this->_staticLabels) {
-            foreach($labels as $key => $label) {
+            foreach ($labels as $key => $label) {
                 $key = is_int($key)? $key + 1: $key;
                 if (1 === $key) {
                     $ret['label'] = $label;

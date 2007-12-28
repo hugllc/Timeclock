@@ -112,7 +112,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $this->_obj->requirednote = $form->getRequiredNote();
         $this->_obj->errors = new StdClass;
 
-        if($this->_collectHidden) {
+        if ($this->_collectHidden) {
             $this->_obj->hidden = '';
         }
         $this->_elementIdx = 1;
@@ -131,7 +131,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
     function renderElement(&$element, $required, $error) 
     {
         $elObj = $this->_elementToObject($element, $required, $error);
-        if(!empty($error)) {
+        if (!empty($error)) {
             $name = $elObj->name;
             $this->_obj->errors->$name = $error;
         }
@@ -140,7 +140,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
 
     function renderHidden(&$element)
     {
-        if($this->_collectHidden) {
+        if ($this->_collectHidden) {
             $this->_obj->hidden .= $element->toHtml() . "\n";
         } else {
             $this->renderElement($element, false, null);
@@ -150,7 +150,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
     function startGroup(&$group, $required, $error) 
     {
         $this->_currentGroup = $this->_elementToObject($group, $required, $error);
-        if(!empty($error)) {
+        if (!empty($error)) {
             $name = $this->_currentGroup->name;
             $this->_obj->errors->$name = $error;
         }
@@ -173,7 +173,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
      */
     function _elementToObject(&$element, $required, $error) 
     {
-        if($this->_elementType) {
+        if ($this->_elementType) {
             $ret = new $this->_elementType;
         }
         $ret->name = $element->getName();
@@ -193,11 +193,11 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
         $ret->required = $required;
         $ret->error = $error;
 
-        if(isset($this->_elementStyles[$ret->name])) {
+        if (isset($this->_elementStyles[$ret->name])) {
             $ret->style = $this->_elementStyles[$ret->name];
             $ret->styleTemplate = "styles/". $ret->style .".html";
         }
-        if($ret->type == 'group') {
+        if ($ret->type == 'group') {
             $ret->separator = $element->_separator;
             $ret->elements = array();
         } else {
@@ -216,7 +216,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
     function _storeObject($elObj) 
     {
         $name = $elObj->name;
-        if(is_object($this->_currentGroup) && $elObj->type != 'group') {
+        if (is_object($this->_currentGroup) && $elObj->type != 'group') {
             $this->_currentGroup->elements[] = $elObj;
         } elseif (isset($this->_currentSection)) {
             $this->_obj->sections[$this->_currentSection]->elements[] = $elObj;
@@ -227,7 +227,7 @@ class HTML_QuickForm_Renderer_Object extends HTML_QuickForm_Renderer
 
     function setElementStyle($elementName, $styleName = null)
     {
-        if(is_array($elementName)) {
+        if (is_array($elementName)) {
             $this->_elementStyles = array_merge($this->_elementStyles, $elementName);
         } else {
             $this->_elementStyles[$elementName] = $styleName;

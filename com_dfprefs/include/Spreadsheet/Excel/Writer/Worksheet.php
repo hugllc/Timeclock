@@ -414,14 +414,14 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $this->_margin_top      = 1.00;
         $this->_margin_bottom   = 1.00;
     
-        $this->title_rowmin     = NULL;
-        $this->title_rowmax     = NULL;
-        $this->title_colmin     = NULL;
-        $this->title_colmax     = NULL;
-        $this->print_rowmin     = NULL;
-        $this->print_rowmax     = NULL;
-        $this->print_colmin     = NULL;
-        $this->print_colmax     = NULL;
+        $this->title_rowmin     = null;
+        $this->title_rowmax     = null;
+        $this->title_colmin     = null;
+        $this->title_colmax     = null;
+        $this->print_rowmin     = null;
+        $this->print_rowmax     = null;
+        $this->print_colmin     = null;
+        $this->print_colmax     = null;
     
         $this->_print_gridlines  = 1;
         $this->_screen_gridlines = 1;
@@ -435,7 +435,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $this->_vbreaks         = array();
     
         $this->_protect         = 0;
-        $this->_password        = NULL;
+        $this->_password        = null;
     
         $this->col_sizes        = array();
         $this->_row_sizes        = array();
@@ -960,7 +960,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     * @param integer $first_row First row to repeat
     * @param integer $last_row  Last row to repeat. Optional.
     */
-    function repeatRows($first_row, $last_row = NULL)
+    function repeatRows($first_row, $last_row = null)
     {
         $this->title_rowmin  = $first_row;
         if (isset($last_row)) { //Second row is optional
@@ -978,7 +978,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     * @param integer $first_col First column to repeat
     * @param integer $last_col  Last column to repeat. Optional.
     */
-    function repeatColumns($first_col, $last_col = NULL)
+    function repeatColumns($first_col, $last_col = null)
     {
         $this->title_colmin  = $first_col;
         if (isset($last_col)) { // Second col is optional
@@ -1063,7 +1063,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     */
     function setHPagebreaks($breaks)
     {
-        foreach($breaks as $break) {
+        foreach ($breaks as $break) {
             array_push($this->_hbreaks,$break);
         }
     }
@@ -1077,7 +1077,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     */
     function setVPagebreaks($breaks)
     {
-        foreach($breaks as $break) {
+        foreach ($breaks as $break) {
             array_push($this->_vbreaks,$break);
         }
     }
@@ -1189,7 +1189,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     {   
         $retval = '';
         if (is_array($val)) {
-            foreach($val as $v) {
+            foreach ($val as $v) {
                 if (is_array($v)) {
                     $this->writeCol($row, $col, $v, $format);
                 } else {
@@ -1218,7 +1218,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     {
         $retval = '';
         if (is_array($val)) {
-            foreach($val as $v) { 
+            foreach ($val as $v) { 
                 $this->write($row, $col, $v, $format);
                 $row++;
             }
@@ -1360,7 +1360,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
  
         // split the plain text password in its component characters
         $chars = preg_split('//', $plaintext, -1, PREG_SPLIT_NO_EMPTY);
-        foreach($chars as $char)
+        foreach ($chars as $char)
         {
             $value        = ord($char) << $i;   // shifted ASCII value 
             $rotated_bits = $value >> 15;       // rotated bits beyond bit 15
@@ -1641,7 +1641,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $data      = pack("vvv", $row, $col, $note_length);
         $this->_append($header.$data.substr($note, 0, 2048));
 
-        for($i = $max_length; $i < $note_length; $i += $max_length)
+        for ($i = $max_length; $i < $note_length; $i += $max_length)
         {
             $chunk  = substr($note, $i, $max_length);
             $length = 0x0006 + strlen($chunk);
@@ -2108,7 +2108,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     * @access public
     * @param integer $row    The row to set
     * @param integer $height Height we are giving to the row. 
-    *                        Use NULL to set XF without setting height
+    *                        Use null to set XF without setting height
     * @param mixed   $format XF format we are giving to the row
     * @param bool    $hidden The optional hidden attribute
     * @param integer $level  The optional outline level for row, in range [0,7]
@@ -2128,8 +2128,8 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         // set _row_sizes so _sizeRow() can use it
         $this->_row_sizes[$row] = $height;
 
-        // Use setRow($row, NULL, $XF) to set XF format without setting height
-        if ($height != NULL) {
+        // Use setRow($row, null, $XF) to set XF format without setting height
+        if ($height != null) {
             $miyRw = $height * 20;  // row height
         }
         else {
@@ -2479,7 +2479,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
             $pnnAct = $panes[4];
         }
         else {
-            $pnnAct = NULL;
+            $pnnAct = null;
         }
         $record  = 0x0041;       // Record identifier
         $length  = 0x000A;       // Number of bytes to follow
@@ -2989,7 +2989,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $data    = pack("v",  $cbrk);
     
         // Append each page break
-        foreach($breaks as $break) {
+        foreach ($breaks as $break) {
             if ($this->_BIFF_version == 0x0600) {
                 $data .= pack("vvv", $break, 0x0000, 0x00ff);
             }
@@ -3511,7 +3511,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $this->_append($header.$data);
       
         $record = 0x01be;              // Record identifier
-        foreach($this->_dv as $dv)
+        foreach ($this->_dv as $dv)
         {
             $length = strlen($dv);      // Bytes to follow
             $header = pack("vv", $record, $length);
