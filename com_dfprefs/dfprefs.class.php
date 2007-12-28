@@ -57,7 +57,7 @@ class dfPrefs extends mosDBTable {
 
     var $_defaults = array(
         'useredit' => 1,
-  );
+    );
     
 
     function dfPrefs(&$db, $cache = true) {
@@ -69,12 +69,12 @@ class dfPrefs extends mosDBTable {
     }
 
     function getArea()
-{
+    {
         return mosGetParam($_REQUEST, 'option', 'unknown');
     }
 
     function cache()
-{
+    {
         global $database;
         if (!isset($_SESSION['dfprefs']['cache'])) {
             $query = "SELECT * FROM #__dfprefs "

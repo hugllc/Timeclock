@@ -34,7 +34,7 @@
  */
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once($mainframe->getPath('toolbar_html'));
+require_once $mainframe->getPath('toolbar_html');
 
 
 $task = mosGetParam($_REQUEST, 'task', '');

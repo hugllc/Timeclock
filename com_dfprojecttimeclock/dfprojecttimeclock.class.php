@@ -34,10 +34,11 @@
  */
 defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-if (!@include_once $mainframe->getPath('class', 'com_dfproject')) {
+
+if (!include_once $mainframe->getPath('class', 'com_dfproject')) {
     die('com_dfproject is required for com_dfprojecttimeclock');
 }
-@include_once $mainframe->getPath('class', 'com_dfprojectwcomp');
+include_once $mainframe->getPath('class', 'com_dfprojectwcomp');
 require_once($mosConfig_absolute_path."/includes/sef.php");
 
 define("_HAVE_DFPROJECT_TIMECLOCK", true);
@@ -72,7 +73,7 @@ class timesheet extends mosDBTable{
     var $insertDate;
     var $Notes;
 
-    function timesheet($config = null) {
+    function __construct($config = null) {
         global $database;
         $this->_db =& $database;
         if (is_null($config)) $config = dfprefs::getSystem();
@@ -119,6 +120,25 @@ class timesheet extends mosDBTable{
         return $res;   
     }
 
+    /**
+     * Takes in a date in almost any format and returns an integer of
+     * 6am on that day.
+     *
+     * @param mixed $date The date to fix.
+     *
+     * @return int
+     */
+    function fixDate($date)
+    {
+        if (empty($date)) {
+            $date = time();
+        } else if (is_string($date)) {
+            $date = strtotime($date);
+        }
+        // This makes sure daylight savings time doesn't effect us.
+        return strtotime(date('Y-m-d 06:00:00', $date));
+    }
+    
     function getPeriod($Start, $End) {
         foreach (array('Start', 'End') as $Date) {
             if (empty($$Date)) {
