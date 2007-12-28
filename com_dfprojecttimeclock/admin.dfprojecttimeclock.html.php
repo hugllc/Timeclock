@@ -25,7 +25,7 @@
  *
  * @category   Timeclock
  * @package    Timeclock
- * @subpackage Com_DfPrefs
+ * @subpackage Com_DfProjectTimeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2005-2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License

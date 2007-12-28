@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/dfTimeclockClassTest.php';
  * before the software is ever released.
  *
  * @category   Test
- * @package    HUGnetLibTest
+ * @package    TimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
