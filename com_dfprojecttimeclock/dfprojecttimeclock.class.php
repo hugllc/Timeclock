@@ -42,7 +42,6 @@ define('TIMEFORMAT', " h:i a ");
 define("_PROJ_BASEPATH", dirname( $mainframe->getPath( 'class', 'com_dfprefs' ) ));
 define("_PROJ_TIMECLOCK_IMGPATH", sefRelToAbs("components/com_dfprojecttimeclock/images/"));
 
-
 class timesheet extends mosDBTable{
 	var $_tbl = '#__dfproject_timesheet';
 	var $_tbl_key = 'id';
