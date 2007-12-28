@@ -87,7 +87,7 @@ class timesheet extends mosDBTable
     /**
      * Function
      *
-     * @return none
+     * @return void
      */    
     function __construct($config = null)
     {

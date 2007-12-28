@@ -19,7 +19,7 @@ doc:
 	rm -Rf Documentation/Timeclock
 	mkdir -p Documentation/Timeclock
 	echo Building Docs
-	${PHPDOC} -d . -t Documentation/Timeclock -c |tee Documentation/Timeclock.build.txt
+	${PHPDOC} -c phpdoc.ini |tee Documentation/Timeclock.build.txt
 
 style:
 	${PHPCS} --standard=PHPCS --report=checkstyle  . > Documentation/Timeclock/checkstyle.xml

@@ -64,7 +64,7 @@ class dfTimeclockTests
     /**
      * main function
      *
-     * @return none
+     * @return void
      */
     public static function main()
     {
@@ -74,7 +74,7 @@ class dfTimeclockTests
     /**
      * test suite
      *
-     * @return none
+     * @return void
      */
     public static function suite()
     {

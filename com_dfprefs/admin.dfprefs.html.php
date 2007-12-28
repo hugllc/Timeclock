@@ -61,7 +61,7 @@ class HTML_DfPrefs
      * @param string $area    The area
      * @param mixed  $task    The task chosen
      *
-     * @return none
+     * @return void
      */
     function showUsers(&$rows, $pageNav, $search, $option, $lists, $area, $task)
     {
@@ -178,7 +178,7 @@ class HTML_DfPrefs
      * @param array  $lists   list filters
      * @param mixed  $task    The task chosen
      *
-     * @return none
+     * @return void
      */
     function showPrefsDefine(&$rows, $pageNav, $search, $option, $lists, $task) 
     {
@@ -294,7 +294,7 @@ class HTML_DfPrefs
      * @param array  &$values Values
      * @param string $area    The area
      *
-     * @return none
+     * @return void
      */
     function editUser($option, &$row, &$prefs, &$values, $area)
     {
@@ -440,7 +440,7 @@ class HTML_DfPrefs
      * @param string $option The option chosen
      * @param object &$row   database result object
      *
-     * @return none
+     * @return void
      */
     function editPrefDefine($option, &$row)
     {
@@ -596,7 +596,7 @@ class HTML_DfPrefs
      * @param string $option The option chosen
      * @param array  $config The configuration to display
      *
-     * @return none
+     * @return void
      */
     function showConfig($option, $config)
     {
@@ -672,7 +672,7 @@ class HTML_DfPrefs
     /**
      * Displays the user list
      *
-     * @return none
+     * @return void
      */
     function showAbout()
     {

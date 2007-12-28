@@ -69,7 +69,7 @@ class AllTests
     /**
      * main function
      *
-     * @return none
+     * @return void
      */
     public static function main()
     {
@@ -79,7 +79,7 @@ class AllTests
     /**
      * test suite
      *
-     * @return none
+     * @return void
      */
     public static function suite()
     {

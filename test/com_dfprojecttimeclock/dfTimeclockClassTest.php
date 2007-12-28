@@ -65,7 +65,7 @@ class dftimeclockClassTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -82,7 +82,7 @@ class dftimeclockClassTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -95,7 +95,7 @@ class dftimeclockClassTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -122,7 +122,7 @@ class dftimeclockClassTest extends PHPUnit_Framework_TestCase
      * @param mixed $date   The date to feed the function
      * @param bool  $expect The result to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataFixDate
      */
