@@ -31,9 +31,9 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
+require_once($mainframe->getPath('class'));
 
 class HTML_dfprojecttimeclock {
     function showConfig($option, $config) {
@@ -42,39 +42,39 @@ class HTML_dfprojecttimeclock {
         mosCommonHTML::loadCalendar();
 
         $periodtypes = array(
-            mosHTML::makeOption( 'FIXED', 'Fixed' ),
-        );
+            mosHTML::makeOption('FIXED', 'Fixed'),
+      );
 
         $vacationAccrual = array(
-            mosHTML::makeOption( 'WEEKLY', 'Weekly' ),
-        );
+            mosHTML::makeOption('WEEKLY', 'Weekly'),
+      );
         $vacationType = array(
-            mosHTML::makeOption( 'ACRUAL', 'Acrual' ),
-            mosHTML::makeOption( 'FIXED', 'FIXED' ),
-        );
+            mosHTML::makeOption('ACRUAL', 'Acrual'),
+            mosHTML::makeOption('FIXED', 'FIXED'),
+      );
 
-        $debugsel = mosHTML::yesnoRadioList( 'df_config[debug]', 'class="inputbox"', $config['debug'] );
+        $debugsel = mosHTML::yesnoRadioList('df_config[debug]', 'class="inputbox"', $config['debug']);
 
         $query = "SELECT id AS value, name AS text"
         . "\n FROM #__groups"
         . "\n ORDER BY id"
         ;
-        $database->setQuery( $query );
+        $database->setQuery($query);
 
-        $groups = array(mosHTML::makeOption( -1, 'None' ));
+        $groups = array(mosHTML::makeOption(-1, 'None'));
         $groups = array_merge($groups, $database->loadObjectList());
         
         $query = "SELECT id AS value, name AS text"
         . "\n FROM #__users"
         . "\n ORDER BY name"
         ;
-        $database->setQuery( $query );
+        $database->setQuery($query);
         $users = $database->loadObjectList();
 
         $configUsers = array();
         $groupAccess = array();
         foreach (array('Timeclock', 'TSummary', 'TOthers', 'HolidayHours', 'SickHours', 'VacationHours') as $type) {
-            $groupAccess[$type] = mosHTML::selectList( $groups, 'df_config[group'.$type.']', 'class="inputbox"', 'value', 'text', $config['group'.$type] );
+            $groupAccess[$type] = mosHTML::selectList($groups, 'df_config[group'.$type.']', 'class="inputbox"', 'value', 'text', $config['group'.$type]);
         }
         
         $tab = new mosTabs(1);
@@ -83,20 +83,20 @@ class HTML_dfprojecttimeclock {
      <script language="javascript" type="text/javascript">
     function submitbutton(pressbutton) {
       var form = document.adminForm;
-      <?php getEditorContents( 'editor1', 'answer' ) ;?>
+      <?php getEditorContents('editor1', 'answer') ;?>
       if (pressbutton == 'cancel') {
-        submitform( pressbutton );
+        submitform(pressbutton);
         return;
       }
       // do field validation
       if (form.dbHost.value == ""){
-        alert( "Hostname must be set." );
+        alert("Hostname must be set.");
       if (form.dbUser.value == ""){
-        alert( "Username must be set." );
+        alert("Username must be set.");
       if (form.dbPassword.value == ""){
-        alert( "Password must be set." );
+        alert("Password must be set.");
       } else {
-        submitform( pressbutton );
+        submitform(pressbutton);
       }
     }
     </script>
@@ -155,7 +155,7 @@ class HTML_dfprojecttimeclock {
       <tr>
         <td valign="middle" align="right" style="white-space: nowrap;">Max Daily Hours:</td>
         <td>
-          <?php print mosHTML::integerSelectList( 1, 24, 1, 'df_config[maxhours]','class="inputbox"' , $config['maxhours']); ?>
+          <?php print mosHTML::integerSelectList(1, 24, 1, 'df_config[maxhours]','class="inputbox"', $config['maxhours']); ?>
         </td>
         <td>
             The maximum number of hours a person can log in one day.
@@ -164,7 +164,7 @@ class HTML_dfprojecttimeclock {
       <tr>
         <td valign="middle" align="right" style="white-space: nowrap;">Vacation Calculation Method:</td>
         <td>
-            <?php print mosHTML::selectList( $vacationType, 'df_config[vacationType]', 'class="inputbox"', 'value', 'text', $config['vacationType'] ); ?>
+            <?php print mosHTML::selectList($vacationType, 'df_config[vacationType]', 'class="inputbox"', 'value', 'text', $config['vacationType']); ?>
         </td>
         <td>
             How vacation is calculated.
@@ -173,7 +173,7 @@ class HTML_dfprojecttimeclock {
       <tr>
         <td valign="middle" align="right" style="white-space: nowrap;">Vacation Accrual Period:</td>
         <td>
-            <?php print mosHTML::selectList( $vacationAccrual, 'df_config[vacationAccrual]', 'class="inputbox"', 'value', 'text', $config['vacationAccrual'] ); ?>
+            <?php print mosHTML::selectList($vacationAccrual, 'df_config[vacationAccrual]', 'class="inputbox"', 'value', 'text', $config['vacationAccrual']); ?>
         </td>
         <td>
             How often vacation is accrued.
@@ -196,7 +196,7 @@ number of years the employee has worked.  That means put the smaller number of y
       <tr>
         <td valign="middle" align="right" style="white-space: nowrap;">Max Decimal Places:</td>
         <td>
-          <?php print mosHTML::integerSelectList( 1, 6, 1, 'df_config[decimalPlaces]','class="inputbox"' , $config['decimalPlaces']); ?>
+          <?php print mosHTML::integerSelectList(1, 6, 1, 'df_config[decimalPlaces]','class="inputbox"', $config['decimalPlaces']); ?>
         </td>
         <td>
             The maximum number of hours a person can log in one day.
@@ -220,7 +220,7 @@ number of years the employee has worked.  That means put the smaller number of y
       <tr>
         <td valign="middle" align="right">Type of Pay Period:</td>
         <td>
-            <?php print mosHTML::selectList( $periodtypes, 'df_config[periodtype]', 'class="inputbox"', 'value', 'text', $config['periodtype'] ); ?>
+            <?php print mosHTML::selectList($periodtypes, 'df_config[periodtype]', 'class="inputbox"', 'value', 'text', $config['periodtype']); ?>
         </td>
         <td>
             Type of Payperiod.  Fixed = Fixed length pay period.
@@ -229,7 +229,7 @@ number of years the employee has worked.  That means put the smaller number of y
       <tr>
         <td valign="middle" align="right">Length of Pay Period:</td>
         <td>
-          <?php print mosHTML::integerSelectList( 1, 31, 1, 'df_config[periodlength]','class="inputbox"' , $config['periodlength']); ?>
+          <?php print mosHTML::integerSelectList(1, 31, 1, 'df_config[periodlength]','class="inputbox"', $config['periodlength']); ?>
         </td>
         <td>
             The number of days in a fixed length pay period.

@@ -77,7 +77,7 @@ class HTML_Menu_DirectTreeRenderer extends HTML_Menu_Renderer
         HTML_MENU_ENTRY_INACTIVE    => '<a href="{url}">{title}</a>',
         HTML_MENU_ENTRY_ACTIVE      => '<strong>{title}</strong>',
         HTML_MENU_ENTRY_ACTIVEPATH  => '<a href="{url}"><em>{title}</em></a>'
-    );
+  );
 
 
     function setMenuType($menuType)

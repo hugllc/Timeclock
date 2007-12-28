@@ -31,27 +31,27 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-require_once( $mainframe->getPath( 'class' ) );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
+require_once($mainframe->getPath('class'));
 
 class HTML_dfproject {
     function showConfig($option, $config) {
         global $database;
 
-        $debugsel = mosHTML::yesnoRadioList( 'df_config[debug]', 'class="inputbox"', $config['debug'] );
+        $debugsel = mosHTML::yesnoRadioList('df_config[debug]', 'class="inputbox"', $config['debug']);
 
         $query = "SELECT id AS value, name AS text"
         . "\n FROM #__groups"
         . "\n ORDER BY id"
         ;
-        $database->setQuery( $query );
+        $database->setQuery($query);
 
-        $groups = array(mosHTML::makeOption( -1, 'None' ));
+        $groups = array(mosHTML::makeOption(-1, 'None'));
         $groups = array_merge($groups, $database->loadObjectList());
         
-        $readAccess = mosHTML::selectList( $groups, 'df_config[groupRead]', 'class="inputbox"', 'value', 'text', $config['groupRead'] );
-        $writeAccess = mosHTML::selectList( $groups, 'df_config[groupWrite]', 'class="inputbox"', 'value', 'text', $config['groupWrite'] );
-        $debugAccess = mosHTML::selectList( $groups, 'df_config[groupDebug]', 'class="inputbox"', 'value', 'text', $config['groupDebug'] );
+        $readAccess = mosHTML::selectList($groups, 'df_config[groupRead]', 'class="inputbox"', 'value', 'text', $config['groupRead']);
+        $writeAccess = mosHTML::selectList($groups, 'df_config[groupWrite]', 'class="inputbox"', 'value', 'text', $config['groupWrite']);
+        $debugAccess = mosHTML::selectList($groups, 'df_config[groupDebug]', 'class="inputbox"', 'value', 'text', $config['groupDebug']);
         
         $tab = new mosTabs(1);
 
@@ -59,20 +59,20 @@ class HTML_dfproject {
      <script language="javascript" type="text/javascript">
     function submitbutton(pressbutton) {
       var form = document.adminForm;
-      <?php getEditorContents( 'editor1', 'answer' ) ;?>
+      <?php getEditorContents('editor1', 'answer') ;?>
       if (pressbutton == 'cancel') {
-        submitform( pressbutton );
+        submitform(pressbutton);
         return;
       }
       // do field validation
       if (form.dbHost.value == ""){
-        alert( "Hostname must be set." );
+        alert("Hostname must be set.");
       if (form.dbUser.value == ""){
-        alert( "Username must be set." );
+        alert("Username must be set.");
       if (form.dbPassword.value == ""){
-        alert( "Password must be set." );
+        alert("Password must be set.");
       } else {
-        submitform( pressbutton );
+        submitform(pressbutton);
       }
     }
     </script>

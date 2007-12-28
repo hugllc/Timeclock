@@ -31,18 +31,18 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 // This requires that the session be started.
 @session_start();
 
-if (!@include_once $mainframe->getPath( 'class', 'com_dfproject' )) {
+if (!@include_once $mainframe->getPath('class', 'com_dfproject')) {
     die('com_dfproject is required for com_dfprojecttimeclock');
 }
 
 define("_HAVE_DFPROJECT_BILLING", true);
 
 define("DFPROJECT_CONFIG_FILE", "config.inc.php");
-require_once( $mainframe->getPath( 'class', 'com_dfprefs' ) );
+require_once($mainframe->getPath('class', 'com_dfprefs'));
 
 
 define("PLUGIN_BILLING_TABLE", '#__dfproject_billing');
@@ -74,8 +74,8 @@ class billing  extends mosDBTable {
     function getRecord($id) {
 
         $this->load($id);
-        foreach (get_object_vars( $this ) as $key => $val) {
-            if (substr( $key, 0, 1 ) != '_') {
+        foreach (get_object_vars($this) as $key => $val) {
+            if (substr($key, 0, 1) != '_') {
                 $cache[$key] = $val;
             }
         }
@@ -84,8 +84,8 @@ class billing  extends mosDBTable {
         
     }
 
-    function save( $source , $order_filter='' ) {
-        if (!$this->bind( $source )) {
+    function save($source, $order_filter='') {
+        if (!$this->bind($source)) {
             return false;
         }
         if (!$this->check()) {
@@ -97,7 +97,7 @@ class billing  extends mosDBTable {
 
         if ($order_filter) {
             $filter_value = $this->$order_filter;
-            $this->updateOrder( $order_filter ? "`$order_filter` = '$filter_value'" : '' );
+            $this->updateOrder($order_filter ? "`$order_filter` = '$filter_value'" : '');
         }
         $this->_error = '';
         return true;

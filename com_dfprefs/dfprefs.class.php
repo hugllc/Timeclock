@@ -31,7 +31,7 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
 // This requires that the session be started.
 @session_start();
@@ -56,20 +56,20 @@ class dfPrefs extends mosDBTable {
 
     var $_defaults = array(
         'useredit' => 1,
-    );
+  );
     
 
-    function dfPrefs( &$db , $cache = true) {
+    function dfPrefs(&$db, $cache = true) {
 
-        $this->mosDBTable('#__dfprefs', 'id', $db );
+        $this->mosDBTable('#__dfprefs', 'id', $db);
         $this->_db =& $db;
         $this->_cache = $cache;
-        $this->_area = mosGetParam( $_REQUEST, 'option', 'unknown' );
+        $this->_area = mosGetParam($_REQUEST, 'option', 'unknown');
     }
 
     function getArea()
 {
-        return mosGetParam( $_REQUEST, 'option', 'unknown' );
+        return mosGetParam($_REQUEST, 'option', 'unknown');
     }
 
     function cache()
@@ -81,7 +81,7 @@ class dfPrefs extends mosDBTable {
                . " area = 'com_dfprefs'"
                . " AND type = 'SYSTEM'"
                . " AND name = 'cache'";
-            $database->setQuery( $query );
+            $database->setQuery($query);
 
             $ret = $database->loadObjectList();
             $_SESSION['dfprefs']['cache'] = (bool)unserialize($ret[0]->value);
@@ -90,7 +90,7 @@ class dfPrefs extends mosDBTable {
     }
 
 
-    function set($id, $name, $value, $type='USER', $visible=0, $area = null ) {
+    function set($id, $name, $value, $type='USER', $visible=0, $area = null) {
         global $database;
         
         if (is_null($area)) $area = dfprefs::getArea();
@@ -108,7 +108,7 @@ class dfPrefs extends mosDBTable {
                . ", type = '".(string)$type."'"
                . ", visible = ".(int)$visible;
 
-            $database->setQuery( $query );
+            $database->setQuery($query);
             $ret = $database->query();
             // This adds it to the cache
             $_SESSION['dfprefs'][$type][$id][$area][$name] = $value;
@@ -127,7 +127,7 @@ class dfPrefs extends mosDBTable {
             if (!is_null($area)) $query .=  " AND area = '".(string)$area."'";
             if (!is_null($type)) $query .= " AND type = '".(string)$type."'";
             if (!is_null($visible)) $query .= " AND visible = ".(int)(bool)$visible;
-            $database->setQuery( $query );
+            $database->setQuery($query);
 
             $ret = $database->loadObjectList();
 
@@ -154,7 +154,7 @@ class dfPrefs extends mosDBTable {
           if (is_null($area)) $area = dfPrefs::getArea();
        
         if ($my->id > 0) {
-            dfprefs::set( $id, $name, $value, 'USER', $visible , $area);
+            dfprefs::set($id, $name, $value, 'USER', $visible, $area);
         } else {
             $_SESSION['dfprefs']['USER'][$id][$area][$name] = $value;
         }
@@ -187,7 +187,7 @@ class dfPrefs extends mosDBTable {
     function setSystem($name, $value, $area = null) {
          if (is_null($area)) $area = dfPrefs::getArea();
        
-        return dfprefs::set( 0 , $name, $value, 'SYSTEM', 0 , $area);
+        return dfprefs::set(0, $name, $value, 'SYSTEM', 0, $area);
 
     }
 
@@ -244,10 +244,10 @@ class dfPrefs_define extends mosDBTable {
     var $parameters = null;
     
 
-    function dfPrefs_define( ) {
+    function dfPrefs_define() {
         global $database;
 
-        $this->mosDBTable('#__dfprefs_define', 'id', $database );
+        $this->mosDBTable('#__dfprefs_define', 'id', $database);
         $this->_db =& $db;
         $this->_area = dfPrefs::getArea();
     }
@@ -264,7 +264,7 @@ class dfPrefs_define extends mosDBTable {
         if (!is_null($area)) $query .= " `area` = '".(string)$area."'";
         if (!is_null($type)) $query .= " AND `preftype` = '".(string)$type."'";
 
-        $database->setQuery( $query );
+        $database->setQuery($query);
 
         $ret = $database->loadObjectList();
 
@@ -279,7 +279,7 @@ class dfPrefs_define extends mosDBTable {
         
     }
 
-    function set($id, $name, $default, $type, $preftype='USER', $area = null, $help='', $parameters=array() ) {
+    function set($id, $name, $default, $type, $preftype='USER', $area = null, $help='', $parameters=array()) {
         global $database;        
 
         if (is_null($area)) $area = dfPrefs::getArea();        
@@ -297,7 +297,7 @@ class dfPrefs_define extends mosDBTable {
         if (is_null($id)) {
              $query = "INSERT INTO #__dfprefs_define "
                 . " SET "
-                . " id = '".(int)$id."' ,"
+                . " id = '".(int)$id."',"
                 . $basequery;
         } else {
              $query = "UPDATE #__dfprefs_define "
@@ -318,11 +318,11 @@ class dfPrefs_define extends mosDBTable {
         return $ret;
     }
 
-    function getById( $id ) {
+    function getById($id) {
         global $database;
         $query = "SELECT * FROM #__dfprefs_define "
            . " WHERE id = ".$id;
-        $database->setQuery( $query );
+        $database->setQuery($query);
 
         $ret = $database->loadObjectList();
         if ($database->getErrorNum()) {
@@ -340,7 +340,7 @@ class dfPrefs_define extends mosDBTable {
     }
 
 
-    function get( $name = null, $preftype = null, $area = null, $type = null ) {
+    function get($name = null, $preftype = null, $area = null, $type = null) {
         global $database;
 
 //        if (is_null($area)) $area = dfPrefs::getArea();        
@@ -352,7 +352,7 @@ class dfPrefs_define extends mosDBTable {
         if (!is_null($type)) $query .= " AND type = '".(string)$type."'";
         if (!is_null($preftype)) $query .= " AND preftype = '".(string)$preftype."'";
 
-        $database->setQuery( $query );
+        $database->setQuery($query);
 
         $ret = $database->loadObjectList();
         if ($database->getErrorNum()) {
@@ -386,7 +386,7 @@ class dfFileConfig {
         if (empty($this->file)) $this->file = "config.inc.php";
         $this->default_config = $default;
         if ($path === null) {
-            $this->path = dirname( $mainframe->getPath( 'class' ) );
+            $this->path = dirname($mainframe->getPath('class'));
         } else {
             $this->path = $path;
         }
@@ -421,7 +421,7 @@ class dfFileConfig {
     function saveConfig($new) {
         if (!is_array($new)) return false;
         $df_config = $this->getConfig();
-//        if ($new === null) $new = mosGetParam( $_REQUEST, 'df_config', array( ) );
+//        if ($new === null) $new = mosGetParam($_REQUEST, 'df_config', array());
         $df_config = $this->mergeConfig($df_config, $new);
         return $this->writeFile($df_config);
     }
@@ -431,7 +431,7 @@ class dfFileConfig {
         $cf = fopen($this->path.DIRECTORY_SEPARATOR.$this->file, "w");
         if ($cf == false) return false;
         fwrite($cf, "<?php\n");
-        fwrite($cf, "defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );\n\n");
+        fwrite($cf, "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');\n\n");
 
         $this->writeRaw($cf, $df_config);
 
@@ -508,7 +508,7 @@ class dfFileConfig {
     function getUser($user_id = null) {
         global $my, $database;
         
-        if ( $user_id === null ) {
+        if ($user_id === null) {
             return $my;
         } else {
             if (!is_object($this->_users[$user_id])) {

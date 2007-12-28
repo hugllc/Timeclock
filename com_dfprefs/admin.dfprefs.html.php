@@ -31,15 +31,15 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
+require_once($mainframe->getPath('class'));
 
 
 class HTML_dfprefs {
 
 
-    function showUsers( &$rows, $pageNav, $search, $option, $lists, $area, $task ) {
+    function showUsers(&$rows, $pageNav, $search, $option, $lists, $area, $task) {
         ?>
         <form action="index2.php" method="post" name="adminForm">
 
@@ -89,7 +89,7 @@ class HTML_dfprefs {
         </tr>
         <?php
         $k = 0;
-        for ($i=0, $n=count( $rows ); $i < $n; $i++) {
+        for ($i=0, $n=count($rows); $i < $n; $i++) {
             $row     =& $rows[$i];
 
             $img     = $row->block ? 'publish_x.png' : 'tick.png';
@@ -101,7 +101,7 @@ class HTML_dfprefs {
                 <?php echo $i+1+$pageNav->limitstart;?>
                 </td>
                 <td>
-                <?php echo mosHTML::idBox( $i, $row->id ); ?>
+                <?php echo mosHTML::idBox($i, $row->id); ?>
                 </td>
                 <td>
                 <a href="<?php echo $link; ?>">
@@ -123,7 +123,7 @@ class HTML_dfprefs {
                 </a>
                 </td>
                 <td nowrap="nowrap">
-                <?php echo mosFormatDate( $row->lastvisitDate, _CURRENT_SERVER_TIME_FORMAT ); ?>
+                <?php echo mosFormatDate($row->lastvisitDate, _CURRENT_SERVER_TIME_FORMAT); ?>
                 </td>
                 <td>
                 <?php echo $row->id; ?>
@@ -143,7 +143,7 @@ class HTML_dfprefs {
         </form>
         <?php
     }
-    function showPrefsDefine( &$rows, $pageNav, $search, $option, $lists, $task ) {
+    function showPrefsDefine(&$rows, $pageNav, $search, $option, $lists, $task) {
         ?>
         <form action="index2.php" method="post" name="adminForm">
 
@@ -196,7 +196,7 @@ class HTML_dfprefs {
         </tr>
         <?php
         $k = 0;
-        for ($i=0, $n=count( $rows ); $i < $n; $i++) {
+        for ($i=0, $n=count($rows); $i < $n; $i++) {
             $row     =& $rows[$i];
 
             $row->parameters = unserialize($row->parameters);
@@ -210,7 +210,7 @@ class HTML_dfprefs {
                 <?php echo $i+1+$pageNav->limitstart;?>
                 </td>
                 <td>
-                <?php if ($editable) echo mosHTML::idBox( $i, $row->id ); ?>
+                <?php if ($editable) echo mosHTML::idBox($i, $row->id); ?>
                 </td>
                 <td>
                 <?php if ($editable) echo '<a href="<?php echo $link; ?>">'; ?>
@@ -247,10 +247,10 @@ class HTML_dfprefs {
         <?php
     }
     
-    function editUser( $option, &$row, &$prefs, &$values, $area) {
+    function editUser($option, &$row, &$prefs, &$values, $area) {
 
-        $yesno[] = mosHTML::makeOption( '0', 'No' );
-        $yesno[] = mosHTML::makeOption( '1', 'Yes' );
+        $yesno[] = mosHTML::makeOption('0', 'No');
+        $yesno[] = mosHTML::makeOption('1', 'Yes');
 
         // This builds the preferences
         $userprefs = array();
@@ -260,7 +260,7 @@ class HTML_dfprefs {
                 $up = array(
                     'name' => $p->name,
                     'help' => $p->help,
-                );
+              );
                 if (!empty($p->parameters['title'])) {
                     $up['title'] = $p->parameters['title'];
                 } else {
@@ -288,14 +288,14 @@ class HTML_dfprefs {
                         $up['input'] .= ' />';
                         break;
                     case 'YESNO':
-                        $up['input'] = mosHTML::selectList( $yesno, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value );
+                        $up['input'] = mosHTML::selectList($yesno, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value);
                         break;
                     case 'SELECT':
                         $options = array();
                         foreach ($p->parameters['options'] as $key => $value) {
-                            $options[] = mosHTML::makeOption( $key, $value );
+                            $options[] = mosHTML::makeOption($key, $value);
                         }
-                        $up['input'] = mosHTML::selectList( $options, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value );
+                        $up['input'] = mosHTML::selectList($options, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value);
                         break;
                     case 'DATE':
                         mosCommonHTML::loadCalendar();
@@ -319,23 +319,23 @@ class HTML_dfprefs {
     function submitbutton(pressbutton) {
       var form = document.adminForm;
 
-      <?php getEditorContents( 'editor1', 'answer' ) ;?>
+      <?php getEditorContents('editor1', 'answer') ;?>
       
       if (pressbutton == 'cancel') {
-        submitform( pressbutton );
+        submitform(pressbutton);
         return;
       }
 /*
       // do field validation
       if (form.adminForm.value == ""){
-        alert( "Hostname must be set." );
+        alert("Hostname must be set.");
       } else if (form.dbUser.value == ""){
-        alert( "Username must be set." );
+        alert("Username must be set.");
       } else if (form.dbPassword.value == ""){
-        alert( "Password must be set." );
+        alert("Password must be set.");
       } else {
 */
-        submitform( pressbutton );
+        submitform(pressbutton);
 //      }
 
     }
@@ -394,41 +394,41 @@ class HTML_dfprefs {
 <?php
    }
 
-    function editPrefDefine( $option, &$row ) {
+    function editPrefDefine($option, &$row) {
 
-        $yesno[] = mosHTML::makeOption( '0', 'No' );
-        $yesno[] = mosHTML::makeOption( '1', 'Yes' );
+        $yesno[] = mosHTML::makeOption('0', 'No');
+        $yesno[] = mosHTML::makeOption('1', 'Yes');
 
-        $preftype[] = mosHTML::makeOption( 'USER', 'User' );
-        $preftype[] = mosHTML::makeOption( 'ADMINUSER', 'Admin' );
+        $preftype[] = mosHTML::makeOption('USER', 'User');
+        $preftype[] = mosHTML::makeOption('ADMINUSER', 'Admin');
 
 
-        $preftypelist = mosHTML::selectList( $preftype, 'dfprefs_define[preftype]', 'class="inputbox"', 'value', 'text', $row->preftype );
+        $preftypelist = mosHTML::selectList($preftype, 'dfprefs_define[preftype]', 'class="inputbox"', 'value', 'text', $row->preftype);
 
-        $type[] = mosHTML::makeOption( 'TEXT', 'Text' );
-        $type[] = mosHTML::makeOption( 'YESNO', 'Yes/No' );
+        $type[] = mosHTML::makeOption('TEXT', 'Text');
+        $type[] = mosHTML::makeOption('YESNO', 'Yes/No');
 
-        $typelist = mosHTML::selectList( $type, 'dfprefs_define[type]', 'class="inputbox"', 'value', 'text', $row->type );
+        $typelist = mosHTML::selectList($type, 'dfprefs_define[type]', 'class="inputbox"', 'value', 'text', $row->type);
 
 
 ?>
     <script language="javascript" type="text/javascript">
     function submitbutton(pressbutton) {
       var form = document.adminForm;
-      <?php getEditorContents( 'editor1', 'answer' ) ;?>
+      <?php getEditorContents('editor1', 'answer') ;?>
       if (pressbutton == 'cancel') {
-        submitform( pressbutton );
+        submitform(pressbutton);
         return;
       }
       // do field validation
       if (form.dbHost.value == ""){
-        alert( "Hostname must be set." );
+        alert("Hostname must be set.");
       if (form.dbUser.value == ""){
-        alert( "Username must be set." );
+        alert("Username must be set.");
       if (form.dbPassword.value == ""){
-        alert( "Password must be set." );
+        alert("Password must be set.");
       } else {
-        submitform( pressbutton );
+        submitform(pressbutton);
       }
     }
     </script>
@@ -543,29 +543,29 @@ class HTML_dfprefs {
 
     function showConfig($option, $config) {
 
-        $yesno[] = mosHTML::makeOption( '0', 'No' );
-        $yesno[] = mosHTML::makeOption( '1', 'Yes' );
+        $yesno[] = mosHTML::makeOption('0', 'No');
+        $yesno[] = mosHTML::makeOption('1', 'Yes');
    
-        $debugsel = mosHTML::selectList( $yesno, 'df_config[debug]', 'class="inputbox"', 'value', 'text', $config['debug'] );
-        $cachesel = mosHTML::selectList( $yesno, 'df_config[cache]', 'class="inputbox"', 'value', 'text', $config['cache'] );
+        $debugsel = mosHTML::selectList($yesno, 'df_config[debug]', 'class="inputbox"', 'value', 'text', $config['debug']);
+        $cachesel = mosHTML::selectList($yesno, 'df_config[cache]', 'class="inputbox"', 'value', 'text', $config['cache']);
     ?>
      <script language="javascript" type="text/javascript">
     function submitbutton(pressbutton) {
       var form = document.adminForm;
-      <?php getEditorContents( 'editor1', 'answer' ) ;?>
+      <?php getEditorContents('editor1', 'answer') ;?>
       if (pressbutton == 'cancel') {
-        submitform( pressbutton );
+        submitform(pressbutton);
         return;
       }
       // do field validation
       if (form.dbHost.value == ""){
-        alert( "Hostname must be set." );
+        alert("Hostname must be set.");
       if (form.dbUser.value == ""){
-        alert( "Username must be set." );
+        alert("Username must be set.");
       if (form.dbPassword.value == ""){
-        alert( "Password must be set." );
+        alert("Password must be set.");
       } else {
-        submitform( pressbutton );
+        submitform(pressbutton);
       }
     }
     </script>

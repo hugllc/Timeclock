@@ -31,15 +31,15 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
     
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'class' , 'com_dfproject' ) );
-require_once( $mainframe->getPath( 'front_html' , 'com_dfproject' ) );
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('class', 'com_dfproject'));
+require_once($mainframe->getPath('front_html', 'com_dfproject'));
 
-require_once( _PROJ_BASEPATH."/include/tables.inc.php" );
-require_once( _PROJ_BASEPATH."/include/extra.inc.php" );
+require_once(_PROJ_BASEPATH."/include/tables.inc.php");
+require_once(_PROJ_BASEPATH."/include/extra.inc.php");
 
 
 
@@ -152,11 +152,11 @@ class HTML_DragonflyProject_Timeclock {
 
         $header = array(
             'name' => "Project",
-        );
+      );
         
         $format = array(
             'name' => array(),
-        );
+      );
         $this->_week = array();
         $week = 1;
         $days = 1;
@@ -276,11 +276,11 @@ class HTML_DragonflyProject_Timeclock {
         if (defined('_HAVE_DFPROJECT_WCOMP')) {
             $header = array(
                 'projectName' => "Project",
-            );
+          );
             
             $this->_format = array(
                 'projectName' => array(),
-            );
+          );
             
             for ($d = $this->period['start']; $d <= $this->period['end']; $d += 86400) {
                 $mDate = date($this->dateFormat, $d);
@@ -297,7 +297,7 @@ class HTML_DragonflyProject_Timeclock {
             $summary = array();
             $header = array(
                 'user_name' => "Employee",
-            );
+          );
             foreach ($res['codes'] as $key => $name) {
                 $header[$key] = wordwrap($name, 10, "<br/>"); //$name;
                 $this->_format[$key] = array('style' => 'text-align: center;');
@@ -374,7 +374,7 @@ class HTML_DragonflyProject_Timeclock {
             'minYear' => 2000,
             'maxYear' => date("Y"),                echo '<td><a href="'.$link.'task=paysum">'.HTML_DragonflyProject::caption(_PROJ_TIMECLOCK_IMGPATH."paysummary.png", "Payperiod", "Payperiod").'</a></td>';
 
-        );
+      );
 
         $fDates = array();
         $fDates[] = $form->createElement('date', 'StartDate', 'Start:', $options);
@@ -387,7 +387,7 @@ class HTML_DragonflyProject_Timeclock {
         $def = array(
             'StartDate' => $this->period['start'],
             'EndDate' => $this->period['end'],
-        );
+      );
         $form->setDefaults($def);    
 
         print $form->toHTML();
@@ -398,11 +398,11 @@ class HTML_DragonflyProject_Timeclock {
 
         $header = array(
             'projectName' => "Project",
-        );
+      );
         
         $this->_format = array(
             'projectName' => array(),
-        );
+      );
         
         for ($d = $this->period['start']; $d <= $this->period['end']; $d += 86400) {
             $mDate = date($this->dateFormat, $d);
@@ -419,7 +419,7 @@ class HTML_DragonflyProject_Timeclock {
         $summary = array();
         $header = array(
             'project_name' => "Project",
-        );
+      );
         foreach ($res['users'] as $key => $name) {
             if (empty($name)) $name = "#".$key;
 
@@ -455,11 +455,11 @@ class HTML_DragonflyProject_Timeclock {
 {
         $header = array(
             'user_name' => "User",
-        );
+      );
         
         $format = array(
             'user_name' => array(),
-        );
+      );
         $week = 1;
         $days = 1;
         for ($d = $this->period['start']; $d <= $this->period['end']; $d += 86400) {
@@ -540,14 +540,14 @@ class HTML_DragonflyProject_Timeclock {
             'format' => "d M Y",
             'minYear' => 2000,
             'maxYear' => date("Y")+1,
-        );
+      );
         $this->_form->addElement('date', 'Date', 'Date Worked:', $options);
         $this->_form->setDefaults(array('Date' => $this->Date));
     
         $this->saveGrp = array(
             $this->_form->createElement('submit', 'PostHours', _CMN_SAVE),
             $this->_form->createElement('submit', 'PostHours', _CMN_SAVE.' & Close'),
-        );
+      );
         $this->errors = '';
         $this->savedHours = false;
         foreach ($projects as $key => $val) {
@@ -585,7 +585,7 @@ class HTML_DragonflyProject_Timeclock {
         } else {
             $this->_extraHTML .= '<span style="font-weight: bold;" class="error">Total hours: (Maximum: '.$this->config['maxhours'].')</span> ';
         }
-        $this->_extraHTML .= " ".$dayTotalHours.' ( '.$this->config['maxhours'].' max )</span></div>';    
+        $this->_extraHTML .= " ".$dayTotalHours.' ('.$this->config['maxhours'].' max)</span></div>';    
     }
     
     function _build_add_form($key, $val, $user_id, $sheets) {
@@ -619,7 +619,7 @@ class HTML_DragonflyProject_Timeclock {
                     'Date' => date("Y-m-d", strtotime($this->Date)),
                     'insertDate' => date("Y-m-d H:i:s"),
                     'Notes' => mosStripSlashes($notes[$key]),
-                );
+              );
 
                 $return = null;
                 if (!$this->_timesheet->checkHours($info['hours'])) {

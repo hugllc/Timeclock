@@ -40,14 +40,14 @@ require_once 'HTML/QuickForm/Renderer/Array.php';
  *          [1st_element_name] => Error for the 1st element
  *          ...
  *          [nth_element_name] => Error for the nth element
- *      )
+ *    )
  *
  *  [header] => Array
  *      (
  *          [1st_header_name] => Header text for the 1st header
  *          ...
  *          [nth_header_name] => Header text for the nth header
- *      )
+ *    )
  *
  *  [1st_element_name] => Array for the 1st element
  *  ...
@@ -68,8 +68,8 @@ require_once 'HTML/QuickForm/Renderer/Array.php';
  *          [1st_gitem_name] => Array for the 1st element in group
  *          ...
  *          [nth_gitem_name] => Array for the nth element in group
- *      )
- * )
+ *    )
+ *)
  *
  * @access public
  */
@@ -184,10 +184,10 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
             if (isset($matches[1])) {
                 $sKeysSub = substr_replace($ret['name'], '', 0, strlen($matches[1]));
                 $sKeysSub = str_replace(
-                    array('['  ,   ']', '[\'\']'),
-                    array('[\'', '\']', '[]'    ),
+                    array('[' ,   ']', '[\'\']'),
+                    array('[\'', '\']', '[]'  ),
                     $sKeysSub
-                );
+              );
                 $sKeys = '[\'' . $matches[1]  . '\']' . $sKeysSub;
             } else {
                 $sKeys = '[\'' . $ret['name'] . '\']';
@@ -264,7 +264,7 @@ class HTML_QuickForm_Renderer_ArraySmarty extends HTML_QuickForm_Renderer_Array
             'html'     => $html,
             'required' => $required,
             'error'    => $error
-        ));
+      ));
         if (!empty($label) && strpos($this->_required, $this->_tpl->left_delimiter . '$label') !== false) {
             $label = $this->_tplFetch($this->_required);
         }

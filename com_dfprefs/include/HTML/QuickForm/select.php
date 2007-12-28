@@ -364,7 +364,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
             $this->setValue($values);
         }
         $fetchMode = ($textCol && $valueCol) ? DB_FETCHMODE_ASSOC : DB_FETCHMODE_DEFAULT;
-        while (is_array($row = $result->fetchRow($fetchMode)) ) {
+        while (is_array($row = $result->fetchRow($fetchMode))) {
             if ($fetchMode == DB_FETCHMODE_ASSOC) {
                 $this->addOption($row[$textCol], $row[$valueCol]);
             } else {
@@ -534,7 +534,7 @@ class HTML_QuickForm_select extends HTML_QuickForm_element {
                              'type'  => 'hidden',
                              'name'  => $name,
                              'value' => $this->_values[$key]
-                         ) + $idAttr) . ' />';
+                       ) + $idAttr) . ' />';
             }
         }
         return $html;

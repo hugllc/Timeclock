@@ -31,7 +31,7 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 function com_install()
 {
     global $mainframe;
@@ -45,8 +45,8 @@ function com_install()
             'help' => 'Can this user edit their own preferences? User editable preferences are marked in <span style="color: red;">red</span> in their help text.',
             'parameters' => array(
                 'title' => "Allow User Edit",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'debug',
             'type' => 'HIDDEN',
@@ -55,8 +55,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'cache',
             'type' => 'HIDDEN',
@@ -65,8 +65,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'com_label',
             'type' => 'HIDDEN',
@@ -76,10 +76,10 @@ function com_install()
             'parameters' => array(
                 'visible' => false,
                 'static' => true,
-            ),
-        ),
+          ),
+      ),
 
-    );            
+  );            
 ?>    
     <div style="text-align: left; margin-bottom: 50px;">
 
@@ -95,7 +95,7 @@ function com_install()
     $found = array();
     foreach (array() as $com) {
         print '<div style="font-weight:bold;">Checking for '.$com.'... ';
-        if (@include_once($mainframe->getPath( 'class', 'com_'.$com ))) {
+        if (@include_once($mainframe->getPath('class', 'com_'.$com))) {
             $found[$com] = true;
             print '<span style="color:green;">Found</span>';
         } else {
@@ -106,7 +106,7 @@ function com_install()
     }
     if ($found == array()) print "None";
     
-    require_once( $mainframe->getPath( 'class' , 'com_dfprefs' ) );
+    require_once($mainframe->getPath('class', 'com_dfprefs'));
 
     print "<h2>Required Pref Definitions</h2>";
     foreach ($prefs as $p) {

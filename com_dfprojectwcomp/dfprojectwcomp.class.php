@@ -31,18 +31,18 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 // This requires that the session be started.
 @session_start();
 
-if (!@include_once $mainframe->getPath( 'class', 'com_dfproject' )) {
+if (!@include_once $mainframe->getPath('class', 'com_dfproject')) {
     die('com_dfproject is required for com_dfprojecttimeclock');
 }
 
 define("_HAVE_DFPROJECT_WCOMP", true);
 
 define("DFPROJECT_CONFIG_FILE", "config.inc.php");
-require_once( $mainframe->getPath( 'class', 'com_dfprefs' ) );
+require_once($mainframe->getPath('class', 'com_dfprefs'));
 
 
 define("PLUGIN_WORKERSCOMP_TABLE", '#__dfproject_workers_comp');
@@ -65,15 +65,15 @@ class wcCode  extends mosDBTable{
     
     function loadArray($id) {
         $this->load($id);
-        foreach (get_object_vars( $this ) as $key => $val) {
-            if (substr( $key, 0, 1 ) != '_') {
+        foreach (get_object_vars($this) as $key => $val) {
+            if (substr($key, 0, 1) != '_') {
                 $cache[$key] = $val;
             }
         }
         return ($cache);
     }
 
-    function save( $source, $order_filter='' ) {
+    function save($source, $order_filter='') {
         $k = $this->_tbl_key;
         $this->load($source[$this->_tbl_key]);
 
@@ -83,7 +83,7 @@ class wcCode  extends mosDBTable{
         } else {
             $update = true;
         }
-        if (!$this->bind( $source )) {
+        if (!$this->bind($source)) {
             return false;
         }
         if (!$this->check()) {
@@ -92,12 +92,12 @@ class wcCode  extends mosDBTable{
 
 
         if ($update) {
-            $ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
+            $ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
         } else {
-            $ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+            $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
         }
-        if ( !$ret ) {
-            $this->_error = strtolower(get_class( $this ))."::store failed <br />" . $this->_db->getErrorMsg();
+        if (!$ret) {
+            $this->_error = strtolower(get_class($this))."::store failed <br />" . $this->_db->getErrorMsg();
             return false;
         }
 

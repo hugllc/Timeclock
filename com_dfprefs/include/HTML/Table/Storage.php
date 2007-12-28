@@ -528,7 +528,7 @@ class HTML_Table_Storage extends HTML_Common {
     function altRowAttributes($start, $attributes1, $attributes2, $inTR = false)
     {
         for ($row = $start ; $row < $this->_rows ; $row++) {
-            $attributes = ( ($row + $start) % 2 == 0 ) ? $attributes1 : $attributes2;
+            $attributes = (($row + $start) % 2 == 0) ? $attributes1 : $attributes2;
             $this->updateRowAttributes($row, $attributes, $inTR);
         }
     }

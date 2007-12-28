@@ -31,12 +31,12 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 // This requires that the session be started.
 @session_start();
 
 define("DFPROJECT_CONFIG_FILE", "config.inc.php");
-require_once( $mainframe->getPath( 'class', 'com_dfprefs' ) );
+require_once($mainframe->getPath('class', 'com_dfprefs'));
 
 
 define("PLUGIN_PROJECTS_TABLE", '#__dfproject');
@@ -91,7 +91,7 @@ class project  extends mosDBTable{
         $query = "INSERT INTO ".$this->_users_tbl
                 ." SET "
                 ." user_id = '".$user_id."' "
-                ." , id = '".$id."' ";
+                .", id = '".$id."' ";
         $database->setQuery($query);                                
          return $database->query($query);
     }
@@ -107,8 +107,8 @@ class project  extends mosDBTable{
          return $database->query($query);
     }
     
-    function save( $source, $order_filter='' ) {
-        if (!$this->bind( $source )) {
+    function save($source, $order_filter='') {
+        if (!$this->bind($source)) {
             return false;
         }
         if (!$this->check()) {
@@ -120,7 +120,7 @@ class project  extends mosDBTable{
 
         if ($order_filter) {
             $filter_value = $this->$order_filter;
-            $this->updateOrder( $order_filter ? "`$order_filter` = '$filter_value'" : '' );
+            $this->updateOrder($order_filter ? "`$order_filter` = '$filter_value'" : '');
         }
         $this->_error = '';
         return true;

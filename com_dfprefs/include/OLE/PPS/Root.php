@@ -171,7 +171,7 @@ class OLE_PPS_Root extends OLE_PPS
         $iSlCnt = floor($this->_BIG_BLOCK_SIZE / OLE_LONG_INT_SIZE);
         $iSBDcnt = floor($iSBcnt / $iSlCnt) + (($iSBcnt % $iSlCnt)? 1:0);
         $iBBcnt +=  (floor($iSmallLen / $this->_BIG_BLOCK_SIZE) +
-                      (( $iSmallLen % $this->_BIG_BLOCK_SIZE)? 1: 0));
+                      (($iSmallLen % $this->_BIG_BLOCK_SIZE)? 1: 0));
         $iCnt = count($raList);
         $iBdCnt = $this->_BIG_BLOCK_SIZE / OLE_PPS_SIZE;
         $iPPScnt = (floor($iCnt/$iBdCnt) + (($iCnt % $iBdCnt)? 1: 0));
@@ -251,14 +251,14 @@ class OLE_PPS_Root extends OLE_PPS
                   . pack("V", 0x1000)
                   . pack("V", 0)                  //Small Block Depot
                   . pack("V", 1)
-          );
+        );
         // Extra BDList Start, Count
         if ($iBdCnt < $i1stBdL)
         {
             fwrite($FILE,
                       pack("V", -2).      // Extra BDList Start
                       pack("V", 0)        // Extra BDList Count
-                  );
+                );
         }
         else
         {
@@ -476,7 +476,7 @@ class OLE_PPS_Root extends OLE_PPS
             fwrite($FILE, pack("V", $i+$iSbdSize+$iBsize+1));
         }
         fwrite($FILE, pack("V", -2));
-        // Set for BBD itself ( 0xFFFFFFFD : BBD)
+        // Set for BBD itself (0xFFFFFFFD : BBD)
         for ($i=0; $i<$iBdCnt;$i++) {
             fwrite($FILE, pack("V", 0xFFFFFFFD));
         }

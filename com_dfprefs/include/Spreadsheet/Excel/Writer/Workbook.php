@@ -390,7 +390,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
     function setCustomColor($index,$red,$green,$blue)
     {
         // Match a HTML #xxyyzz style parameter
-        /*if (defined $_[1] and $_[1] =~ /^#(\w\w)(\w\w)(\w\w)/ ) {
+        /*if (defined $_[1] and $_[1] =~ /^#(\w\w)(\w\w)(\w\w)/) {
             @_ = ($_[0], hex $1, hex $2, hex $3);
         }*/
     
@@ -401,9 +401,9 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         }
     
         // Check that the colour components are in the right range
-        if ( ($red   < 0 or $red   > 255) or
+        if (($red   < 0 or $red   > 255) or
              ($green < 0 or $green > 255) or
-             ($blue  < 0 or $blue  > 255) )  
+             ($blue  < 0 or $blue  > 255))  
         {
             return $this->raiseError("Color component outside range: 0 <= color <= 255");
         }
@@ -479,7 +479,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
                            array(0x99, 0x33, 0x66, 0x00),   // 61
                            array(0x33, 0x33, 0x99, 0x00),   // 62
                            array(0x33, 0x33, 0x33, 0x00),   // 63
-                         );
+                       );
     }
     
     /**
@@ -817,7 +817,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
                     $this->_worksheets[$i]->print_rowmax,
                     $this->_worksheets[$i]->print_colmin,
                     $this->_worksheets[$i]->print_colmax
-                    );
+                  );
             }
         }
     
@@ -842,7 +842,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
                     $rowmax,
                     $colmin,
                     $colmax
-                    );
+                  );
             }
             elseif (isset($rowmin)) {
                 // Row title has been defined.
@@ -853,7 +853,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
                     $rowmax,
                     0x00,
                     0xff
-                    );
+                  );
             }
             elseif (isset($colmin)) {
                 // Column title has been defined.
@@ -864,7 +864,7 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
                     0x3fff,
                     $colmin,
                     $colmax
-                    );
+                  );
             }
             else {
                 // Print title hasn't been defined.

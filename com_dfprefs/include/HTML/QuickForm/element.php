@@ -249,7 +249,7 @@ class HTML_QuickForm_element extends HTML_Common
                        'type'  => 'hidden',
                        'name'  => $this->getName(),
                        'value' => $this->getValue()
-                   ) + (isset($id)? array('id' => $id): array())) . ' />';
+                 ) + (isset($id)? array('id' => $id): array())) . ' />';
         }
     }
 

@@ -31,11 +31,11 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'front_html' ) );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('front_html'));
 
-$option = mosGetParam( $_REQUEST, 'option' ) ;
+$option = mosGetParam($_REQUEST, 'option') ;
 
 switch ($task) {
 
@@ -58,8 +58,8 @@ function editUser($option) {
     $prefs = dfPrefs_define::get(null, "USER");
 
     // check to ensure only super admins can edit super admin info
-    if ( ( $my->gid < 25 ) && ( $row->gid == 25 ) ) {
-        mosRedirect( 'index2.php?option=com_users', _NOT_AUTH );
+    if (($my->gid < 25) && ($row->gid == 25)) {
+        mosRedirect('index2.php?option=com_users', _NOT_AUTH);
     }
     
     dfprefs::flushCache();
@@ -76,7 +76,7 @@ function saveUser()
     
     foreach ($newprefs as $area => $prefs) {
         foreach ($prefs as $name => $value) {
-            $ret = dfprefs::set($my->id, $name, $value, 'USER', 1, $area );
+            $ret = dfprefs::set($my->id, $name, $value, 'USER', 1, $area);
             var_dump($ret);
         }
     }    

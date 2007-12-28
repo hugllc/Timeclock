@@ -31,11 +31,11 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'front_html' ) );
-require_once( $mainframe->getPath( 'class' , 'com_dfprefs') );
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('front_html'));
+require_once($mainframe->getPath('class', 'com_dfprefs'));
 
 check_ssl();
 
@@ -57,7 +57,7 @@ if (dfprefs::requireAccess('Read')) {
     case 'edit_billings':
         if (dfprefs::requireAccess('Write')) {
             if ($my->id > 0) {
-                $id   = mosGetParam( $_REQUEST, 'id', null );
+                $id   = mosGetParam($_REQUEST, 'id', null);
                 if (empty($id)) mosRedirect(getMyURL(array('task','id'))."task=customers");
                 $HTML->edit($id);
                 break;
@@ -65,16 +65,16 @@ if (dfprefs::requireAccess('Read')) {
         }
     case 'view':
     case 'view_billings':
-        $id   = mosGetParam( $_REQUEST, 'id', null );
+        $id   = mosGetParam($_REQUEST, 'id', null);
         if (empty($id)) mosRedirect(getMyURL(array('task','id'))."task=customers");
         $HTML->view($id);
         break;
     case 'reports':
         if (dfprefs::requireAccess('Reports')) {
-            $id   = mosGetParam( $_REQUEST, 'id', null );
-            $Date   = mosGetParam( $_REQUEST, 'Date', null );
+            $id   = mosGetParam($_REQUEST, 'id', null);
+            $Date   = mosGetParam($_REQUEST, 'Date', null);
             if (empty($id)) mosRedirect(getMyURL(array('task','id'))."task=customers");
-            $report = mosGetParam( $_REQUEST, 'report', 'default' );
+            $report = mosGetParam($_REQUEST, 'report', 'default');
             $HTML->setPeriod($Date);
             $HTML->reports($id, $report);
         }

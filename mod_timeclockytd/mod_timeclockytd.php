@@ -31,28 +31,28 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Restricted access' );
+defined('_VALID_MOS') or die('Restricted access');
 //die("GOTHERE");
 
-require_once( $mainframe->getPath( 'class' , 'com_dfproject' ) );
-require_once( $mainframe->getPath( 'class' , 'com_dfprojecttimeclock' ) );
+require_once($mainframe->getPath('class', 'com_dfproject'));
+require_once($mainframe->getPath('class', 'com_dfprojecttimeclock'));
 
-//$return = mosGetParam( $_SERVER, 'REQUEST_URI', null );
+//$return = mosGetParam($_SERVER, 'REQUEST_URI', null);
 // converts & to &amp; for xtml compliance
-//$return = str_replace( '&', '&amp;', $return );
+//$return = str_replace('&', '&amp;', $return);
 /*
-$registration_enabled     = $mainframe->getCfg( 'allowUserRegistration' );
-$message_login             = $params->def( 'login_message', 0 );
-$message_logout         = $params->def( 'logout_message', 0 );
-$pretext                 = $params->get( 'pretext' );
-$posttext                 = $params->get( 'posttext' );
-$login                     = $params->def( 'login', $return );
-$logout                 = $params->def( 'logout', $return );
-$name                     = $params->def( 'name', 1 );
-$greeting                 = $params->def( 'greeting', 1 );
+$registration_enabled     = $mainframe->getCfg('allowUserRegistration');
+$message_login             = $params->def('login_message', 0);
+$message_logout         = $params->def('logout_message', 0);
+$pretext                 = $params->get('pretext');
+$posttext                 = $params->get('posttext');
+$login                     = $params->def('login', $return);
+$logout                 = $params->def('logout', $return);
+$name                     = $params->def('name', 1);
+$greeting                 = $params->def('greeting', 1);
 
 $form_submit_loc = str_replace("http://", "https://", $mosConfig_live_site)."/";
-$form_submit_loc .= sefRelToAbs( 'index.php' );
+$form_submit_loc .= sefRelToAbs('index.php');
 */
 
 if (dfprefs::checkAccess('Timeclock', "com_dfprojecttimeclock") && ($my->id > 0)) {

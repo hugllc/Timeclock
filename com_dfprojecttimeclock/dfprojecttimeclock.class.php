@@ -31,12 +31,12 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-if (!@include_once $mainframe->getPath( 'class', 'com_dfproject' )) {
+if (!@include_once $mainframe->getPath('class', 'com_dfproject')) {
     die('com_dfproject is required for com_dfprojecttimeclock');
 }
-@include_once $mainframe->getPath( 'class', 'com_dfprojectwcomp' );
+@include_once $mainframe->getPath('class', 'com_dfprojectwcomp');
 require_once($mosConfig_absolute_path."/includes/sef.php");
 
 define("_HAVE_DFPROJECT_TIMECLOCK", true);
@@ -47,7 +47,7 @@ define("DAY_SECONDS", 86400);
 define('SHORTDATEFORMAT', " Y-m-d ");
 define('TIMEFORMAT', " h:i a ");
 
-define("_PROJ_BASEPATH", dirname( $mainframe->getPath( 'class', 'com_dfprefs' ) ));
+define("_PROJ_BASEPATH", dirname($mainframe->getPath('class', 'com_dfprefs')));
 define("_PROJ_TIMECLOCK_IMGPATH", sefRelToAbs("components/com_dfprojecttimeclock/images/"));
 
 class timesheet extends mosDBTable{
@@ -246,7 +246,7 @@ class timesheet extends mosDBTable{
         $query .= " AND ";
         $query .= $this->getUserStartWhere();
         $query .= " AND ";
-        $query .= '( #__dfproject_timesheet.user_id='.$user_id;
+        $query .= '(#__dfproject_timesheet.user_id='.$user_id;
         if (dfprefs::checkAccess('HolidayHours')) {
             $query .= " OR ";
             $query .= "#__dfproject.type='HOLIDAY'";        
@@ -265,19 +265,19 @@ class timesheet extends mosDBTable{
 
         $sheet = array();
     
-        $query = "SELECT * , #__dfproject_users.user_id as user_id, #__dfproject.user_id as owner_id";
+        $query = "SELECT *, #__dfproject_users.user_id as user_id, #__dfproject.user_id as owner_id";
         $query .= " from #__dfproject_users ";
         $query .= " JOIN #__dfproject on #__dfproject.id=#__dfproject_users.id ";
         $query .= " WHERE ";
-        $query .= ' ( #__dfproject_users.user_id='.$user_id;
+        $query .= ' (#__dfproject_users.user_id='.$user_id;
         $query .= " AND ";
-        $query .= " ( #__dfproject.type='VACATION' "; 
+        $query .= " (#__dfproject.type='VACATION' "; 
         $query .= " OR ";
         $query .= "#__dfproject.type='SICK'";
         $query .= " OR ";
         $query .= "#__dfproject.type='HOLIDAY'";
         $query .= " OR ";
-        $query .= "#__dfproject.status='ACTIVE' ))";
+        $query .= "#__dfproject.status='ACTIVE'))";
         if (dfprefs::checkAccess('HolidayHours')) {
             $query .= " OR ";
             $query .= "#__dfproject.type='HOLIDAY'";
@@ -810,8 +810,8 @@ class timesheet extends mosDBTable{
         return $hours < $this->_maxDailyHours; 
     }
 
-    function save( $source, $order_filter='' ) {
-            if (!$this->bind( $source )) {
+    function save($source, $order_filter='') {
+            if (!$this->bind($source)) {
                     return false;
             }
 

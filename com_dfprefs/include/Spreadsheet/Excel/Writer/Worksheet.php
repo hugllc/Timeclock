@@ -467,7 +467,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     {
         // Open tmp file for storing Worksheet data
         $fh = tmpfile();
-        if ( $fh) {
+        if ($fh) {
             // Store filehandle
             $this->_filehandle = $fh;
         }
@@ -1906,7 +1906,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $data        = pack("vvvv", $row1, $row2, $col1, $col2);
     
         // Write the packed data
-        $this->_append( $header. $data.
+        $this->_append($header. $data.
                         $unknown1. $options.
                         $unknown2. $url_len. $url);
         return($str_error);
@@ -2037,7 +2037,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         // Determine if the link contains a sheet reference and change some of the
         // parameters accordingly.
         // Split the dir name and sheet name (if it exists)
-        list($dir_long , $sheet) = split('/\#/', $url);
+        list($dir_long, $sheet) = split('/\#/', $url);
         $link_type               = 0x01 | $absolute;
     
         if (isset($sheet)) {
@@ -2066,15 +2066,15 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $dir_long       = $dir_long . "\0";
     
         // Pack the lengths of the dir strings
-        $dir_short_len = pack("V", strlen($dir_short)      );
-        $dir_long_len  = pack("V", strlen($dir_long)       );
+        $dir_short_len = pack("V", strlen($dir_short)    );
+        $dir_long_len  = pack("V", strlen($dir_long)     );
         $stream_len    = pack("V", strlen($dir_long) + 0x06);
     
         // Pack the undocumented parts of the hyperlink stream
-        $unknown1 = pack("H*",'D0C9EA79F9BACE118C8200AA004BA90B02000000'       );
-        $unknown2 = pack("H*",'0303000000000000C000000000000046'               );
+        $unknown1 = pack("H*",'D0C9EA79F9BACE118C8200AA004BA90B02000000'     );
+        $unknown2 = pack("H*",'0303000000000000C000000000000046'             );
         $unknown3 = pack("H*",'FFFFADDE000000000000000000000000000000000000000');
-        $unknown4 = pack("v",  0x03                                            );
+        $unknown4 = pack("v",  0x03                                          );
     
         // Pack the main data stream
         $data        = pack("vvvv", $row1, $row2, $col1, $col2) .
@@ -3235,11 +3235,11 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $x2 = $width  / $this->_sizeCol($col_end)     * 1024; // Distance to right side of object
         $y2 = $height / $this->_sizeRow($row_end)     *  256; // Distance to bottom of object
     
-        $this->_storeObjPicture( $col_start, $x1,
+        $this->_storeObjPicture($col_start, $x1,
                                   $row_start, $y1,
                                   $col_end, $x2,
                                   $row_end, $y2
-                                );
+                              );
     }
     
     /**

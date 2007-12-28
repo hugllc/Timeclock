@@ -31,11 +31,11 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'front_html' ) );
-require_once( $mainframe->getPath( 'class' , 'com_dfprefs') );
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('front_html'));
+require_once($mainframe->getPath('class', 'com_dfprefs'));
 
 check_ssl();
 
@@ -60,7 +60,7 @@ if (dfprefs::requireAccess('Read')) {
     case 'edit_wcCodes':
         if (dfprefs::requireAccess('Write')) {
             if ($my->id > 0) {
-                $id   = mosGetParam( $_REQUEST, 'id', null );
+                $id   = mosGetParam($_REQUEST, 'id', null);
                 if (empty($id)) mosRedirect(getMyURL(array('task','id'))."task=wcCodes");
                 $HTML->edit($id);
                 break;
@@ -68,7 +68,7 @@ if (dfprefs::requireAccess('Read')) {
         }
     case 'view':
     case 'view_wcCodes':
-        $id   = mosGetParam( $_REQUEST, 'id', null );
+        $id   = mosGetParam($_REQUEST, 'id', null);
         if (empty($id)) mosRedirect(getMyURL(array('task','id'))."task=wcCodes");
         $HTML->view($id);
         break;

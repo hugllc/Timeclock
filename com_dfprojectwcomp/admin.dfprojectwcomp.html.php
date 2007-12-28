@@ -31,33 +31,33 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-require_once( $mainframe->getPath( 'class' ) );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
+require_once($mainframe->getPath('class'));
 
 class HTML_dfprojectwcomp {
     function showConfig($option, $config) {
         global $database;
 
-        $debugsel = mosHTML::yesnoRadioList( 'df_config[debugwc]', 'class="inputbox"', $config['debugwc'] );
+        $debugsel = mosHTML::yesnoRadioList('df_config[debugwc]', 'class="inputbox"', $config['debugwc']);
 
         $query = "SELECT id AS value, name AS text"
         . "\n FROM #__groups"
         . "\n ORDER BY id"
         ;
-        $database->setQuery( $query );
+        $database->setQuery($query);
 
-        $groups = array(mosHTML::makeOption( -1, 'None' ));
+        $groups = array(mosHTML::makeOption(-1, 'None'));
         $groups = array_merge($groups, $database->loadObjectList());
         
-        $readAccess = mosHTML::selectList( $groups, 'df_config[groupAccess][readwc]', 'class="inputbox"', 'value', 'text', $config['groupAccess']['readwc'] );
-        $writeAccess = mosHTML::selectList( $groups, 'df_config[groupAccess][writewc]', 'class="inputbox"', 'value', 'text', $config['groupAccess']['writewc'] );
-        $debugAccess = mosHTML::selectList( $groups, 'df_config[groupAccess][debugwc]', 'class="inputbox"', 'value', 'text', $config['groupAccess']['debugwc'] );
+        $readAccess = mosHTML::selectList($groups, 'df_config[groupAccess][readwc]', 'class="inputbox"', 'value', 'text', $config['groupAccess']['readwc']);
+        $writeAccess = mosHTML::selectList($groups, 'df_config[groupAccess][writewc]', 'class="inputbox"', 'value', 'text', $config['groupAccess']['writewc']);
+        $debugAccess = mosHTML::selectList($groups, 'df_config[groupAccess][debugwc]', 'class="inputbox"', 'value', 'text', $config['groupAccess']['debugwc']);
 
         $query = "SELECT id AS value, name AS text"
         . "\n FROM #__users"
         . "\n ORDER BY name"
         ;
-        $database->setQuery( $query );
+        $database->setQuery($query);
         $users = $database->loadObjectList();
 
         $configUsers = array();
@@ -65,13 +65,13 @@ class HTML_dfprojectwcomp {
             if (!is_array($configUsers[$type])) $configUsers[$type] = array();
             if (is_array($config['userAccess'][$type])) {
                 foreach ($config['userAccess'][$type] as $user) {
-                    $configUsers[$type][] = mosHTML::makeOption( $user, '' );
+                    $configUsers[$type][] = mosHTML::makeOption($user, '');
                 }
             }
         }
-        $userReadAccess = mosHTML::selectList( $users, 'df_config[userAccess][readwc][]', 'class="inputbox" multiple="multiple"', 'value', 'text', $configUsers['readwc'] );
-        $userWriteAccess = mosHTML::selectList( $users, 'df_config[userAccess][writewc][]', 'class="inputbox" multiple="multiple"', 'value', 'text', $configUsers['writewc'] );
-        $userDebugAccess = mosHTML::selectList( $users, 'df_config[userAccess][debugwc][]', 'class="inputbox" multiple="multiple"', 'value', 'text', $configUsers['debugwc'] );
+        $userReadAccess = mosHTML::selectList($users, 'df_config[userAccess][readwc][]', 'class="inputbox" multiple="multiple"', 'value', 'text', $configUsers['readwc']);
+        $userWriteAccess = mosHTML::selectList($users, 'df_config[userAccess][writewc][]', 'class="inputbox" multiple="multiple"', 'value', 'text', $configUsers['writewc']);
+        $userDebugAccess = mosHTML::selectList($users, 'df_config[userAccess][debugwc][]', 'class="inputbox" multiple="multiple"', 'value', 'text', $configUsers['debugwc']);
 
         
         $tab = new mosTabs(1);
@@ -80,20 +80,20 @@ class HTML_dfprojectwcomp {
      <script language="javascript" type="text/javascript">
     function submitbutton(pressbutton) {
       var form = document.adminForm;
-      <?php getEditorContents( 'editor1', 'answer' ) ;?>
+      <?php getEditorContents('editor1', 'answer') ;?>
       if (pressbutton == 'cancel') {
-        submitform( pressbutton );
+        submitform(pressbutton);
         return;
       }
       // do field validation
       if (form.dbHost.value == ""){
-        alert( "Hostname must be set." );
+        alert("Hostname must be set.");
       if (form.dbUser.value == ""){
-        alert( "Username must be set." );
+        alert("Username must be set.");
       if (form.dbPassword.value == ""){
-        alert( "Password must be set." );
+        alert("Password must be set.");
       } else {
-        submitform( pressbutton );
+        submitform(pressbutton);
       }
     }
     </script>

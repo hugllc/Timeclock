@@ -32,13 +32,13 @@ require_once 'HTML/Menu/Renderer.php';
  *    'entry1',
  *    ...
  *    'entryN'
- * )
+ *)
  * while 'rows' produce a two-dimensional array:
  * array(
  *    array('entry 1 for row 1', ..., 'entry M_1 for row 1'),
  *    ...
  *    array('entry 1 for row N', ..., 'entry M_N for row 1')
- * )
+ *)
  * Here entry is 
  * array(
  *    'url'    => url element of menu entry
@@ -47,7 +47,7 @@ require_once 'HTML/Menu/Renderer.php';
  *    'type'   => type of entry, one of HTML_MENU_ENTRY_* constants
  *    // if the nodes in the original menu array contained keys other
  *    // than 'url', 'title' and 'sub', they will be copied here, too
- * )
+ *)
  * 
  * @version  $Revision: 1.2 $
  * @author   Alexey Borzov <avb@php.net>

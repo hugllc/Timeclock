@@ -285,7 +285,7 @@ class HTML_QuickForm_hierselect extends HTML_QuickForm_group
                 $onChange[$i] = $select->getAttribute('onchange');
                 $select->updateAttributes(
                     array('onchange' => '_hs_swapOptions(this.form, \'' . $this->_escapeString($this->getName()) . '\', ' . $keys[$i] . ');' . $onChange[$i])
-                );
+              );
             }
             
             // create the js function to call
@@ -559,7 +559,7 @@ JAVASCRIPT;
             "'"     => "\\'",
             '"'     => '\"',
             '\\'    => '\\\\'
-        ));
+      ));
     }
 
     // }}}

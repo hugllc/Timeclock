@@ -31,15 +31,15 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
 // This module only works for registered users.
 if ($my->id > 1) {
 //    mosRedirect("", _NOT_AUTH);
     
-    require_once( $mainframe->getPath( 'class' ) );
-    require_once( $mainframe->getPath( 'front_html' ) );
-    require_once( $mainframe->getPath( 'class' , 'com_dfprefs') );
+    require_once($mainframe->getPath('class'));
+    require_once($mainframe->getPath('front_html'));
+    require_once($mainframe->getPath('class', 'com_dfprefs'));
     
     check_ssl();
     

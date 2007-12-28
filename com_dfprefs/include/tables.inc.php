@@ -31,7 +31,7 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 $myInclude = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $path = ini_get("include_path");
 if (stristr($path, $myInclude) === false) {

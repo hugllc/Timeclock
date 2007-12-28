@@ -75,7 +75,7 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     {
         $this->updateAttributes(array(
             'name' => $name 
-        ));
+      ));
     }
 
 
@@ -89,7 +89,7 @@ class HTML_QuickForm_xbutton extends HTML_QuickForm_element
     {
         $this->updateAttributes(array(
             'value' => $value
-        ));
+      ));
     }
 
 

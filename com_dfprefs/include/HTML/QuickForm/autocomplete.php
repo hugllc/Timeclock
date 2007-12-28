@@ -116,7 +116,7 @@ class HTML_QuickForm_autocomplete extends HTML_QuickForm_text
 
         $this->updateAttributes(array(
             'onkeypress' => 'return autocomplete(this, event, ' . $arrayName . ');'
-        ));
+      ));
         if ($this->_flagFrozen) {
             $js = '';
         } else {
@@ -204,7 +204,7 @@ function autocomplete(textbox, event, values) {
             default:
                 var c = String.fromCharCode(
                     (event.charCode == undefined) ? event.keyCode : event.charCode
-                );
+              );
                 replaceSelection(textbox, c);
                 sMatch = autocompleteMatch(textbox.value, values);
                 var len = textbox.value.length;
@@ -232,7 +232,7 @@ EOS;
                 "'"     => "\\'",
                 '"'     => '\"',
                 '\\'    => '\\\\'
-            );
+          );
 
             $js .= $this->_js;
             $js .= 'var ' . $arrayName . " = new Array();\n";

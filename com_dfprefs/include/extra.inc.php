@@ -85,7 +85,7 @@ function getUser($id)
     . "\n WHERE id = '".$id."'"
     . "\n ORDER BY name"
     ;
-    $database->setQuery( $query );
+    $database->setQuery($query);
     $user = $database->loadObjectList();
     if (is_array($user)) list(,$user) = each($user);
 
@@ -101,7 +101,7 @@ function getUsers($block = 0)
     . "\n WHERE block = '".$block."'"
     . "\n ORDER BY name"
     ;
-    $database->setQuery( $query );
+    $database->setQuery($query);
     $users = $database->loadObjectList();
 
     return $users;

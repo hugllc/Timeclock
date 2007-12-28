@@ -45,8 +45,8 @@ function com_install()
             'help' => 'Format:  YYYY-MM-DD <br />The date this person started',
             'parameters' => array(
                 'title' => "Start Date",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'employeeType',
             'type' => 'SELECT',
@@ -60,9 +60,9 @@ function com_install()
                     'PARTTIME' => "Part Time",
                     'TEMPORARY' => "Temporary",
                     'CONTRACTOR' => "Contractor",
-                ),
-            ),
-        ),
+              ),
+          ),
+      ),
         array(
             'name' => 'vacationHours',
             'type' => 'TEXT',
@@ -73,8 +73,8 @@ function com_install()
                 'size' => 5,
                 'maxlength' => 4,
                 'title' => "Vacation Hours",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'sickHours',
             'type' => 'TEXT',
@@ -85,8 +85,8 @@ function com_install()
                 'size' => 5,
                 'maxlength' => 4,
                 'title' => "Sick Hours",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userHolidayHours',
             'type' => 'YESNO',
@@ -95,8 +95,8 @@ function com_install()
             'help' => 'Does this person get holiday hours.',
             'parameters' => array(
                 'title' => "Holiday Hours",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userTimeclock',
             'type' => 'YESNO',
@@ -105,8 +105,8 @@ function com_install()
             'help' => 'Does this person have access to the timeclock',
             'parameters' => array(
                 'title' => "Timeclock Access",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userTSummary',
             'type' => 'YESNO',
@@ -115,8 +115,8 @@ function com_install()
             'help' => 'Does this person have access to the timeclock summaries.',
             'parameters' => array(
                 'title' => "Summary Access",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userTDebug',
             'type' => 'YESNO',
@@ -125,8 +125,8 @@ function com_install()
             'help' => 'Does this person get debug messages about timeclock.',
             'parameters' => array(
                 'title' => "Debug Access",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userTOthers',
             'type' => 'YESNO',
@@ -135,8 +135,8 @@ function com_install()
             'help' => 'Does this person get access to other peoples timecards?',
             'parameters' => array(
                 'title' => "Acess to Others Timecards",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'vacationType',
             'type' => 'HIDDEN',
@@ -145,8 +145,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'vacationAccrual',
             'type' => 'HIDDEN',
@@ -155,8 +155,8 @@ function com_install()
             'help' => 'How often vacation is accrued',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'vacationAccrualTable',
             'type' => 'HIDDEN',
@@ -165,8 +165,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'decimalPlaces',
             'type' => 'HIDDEN',
@@ -175,8 +175,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'maxhours',
             'type' => 'HIDDEN',
@@ -185,8 +185,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'periodlength',
             'type' => 'HIDDEN',
@@ -195,8 +195,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'periodstart',
             'type' => 'HIDDEN',
@@ -205,8 +205,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupTimeclock',
             'type' => 'HIDDEN',
@@ -215,8 +215,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupTSummary',
             'type' => 'HIDDEN',
@@ -225,8 +225,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupTOthers',
             'type' => 'HIDDEN',
@@ -235,8 +235,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupHolidayHours',
             'type' => 'HIDDEN',
@@ -245,8 +245,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'com_label',
             'type' => 'HIDDEN',
@@ -256,10 +256,10 @@ function com_install()
             'parameters' => array(
                 'visible' => false,
                 'static' => true,
-            ),
-        ),
+          ),
+      ),
 
-    );            
+  );            
 ?>    
     <div style="text-align: left; margin-bottom: 50px;">
 
@@ -275,7 +275,7 @@ function com_install()
     $found = array();
     foreach (array("dfproject", "dfprefs") as $com) {
         print '<div style="font-weight:bold;">Checking for '.$com.'... ';
-        if (@include_once($mainframe->getPath( 'class', 'com_'.$com ))) {
+        if (@include_once($mainframe->getPath('class', 'com_'.$com))) {
             $found[$com] = true;
             print '<span style="color:green;">Found</span>';
         } else {

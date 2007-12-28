@@ -134,25 +134,25 @@ class HTML_TreeMenu
                 $treeMenu  = new HTML_TreeMenu();
                 $curNode[0] = &$treeMenu;   // we need the current node as the reference to the
 
-                foreach ( $nodes as $aNode ) {
+                foreach ($nodes as $aNode) {
                     $events = array();
                     $data = array();
 
                     // In an XML, all the attributes are saved in an array, but since they might be
                     // used as the parameters, we simply extract them here if we handle an XML-structure
-                    if ( $isXMLStruct && sizeof($aNode['attributes']) ){
-                        foreach ( $aNode['attributes'] as $key=>$val ) {
-                            if ( !$aNode[$key] ) { // dont overwrite existing values
+                    if ($isXMLStruct && sizeof($aNode['attributes'])){
+                        foreach ($aNode['attributes'] as $key=>$val) {
+                            if (!$aNode[$key]) { // dont overwrite existing values
                                 $aNode[$key] = $val;
                             }
                         }
                     }
 
                     // Process all the data that are saved in $aNode and put them in the data and/or events array
-                    foreach ( $aNode as $key=>$val ) {
-                        if ( !is_array($val) ) {
+                    foreach ($aNode as $key=>$val) {
+                        if (!is_array($val)) {
                             // Dont get the recursive data in here! they are always arrays
-                            if ( substr($key,0,2) == 'on' ){  // get the events
+                            if (substr($key,0,2) == 'on'){  // get the events
                                 $events[$key] = $val;
                             }
 
@@ -165,7 +165,7 @@ class HTML_TreeMenu
                     $data['text'] = $aNode['text'] ? $aNode['text'] : $aNode['name'];
 
                     // Add the item to the proper node
-                    $thisNode = &$curNode[$aNode['level']]->addItem( new HTML_TreeNode( $data , $events ) );
+                    $thisNode = &$curNode[$aNode['level']]->addItem(new HTML_TreeNode($data, $events));
                     $curNode[$aNode['level']+1] = &$thisNode;
                 }
                 break;

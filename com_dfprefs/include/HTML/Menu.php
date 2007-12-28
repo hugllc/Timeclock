@@ -145,12 +145,12 @@ class HTML_Menu
     *                           11 => array(
     *                                       'title' => 'PHPDoc',
     *                                       ...
-    *                                     ),
-    *                           12 => array( ... ),
-    *                 )
-    *             ),
-    *           2 => array( 'title' => 'Stuff', 'url' => '/stuff/index.php' )
-    *        )
+    *                                   ),
+    *                           12 => array(...),
+    *               )
+    *           ),
+    *           2 => array('title' => 'Stuff', 'url' => '/stuff/index.php')
+    *      )
     *
     * Note the index 'sub' and the nesting. Note also that 1, 11, 12, 2
     * must be unique. The class uses them as ID's.

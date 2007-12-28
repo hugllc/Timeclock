@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *
  * PHP Version 5
@@ -31,7 +31,7 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 function com_uninstall()
 {
  echo "Thank you for using this component. Please contact me at prices@dflytech.com with any questions";

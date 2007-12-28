@@ -47,7 +47,7 @@ $GLOBALS['HTML_QUICKFORM_ELEMENT_TYPES'] =
             'hierselect'    =>array('HTML/QuickForm/hierselect.php', 'HTML_QuickForm_hierselect'),
             'autocomplete'  =>array('HTML/QuickForm/autocomplete.php', 'HTML_QuickForm_autocomplete'),
             'xbutton'       =>array('HTML/QuickForm/xbutton.php','HTML_QuickForm_xbutton')
-        );
+      );
 
 $GLOBALS['_HTML_QuickForm_registered_rules'] = array(
     'required'      => array('html_quickform_rule_required', 'HTML/QuickForm/Rule/Required.php'),
@@ -1054,7 +1054,7 @@ class HTML_QuickForm extends HTML_Common {
             'validation'  => $validation,
             'reset'       => $reset,
             'dependent'   => $dependent
-        );
+      );
     } // end func addRule
 
     // }}}
@@ -1693,7 +1693,7 @@ class HTML_QuickForm extends HTML_Common {
             "'"     => "\\'",
             '"'     => '\"',
             '\\'    => '\\\\'
-        );
+      );
 
         foreach ($this->_rules as $elementName => $rules) {
             foreach ($rules as $rule) {
@@ -1937,7 +1937,7 @@ class HTML_QuickForm extends HTML_Common {
                 QUICKFORM_INVALID_PROCESS       => 'process callback does not exist',
                 QUICKFORM_DEPRECATED            => 'method is deprecated',
                 QUICKFORM_INVALID_DATASOURCE    => 'datasource is not an object'
-            );
+          );
         }
 
         // If this is an error object, then grab the corresponding error code

@@ -58,7 +58,7 @@ class HTML_Menu_SigmaTreeRenderer extends HTML_Menu_Renderer
         HTML_MENU_ENTRY_INACTIVE    => 'inactive',
         HTML_MENU_ENTRY_ACTIVE      => 'active',
         HTML_MENU_ENTRY_ACTIVEPATH  => 'activepath'
-    );
+  );
 
    /**
     * Class constructor.

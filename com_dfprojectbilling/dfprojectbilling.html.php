@@ -31,18 +31,18 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'class' , 'com_dfprojecttimeclock') );
-require_once( $mainframe->getPath( 'front_html' , 'com_dfproject' ) );
-require_once( 'HTML/QuickForm.php' );
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('class', 'com_dfprojecttimeclock'));
+require_once($mainframe->getPath('front_html', 'com_dfproject'));
+require_once('HTML/QuickForm.php');
 
-define("_PROJ_BASEPATH", dirname( $mainframe->getPath( 'class', 'com_dfprefs' ) ));
+define("_PROJ_BASEPATH", dirname($mainframe->getPath('class', 'com_dfprefs')));
 define("_PROJ_IMGPATH", sefRelToAbs("components/com_dfproject/images/"));
 
-require_once( _PROJ_BASEPATH."/include/tables.inc.php" );
-require_once( _PROJ_BASEPATH."/include/extra.inc.php" );
+require_once(_PROJ_BASEPATH."/include/tables.inc.php");
+require_once(_PROJ_BASEPATH."/include/extra.inc.php");
 
 
 
@@ -54,20 +54,20 @@ class HTML_DragonflyProject_Billing {
             'id' => 'Id',
             'name' => 'Name',
             'company' => 'Company',
-        ),
+      ),
         'fulllist' => array(
             'action' => '',
             'id' => 'Id',
             'name' => 'Name',
             'company' => 'Company',
-        ),
-    );
+      ),
+  );
     var $_listAttrib = array(
         'default' => array(
             'action' => array('style' => 'text-align: center; white-space: nowrap;'),
             'id' => array('style' => 'text-align: center;'),
-        ),
-    );
+      ),
+  );
 
     var $_viewCols = array(
         'default' => array(
@@ -81,8 +81,8 @@ class HTML_DragonflyProject_Billing {
             'zip' => 'Zip',
             'country' => 'Country',
             'notes' => 'Notes',
-        ),
-    );
+      ),
+  );
 
     function HTML_DragonflyProject_Billing(&$db) {
         $this->_db = &$db;
@@ -121,7 +121,7 @@ class HTML_DragonflyProject_Billing {
         $this->_form->setDefaults($this->_customer);
 
         if (isset($_REQUEST['postbilling']) && $this->_form->validate()) {
-            $info = mosGetParam($_REQUEST, 'info', array( ) );
+            $info = mosGetParam($_REQUEST, 'info', array());
 
             $return = $this->_billing->save($info);
             if ($return) {
@@ -188,11 +188,11 @@ class HTML_DragonflyProject_Billing {
 
         $header = array(
             'projectName' => "Project",
-        );
+      );
         
         $this->_format = array(
             'projectName' => array(),
-        );
+      );
         
         $this->period = $this->_billing->getPeriod();        
 
@@ -211,7 +211,7 @@ class HTML_DragonflyProject_Billing {
         $summary = array();
         $header = array(
             'project_name' => "Project",
-        );
+      );
         foreach ($res['users'] as $key => $name) {
             if (empty($name)) $name = "#".$key;
 

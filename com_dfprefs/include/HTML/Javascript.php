@@ -153,7 +153,7 @@ class HTML_Javascript
      */
     function setOutputMode($mode = HTML_JAVASCRIPT_OUTPUT_RETURN, $file = null)
     {
-        if ($mode == HTML_JAVASCRIPT_OUTPUT_FILE ) {
+        if ($mode == HTML_JAVASCRIPT_OUTPUT_FILE) {
             if (isset($file)) {
                 $this->_file = $file;
             } else {
@@ -200,28 +200,28 @@ class HTML_Javascript
                 $ret = PEAR::raiseError(
                         'No script started',
                         HTML_JAVASCRIPT_ERROR_NOSTART
-                        );
+                      );
                 break;
                 
             case HTML_JAVASCRIPT_ERROR_NOEND:
                 $ret = PEAR::raiseError(
                         'Last script was not ended',
                         HTML_JAVASCRIPT_ERROR_NOEND
-                        );
+                      );
                 break;
                 
             case HTML_JAVASCRIPT_ERROR_NOFILE:
                 $ret = PEAR::raiseError(
                         'A filename must be specified for setoutputMode()',
                         HTML_JAVASCRIPT_ERROR_NOFILE
-                        );
+                      );
                 break;
                 
             default:
                 return PEAR::raiseError(
                         'Unknown Error',
                         HTML_JAVASCRIPT_ERROR_UNKNOWN
-                        );
+                      );
                 break;
         }
 
@@ -287,7 +287,7 @@ class HTML_Javascript
     function _out($str)
     {
         static $fp;
-        if ( isset($this) ){
+        if (isset($this)){
             $mode = $this->_mode;
             $file = $this->_file;
         } else {
@@ -337,13 +337,13 @@ class HTML_Javascript
         if ($var) {
             $ret = HTML_Javascript::_out(
                     'document.writeln('.$str.')'.HTML_JAVASCRIPT_NL
-                    );
+                  );
         } else {
             $ret = HTML_Javascript::_out(
                         'document.writeln("'.
                         HTML_Javascript_Convert::escapeString($str).'")'.
                         HTML_JAVASCRIPT_NL
-                    );
+                  );
         }
         return $ret;
     }
@@ -365,14 +365,14 @@ class HTML_Javascript
         if ($var) {
             return HTML_Javascript::_out(
                     'document.writeln('.$str.'+"<br />")'.HTML_JAVASCRIPT_NL
-                    );
+                  );
         }
         
         return HTML_Javascript::_out(
                     'document.writeln("'.
                     HTML_Javascript_Convert::escapeString($str).
                     '"+"<br />")'.HTML_JAVASCRIPT_NL
-                );
+              );
         
     }
 
@@ -476,7 +476,7 @@ class HTML_Javascript
      */
     function popup(
         $assign, $file, $title, $width, $height, $attr, $top = 300, $left = 300
-    )
+  )
     {
         if (!is_array($attr)) {
             if (!is_bool($attr)) {
@@ -522,7 +522,7 @@ class HTML_Javascript
      */
     function popupWrite(
         $assign, $str, $title, $width, $height, $attr, $top = 300, $left = 300
-    )
+  )
     {
         static  $cnt_popup;
         $str        = HTML_Javascript_Convert::escapeString($str);

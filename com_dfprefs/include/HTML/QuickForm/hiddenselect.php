@@ -83,7 +83,7 @@ class HTML_QuickForm_hiddenselect extends HTML_QuickForm_select
                         'type'  => 'hidden',
                         'name'  => $name,
                         'value' => $val
-                    )) . " />\n" ;
+                  )) . " />\n" ;
                 }
             }
         }

@@ -41,13 +41,13 @@ require_once 'HTML/QuickForm/Renderer.php';
  *     '1st element name' => 'Error for the 1st element',
  *     ...
  *     'nth element name' => 'Error for the nth element'
- *   ),
+ * ),
  *   // if there are no headers in the form:
  *   'elements' => array(
  *     element_1,
  *     ...
  *     element_N
- *   )
+ * )
  *   // if there are headers in the form:
  *   'sections' => array(
  *     array(
@@ -57,8 +57,8 @@ require_once 'HTML/QuickForm/Renderer.php';
  *          element_1,
  *          ...
  *          element_K1
- *       )
- *     ),
+ *     )
+ *   ),
  *     ...
  *     array(
  *       'header'   => 'Header text for the Mth header',
@@ -67,10 +67,10 @@ require_once 'HTML/QuickForm/Renderer.php';
  *          element_1,
  *          ...
  *          element_KM
- *       )
  *     )
  *   )
- * );
+ * )
+ *);
  *
  * where element_i is an array of the form:
  * array(
@@ -90,8 +90,8 @@ require_once 'HTML/QuickForm/Renderer.php';
  *     element_1,
  *     ...
  *     element_N
- *   )
- * );
+ * )
+ *);
  *
  * @access public
  */
@@ -175,7 +175,7 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
             'attributes'        => $form->getAttributes(true),
             'requirednote'      => $form->getRequiredNote(),
             'errors'            => array()
-        );
+      );
         if ($this->_collectHidden) {
             $this->_ary['hidden'] = '';
         }
@@ -190,7 +190,7 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
         $this->_ary['sections'][$this->_sectionCount] = array(
             'header' => $header->toHtml(),
             'name'   => $header->getName()
-        );
+      );
         $this->_currentSection = $this->_sectionCount++;
     } // end func renderHeader
 
@@ -249,7 +249,7 @@ class HTML_QuickForm_Renderer_Array extends HTML_QuickForm_Renderer
             'frozen'    => $element->isFrozen(),
             'required'  => $required,
             'error'     => $error
-        );
+      );
         // render label(s)
         $labels = $element->getLabel();
         if (is_array($labels) && $this->_staticLabels) {

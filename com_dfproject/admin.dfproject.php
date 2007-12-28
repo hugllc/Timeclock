@@ -31,12 +31,12 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'admin_html' ) );
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('admin_html'));
 
-$cid = mosGetParam( $_POST, 'cid', array( mosGetParam( $_POST, 'id' ) ) );
+$cid = mosGetParam($_POST, 'cid', array(mosGetParam($_POST, 'id')));
 
 
 switch ($task) {
@@ -45,17 +45,17 @@ case 'config':
     HTML_dfproject::showConfig($option, $df_config);
     break;
 case 'configsave':
-    $new = mosGetParam( $_POST, 'df_config', array( ) );
+    $new = mosGetParam($_POST, 'df_config', array());
 
     if (dfprefs::setSystemArray($new)) {
         $msg = "Configuration Saved";
     } else {
         $msg = "Save Failed";
     }
-    mosRedirect( "index2.php?option=$option&task=config" , $msg);
+    mosRedirect("index2.php?option=$option&task=config", $msg);
     break;
 case 'userpref':
-    mosRedirect( "index2.php?option=com_dfprefs&task=userpref&area=$option" );
+    mosRedirect("index2.php?option=com_dfprefs&task=userpref&area=$option");
     break;
 case 'install':
     @require_once("install.dfproject.php");

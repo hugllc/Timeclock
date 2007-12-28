@@ -31,18 +31,18 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
-@include_once( $mainframe->getPath( 'class' , 'com_dfprojectwcomp' ) );
-@include_once( $mainframe->getPath( 'class' , 'com_dfprojectbilling' ) );
-require_once( 'HTML/QuickForm.php' );
+require_once($mainframe->getPath('class'));
+@include_once($mainframe->getPath('class', 'com_dfprojectwcomp'));
+@include_once($mainframe->getPath('class', 'com_dfprojectbilling'));
+require_once('HTML/QuickForm.php');
 
-define("_PROJ_BASEPATH", dirname( $mainframe->getPath( 'class', 'com_dfprefs' ) ));
+define("_PROJ_BASEPATH", dirname($mainframe->getPath('class', 'com_dfprefs')));
 define("_PROJ_IMGPATH", sefRelToAbs("components/com_dfproject/images/"));
 
-require_once( _PROJ_BASEPATH."/include/tables.inc.php" );
-require_once( _PROJ_BASEPATH."/include/extra.inc.php" );
+require_once(_PROJ_BASEPATH."/include/tables.inc.php");
+require_once(_PROJ_BASEPATH."/include/extra.inc.php");
 
 class HTML_DragonflyProject {
     
@@ -55,7 +55,7 @@ class HTML_DragonflyProject {
             'type' => 'Type',
             'status' => 'Status',
             'parent' => 'Parent',
-        ),
+      ),
         'fulllist' => array(
             'action' => '',
             'projectNum' => '#',
@@ -67,19 +67,19 @@ class HTML_DragonflyProject {
             'status' => 'Status',
             'parent' => 'Parent',
             'wcCode' => 'Workers Comp Code',
-         ),
-     );        
+       ),
+   );        
 
     var $_listAttrib = array(
         'action' => array('style' => 'text-align: center; white-space: nowrap;'),
         'projectNum' => array('style' => 'text-align: center;'),
         'parent' => array('style' => 'text-align: center;'),
         'description' => array('style' => 'vertical-align: top;'),
-    );
+  );
 
     var $_view_attrib = array(
             'description' => array('style' => 'vertical-align: top;'),
-    );
+  );
 
 
     var $_viewCols = array(
@@ -100,8 +100,8 @@ class HTML_DragonflyProject {
             'action' => 'action',
             'users' => 'Users',
             'adduser' => 'Add User',
-        ),
-    );
+      ),
+  );
    
     function HTML_DragonflyProject(&$db) {
         $this->_db = &$db;
@@ -362,7 +362,7 @@ class HTML_DragonflyProject {
 //        $this->_proj->setIndex('id');
         $attrib = array(
             'action' => 'style="white-space: nowrap;"',
-        );
+      );
 //        $projects = $this->_db->getArray("SELECT * FROM ".$this->_proj->_tbl." ORDER BY id ASC");
         $query = "SELECT * FROM ".$this->_proj->_tbl." ORDER BY id ASC";
         $this->_db->setQuery($query);

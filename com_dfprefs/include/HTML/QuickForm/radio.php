@@ -142,7 +142,7 @@ class HTML_QuickForm_radio extends HTML_QuickForm_input
             return '<tt>(x)</tt>' .
                    $this->_getPersistantData();
         } else {
-            return '<tt>( )</tt>';
+            return '<tt>()</tt>';
         }
     } //end func getFrozenHtml
 

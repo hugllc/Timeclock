@@ -41,7 +41,7 @@ class HTML_QuickForm_Rule_Regex extends HTML_QuickForm_Rule
                     'numeric'       => '/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/',
                     'nopunctuation' => '/^[^().\/\*\^\?#!@$%+=,\"\'><~\[\]{}]+$/',
                     'nonzero'       => '/^-?[1-9][0-9]*/'
-                    );
+                  );
 
     /**
      * Validates a value using a regular expression

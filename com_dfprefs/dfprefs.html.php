@@ -31,9 +31,9 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
+require_once($mainframe->getPath('class'));
 
 class HTML_dfprefs {
     
@@ -42,10 +42,10 @@ class HTML_dfprefs {
 {
     }
 
-    function editUser( $option, &$row, &$prefs, &$values, $area) {
+    function editUser($option, &$row, &$prefs, &$values, $area) {
 
-        $yesno[] = mosHTML::makeOption( '0', 'No' );
-        $yesno[] = mosHTML::makeOption( '1', 'Yes' );
+        $yesno[] = mosHTML::makeOption('0', 'No');
+        $yesno[] = mosHTML::makeOption('1', 'Yes');
 
         // This builds the preferences
         $userprefs = array();
@@ -55,7 +55,7 @@ class HTML_dfprefs {
                 $up = array(
                     'name' => $p->name,
                     'help' => $p->help
-                );
+              );
                 if (!empty($p->parameters['title'])) {
                     $up['title'] = $p->parameters['title'];
                 } else {
@@ -78,7 +78,7 @@ class HTML_dfprefs {
                         $up['input'] .= ' />';
                         break;
                     case 'YESNO':
-                        $up['input'] = mosHTML::selectList( $yesno, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value );
+                        $up['input'] = mosHTML::selectList($yesno, $varname.'['.$p->area.']['.$p->name.']', 'class="inputbox"', 'value', 'text', $value);
                         break;
                     case 'DATE':
                         mosCommonHTML::loadCalendar();
@@ -95,21 +95,21 @@ class HTML_dfprefs {
         }
         $filter_area = mosGetParam($_REQUEST, "filter_area", $area);
         // Make the area drop down
-        $fAreas = array(mosHTML::makeOption( 0, '- Show All -'));
+        $fAreas = array(mosHTML::makeOption(0, '- Show All -'));
         $allAreas = array_keys($userprefs);
         $areaName = array();
         foreach ($allAreas as $a) {
             $areaName[$a] = dfprefs::getSystem("com_label", $a);
             if (empty($areaName[$a])) $areaName[$a] = $a;
 
-            $fAreas[] = mosHTML::makeOption( $a, $areaName[$a]);
+            $fAreas[] = mosHTML::makeOption($a, $areaName[$a]);
         }
-        $areaselect = mosHTML::selectList( $fAreas, 'filter_area', 'class="inputbox" size="1" onchange="hideparts(this.value);"', 'value', 'text', "$filter_area" );
+        $areaselect = mosHTML::selectList($fAreas, 'filter_area', 'class="inputbox" size="1" onchange="hideparts(this.value);"', 'value', 'text', "$filter_area");
 
 ?>
     <script language="javascript" type="text/javascript">
     function hideparts(area) {
-        areas = [ "<?php print implode("\" , \"", $allAreas); ?>" ];
+        areas = [ "<?php print implode("\", \"", $allAreas); ?>" ];
         
         for (i = 0; i < areas.length; i++) {
             thisArea = areas[i];

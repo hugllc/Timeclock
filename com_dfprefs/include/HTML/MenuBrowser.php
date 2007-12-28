@@ -214,7 +214,7 @@ class HTML_MenuBrowser
                 }
             } else {
                 if ($this->file_suffix == substr($file, strlen($file) - $this->file_suffix_length, $this->file_suffix_length)
-                    && !($noindex && $this->index_file == $file) )
+                    && !($noindex && $this->index_file == $file))
                 {
                     $id++;
                     $struct[$this->id_prefix . $id]['url'] = $dir . $file;

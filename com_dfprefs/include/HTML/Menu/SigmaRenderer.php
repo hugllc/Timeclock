@@ -49,7 +49,7 @@ class HTML_Menu_SigmaRenderer extends HTML_Menu_Renderer
         HTML_MENU_ENTRY_NEXT        => 'next',
         HTML_MENU_ENTRY_UPPER       => 'upper',
         HTML_MENU_ENTRY_BREADCRUMB  => 'breadcrumb'
-    );
+  );
 
    /**
     * Prefix for template blocks and placeholders

@@ -31,13 +31,13 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
 
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'admin_html' ) );
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('admin_html'));
 
-$id = mosGetParam( $_REQUEST, 'id', null ) ;
+$id = mosGetParam($_REQUEST, 'id', null) ;
 if (is_null($id)) {
     $cid = mosGetParam($_REQUEST, 'cid', array());
     $id = $cid[0];
@@ -54,7 +54,7 @@ case 'config':
     HTML_dfprefs::showConfig($option, $df_config);
     break;
 case 'configsave':
-    $new = mosGetParam( $_POST, 'df_config', array( ) );
+    $new = mosGetParam($_POST, 'df_config', array());
 
     if (dfprefs::setSystemArray($new)) {
         $msg = "Configuration Saved";
@@ -62,7 +62,7 @@ case 'configsave':
         $msg = "Save Failed";
     }
 
-    mosRedirect( "index2.php?option=$option&task=config&area=$area" , $msg);
+    mosRedirect("index2.php?option=$option&task=config&area=$area", $msg);
     break;
 case 'new':
     editPrefDefine(null, $option);
@@ -71,7 +71,7 @@ case 'editpref':
     editPrefDefine($id, $option);
     break;
 case 'edituser':
-    editUser($id, $option );
+    editUser($id, $option);
     break;
 case 'save':
     $save = true;
@@ -80,16 +80,16 @@ case 'apply':
     switch($savetype) {
         case "pref_define":
             if (savePrefDefine($id, $option)) {
-                if ($save) mosRedirect( "index2.php?option=$option&task=prefs&area=$area" );
+                if ($save) mosRedirect("index2.php?option=$option&task=prefs&area=$area");
             }
             break;
         case "user":
         default:
             saveUser($id, $option, $area);
             if ($save) {
-                mosRedirect( "index2.php?option=$option&area=$area" );
+                mosRedirect("index2.php?option=$option&area=$area");
             } else {
-                mosRedirect( "index2.php?option=$option&area=$area&id=$id&task=edituser&hidemainmenu=1");
+                mosRedirect("index2.php?option=$option&area=$area&id=$id&task=edituser&hidemainmenu=1");
             }
             break;
     }
@@ -102,41 +102,41 @@ case 'about':
     HTML_dfprefs::showAbout();
     break;
 case 'prefs':
-    showPrefsDefine( $option , $task);
+    showPrefsDefine($option, $task);
     break;   
 
 case 'users':
 default:
-    showUsers( $option, $task );
+    showUsers($option, $task);
     break;   
 }
 
-function showUsers( $option , $task) {
+function showUsers($option, $task) {
     global $database, $mainframe, $my, $acl, $mosConfig_list_limit;
 
-    $filter_type    = $mainframe->getUserStateFromRequest( "filter_type{$option}", 'filter_type', 0 );
-    $filter_logged    = intval( $mainframe->getUserStateFromRequest( "filter_logged{$option}", 'filter_logged', 0 ) );
-    $limit             = intval( $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit ) );
-    $limitstart     = intval( $mainframe->getUserStateFromRequest( "view{$option}limitstart", 'limitstart', 0 ) );
-    $search         = $mainframe->getUserStateFromRequest( "search{$option}", 'search', '' );
-    $search         = $database->getEscaped( trim( strtolower( $search ) ) );
+    $filter_type    = $mainframe->getUserStateFromRequest("filter_type{$option}", 'filter_type', 0);
+    $filter_logged    = intval($mainframe->getUserStateFromRequest("filter_logged{$option}", 'filter_logged', 0));
+    $limit             = intval($mainframe->getUserStateFromRequest("viewlistlimit", 'limit', $mosConfig_list_limit));
+    $limitstart     = intval($mainframe->getUserStateFromRequest("view{$option}limitstart", 'limitstart', 0));
+    $search         = $mainframe->getUserStateFromRequest("search{$option}", 'search', '');
+    $search         = $database->getEscaped(trim(strtolower($search)));
     $where             = array();
     $area            = mosGetParam($_REQUEST, "area", $option);
 
-    if (isset( $search ) && $search!= "") {
+    if (isset($search) && $search!= "") {
         $where[] = "(a.username LIKE '%$search%' OR a.email LIKE '%$search%' OR a.name LIKE '%$search%')";
     }
-    if ( $filter_logged == 1 ) {
+    if ($filter_logged == 1) {
         $where[] = "s.userid = a.id";
     } else if ($filter_logged == 2) {
         $where[] = "s.userid IS null";
     }
 
     // exclude any child group id's for this user
-    $pgids = $acl->get_group_children( $my->gid, 'ARO', 'RECURSE' );
+    $pgids = $acl->get_group_children($my->gid, 'ARO', 'RECURSE');
 
-    if (is_array( $pgids ) && count( $pgids ) > 0) {
-        $where[] = "(a.gid NOT IN (" . implode( ',', $pgids ) . "))";
+    if (is_array($pgids) && count($pgids) > 0) {
+        $where[] = "(a.gid NOT IN (" . implode(',', $pgids) . "))";
     }
 
     $query = "SELECT COUNT(a.id)"
@@ -146,13 +146,13 @@ function showUsers( $option , $task) {
         $query .= "\n INNER JOIN #__session AS s ON s.userid = a.id";
     }
 
-    $query .= ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
+    $query .= (count($where) ? "\n WHERE " . implode(' AND ', $where) : '')
     ;
-    $database->setQuery( $query );
+    $database->setQuery($query);
     $total = $database->loadResult();
 
-    require_once( $GLOBALS['mosConfig_absolute_path'] . '/administrator/includes/pageNavigation.php' );
-    $pageNav = new mosPageNav( $total, $limitstart, $limit  );
+    require_once($GLOBALS['mosConfig_absolute_path'] . '/administrator/includes/pageNavigation.php');
+    $pageNav = new mosPageNav($total, $limitstart, $limit);
 
     $query = "SELECT a.*, g.name AS groupname"
     . "\n FROM #__users AS a"
@@ -164,10 +164,10 @@ function showUsers( $option , $task) {
         $query .= "\n INNER JOIN #__session AS s ON s.userid = a.id";
     }
 
-    $query .= (count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : "")
+    $query .= (count($where) ? "\n WHERE " . implode(' AND ', $where) : "")
     . "\n GROUP BY a.id"
     ;
-    $database->setQuery( $query, $pageNav->limitstart, $pageNav->limit );
+    $database->setQuery($query, $pageNav->limitstart, $pageNav->limit);
     $rows = $database->loadObjectList();
 
     if ($database->getErrorNum()) {
@@ -176,11 +176,11 @@ function showUsers( $option , $task) {
     }
 
     $template = 'SELECT COUNT(s.userid) FROM #__session AS s WHERE s.userid = %d';
-    $n = count( $rows );
+    $n = count($rows);
     for ($i = 0; $i < $n; $i++) {
         $row = &$rows[$i];
-        $query = sprintf( $template, intval( $row->id ) );
-        $database->setQuery( $query );
+        $query = sprintf($template, intval($row->id));
+        $database->setQuery($query);
         $row->loggedin = $database->loadResult();
     }
 
@@ -190,28 +190,28 @@ function showUsers( $option , $task) {
     . "\n WHERE name != 'ROOT'"
     . "\n AND name != 'USERS'"
     ;
-    $types[] = mosHTML::makeOption( '0', '- Select Group -' );
-    $database->setQuery( $query );
-    $types = array_merge( $types, $database->loadObjectList() );
-    $lists['type'] = mosHTML::selectList( $types, 'filter_type', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'value', 'text', "$filter_type" );
+    $types[] = mosHTML::makeOption('0', '- Select Group -');
+    $database->setQuery($query);
+    $types = array_merge($types, $database->loadObjectList());
+    $lists['type'] = mosHTML::selectList($types, 'filter_type', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', "$filter_type");
 
     // get list of Log Status for dropdown filter
-    $logged[] = mosHTML::makeOption( 0, '- Select Log Status - ');
-    $logged[] = mosHTML::makeOption( 1, 'Logged In');
-    $lists['logged'] = mosHTML::selectList( $logged, 'filter_logged', 'class="inputbox" size="1" onchange="document.adminForm.submit( );"', 'value', 'text', "$filter_logged" );
+    $logged[] = mosHTML::makeOption(0, '- Select Log Status - ');
+    $logged[] = mosHTML::makeOption(1, 'Logged In');
+    $lists['logged'] = mosHTML::selectList($logged, 'filter_logged', 'class="inputbox" size="1" onchange="document.adminForm.submit();"', 'value', 'text', "$filter_logged");
 
-    HTML_dfprefs::showUsers( $rows, $pageNav, $search, $option, $lists , $area , $task);
+    HTML_dfprefs::showUsers($rows, $pageNav, $search, $option, $lists, $area, $task);
 }
 
-function showPrefsDefine( $option , $task ) {
+function showPrefsDefine($option, $task) {
     global $database, $mainframe, $my, $acl, $mosConfig_list_limit;
 
-    $filter_type    = $mainframe->getUserStateFromRequest( "filter_type{$option}", 'filter_type', 0 );
-    $filter_logged    = intval( $mainframe->getUserStateFromRequest( "filter_logged{$option}", 'filter_logged', 0 ) );
-    $limit             = intval( $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit ) );
-    $limitstart     = intval( $mainframe->getUserStateFromRequest( "view{$option}limitstart", 'limitstart', 0 ) );
-    $search         = $mainframe->getUserStateFromRequest( "search{$option}", 'search', '' );
-    $search         = $database->getEscaped( trim( strtolower( $search ) ) );
+    $filter_type    = $mainframe->getUserStateFromRequest("filter_type{$option}", 'filter_type', 0);
+    $filter_logged    = intval($mainframe->getUserStateFromRequest("filter_logged{$option}", 'filter_logged', 0));
+    $limit             = intval($mainframe->getUserStateFromRequest("viewlistlimit", 'limit', $mosConfig_list_limit));
+    $limitstart     = intval($mainframe->getUserStateFromRequest("view{$option}limitstart", 'limitstart', 0));
+    $search         = $mainframe->getUserStateFromRequest("search{$option}", 'search', '');
+    $search         = $database->getEscaped(trim(strtolower($search)));
     $where             = array();
 
 
@@ -219,53 +219,53 @@ function showPrefsDefine( $option , $task ) {
     $where[] = "(a.type <> 'HIDDEN')";
     $where[] = "(a.area = 'Local Preferences')";
 
-    if (isset( $search ) && $search!= "") {
+    if (isset($search) && $search!= "") {
         $where[] = "(a.name LIKE '%$search%')";
     }
 
     $query = "SELECT COUNT(a.id)"
     . "\n FROM #__dfprefs_define AS a";
 
-    $query .= ( count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : '' )
+    $query .= (count($where) ? "\n WHERE " . implode(' AND ', $where) : '')
     ;
-    $database->setQuery( $query );
+    $database->setQuery($query);
     $total = $database->loadResult();
 
-    require_once( $GLOBALS['mosConfig_absolute_path'] . '/administrator/includes/pageNavigation.php' );
-    $pageNav = new mosPageNav( $total, $limitstart, $limit  );
+    require_once($GLOBALS['mosConfig_absolute_path'] . '/administrator/includes/pageNavigation.php');
+    $pageNav = new mosPageNav($total, $limitstart, $limit);
 
     $query = "SELECT a.* "
     . "\n FROM #__dfprefs_define AS a";
 
 
-    $query .= (count( $where ) ? "\n WHERE " . implode( ' AND ', $where ) : "")
+    $query .= (count($where) ? "\n WHERE " . implode(' AND ', $where) : "")
     . "\n"
     ;
 
-    $database->setQuery( $query, $pageNav->limitstart, $pageNav->limit );
+    $database->setQuery($query, $pageNav->limitstart, $pageNav->limit);
     $rows = $database->loadObjectList();
 
     if ($database->getErrorNum()) {
         echo $database->stderr();
         return false;
     }
-    HTML_dfprefs::showPrefsDefine( $rows, $pageNav, $search, $option, $lists, $task );
+    HTML_dfprefs::showPrefsDefine($rows, $pageNav, $search, $option, $lists, $task);
 }
 
 
-function editUser( $uid='0', $option='com_dfprefs' ) {
+function editUser($uid='0', $option='com_dfprefs') {
     global $database, $my;
 
-    $row = new mosUser( $database );
+    $row = new mosUser($database);
     // load the row from the db table
-    $row->load( (int)$uid );
+    $row->load((int)$uid);
 
-    if ( $uid ) {
+    if ($uid) {
         $query = "SELECT *"
         . "\n FROM #__contact_details"
         . "\n WHERE user_id = $row->id"
         ;
-        $database->setQuery( $query );
+        $database->setQuery($query);
         $contact = $database->loadObjectList();
     } else {
         $contact     = null;
@@ -277,8 +277,8 @@ function editUser( $uid='0', $option='com_dfprefs' ) {
     $prefs += dfPrefs_define::get(null, "ADMINUSER");
 
     // check to ensure only super admins can edit super admin info
-    if ( ( $my->gid < 25 ) && ( $row->gid == 25 ) ) {
-        mosRedirect( 'index2.php?option=com_users', _NOT_AUTH );
+    if (($my->gid < 25) && ($row->gid == 25)) {
+        mosRedirect('index2.php?option=com_users', _NOT_AUTH);
     }
     
     dfprefs::flushCache();        
@@ -288,14 +288,14 @@ function editUser( $uid='0', $option='com_dfprefs' ) {
 
 }
 
-function saveUser( $uid , $option) {
+function saveUser($uid, $option) {
     global $database, $dfprefs;
     
     $newprefs = mosGetParam($_POST, 'admin_dfprefs', array());
 
     foreach ($newprefs as $area => $prefs) {
         foreach ($prefs as $name => $value) {
-            $ret = dfprefs::set($uid, $name, $value, 'ADMINUSER', 1, $area );
+            $ret = dfprefs::set($uid, $name, $value, 'ADMINUSER', 1, $area);
             var_dump($ret);
         }
     }
@@ -304,23 +304,23 @@ function saveUser( $uid , $option) {
     
     foreach ($newprefs as $area => $prefs) {
         foreach ($prefs as $name => $value) {
-            $ret = dfprefs::set($uid, $name, $value, 'USER', 1, $area );
+            $ret = dfprefs::set($uid, $name, $value, 'USER', 1, $area);
             var_dump($ret);
         }
     }    
 }
 
-function editPrefDefine( $id, $option='com_dfprefs' ) {
+function editPrefDefine($id, $option='com_dfprefs') {
     global $database, $my, $dfprefs, $option;
 
     if (!is_null($id)) {
         $row = dfprefs_define::getById($id);
     }
-    HTML_dfprefs::editPrefDefine( $option, $row );
+    HTML_dfprefs::editPrefDefine($option, $row);
 
 }
 
-function savePrefDefine( $id, $option) {
+function savePrefDefine($id, $option) {
     global $database, $dfprefs;
     
     if (empty($id)) unset($id);
@@ -340,7 +340,7 @@ function savePrefDefine( $id, $option) {
             break;
     }
 
-    return dfprefs_define::set($id, $newprefs['name'], $newprefs['default'], $newprefs['type'], $newprefs['preftype'], $newprefs['area'], $newprefs['help'], $newprefs['parameters'] );
+    return dfprefs_define::set($id, $newprefs['name'], $newprefs['default'], $newprefs['type'], $newprefs['preftype'], $newprefs['area'], $newprefs['help'], $newprefs['parameters']);
 
     
 }

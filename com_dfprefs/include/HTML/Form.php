@@ -201,7 +201,7 @@ class HTML_Form
         'submit'      => false,
         'text'        => 3,
         'textarea'    => 3,
-    );
+  );
 
     /**
      * allow $_GET/$_POST data to show up in fields when a $default
@@ -2651,7 +2651,7 @@ class HTML_Form
             call_user_func_array(
                 array(&$this, 'display' . ucfirst($type) . 'Row'),
                 $field
-            );
+          );
         }
 
         print "</table>\n";

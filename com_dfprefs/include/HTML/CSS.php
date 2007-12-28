@@ -98,7 +98,7 @@ class HTML_CSS extends HTML_Common {
      */
     var $_css = array('body'=>array(
                                     'background-color'=>'#ffffff'
-                                    ));
+                                  ));
     
     /**
      * Contains "alibis" (other elements that share a definition) of an element defined in CSS

@@ -81,7 +81,7 @@ class HTML_Menu_DirectRenderer extends HTML_Menu_Renderer
         HTML_MENU_ENTRY_NEXT        => '<td><a href="{url}">{title} &gt;&gt;</a></td>',
         HTML_MENU_ENTRY_UPPER       => '<td><a href="{url}">^ {title} ^</a></td>',
         HTML_MENU_ENTRY_BREADCRUMB  => '<td><a href="{url}">{title}</a> &gt;&gt; </td>'
-    );
+  );
 
     function finishMenu($level)
     {

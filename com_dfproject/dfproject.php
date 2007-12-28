@@ -31,10 +31,10 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'front_html' ) );
-require_once( $mainframe->getPath( 'class' , 'com_dfprefs') );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('front_html'));
+require_once($mainframe->getPath('class', 'com_dfprefs'));
 
 
 check_ssl();
@@ -49,8 +49,8 @@ if (dfprefs::requireAccess('Read')) {
     switch ($task) {
     case 'adduser':
         if (dfprefs::requireAccess('Write')) {
-            $user_id   = mosGetParam( $_REQUEST, 'user_id', null );
-            $id   = mosGetParam( $_REQUEST, 'id', null );
+            $user_id   = mosGetParam($_REQUEST, 'user_id', null);
+            $id   = mosGetParam($_REQUEST, 'id', null);
             if (($id !== null) && ($user_id !== null)) {
                 $project->addUser($user_id, $id);
             }
@@ -59,8 +59,8 @@ if (dfprefs::requireAccess('Read')) {
         break;
     case 'removeuser':
         if (dfprefs::requireAccess('Write')) {
-            $user_id   = mosGetParam( $_REQUEST, 'user_id', null );
-            $id   = mosGetParam( $_REQUEST, 'id', null );
+            $user_id   = mosGetParam($_REQUEST, 'user_id', null);
+            $id   = mosGetParam($_REQUEST, 'id', null);
             if (($id !== null) && ($user_id !== null)) {
                 $project->removeUser($user_id, $id);
             }

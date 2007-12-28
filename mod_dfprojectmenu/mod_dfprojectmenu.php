@@ -31,15 +31,15 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Restricted access' );
+defined('_VALID_MOS') or die('Restricted access');
 //die("GOTHERE");
 
 global $dfconfig, $cur_template;
 
-require_once( $mainframe->getPath( 'class' , 'com_dfproject' ) );
-@include_once( $mainframe->getPath( 'class' , 'com_dfprojecttimeclock' ) );
-@include_once( $mainframe->getPath( 'class' , 'com_dfprojectwcomp' ) );
-@include_once( $mainframe->getPath( 'class' , 'com_dfprojectbilling' ) );
+require_once($mainframe->getPath('class', 'com_dfproject'));
+@include_once($mainframe->getPath('class', 'com_dfprojecttimeclock'));
+@include_once($mainframe->getPath('class', 'com_dfprojectwcomp'));
+@include_once($mainframe->getPath('class', 'com_dfprojectbilling'));
 
 $Itemid = mosGetParam($_GET, 'Itemid');
 $option = mosGetParam($_REQUEST, 'option');
@@ -92,7 +92,7 @@ if (defined('_HAVE_DFPROJECT_WCOMP')) {
 if (defined('_HAVE_DFPROJECT_TIMECLOCK')) {
     if (dfprefs::checkAccess('Timeclock', "com_dfprojecttimeclock")
         || dfprefs::checkAccess('TSummary', "com_dfprojecttimeclock")
-        ) {
+      ) {
         $id = "";
         if ($option == 'com_dfprojecttimeclock') $id = 'id="active_menu"';
         print '<tr align="left"><td>';

@@ -85,7 +85,7 @@ class HTML_Javascript_Convert
             "'"     => "\\'",
             '"'     => '\"',
             '\\' => '\\\\'
-        );
+      );
 
         return strtr($str,$js_escape);
     }
@@ -108,11 +108,11 @@ class HTML_Javascript_Convert
     function convertVar($var, $varname, $global = false)
     {
         $var_type    = gettype($var);
-        switch ( $var_type ) {
+        switch ($var_type) {
             case 'boolean':
                 return HTML_Javascript_Convert::convertBoolean(
                             $var, $varname, $global
-                        );
+                      );
                         
             case 'integer':
             case 'double':
@@ -126,22 +126,22 @@ class HTML_Javascript_Convert
             case 'string':
                 return HTML_Javascript_Convert::convertString(
                             $var, $varname, $global
-                        );
+                      );
                         
             case 'array':
                 return HTML_Javascript_Convert::convertArray(
                             $var, $varname, $global
-                        );
+                      );
                         
             case 'null':
                 return HTML_Javascript_Convert::convertNull(
                             $varname, $global
-                        );
+                      );
                         
             default:
                 return HTML_Javascript_Convert::raiseError(
                         HTML_JAVASCRIPT_ERROR_CONVERT_INVVAR, __FUNCTION__.':'.$var_type
-                    );
+                  );
         }
     }
 
@@ -163,12 +163,12 @@ class HTML_Javascript_Convert
             case HTML_JAVASCRIPT_CONVERT_ERROR_INVVAR:
                 return PEAR::raiseError(
                     'Invalid variable:'.$str, $code 
-                );
+              );
                 
             default:
                 return PEAR::raiseError(
                     'Unknown Error:'.$str, $code 
-                );
+              );
         }
     }
 
@@ -264,16 +264,16 @@ class HTML_Javascript_Convert
         if ($global) {
             $var = 'var ';
         }
-        if ( is_array($arr) ){
+        if (is_array($arr)){
             $length = sizeof($arr);
             $var    .= $varname . ' = Array('. $length .')'.HTML_JAVASCRIPT_NL;
-            foreach ( $arr as $key=>$cell ){
+            foreach ($arr as $key=>$cell){
                 $jskey  = '"' . $key . '"';
-                if ( is_array( $cell ) ){
+                if (is_array($cell)){
                     $level++;
                     $var    .= HTML_Javascript_Convert::convertArray(
                                     $cell,'tmp'.$level,$global,$level
-                                );
+                              );
                     $var    .= $varname .
                                 "[$jskey] = tmp$level".
                                 HTML_JAVASCRIPT_NL;
@@ -292,7 +292,7 @@ class HTML_Javascript_Convert
         } else {
             return HTML_Javascript_Convert::raiseError(
                         HTML_JAVASCRIPT_CONVERT_ERROR_INVVAR, __FUNCTION__.':'.gettype($arr)
-                    );
+                  );
         }
     }
 
@@ -310,14 +310,14 @@ class HTML_Javascript_Convert
      * @param  boolean $new     if true, the JS var will be set
      * @return mixed   a PEAR_Error or the converted array
      */
-    function convertArrayToProperties( $array, $varname, $global=false, $new=true )
+    function convertArrayToProperties($array, $varname, $global=false, $new=true)
     {
         if (is_array($array)){
             $cnt = sizeof($array)-1;
             $i  = 0;
             $convert = $global?'var ':'';
             $convert .= $new?$varname.'={'.HTML_JAVASCRIPT_NL:'{';
-            foreach ( $array as $key=>$val) {
+            foreach ($array as $key=>$val) {
                 $key = $key?'"'.$key.'"':"'0'";
                 $convert .= $key.':';
                 if (is_array($val)){
@@ -347,9 +347,9 @@ class HTML_Javascript_Convert
      * @access public
      * @return mixed return
      */
-    function convertValue( $val )
+    function convertValue($val)
     {
-        switch ( gettype($val) ) {
+        switch (gettype($val)) {
             case 'boolean':
                 return $val ? 'true' : 'false';
                 
@@ -363,7 +363,7 @@ class HTML_Javascript_Convert
             case 'array':
                 return HTML_Javascript_Convert::convertArray(
                             $val, $varname, $global
-                        );
+                      );
                         
             case 'null':
                 return 'null';
@@ -371,7 +371,7 @@ class HTML_Javascript_Convert
             default:
                 return HTML_Javascript_Convert::raiseError(
                         HTML_JAVASCRIPT_ERROR_CONVERT_INVVAR, __FUNCTION__.':'.gettype($val)
-                    );
+                  );
         }
     }
 

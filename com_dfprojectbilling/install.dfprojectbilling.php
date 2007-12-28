@@ -44,8 +44,8 @@ function com_install()
             'help' => 'Does this person have read access to customers?',
             'parameters' => array(
                 'title' => "Read Access",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userWrite',
             'type' => 'YESNO',
@@ -54,8 +54,8 @@ function com_install()
             'help' => 'Does this person have write access to customers?',
             'parameters' => array(
                 'title' => "Write Access",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userReports',
             'type' => 'YESNO',
@@ -64,8 +64,8 @@ function com_install()
             'help' => 'Does this person have access to view reports?',
             'parameters' => array(
                 'title' => "Report Access",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'userDebug',
             'type' => 'YESNO',
@@ -74,8 +74,8 @@ function com_install()
             'help' => 'Does this person get debug messages.',
             'parameters' => array(
                 'title' => "Debug Access",
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupRead',
             'type' => 'HIDDEN',
@@ -84,8 +84,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupWrite',
             'type' => 'HIDDEN',
@@ -94,8 +94,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupReports',
             'type' => 'HIDDEN',
@@ -104,8 +104,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'groupDebug',
             'type' => 'HIDDEN',
@@ -114,8 +114,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'debug',
             'type' => 'HIDDEN',
@@ -124,8 +124,8 @@ function com_install()
             'help' => '',
             'parameters' => array(
                 'visible' => false,
-            ),
-        ),
+          ),
+      ),
         array(
             'name' => 'com_label',
             'type' => 'HIDDEN',
@@ -135,10 +135,10 @@ function com_install()
             'parameters' => array(
                 'visible' => false,
                 'static' => true,
-            ),
-        ),
+          ),
+      ),
 
-    );            
+  );            
 ?>    
     <div style="text-align: left; margin-bottom: 50px;">
 
@@ -154,7 +154,7 @@ function com_install()
     $found = array();
     foreach (array("dfprefs", "dfproject") as $com) {
         print '<div style="font-weight:bold;">Checking for '.$com.'... ';
-        if (@include_once($mainframe->getPath( 'class', 'com_'.$com ))) {
+        if (@include_once($mainframe->getPath('class', 'com_'.$com))) {
             $found[$com] = true;
             print '<span style="color:green;">Found</span>';
         } else {

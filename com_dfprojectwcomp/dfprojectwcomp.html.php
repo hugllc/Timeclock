@@ -31,17 +31,17 @@
  * @version    SVN: $Id: sensor.php 545 2007-12-11 21:50:55Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 
-require_once( $mainframe->getPath( 'class' ) );
-require_once( $mainframe->getPath( 'front_html' , 'com_dfproject' ) );
-require_once( 'HTML/QuickForm.php' );
+require_once($mainframe->getPath('class'));
+require_once($mainframe->getPath('front_html', 'com_dfproject'));
+require_once('HTML/QuickForm.php');
 
-define("_PROJ_BASEPATH", dirname( $mainframe->getPath( 'class', 'com_dfprefs' ) ));
+define("_PROJ_BASEPATH", dirname($mainframe->getPath('class', 'com_dfprefs')));
 define("_PROJ_IMGPATH", sefRelToAbs("components/com_dfproject/images/"));
 
-require_once( _PROJ_BASEPATH."/include/tables.inc.php" );
-require_once( _PROJ_BASEPATH."/include/extra.inc.php" );
+require_once(_PROJ_BASEPATH."/include/tables.inc.php");
+require_once(_PROJ_BASEPATH."/include/extra.inc.php");
 
 
 
@@ -53,22 +53,22 @@ class HTML_DragonflyProject_wcCode {
             'id' => 'Code',
             'title' => 'Name',
             'price' => 'Price',
-        ),
+      ),
         'fulllist' => array(
             'action' => '',
             'id' => 'Code',
             'title' => 'Name',
             'description' => "Description",
             'price' => 'Price',
-        ),
-    );
+      ),
+  );
     var $_listAttrib = array(
         'default' => array(
             'action' => array('style' => 'text-align: center; white-space: nowrap;'),
             'projectNum' => array('style' => 'text-align: center;'),
             'parent' => array('style' => 'text-align: center;'),
-        ),
-    );
+      ),
+  );
 
     var $_viewCols = array(
         'default' => array(
@@ -76,8 +76,8 @@ class HTML_DragonflyProject_wcCode {
             'title' => 'Name',
             'description' => 'Description',
             'price' => 'Price',
-        ),
-    );
+      ),
+  );
 
     function HTML_DragonflyProject_wcCode(&$db) {
         $this->_db = &$db;
@@ -109,7 +109,7 @@ class HTML_DragonflyProject_wcCode {
         $this->_form->setDefaults($this->_code);
 
         if (isset($_REQUEST['postwcCode']) && $this->_form->validate()) {
-            $info = mosGetParam($_REQUEST, 'info', array( ) );
+            $info = mosGetParam($_REQUEST, 'info', array());
 //            $this->_workersComp->makeWritable();
             $return = $this->_wcCode->save($info);
             if ($return) {
