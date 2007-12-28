@@ -47,9 +47,14 @@
 class JoomlaMainFrame
 {
     /**
+     * Returns the path to the specified item
      *
+     * @param string $item   The item to find
+     * @param string $option The option to use
+     *
+     * @return string
      */
-    function getPath($type, $option)
+    function getPath($item, $option)
     {
         // Get the base directory
         $basedir = explode("/", dirname(__FILE__));
@@ -58,7 +63,7 @@ class JoomlaMainFrame
         // This is the file base
         $filebase = substr($option, 4);
         // If this is a class file return this address
-        if ($type == "class") return $basedir."/".$option."/".$filebase.".class.php";
+        if ($item == "class") return $basedir."/".$option."/".$filebase.".class.php";
         // Don't know what this is.  Return nothing
         return "";
     }    
@@ -76,7 +81,7 @@ class JoomlaMainFrame
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class mosDBTable
+class MosDBTable
 {
 
 }
@@ -86,16 +91,16 @@ class mosDBTable
  *
  * Parts of this class fall under the following:
  * <pre>
- * @version $Id$
- * @package Joomla
- * @subpackage Database
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ *  @version $Id$
+ *  @package Joomla
+ *  @subpackage Database
+ *  @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
+ *  @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ *  Joomla! is free software. This version may have been modified pursuant
+ *  to the GNU General Public License, and as distributed it includes or
+ *  is derivative of works licensed under the GNU General Public License or
+ *  other free or open source software licenses.
+ *  See COPYRIGHT.php for copyright notices and details.
  * </pre>
  *
  * @category   Test
@@ -106,7 +111,7 @@ class mosDBTable
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class mosDatabase
+class MosDatabase
 {
     /**
      * Sets the SQL query string for later execution.
@@ -114,10 +119,12 @@ class mosDatabase
      * This function replaces a string identifier <var>$prefix</var> with the
      * string held is the <var>_table_prefix</var> class variable.
      *
-     * @param string The SQL query
-     * @param string The offset to start selection
-     * @param string The number of results to return
-     * @param string The common table prefix
+     * @param string $sql    The SQL query
+     * @param string $offset The offset to start selection
+     * @param string $limit  The number of results to return
+     * @param string $prefix The common table prefix
+     *
+     * @return bool
      */
     function setQuery($sql, $offset = 0, $limit = 0, $prefix='#__') 
     {
@@ -128,7 +135,7 @@ class mosDatabase
      * If <var>key</var> is not empty then the returned array is indexed by the value
      * the database key.  Returns <var>null</var> if the query fails.
      *
-     * @param string The field name of a primary key
+     * @param string $key The field name of a primary key
      *
      * @return array If <var>key</var> is empty as sequential list of returned records.
      */
@@ -143,6 +150,8 @@ class mosDatabase
  * @param string $var     The global variable to use
  * @param string $name    The name of the index of that global variable
  * @param mixed  $default The default value to send.
+ *
+ * @return mixed
  */
 function mosGetParam($var, $name, $default=null)
 {
@@ -155,7 +164,7 @@ function mosGetParam($var, $name, $default=null)
 global $database;
 global $mainframe;
 global $mosConfig_absolute_path;
-$database                = new mosDatabase();
+$database                = new MosDatabase();
 $mainframe               = new JoomlaMainFrame();
 $mosConfig_absolute_path = dirname(__FILE__);
 ?>
