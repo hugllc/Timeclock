@@ -36,7 +36,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 require_once($mainframe->getPath('class'));
 require_once($mainframe->getPath('front_html'));
 
-$option = mosGetParam($_REQUEST, 'option') ;
+$option = mosGetParam($_REQUEST, 'option');
 
 switch ($task) {
 

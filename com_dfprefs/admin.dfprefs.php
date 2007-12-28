@@ -38,7 +38,7 @@ defined('_VALID_MOS') or die('Direct Access to this location is not allowed.');
 require_once($mainframe->getPath('class'));
 require_once($mainframe->getPath('admin_html'));
 
-$id = mosGetParam($_REQUEST, 'id', null) ;
+$id = mosGetParam($_REQUEST, 'id', null);
 if (is_null($id)) {
     $cid = mosGetParam($_REQUEST, 'cid', array());
     $id = $cid[0];

@@ -81,7 +81,7 @@ class HTML_dfprojectwcomp {
      <script language="javascript" type="text/javascript">
     function submitbutton(pressbutton) {
       var form = document.adminForm;
-      <?php getEditorContents('editor1', 'answer') ;?>
+      <?php getEditorContents('editor1', 'answer');?>
       if (pressbutton == 'cancel') {
         submitform(pressbutton);
         return;
