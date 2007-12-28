@@ -114,7 +114,7 @@ class dftimeclockClassTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array("2007-12-04", 1196769600),
-       );
+        );
     }
     /**
      * test registerDriver

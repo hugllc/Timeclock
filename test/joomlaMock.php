@@ -119,7 +119,7 @@ class mosDatabase
      * @param string The number of results to return
      * @param string The common table prefix
      */
-    function setQuery( $sql, $offset = 0, $limit = 0, $prefix='#__' ) 
+    function setQuery($sql, $offset = 0, $limit = 0, $prefix='#__') 
     {
     }
     /**
@@ -132,7 +132,7 @@ class mosDatabase
      *
      * @return array If <var>key</var> is empty as sequential list of returned records.
      */
-    function loadObjectList( $key='' ) 
+    function loadObjectList($key='') 
     {
     }
 }
