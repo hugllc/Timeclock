@@ -51,8 +51,19 @@ define('TIMEFORMAT', " h:i a ");
 
 define("_PROJ_BASEPATH", dirname($mainframe->getPath('class', 'com_dfprefs')));
 define("_PROJ_TIMECLOCK_IMGPATH", sefRelToAbs("components/com_dfprojecttimeclock/images/"));
-
-class timesheet extends mosDBTable{
+/**
+ * This class does most of the timesheet work
+ *
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage Com_DfProjectTimeclock
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2005-2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ */
+class timesheet extends mosDBTable
+{
     var $_tbl = '#__dfproject_timesheet';
     var $_tbl_key = 'id';
 
@@ -73,11 +84,16 @@ class timesheet extends mosDBTable{
     var $insertDate;
     var $Notes;
 
-    function __construct($config = null) {
+    /**
+     * Function
+     *
+     * @return none
+     */    
+    function __construct($config = null)
+    {
         global $database;
         $this->_db =& $database;
         if (is_null($config)) $config = dfprefs::getSystem();
-
         $this->_config = $config;
 
         $this->_maxDailyHours = $config['maxhours'];
@@ -88,7 +104,13 @@ class timesheet extends mosDBTable{
         
     }
 
-    function getUserStartDate($id = null) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getUserStartDate($id = null)
+    {
         global $my;
         if (is_null($id)) $id = $my->id;    
 
@@ -97,7 +119,13 @@ class timesheet extends mosDBTable{
         return $startdate;
     }
 
-    function checkUserStartDate($date, $id = null) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function checkUserStartDate($date, $id = null)
+    {
         global $my;
         if (is_string($date)) $date = strtotime($date);
         if (is_null($id)) $id = $my->id;
@@ -106,7 +134,13 @@ class timesheet extends mosDBTable{
         return ($date >= $startdate);
     }
 
-    function getHours($user_id, $Date) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getHours($user_id, $Date)
+    {
         $query = "SELECT * ";
         $query .= " from #__dfproject_timesheet ";
         $query .= " WHERE ";
@@ -139,7 +173,13 @@ class timesheet extends mosDBTable{
         return strtotime(date('Y-m-d 06:00:00', $date));
     }
     
-    function getPeriod($Start, $End) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getPeriod($Start, $End)
+    {
         foreach (array('Start', 'End') as $Date) {
             if (empty($$Date)) {
                 $$Date = time();
@@ -170,7 +210,13 @@ class timesheet extends mosDBTable{
         return($return);
     }
 
-    function setPeriod($Start, $End) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function setPeriod($Start, $End)
+    {
     
         $period = timesheet::getPeriod($Start, $End);
         // Add where fields
@@ -178,7 +224,13 @@ class timesheet extends mosDBTable{
 //        $this->addWhere($this->_dateField."<='".date("Y-m-d", $period['end'])."'");    
     }
     
-    function getPayPeriodWhere($Date=null) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getPayPeriodWhere($Date=null)
+    {
         
         $period = timesheet::getPayPeriod($Date);
         // Add where fields
@@ -190,8 +242,13 @@ class timesheet extends mosDBTable{
         return $where;
     }
 
+    /**
+     * Function
+     *
+     * @return array
+     */    
     function getUserStartWhere()
-{
+    {
         $startdate = dfprefs::getUser("startDate", null, $id);
         $startdate = strtotime($startdate);
 
@@ -199,7 +256,13 @@ class timesheet extends mosDBTable{
         return $where;
     }
     
-    function getPayPeriod($Date=null) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getPayPeriod($Date=null)
+    {
         global $prefs;
 
         if (empty($Date)) {
@@ -253,7 +316,13 @@ class timesheet extends mosDBTable{
         return($this->period);
     }
     
-    function prepare_timesheet($user_id) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function prepare_timesheet($user_id) 
+    {
         global $dfconfig;
         
         $query = "SELECT * ";
@@ -281,7 +350,7 @@ class timesheet extends mosDBTable{
         $this->_db->setQuery($query);
         $res = $this->_db->loadObjectList();
 
-//        $res = $this->_db->getArray($query);
+        //$res = $this->_db->getArray($query);
         if (!is_array($res)) $res = array();
 
         $sheet = array();
@@ -304,12 +373,12 @@ class timesheet extends mosDBTable{
             $query .= "#__dfproject.type='HOLIDAY'";
         
         }
-//                $projRes = $this->_db->getArray($query);
+        //                $projRes = $this->_db->getArray($query);
 
         $this->_db->setQuery($query);
         $projRes = $this->_db->loadObjectList();
 
-//                    arrayHtmlEntities($projRes);
+        //                    arrayHtmlEntities($projRes);
 
         if (!is_array($projRes)) $projRes = array();
 
@@ -322,7 +391,7 @@ class timesheet extends mosDBTable{
                 if (($s->type == 'HOLIDAY') && ($user_id == $s->user_id)) {
                     $sheet[$s->id]['setTime'] = true;
                 } else if ($s->type != 'HOLIDAY') {
- //                   $sheet[$s->id]['setTime'] = true;
+                     //                   $sheet[$s->id]['setTime'] = true;
                     $sheet[$s->id]['setTime'] = $this->setTime($s);
                 }
 
@@ -392,7 +461,13 @@ class timesheet extends mosDBTable{
     }
 
 
-    function notePopup($text, $note) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function notePopup($text, $note)
+    {
         $tip = str_replace("\n", ' ', $note);
         $tip = str_replace("\r", ' ', $tip);
         // Two are required here because we need an actual \ in the string that is printed.
@@ -409,7 +484,13 @@ class timesheet extends mosDBTable{
     
     }
 
-    function projectName($proj) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function projectName($proj) 
+    {
         $tip = str_replace("\n", ' ', $proj->description);
         $tip = str_replace("\r", ' ', $tip);
         // Two are required here because we need an actual \ in the string that is printed.
@@ -427,8 +508,13 @@ class timesheet extends mosDBTable{
         return mosToolTip($tip, $header, '', '', $name, '', false);
 
     }
+    /**
+     * Function
+     *
+     * @return array
+     */    
     function prepare_summary()
-{
+    {
         global $dfconfig;
         $query = "SELECT ";
         $query .= " #__dfproject_timesheet.id as id ";
@@ -494,8 +580,13 @@ class timesheet extends mosDBTable{
 
     }
     
+    /**
+     * Function
+     *
+     * @return array
+     */    
     function prepare_wcsummary()
-{
+    {
         if (defined('_HAVE_DFPROJECT_WCOMP')) {
             global $dfconfig;
             $query = "SELECT ";
@@ -570,7 +661,13 @@ class timesheet extends mosDBTable{
         }
     }
 
-    function prepare_notes($user_id=null) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function prepare_notes($user_id=null)
+    {
         $query = "SELECT ";
         $query .= " #__dfproject.name as project_name ";
         $query .= ", #__dfproject.id as project_id ";
@@ -614,8 +711,13 @@ class timesheet extends mosDBTable{
    
     }
 
+    /**
+     * Function
+     *
+     * @return array
+     */    
     function prepare_week_totals()
-{
+    {
         $return = array();
         global $dfconfig;
         $query = "SELECT ";
@@ -688,11 +790,23 @@ class timesheet extends mosDBTable{
         return $return;
     }
 
-    function check_user(&$row) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function check_user(&$row) 
+    {
         if (empty($row->user_name)) $row->user_name = "User #".$row->user_id; 
     }
 
-    function prepare_add($user_id) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function prepare_add($user_id) 
+    {
         $projects = array();
 
         $proj_id = mosGetParam($_REQUEST, 'project_id', null);
@@ -781,7 +895,13 @@ class timesheet extends mosDBTable{
         return $projects;
     }
     
-    function setTime($proj) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function setTime($proj) 
+    {
         if (is_array($proj)) {
             $type = $proj['type'];
         } else if (is_object($proj)) {
@@ -795,7 +915,13 @@ class timesheet extends mosDBTable{
     
     
     
-    function getSQLDate($dateArray) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getSQLDate($dateArray) 
+    {
         if (is_array($dateArray)) {
                 $date = "";
                 $sep = "";
@@ -827,11 +953,23 @@ class timesheet extends mosDBTable{
         return $date;
     }
 
-    function checkHours($hours) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function checkHours($hours) 
+    {
         return $hours < $this->_maxDailyHours; 
     }
 
-    function save($source, $order_filter='') {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function save($source, $order_filter='') 
+    {
             if (!$this->bind($source)) {
                     return false;
             }
@@ -850,7 +988,13 @@ class timesheet extends mosDBTable{
             return true;
     }
 
-    function getVacation($id = null) {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getVacation($id = null) 
+    {
         global $my;
         if (is_null($id)) $id = $my->id;    
 
@@ -863,8 +1007,14 @@ class timesheet extends mosDBTable{
         }
         return $vh;
     }
-    
-    function getVAccrual($id = null) {
+
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getVAccrual($id = null) 
+    {
         global $my;
         if (is_null($id)) $id = $my->id;    
         $table = $this->_config['vacationAccrualTable'];
@@ -891,24 +1041,30 @@ class timesheet extends mosDBTable{
         return $accrual;
     }
     
-    function getServiceLength($date, $id = null, $units="s") {
+    /**
+     * Function
+     *
+     * @return array
+     */    
+    function getServiceLength($date, $id = null, $units="s") 
+    {
         global $my;
         if (is_string($date)) $date = strtotime($date);
         if (is_null($id)) $id = $my->id;
         $startdate = $this->getUserStartDate($id);
         $time = $date - $startdate;
         switch(trim(strtolower($units))) {
-            case "y":
-                $time /= 365.25;
-            case "d":
-                $time /= 24;
-            case "h":
-                $time /= 60;
-            case "m":
-                $time /= 60;
-            case "s":
-            default:
-                break;
+        case "y":
+            $time /= 365.25;
+        case "d":
+            $time /= 24;
+        case "h":
+            $time /= 60;
+        case "m":
+            $time /= 60;
+        case "s":
+        default:
+            break;
         }
         return $time;
     }
