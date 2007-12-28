@@ -47,7 +47,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 
 // Joomla stuff
-require_once dirname(__FILE__)."/test/joomlaMock.php";
+require_once dirname(__FILE__)."/test/JoomlaMock/joomla.php";
 
 
 require_once dirname(__FILE__)."/test/com_dfprojecttimeclock/dfTimeclockTests.php";
