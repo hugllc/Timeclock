@@ -1,5 +1,6 @@
 <?php
 /**
+ * Short Description
  *
  * PHP Version 5
  *
@@ -24,7 +25,7 @@
  *
  * @category   Timeclock
  * @package    Timeclock
- * @subpackage com_dfprefs
+ * @subpackage Com_DfPrefs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2005-2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -47,7 +48,7 @@ include_once 'Spreadsheet/Excel/Writer.php';
  *
  * @category   Timeclock
  * @package    Timeclock
- * @subpackage com_dfprefs
+ * @subpackage Com_DfPrefs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2005-2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
