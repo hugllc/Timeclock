@@ -39,18 +39,18 @@
  * This is the original file header from the file this function was in:
  *
  * <pre>
- * @version $Id$
- * @package Joomla
- * @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ *  @version $Id$
+ *  @package Joomla
+ *  @copyright Copyright (C) 2005 Open Source Matters. All rights reserved.
+ *  @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ *  Joomla! is free software. This version may have been modified pursuant
+ *  to the GNU General Public License, and as distributed it includes or
+ *  is derivative of works licensed under the GNU General Public License or
+ *  other free or open source software licenses.
+ *  See COPYRIGHT.php for copyright notices and details.
  * </pre>
  *
- * @param string The URL
+ * @param string $string The URL
  *
  * @return string
  */
@@ -60,12 +60,12 @@ function sefRelToAbs($string)
     global $iso_client_lang;
 
     //multilingual code url support
-    if($mosConfig_sef && $mosConfig_multilingual_support && $string!='index.php' && !eregi("^(([^:/?#]+):)",$string) && !strcasecmp(substr($string,0,9),'index.php') && !eregi('lang=', $string)) {
+    if ($mosConfig_sef && $mosConfig_multilingual_support && $string!='index.php' && !eregi("^(([^:/?#]+):)", $string) && !strcasecmp(substr($string, 0, 9), 'index.php') && !eregi('lang=', $string)) {
         $string .= '&amp;lang='. $iso_client_lang;
     }
 
     // SEF URL Handling
-    if ($mosConfig_sef && !eregi("^(([^:/?#]+):)",$string) && !strcasecmp(substr($string,0,9),'index.php')) {
+    if ($mosConfig_sef && !eregi("^(([^:/?#]+):)", $string) && !strcasecmp(substr($string, 0, 9), 'index.php')) {
         // Replace all &amp; with &
         $string = str_replace('&amp;', '&', $string);
 
@@ -97,7 +97,7 @@ function sefRelToAbs($string)
             parse_str($url['query'], $parts);
 
             // special handling for javascript
-            foreach($parts as $key => $value) {
+            foreach ($parts as $key => $value) {
                 if (strpos($value, '+') !== false) {
                     $parts[$key] = stripslashes(str_replace('%2b', '+', $value));
                 }
@@ -107,7 +107,7 @@ function sefRelToAbs($string)
 
             // Component com_content urls
             if (((isset($parts['option']) && ($parts['option'] == 'com_content' || $parts['option'] == 'content'))) && ($parts['task'] != 'new') && ($parts['task'] != 'edit')) {
-            // index.php?option=com_content [&task=$task] [&sectionid=$sectionid] [&id=$id] [&Itemid=$Itemid] [&limit=$limit] [&limitstart=$limitstart] [&year=$year] [&month=$month] [&module=$module]
+                // index.php?option=com_content [&task=$task] [&sectionid=$sectionid] [&id=$id] [&Itemid=$Itemid] [&limit=$limit] [&limitstart=$limitstart] [&year=$year] [&month=$month] [&module=$module]
                 $sefstring .= 'content/';
 
                 // task
@@ -164,14 +164,14 @@ function sefRelToAbs($string)
 
                 $string = $sefstring;
 
-            // all other components
-            // index.php?option=com_xxxx &...
+                // all other components
+                // index.php?option=com_xxxx &...
             } else if (isset($parts['option']) && (strpos($parts['option'], 'com_') !== false)) {
                 // do not SEF where com_content - `edit` or `new` task link
                 if (!(($parts['option'] == 'com_content') && ((isset($parts['task']) == 'new') || (isset($parts['task']) == 'edit')))) {
                     $sefstring     = 'component/';
 
-                    foreach($parts as $key => $value) {
+                    foreach ($parts as $key => $value) {
                         // remove slashes automatically added by parse_str
                         $value        = stripslashes($value);
                         $sefstring .= $key .','. $value.'/';
@@ -180,8 +180,8 @@ function sefRelToAbs($string)
                     $string = str_replace('=', ',', $sefstring);
                 }
             }
-        // no query given. Empty $string to get only the fragment
-        // index.php#anchor or index.php?#anchor
+            // no query given. Empty $string to get only the fragment
+            // index.php#anchor or index.php?#anchor
         } else {
             $string = '';
         }
@@ -198,7 +198,7 @@ function sefRelToAbs($string)
         // If the above doesnt work - try uncommenting this line instead
         // return $mosConfig_live_site .'/index.php?/'. $string . $fragment;
     } else {
-    // Handling for when SEF is not activated
+        // Handling for when SEF is not activated
         // Relative link handling
         if ((strpos($string, $mosConfig_live_site) !== 0)) {
             // if URI starts with a "/", means URL is at the root of the host...
