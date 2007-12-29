@@ -91,6 +91,9 @@ class dftimeclockClassTest extends JoomlaTestCase
     protected function setUp() 
     {
         parent::setUp();
+        $this->installComponent("com_dfprefs");
+        $this->installComponent("com_dfproject");
+        $this->installComponent("com_dfprojecttimeclock");
         $this->o = new timesheet();
     }
 
@@ -222,12 +225,12 @@ class dftimeclockClassTest extends JoomlaTestCase
             array(
                 "2007-11-24", 
                 array(
-                    "start" => 1196424000,
-                    "end" => 1197547200,
-                    "prev" => 1195214400,
-                    "prevend" => 1196337600,
-                    "next" => 1197633600,
-                    "nextend" => 1198756800,
+                    "start" => 1195473600,
+                    "end" => 1196596800,
+                    "prev" => 1194264000,
+                    "prevend" => 1195387200,
+                    "next" => 1196683200,
+                    "nextend" => 1197806400,
                     "periodlength" => 14,
                 ),
             ),
@@ -259,7 +262,7 @@ class dftimeclockClassTest extends JoomlaTestCase
         return array(
             array(
                 "2007-11-24",
-                " (#__dfproject_timesheet.Date>='2007-11-30' AND #__dfproject_timesheet.Date<='2007-12-13') ",
+                " (#__dfproject_timesheet.Date>='2007-11-19' AND #__dfproject_timesheet.Date<='2007-12-02') ",
             ),
        );
     }
@@ -316,6 +319,155 @@ class dftimeclockClassTest extends JoomlaTestCase
     public function testNotePopup($text, $note, $expect) 
     {
         $ret = $this->o->notePopup($text, $note);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * dataProvider for testNotePopup
+     *
+     * @return array
+     */
+    public static function dataProjectName() 
+    {
+        return array(
+            array(
+                new MosClass(array(
+                                "id" => 3,
+                                "description" => "<note>This i\r\ns a te\rst\n \t</note>",
+                                "name" => "pro\nJect",
+                                "wcCode" => 2534,
+                             )),
+                array(
+                    "tooltip" => "&lt;note&gt;This i  s a te st  \t&lt;/note&gt;", 
+                    "title"   => "3. pro Ject (2534)", 
+                    "width"   => '', 
+                    "image"   => '', 
+                    "text"    => "pro Ject", 
+                    "href"    => '', 
+                    "link"    => false,
+                ),
+            ),
+       );
+    }
+    /**
+     * test getPeriod
+     *
+     * @param string $proj   The project name
+     * @param bool   $expect The result to expect
+     *
+     * @return void
+     *
+     * @dataProvider dataProjectName
+     */
+    public function testProjectName($proj, $expect) 
+    {
+        $ret = $this->o->ProjectName($proj);
+        $this->assertSame($expect, $ret);
+    }
+
+
+    /**
+     * dataProvider for testNotePopup
+     *
+     * @return array
+     */
+    public static function dataCheckUser() 
+    {
+        return array(
+            array(
+                1,
+                "test",
+                "test",
+            ),
+       );
+    }
+    /**
+     * test getPeriod
+     *
+     * @param int    $user_id    The user id
+     * @param string $user_name  The user name
+     * @param bool   $expect The result to expect
+     *
+     * @return void
+     *
+     * @dataProvider dataCheckUser
+     */
+    public function testCheckUser($user_id, $user_name, $expect) 
+    {
+        $class = new MosClass(array("user_id" => $user_id, "user_name" => $user_name));
+        $ret = $this->o->check_user($class);
+        $this->assertSame($expect, $class->user_name);
+    }
+
+    /**
+     * dataProvider for testGetSqlDate
+     *
+     * @return array
+     */
+    public static function dataGetSqlDate() 
+    {
+        return array(
+            array(
+                array("Y" => 2005, "m" => 12, "d" => 25),
+                "2005-12-25",
+            ),
+            array(
+                array("y" => 05, "M" => 12, "d" => 25),
+                "2005-12-25",
+            ),
+            array(
+                true,
+                true,
+            ),
+            array(
+                1196769600,
+                "2007-12-04", 
+            ),
+       );
+    }
+    /**
+     * test getPeriod
+     *
+     * @param mixed $dateArray The date to use
+     * @param bool  $expect    The result to expect
+     *
+     * @return void
+     *
+     * @dataProvider dataGetSqlDate
+     */
+    public function testGetSqlDate($dateArray, $expect) 
+    {
+        $ret = $this->o->getSqlDate($dateArray);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * dataProvider for testCheckHours
+     *
+     * @return array
+     */
+    public static function dataCheckHours() 
+    {
+        return array(
+            array(0, true),
+            array(18, true),
+            array(19, false),
+            array(20, false),
+        );
+    }
+    /**
+     * test getPeriod
+     *
+     * @param mixed $hours  The number of hours
+     * @param bool  $expect The result to expect
+     *
+     * @return void
+     *
+     * @dataProvider dataCheckHours
+     */
+    public function testCheckHours($hours, $expect) 
+    {
+        $ret = $this->o->checkHours($hours);
         $this->assertSame($expect, $ret);
     }
 

@@ -99,7 +99,17 @@ class dfPrefs extends mosDBTable {
         if (dfprefs::cache() && ($_SESSION['dfprefs'][$type][$id][$area][$name] == $value)) {
             return true;
         } else {
-            $query = "REPLACE into #__dfprefs "
+            $query = "REPLACE into `#__dfprefs` (`id` , `name`, `value`, `area`, `type`, `visible`) "
+               . "VALUES ("
+               . (int)$id
+               . ", '".(string)$name."'"
+               . ", ".(string)serialize($value)."'"
+               . ", ".(string)$area."'"
+               . ", ".(string)$type."'"
+               . ", ".(int)$visible
+               . ")";
+
+/*
                . " SET "
                . " id = ".(int)$id
                . ", name = '".(string)$name."'"
@@ -107,7 +117,7 @@ class dfPrefs extends mosDBTable {
                . ", area = '".(string)$area."'"
                . ", type = '".(string)$type."'"
                . ", visible = ".(int)$visible;
-
+*/
             $database->setQuery($query);
             $ret = $database->query();
             // This adds it to the cache
@@ -244,6 +254,7 @@ class dfPrefs_define extends mosDBTable {
     var $area = null;
     var $parameters = null;
     
+    private $_nextID = null;
 
     function dfPrefs_define() {
         global $database;
@@ -251,6 +262,25 @@ class dfPrefs_define extends mosDBTable {
         parent::mosDBTable('#__dfprefs_define', 'id', $database);
 //        $this->_db =& $database;
         $this->_area = dfPrefs::getArea();
+    }
+    /**
+     * Gets the next ID to use from the table.
+     *
+     * This only works with integer ID columns!
+     *
+     * @param string $table The table to use.
+     *
+     * @return int
+     */
+    function getNextID($table) 
+    {
+        global $database;
+        $query = "SELECT MAX(id) as id from `".$table."`";    
+        $database->setQuery($query);
+        $database->query();
+        $ret = $database->loadObjectList();
+        $nextID = (isset($ret[0]->id)) ? (int) $ret[0]->id : 1 ;
+        return $nextID + 1;
     }
 
     function getDefaults($area=null, $type=null) {
@@ -272,37 +302,43 @@ class dfPrefs_define extends mosDBTable {
         $return = array();
         if (is_array($ret)) {
             foreach ($ret as $entry) {
-                $return[$entry->area][$entry->name] = unserialize($entry->default);
+               $return[$entry->area][$entry->name] = unserialize($entry->default);
             }
         }
         if (is_null($area)) return $return;
-           return $return[$area];
+        return $return[$area];
         
     }
 
     function set($id, $name, $default, $type, $preftype='USER', $area = null, $help='', $parameters=array()) {
         global $database;        
-
         if (is_null($area)) $area = dfPrefs::getArea();        
         if (empty($id)) unset($id);        
-        $basequery = " name = '".(string)$name."'"
-           . ", area = '".(string)$area."'"
-           . ", type = '".(string)$type."'"
-           . ", preftype = '".(string)$preftype."'"
-           . ", help = '".(string)$help."'"
-           . ", `default` = '".(string)serialize($default)."'"
-           . ", parameters = '".(string)serialize($parameters)."'";
 
 
         if (is_null($id)) {
-             $query = "INSERT INTO #__dfprefs_define "
-                . " SET "
-                . " id = '".(int)$id."',"
-                . $basequery;
+            $id = self::getNextID("#__dfprefs_define");
+            $query = "INSERT INTO `#__dfprefs_define` (`id`, `name`, `area`, `type`, `preftype`, `help`, `default`, `parameters`) "
+                . " VALUES ("
+                . " '".(int)$id."'"
+                . ", '".(string)$name."'"
+                . ", '".(string)$area."'"
+                . ", '".(string)$type."'"
+                . ", '".(string)$preftype."'"
+                . ", '".(string)$help."'"
+                . ", '".(string)serialize($default)."'"
+                . ", '".(string)serialize($parameters)."'"
+                . ")";
         } else {
              $query = "UPDATE #__dfprefs_define "
                 . " SET "
-                . $basequery
+                . " name = '".(string)$name."'"
+                . ", area = '".(string)$area."'"
+                . ", type = '".(string)$type."'"
+                . ", preftype = '".(string)$preftype."'"
+                . ", help = '".(string)$help."'"
+                . ", `default` = '".(string)serialize($default)."'"
+                . ", parameters = '".(string)serialize($parameters)."'"
                 . " WHERE id = '".(int)$id."'";
         }
 
@@ -342,7 +378,6 @@ class dfPrefs_define extends mosDBTable {
 
     function get($name = null, $preftype = null, $area = null, $type = null) {
         global $database;
-
 //        if (is_null($area)) $area = dfPrefs::getArea();        
 
         $query = "SELECT * FROM #__dfprefs_define "
@@ -366,7 +401,6 @@ class dfPrefs_define extends mosDBTable {
             }
 //            if (count($ret) == 1) $ret = $ret[0];
         }
-
         return $ret;
     }
 }

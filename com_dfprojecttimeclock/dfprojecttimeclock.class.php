@@ -94,14 +94,14 @@ class timesheet extends mosDBTable
 
         global $database;
         $this->_db =& $database;
-//        if (is_null($config)) $config = dfprefs::getSystem();
+        if (is_null($config)) $config = dfprefs::getSystem();
         $this->_config = $config;
 
-        $this->_maxDailyHours = $config['maxhours'];
-        $this->_periodStart = $config['periodstart'];
-        $this->_periodType = $config['periodtype'];
-        $this->_periodLength = $config['periodlength'];
-        $this->_decimalPlaces = $config['decimalPlaces'];
+        if (!empty($config['maxhours'])) $this->_maxDailyHours = $config['maxhours'];
+        if (!empty($config['periodstart'])) $this->_periodStart = $config['periodstart'];
+        if (!empty($config['periodtype'])) $this->_periodType = $config['periodtype'];
+        if (!empty($config['periodlength'])) $this->_periodLength = $config['periodlength'];
+        if (!empty($config['decimalPlaces'])) $this->_decimalPlaces = $config['decimalPlaces'];
         
     }
 
@@ -290,37 +290,24 @@ class timesheet extends mosDBTable
     function prepare_timesheet($user_id) 
     {
         global $dfconfig;
-        
-        $query = "SELECT * ";
-        $query .= ", #__dfproject_timesheet.id as id ";
-        $query .= ", #__dfproject.id as project_id ";
-        $query .= ", #__dfproject_timesheet.Date as Date ";
-        $query .= " from #__dfproject_timesheet ";
-        $query .= " LEFT JOIN #__dfproject on #__dfproject.id=#__dfproject_timesheet.project_id ";
-        $query .= " WHERE ";
-        $query .= $this->getPayPeriodWhere($this->Date);
-        $query .= " AND ";
-        $query .= $this->getUserStartWhere();
-        $query .= " AND ";
-        $query .= '(#__dfproject_timesheet.user_id='.$user_id;
-        if (dfprefs::checkAccess('HolidayHours')) {
-            $query .= " OR ";
-            $query .= "#__dfproject.type='HOLIDAY'";        
-        } else {
-            $query .= " AND ";
-            $query .= "#__dfproject.type<>'HOLIDAY'";                
-        }
-        $query .= ") AND ";
-        $query .= " hours > 0";
-        $query .= " ORDER BY #__dfproject_timesheet.id asc ";                        
-        $this->_db->setQuery($query);
-        $res = $this->_db->loadObjectList();
-
-        //$res = $this->_db->getArray($query);
-        if (!is_array($res)) $res = array();
-
         $sheet = array();
-    
+        $this->prepareTimesheetProjects(&$sheet, $user_id);
+        $this->prepareTimesheetTimesheets(&$sheet, $user_id);
+        $this->prepareTimesheetMakeTree(&$sheet, $user_id);
+        $this->prepareTimesheetCategorize(&$sheet, $user_id);
+        $this->prepareTimesheetSort(&$sheet, $user_id);
+        return $sheet;
+    }
+    /**
+     * Adds all of the projects to the user's timesheet
+     *
+     * @param array &$sheet  The timesheet
+     * @param int   $user_id The user to do this for
+     *
+     * @return void
+     */
+    protected function prepareTimesheetProjects(&$sheet, $user_id)
+    {
         $query = "SELECT *, #__dfproject_users.user_id as user_id, #__dfproject.user_id as owner_id";
         $query .= " from #__dfproject_users ";
         $query .= " JOIN #__dfproject on #__dfproject.id=#__dfproject_users.id ";
@@ -363,8 +350,45 @@ class timesheet extends mosDBTable
 
             }
         }
-    
-        
+    }
+    /**
+     * Adds all of the time sheets in
+     *
+     * @param array &$sheet  The timesheet
+     * @param int   $user_id The user to do this for
+     *
+     * @return void
+     */
+    protected function prepareTimesheetTimesheets(&$sheet, $user_id)
+    {
+   
+        $query = "SELECT * ";
+        $query .= ", #__dfproject_timesheet.id as id ";
+        $query .= ", #__dfproject.id as project_id ";
+        $query .= ", #__dfproject_timesheet.Date as Date ";
+        $query .= " from #__dfproject_timesheet ";
+        $query .= " LEFT JOIN #__dfproject on #__dfproject.id=#__dfproject_timesheet.project_id ";
+        $query .= " WHERE ";
+        $query .= $this->getPayPeriodWhere($this->Date);
+        $query .= " AND ";
+        $query .= $this->getUserStartWhere();
+        $query .= " AND ";
+        $query .= '(#__dfproject_timesheet.user_id='.$user_id;
+        if (dfprefs::checkAccess('HolidayHours')) {
+            $query .= " OR ";
+            $query .= "#__dfproject.type='HOLIDAY'";        
+        } else {
+            $query .= " AND ";
+            $query .= "#__dfproject.type<>'HOLIDAY'";                
+        }
+        $query .= ") AND ";
+        $query .= " hours > 0";
+        $query .= " ORDER BY #__dfproject_timesheet.id asc ";                        
+        $this->_db->setQuery($query);
+        $res = $this->_db->loadObjectList();
+
+        //$res = $this->_db->getArray($query);
+        if (!is_array($res)) $res = array();
         // Add the time to the sheet
         foreach ($res as $s) {
             if (!isset($sheet[$s->project_id]['name'])) {
@@ -374,7 +398,18 @@ class timesheet extends mosDBTable
             $sheet[$s->project_id][$s->Date] += round($s->hours, $this->_decimalPlaces);
             $sheet[$s->project_id][$s->Date."_Notes"] .= $s->Notes;
         }
-
+    }
+    /**
+     * Makes the sheet into a tree
+     *
+     * @param array &$sheet  The timesheet
+     * @param int   $user_id The user to do this for
+     *
+     * @return void
+     */
+    protected function prepareTimesheetMakeTree(&$sheet, $user_id)
+    {
+    
         // Make it a tree...
         foreach ($sheet as $k => $p) {
             if (($p['status'] == 'SPECIAL') && empty($p['parent_id'])) $p['parent_id'] = -2;
@@ -398,6 +433,17 @@ class timesheet extends mosDBTable
                 unset($sheet[$k]);
             }
         }
+    }
+    /**
+     * Makes the sheet into a tree
+     *
+     * @param array &$sheet  The timesheet
+     * @param int   $user_id The user to do this for
+     *
+     * @return void
+     */
+    protected function prepareTimesheetCategorize(&$sheet, $user_id)
+    {
         // Put everything without subprojects into one category...
     
         foreach ($sheet as $k => $p) {
@@ -416,14 +462,23 @@ class timesheet extends mosDBTable
             $sheet[-2]['name'] = 'Special';    
             $sheet[-2]['type'] = 'UMBRELLA';        
         }
+    }
+    /**
+     * Makes the sheet into a tree
+     *
+     * @param array &$sheet  The timesheet
+     * @param int   $user_id The user to do this for
+     *
+     * @return void
+     */
+    protected function prepareTimesheetSort(&$sheet, $user_id)
+    {
         ksort($sheet);    
         foreach (array_keys($sheet) as $k) {
             if (is_array($sheet[$k]['subProjects'])) {
                 ksort($sheet[$k]['subProjects']);
             }
         }
-
-        return $sheet;
     }
 
 
@@ -887,49 +942,44 @@ class timesheet extends mosDBTable
     /**
      * Function
      *
+     * @param mixed $dateArray The date to use
+     *
      * @return array
      */    
     function getSQLDate($dateArray) 
     {
         if (is_array($dateArray)) {
-                $date = "";
-                $sep = "";
-                if (isset($dateArray['Y'])) {
-                        $date .= $dateArray['Y'];
-                        $sep = '-';
-                } else if (isset($dateArray['y'])) {
-                        $date .= $dateArray['y'];
-                        $sep = '-';
-                }
-
-                if (isset($dateArray['m'])) {
-                        $date .= $sep.$dateArray['m'];
-                        $sep = '-';
-                } else if (isset($dateArray['M'])) {
-                        $date .= $sep.$dateArray['M'];
-                        $sep = '-';
-                }
-
-                if (isset($dateArray['d'])) {
-                        $date .= $sep.$dateArray['d'];
-                }
+            $dateArray = array_change_key_case($dateArray, CASE_LOWER);
+            $sep = "";
+            if (isset($dateArray['y'])) {
+                $date = $dateArray['y'];
+                if (strlen($date) == 2) $date = "20".$date;
+                if (strlen($date) == 1) $date = "200".$date;
+                $sep = '-';
+            }
+            foreach (array("m", "d") as $key) {
+                if (isset($dateArray[$key])) {
+                    $date .= $sep.$dateArray[$key];
+                    $sep = '-';
+                }                
+            }
         } else if (is_numeric($dateArray)) {
-                $date = date('Y-m-d', $dateArray);
+            $date = date('Y-m-d', $dateArray);
         }
-        if (empty($date)) {
-                $date = $dateArray;
-        }
+        if (empty($date)) return $dateArray;
         return $date;
     }
 
     /**
      * Function
      *
+     * @param mixed $hours  The number of hours
+     *
      * @return array
      */    
     function checkHours($hours) 
     {
-        return $hours < $this->_maxDailyHours; 
+        return ($hours < $this->_maxDailyHours); 
     }
 
     /**
