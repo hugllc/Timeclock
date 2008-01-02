@@ -48,7 +48,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 // Joomla stuff
 require_once dirname(__FILE__)."/test/JoomlaMock/joomla.php";
-
+require_once dirname(__FILE__)."/test/JoomlaMock/test/JoomlaMockTests.php";
 
 require_once dirname(__FILE__)."/test/com_dfprojecttimeclock/dfTimeclockTests.php";
 
@@ -90,6 +90,7 @@ class AllTests
 //        $suite->addTestSuite('otherTest');
         // Base class tests
         $suite->addTest(DfTimeclockTests::suite());
+        $suite->addTest(JoomlaMockTests::suite());
  
         return $suite;
     }
