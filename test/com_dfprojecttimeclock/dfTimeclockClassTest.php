@@ -234,6 +234,32 @@ class dftimeclockClassTest extends JoomlaTestCase
                     "periodlength" => 14,
                 ),
             ),
+            // This one tests DLST
+            array(
+                "2007-03-09", 
+                array(
+                    "start" => strtotime("2007-02-26 06:00:00"),
+                    "end" => strtotime("2007-03-11 06:00:00"),
+                    "prev" => strtotime("2007-02-12 06:00:00"),
+                    "prevend" => strtotime("2007-02-25 06:00:00"),
+                    "next" => strtotime("2007-03-12 06:00:00"),
+                    "nextend" => strtotime("2007-03-25 06:00:00"),
+                    "periodlength" => 14,
+                ),
+            ),
+            // This one tests Leap Year (and DLST!)
+            array(
+                "2008-02-28", 
+                array(
+                    "start" => strtotime("2008-02-25 06:00:00"),
+                    "end" => strtotime("2008-03-09 06:00:00"),
+                    "prev" => strtotime("2008-02-11 06:00:00"),
+                    "prevend" => strtotime("2008-02-24 06:00:00"),
+                    "next" => strtotime("2008-03-10 06:00:00"),
+                    "nextend" => strtotime("2008-03-23 06:00:00"),
+                    "periodlength" => 14,
+                ),
+            ),
         );
     }
     /**
