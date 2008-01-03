@@ -111,6 +111,24 @@ class dftimeclockClassTest extends JoomlaTestCase
         unset($this->o);
     }
 
+    /**
+     * Checks to make sure the table is set correctly
+     *
+     * @return void
+     */
+    public function testTable() 
+    {
+        $this->assertSame("#__dfproject_timesheet", $this->readAttribute($this->o, "_tbl"));
+    }
+    /**
+     * Checks to make sure the id is set correctly
+     *
+     * @return void
+     */
+    public function testId() 
+    {
+        $this->assertSame("id", $this->readAttribute($this->o, "_tbl_key"));
+    }
 
     /**
      * dataProvider for testFixDate
