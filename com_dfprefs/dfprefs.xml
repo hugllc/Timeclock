@@ -10,6 +10,7 @@
     <files>
         <filename>dfprefs.php</filename>
         <filename>dfprefs.html.php</filename>
+        <filename>LICENSE.TXT</filename>
     </files>
     <install>
         <queries>
