@@ -37,10 +37,6 @@
 if (!defined("PHPUnit_MAIN_METHOD")) {
     define("PHPUnit_MAIN_METHOD", "DfPrefsXmlTest::main");
 }
-// This is for the joomla extensions
-if (!defined('_VALID_MOS')) {
-    define('_VALID_MOS', true);
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";

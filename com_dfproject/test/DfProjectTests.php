@@ -36,9 +36,6 @@
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'DfProjectTests::main');
 }
-if (!defined('_VALID_MOS')) {
-    define('_VALID_MOS', true);
-}
 
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
