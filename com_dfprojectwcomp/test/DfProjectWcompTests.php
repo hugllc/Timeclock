@@ -29,12 +29,12 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: TimeclockTests.php 680 2007-12-28 22:55:57Z prices $    
+ * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'TimeclockTests::main');
+    define('PHPUnit_MAIN_METHOD', 'DfProjectWcompTests::main');
 }
 if (!defined('_VALID_MOS')) {
     define('_VALID_MOS', true);
@@ -45,17 +45,7 @@ require_once 'PHPUnit/Framework.php';
 /** This is for running tests */
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-
-// Joomla stuff
-require_once dirname(__FILE__)."/test/JoomlaMock/joomla.php";
-require_once dirname(__FILE__)."/test/JoomlaMock/test/JoomlaMockTests.php";
-
-
-require_once dirname(__FILE__)."/com_dfprefs/test/DfPrefsTests.php";
-require_once dirname(__FILE__)."/com_dfproject/test/DfProjectTests.php";
-require_once dirname(__FILE__)."/com_dfprojecttimeclock/test/dfTimeclockTests.php";
-require_once dirname(__FILE__)."/com_dfprojectbilling/test/DfProjectBillingTests.php";
-require_once dirname(__FILE__)."/com_dfprojectwcomp/test/DfProjectWcompTests.php";
+require_once dirname(__FILE__).'/DfProjectWcompClassTest.php';
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -69,7 +59,7 @@ require_once dirname(__FILE__)."/com_dfprojectwcomp/test/DfProjectWcompTests.php
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class TimeclockTests
+class DfProjectWcompTests
 {
     /**
      * main function
@@ -88,30 +78,18 @@ class TimeclockTests
      */
     public static function suite()
     {
-        PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__)."/test", '.php');
-        PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+        PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');
         $suite = new PHPUnit_Framework_TestSuite('Timeclock');
 
-//        $suite->addTestSuite('otherTest');
-        // JoomlaMock tests.  These should be first.
-        $suite->addTest(JoomlaMockTests::suite());
-
-        // dfprefs tests.  These should be second.
-        $suite->addTest(DfPrefsTests::suite());
-
-        // dfproject tests.  These should be third.
-        $suite->addTest(DfProjectTests::suite());
-
-        // DfTimeclock tests.
-        $suite->addTest(DfTimeclockTests::suite());
-        $suite->addTest(DfProjectBillingTests::suite());
-        $suite->addTest(DfProjectWcompTests::suite());
+        $suite->addTestSuite('DfProjectWcompClassTest');
+        // Base class tests
+//        $suite->addTest(TimeclockBaseTests::suite());
  
         return $suite;
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'TimeclockTests::main') {
-    TimeclockTests::main();
+if (PHPUnit_MAIN_METHOD == 'DfProjectWcompTests::main') {
+    DfProjectWcompTests::main();
 }
 ?>
