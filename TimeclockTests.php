@@ -29,12 +29,12 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id: TimeclockTests.php 680 2007-12-28 22:55:57Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'AllTests::main');
+    define('PHPUnit_MAIN_METHOD', 'TimeclockTests::main');
 }
 if (!defined('_VALID_MOS')) {
     define('_VALID_MOS', true);
@@ -48,7 +48,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 // Joomla stuff
 require_once dirname(__FILE__)."/test/JoomlaMock/joomla.php";
-require_once dirname(__FILE__)."/test/JoomlaMock/test/JoomlaMockTests.php";
+
 
 require_once dirname(__FILE__)."/test/com_dfprojecttimeclock/dfTimeclockTests.php";
 require_once dirname(__FILE__)."/test/com_dfprefs/DfPrefsTests.php";
@@ -65,7 +65,7 @@ require_once dirname(__FILE__)."/test/com_dfprefs/DfPrefsTests.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class AllTests
+class TimeclockTests
 {
     /**
      * main function
@@ -88,20 +88,18 @@ class AllTests
         PHPUnit_Util_Filter::addFileToFilter(__FILE__);
         $suite = new PHPUnit_Framework_TestSuite('Timeclock');
 
-        // Joomla Mock Tests.  These should be first.
-        $suite->addTest(JoomlaMockTests::suite());
-        // dfprefs tests.  These should be second.
+//        $suite->addTestSuite('otherTest');
+        // dfprefs tests.  These should be first.
         $suite->addTest(DfPrefsTests::suite());
 
         // DfTimeclock tests.
         $suite->addTest(DfTimeclockTests::suite());
-        
  
         return $suite;
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
-    AllTests::main();
+if (PHPUnit_MAIN_METHOD == 'TimeclockTests::main') {
+    TimeclockTests::main();
 }
 ?>

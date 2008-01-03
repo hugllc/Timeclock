@@ -239,7 +239,7 @@ class dfPrefs extends mosDBTable {
              $_SESSION['dfprefs'][$type] = array();
         } else {
             $_SESSION['dfprefs'] = array();
-          }
+        }
     }
 }
 

@@ -12,7 +12,7 @@ test-php:
                 --testdox-html Documentation/test/testdox.html \
                 --log-pmd Documentation/test/pmd.xml \
                 --log-metrics Documentation/test/metrics.xml \
-                AllTests |tee Documentation/test/testoutput.txt	
+                TimeclockTests |tee Documentation/test/testoutput.txt	
 
 
 doc:

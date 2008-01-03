@@ -29,12 +29,12 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id: DfPrefsTests.php 677 2007-12-28 19:54:26Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'AllTests::main');
+    define('PHPUnit_MAIN_METHOD', 'DfPrefsTests::main');
 }
 if (!defined('_VALID_MOS')) {
     define('_VALID_MOS', true);
@@ -45,13 +45,7 @@ require_once 'PHPUnit/Framework.php';
 /** This is for running tests */
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-
-// Joomla stuff
-require_once dirname(__FILE__)."/test/JoomlaMock/joomla.php";
-require_once dirname(__FILE__)."/test/JoomlaMock/test/JoomlaMockTests.php";
-
-require_once dirname(__FILE__)."/test/com_dfprojecttimeclock/dfTimeclockTests.php";
-require_once dirname(__FILE__)."/test/com_dfprefs/DfPrefsTests.php";
+require_once dirname(__FILE__).'/DfPrefsClassTest.php';
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -65,7 +59,7 @@ require_once dirname(__FILE__)."/test/com_dfprefs/DfPrefsTests.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class AllTests
+class DfPrefsTests
 {
     /**
      * main function
@@ -84,24 +78,18 @@ class AllTests
      */
     public static function suite()
     {
-        PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__)."/test", '.php');
-        PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+        PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');
         $suite = new PHPUnit_Framework_TestSuite('Timeclock');
 
-        // Joomla Mock Tests.  These should be first.
-        $suite->addTest(JoomlaMockTests::suite());
-        // dfprefs tests.  These should be second.
-        $suite->addTest(DfPrefsTests::suite());
-
-        // DfTimeclock tests.
-        $suite->addTest(DfTimeclockTests::suite());
-        
+        $suite->addTestSuite('DfPrefsClassTest');
+        // Base class tests
+//        $suite->addTest(TimeclockBaseTests::suite());
  
         return $suite;
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
-    AllTests::main();
+if (PHPUnit_MAIN_METHOD == 'DfPrefsTests::main') {
+    DfPrefsTests::main();
 }
 ?>
