@@ -47,8 +47,8 @@ require_once "PHPUnit/Framework/TestCase.php";
 /** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 require_once dirname(__FILE__).'/../../com_dfprojecttimeclock/dfprojecttimeclock.class.php';
-require_once dirname(__FILE__).'/../JoomlaMock/joomla.php';
-require_once dirname(__FILE__).'/../JoomlaMock/JoomlaTestCase.php';
+require_once dirname(__FILE__).'/../../test/JoomlaMock/joomla.php';
+require_once dirname(__FILE__).'/../../test/JoomlaMock/JoomlaTestCase.php';
 
 /**
  * Test class for driver.

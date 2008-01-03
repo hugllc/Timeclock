@@ -51,8 +51,8 @@ require_once dirname(__FILE__)."/test/JoomlaMock/joomla.php";
 require_once dirname(__FILE__)."/test/JoomlaMock/test/JoomlaMockTests.php";
 
 
-require_once dirname(__FILE__)."/test/com_dfprojecttimeclock/dfTimeclockTests.php";
-require_once dirname(__FILE__)."/test/com_dfprefs/DfPrefsTests.php";
+require_once dirname(__FILE__)."/com_dfprojecttimeclock/test/dfTimeclockTests.php";
+require_once dirname(__FILE__)."/com_dfprefs/test/DfPrefsTests.php";
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
