@@ -48,6 +48,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 // Joomla stuff
 require_once dirname(__FILE__)."/test/JoomlaMock/joomla.php";
+require_once dirname(__FILE__)."/test/JoomlaMock/test/JoomlaMockTests.php";
 
 
 require_once dirname(__FILE__)."/test/com_dfprojecttimeclock/dfTimeclockTests.php";
@@ -89,7 +90,10 @@ class TimeclockTests
         $suite = new PHPUnit_Framework_TestSuite('Timeclock');
 
 //        $suite->addTestSuite('otherTest');
-        // dfprefs tests.  These should be first.
+        // JoomlaMock tests.  These should be first.
+        $suite->addTest(JoomlaMockTests::suite());
+
+        // dfprefs tests.  These should be second.
         $suite->addTest(DfPrefsTests::suite());
 
         // DfTimeclock tests.
