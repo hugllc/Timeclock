@@ -8,6 +8,7 @@
     <authorUrl>www.dflytech.com</authorUrl>
     <version>0.1.22</version>
     <files>
+        <filename>LICENSE.TXT</filename>
         <filename>dfprojecttimeclock.php</filename>
         <filename>dfprojecttimeclock.html.php</filename>
         <filename>dfprojecttimeclock.class.php</filename>

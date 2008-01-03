@@ -8,6 +8,7 @@
     <authorUrl>www.dflytech.com</authorUrl>
     <version>0.0.4</version>
     <files>
+        <filename>LICENSE.TXT</filename>
         <filename>dfprojectwcomp.php</filename>
         <filename>dfprojectwcomp.html.php</filename>
         <filename>dfprojectwcomp.class.php</filename>

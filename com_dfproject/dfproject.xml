@@ -8,6 +8,7 @@
     <authorUrl>www.dflytech.com</authorUrl>
     <version>0.1.7</version>
     <files>
+        <filename>LICENSE.TXT</filename>
         <filename>dfproject.php</filename>
         <filename>dfproject.html.php</filename>
         <filename>dfproject.class.php</filename>

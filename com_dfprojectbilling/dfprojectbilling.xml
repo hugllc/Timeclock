@@ -8,6 +8,7 @@
     <authorUrl>www.hugllc.com</authorUrl>
     <version>0.0.6</version>
     <files>
+        <filename>LICENSE.TXT</filename>
         <filename>dfprojectbilling.php</filename>
         <filename>dfprojectbilling.html.php</filename>
         <filename>dfprojectbilling.class.php</filename>
