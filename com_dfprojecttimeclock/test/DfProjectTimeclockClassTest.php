@@ -33,9 +33,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
 
-// Call dftimeclockClassTest::main() if this source file is executed directly.
+// Call DfProjectTimeclockClassTest::main() if this source file is executed directly.
 if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "dftimeclockClassTest::main");
+    define("PHPUnit_MAIN_METHOD", "DfProjectTimeclockClassTest::main");
 }
 // This is for the joomla extensions
 if (!defined('_VALID_MOS')) {
@@ -62,7 +62,7 @@ require_once dirname(__FILE__).'/../../test/JoomlaMock/JoomlaTestCase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class dftimeclockClassTest extends JoomlaTestCase
+class DfProjectTimeclockClassTest extends JoomlaTestCase
 {
     /**
      * Runs the test methods of this class.
@@ -76,7 +76,7 @@ class dftimeclockClassTest extends JoomlaTestCase
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
-        $suite  = new PHPUnit_Framework_TestSuite("dftimeclockClassTest");
+        $suite  = new PHPUnit_Framework_TestSuite("DfProjectTimeclockClassTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
 
@@ -517,9 +517,9 @@ class dftimeclockClassTest extends JoomlaTestCase
 
 }
 
-// Call dftimeclockClassTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "dftimeclockClassTest::main") {
-    dftimeclockClassTest::main();
+// Call DfProjectTimeclockClassTest::main() if this source file is executed directly.
+if (PHPUnit_MAIN_METHOD == "DfProjectTimeclockClassTest::main") {
+    DfProjectTimeclockClassTest::main();
 }
 
 ?>

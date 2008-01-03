@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
-    <name>DFProjectbilling</name>
+    <name>dfprojectbilling</name>
     <creationDate>August 2006</creationDate>
     <author>Scott Price</author>
     <copyright>2006-2007 Scott Price</copyright>

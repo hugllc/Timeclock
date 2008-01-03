@@ -46,6 +46,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once dirname(__FILE__).'/DfProjectClassTest.php';
+require_once dirname(__FILE__).'/DfProjectXmlTest.php';
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -82,6 +83,7 @@ class DfProjectTests
         $suite = new PHPUnit_Framework_TestSuite('Timeclock');
 
         $suite->addTestSuite('DfProjectClassTest');
+        $suite->addTestSuite('DfProjectXmlTest');
         // Base class tests
 //        $suite->addTest(TimeclockBaseTests::suite());
  

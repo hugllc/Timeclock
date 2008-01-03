@@ -53,7 +53,7 @@ require_once dirname(__FILE__)."/test/JoomlaMock/test/JoomlaMockTests.php";
 
 require_once dirname(__FILE__)."/com_dfprefs/test/DfPrefsTests.php";
 require_once dirname(__FILE__)."/com_dfproject/test/DfProjectTests.php";
-require_once dirname(__FILE__)."/com_dfprojecttimeclock/test/dfTimeclockTests.php";
+require_once dirname(__FILE__)."/com_dfprojecttimeclock/test/DfProjectTimeclockTests.php";
 require_once dirname(__FILE__)."/com_dfprojectbilling/test/DfProjectBillingTests.php";
 require_once dirname(__FILE__)."/com_dfprojectwcomp/test/DfProjectWcompTests.php";
 
@@ -103,7 +103,7 @@ class TimeclockTests
         $suite->addTest(DfProjectTests::suite());
 
         // DfTimeclock tests.
-        $suite->addTest(DfTimeclockTests::suite());
+        $suite->addTest(DfProjectTimeclockTests::suite());
         $suite->addTest(DfProjectBillingTests::suite());
         $suite->addTest(DfProjectWcompTests::suite());
  

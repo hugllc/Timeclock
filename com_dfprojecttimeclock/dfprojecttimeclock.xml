@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
-    <name>DFProject Timeclock</name>
+    <name>dfprojecttimeclock</name>
     <creationDate>October 2005</creationDate>
     <author>Scott Price</author>
     <copyright>2005-2007 Hunt Utilities Group, LLC</copyright>
@@ -59,8 +59,8 @@
             <filename>admin.dfprojecttimeclock.html.php</filename>
             <filename>toolbar.dfprojecttimeclock.php</filename>
             <filename>toolbar.dfprojecttimeclock.html.php</filename>
-            <filename>help/dfprojecttimeclock.html</filename>
-            <filename>help/dfprojecttimeclock_edit.html</filename>
+            <filename>help/timeclock.html</filename>
+            <filename>help/timeclock_edit.html</filename>
         </files>
     </administration>
 </mosinstall>

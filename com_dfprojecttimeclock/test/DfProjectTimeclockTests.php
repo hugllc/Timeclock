@@ -34,7 +34,7 @@
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'dfTimeclockTests::main');
+    define('PHPUnit_MAIN_METHOD', 'DfProjectTimeclockTests::main');
 }
 if (!defined('_VALID_MOS')) {
     define('_VALID_MOS', true);
@@ -45,7 +45,8 @@ require_once 'PHPUnit/Framework.php';
 /** This is for running tests */
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-require_once dirname(__FILE__).'/dfTimeclockClassTest.php';
+require_once dirname(__FILE__).'/DfProjectTimeclockClassTest.php';
+require_once dirname(__FILE__).'/DfProjectTimeclockXmlTest.php';
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -59,7 +60,7 @@ require_once dirname(__FILE__).'/dfTimeclockClassTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class dfTimeclockTests
+class DfProjectTimeclockTests
 {
     /**
      * main function
@@ -81,7 +82,8 @@ class dfTimeclockTests
         PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');
         $suite = new PHPUnit_Framework_TestSuite('Timeclock');
 
-        $suite->addTestSuite('dfTimeclockClassTest');
+        $suite->addTestSuite('DfProjectTimeclockClassTest');
+        $suite->addTestSuite('DfProjectTimeclockXmlTest');
         // Base class tests
 //        $suite->addTest(TimeclockBaseTests::suite());
  
@@ -89,7 +91,7 @@ class dfTimeclockTests
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'dfTimeclockTests::main') {
-    dfTimeclockTests::main();
+if (PHPUnit_MAIN_METHOD == 'DfProjectTimeclockTests::main') {
+    DfProjectTimeclockTests::main();
 }
 ?>

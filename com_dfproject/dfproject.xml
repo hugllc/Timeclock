@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
-    <name>DFProject</name>
+    <name>dfproject</name>
     <creationDate>October 2005</creationDate>
     <author>Scott Price</author>
     <copyright>2005-2007 Hunt Utilities Group, LLC</copyright>
@@ -75,8 +75,8 @@
             <filename>admin.dfproject.html.php</filename>
             <filename>toolbar.dfproject.php</filename>
             <filename>toolbar.dfproject.html.php</filename>
-            <filename>help/dfproject.html</filename>
-            <filename>help/dfproject_edit.html</filename>
+            <filename>help/project.html</filename>
+            <filename>help/project_edit.html</filename>
             <filename>dfproject.class.php</filename>
         </files>
     </administration>

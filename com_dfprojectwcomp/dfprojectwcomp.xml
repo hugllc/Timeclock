@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <mosinstall type="component">
-    <name>DFProjectwcomp</name>
+    <name>dfprojectwcomp</name>
     <creationDate>May 2006</creationDate>
     <author>Scott Price</author>
     <copyright>2006-2007 Hunt Utilities Group, LLC</copyright>
