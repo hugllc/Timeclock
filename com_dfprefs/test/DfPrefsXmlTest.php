@@ -70,6 +70,8 @@ class DfPrefsXmlTest extends JoomlaXmlTestCase
      */
     protected function setUp() 
     {
+        global $JoomlaMockConfig;
+        $JoomlaMockConfig["option"] = "com_dfprefs";
         parent::setUp();
         $dir = dirname(__FILE__);
         $this->basedir = substr($dir, 0, strlen($dir) - 4);        
@@ -106,7 +108,17 @@ class DfPrefsXmlTest extends JoomlaXmlTestCase
      */
     public static function dataFiles()
     {
-        return self::getDataFiles("com_dfprefs", dirname(__FILE__)."/..");    
+        return self::getDataFiles("com_dfprefs");    
+    }
+
+    /**
+     * Data provider for testFiles
+     *
+     * @return array()
+     */
+    public static function dataQueries()
+    {
+        return self::getDataQueries("com_dfprefs");    
     }
 
 }
