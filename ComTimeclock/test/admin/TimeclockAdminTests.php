@@ -1,11 +1,11 @@
 <?php
 /**
- * This runs all of the tests associated with Timeclock
+ * This runs all of the tests associated with ComTimeclock
  *
  * PHP Version 5
  *
  * <pre>
- * Timeclock is a Joomla application to keep track of employee time
+ * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@
  * </pre>
  *
  * @category   Test
- * @package    TimeclockTest
+ * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 /** Test framework */
@@ -40,27 +40,27 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 /** JoomlaMock stuff */
 require_once dirname(__FILE__)."/../JoomlaMock/joomla.php";
 
-require_once dirname(__FILE__)."/controllers/TimeclockAdminControllerTests.php";
-require_once dirname(__FILE__)."/models/TimeclockAdminModelTests.php";
-require_once dirname(__FILE__)."/tables/TimeclockAdminTableTests.php";
-require_once dirname(__FILE__)."/views/TimeclockAdminViewTests.php";
+require_once dirname(__FILE__)."/controllers/ComTimeclockAdminControllerTests.php";
+require_once dirname(__FILE__)."/models/ComTimeclockAdminModelTests.php";
+require_once dirname(__FILE__)."/tables/ComTimeclockAdminTableTests.php";
+require_once dirname(__FILE__)."/views/ComTimeclockAdminViewTests.php";
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
  *
  * @category   Test
- * @package    TimeclockTest
+ * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminTests
+class ComTimeclockAdminTests
 {
     static $_tests = array(
-        "TimeclockAdminControllerTest",
+        "ComTimeclockAdminControllerTest",
     );
 
     /**
@@ -89,10 +89,10 @@ class TimeclockAdminTests
             include_once dirname(__FILE__).'/'.$test.'.php';
             $suite->addTestSuite($test);
         }
-        $suite->addTest(TimeclockAdminControllerTests::suite());
-        $suite->addTest(TimeclockAdminModelTests::suite());
-        $suite->addTest(TimeclockAdminTableTests::suite());
-        $suite->addTest(TimeclockAdminViewTests::suite());
+        $suite->addTest(ComTimeclockAdminControllerTests::suite());
+        $suite->addTest(ComTimeclockAdminModelTests::suite());
+        $suite->addTest(ComTimeclockAdminTableTests::suite());
+        $suite->addTest(ComTimeclockAdminViewTests::suite());
         // Base class tests
         return $suite;
     }

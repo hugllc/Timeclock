@@ -1,11 +1,11 @@
 <?php
 /**
- * This runs all of the tests associated with Timeclock
+ * This runs all of the tests associated with ComTimeclock
  *
  * PHP Version 5
  *
  * <pre>
- * Timeclock is a Joomla application to keep track of employee time
+ * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@
  * </pre>
  *
  * @category   Test
- * @package    TimeclockTest
+ * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 /** Test framework */
@@ -46,8 +46,8 @@ $dir = substr($dir, 0, strlen($dir) - 5);
 $_SESSION["JoomlaMockBaseDir"] = $dir;
 
 /** Test suites */
-require_once dirname(__FILE__)."/site/TimeclockSiteTests.php";
-require_once dirname(__FILE__)."/admin/TimeclockAdminTests.php";
+require_once dirname(__FILE__)."/site/ComTimeclockSiteTests.php";
+require_once dirname(__FILE__)."/admin/ComTimeclockAdminTests.php";
 
 /** THis includes everything so we get a real idea on the code coverage */
 $dirs = array(
@@ -68,12 +68,12 @@ foreach ($dirs as $d) {
  * before the software is ever released.
  *
  * @category   Test
- * @package    TimeclockTest
+ * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 class ComTimeclockTests
 {
@@ -105,8 +105,8 @@ class ComTimeclockTests
             include_once dirname(__FILE__).'/'.$test.'.php';
             $suite->addTestSuite($test);
         }
-        $suite->addTest(TimeclockAdminTests::suite());
-        $suite->addTest(TimeclockSiteTests::suite());
+        $suite->addTest(ComTimeclockAdminTests::suite());
+        $suite->addTest(ComTimeclockSiteTests::suite());
         // Base class tests
         return $suite;
     }

@@ -1,11 +1,11 @@
 <?php
 /**
- * This runs all of the tests associated with Timeclock
+ * This runs all of the tests associated with ComTimeclock
  *
  * PHP Version 5
  *
  * <pre>
- * Timeclock is a Joomla application to keep track of employee time
+ * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@
  * </pre>
  *
  * @category   Test
- * @package    TimeclockTest
+ * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 /** Test framework */
@@ -45,14 +45,14 @@ require_once dirname(__FILE__)."/../../JoomlaMock/joomla.php";
  * before the software is ever released.
  *
  * @category   Test
- * @package    TimeclockTest
+ * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockSiteViewTests
+class ComTimeclockSiteViewTests
 {
     static $_tests = array(
     );
