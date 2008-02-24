@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+    <name>Timeclock</name>
+    <creationDate>2008 02 24</creationDate>
+    <author>Scott Price</author>
+    <authorEmail>prices@hugllc.com</authorEmail>
+    <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
+    <copyright>2008 Hunt Utilities Group, LLC</copyright>
+    <license>GNU Public License V3</license>
+    <version>0.1</version>
+    <description>This component implements a timeclock for employees to track time.</description>
+    
+    <files folder="site">
+        <filename>index.html</filename>
+        <filename>timeclock.php</filename>
+        <filename>controller.php</filename>
+        <filename>views/index.html</filename>
+        <filename>views/timeclock/index.html</filename>
+        <filename>views/timeclock/view.html.php</filename>
+        <filename>views/timeclock/tmpl/index.html</filename>
+        <filename>views/timeclock/tmpl/default.php</filename>
+        <filename>models/timeclock.php</filename>
+        <filename>models/index.html</filename>
+        <filename>images/index.html</filename>
+        <filename>images/HUGgrowingIdeas_Icon.gif</filename>
+        <filename>LICENSE.TXT</filename>
+    </files>
+    <install>
+        <sql>
+            <file charset="utf8" driver="mysqli">install/timeclock_prefs.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+<!--     <file charset="utf8" driver="mysqli">uninstall.sql</file>-->
+        </sql>
+    </uninstall>   
+    <administration>
+        <menu>Timeclock</menu>
+        <submenu>
+            <menu task="config">Configure</menu>
+            <menu task="about">About</menu>
+        </submenu>
+  
+        <files folder="admin">
+            <filename>index.html</filename>
+            <filename>admin.timeclock.php</filename>
+            <filename>controller.php</filename>
+            <filename>tables/index.html</filename>
+            <filename>tables/timeclockprefs.php</filename>
+            <filename>controllers/index.html</filename>
+            <filename>controllers/prefs.php</filename>
+            <filename>models/index.html</filename>
+            <filename>models/timeclockadmin.php</filename>
+            <filename>views/index.html</filename>
+            <filename>views/timeclockadmin/index.html</filename>
+            <filename>views/timeclockadmin/tmpl/index.html</filename>
+            <filename>views/timeclockadmin/tmpl/default.php</filename>
+            <filename>views/timeclockadmin/view.html.php</filename>
+            <filename>views/about/index.html</filename>
+            <filename>views/about/tmpl/index.html</filename>
+            <filename>views/about/tmpl/default.php</filename>
+            <filename>views/about/view.html.php</filename>
+        </files>  
+    </administration>
+</install>
