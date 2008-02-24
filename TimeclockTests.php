@@ -35,7 +35,7 @@
  */
 /** This sets the main function to run */
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'TimeclockTests::main');
+    define('PHPUnit_MAIN_METHOD', 'ComTimeclockTests::main');
 }
 
 require_once 'PHPUnit/Framework.php';
@@ -66,7 +66,7 @@ class TimeclockTests
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'TimeclockTests::main') {
+if (PHPUnit_MAIN_METHOD == 'ComTimeclockTests::main') {
     HUGnetTests::main();
 }
 ?>

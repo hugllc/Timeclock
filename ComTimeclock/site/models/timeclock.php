@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_Timeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -25,13 +25,13 @@
  * </pre>
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
  
 defined('_JEXEC') or die('Restricted access');
@@ -39,17 +39,17 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /**
- * Timeclock model
+ * ComTimeclock model
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelTimeclock extends JModel
+class ComTimeclockModelComTimeclock extends JModel
 {
     /**
      * Method to display the view

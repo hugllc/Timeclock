@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_Timeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -25,27 +25,27 @@
  * </pre>
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 defined('_JEXEC') or die('Restricted access');
-//define('COM_Timeclock_PATH', dirname(JApplicationHelper::getPath("front")));
-//define('COM_Timeclock_ADMIN_PATH', dirname(JApplicationHelper::getPath("admin")));
+//define('COM_ComTimeclock_PATH', dirname(JApplicationHelper::getPath("front")));
+//define('COM_ComTimeclock_ADMIN_PATH', dirname(JApplicationHelper::getPath("admin")));
 
 /** Require the base controller */
 require_once JPATH_COMPONENT.DS.'controller.php';
 
-// Include the Timeclock stuff
-require_once JPATH_COMPONENT_SITE.DS.'includes'.DS.'Timeclock.php';
+// Include the ComTimeclock stuff
+require_once JPATH_COMPONENT_SITE.DS.'includes'.DS.'ComTimeclock.php';
 
 // This loads the prefs table file.
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'Timeclockprefs.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'ComTimeclockprefs.php';
 
 // Require specific controller if requested
 if ($controller = JRequest::getWord('controller')) {
@@ -58,7 +58,7 @@ if ($controller = JRequest::getWord('controller')) {
 }
 
 // Create the controller
-$classname    = 'TimeclockAdminController'.$controller;
+$classname    = 'ComTimeclockAdminController'.$controller;
 $controller   = new $classname();
 
 // Perform the Request task
@@ -69,6 +69,6 @@ $controller->redirect();
 
 ?>
 <div class="copyright">
-<a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a> 
+<a href="http://www.hugllc.com/wiki/index.php/Project:ComTimeclock">ComTimeclock</a> 
 Copyright &copy; 2008 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
 </div>

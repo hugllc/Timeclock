@@ -35,7 +35,7 @@ doc-ComTimeclock:
 style: style-ComTimeclock
 
 style-ComTimeclock:
-	${PHPCS} --standard=PHPCS ComTimeclock
+	${PHPCS} -n ComTimeclock
 
 update:
 	${SVN} update 

@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_Timeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -25,13 +25,13 @@
  * </pre>
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 defined('_JEXEC') or die('Restricted access'); 
@@ -63,7 +63,7 @@ jimport("joomla.html.pane");
                 <input class="text_area" type="text" name="prefs[servers][<?php print $i; ?>][host]" id="prefs_servers_<?php print $i; ?>_host" size="32" maxlength="250" value="<?php echo $this->prefs[servers][$i]["host"];?>" />
             </td>
             <td>
-                The Timeclock database server to use
+                The ComTimeclock database server to use
             </td>
         </tr>
         <tr>
@@ -76,7 +76,7 @@ jimport("joomla.html.pane");
                 <input class="text_area" type="text" name="prefs[servers][<?php print $i; ?>][user]" id="prefs_servers_<?php print $i; ?>_user" size="32" maxlength="250" value="<?php echo $this->prefs[servers][$i]["user"];?>" />
             </td>
             <td>
-                The Timeclock database user
+                The ComTimeclock database user
             </td>
         </tr>
         <tr>
@@ -89,7 +89,7 @@ jimport("joomla.html.pane");
                 <input class="text_area" type="password" name="prefs[servers][<?php print $i; ?>][password]" id="prefs_servers_<?php print $i; ?>_password" size="32" maxlength="250" value="<?php echo $this->prefs[servers][$i]["password"];?>" />
             </td>
             <td>
-                The Timeclock database password
+                The ComTimeclock database password
             </td>
         </tr>
 <?php
@@ -137,7 +137,7 @@ jimport("joomla.html.pane");
 
 <div class="clr"></div>
 
-<input type="hidden" name="option" value="com_Timeclock" />
+<input type="hidden" name="option" value="com_ComTimeclock" />
 <input type="hidden" name="id" value="-1" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="controller" value="prefs" />

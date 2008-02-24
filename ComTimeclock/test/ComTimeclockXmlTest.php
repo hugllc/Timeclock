@@ -61,7 +61,7 @@ class ComTimeclockXmlTest extends ComponentXmlTest
     public $xmlfile = "timeclock.xml";
     
     /** @var string The name of the component */
-    public $comName = "ComTimeclock";
+    public $comName = "Timeclock";
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.

@@ -25,13 +25,13 @@
  * </pre>
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock:JoomlaUI
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -40,14 +40,14 @@ defined('_JEXEC') or die('Restricted access');
  * Preferences table
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock:JoomlaUI
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class TableTimeclockPrefs extends JTable
+class TableComTimeclockPrefs extends JTable
 {
     /**
      * Primary Key
@@ -71,7 +71,7 @@ class TableTimeclockPrefs extends JTable
             "db_server" => "",
             "db_user" => "",
             "db_password" => "",
-            "db_name" => "Timeclock",
+            "db_name" => "ComTimeclock",
             "db_type" => "mysql",
             "gateways" => "",
             "decimalPlaces" => 2,
@@ -199,7 +199,7 @@ class TableTimeclockPrefs extends JTable
         }        
         
         if (empty($instance[$type])) {
-            $instance[$type] = JTable::getInstance("TimeclockPrefs", "Table");
+            $instance[$type] = JTable::getInstance("ComTimeclockPrefs", "Table");
             $instance[$type]->load($oid);
         }
         if (isset($instance[$type]->prefs[$name])) return $instance[$type]->prefs[$name];
@@ -225,7 +225,7 @@ class TableTimeclockPrefs extends JTable
         $oid = $u->id;
         if (empty($oid)) return self::_prefCache($name, $value);
         
-        $p = JTable::getInstance("TimeclockPrefs", "Table");
+        $p = JTable::getInstance("ComTimeclockPrefs", "Table");
         $p->load($oid);
         $p->prefs[$name] = $value;
         return $p->store();
@@ -249,7 +249,7 @@ class TableTimeclockPrefs extends JTable
      */
     function _prefCache($name, $value = null)
     {
-        $prefs =& $_SESSION["TimeclockPrefs"];
+        $prefs =& $_SESSION["ComTimeclockPrefs"];
         if (is_null($value)) {
             if (isset($prefs[$name])) return $prefs[$name];
             if (isset(self::$_defaults["user"][$name])) return self::$_defaults["user"][$name];

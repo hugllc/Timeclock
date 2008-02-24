@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_Timeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -25,13 +25,13 @@
  * </pre>
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
@@ -40,17 +40,17 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 /**
- * HTML View class for the TimeclockWorld Component
+ * HTML View class for the ComTimeclockWorld Component
  *
  * @category   UI
- * @package    Timeclock
+ * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:Timeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewAbout extends JView
+class ComTimeclockAdminViewAbout extends JView
 {
     /**
      * The display function
@@ -61,7 +61,7 @@ class TimeclockAdminViewAbout extends JView
      */
     function display($tpl = null)
     { 
-        JToolBarHelper::title(JText::_('About Timeclock'), "install");
+        JToolBarHelper::title(JText::_('About ComTimeclock'), "install");
         parent::display($tpl);
     }
 }
