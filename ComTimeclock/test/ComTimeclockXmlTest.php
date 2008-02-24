@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/JoomlaMock/testCases/ComponentXmlTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class TimeclockXmlTest extends ComponentXmlTest
+class ComTimeclockXmlTest extends ComponentXmlTest
 {
     /** @var string The name of the xml file */
     static $xml = "timeclock.xml";
@@ -122,8 +122,8 @@ class TimeclockXmlTest extends ComponentXmlTest
      */
     static public function dataFilePresentXml()
     {
-        $site = TimeclockXmlTest::getFilesInDir(dirname(__FILE__)."/../site", true, "");
-        $admin = TimeclockXmlTest::getFilesInDir(dirname(__FILE__)."/../admin", true, "");
+        $site = ComTimeclockXmlTest::getFilesInDir(dirname(__FILE__)."/../site", true, "");
+        $admin = ComTimeclockXmlTest::getFilesInDir(dirname(__FILE__)."/../admin", true, "");
         $ret = array();
         foreach ($site as $file) {
             $ret[] = array("site", $file);

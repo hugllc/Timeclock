@@ -75,10 +75,10 @@ foreach ($dirs as $d) {
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Timeclock
  */
-class TimeclockTests
+class ComTimeclockTests
 {
     static $_tests = array(
-        "TimeclockXmlTest",
+        "ComTimeclockXmlTest",
     );
 
     /**
@@ -99,7 +99,7 @@ class TimeclockTests
     public static function suite()
     {
         PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');
-        $suite = new PHPUnit_Framework_TestSuite('Timeclock');
+        $suite = new PHPUnit_Framework_TestSuite('ComTimeclock');
         
         foreach (self::$_tests as $test) {
             include_once dirname(__FILE__).'/'.$test.'.php';
