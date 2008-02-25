@@ -140,5 +140,5 @@ for ($i = 0; $i < 3; $i++) {
 <input type="hidden" name="option" value="com_ComTimeclock" />
 <input type="hidden" name="id" value="-1" />
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="prefs" />
+<input type="hidden" name="controller" value="config" />
 </form>

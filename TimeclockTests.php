@@ -75,6 +75,7 @@ class TimeclockTests
     public static function suite()
     {
         PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+        PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__)."/../JoomlaMock/", '.php');
     
         $suite = new PHPUnit_Framework_TestSuite('AllTimeclockTests');
 

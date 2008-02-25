@@ -34,10 +34,10 @@
  */
 
 /** Require the JoomlaMock stuff */
-require_once dirname(__FILE__).'/../JoomlaMock/joomla.php';
-require_once dirname(__FILE__).'/../JoomlaMock/testCases/JControllerTest.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
 /** Require the module under test */
-require_once dirname(__FILE__).'/../../admin/controller.php';
+require_once dirname(__FILE__).'/../../../admin/controllers/config.php';
 
 /**
  * Test class for driver.
@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../admin/controller.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminControllerTest extends JControllerTest
+class ComTimeclockAdminControllerConfigTest extends JControllerTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -63,7 +63,7 @@ class ComTimeclockAdminControllerTest extends JControllerTest
      */
     protected function setUp() 
     {
-        $this->o = new TimeclockAdminController();
+        $this->o = new TimeclockAdminControllerConfig();
         parent::setUp();
     }
 
@@ -88,7 +88,7 @@ class ComTimeclockAdminControllerTest extends JControllerTest
     public static function dataDisplay()
     {
         return array(
-            array("display", array("view" => "about")),
+            array("display", array("view" => "config")),
         );
     }
 

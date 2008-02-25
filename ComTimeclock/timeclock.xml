@@ -52,7 +52,7 @@
             <filename>tables/index.html</filename>
             <filename>tables/timeclockprefs.php</filename>
             <filename>controllers/index.html</filename>
-            <filename>controllers/prefs.php</filename>
+            <filename>controllers/config.php</filename>
             <filename>models/index.html</filename>
             <filename>models/config.php</filename>
             <filename>views/index.html</filename>

@@ -55,6 +55,7 @@ require_once dirname(__FILE__)."/../../JoomlaMock/joomla.php";
 class ComTimeclockAdminControllerTests
 {
     static $_tests = array(
+	"ComTimeclockAdminControllerConfigTest",
     );
 
     /**

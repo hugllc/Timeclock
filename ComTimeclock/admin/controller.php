@@ -63,16 +63,5 @@ class TimeclockAdminController extends JController
         parent::display();
     }
 
-    /**
-     * This is for the about
-     *        
-     * @return none
-     */
-    function config()
-    {
-        JRequest::setVar('view', 'config');
-        parent::display();
-    }
 }
-
 ?>
