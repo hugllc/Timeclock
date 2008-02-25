@@ -28,7 +28,7 @@
     </files>
     <install>
         <sql>
-            <file charset="utf8" driver="mysqli">install/timeclock_prefs.sql</file>
+<!--            <file charset="utf8" driver="mysql">install/timeclock_prefs.sql</file>-->
         </sql>
     </install>
     <uninstall>

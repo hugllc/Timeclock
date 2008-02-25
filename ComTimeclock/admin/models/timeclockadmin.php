@@ -49,7 +49,7 @@ jimport('joomla.application.component.model');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class ComTimeclockAdminModelTimeclockAdmin extends JModel
+class TimeclockAdminModelTimeclockAdmin extends JModel
 {
     /** The ID to load */
     private $_id = -1;

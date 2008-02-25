@@ -63,7 +63,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
      */
     protected function setUp() 
     {
-        $this->o = new ComTimeclockController();
+        $this->o = new TimeclockController();
         parent::setUp();
     }
 

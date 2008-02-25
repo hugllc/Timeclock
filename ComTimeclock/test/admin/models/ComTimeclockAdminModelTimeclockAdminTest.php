@@ -49,7 +49,7 @@ require_once dirname(__FILE__).'/../../../admin/models/timeclockadmin.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminModelTimeclockAdminTest extends JModelTest
+class TimeclockAdminModelTimeclockAdminTest extends JModelTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -61,7 +61,7 @@ class ComTimeclockAdminModelTimeclockAdminTest extends JModelTest
      */
     protected function setUp() 
     {
-        $this->o = new ComTimeclockAdminModelTimeclockAdmin();        
+        $this->o = new TimeclockAdminModelTimeclockAdmin();        
         parent::setUp();
     }
 

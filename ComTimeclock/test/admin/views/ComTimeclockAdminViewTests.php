@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../../JoomlaMock/joomla.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class ComTimeclockAdminViewTests
+class TimeclockAdminViewTests
 {
     static $_tests = array(
         "ComTimeclockAdminViewAboutTest",

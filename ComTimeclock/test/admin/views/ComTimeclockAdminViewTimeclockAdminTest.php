@@ -64,7 +64,7 @@ class ComTimeclockAdminViewTimeclockAdminTest extends JViewTest
         $this->sqlFile = array(
             dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
         );
-        $this->o = new ComTimeclockAdminViewTimeclockAdmin();
+        $this->o = new TimeclockAdminViewTimeclockAdmin();
         parent::setUp();
     }
 

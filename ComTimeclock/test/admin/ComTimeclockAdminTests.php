@@ -41,7 +41,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once dirname(__FILE__)."/../JoomlaMock/joomla.php";
 
 require_once dirname(__FILE__)."/controllers/ComTimeclockAdminControllerTests.php";
-require_once dirname(__FILE__)."/models/ComTimeclockAdminModelTests.php";
+require_once dirname(__FILE__)."/models/TimeclockAdminModelTests.php";
 require_once dirname(__FILE__)."/tables/ComTimeclockAdminTableTests.php";
 require_once dirname(__FILE__)."/views/ComTimeclockAdminViewTests.php";
 
@@ -90,9 +90,9 @@ class ComTimeclockAdminTests
             $suite->addTestSuite($test);
         }
         $suite->addTest(ComTimeclockAdminControllerTests::suite());
-        $suite->addTest(ComTimeclockAdminModelTests::suite());
+        $suite->addTest(TimeclockAdminModelTests::suite());
         $suite->addTest(ComTimeclockAdminTableTests::suite());
-        $suite->addTest(ComTimeclockAdminViewTests::suite());
+        $suite->addTest(TimeclockAdminViewTests::suite());
         // Base class tests
         return $suite;
     }
