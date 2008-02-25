@@ -24,10 +24,7 @@
         <filename>models/index.html</filename>
         <filename>images/index.html</filename>
         <filename>images/HUGgrowingIdeas_Icon.gif</filename>
-        <filename>tables/timeclockcustomers.php</filename>
-        <filename>tables/timeclockprojects.php</filename>
         <filename>tables/timeclocktimesheet.php</filename>
-        <filename>tables/timeclockusers.php</filename>
         <filename>tables/index.html</filename>
         <filename>LICENSE.TXT</filename>
     </files>
@@ -67,6 +64,9 @@
             <filename>views/about/tmpl/index.html</filename>
             <filename>views/about/tmpl/default.php</filename>
             <filename>views/about/view.html.php</filename>
+            <filename>tables/timeclockcustomers.php</filename>
+            <filename>tables/timeclockprojects.php</filename>
+            <filename>tables/timeclockusers.php</filename>
         </files>  
     </administration>
 </install>
