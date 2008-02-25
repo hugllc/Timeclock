@@ -70,6 +70,7 @@ class TimeclockAdminController extends JController
      */
     function config()
     {
+        JRequest::setVar('view', 'config');
         parent::display();
     }
 }

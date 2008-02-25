@@ -34,8 +34,8 @@
  */
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JViewTest.php';
-require_once dirname(__FILE__).'/../../../admin/views/timeclockadmin/view.html.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelTest.php';
+require_once dirname(__FILE__).'/../../../admin/models/config.php';
 
 /**
  * Test class for driver.
@@ -49,7 +49,7 @@ require_once dirname(__FILE__).'/../../../admin/views/timeclockadmin/view.html.p
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminViewTimeclockAdminTest extends JViewTest
+class ComTimeclockAdminModelConfigTest extends JModelTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -61,10 +61,7 @@ class ComTimeclockAdminViewTimeclockAdminTest extends JViewTest
      */
     protected function setUp() 
     {
-        $this->sqlFile = array(
-            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
-        );
-        $this->o = new TimeclockAdminViewTimeclockAdmin();
+        $this->o = new TimeclockAdminModelConfig();        
         parent::setUp();
     }
 
@@ -81,15 +78,15 @@ class ComTimeclockAdminViewTimeclockAdminTest extends JViewTest
         parent::tearDown();
         unset($this->o);
     }
+
     /**
      * Data provider
      *
      * @return array
      */
-    public static function dataDisplay()
+    public static function dataGetDataCache()
     {
         return array(
-            array("display", null),
         );
     }
 

@@ -88,7 +88,7 @@ class ComTimeclockAdminControllerTest extends JControllerTest
     public static function dataDisplay()
     {
         return array(
-            array("config", null),
+            array("config", array("view" => "config")),
             array("display", array("view" => "about")),
         );
     }
