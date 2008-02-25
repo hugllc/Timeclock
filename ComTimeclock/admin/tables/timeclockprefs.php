@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class TableComTimeclockPrefs extends JTable
+class TableTimeclockPrefs extends JTable
 {
     /**
      * Primary Key

@@ -35,7 +35,7 @@
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
 require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JTableTest.php';
-require_once dirname(__FILE__).'/../../../admin/tables/timeclockprefs.php';
+require_once dirname(__FILE__).'/../../../admin/tables/timeclockusers.php';
 
 /**
  * Test class for driver.
@@ -49,10 +49,10 @@ require_once dirname(__FILE__).'/../../../admin/tables/timeclockprefs.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminTablesPrefsTest extends JTableTest
+class ComTimeclockAdminTablesUsersTest extends JTableTest
 {
     /** @var string The table we should be using */
-    public $table = "#__timeclock_prefs";
+    public $table = "#__timeclock_users";
     /** @var the Id string */
     public $id = "id";
 
@@ -67,12 +67,12 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     protected function setUp() 
     {
         $this->sqlFile = array(
-            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+            dirname(__FILE__)."/../../../install/timeclock_users.sql",
         );
         parent::setUp();
-        $this->_db->setQuery("DELETE FROM #__timeclock_prefs");
+        $this->_db->setQuery("DELETE FROM #__timeclock_users");
         $this->_db->query();
-        $this->o = new TableTimeclockPrefs($this->_db);
+        $this->o = new TableTimeclockUsers($this->_db);
     }
 
     /**
@@ -96,37 +96,8 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     public static function dataConstruct()
     {
         return array(
-            array("#__timeclock_prefs", "id", null),
+            array("#__timeclock_users", "id", null),
         );
-    }
-
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataEncodeDecode()
-    {
-        return array(
-            array(array("Hello", "there")),
-            array(new stdClass()),
-            array("Hello"),
-            array(1),
-        );
-    }
-    /**
-     * This tests the encode and decode parameters
-     *
-     * @param mixed $sample The sample to encode and decode
-     *
-     * @dataProvider dataEncodeDecode()
-     * @return null
-     */
-    function testEncodeDecode($sample)
-    {
-        $encode = $this->o->encode($sample);
-        $decode = $this->o->decode($encode);
-        $this->assertEquals($sample, $decode);
     }
     /**
      * Data provider
@@ -136,16 +107,6 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     public static function dataStore()
     {
         return array(
-            array(
-                array(
-                    "id" => 12,
-                    "prefs" => array(1,2,3,4),
-                ), 
-                array(
-                    "id" => 12,
-                    "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo0O30=",                
-                ),
-            ),
         );
     }
 
@@ -157,19 +118,6 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     public static function dataLoad()
     {
         return array(
-            array(
-                array(
-                    15 => array(
-                        "id" => 15,
-                        "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo0O30=",
-                    ),
-                ),
-                15,
-                array(
-                    "id" => 15,
-                    "prefs" => array(1,2,3,4),
-                ), 
-            ),
         );
     }
 

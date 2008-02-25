@@ -125,7 +125,7 @@ class TableTimeclockProjects extends JTable
      */
     function __construct(&$db)
     {
-        parent::__construct('#__timeclock_prefs', "id", $db);
+        parent::__construct('#__timeclock_projects', "id", $db);
     }
     
 }

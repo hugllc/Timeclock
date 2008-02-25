@@ -62,7 +62,7 @@ class TimeclockAdminModelTimeclockAdmin extends JModel
      */
     function getData()
     {
-        $row = $this->getTable("ComTimeclockprefs");
+        $row = $this->getTable("TimeclockPrefs");
         $row->load($this->_id);
         return $row;
     }
@@ -74,7 +74,7 @@ class TimeclockAdminModelTimeclockAdmin extends JModel
      */
     function store()
     {
-        $row =& $this->getTable("ComTimeclockprefs"); 
+        $row =& $this->getTable("TimeclockPrefs"); 
         $data = JRequest::get('post');
         if (!is_array($data["prefs"])) return false;
 
