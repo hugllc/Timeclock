@@ -35,7 +35,7 @@
  */
 /** This sets the main function to run */
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'ComTimeclockTests::main');
+    define('PHPUnit_MAIN_METHOD', 'TimeclockTests::main');
 }
 
 require_once 'PHPUnit/Framework.php';
@@ -46,19 +46,37 @@ require_once 'ComTimeclock/test/ComTimeclockTests.php';
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
+ *
+ * @category   Test
+ * @package    HUGnet
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class TimeclockTests
 {
+    /**
+     * Main function
+     *
+     * @return null
+     */
     public static function main()
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
  
+    /**
+     * Suite function
+     *
+     * @return null
+     */
     public static function suite()
     {
         PHPUnit_Util_Filter::addFileToFilter(__FILE__);
     
-        $suite = new PHPUnit_Framework_TestSuite('AllHUGnetTests');
+        $suite = new PHPUnit_Framework_TestSuite('AllTimeclockTests');
 
         $suite->addTest(ComTimeclockTests::suite());
  
@@ -66,7 +84,7 @@ class TimeclockTests
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'ComTimeclockTests::main') {
+if (PHPUnit_MAIN_METHOD == 'TimeclockTests::main') {
     HUGnetTests::main();
 }
 ?>

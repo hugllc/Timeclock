@@ -46,8 +46,8 @@ jimport("joomla.html.pane");
 ?>
     <table class="admintable">
 <?php
-    for ($i = 0; $i < 3; $i++) {
-?>
+for ($i = 0; $i < 3; $i++) {
+    ?>
         <tr>
             <td class="key">
                     <?php echo JText::_('Server')." $i"; ?>            
@@ -60,7 +60,7 @@ jimport("joomla.html.pane");
                 </label>
             </td>
             <td>
-                <input class="text_area" type="text" name="prefs[servers][<?php print $i; ?>][host]" id="prefs_servers_<?php print $i; ?>_host" size="32" maxlength="250" value="<?php echo $this->prefs[servers][$i]["host"];?>" />
+                <input class="text_area" type="text" name="prefs[servers][<?php print $i; ?>][host]" id="prefs_servers_<?php print $i; ?>_host" size="32" maxlength="250" value="<?php echo $this->prefs["servers"][$i]["host"];?>" />
             </td>
             <td>
                 The ComTimeclock database server to use
@@ -73,7 +73,7 @@ jimport("joomla.html.pane");
                 </label>
             </td>
             <td>
-                <input class="text_area" type="text" name="prefs[servers][<?php print $i; ?>][user]" id="prefs_servers_<?php print $i; ?>_user" size="32" maxlength="250" value="<?php echo $this->prefs[servers][$i]["user"];?>" />
+                <input class="text_area" type="text" name="prefs[servers][<?php print $i; ?>][user]" id="prefs_servers_<?php print $i; ?>_user" size="32" maxlength="250" value="<?php echo $this->prefs["servers"][$i]["user"];?>" />
             </td>
             <td>
                 The ComTimeclock database user
@@ -86,14 +86,14 @@ jimport("joomla.html.pane");
                 </label>
             </td>
             <td>
-                <input class="text_area" type="password" name="prefs[servers][<?php print $i; ?>][password]" id="prefs_servers_<?php print $i; ?>_password" size="32" maxlength="250" value="<?php echo $this->prefs[servers][$i]["password"];?>" />
+                <input class="text_area" type="password" name="prefs[servers][<?php print $i; ?>][password]" id="prefs_servers_<?php print $i; ?>_password" size="32" maxlength="250" value="<?php echo $this->prefs["servers"][$i]["password"];?>" />
             </td>
             <td>
                 The ComTimeclock database password
             </td>
         </tr>
-<?php
-    }
+    <?php
+}
 ?>
     </table>
 <?php

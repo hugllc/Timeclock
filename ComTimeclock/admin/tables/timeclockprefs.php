@@ -180,8 +180,8 @@ class TableTimeclockPrefs extends JTable
     /**
      * Gets preferences
      *
-     * @param string $name  The name of the pref to get
-     * @param string $type  The type of param to get
+     * @param string $name The name of the pref to get
+     * @param string $type The type of param to get
      *
      * @return mixed The value of the parameter.
      */
