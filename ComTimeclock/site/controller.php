@@ -49,7 +49,7 @@ jimport('joomla.application.component.controller');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class ComTimeclockController extends JController
+class TimeclockController extends JController
 {
     /**
      * Method to display the view

@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_Preferences is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
  * 
  * This program is free software; you can redistribute it and/or
@@ -26,47 +26,81 @@
  *
  * @category   UI
  * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-
 /**
- * HTML View class for the ComTimeclockWorld Component
+ * Preferences table
  *
  * @category   UI
  * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-
-class TimeclockViewComTimeclock extends JView
+class TableTimeclockTimesheet extends JTable
 {
     /**
-     * The display function
+     * Primary Key
      *
-     * @param string $tpl The template to use
-     *
-     * @return null
+     * @var int
      */
-    function display($tpl = null)
+    public $id = null;
+
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $project_id = 0;
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $user_id = 0;
+    /**
+     * Variable
+     *
+     * @var float
+     */
+    public $hours = 0;
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $Date = '';
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $insertDate= '';
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $notes = '';
+
+    /**
+     * Constructor
+     *
+     * @param object &$db Database connector object
+     */
+    function __construct(&$db)
     {
-        $model =& $this->getModel();
-        $greeting = $model->getGateways();
-        $this->assignRef('greeting', $greeting);
-
-        parent::display($tpl);
+        parent::__construct('#__timeclock_timesheet', "id", $db);
     }
-}
 
-?>
+}

@@ -49,7 +49,7 @@ jimport('joomla.application.component.model');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class ComTimeclockModelComTimeclock extends JModel
+class TimeclockModelComTimeclock extends JModel
 {
     /**
      * Method to display the view

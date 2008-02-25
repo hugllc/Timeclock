@@ -39,11 +39,8 @@ defined('_JEXEC') or die('Restricted access');
 /** Get the component stuff */
 require_once JPATH_COMPONENT.DS.'controller.php';
 
-// Include the ComTimeclock stuff
-require_once JPATH_COMPONENT_SITE.DS.'includes'.DS.'ComTimeclock.php';
-
 // This loads the prefs table file.
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'ComTimeclockprefs.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'timeclockprefs.php';
 
 if ($controller = JRequest::getWord('controller')) {
     $path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
@@ -55,7 +52,7 @@ if ($controller = JRequest::getWord('controller')) {
 }
 
 // Create the controller
-$classname  = 'ComTimeclockController'.$controller;
+$classname  = 'TimeclockController'.$controller;
 $controller = new $classname();
 
 // Perform the Request task
