@@ -63,15 +63,15 @@ class TimeclockAdminViewProject extends JView
     {
         $row = $this->get("Data");
 
-        $model = $this->getModel();
+        $model = $this->getModel("Project");
         
         $user = JFactory::getUser();
         
-        $cid = JRequest::getVar('cid',  0, '', 'array');
+        $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'
         if ($row->isCheckedOut($user->get('id'))) {
-                $msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'The poll' ), $poll->title );
-                $this->setRedirect( 'index.php?option=com_timeclock&controller=projects', $msg );
+                $msg = JText::sprintf('DESCBEINGEDITTED', JText::_('The poll'), $poll->title);
+                $this->setRedirect('index.php?option=com_timeclock&controller=projects', $msg);
         }
         $model->checkout($user->get("id"), $cid[0]);
         
@@ -97,7 +97,7 @@ class TimeclockAdminViewProject extends JView
         $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");        
         $wCompCodeOptions = array();
         foreach ($wCompCodes as $code => $desc) {
-           $wCompCodeOptions[] = JHTML::_("select.option", $code, $code.": ".htmlspecialchars($desc));
+            $wCompCodeOptions[] = JHTML::_("select.option", $code, $code.": ".htmlspecialchars($desc));
         }
                 
         $this->assignRef("wCompCodeOptions", $wCompCodeOptions);

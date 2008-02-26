@@ -77,7 +77,7 @@ class TimeclockAdminControllerProject extends JController
         } else {
             $msg = JText::_('Error Saving Project');
         }
-        $id = JRequest::getVar('id',  0, '', 'int');
+        $id = JRequest::getVar('id', 0, '', 'int');
         $link = 'index.php?option=com_timeclock&controller=project&task=edit&cid[]='.$id;
         $this->setRedirect($link, $msg);
     
@@ -97,7 +97,7 @@ class TimeclockAdminControllerProject extends JController
         } else {
             $msg = JText::_('Error Saving Project');
         }
-        $id = JRequest::getVar('id',  0, '', 'int');
+        $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
         $link = 'index.php?option=com_timeclock&controller=projects';
         $this->setRedirect($link, $msg);
@@ -112,7 +112,7 @@ class TimeclockAdminControllerProject extends JController
     function cancel()
     {
         $model = $this->getModel("Project");
-        $cid = JRequest::getVar('cid',  0, '', 'array');
+        $cid = JRequest::getVar('cid', 0, '', 'array');
         $model->checkin($cid[0]);
         $link = 'index.php?option=com_timeclock&controller=projects';
         $this->setRedirect($link, $msg);

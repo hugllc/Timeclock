@@ -54,10 +54,10 @@ JToolBarHelper::addNewX();
         <thead>
                 <tr>
                         <th width="5">
-                                <?php echo JText::_( 'Id' ); ?>
+                                <?php echo JText::_('Id'); ?>
                         </th>
                         <th width="20">
-                                <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" />
+                                <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
                         </th>
                         <th  class="title">
                             <?php echo JText::_("Name"); ?>
@@ -94,14 +94,13 @@ JToolBarHelper::addNewX();
         <tbody>
         <?php
         $k = 0;
-        for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
-        {
+        for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 $row = &$this->rows[$i];
 
                 $link           = JRoute::_('index.php?option=com_timeclock&controller=project&cid[]='. $row->id);
 
-                $checked        = JHTML::_('grid.checkedout',   $row, $i );
-                $published      = JHTML::_('grid.published', $row, $i );
+                $checked        = JHTML::_('grid.checkedout', $row, $i);
+                $published      = JHTML::_('grid.published', $row, $i);
                 $name           = ($row->parent_id == 0) ? $row->name : $row->parentname.": ".$row->name;
                 
         ?>
@@ -117,7 +116,7 @@ JToolBarHelper::addNewX();
                                 echo $name;
                         } else {
                                 ?>
-                                <span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Project' );?>::<?php echo $name; ?>">
+                                <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $name; ?>">
                                 <a href="<?php echo $link  ?>">
                                         <?php echo $name; ?></a></span>
                                 <?php

@@ -224,7 +224,7 @@ class TableTimeclockPrefs extends JTable
         $function = "filterPref".ucfirst($name);
 
         $methods = get_class_methods("TableTimeclockPrefs");
-        if (array_search($function, $methods) !== FALSE) {
+        if (array_search($function, $methods) !== false) {
             return self::$function($value);
         }
         return $value;

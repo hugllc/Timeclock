@@ -62,7 +62,7 @@ class TimeclockAdminModelProjects extends JModel
     {
         parent::__construct();
     
-        $array = JRequest::getVar('cid',  0, '', 'array');
+        $array = JRequest::getVar('cid', 0, '', 'array');
         $this->setId($array);
     }
     /**

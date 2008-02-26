@@ -62,7 +62,7 @@ class TimeclockAdminModelProject extends JModel
     {
         parent::__construct();
     
-        $array = JRequest::getVar('cid',  0, '', 'array');
+        $array = JRequest::getVar('cid', 0, '', 'array');
         $this->setId($array);
     }
     /**
@@ -163,6 +163,7 @@ class TimeclockAdminModelProject extends JModel
         if (empty($this->_parents[$id])) {
             $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND status='ACTIVE' AND (type='PROJECT' OR type='UMBRELLA') ORDER BY id asc";
             $parentList = $this->_getList($query);
+            if (!is_array($parentList)) return $parents;
             foreach ($parentList as $val) {
                 $parents[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
             }

@@ -43,7 +43,7 @@ JToolBarHelper::title(JText::_("Project: <small><small>[ ".$title." ]</small></s
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
-JRequest::setVar( 'hidemainmenu', 1 );
+JRequest::setVar('hidemainmenu', 1);
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">

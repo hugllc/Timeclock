@@ -61,7 +61,7 @@ class TimeclockAdminViewProjects extends JView
      */
     function display($tpl = null)
     {
-       global $mainframe;
+        global $mainframe;
         $model = $this->getModel("Projects");
         $limit          = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
         $limitstart     = $mainframe->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
