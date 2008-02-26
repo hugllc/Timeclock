@@ -97,7 +97,7 @@ JToolBarHelper::addNewX();
         for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 $row = &$this->rows[$i];
 
-                $link           = JRoute::_('index.php?option=com_timeclock&controller=project&cid[]='. $row->id);
+                $link           = JRoute::_('index.php?option=com_timeclock&controller=projects&task=edit&cid[]='. $row->id);
 
                 $checked        = JHTML::_('grid.checkedout', $row, $i);
                 $published      = JHTML::_('grid.published', $row, $i);

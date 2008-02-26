@@ -61,11 +61,12 @@ class TimeclockAdminViewProject extends JView
      */
     function display($tpl = null)
     {
+        $model =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        // Set this as the default model
+        $this->setModel($model, true);
         $row = $this->get("Data");
 
-        $model = $this->getModel("Project");
-        
-        $user = JFactory::getUser();
+        $user =& JFactory::getUser();
         
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'

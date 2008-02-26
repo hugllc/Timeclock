@@ -38,6 +38,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
+
+require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
+
 /**
  * ComTimeclock World Component Controller
  *
@@ -70,48 +73,11 @@ class TimeclockAdminControllerProjects extends JController
      */
     function edit()
     {
+        JRequest::setVar('model', 'projects');
         JRequest::setVar('view', 'project');
+        JRequest::setVar('layout', 'form');
+        JRequest::setVar('hidemainmenu', 1);
         parent::display();
-    }
-    /**
-     * save a record (and redirect to main page)
-     *
-     * @return void
-     */
-    function apply()
-    {
-        $model = $this->getModel("Project");
-    
-        if ($model->store()) {
-            $msg = JText::_('Project Saved!');
-        } else {
-            $msg = JText::_('Error Saving Project');
-        }
-        $cid = JRequest::getVar('cid', 0, '', 'array');
-        $link = 'index.php?option=com_timeclock&controller=project&task=edit&cid[]='.$cid[0];
-        $this->setRedirect($link, $msg);
-    
-    }
-
-    /**
-     * save a record (and redirect to main page)
-     *
-     * @return void
-     */
-    function save()
-    {
-        $model = $this->getModel("Project");
-    
-        if ($model->store()) {
-            $msg = JText::_('Project Saved!');
-        } else {
-            $msg = JText::_('Error Saving Project');
-        }
-        $cid = JRequest::getVar('cid', 0, '', 'array');
-        $model->checkin($cid[0]);
-        $link = 'index.php?option=com_timeclock&controller=project';
-        $this->setRedirect($link, $msg);
-    
     }
 
     /**
@@ -143,6 +109,62 @@ class TimeclockAdminControllerProjects extends JController
         $model->publish(0, $user->get("id"));
         $link = 'index.php?option=com_timeclock&controller=projects';
         $this->setRedirect($link);
+    
+    }
+
+    /**
+     * save a record (and redirect to main page)
+     *
+     * @return void
+     */
+    function apply()
+    {
+        $model = $this->getModel("Projects");
+    
+        if ($model->store()) {
+            $msg = JText::_('Project Saved!');
+        } else {
+            $msg = JText::_('Error Saving Project');
+        }
+        $id = JRequest::getVar('id', 0, '', 'int');
+        $link = 'index.php?option=com_timeclock&controller=projects&task=edit&cid[]='.$id;
+        $this->setRedirect($link, $msg);
+    
+    }
+
+    /**
+     * save a record (and redirect to main page)
+     *
+     * @return void
+     */
+    function save()
+    {
+        $model = $this->getModel("Projects");
+    
+        if ($model->store()) {
+            $msg = JText::_('Project Saved!');
+        } else {
+            $msg = JText::_('Error Saving Project');
+        }
+        $id = JRequest::getVar('id', 0, '', 'int');
+        $model->checkin($id);
+        $link = 'index.php?option=com_timeclock&controller=projects';
+        $this->setRedirect($link, $msg);
+    
+    }
+
+    /**
+     * save a record (and redirect to main page)
+     *
+     * @return void
+     */
+    function cancel()
+    {
+        $model = $this->getModel("Project");
+        $cid = JRequest::getVar('cid', 0, '', 'array');
+        $model->checkin($cid[0]);
+        $link = 'index.php?option=com_timeclock&controller=projects';
+        $this->setRedirect($link, $msg);
     
     }
 

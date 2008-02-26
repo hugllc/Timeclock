@@ -160,5 +160,5 @@ JToolBarHelper::cancel();
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="id" value="<?php print $this->row->id; ?>" />
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="project" />
+<input type="hidden" name="controller" value="projects" />
 </form>

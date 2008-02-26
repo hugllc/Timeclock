@@ -163,6 +163,79 @@ class TimeclockAdminModelProjects extends JModel
         return $table->checkout($who, $oid);
     }
 
+
+    /**
+     * Method to store a record
+     *
+     * @access    public
+     * @return    boolean    True on success
+     */
+    function store()
+    {
+        $row =& $this->getTable("TimeclockProjects"); 
+        $data = JRequest::get('post');
+        
+        // Bind the form fields to the hello table
+        if (!$row->bind($data)) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+        // Make sure the record is valid
+        if (!$row->check()) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    
+        // Store the web link table to the database
+        if (!$row->store()) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    
+        return true;
+    }
+
+
+    /**
+     * Gets select options for parent projects
+     *
+     * @param int $id       The Id of the item to get the parent for
+     * @param int $selected The Id of the item to be selected
+     *
+     * @return array
+     */
+    function getParentOptions($id, $selected=0)
+    {
+        $parents = array(JHTML::_("select.option", 0, "None"));
+        if ($this->countParents($id) > 0) return $parents;
+        if (empty($this->_parents[$id])) {
+            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND status='ACTIVE' AND (type='PROJECT' OR type='UMBRELLA') ORDER BY id asc";
+            $parentList = $this->_getList($query);
+            if (!is_array($parentList)) return $parents;
+            foreach ($parentList as $val) {
+                $parents[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
+            }
+            $this->_parents[$id] = $parents;
+        }
+        return $this->_parents[$id];
+    }
+
+    /**
+     * Method to display the view
+     *
+     * @param int $id The Id of the item to get the parent for
+     *
+     * @return string
+     */
+    function countParents($id)
+    {
+        if (empty($this->_parentCount[$id])) {
+            $query = "select * from #__timeclock_projects where parent_id=".(int)$id;
+            $this->_projectCount[$id] = $this->_getListCount($query);
+        }
+        return $this->_projectCount[$id];
+    }
+
 }
 
 ?>

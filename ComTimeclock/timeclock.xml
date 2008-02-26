@@ -53,11 +53,9 @@
             <filename>tables/timeclockprefs.php</filename>
             <filename>controllers/index.html</filename>
             <filename>controllers/config.php</filename>
-            <filename>controllers/project.php</filename>
             <filename>controllers/projects.php</filename>
             <filename>models/index.html</filename>
             <filename>models/config.php</filename>
-            <filename>models/project.php</filename>
             <filename>models/projects.php</filename>
             <filename>views/index.html</filename>
             <filename>views/config/index.html</filename>
@@ -71,6 +69,7 @@
             <filename>views/project/index.html</filename>
             <filename>views/project/tmpl/index.html</filename>
             <filename>views/project/tmpl/default.php</filename>
+            <filename>views/project/tmpl/form.php</filename>
             <filename>views/project/view.html.php</filename>
             <filename>views/projects/index.html</filename>
             <filename>views/projects/tmpl/index.html</filename>
