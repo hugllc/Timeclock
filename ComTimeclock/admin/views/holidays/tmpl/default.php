@@ -75,10 +75,10 @@ JToolBarHelper::addNewX();
                             <?php echo JHTML::_('grid.sort',   'Notes', 't.notes', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort',   'Created', 't.created', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort',   'Worked', 't.worked', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort',   'Worked', 't.worked', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort',   'Created', 't.created', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
                         </th>
                         <th width="1%" align="center">
                             <?php echo JHTML::_('grid.sort',   'Hours', 't.hours', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
@@ -128,10 +128,10 @@ JToolBarHelper::addNewX();
                         ?>
                         </td>
                         <td align="center">
-                                <?php echo $row->created; ?>
+                                <?php echo $row->worked; ?>
                         </td>
                         <td align="center">
-                                <?php echo $row->worked; ?>
+                                <?php echo $row->created; ?>
                         </td>
                         <td align="center">
                                 <?php echo $row->hours; ?>
