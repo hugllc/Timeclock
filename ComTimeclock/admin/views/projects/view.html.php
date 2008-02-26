@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewConfig extends JView
+class TimeclockAdminViewProjects extends JView
 {
     /**
      * The display function
@@ -61,20 +61,23 @@ class TimeclockAdminViewConfig extends JView
      */
     function display($tpl = null)
     {
-        $row = $this->get("Data");
-        // Merge in the defaults in case they have changed.
-        $defaults = $row->getDefaults("system");
-        $row->prefs = array_merge($defaults, $row->prefs);
-        
-        JToolBarHelper::title(JText::_('Timeclock Preferences'));
-        JToolBarHelper::save();
-        
-        $payPeriodTypeOptions = array(
-            JHTML::_("select.option", "FIXED", "Fixed"),
-        );
+       global $mainframe;
+        $model = $this->getModel("Projects");
+        $limit          = $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
+        $limitstart     = $mainframe->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
 
-        $this->assignRef("payPeriodTypeOptions", $payPeriodTypeOptions);
-        $this->assignRef("prefs", $row->prefs);
+        $rows = $model->getProjects($limitstart, $limit);
+        $total = $model->countProjects();
+
+        jimport('joomla.html.pagination');
+        $pagination = new JPagination( $total, $limitstart, $limit );
+        
+        $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");        
+
+        $this->assignRef("wCompCodes", $wCompCodes);
+        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("rows", $rows);
+        $this->assignRef("pagination",  $pagination);
         parent::display($tpl);
     }
 }

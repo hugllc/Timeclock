@@ -68,13 +68,13 @@ class TableTimeclockPrefs extends JTable
      */
     private static $_defaults = array(
         "system" => array(
-            "db_server" => "",
-            "db_user" => "",
-            "db_password" => "",
-            "db_name" => "ComTimeclock",
-            "db_type" => "mysql",
-            "gateways" => "",
             "decimalPlaces" => 2,
+            "maxDailyHours" => 24,
+            "firstPayPeriodStart" => "2000-12-11",
+            "payPeriodType" => "FIXED",
+            "payPeriodLength" => 14,
+            "wCompEnable" => 0,
+            "wCompCodes" => '',
         ),
         "user" => array(
         ),
@@ -199,15 +199,56 @@ class TableTimeclockPrefs extends JTable
         }        
         
         if (empty($instance[$type])) {
-            $instance[$type] = JTable::getInstance("ComTimeclockPrefs", "Table");
+            $instance[$type] = JTable::getInstance("TimeclockPrefs", "Table");
             $instance[$type]->load($oid);
         }
-        if (isset($instance[$type]->prefs[$name])) return $instance[$type]->prefs[$name];
-        if (isset(self::$_defaults[$type][$name])) return self::$_defaults[$type][$name];
+        if (isset($instance[$type]->prefs[$name])) return self::filterPref($name, $instance[$type]->prefs[$name]);
+        if (isset(self::$_defaults[$type][$name])) return self::filterPref($name, self::$_defaults[$type][$name]);
         if ($type != "system") return self::getPref($name, "system");
-        return null;
+        return self::filterPref($name, null);
     }
 
+
+    /**
+     * Filter a pref
+     *
+     * @param string $name  The name of the pref to filter
+     * @param mixed  $value The value to filter
+     *
+     * @return mixed Filtered value
+     */
+    function filterPref($name, $value)
+    {
+        // Protect it from calling itself.
+        if (empty($name)) return $value;
+        $function = "filterPref".ucfirst($name);
+
+        $methods = get_class_methods("TableTimeclockPrefs");
+        if (array_search($function, $methods) !== FALSE) {
+            return self::$function($value);
+        }
+        return $value;
+    }
+
+    /**
+     * Filter
+     *
+     * @param string $value The string to parse
+     *
+     * @return array
+     */
+    function filterPrefWCompCodes($value)
+    {
+        $ret = array();
+        $v = explode("\n", $value);
+        foreach ($v as $line) {
+            $line = trim($line);
+            $key = substr($line, 0, 4);
+            $val = substr($line, 4);
+            $ret[$key] = $val;
+        }
+        return $ret;
+    }
     /**
      * Sets preferences
      *

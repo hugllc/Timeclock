@@ -49,7 +49,7 @@ jimport('joomla.application.component.controller');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminControllerConfig extends JController
+class TimeclockAdminControllerProjects extends JController
 {
     /**
      * Method to display the view
@@ -59,7 +59,18 @@ class TimeclockAdminControllerConfig extends JController
      */
     function display()
     {
-        JRequest::setVar('view', 'config');
+        JRequest::setVar('view', 'projects');
+        parent::display();
+    }
+    /**
+     * Method to display the view
+     *
+     * @access public
+     * @return null
+     */
+    function edit()
+    {
+        JRequest::setVar('view', 'project');
         parent::display();
     }
     /**
@@ -67,19 +78,74 @@ class TimeclockAdminControllerConfig extends JController
      *
      * @return void
      */
-    function save()
+    function apply()
     {
-        $model = $this->getModel("Config");
+        $model = $this->getModel("Project");
     
         if ($model->store()) {
-            $msg = JText::_('Preferences Saved!');
+            $msg = JText::_('Project Saved!');
         } else {
-            $msg = JText::_('Error Saving Preferences');
+            $msg = JText::_('Error Saving Project');
         }
-        $link = 'index.php?option=com_timeclock&controller=config';
+        $cid = JRequest::getVar('cid',  0, '', 'array');
+        $link = 'index.php?option=com_timeclock&controller=project&task=edit&cid[]='.$cid[0];
         $this->setRedirect($link, $msg);
     
     }
+
+    /**
+     * save a record (and redirect to main page)
+     *
+     * @return void
+     */
+    function save()
+    {
+        $model = $this->getModel("Project");
+    
+        if ($model->store()) {
+            $msg = JText::_('Project Saved!');
+        } else {
+            $msg = JText::_('Error Saving Project');
+        }
+        $cid = JRequest::getVar('cid',  0, '', 'array');
+        $model->checkin($cid[0]);
+        $link = 'index.php?option=com_timeclock&controller=project';
+        $this->setRedirect($link, $msg);
+    
+    }
+
+    /**
+     * Publishes an item
+     *
+     * @return void
+     */
+    function publish()
+    {
+        $model = $this->getModel("Projects");
+        $user = JFactory::getUser();
+
+        $model->publish(1, $user->get("id"));
+        $link = 'index.php?option=com_timeclock&controller=projects';
+        $this->setRedirect($link);
+    
+    }
+
+    /**
+     * unpublishes an item
+     *
+     * @return void
+     */
+    function unpublish()
+    {
+        $model = $this->getModel("Projects");
+        $user = JFactory::getUser();
+
+        $model->publish(0, $user->get("id"));
+        $link = 'index.php?option=com_timeclock&controller=projects';
+        $this->setRedirect($link);
+    
+    }
+
 }
 
 ?>

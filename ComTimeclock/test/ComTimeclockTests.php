@@ -40,6 +40,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 /** JoomlaMock stuff */
 require_once "JoomlaMock/joomla.php";
 require_once "JoomlaMock/mocks/JTable.php";
+require_once "JoomlaMock/mocks/JHTML.php";
 
 $dir = dirname(__FILE__);
 $dir = substr($dir, 0, strlen($dir) - 5);

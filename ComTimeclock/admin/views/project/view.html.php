@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewConfig extends JView
+class TimeclockAdminViewProject extends JView
 {
     /**
      * The display function
@@ -62,21 +62,53 @@ class TimeclockAdminViewConfig extends JView
     function display($tpl = null)
     {
         $row = $this->get("Data");
-        // Merge in the defaults in case they have changed.
-        $defaults = $row->getDefaults("system");
-        $row->prefs = array_merge($defaults, $row->prefs);
+
+        $model = $this->getModel();
         
-        JToolBarHelper::title(JText::_('Timeclock Preferences'));
-        JToolBarHelper::save();
+        $user = JFactory::getUser();
         
-        $payPeriodTypeOptions = array(
-            JHTML::_("select.option", "FIXED", "Fixed"),
+        $cid = JRequest::getVar('cid',  0, '', 'array');
+        // fail if checked out not by 'me'
+        if ($row->isCheckedOut($user->get('id'))) {
+                $msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'The poll' ), $poll->title );
+                $this->setRedirect( 'index.php?option=com_timeclock&controller=projects', $msg );
+        }
+        $model->checkout($user->get("id"), $cid[0]);
+        
+        $add = empty($row->id);
+
+        $statusOptions = array(
+            JHTML::_("select.option", "ACTIVE", "Active"),
+            JHTML::_("select.option", "DONE", "Done"),
+            JHTML::_("select.option", "HOLD", "Hold"),
+            JHTML::_("select.option", "SPECIAL", "Special"),
         );
 
-        $this->assignRef("payPeriodTypeOptions", $payPeriodTypeOptions);
-        $this->assignRef("prefs", $row->prefs);
+        $typeOptions = array(
+            JHTML::_("select.option", "PROJECT", "Project"),
+            JHTML::_("select.option", "UMBRELLA", "Umbrella"),
+            JHTML::_("select.option", "VACATION", "Vacation"),
+            JHTML::_("select.option", "SICK", "Sick"),
+            JHTML::_("select.option", "HOLIDAY", "Holiday"),
+            JHTML::_("select.option", "UNPAID", "Unpaid"),
+        );
+        $parentOptions = $model->getParentOptions($row->id, $row->parent_id);
+        
+        $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");        
+        $wCompCodeOptions = array();
+        foreach ($wCompCodes as $code => $desc) {
+           $wCompCodeOptions[] = JHTML::_("select.option", $code, $code.": ".htmlspecialchars($desc));
+        }
+                
+        $this->assignRef("wCompCodeOptions", $wCompCodeOptions);
+        $this->assignRef("parentOptions", $parentOptions);
+        $this->assignRef("typeOptions", $typeOptions);
+        $this->assignRef("statusOptions", $statusOptions);
+        $this->assignRef("add", $add);
+        $this->assignRef("row", $row);
         parent::display($tpl);
     }
+
 }
 
 ?>

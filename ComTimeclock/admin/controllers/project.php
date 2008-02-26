@@ -49,7 +49,7 @@ jimport('joomla.application.component.controller');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminControllerConfig extends JController
+class TimeclockAdminControllerProject extends JController
 {
     /**
      * Method to display the view
@@ -59,9 +59,30 @@ class TimeclockAdminControllerConfig extends JController
      */
     function display()
     {
-        JRequest::setVar('view', 'config');
+        JRequest::setVar('view', 'project');
         parent::display();
     }
+
+    /**
+     * save a record (and redirect to main page)
+     *
+     * @return void
+     */
+    function apply()
+    {
+        $model = $this->getModel("Project");
+    
+        if ($model->store()) {
+            $msg = JText::_('Project Saved!');
+        } else {
+            $msg = JText::_('Error Saving Project');
+        }
+        $id = JRequest::getVar('id',  0, '', 'int');
+        $link = 'index.php?option=com_timeclock&controller=project&task=edit&cid[]='.$id;
+        $this->setRedirect($link, $msg);
+    
+    }
+
     /**
      * save a record (and redirect to main page)
      *
@@ -69,17 +90,36 @@ class TimeclockAdminControllerConfig extends JController
      */
     function save()
     {
-        $model = $this->getModel("Config");
+        $model = $this->getModel("Project");
     
         if ($model->store()) {
-            $msg = JText::_('Preferences Saved!');
+            $msg = JText::_('Project Saved!');
         } else {
-            $msg = JText::_('Error Saving Preferences');
+            $msg = JText::_('Error Saving Project');
         }
-        $link = 'index.php?option=com_timeclock&controller=config';
+        $id = JRequest::getVar('id',  0, '', 'int');
+        $model->checkin($id);
+        $link = 'index.php?option=com_timeclock&controller=projects';
         $this->setRedirect($link, $msg);
     
     }
+
+    /**
+     * save a record (and redirect to main page)
+     *
+     * @return void
+     */
+    function cancel()
+    {
+        $model = $this->getModel("Project");
+        $cid = JRequest::getVar('cid',  0, '', 'array');
+        $model->checkin($cid[0]);
+        $link = 'index.php?option=com_timeclock&controller=projects';
+        $this->setRedirect($link, $msg);
+    
+    }
+
+
 }
 
 ?>
