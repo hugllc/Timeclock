@@ -81,6 +81,18 @@ class TimeclockAdminControllerProjects extends JController
     }
 
     /**
+     * redirects to a default url
+     *
+     * @return void
+     */
+    function reset($msg=null)
+    {
+        $link = 'index.php?option=com_timeclock&controller=projects';
+        $this->setRedirect($link, $msg);
+    
+    }
+
+    /**
      * Publishes an item
      *
      * @return void
@@ -91,9 +103,7 @@ class TimeclockAdminControllerProjects extends JController
         $user = JFactory::getUser();
 
         $model->publish(1, $user->get("id"));
-        $link = 'index.php?option=com_timeclock&controller=projects';
-        $this->setRedirect($link);
-    
+        $this->reset();    
     }
 
     /**
@@ -107,9 +117,7 @@ class TimeclockAdminControllerProjects extends JController
         $user = JFactory::getUser();
 
         $model->publish(0, $user->get("id"));
-        $link = 'index.php?option=com_timeclock&controller=projects';
-        $this->setRedirect($link);
-    
+        $this->reset();        
     }
 
     /**
@@ -148,8 +156,7 @@ class TimeclockAdminControllerProjects extends JController
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
-        $link = 'index.php?option=com_timeclock&controller=projects';
-        $this->setRedirect($link, $msg);
+        $this->reset();    
     
     }
 
@@ -160,11 +167,10 @@ class TimeclockAdminControllerProjects extends JController
      */
     function cancel()
     {
-        $model = $this->getModel("Project");
+        $model = $this->getModel("Projects");
         $cid = JRequest::getVar('cid', 0, '', 'array');
         $model->checkin($cid[0]);
-        $link = 'index.php?option=com_timeclock&controller=projects';
-        $this->setRedirect($link, $msg);
+        $this->reset();    
     
     }
 

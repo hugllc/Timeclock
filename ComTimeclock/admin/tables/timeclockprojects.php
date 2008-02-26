@@ -91,12 +91,6 @@ class TableTimeclockProjects extends JTable
      *
      * @var string
      */
-    public $status = 'ACTIVE';
-    /**
-     * Variable
-     *
-     * @var string
-     */
     public $type = 'PROJECT';
     /**
      * Variable

@@ -78,13 +78,6 @@ class TimeclockAdminViewProject extends JView
         
         $add = empty($row->id);
 
-        $statusOptions = array(
-            JHTML::_("select.option", "ACTIVE", "Active"),
-            JHTML::_("select.option", "DONE", "Done"),
-            JHTML::_("select.option", "HOLD", "Hold"),
-            JHTML::_("select.option", "SPECIAL", "Special"),
-        );
-
         $typeOptions = array(
             JHTML::_("select.option", "PROJECT", "Project"),
             JHTML::_("select.option", "UMBRELLA", "Umbrella"),
@@ -104,7 +97,6 @@ class TimeclockAdminViewProject extends JView
         $this->assignRef("wCompCodeOptions", $wCompCodeOptions);
         $this->assignRef("parentOptions", $parentOptions);
         $this->assignRef("typeOptions", $typeOptions);
-        $this->assignRef("statusOptions", $statusOptions);
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
         parent::display($tpl);

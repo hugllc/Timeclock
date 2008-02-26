@@ -53,6 +53,11 @@ class TimeclockAdminModelProjects extends JModel
 {
     /** The ID to load */
     private $_id = -1;
+    var $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name 
+                      FROM #__timeclock_projects AS t 
+                      LEFT JOIN #__timeclock_projects as p ON t.parent_id = p.id
+                      LEFT JOIN #__users as u ON t.created_by = u.id ";
+
     /**
      * Constructor that retrieves the ID from the request
      *
@@ -98,11 +103,13 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function getProjects($limitstart=null, $limit=null)
+    function getProjects($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         $key = (string)$limitstart.$limit;
         if (empty($this->_projects[$key])) {
-            $query = "select #__timeclock_projects.*, parents.name as parentname from #__timeclock_projects left join #__timeclock_projects as parents on #__timeclock_projects.parent_id = parents.id order by id asc";
+            $query = $this->_allQuery." "
+                     .$where." "
+                     .$orderby;
             $this->_projects[$key] = $this->_getList($query, $limitstart, $limit);
         }
         return $this->_projects[$key];
@@ -113,10 +120,10 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function countProjects()
+    function countProjects($where="")
     {
         if (empty($this->_projectCount)) {
-            $query = "select * from #__timeclock_projects order by id asc";
+            $query = $this->_allQuery." ".$where;
             $this->_projectCount = $this->_getListCount($query);
         }
         return $this->_projectCount;
@@ -209,7 +216,7 @@ class TimeclockAdminModelProjects extends JModel
         $parents = array(JHTML::_("select.option", 0, "None"));
         if ($this->countParents($id) > 0) return $parents;
         if (empty($this->_parents[$id])) {
-            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND status='ACTIVE' AND (type='PROJECT' OR type='UMBRELLA') ORDER BY id asc";
+            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND published=1 AND (type='PROJECT' OR type='UMBRELLA') ORDER BY id asc";
             $parentList = $this->_getList($query);
             if (!is_array($parentList)) return $parents;
             foreach ($parentList as $val) {

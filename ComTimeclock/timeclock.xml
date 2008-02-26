@@ -41,7 +41,11 @@
     <administration>
         <menu>Timeclock</menu>
         <submenu>
-            <menu task="config">Configure</menu>
+            <menu controller="config">Configure</menu>
+            <menu controller="users">Users</menu>
+            <menu controller="customers">Customers</menu>
+            <menu controller="projects">Projects</menu>
+            <menu controller="holidays">Holidays</menu>
             <menu task="about">About</menu>
         </submenu>
   

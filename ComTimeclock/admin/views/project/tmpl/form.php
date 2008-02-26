@@ -90,14 +90,14 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('Published'); ?>:
+                    <?php echo JText::_('Active'); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
-                Is this project research?
+                Is this project active?
             </td>
         </tr>
         <tr>
@@ -111,19 +111,6 @@ JToolBarHelper::cancel();
             </td>
             <td>
                 The type of project.
-            </td>
-        </tr>
-        <tr>
-            <td width="100" align="right" class="key">
-                <label for="status">
-                    <?php echo JText::_('Status'); ?>:
-                </label>
-            </td>
-            <td>
-                <?php print JHTML::_("select.genericList", $this->statusOptions, "status", "", 'value', 'text', $this->row->status); ?>
-            </td>
-            <td>
-                The status of the project
             </td>
         </tr>
         <tr>

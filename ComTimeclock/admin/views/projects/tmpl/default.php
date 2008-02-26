@@ -42,12 +42,26 @@ JHTML::_('behavior.tooltip');
 JToolBarHelper::title(JText::_('Timeclock Projects'));
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
-JToolBarHelper::deleteList();
 JToolBarHelper::editListX();
 JToolBarHelper::addNewX();
 
 ?>
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php?option=com_timeclock&controller=projects" method="post" name="adminForm">
+<table>
+        <tr>
+                <td align="left" width="100%">
+                        <?php echo JText::_('Filter'); ?>:
+                        <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+                        <?php echo JText::_('by'); ?>:
+                        <?php echo JHTML::_('select.genericlist', $this->lists['search_options'], 'search_filter', '', 'value', 'text', $this->lists['search_filter'], 'search_filter'); ?>
+                        <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
+                        <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+                </td>
+                <td nowrap="nowrap">
+                        <?php echo $this->lists['state']; ?>
+                </td>
+        </tr>
+</table>
 
 <div id="tablecell">
         <table class="adminlist">
@@ -63,13 +77,10 @@ JToolBarHelper::addNewX();
                             <?php echo JText::_("Name"); ?>
                         </th>
                         <th width="1%" align="center">
-                            <?php echo JText::_("Published"); ?>
-                        </th>
-                        <th width="5%" align="center">
-                            <?php echo JText::_("Status"); ?>
+                            <?php echo JText::_("Active"); ?>
                         </th>
                         <?php if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
-                        <th align="center">
+                        <th width="5%" align="center">
                             <?php echo JText::_("Worker's Comp"); ?>
                         </th>
                         <?php } ?>
@@ -102,7 +113,7 @@ JToolBarHelper::addNewX();
                 $checked        = JHTML::_('grid.checkedout', $row, $i);
                 $published      = JHTML::_('grid.published', $row, $i);
                 $name           = ($row->parent_id == 0) ? $row->name : $row->parentname.": ".$row->name;
-                
+                $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
         ?>
                 <tr class="<?php echo "row$k"; ?>">
                         <td>
@@ -126,9 +137,6 @@ JToolBarHelper::addNewX();
                         <td align="center">
                                 <?php echo $published;?>
                         </td>
-                        <td align="center">
-                                <?php echo $row->status; ?>
-                        </td>
                         <?php if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
                         <td align="center">
                                 <?php echo $row->wcCode;?>
@@ -141,7 +149,7 @@ JToolBarHelper::addNewX();
                                 <?php echo ($row->research == 0) ? "NO" : "YES"; ?>
                         </td>
                         <td align="center">
-                                <?php echo $row->created_by; ?>
+                                <?php echo $author; ?>
                         </td>
                 </tr>
                 <?php
@@ -158,6 +166,6 @@ JToolBarHelper::addNewX();
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="id" value="-1" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="task" value="" />
+<input type="hidden" name="task" id="task" value="" />
 <input type="hidden" name="controller" value="projects" />
 </form>
