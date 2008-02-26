@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewHoliday extends JView
+class TimeclockAdminViewUser extends JView
 {
     /**
      * The display function
@@ -61,7 +61,7 @@ class TimeclockAdminViewHoliday extends JView
      */
     function display($tpl = null)
     {
-        $model =& JModel::getInstance("Holidays", "TimeclockAdminModel");
+        $model =& JModel::getInstance("Users", "TimeclockAdminModel");
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");
@@ -69,17 +69,23 @@ class TimeclockAdminViewHoliday extends JView
         $user =& JFactory::getUser();
         
         $cid = JRequest::getVar('cid', 0, '', 'array');
-        // fail if checked out not by 'me'
-        if ($row->isCheckedOut($user->get('id'))) {
-                $msg = JText::sprintf('DESCBEINGEDITTED', JText::_('The poll'), $poll->title);
-                $this->setRedirect('index.php?option=com_timeclock&controller=holidayss', $msg);
-        }
-        $model->checkout($user->get("id"), $cid[0]);
+        if ($cid[0] < 1) $this->setRedirect('index.php?option=com_timeclock&controller=holidayss', "No User given!");
+
+        $user =& JFactory::getUser($cid[0]);
+        
         
         $add = empty($row->id);
 
-        $lists['projects'] = $model->projectOptions();
+        $lists["status"] = array(
+            JHTML::_("select.option", "FULLTIME", "Full Time"),
+            JHTML::_("select.option", "PARTTIME", "Part Time"),
+            JHTML::_("select.option", "CONTRACTOR", "Contractor"),
+            JHTML::_("select.option", "TEMPORARY", "Temporary"),
+            JHTML::_("select.option", "TERMINATED", "Terminated"),
+        );
 
+
+        $this->assignRef("user", $user);
         $this->assignRef("lists", $lists);
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);

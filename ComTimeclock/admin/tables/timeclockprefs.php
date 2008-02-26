@@ -260,13 +260,15 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function setPref($name, $value)
+    function setPref($name, $value, $oid=null)
     {
-        $u =& JFactory::getUser();
-        $oid = $u->id;
+        if (empty($oid)) {
+            $u =& JFactory::getUser();
+            $oid = $u->id;
+        }
         if (empty($oid)) return self::_prefCache($name, $value);
         
-        $p = JTable::getInstance("ComTimeclockPrefs", "Table");
+        $p = JTable::getInstance("TimeclockPrefs", "Table");
         $p->load($oid);
         $p->prefs[$name] = $value;
         return $p->store();
@@ -290,7 +292,7 @@ class TableTimeclockPrefs extends JTable
      */
     function _prefCache($name, $value = null)
     {
-        $prefs =& $_SESSION["ComTimeclockPrefs"];
+        $prefs =& $_SESSION["TimeclockPrefs"];
         if (is_null($value)) {
             if (isset($prefs[$name])) return $prefs[$name];
             if (isset(self::$_defaults["user"][$name])) return self::$_defaults["user"][$name];
