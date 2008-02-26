@@ -62,6 +62,8 @@ class TimeclockAdminViewUser extends JView
     function display($tpl = null)
     {
         $model =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $projectModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");
@@ -73,9 +75,6 @@ class TimeclockAdminViewUser extends JView
 
         $user =& JFactory::getUser($cid[0]);
         
-        
-        $add = empty($row->id);
-
         $lists["status"] = array(
             JHTML::_("select.option", "FULLTIME", "Full Time"),
             JHTML::_("select.option", "PARTTIME", "Part Time"),
@@ -84,10 +83,11 @@ class TimeclockAdminViewUser extends JView
             JHTML::_("select.option", "TERMINATED", "Terminated"),
         );
 
+        $lists["userProjects"] = $model->getUserProjects($cid[0]);
+        $lists["projects"] = $projectModel->getOptions("WHERE published=1 AND Type <> 'UMBRELLA'", 0, "Select Project");
 
         $this->assignRef("user", $user);
         $this->assignRef("lists", $lists);
-        $this->assignRef("add", $add);
         $this->assignRef("row", $row);
         parent::display($tpl);
     }

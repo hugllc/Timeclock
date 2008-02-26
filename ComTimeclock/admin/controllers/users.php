@@ -40,6 +40,8 @@ jimport('joomla.application.component.controller');
 
 
 require_once dirname(__FILE__)."/../tables/timeclockprefs.php";
+require_once dirname(__FILE__)."/../tables/timeclockusers.php";
+require_once dirname(__FILE__)."/projects.php";
 
 /**
  * ComTimeclock World Component Controller
@@ -108,12 +110,37 @@ class TimeclockAdminControllerUsers extends JController
      *
      * @return void
      */
+    function addproject()
+    {
+        $model = $this->getModel("Users");
+        $model->addproject();
+        $link = $_SERVER["HTTP_REFERER"];
+        $this->setRedirect($link, $msg);
+    }
+
+    /**
+     * Publishes an item
+     *
+     * @return void
+     */
+    function removeproject()
+    {
+        $model = $this->getModel("Users");
+        $model->removeproject();
+        $link = $_SERVER["HTTP_REFERER"];
+        $this->setRedirect($link, $msg);
+    }
+
+
+    /**
+     * Publishes an item
+     *
+     * @return void
+     */
     function publish()
     {
         $model = $this->getModel("Users");
-        $user = JFactory::getUser();
-
-        $model->publish(1, $user->get("id"));
+        $model->publish(1);
         $this->reset();    
     }
 
@@ -125,9 +152,8 @@ class TimeclockAdminControllerUsers extends JController
     function unpublish()
     {
         $model = $this->getModel("Users");
-        $user = JFactory::getUser();
 
-        $model->publish(0, $user->get("id"));
+        $model->publish(0);
         $this->reset();        
     }
 

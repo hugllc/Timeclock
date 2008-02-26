@@ -139,6 +139,29 @@ JToolBarHelper::cancel();
                 The worker's comp code
             </td>
         </tr>
+        <tr>
+            <td class="key">
+                <label for="Add User">
+                    <?php echo JText::_('Add User'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduser\';this.form.submit();"', 'value', 'text', 0); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="key">
+                <label for="Users">
+                    <?php echo JText::_('Users'); ?>:
+                </label>
+            </td>
+            <td>
+            <?php foreach ($this->lists["projectUsers"] as $user) { ?>
+                    <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
+                    <?php print empty($user->name) ? $user->id : $user->name; ?><br />
+            <?php } ?>
+            </td>
+        </tr>
     </table>
 </div>
 

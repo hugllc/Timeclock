@@ -228,6 +228,26 @@ class TimeclockAdminModelProjects extends JModel
     }
 
     /**
+     * Gets select options for parent projects
+     *
+     * @param int $id       The Id of the item to get the parent for
+     * @param int $selected The Id of the item to be selected
+     *
+     * @return array
+     */
+    function getOptions($where, $selected=0, $selectedText = "None")
+    {
+        $ret = array(JHTML::_("select.option", 0, $selectedText));
+        $query = "SELECT id, name FROM #__timeclock_projects ".$where." ORDER BY id asc";
+        $list = self::_getList($query);
+        if (!is_array($list)) return $ret;
+        foreach ($list as $val) {
+            $ret[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
+        }
+        return $ret;
+    }
+
+    /**
      * Method to display the view
      *
      * @param int $id The Id of the item to get the parent for
@@ -241,6 +261,26 @@ class TimeclockAdminModelProjects extends JModel
             $this->_projectCount[$id] = $this->_getListCount($query);
         }
         return $this->_projectCount[$id];
+    }
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid Project id
+     * @param int $limitstart The record to start on
+     * @param int $limit      The max number of records to retrieve 
+     *
+     * @return array
+     */
+    function getProjectUsers($oid, $limitstart = null, $limit = null)
+    {
+        $query = "select u.id as proj_id, p.*, u.user_id as id from #__timeclock_users as u
+                  LEFT JOIN #__users as p on u.user_id = p.id 
+                  WHERE u.id = ".(int)$oid."
+                  ORDER BY p.id asc
+                  ";
+        $ret = $this->_getList($query, $limitstart, $limit);
+        if (!is_array($ret)) return array();
+        return $ret;
     }
 
 }

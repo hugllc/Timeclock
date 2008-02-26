@@ -70,6 +70,30 @@ class TableTimeclockUsers extends JTable
     function __construct(&$db)
     {
         parent::__construct('#__timeclock_users', "id", $db);
+    }    
+    
+    /**
+     * Stores data
+     *
+     * @return bool
+     */
+    function store()
+    {
+        $this->delete($this->id, $this->user_id);
+        return $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);    
     }
 
+    /**
+     * Deletes data
+     *
+     * @return bool
+     */
+    function delete()
+    {
+        $query = "DELETE FROM ".$this->_tbl." WHERE id=".(int)$this->id." AND user_id=".(int)$this->user_id;
+        $this->_db->setQuery($query);
+        return (bool) $this->_db->query();
+    }
+    
+     
 }

@@ -45,11 +45,6 @@ JToolBarHelper::cancel();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div>
-<?php
-    $pane = JPane::getInstance("tabs");
-    echo $pane->startPane("config-pane");  
-    echo $pane->startPanel(JText::_("General"), "general-page");
-?>
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
@@ -117,11 +112,30 @@ JToolBarHelper::cancel();
                 The status of the user
             </td>
         </tr>
+        <tr>
+            <td class="key">
+                <label for="Projects">
+                    <?php echo JText::_('Add Project'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->lists["projects"], "projid", 'onChange="this.form.task.value=\'addproject\';this.form.submit();"', 'value', 'text', 0); ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="key">
+                <label for="Projects">
+                    <?php echo JText::_('Projects'); ?>:
+                </label>
+            </td>
+            <td>
+            <?php foreach ($this->lists["userProjects"] as $proj) { ?>
+                    <button onClick="this.form.task.value='removeproject';this.form.projid.value='<?php print $proj->id;?>';this.form.submit();">Remove</button>
+                    <?php print sprintf("%04d", $proj->id).": ".$proj->name; ?><br />
+            <?php } ?>
+            </td>
+        </tr>
     </table>
-<?php
-    echo $pane->endPanel();
-    echo $pane->endPane();
-?>
 
 </div>
 
@@ -131,9 +145,8 @@ JToolBarHelper::cancel();
 <input type="hidden" name="checked_out" value="<?php print $this->row->checked_out; ?>" />
 <input type="hidden" name="checked_out_time" value="<?php print $this->row->checked_out_time; ?>" />
 
-
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="id" value="<?php print $this->row->id; ?>" />
-<input type="hidden" name="task" value="" />
+<input type="hidden" name="task" id="task" value="" />
 <input type="hidden" name="controller" value="users" />
 </form>

@@ -84,7 +84,10 @@ JToolBarHelper::editListX();
                             <?php echo JHTML::_('grid.sort',   'Last Visit', 'u.lastvisitDate', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="10%" align="center">
-                            <?php echo JText::_('StartDate'); ?>
+                            <?php echo JText::_('Start Date'); ?>
+                        </th>
+                        <th width="10%" align="center">
+                            <?php echo JText::_('End Date'); ?>
                         </th>
                         <th width="5%" align="center">
                             <?php echo JText::_('Status'); ?>
@@ -133,6 +136,9 @@ JToolBarHelper::editListX();
                         </td>
                         <td align="center">
                                 <?php echo $row->prefs["admin_startDate"]; ?>
+                        </td>
+                        <td align="center">
+                                <?php echo $row->prefs["admin_endDate"]; ?>
                         </td>
                         <td align="center">
                                 <?php echo $row->prefs["admin_status"]; ?>

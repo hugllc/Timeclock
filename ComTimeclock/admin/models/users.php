@@ -98,8 +98,10 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Method to display the view
      *
-     * @param int $limitstart The record to start on
-     * @param int $limit      The max number of records to retrieve 
+     * @param string $where      The where clause to use (must include "WHERE")
+     * @param int    $limitstart The record to start on
+     * @param int    $limit      The max number of records to retrieve 
+     * @param string $orderby    The orderby clause to use (must include "ORDER BY")
      *
      * @return string
      */
@@ -136,9 +138,12 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return bool
      */
-    function publish($publish, $user_id)
+    function publish($publish)
     {
-        TableTimeclockPrefs::setPref("admin_active", (bool)$publish, $user_id);
+        if (!is_array($this->_id)) $this->_id = array($this->_id);
+        foreach ($this->_id as $id) {
+            TableTimeclockPrefs::setPref("admin_active", (bool)$publish, $id);
+        }
     }
 
     /**
@@ -152,6 +157,81 @@ class TimeclockAdminModelUsers extends JModel
     {
         $table = $this->getTable("TimeclockPrefs");
         return $table->checkin($oid);
+    }
+
+    /**
+     * Checks in an item
+     *
+     * @param int $oid The id of the item to save
+     *
+     * @return bool
+     */
+    function addproject()
+    {
+        $row = $this->getTable("TimeclockUsers");
+        $projid = JRequest::getVar('projid', 0, '', 'int');
+
+        $id = JRequest::getVar('projid', 0, '', 'int');
+        $user_id = JRequest::getVar('id', 0, '', 'int');
+        if (!is_array($id)) $id = array($id);
+
+        $ret = true;
+        foreach($id as $p) {
+            $data = array(
+                "id" => $p,
+                "user_id" => $user_id,
+            );
+            
+            if (!$row->bind($data)) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+            // Make sure the record is valid
+            if (!$row->check()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        
+            // Store the web link table to the database
+            if (!$row->store()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Checks in an item
+     *
+     * @param int $oid The id of the item to save
+     *
+     * @return bool
+     */
+    function removeproject()
+    {
+        $row = $this->getTable("TimeclockUsers");
+        $projid = JRequest::getVar('projid', 0, '', 'int');
+        $data = array(
+            "id" => JRequest::getVar('projid', 0, '', 'int'),
+            "user_id" => JRequest::getVar('id', 0, '', 'int'),
+        );
+        
+        // Bind the form fields to the hello table
+        if (!$row->bind($data)) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+        // Store the web link table to the database
+        if (!$row->delete()) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    
+        return true;
     }
 
     /**
@@ -212,7 +292,28 @@ class TimeclockAdminModelUsers extends JModel
         return true;
     }
 
-
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid User id
+     * @param int $limitstart The record to start on
+     * @param int $limit      The max number of records to retrieve 
+     *
+     * @return array
+     */
+    function getUserProjects($oid, $limitstart = null, $limit = null)
+    {
+        $query = "select * from #__timeclock_users as u
+                  LEFT JOIN #__timeclock_projects as p on u.id = p.id 
+                  WHERE u.user_id = ".(int)$oid."
+                     AND p.published = 1
+                     AND p.Type <> 'UMBRELLA'
+                  ORDER BY p.id asc
+                  ";
+        $ret = $this->_getList($query, $limitstart, $limit);
+        if (!is_array($ret)) return array();
+        return $ret;
+    }
 
 }
 

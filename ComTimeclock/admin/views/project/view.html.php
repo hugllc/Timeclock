@@ -93,7 +93,12 @@ class TimeclockAdminViewProject extends JView
         foreach ($wCompCodes as $code => $desc) {
             $wCompCodeOptions[] = JHTML::_("select.option", $code, $code.": ".htmlspecialchars($desc));
         }
+        
+        $lists["projectUsers"] = $model->getProjectUsers($cid[0]);
+        $lists["users"] = array();   //$projectModel->getOptions("WHERE published=1 AND Type <> 'UMBRELLA'", 0, "Select Project");
                 
+        $this->assignRef("lists", $lists);
+
         $this->assignRef("wCompCodeOptions", $wCompCodeOptions);
         $this->assignRef("parentOptions", $parentOptions);
         $this->assignRef("typeOptions", $typeOptions);
