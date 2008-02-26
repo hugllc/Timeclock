@@ -37,9 +37,9 @@
 defined('_JEXEC') or die('Restricted access'); 
 jimport("joomla.html.pane");
 
-$title = ($this->add) ? "Add Project" : "Edit Project: <small><small>[ ".$this->row->name." ]</small></small>";
+$title = ($this->add) ? "Add" : "Edit";
 
-JToolBarHelper::title(JText::_($title));
+JToolBarHelper::title(JText::_("Project: <small><small>[ ".$title." ]</small></small>"));
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -83,6 +83,19 @@ JRequest::setVar( 'hidemainmenu', 1 );
             </td>
             <td>
                 <?php print JHTML::_("select.booleanList", "research", "", $this->row->research); ?>
+            </td>
+            <td>
+                Is this project research?
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="Published">
+                    <?php echo JText::_('Published'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
                 Is this project research?

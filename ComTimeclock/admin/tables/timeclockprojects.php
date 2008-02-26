@@ -127,9 +127,15 @@ class TableTimeclockProjects extends JTable
     /**
      * Variable
      *
-     * @var int
+     * @var string
      */
     public $checked_out_time = '';
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $published = 1;
 
     
     /**
