@@ -91,6 +91,17 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
             array("display", array("view" => "projects")),
         );
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataRegisterTask()
+    {
+        return array(
+            array(array(array('add', 'edit'))),
+        );
+    }
 
 }
 

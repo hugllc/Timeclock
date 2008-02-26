@@ -73,13 +73,13 @@ class TableTimeclockProjects extends JTable
      *
      * @var int
      */
-    public $user_id = null;
+    public $created_by = null;
     /**
      * Variable
      *
      * @var string
      */
-    public $date = '';
+    public $created = '';
     /**
      * Variable
      *

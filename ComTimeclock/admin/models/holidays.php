@@ -38,6 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
+
 /**
  * ComTimeclock model
  *
@@ -49,13 +51,13 @@ jimport('joomla.application.component.model');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelProjects extends JModel
+class TimeclockAdminModelHolidays extends JModel
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name, p.checked_out as parent_checked_out
-                      FROM #__timeclock_projects AS t 
-                      LEFT JOIN #__timeclock_projects as p ON t.parent_id = p.id
+    var $_allQuery = "SELECT t.*, u.name as created_by_name, p.name as project_name
+                      FROM #__timeclock_timesheet AS t 
+                      LEFT JOIN #__timeclock_projects as p ON t.project_id = p.id
                       LEFT JOIN #__users as u ON t.created_by = u.id ";
 
     /**
@@ -89,7 +91,7 @@ class TimeclockAdminModelProjects extends JModel
      */
     function &getData()
     {
-        $row = $this->getTable("TimeclockProjects");
+        $row = $this->getTable("TimeclockTimesheet");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
         $row->load($id);
         return $row;
@@ -103,12 +105,16 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function getProjects($where = "", $limitstart=null, $limit=null, $orderby = "")
+    function getHolidays($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
-        $key = (string)$limitstart.$limit;
+        if (empty($where)) {
+            $where = " WHERE p.Type='HOLIDAY' ";
+        } else {
+            $where .= " AND p.Type='HOLIDAY' ";
+        }
         $query = $this->_allQuery." "
-                 .$where." "
-                 .$orderby;
+                .$where." "
+                .$orderby;
         return $this->_getList($query, $limitstart, $limit);
     }
 
@@ -117,24 +123,15 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function countProjects($where="")
+    function countHolidays($where="")
     {
+        if (empty($where)) {
+            $where = " WHERE Type='HOLIDAY' ";
+        } else {
+            $where .= " AND Type='HOLIDAY' ";
+        }
         $query = $this->_allQuery." ".$where;
         return $this->_getListCount($query);
-    }
-
-    /**
-     * Publishes or unpublishes an item
-     *
-     * @param int $publish 1 to publish, 0 to unpublish
-     *
-     * @return bool
-     */
-    function publish($publish, $user_id)
-    {
-        $table = $this->getTable("TimeclockProjects");
-        $id = is_array($this->_id) ? $this->_id : array($this->_id);
-        return $table->publish($id, $publish, $user_id);
     }
 
     /**
@@ -164,6 +161,22 @@ class TimeclockAdminModelProjects extends JModel
         return $table->checkout($who, $oid);
     }
 
+    /**
+     * Get the project options for a select list
+     *
+     * @return array
+     */
+    function projectOptions()
+    {
+        $ret = array();
+        $query = "SELECT id, name FROM #__timeclock_projects where Type='HOLIDAY'";
+        $proj = $this->_getList($query, $limitstart, $limit);
+        if (!is_array($proj)) return $ret;
+        foreach ($proj as $p) {
+            $ret[] = JHTML::_("select.option", $p->id, $p->name);
+        }
+        return $ret;
+    }
 
     /**
      * Method to store a record
@@ -173,15 +186,15 @@ class TimeclockAdminModelProjects extends JModel
      */
     function store()
     {
-        $row =& $this->getTable("TimeclockProjects"); 
+        $row =& $this->getTable("TimeclockTimesheet"); 
         $data = JRequest::get('post');
-
-         if (empty($data['id'])) {
+    
+        if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
             $user =& JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
-       
+        
         // Bind the form fields to the hello table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
@@ -202,46 +215,6 @@ class TimeclockAdminModelProjects extends JModel
         return true;
     }
 
-
-    /**
-     * Gets select options for parent projects
-     *
-     * @param int $id       The Id of the item to get the parent for
-     * @param int $selected The Id of the item to be selected
-     *
-     * @return array
-     */
-    function getParentOptions($id, $selected=0)
-    {
-        $parents = array(JHTML::_("select.option", 0, "None"));
-        if ($this->countParents($id) > 0) return $parents;
-        if (empty($this->_parents[$id])) {
-            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND published=1 AND (type='PROJECT' OR type='UMBRELLA') ORDER BY id asc";
-            $parentList = $this->_getList($query);
-            if (!is_array($parentList)) return $parents;
-            foreach ($parentList as $val) {
-                $parents[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
-            }
-            $this->_parents[$id] = $parents;
-        }
-        return $this->_parents[$id];
-    }
-
-    /**
-     * Method to display the view
-     *
-     * @param int $id The Id of the item to get the parent for
-     *
-     * @return string
-     */
-    function countParents($id)
-    {
-        if (empty($this->_parentCount[$id])) {
-            $query = "select * from #__timeclock_projects where parent_id=".(int)$id;
-            $this->_projectCount[$id] = $this->_getListCount($query);
-        }
-        return $this->_projectCount[$id];
-    }
 
 }
 

@@ -67,7 +67,7 @@ class TableTimeclockTimesheet extends JTable
      *
      * @var int
      */
-    public $user_id = 0;
+    public $created_by = 0;
     /**
      * Variable
      *
@@ -79,13 +79,13 @@ class TableTimeclockTimesheet extends JTable
      *
      * @var string
      */
-    public $Date = '';
+    public $worked = '';
     /**
      * Variable
      *
      * @var string
      */
-    public $insertDate= '';
+    public $created= '';
     /**
      * Variable
      *

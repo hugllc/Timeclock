@@ -89,8 +89,8 @@ JToolBarHelper::cancel();
         </tr>
         <tr>
             <td width="100" align="right" class="key">
-                <label for="published">
-                    <?php echo JText::_('Active'); ?>:
+                <label for="Published">
+                    <?php echo JText::_('Published'); ?>:
                 </label>
             </td>
             <td>
@@ -143,14 +143,9 @@ JToolBarHelper::cancel();
 </div>
 
 <div class="clr"></div>
-<input type="hidden" name="created" value="<?php print $this->row->created; ?>" />
-<input type="hidden" name="created_by" value="<?php print $this->row->created_by; ?>" />
-<input type="hidden" name="checked_out" value="<?php print $this->row->checked_out; ?>" />
-<input type="hidden" name="checked_out_time" value="<?php print $this->row->checked_out_time; ?>" />
-
 
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="id" value="<?php print $this->row->id; ?>" />
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="projects" />
+<input type="hidden" name="controller" value="project" />
 </form>

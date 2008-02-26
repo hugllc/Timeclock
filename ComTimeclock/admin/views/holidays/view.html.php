@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewProjects extends JView
+class TimeclockAdminViewHolidays extends JView
 {
     /**
      * The display function
@@ -62,18 +62,18 @@ class TimeclockAdminViewProjects extends JView
     function display($tpl = null)
     {
         global $mainframe, $option;
-        $model = $this->getModel("Projects");
+        $model = $this->getModel("Holidays");
 
         $db =& JFactory::getDBO();
-        $filter_order     = $mainframe->getUserStateFromRequest("$option.projects.filter_order", 'filter_order', 't.id', 'cmd');
-        $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.projects.filter_order_Dir", 'filter_order_Dir', '', 'word');
-        $filter_state     = $mainframe->getUserStateFromRequest("$option.projects.filter_state", 'filter_state', '', 'word');
-        $search           = $mainframe->getUserStateFromRequest("$option.projects.search", 'search', '', 'string');
+        $filter_order     = $mainframe->getUserStateFromRequest("$option.holidays.filter_order", 'filter_order', 't.worked', 'cmd');
+        $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.holidays.filter_order_Dir", 'filter_order_Dir', 'desc', 'word');
+        $filter_state     = $mainframe->getUserStateFromRequest("$option.holidays.filter_state", 'filter_state', '', 'word');
+        $search           = $mainframe->getUserStateFromRequest("$option.holidays.search", 'search', '', 'string');
         $search           = JString::strtolower($search);
-        $search_filter    = $mainframe->getUserStateFromRequest("$option.projects.search_filter", 'search_filter', 'name', 'string');
+        $search_filter    = $mainframe->getUserStateFromRequest("$option.holidays.search_filter", 'search_filter', 'notes', 'string');
                 
         $limit            = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-        $limitstart       = $mainframe->getUserStateFromRequest($option.'.projects.limitstart', 'limitstart', 0, 'int');
+        $limitstart       = $mainframe->getUserStateFromRequest($option.'.holidays.limitstart', 'limitstart', 0, 'int');
 
         $where = array();
 
@@ -91,14 +91,14 @@ class TimeclockAdminViewProjects extends JView
         $where          = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
         $orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
 
-        $rows = $model->getProjects($where, $limitstart, $limit, $orderby);
-        $total = $model->countProjects($where);
+        $rows = $model->getHolidays($where, $limitstart, $limit, $orderby);
+        $total = $model->countHolidays($where);
 
         jimport('joomla.html.pagination');
         $pagination = new JPagination($total, $limitstart, $limit);
 
         // state filter
-        $lists['state'] = JHTML::_('grid.state', $filter_state, "Active", "Inactive");
+        $lists['state'] = JHTML::_('grid.state',  $filter_state, "Active", "Inactive");
 
         // table ordering
         $lists['order_Dir']      = $filter_order_Dir;
@@ -106,14 +106,6 @@ class TimeclockAdminViewProjects extends JView
 
         // search filter
         $lists['search']         = $search;
-        $lists['search_filter']  = $search_filter;
-        $lists['search_options'] = array(
-            JHTML::_('select.option', 'name', 'Name'),
-            JHTML::_('select.option', 'type', 'Type'),
-            JHTML::_('select.option', 'wcCode', "Worker's Comp Code"),
-        );
-        $lists['search_options_default'] = 'name';       
-        $lists["wCompCodes"] = TableTimeclockPrefs::getPref("wCompCodes");        
 
         $this->assignRef("lists", $lists);
         $this->assignRef("user", JFactory::getUser());

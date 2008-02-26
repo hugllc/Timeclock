@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminControllerProjects extends JController
+class TimeclockAdminControllerHolidays extends JController
 {
     /**
      * Custom Constructor
@@ -64,7 +64,6 @@ class TimeclockAdminControllerProjects extends JController
         $this->registerTask('add', 'edit');
 
     }
-
     /**
      * Method to display the view
      *
@@ -73,7 +72,7 @@ class TimeclockAdminControllerProjects extends JController
      */
     function display()
     {
-        JRequest::setVar('view', 'projects');
+        JRequest::setVar('view', 'holidays');
         parent::display();
     }
     /**
@@ -84,8 +83,8 @@ class TimeclockAdminControllerProjects extends JController
      */
     function edit()
     {
-        JRequest::setVar('model', 'projects');
-        JRequest::setVar('view', 'project');
+        JRequest::setVar('model', 'holidays');
+        JRequest::setVar('view', 'holiday');
         JRequest::setVar('layout', 'form');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
@@ -98,37 +97,9 @@ class TimeclockAdminControllerProjects extends JController
      */
     function reset($msg=null)
     {
-        $link = 'index.php?option=com_timeclock&controller=projects';
+        $link = 'index.php?option=com_timeclock&controller=holidays';
         $this->setRedirect($link, $msg);
     
-    }
-
-    /**
-     * Publishes an item
-     *
-     * @return void
-     */
-    function publish()
-    {
-        $model = $this->getModel("Projects");
-        $user = JFactory::getUser();
-
-        $model->publish(1, $user->get("id"));
-        $this->reset();    
-    }
-
-    /**
-     * unpublishes an item
-     *
-     * @return void
-     */
-    function unpublish()
-    {
-        $model = $this->getModel("Projects");
-        $user = JFactory::getUser();
-
-        $model->publish(0, $user->get("id"));
-        $this->reset();        
     }
 
     /**
@@ -138,7 +109,7 @@ class TimeclockAdminControllerProjects extends JController
      */
     function apply()
     {
-        $model = $this->getModel("Projects");
+        $model = $this->getModel("Holidays");
     
         if ($model->store()) {
             $msg = JText::_('Project Saved!');
@@ -146,7 +117,7 @@ class TimeclockAdminControllerProjects extends JController
             $msg = JText::_('Error Saving Project');
         }
         $id = JRequest::getVar('id', 0, '', 'int');
-        $link = 'index.php?option=com_timeclock&controller=projects&task=edit&cid[]='.$id;
+        $link = 'index.php?option=com_timeclock&controller=holidays&task=edit&cid[]='.$id;
         $this->setRedirect($link, $msg);
     
     }
@@ -158,7 +129,7 @@ class TimeclockAdminControllerProjects extends JController
      */
     function save()
     {
-        $model = $this->getModel("Projects");
+        $model = $this->getModel("Holidays");
     
         if ($model->store()) {
             $msg = JText::_('Project Saved!');
@@ -178,7 +149,7 @@ class TimeclockAdminControllerProjects extends JController
      */
     function cancel()
     {
-        $model = $this->getModel("Projects");
+        $model = $this->getModel("Holidays");
         $cid = JRequest::getVar('cid', 0, '', 'array');
         $model->checkin($cid[0]);
         $this->reset();    
