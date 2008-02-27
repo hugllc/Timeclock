@@ -156,10 +156,13 @@ JToolBarHelper::cancel();
                 </label>
             </td>
             <td>
-            <?php foreach ($this->lists["projectUsers"] as $user) { ?>
+            <?php 
+foreach ($this->lists["projectUsers"] as $user) { ?>
                     <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
                     <?php print empty($user->name) ? $user->id : $user->name; ?><br />
-            <?php } ?>
+            <?php 
+} 
+            ?>
             </td>
         </tr>
     </table>

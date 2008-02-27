@@ -66,25 +66,25 @@ JToolBarHelper::addNewX();
         <thead>
                 <tr>
                         <th width="5">
-                            <?php echo JHTML::_('grid.sort',   'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort', 'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="20">
                                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
                         </th>
                         <th  class="title">
-                            <?php echo JHTML::_('grid.sort',   'Notes', 't.notes', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort', 'Notes', 't.notes', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort',   'Worked', 't.worked', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort', 'Worked', 't.worked', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort',   'Created', 't.created', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort', 'Created', 't.created', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="1%" align="center">
-                            <?php echo JHTML::_('grid.sort',   'Hours', 't.hours', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort', 'Hours', 't.hours', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort',   'Created By', 't.created_by', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                            <?php echo JHTML::_('grid.sort', 'Created By', 't.created_by', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                 </tr>
         </thead>

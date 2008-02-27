@@ -129,10 +129,13 @@ JToolBarHelper::cancel();
                 </label>
             </td>
             <td>
-            <?php foreach ($this->lists["userProjects"] as $proj) { ?>
+            <?php 
+foreach ($this->lists["userProjects"] as $proj) { ?>
                     <button onClick="this.form.task.value='removeproject';this.form.projid.value='<?php print $proj->id;?>';this.form.submit();">Remove</button>
                     <?php print sprintf("%04d", $proj->id).": ".$proj->name; ?><br />
-            <?php } ?>
+    <?php
+} 
+?>
             </td>
         </tr>
     </table>

@@ -66,13 +66,13 @@ JToolBarHelper::editListX();
         <thead>
                 <tr>
                         <th width="5">
-                            <?php echo JHTML::_('grid.sort',   'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="20">
                                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
                         </th>
                         <th  class="title">
-                            <?php echo JHTML::_('grid.sort',   'Name', 't.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Name', 't.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="1%" align="center">
                             <?php echo JText::_('Active'); ?>
@@ -81,7 +81,7 @@ JToolBarHelper::editListX();
                             <?php echo JText::_('Reports'); ?>
                         </th>
                         <th width="10%" align="center">
-                            <?php echo JHTML::_('grid.sort',   'Last Visit', 'u.lastvisitDate', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Last Visit', 'u.lastvisitDate', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
                         <th width="10%" align="center">
                             <?php echo JText::_('Start Date'); ?>
@@ -103,51 +103,51 @@ JToolBarHelper::editListX();
         </tfoot>
         <tbody>
         <?php
-        $k = 0;
-        for ($i=0, $n=count($this->rows); $i < $n; $i++) {
-                $row = &$this->rows[$i];
+$k = 0;
+for ($i=0, $n=count($this->rows); $i < $n; $i++) {
+    $row = &$this->rows[$i];
 
-                $link           = JRoute::_('index.php?option=com_timeclock&controller=users&task=edit&cid[]='. $row->id);
+    $link           = JRoute::_('index.php?option=com_timeclock&controller=users&task=edit&cid[]='. $row->id);
 
-                $checked        = JHTML::_('grid.checkedout', $row, $i);
-                $published      = JHTML::_('grid.published', $row, $i);
-                $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
-        ?>
-                <tr class="<?php echo "row$k"; ?>">
-                        <td>
-                              <?php echo $row->id; ?>
-                        </td>
-                        <td>
-                                <?php echo $checked; ?>
-                        </td>
-                        <td>
-                            <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->name; ?>">
-                            <a href="<?php echo $link  ?>">
-                                    <?php echo $row->name; ?></a></span>
-                        </td>
-                        <td align="center">
-                                <?php echo $published;?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->prefs["admin_reports"] ? "YES" : "NO";?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->lastvisitDate; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->prefs["admin_startDate"]; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->prefs["admin_endDate"]; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->prefs["admin_status"]; ?>
-                        </td>
-                </tr>
-                <?php
-                        $k = 1 - $k;
-                }
-                ?>
+    $checked        = JHTML::_('grid.checkedout', $row, $i);
+    $published      = JHTML::_('grid.published', $row, $i);
+    $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
+    ?>
+            <tr class="<?php echo "row$k"; ?>">
+                <td>
+                      <?php echo $row->id; ?>
+                </td>
+                <td>
+                        <?php echo $checked; ?>
+                </td>
+                <td>
+                    <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->name; ?>">
+                    <a href="<?php echo $link  ?>">
+                            <?php echo $row->name; ?></a></span>
+                </td>
+                <td align="center">
+                        <?php echo $published;?>
+                </td>
+                <td align="center">
+                        <?php echo $row->prefs["admin_reports"] ? "YES" : "NO";?>
+                </td>
+                <td align="center">
+                        <?php echo $row->lastvisitDate; ?>
+                </td>
+                <td align="center">
+                        <?php echo $row->prefs["admin_startDate"]; ?>
+                </td>
+                <td align="center">
+                        <?php echo $row->prefs["admin_endDate"]; ?>
+                </td>
+                <td align="center">
+                        <?php echo $row->prefs["admin_status"]; ?>
+                </td>
+            </tr>
+            <?php
+    $k = 1 - $k;
+}
+            ?>
         </tbody>
         </table>
 </div>
@@ -162,5 +162,5 @@ JToolBarHelper::editListX();
 <input type="hidden" name="controller" value="users" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHTML::_('form.token'); ?>
 </form>

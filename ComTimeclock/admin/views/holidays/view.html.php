@@ -98,7 +98,7 @@ class TimeclockAdminViewHolidays extends JView
         $pagination = new JPagination($total, $limitstart, $limit);
 
         // state filter
-        $lists['state'] = JHTML::_('grid.state',  $filter_state, "Active", "Inactive");
+        $lists['state'] = JHTML::_('grid.state', $filter_state, "Active", "Inactive");
 
         // table ordering
         $lists['order_Dir']      = $filter_order_Dir;
@@ -110,7 +110,7 @@ class TimeclockAdminViewHolidays extends JView
         $this->assignRef("lists", $lists);
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
-        $this->assignRef("pagination",  $pagination);
+        $this->assignRef("pagination", $pagination);
         parent::display($tpl);
     }
 }

@@ -48,134 +48,142 @@ JToolBarHelper::addNewX();
 ?>
 <form action="index.php?option=com_timeclock&controller=projects" method="post" name="adminForm">
 <table>
-        <tr>
-                <td align="left" width="100%">
-                        <?php echo JText::_('Filter'); ?>:
-                        <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-                        <?php echo JText::_('by'); ?>:
-                        <?php echo JHTML::_('select.genericlist', $this->lists['search_options'], 'search_filter', '', 'value', 'text', $this->lists['search_filter'], 'search_filter'); ?>
-                        <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-                        <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
-                </td>
-                <td nowrap="nowrap">
-                        <?php echo $this->lists['state']; ?>
-                </td>
-        </tr>
+    <tr>
+        <td align="left" width="100%">
+            <?php echo JText::_('Filter'); ?>:
+            <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+            <?php echo JText::_('by'); ?>:
+            <?php echo JHTML::_('select.genericlist', $this->lists['search_options'], 'search_filter', '', 'value', 'text', $this->lists['search_filter'], 'search_filter'); ?>
+            <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
+            <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+        </td>
+        <td nowrap="nowrap">
+            <?php echo $this->lists['state']; ?>
+        </td>
+    </tr>
 </table>
 <div id="tablecell">
-        <table class="adminlist">
-        <thead>
-                <tr>
-                        <th width="5">
-                            <?php echo JHTML::_('grid.sort',   'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                        <th width="20">
-                                <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
-                        </th>
-                        <th  class="title">
-                            <?php echo JHTML::_('grid.sort',   'Name', 't.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                        <th align="center">
-                            <?php echo JHTML::_('grid.sort',   'Parent', 'p.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                        <th width="1%" align="center">
-                            <?php echo JHTML::_('grid.sort',   'Active', 't.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                        <?php if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
-                        <th width="5%" align="center">
-                            <?php echo JHTML::_('grid.sort', "Worker's Comp", 't.wcCode', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                        <?php } ?>
-                        <th width="5%" align="center">
-                            <?php echo JHTML::_('grid.sort',   'Type', 't.Type', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                        <th width="1%" align="center">
-                            <?php echo JHTML::_('grid.sort',   'Research', 't.research', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                        <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort',   'Created By', 't.created_by', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
-                        </th>
-                </tr>
-        </thead>
-        <tfoot>
-                <tr>
-                        <td colspan="9">
-                                <?php echo $this->pagination->getListFooter(); ?>
-                        </td>
-                </tr>
-        </tfoot>
-        <tbody>
-        <?php
-        $k = 0;
-        for ($i=0, $n=count($this->rows); $i < $n; $i++) {
-                $row = &$this->rows[$i];
+    <table class="adminlist">
+    <thead>
+            <tr>
+                    <th width="5">
+                        <?php echo JHTML::_('grid.sort', 'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+                    <th width="20">
+                            <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
+                    </th>
+                    <th  class="title">
+                        <?php echo JHTML::_('grid.sort', 'Name', 't.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+                    <th align="center">
+                        <?php echo JHTML::_('grid.sort', 'Parent', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+                    <th width="1%" align="center">
+                        <?php echo JHTML::_('grid.sort', 'Active', 't.published', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+<?php 
+if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
+                    <th width="5%" align="center">
+                        <?php echo JHTML::_('grid.sort', "Worker's Comp", 't.wcCode', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+    <?php 
+} 
+?>
+                    <th width="5%" align="center">
+                        <?php echo JHTML::_('grid.sort', 'Type', 't.Type', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+                    <th width="1%" align="center">
+                        <?php echo JHTML::_('grid.sort', 'Research', 't.research', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+                    <th width="5%" nowrap="nowrap">
+                        <?php echo JHTML::_('grid.sort', 'Created By', 't.created_by', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
+            </tr>
+    </thead>
+    <tfoot>
+            <tr>
+                    <td colspan="9">
+                            <?php echo $this->pagination->getListFooter(); ?>
+                    </td>
+            </tr>
+    </tfoot>
+    <tbody>
+<?php
+$k = 0;
+for ($i=0, $n=count($this->rows); $i < $n; $i++) {
+    $row = &$this->rows[$i];
 
-                $link           = JRoute::_('index.php?option=com_timeclock&controller=projects&task=edit&cid[]='. $row->id);
-                $parentlink     = JRoute::_('index.php?option=com_timeclock&controller=projects&task=edit&cid[]='. $row->parent_id);
+    $link           = JRoute::_('index.php?option=com_timeclock&controller=projects&task=edit&cid[]='. $row->id);
+    $parentlink     = JRoute::_('index.php?option=com_timeclock&controller=projects&task=edit&cid[]='. $row->parent_id);
 
-                $checked        = JHTML::_('grid.checkedout', $row, $i);
-                $published      = JHTML::_('grid.published', $row, $i);
-                $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
+    $checked        = JHTML::_('grid.checkedout', $row, $i);
+    $published      = JHTML::_('grid.published', $row, $i);
+    $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
+    ?>
+        <tr class="<?php echo "row$k"; ?>">
+            <td>
+                    <?php printf("%04d", $row->id); ?>
+            </td>
+            <td>
+                    <?php echo $checked; ?>
+            </td>
+            <td>
+            <?php
+    if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
+        echo $row->name;
+    } else {
         ?>
-                <tr class="<?php echo "row$k"; ?>">
-                        <td>
-                                <?php printf("%04d", $row->id); ?>
-                        </td>
-                        <td>
-                                <?php echo $checked; ?>
-                        </td>
-                        <td>
-                        <?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
-                                echo $row->name;
-                        } else {
-                                ?>
-                                <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->name; ?>">
-                                <a href="<?php echo $link  ?>">
-                                        <?php echo $row->name; ?></a></span>
-                                <?php
-                        }
-                        ?>
-                        </td>
-                        <td>
-                        <?php if ($row->parent_id > 0) {
-                            if (JTable::isCheckedOut($this->user->get('id'), $row->parent_checked_out)) {
-                                    echo $row->parentname;
-                            } else {
-                                    ?>
-                                    <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->parentname; ?>">
-                                    <a href="<?php echo $parentlink  ?>">
-                                            <?php echo $row->parentname; ?></a></span>
-                                    <?php
-                            }
-                        } else {
-                            echo JText::_("None");
-                        }
-                        ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $published;?>
-                        </td>
-                        <?php if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
-                        <td align="center">
-                                <?php echo $row->wcCode;?>
-                        </td>
-                        <?php } ?>
-                        <td align="center">
-                                <?php echo $row->type; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo ($row->research == 0) ? "NO" : "YES"; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $author; ?>
-                        </td>
-                </tr>
-                <?php
-                        $k = 1 - $k;
-                }
-                ?>
-        </tbody>
-        </table>
+        <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->name; ?>">
+        <a href="<?php echo $link  ?>">
+        <?php echo $row->name; ?></a></span>
+        <?php
+    }
+            ?>
+            </td>
+            <td>
+            <?php
+    if ($row->parent_id > 0) {
+        if (JTable::isCheckedOut($this->user->get('id'), $row->parent_checked_out)) {
+                echo $row->parentname;
+        } else {
+            ?>
+            <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->parentname; ?>">
+            <a href="<?php echo $parentlink  ?>">
+            <?php echo $row->parentname; ?></a></span>
+            <?php
+        }
+    } else {
+        echo JText::_("None");
+    }
+            ?>
+            </td>
+            <td align="center">
+                <?php echo $published;?>
+            </td>
+    <?php 
+    if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
+            <td align="center">
+                <?php echo $row->wcCode;?>
+            </td>
+        <?php 
+    } 
+    ?>
+            <td align="center">
+                <?php echo $row->type; ?>
+            </td>
+            <td align="center">
+                <?php echo ($row->research == 0) ? "NO" : "YES"; ?>
+            </td>
+            <td align="center">
+                <?php echo $author; ?>
+            </td>
+        </tr>
+    <?php
+    $k = 1 - $k;
+}
+?>
+    </tbody>
+    </table>
 </div>
 
 
@@ -188,5 +196,5 @@ JToolBarHelper::addNewX();
 <input type="hidden" name="controller" value="projects" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHTML::_('form.token'); ?>
 </form>

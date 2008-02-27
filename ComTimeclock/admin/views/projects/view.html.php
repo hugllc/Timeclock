@@ -118,7 +118,7 @@ class TimeclockAdminViewProjects extends JView
         $this->assignRef("lists", $lists);
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
-        $this->assignRef("pagination",  $pagination);
+        $this->assignRef("pagination", $pagination);
         parent::display($tpl);
     }
 }
