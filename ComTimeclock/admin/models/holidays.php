@@ -38,6 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+/** Get the timesheet table */
 require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
 
 /**
