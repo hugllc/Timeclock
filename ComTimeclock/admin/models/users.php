@@ -123,6 +123,8 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Method to display the view
      *
+     * @param string $where The where clause to use.  Must include 'WHERE'
+     *
      * @return string
      */
     function countUsers($where="")
@@ -162,8 +164,6 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Checks in an item
      *
-     * @param int $oid The id of the item to save
-     *
      * @return bool
      */
     function addproject()
@@ -176,7 +176,7 @@ class TimeclockAdminModelUsers extends JModel
         if (!is_array($id)) $id = array($id);
 
         $ret = true;
-        foreach($id as $p) {
+        foreach ($id as $p) {
             $data = array(
                 "id" => $p,
                 "user_id" => $user_id,
@@ -206,8 +206,6 @@ class TimeclockAdminModelUsers extends JModel
 
     /**
      * Checks in an item
-     *
-     * @param int $oid The id of the item to save
      *
      * @return bool
      */
@@ -295,7 +293,7 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Get projects for a user
      *
-     * @param int $oid User id
+     * @param int $oid        User id
      * @param int $limitstart The record to start on
      * @param int $limit      The max number of records to retrieve 
      *

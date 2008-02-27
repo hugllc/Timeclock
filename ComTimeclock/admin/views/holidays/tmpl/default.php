@@ -96,56 +96,57 @@ JToolBarHelper::addNewX();
                 </tr>
         </tfoot>
         <tbody>
-        <?php
-        $k = 0;
-        for ($i=0, $n=count($this->rows); $i < $n; $i++) {
-                $row = &$this->rows[$i];
+<?php
+$k = 0;
+for ($i=0, $n=count($this->rows); $i < $n; $i++) {
+    $row = &$this->rows[$i];
 
-                $link           = JRoute::_('index.php?option=com_timeclock&controller=holidays&task=edit&cid[]='. $row->id);
+    $link           = JRoute::_('index.php?option=com_timeclock&controller=holidays&task=edit&cid[]='. $row->id);
 
-                $checked        = JHTML::_('grid.checkedout', $row, $i);
-                $published      = JHTML::_('grid.published', $row, $i);
-                $name           = substr($row->notes, 0, 60);
-                $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
+    $checked        = JHTML::_('grid.checkedout', $row, $i);
+    $published      = JHTML::_('grid.published', $row, $i);
+    $name           = substr($row->notes, 0, 60);
+    $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
+    ?>
+    <tr class="<?php echo "row$k"; ?>">
+        <td>
+                <?php printf("%04d", $row->id); ?>
+        </td>
+        <td>
+                <?php echo $checked; ?>
+        </td>
+        <td>
+    <?php
+    if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
+        echo $name;
+    } else {
         ?>
-                <tr class="<?php echo "row$k"; ?>">
-                        <td>
-                                <?php printf("%04d", $row->id); ?>
-                        </td>
-                        <td>
-                                <?php echo $checked; ?>
-                        </td>
-                        <td>
-                        <?php if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
-                                echo $name;
-                        } else {
-                                ?>
-                                <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $name; ?>">
-                                <a href="<?php echo $link  ?>">
-                                        <?php echo $name; ?></a></span>
-                                <?php
-                        }
-                        ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->worked; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->created; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $row->hours; ?>
-                        </td>
-                        <td align="center">
-                                <?php echo $author; ?>
-                        </td>
-                </tr>
-                <?php
-                        $k = 1 - $k;
-                }
-                ?>
-        </tbody>
-        </table>
+        <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $name; ?>">
+        <a href="<?php echo $link  ?>">
+                <?php echo $name; ?></a></span>
+        <?php
+    }
+            ?>
+            </td>
+            <td align="center">
+                    <?php echo $row->worked; ?>
+            </td>
+            <td align="center">
+                    <?php echo $row->created; ?>
+            </td>
+            <td align="center">
+                    <?php echo $row->hours; ?>
+            </td>
+            <td align="center">
+                    <?php echo $author; ?>
+            </td>
+        </tr>
+    <?php
+    $k = 1 - $k;
+}
+?>
+    </tbody>
+    </table>
 </div>
 
 

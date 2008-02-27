@@ -98,8 +98,10 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Method to display the view
      *
-     * @param int $limitstart The record to start on
-     * @param int $limit      The max number of records to retrieve 
+     * @param string $where      The where clause to use.  Must include 'WHERE'
+     * @param int    $limitstart The record to start on
+     * @param int    $limit      The max number of records to retrieve 
+     * @param string $orderby    The order by clause.  Must include 'ORDER BY'
      *
      * @return string
      */
@@ -115,6 +117,8 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Method to display the view
      *
+     * @param string $where The where clause to use.  Must include 'WHERE'
+     *
      * @return string
      */
     function countProjects($where="")
@@ -127,6 +131,7 @@ class TimeclockAdminModelProjects extends JModel
      * Publishes or unpublishes an item
      *
      * @param int $publish 1 to publish, 0 to unpublish
+     * @param int $user_id The user ID to change
      *
      * @return bool
      */
@@ -176,7 +181,7 @@ class TimeclockAdminModelProjects extends JModel
         $row =& $this->getTable("TimeclockProjects"); 
         $data = JRequest::get('post');
 
-         if (empty($data['id'])) {
+        if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
             $user =& JFactory::getUser();
             $data["created_by"] = $user->get("id");
@@ -230,14 +235,14 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Gets select options for parent projects
      *
-     * @param int $id       The Id of the item to get the parent for
-     * @param int $selected The Id of the item to be selected
+     * @param string $where The where clause to use.  Must include 'WHERE'
+     * @param string $text  The text of the first entry
      *
      * @return array
      */
-    function getOptions($where, $selected=0, $selectedText = "None")
+    function getOptions($where, $text = "None")
     {
-        $ret = array(JHTML::_("select.option", 0, $selectedText));
+        $ret = array(JHTML::_("select.option", 0, $text));
         $query = "SELECT id, name FROM #__timeclock_projects ".$where." ORDER BY id asc";
         $list = self::_getList($query);
         if (!is_array($list)) return $ret;
@@ -265,7 +270,7 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Get projects for a user
      *
-     * @param int $oid Project id
+     * @param int $oid        Project id
      * @param int $limitstart The record to start on
      * @param int $limit      The max number of records to retrieve 
      *

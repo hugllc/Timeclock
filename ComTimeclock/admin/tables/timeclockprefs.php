@@ -257,6 +257,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @param string $name  The name of the pref to get
      * @param string $value The value of the pref to set
+     * @param int    $oid   The user ID to set the prefs for.  null sets them for the current user.
      *
      * @return mixed The value of the parameter.
      */

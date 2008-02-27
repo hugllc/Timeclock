@@ -100,8 +100,10 @@ class TimeclockAdminModelHolidays extends JModel
     /**
      * Method to display the view
      *
-     * @param int $limitstart The record to start on
-     * @param int $limit      The max number of records to retrieve 
+     * @param string $where      The where clause to use.  Must include 'WHERE'
+     * @param int    $limitstart The record to start on
+     * @param int    $limit      The max number of records to retrieve 
+     * @param string $orderby    The order by clause.  Must include 'ORDER BY'
      *
      * @return string
      */
@@ -120,6 +122,8 @@ class TimeclockAdminModelHolidays extends JModel
 
     /**
      * Method to display the view
+     *
+     * @param string $where The where clause to use.  Must include 'WHERE'
      *
      * @return string
      */

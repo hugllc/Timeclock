@@ -58,6 +58,8 @@ class TimeclockAdminControllerUsers extends JController
 {
     /**
      * Custom Constructor
+     *
+     * @param array $default The configuration array.
      */
     function __construct($default = array())
     {
@@ -95,6 +97,8 @@ class TimeclockAdminControllerUsers extends JController
 
     /**
      * redirects to a default url
+     *
+     * @param string $msg The message to have when redirected
      *
      * @return void
      */
