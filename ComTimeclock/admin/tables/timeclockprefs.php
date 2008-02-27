@@ -57,11 +57,29 @@ class TableTimeclockPrefs extends JTable
     public $id = null;
 
     /**
-     * Primary Key
+     * Variable
      *
      * @var int
      */
     public $prefs = array();
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $published = 0;
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $startDate = null;
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $endDate = null;
 
     /**
      * @var array The defaults for everything

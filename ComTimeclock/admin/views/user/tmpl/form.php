@@ -53,7 +53,7 @@ JToolBarHelper::cancel();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("calendar", $this->row->prefs["admin_startDate"], "admin_startDate", "admin_startDate", "%Y-%m-%d", "");?>
+                <?php print JHTML::_("calendar", $this->row->startDate, "startDate", "startDate", "%Y-%m-%d", "");?>
             </td>
             <td>
                 When this user starts
@@ -66,7 +66,7 @@ JToolBarHelper::cancel();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("calendar", $this->row->prefs["admin_endDate"], "admin_endDate", "admin_endDate", "%Y-%m-%d", "");?>
+                <?php print JHTML::_("calendar", $this->row->endDate, "endDate", "endDate", "%Y-%m-%d", "");?>
             </td>
             <td>
                 When this user leaves.  Leave blank if the user is still employed.
@@ -79,7 +79,7 @@ JToolBarHelper::cancel();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.booleanList", "admin_active", "", $this->row->prefs["admin_active"]); ?>
+                <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
                 Is this user active in the timeclock.  'No' means they will not be able to access any

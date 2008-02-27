@@ -54,7 +54,7 @@ class TimeclockAdminModelUsers extends JModel
     /** The ID to load */
     private $_id = -1;
     /** Query to get all records */
-    private $_allQuery = "SELECT u.*, p.prefs prefs
+    private $_allQuery = "SELECT u.*, p.*
                       FROM #__users AS u 
                       LEFT JOIN #__timeclock_prefs as p ON u.id = p.id ";
 
@@ -115,7 +115,6 @@ class TimeclockAdminModelUsers extends JModel
         if (!is_array($ret)) return $ret;
         foreach ($ret as $key => $val) {
             $ret[$key]->prefs = TableTimeclockPrefs::decode($val->prefs);
-            $ret[$key]->published = (bool) $val->prefs["admin_active"];
         }
         return $ret;
     }
@@ -169,7 +168,6 @@ class TimeclockAdminModelUsers extends JModel
     function addproject()
     {
         $row = $this->getTable("TimeclockUsers");
-        $projid = JRequest::getVar('projid', 0, '', 'int');
 
         $id = JRequest::getVar('projid', 0, '', 'int');
         $user_id = JRequest::getVar('id', 0, '', 'int');
@@ -268,6 +266,9 @@ class TimeclockAdminModelUsers extends JModel
         // Load the new data
         foreach ($data as $f => $v) {
             if (substr($f, 0, 6) == "admin_") $prefs["prefs"][$f] = $v;
+        }
+        foreach (array("published", "startDate", "endDate") as $key) {
+            $prefs[$key] = $data[$key];
         }
 
         // Bind the form fields to the hello table
