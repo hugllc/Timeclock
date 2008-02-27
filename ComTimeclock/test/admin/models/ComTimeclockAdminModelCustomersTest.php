@@ -89,6 +89,62 @@ class ComTimeclockAdminModelCustomersTest extends JModelTest
         return array(
         );
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStore()
+    {
+        return array(
+            array(
+                array(
+                    "company" => "a",
+                    "name" => "b",
+                    "address1" => "c",
+                    "address2" => "d",
+                    "city" => "e",
+                    "state" => "f",
+                    "zip" => "g",
+                    "country" => "h",
+                    "notes" => "i",
+                    "published" => "j",
+                ), 
+                "post", 
+                array(
+                    "id" => null,
+                    "company" => "a",
+                    "name" => "b",
+                    "address1" => "c",
+                    "address2" => "d",
+                    "city" => "e",
+                    "state" => "f",
+                    "zip" => "g",
+                    "country" => "h",
+                    "notes" => "i",
+                    "published" => "j",
+                    "checked_out" => null,
+                    "checked_out_time" => null,
+                    "created_by" => 62,
+                ), 
+                store,
+            ),
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreRet()
+    {
+        return array(
+            array(null, "store", true),
+            array("bind", "store", false),
+            array("check", "store", false),
+            array("store", "store", false),
+        );
+    }
 
 
 }
