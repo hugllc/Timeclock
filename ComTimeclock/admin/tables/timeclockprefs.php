@@ -211,7 +211,7 @@ class TableTimeclockPrefs extends JTable
             $oid = -1;
         } else {
             $u =& JFactory::getUser();
-            $oid = $u->id;
+            $oid = $u->get("id");
             if (empty($oid)) return self::_prefCache($name);
             $type = "user";
         }        

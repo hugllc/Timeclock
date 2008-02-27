@@ -38,9 +38,11 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-
+/** Load the prefs table */
 require_once dirname(__FILE__)."/../tables/timeclockprefs.php";
+/** Load the users table */
 require_once dirname(__FILE__)."/../tables/timeclockusers.php";
+/** Load the projets controller */
 require_once dirname(__FILE__)."/projects.php";
 
 /**

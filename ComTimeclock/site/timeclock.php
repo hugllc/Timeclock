@@ -33,7 +33,6 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
- 
 defined('_JEXEC') or die('Restricted access');
 
 /** Get the component stuff */

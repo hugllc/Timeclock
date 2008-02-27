@@ -24,7 +24,7 @@
  * </pre>
  *
  * @category   Test
- * @package    HUGnet
+ * @package    Timeclock
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
@@ -49,7 +49,7 @@ require_once 'ComTimeclock/test/ComTimeclockTests.php';
  * before the software is ever released.
  *
  * @category   Test
- * @package    HUGnet
+ * @package    Timeclock
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC

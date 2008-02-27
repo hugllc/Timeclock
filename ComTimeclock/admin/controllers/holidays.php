@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-
+/** Load the projects table */
 require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
 
 /**

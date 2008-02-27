@@ -35,7 +35,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-define("COM_TIMECLOCK_FRONT", "..".DS."components".DS."com_ComTimeclock");
+/** Define the front end of the timeclock */
+define("COM_TIMECLOCK_FRONT", "..".DS."components".DS."com_timeclock");
 ?>
 <img src="<?php echo COM_TIMECLOCK_FRONT.DS."images".DS."HUGgrowingIdeas_Icon.gif"; ?>" style="float:left; padding-right: 10px;" alt="HUG logo" />
 <p>
