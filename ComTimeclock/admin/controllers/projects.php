@@ -92,6 +92,31 @@ class TimeclockAdminControllerProjects extends JController
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
     }
+    /**
+     * Publishes an item
+     *
+     * @return void
+     */
+    function adduser()
+    {
+        $model = $this->getModel("Projects");
+        $model->adduser();
+        $link = $_SERVER["HTTP_REFERER"];
+        $this->setRedirect($link, $msg);
+    }
+
+    /**
+     * Publishes an item
+     *
+     * @return void
+     */
+    function removeuser()
+    {
+        $model = $this->getModel("Projects");
+        $model->removeuser();
+        $link = $_SERVER["HTTP_REFERER"];
+        $this->setRedirect($link, $msg);
+    }
 
     /**
      * redirects to a default url

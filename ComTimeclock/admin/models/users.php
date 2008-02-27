@@ -210,7 +210,6 @@ class TimeclockAdminModelUsers extends JModel
     function removeproject()
     {
         $row = $this->getTable("TimeclockUsers");
-        $projid = JRequest::getVar('projid', 0, '', 'int');
         $data = array(
             "id" => JRequest::getVar('projid', 0, '', 'int'),
             "user_id" => JRequest::getVar('id', 0, '', 'int'),
@@ -311,6 +310,27 @@ class TimeclockAdminModelUsers extends JModel
                   ";
         $ret = $this->_getList($query, $limitstart, $limit);
         if (!is_array($ret)) return array();
+        return $ret;
+    }
+    /**
+     * Gets select options for parent projects
+     *
+     * @param string $where The where clause to use.  Must include 'WHERE'
+     * @param string $text  The text of the first entry
+     *
+     * @return array
+     */
+    function getOptions($where, $text = "None")
+    {
+        $ret = array(JHTML::_("select.option", 0, $text));
+        $query = "SELECT u.id, u.name FROM #__users AS u 
+                  LEFT JOIN #__timeclock_prefs AS p ON u.id = p.id "
+                  .$where." ORDER BY u.id asc";
+        $list = self::_getList($query);
+        if (!is_array($list)) return $ret;
+        foreach ($list as $val) {
+            $ret[] = JHTML::_("select.option", $val->id, $val->name);
+        }
         return $ret;
     }
 

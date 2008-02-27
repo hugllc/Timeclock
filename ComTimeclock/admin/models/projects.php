@@ -126,6 +126,75 @@ class TimeclockAdminModelProjects extends JModel
         $query = $this->_allQuery." ".$where;
         return $this->_getListCount($query);
     }
+    /**
+     * Checks in an item
+     *
+     * @return bool
+     */
+    function adduser()
+    {
+        $row = $this->getTable("TimeclockUsers");
+
+        $id = JRequest::getVar('id', 0, '', 'int');
+        $user_id = JRequest::getVar('user_id', 0, '', 'int');
+        if (!is_array($user_id)) $user_id = array($user_id);
+
+        $ret = true;
+        foreach ($user_id as $u) {
+            $data = array(
+                "id" => $id,
+                "user_id" => $u,
+            );
+            
+            if (!$row->bind($data)) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+            // Make sure the record is valid
+            if (!$row->check()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        
+            // Store the web link table to the database
+            if (!$row->store()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Checks in an item
+     *
+     * @return bool
+     */
+    function removeuser()
+    {
+        $row = $this->getTable("TimeclockUsers");
+
+        $data = array(
+            "id" => JRequest::getVar('id', 0, '', 'int'),
+            "user_id" => JRequest::getVar('user_id', 0, '', 'int'),
+        );
+
+        // Bind the form fields to the hello table
+        if (!$row->bind($data)) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+        // Store the web link table to the database
+        if (!$row->delete()) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    
+        return true;
+    }
 
     /**
      * Publishes or unpublishes an item
