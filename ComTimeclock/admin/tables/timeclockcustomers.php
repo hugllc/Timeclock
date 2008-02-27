@@ -110,6 +110,37 @@ class TableTimeclockCustomers extends JTable
      * @var string
      */
     public $notes = '';
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $published = '';
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $checked_out = 0;
+
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $checked_out_time = '';
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $created_by = null;
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $created = '';
 
     
     /**

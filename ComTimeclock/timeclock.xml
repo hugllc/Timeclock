@@ -56,11 +56,13 @@
             <filename>tables/index.html</filename>
             <filename>tables/timeclockprefs.php</filename>
             <filename>controllers/index.html</filename>
+            <filename>controllers/customers.php</filename>
             <filename>controllers/config.php</filename>
             <filename>controllers/projects.php</filename>
             <filename>controllers/holidays.php</filename>
             <filename>controllers/users.php</filename>
             <filename>models/index.html</filename>
+            <filename>models/customers.php</filename>
             <filename>models/config.php</filename>
             <filename>models/projects.php</filename>
             <filename>models/holidays.php</filename>
@@ -92,6 +94,15 @@
             <filename>views/holidays/tmpl/index.html</filename>
             <filename>views/holidays/tmpl/default.php</filename>
             <filename>views/holidays/view.html.php</filename>
+            <filename>views/customer/index.html</filename>
+            <filename>views/customer/tmpl/index.html</filename>
+            <filename>views/customer/tmpl/default.php</filename>
+            <filename>views/customer/tmpl/form.php</filename>
+            <filename>views/customer/view.html.php</filename>
+            <filename>views/customers/index.html</filename>
+            <filename>views/customers/tmpl/index.html</filename>
+            <filename>views/customers/tmpl/default.php</filename>
+            <filename>views/customers/view.html.php</filename>
             <filename>views/user/index.html</filename>
             <filename>views/user/tmpl/index.html</filename>
             <filename>views/user/tmpl/default.php</filename>
