@@ -84,6 +84,21 @@ class TimeclockAdminController extends JController
         $mainframe->set('JComponentTitle', $html);
     }
 
+    /**
+     * Get Referrer
+     *
+     * @return string
+     */
+    function referer()
+    {
+        $referer = JRequest::getString('referer', "", 'post');
+        if (!empty($referer)) return $referer;
+        $referer = $_SERVER["HTTP_REFERER"];
+        if (!empty($referer)) return $referer;
+        return "index.php";
+        
+    }
+     
 
 }
 ?>

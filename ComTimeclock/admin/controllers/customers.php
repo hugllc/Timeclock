@@ -142,7 +142,7 @@ class TimeclockAdminControllerCustomers extends JController
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
-        $this->reset();    
+        $this->reset($msg);    
     
     }
 

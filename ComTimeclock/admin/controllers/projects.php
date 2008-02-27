@@ -101,7 +101,7 @@ class TimeclockAdminControllerProjects extends JController
     {
         $model = $this->getModel("Projects");
         $model->adduser();
-        $link = $_SERVER["HTTP_REFERER"];
+        $link = TimeclockAdminController::referer();
         $this->setRedirect($link, $msg);
     }
 
@@ -114,7 +114,7 @@ class TimeclockAdminControllerProjects extends JController
     {
         $model = $this->getModel("Projects");
         $model->removeuser();
-        $link = $_SERVER["HTTP_REFERER"];
+        $link = TimeclockAdminController::referer();
         $this->setRedirect($link, $msg);
     }
 
@@ -196,7 +196,7 @@ class TimeclockAdminControllerProjects extends JController
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
-        $this->reset();    
+        $this->reset($msg);    
     
     }
 

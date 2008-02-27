@@ -120,7 +120,7 @@ class TimeclockAdminControllerUsers extends JController
     {
         $model = $this->getModel("Users");
         $model->addproject();
-        $link = $_SERVER["HTTP_REFERER"];
+        $link = TimeclockAdminController::referer();
         $this->setRedirect($link, $msg);
     }
 
@@ -133,7 +133,7 @@ class TimeclockAdminControllerUsers extends JController
     {
         $model = $this->getModel("Users");
         $model->removeproject();
-        $link = $_SERVER["HTTP_REFERER"];
+        $link = TimeclockAdminController::referer();
         $this->setRedirect($link, $msg);
     }
 
@@ -193,13 +193,13 @@ class TimeclockAdminControllerUsers extends JController
         $model = $this->getModel("Users");
     
         if ($model->store()) {
-            $msg = JText::_('Project Saved!');
+            $msg = JText::_('User Settings Saved!');
         } else {
-            $msg = JText::_('Error Saving Project');
+            $msg = JText::_('Error Saving User Settings');
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
-        $this->reset();    
+        $this->reset($msg);    
     
     }
 

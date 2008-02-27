@@ -103,6 +103,26 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
             array(array(array('add', 'edit'))),
         );
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreTasks()
+    {
+        return array(
+            array("save", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => "User Settings Saved!")),          
+            array("save", false, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => "Error Saving User Settings")),          
+            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=users&task=edit&cid[]=0", "msg" => "User Settings Saved!")),          
+            array("apply", false, array("link" => "index.php?option=com_timeclock&controller=users&task=edit&cid[]=0", "msg" => "Error Saving User Settings")),          
+            array("reset", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
+            array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
+            array("publish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
+            array("unpublish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
+            array("addproject", true, array("link" => "index.php", "msg" => null)),          
+            array("removeproject", false, array("link" => "index.php", "msg" => null)),          
+        );
+    }
 
 }
 

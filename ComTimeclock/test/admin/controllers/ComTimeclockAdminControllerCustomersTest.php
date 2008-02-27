@@ -30,7 +30,7 @@
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
+ * @link       https://dev.hugllc.com/index.php/Customer:ComTimeclock:JoomlaUI
  */
 
 /** Require the JoomlaMock stuff */
@@ -49,7 +49,7 @@ require_once dirname(__FILE__).'/../../../admin/controllers/customers.php';
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
+ * @link       https://dev.hugllc.com/index.php/Customer:ComTimeclock:JoomlaUI
  */
 class ComTimeclockAdminControllerCustomersTest extends JControllerTest
 {
@@ -101,6 +101,24 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
     {
         return array(
             array(array(array('add', 'edit'))),
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreTasks()
+    {
+        return array(
+            array("save", true, array("link" => "index.php?option=com_timeclock&controller=customers", "msg" => "Customer Saved!")),          
+            array("save", false, array("link" => "index.php?option=com_timeclock&controller=customers", "msg" => "Error Saving Customer")),          
+            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=customers&task=edit&cid[]=0", "msg" => "Customer Saved!")),          
+            array("apply", false, array("link" => "index.php?option=com_timeclock&controller=customers&task=edit&cid[]=0", "msg" => "Error Saving Customer")),          
+            array("reset", true, array("link" => "index.php?option=com_timeclock&controller=customers", "msg" => null)),          
+            array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=customers", "msg" => null)),          
+            array("publish", true, array("link" => "index.php?option=com_timeclock&controller=customers", "msg" => null)),          
+            array("unpublish", true, array("link" => "index.php?option=com_timeclock&controller=customers", "msg" => null)),          
         );
     }
 
