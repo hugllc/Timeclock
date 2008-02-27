@@ -37,7 +37,7 @@
 require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
 require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
 /** Require the module under test */
-require_once dirname(__FILE__).'/../../../admin/controllers/projects.php';
+require_once dirname(__FILE__).'/../../../admin/controllers/users.php';
 
 /**
  * Test class for driver.
@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../admin/controllers/projects.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminControllerProjectsTest extends JControllerTest
+class ComTimeclockAdminControllerUsersTest extends JControllerTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -63,7 +63,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
      */
     protected function setUp() 
     {
-        $this->o = new TimeclockAdminControllerProjects();
+        $this->o = new TimeclockAdminControllerUsers();
         parent::setUp();
     }
 
@@ -88,8 +88,8 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
     public static function dataDisplay()
     {
         return array(
-            array("display", array("view" => "projects")),
-            array("edit", array("model" => "projects", "view" => "project", "layout" => "form", "hidemainmenu" => 1)),
+            array("display", array("view" => "users")),
+            array("edit", array("model" => "users", "view" => "user", "layout" => "form", "hidemainmenu" => 1)),
         );
     }
     /**

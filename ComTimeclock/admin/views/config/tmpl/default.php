@@ -145,7 +145,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 </label>
             </td>
             <td>
-                <textarea class="text_area" type="text" name="prefs[wCompCodes]" id="prefs_wCompCodes" cols="30" rows="5"><?php echo $this->prefs["wCompCodes"];?></textarea>
+                <textarea class="text_area" type="text" name="prefs[wCompCodes]" id="prefs_wCompCodes" cols="50" rows="5"><?php echo $this->prefs["wCompCodes"];?></textarea>
             </td>
             <td>
                 Worker's Compensation codes.  Put one per line.  The first 4 characters of the line are the code,

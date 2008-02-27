@@ -57,6 +57,9 @@ class ComTimeclockAdminControllerTests
     static $_tests = array(
         "ComTimeclockAdminControllerConfigTest",
         "ComTimeclockAdminControllerProjectsTest",
+        "ComTimeclockAdminControllerHolidaysTest",
+        "ComTimeclockAdminControllerCustomersTest",
+        "ComTimeclockAdminControllerUsersTest",
     );
 
     /**

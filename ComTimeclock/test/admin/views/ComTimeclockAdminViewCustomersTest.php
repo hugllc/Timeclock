@@ -32,12 +32,10 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
-/** Require the module under test */
-require_once dirname(__FILE__).'/../../../admin/controllers/projects.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JViewTest.php';
+require_once dirname(__FILE__).'/../../../admin/views/customers/view.html.php';
 
 /**
  * Test class for driver.
@@ -51,7 +49,7 @@ require_once dirname(__FILE__).'/../../../admin/controllers/projects.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminControllerProjectsTest extends JControllerTest
+class ComTimeclockAdminViewCustomersTest extends JViewTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -63,7 +61,12 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
      */
     protected function setUp() 
     {
-        $this->o = new TimeclockAdminControllerProjects();
+        $this->sqlFile = array(
+            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+            dirname(__FILE__)."/../../../install/timeclock_projects.sql",
+            dirname(__FILE__)."/../../../install/timeclock_customers.sql",
+        );
+        $this->o = new TimeclockAdminViewCustomers();
         parent::setUp();
     }
 
@@ -88,21 +91,10 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
     public static function dataDisplay()
     {
         return array(
-            array("display", array("view" => "projects")),
-            array("edit", array("model" => "projects", "view" => "project", "layout" => "form", "hidemainmenu" => 1)),
+            array("display", null),
         );
     }
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataRegisterTask()
-    {
-        return array(
-            array(array(array('add', 'edit'))),
-        );
-    }
+
 
 }
 

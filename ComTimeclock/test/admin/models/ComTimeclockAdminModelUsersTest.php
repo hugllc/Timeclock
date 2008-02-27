@@ -32,12 +32,10 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
-/** Require the module under test */
-require_once dirname(__FILE__).'/../../../admin/controllers/projects.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelTest.php';
+require_once dirname(__FILE__).'/../../../admin/models/users.php';
 
 /**
  * Test class for driver.
@@ -51,7 +49,7 @@ require_once dirname(__FILE__).'/../../../admin/controllers/projects.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminControllerProjectsTest extends JControllerTest
+class ComTimeclockAdminModelUsersTest extends JModelTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -63,7 +61,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
      */
     protected function setUp() 
     {
-        $this->o = new TimeclockAdminControllerProjects();
+        $this->o = new TimeclockAdminModelUsers();        
         parent::setUp();
     }
 
@@ -80,29 +78,18 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
         parent::tearDown();
         unset($this->o);
     }
+
     /**
      * Data provider
      *
      * @return array
      */
-    public static function dataDisplay()
+    public static function dataGetDataCache()
     {
         return array(
-            array("display", array("view" => "projects")),
-            array("edit", array("model" => "projects", "view" => "project", "layout" => "form", "hidemainmenu" => 1)),
         );
     }
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataRegisterTask()
-    {
-        return array(
-            array(array(array('add', 'edit'))),
-        );
-    }
+
 
 }
 

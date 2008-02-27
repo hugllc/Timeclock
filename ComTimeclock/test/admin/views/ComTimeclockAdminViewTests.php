@@ -59,6 +59,12 @@ class ComTimeclockAdminViewTests
         "ComTimeclockAdminViewConfigTest",
         "ComTimeclockAdminViewProjectTest",
         "ComTimeclockAdminViewProjectsTest",
+        "ComTimeclockAdminViewUserTest",
+        "ComTimeclockAdminViewUsersTest",
+        "ComTimeclockAdminViewHolidayTest",
+        "ComTimeclockAdminViewHolidaysTest",
+        "ComTimeclockAdminViewCustomerTest",
+        "ComTimeclockAdminViewCustomersTest",
     );
 
     /**

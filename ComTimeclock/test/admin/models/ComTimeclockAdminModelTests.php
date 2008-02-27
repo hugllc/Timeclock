@@ -57,6 +57,9 @@ class ComTimeclockAdminModelTests
     static $_tests = array(
         "ComTimeclockAdminModelConfigTest",
         "ComTimeclockAdminModelProjectsTest",
+        "ComTimeclockAdminModelCustomersTest",
+        "ComTimeclockAdminModelHolidaysTest",
+        "ComTimeclockAdminModelUsersTest",
     );
 
     /**
