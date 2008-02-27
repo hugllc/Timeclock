@@ -61,7 +61,6 @@ class TimeclockAdminViewAbout extends JView
      */
     function display($tpl = null)
     { 
-        JToolBarHelper::title(JText::_('About ComTimeclock'), "install");
         parent::display($tpl);
     }
 }

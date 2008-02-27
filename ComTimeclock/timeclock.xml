@@ -23,7 +23,7 @@
         <filename>models/timeclock.php</filename>
         <filename>models/index.html</filename>
         <filename>images/index.html</filename>
-        <filename>images/HUGgrowingIdeas_Icon.gif</filename>
+        <filename>images/clock.png</filename>
         <filename>tables/timeclocktimesheet.php</filename>
         <filename>tables/index.html</filename>
         <filename>LICENSE.TXT</filename>
@@ -55,6 +55,8 @@
             <filename>controller.php</filename>
             <filename>tables/index.html</filename>
             <filename>tables/timeclockprefs.php</filename>
+            <filename>images/index.html</filename>
+            <filename>images/clock-48.png</filename>
             <filename>controllers/index.html</filename>
             <filename>controllers/customers.php</filename>
             <filename>controllers/config.php</filename>

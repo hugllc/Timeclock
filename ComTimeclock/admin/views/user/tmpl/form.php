@@ -37,7 +37,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 jimport("joomla.html.pane");
 
-JToolBarHelper::title(JText::_("User Configuration: <small><small>[ ".$this->user->name." ]</small></small>"));
+TimeclockAdminController::title(JText::_("User Configuration: <small><small>[ ".$this->user->name." ]</small></small>"));
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();

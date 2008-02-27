@@ -63,5 +63,26 @@ class TimeclockAdminController extends JController
         parent::display();
     }
 
+    /**
+    * Title cell
+    * For the title and toolbar to be rendered correctly,
+    * this title fucntion must be called before the starttable function and the toolbars icons
+    * this is due to the nature of how the css has been used to postion the title in respect to the toolbar
+    * @param string The title
+    * @param string The name of the image
+    * @since 1.5
+    */
+    function title($title)
+    {
+        global $mainframe;
+
+        $html  = "<div class=\"header\" style=\"background-image: url("."components".DS."com_timeclock".DS."images".DS."clock-48.png);\">\n";
+        $html .= "$title\n";
+        $html .= "</div>\n";
+
+        $mainframe->set('JComponentTitle', $html);
+    }
+
+
 }
 ?>

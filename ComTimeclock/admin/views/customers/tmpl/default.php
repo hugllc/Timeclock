@@ -39,9 +39,9 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip'); 
 
-JToolBarHelper::title(JText::_('Timeclock Holidays'));
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
+TimeclockAdminController::title(JText::_('Timeclock Customers'));
+JToolBarHelper::publishList("publish", "Activate");
+JToolBarHelper::unpublishList("unpublish", "Deactivate");
 JToolBarHelper::editListX();
 JToolBarHelper::addNewX();
 

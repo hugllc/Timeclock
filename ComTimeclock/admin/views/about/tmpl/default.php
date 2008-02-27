@@ -35,27 +35,34 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-/** Define the front end of the timeclock */
-define("COM_TIMECLOCK_FRONT", "..".DS."components".DS."com_timeclock");
+
+TimeclockAdminController::title(JText::_('About Timeclock'));
+
 ?>
-<img src="<?php echo COM_TIMECLOCK_FRONT.DS."images".DS."HUGgrowingIdeas_Icon.gif"; ?>" style="float:left; padding-right: 10px;" alt="HUG logo" />
+<div style="width: 500px;">
 <p>
-ComTimeclock is a component (among other things) that is created for viewing
-and interacting with <a href="http://www.hugllc.com/wiki/index.php/Project:ComTimeclock">ComTimeclock</a>
- data.  It has both an engineering centric interface and a more user centric interface.  The user
- interface is mostly contained in the plugin that is included.
+Timeclock is a component designed to track the time employees spend on projects.
+It is designed to be used to facilitate payroll for employees that range across multiple sites.
 </p>
+More information on Timeclock can be found on the <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock"
+>Hunt Utilities Group, LLC wiki</a>
 <p>
-ComTimeclock was written by Scott Price (<a href="mailto:prices@hugllc.com">prices@hugllc.com</a>) an employee of 
+Timeclock was written by Scott Price (<a href="mailto:prices@hugllc.com">prices@hugllc.com</a>) an employee of 
 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC.</a>.
 </p>
-<h2 style="clear:both;">Install Check</h2>
-
-<h2 style="clear:both;">License</h2>
+<h2 style="clear:both;">Contributions and Thanks</h2>
 <p>
-<a href="<?php echo COM_TIMECLOCK_FRONT.DS."LICENSE.TXT";?>">License File</a>
+<ul>
+<li>The clock icon was created by <a href="http://nuovext.pwsp.net/">Alexandre Moore</a> and posted on 
+<a href="http://www.iconfinder.net">iconfinder.net</a>.  It is licensed
+under the GNU GPL.</li>
+<li>I based a significant portion of my code from base Joomla! components.  Some of it was copied and
+modified to fit my needs.  Most notably com_content and com_poll.</li>
+</ul>
 </p>
-<a href="http://www.hugllc.com/wiki/index.php/Project:ComTimeclock">ComTimeclock</a> is a Joomla! 1.5 component<br />
+<h2 style="clear:both;">License</h2>
+<a href="<?php echo COM_TIMECLOCK_FRONT.DS."LICENSE.TXT";?>">License File</a>
+<a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a> is a Joomla! 1.5 component<br />
 Copyright &copy; 2008 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a><br />
 <p>
 This program is free software; you can redistribute it and/or
@@ -75,3 +82,4 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 MA  02110-1301, USA.
 </p>
+</div>

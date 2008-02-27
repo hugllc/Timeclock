@@ -37,6 +37,8 @@
 defined('_JEXEC') or die('Restricted access'); 
 jimport("joomla.html.pane");
 
+TimeclockAdminController::title(JText::_('Timeclock Preferences'));
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div>

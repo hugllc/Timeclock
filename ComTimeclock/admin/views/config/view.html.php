@@ -66,7 +66,6 @@ class TimeclockAdminViewConfig extends JView
         $defaults = $row->getDefaults("system");
         $row->prefs = array_merge($defaults, $row->prefs);
         
-        JToolBarHelper::title(JText::_('Timeclock Preferences'));
         JToolBarHelper::save();
         
         $payPeriodTypeOptions = array(

@@ -39,7 +39,7 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip'); 
 
-JToolBarHelper::title(JText::_('Timeclock Projects'));
+TimeclockAdminController::title(JText::_('Timeclock Projects'));
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 JToolBarHelper::editListX();

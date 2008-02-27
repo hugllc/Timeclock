@@ -39,7 +39,7 @@ jimport("joomla.html.pane");
 
 $title = ($this->add) ? "Add" : "Edit";
 
-JToolBarHelper::title(JText::_("Timeclock Holidays: <small><small>[ ".$title." ]</small></small>"));
+TimeclockAdminController::title(JText::_("Timeclock Holidays: <small><small>[ ".$title." ]</small></small>"));
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
