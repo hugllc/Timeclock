@@ -61,6 +61,11 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
      */
     protected function setUp() 
     {
+        $this->sqlFile = array(
+            dirname(__FILE__)."/../../../install/timeclock_projects.sql",
+            dirname(__FILE__)."/../../../install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+        );
         $this->o = new TimeclockAdminModelProjects();        
         parent::setUp();
     }
@@ -87,6 +92,69 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     public static function dataGetDataCache()
     {
         return array(
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStore()
+    {
+        return array(
+            array(
+                array(
+                    "name" => "a",
+                    "description" => "b",
+                    "created_by" => "c",
+                    "research" => "d",
+                    "type" => "e",
+                    "parent_id" => "f",
+                    "wcCode" => "g",
+                    "customer" => "h",
+                    "checked_out" => "i",
+                    "checked_out_time" => "j",
+                    "published" => 1,
+                ), 
+                "post", 
+                array(
+                    "id" => null,
+                    "name" => "a",
+                    "description" => "b",
+                    "created_by" => 62,
+                    "research" => "d",
+                    "type" => "e",
+                    "parent_id" => "f",
+                    "wcCode" => "g",
+                    "customer" => "h",
+                    "checked_out" => "i",
+                    "checked_out_time" => "j",
+                    "published" => 1,
+                ), 
+                "store",
+            ),
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreRet()
+    {
+        return array(
+            array(null, "store", true, array("id" => 13)),
+            array("bind", "store", false, array("id" => 13)),
+            array("check", "store", false, array("id" => 13)),
+            array("store", "store", false, array("id" => 13)),
+
+            array(null, "adduser", true, array("id" => 13, "projid" => 10)),
+            array("bind", "adduser", false, array("id" => 13, "projid" => 10)),
+            array("check", "adduser", false, array("id" => 13, "projid" => 10)),
+
+            array(null, "removeuser", true, array("id" => 13, "projid" => 10)),
+            array("bind", "removeuser", false, array("id" => 13, "projid" => 10)),
+
         );
     }
 

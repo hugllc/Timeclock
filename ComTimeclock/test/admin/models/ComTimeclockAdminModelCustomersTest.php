@@ -61,6 +61,10 @@ class ComTimeclockAdminModelCustomersTest extends JModelTest
      */
     protected function setUp() 
     {
+        $this->sqlFile = array(
+            dirname(__FILE__)."/../../../install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+        );
         $this->o = new TimeclockAdminModelCustomers();        
         parent::setUp();
     }

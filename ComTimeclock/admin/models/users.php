@@ -169,8 +169,8 @@ class TimeclockAdminModelUsers extends JModel
     {
         $row = $this->getTable("TimeclockUsers");
 
-        $id = JRequest::getVar('projid', 0, '', 'int');
-        $user_id = JRequest::getVar('id', 0, '', 'int');
+        $id = JRequest::getVar('projid', 0, 'post', 'int');
+        $user_id = JRequest::getVar('id', 0, 'post', 'int');
         if (!is_array($id)) $id = array($id);
 
         $ret = true;
@@ -191,7 +191,6 @@ class TimeclockAdminModelUsers extends JModel
                 $ret = false;
                 continue;
             }
-        
             // Store the web link table to the database
             if (!$row->store()) {
                 $this->setError($this->_db->getErrorMsg());

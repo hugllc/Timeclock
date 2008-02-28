@@ -68,6 +68,7 @@ class ComTimeclockAdminTablesUsersTest extends JTableTest
     {
         $this->sqlFile = array(
             dirname(__FILE__)."/../../../install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
         );
         parent::setUp();
         $this->_db->setQuery("DELETE FROM #__timeclock_users");

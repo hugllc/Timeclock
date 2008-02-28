@@ -61,6 +61,10 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
      */
     protected function setUp() 
     {
+        $this->sqlFile = array(
+            dirname(__FILE__)."/../../../install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+        );
         $this->o = new TimeclockAdminModelUsers();        
         parent::setUp();
     }
@@ -89,6 +93,57 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
         return array(
         );
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStore()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 15,
+                    "prefs" => array(1,2,3,4,5),
+                    "published" => 1,
+                    "startDate" => "2008-04-12",
+                    "endDate" => "2009-04-12",
+                ), 
+                "post", 
+                array(
+                    "id" => 15,
+                    "prefs" => "YTowOnt9",
+                    "published" => 1,
+                    "startDate" => "2008-04-12",
+                    "endDate" => "2009-04-12",
+                ), 
+                "store",
+            ),
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreRet()
+    {
+        return array(
+            array(null, "store", true, array("id" => 13)),
+            array("bind", "store", false, array("id" => 13)),
+            array("check", "store", false, array("id" => 13)),
+            array("store", "store", false, array("id" => 13)),
+
+            array(null, "addproject", true, array("id" => 13, "projid" => 10)),
+            array("bind", "addproject", false, array("id" => 13, "projid" => 10)),
+            array("check", "addproject", false, array("id" => 13, "projid" => 10)),
+
+            array(null, "removeproject", true, array("id" => 13, "projid" => 10)),
+            array("bind", "removeproject", false, array("id" => 13, "projid" => 10)),
+
+        );
+    }
+
 
 
 }

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `jos_timeclock_timesheet` (
+CREATE TABLE IF NOT EXISTS `#__timeclock_timesheet` (
   `id` int(11) NOT NULL auto_increment,
   `project_id` int(11) NOT NULL default '0',
   `user_id` int(11) NOT NULL default '0',

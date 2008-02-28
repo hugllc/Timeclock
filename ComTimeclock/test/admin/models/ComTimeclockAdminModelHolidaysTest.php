@@ -61,6 +61,10 @@ class ComTimeclockAdminModelHolidaysTest extends JModelTest
      */
     protected function setUp() 
     {
+        $this->sqlFile = array(
+            dirname(__FILE__)."/../../../install/timeclock_holidays.sql",
+            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+        );
         $this->o = new TimeclockAdminModelHolidays();        
         parent::setUp();
     }
@@ -87,6 +91,50 @@ class ComTimeclockAdminModelHolidaysTest extends JModelTest
     public static function dataGetDataCache()
     {
         return array(
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStore()
+    {
+        return array(
+            array(
+                array(
+                    "id" => null,
+                    "project_id" => "a",
+                    "created_by" => 62,
+                    "hours" => "d",
+                    "worked" => "e",
+                    "notes" => "f",
+                ), 
+                "post", 
+                array(
+                    "id" => null,
+                    "project_id" => "a",
+                    "created_by" => 62,
+                    "hours" => "d",
+                    "worked" => "e",
+                    "notes" => "f",
+                ), 
+                "store",
+            ),
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreRet()
+    {
+        return array(
+            array(null, "store", true, array("id" => 13)),
+            array("bind", "store", false, array("id" => 13)),
+            array("check", "store", false, array("id" => 13)),
+            array("store", "store", false, array("id" => 13)),
         );
     }
 
