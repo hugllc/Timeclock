@@ -33,13 +33,13 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.view');
 
 /**
- * ComTimeclock World Component Controller
+ * HTML View class for the ComTimeclockWorld Component
  *
  * @category   UI
  * @package    ComTimeclock
@@ -49,63 +49,38 @@ jimport('joomla.application.component.controller');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockController extends JController
+
+class TimeclockViewAddHours extends JView
 {
     /**
-     * Method to display the view
+     * The display function
      *
-     * @access public
+     * @param string $tpl The template to use
+     *
      * @return null
      */
-    function display()
+    function display($tpl = null)
     {
-        parent::display();
+        $model   =& $this->getModel();
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+
+        $data     = $model->getData();
+        $date     = $model->getDate();
+        $user     = JFactory::getUser();
+        $user_id  = $user->get("id");
+        $projects = $projModel->getUserProjects($user_id);
+        $referer  = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+        $projid   = JRequest::getVar('projid', null, '', 'string');
+
+        $this->assignRef("projid", $projid);
+        $this->assignRef("referer", $referer);
+        $this->assignRef("projects", $projects);        
+        $this->assignRef("user", $user);        
+        $this->assignRef("data", $data);        
+        $this->assignRef("date", $date);
+        parent::display($tpl);
+
     }
-
-    /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function addhours()
-    {
-        JRequest::setVar('view', 'addhours');
-        JRequest::setVar('hidemainmenu', 1);
-        parent::display();
-    }
-
-    /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function savehours()
-    {
-        $model = $this->getModel("AddHours");
-    
-        if ($model->store()) {
-            $msg = JText::_('Hours Saved!');
-        } else {
-            $msg = JText::_('Error Saving Hours');
-        }
-
-        $referer = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
-    }
-
-    /**
-     * Format the project id
-     *
-     * @param int $id The project ID
-     *
-     * @return string
-     */
-    function formatProjId($id)
-    {
-        return sprintf("%04d", (int)$id);
-    }
-
 }
 
 ?>

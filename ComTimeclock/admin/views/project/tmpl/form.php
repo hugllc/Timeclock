@@ -120,7 +120,7 @@ JToolBarHelper::cancel();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.genericList", $this->parentOptions, "parent_id", "", 'value', 'text', $this->row->status); ?>
+                <?php print JHTML::_("select.genericList", $this->parentOptions, "parent_id", "", 'value', 'text', $this->row->parent_id); ?>
             </td>
             <td>
                 The parent project

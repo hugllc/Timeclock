@@ -116,7 +116,7 @@ class TimeclockModelTimeclock extends JModel
     
             
     
-        $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id
+        $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
                   FROM #__timeclock_timesheet as t
                   LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
                   WHERE ".$this->employmentDateWhere("t.worked")
@@ -128,10 +128,44 @@ class TimeclockModelTimeclock extends JModel
         if (!is_array($ret)) return array();
         $data = array();
         foreach ($ret as $d) {
-            $data[$d->project_id][$d->worked] += $d->hours;
+            $data[$d->project_id][$d->worked]['hours'] += $d->hours;
+            $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
+        }
+        $data = $this->getHolidayHours($data);
+        return $data;
+    }
+
+    /**
+     * Method to display the view
+     *
+     * @param array $data Data to merge with
+     *
+     * @return string
+     */
+    function getHolidayHours($data = array())
+    {
+    
+        $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
+                  FROM #__timeclock_timesheet as t
+                  LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
+                  JOIN #__timeclock_users as u on u.id = p.id
+                  WHERE ".$this->employmentDateWhere("t.worked")
+                  ." AND ".$this->periodWhere("t.worked")
+                  ." AND p.type='HOLIDAY'
+                     AND u.user_id='".$this->_id."'
+                  GROUP BY t.worked, t.project_id
+                  ";
+        $ret = $this->_getList($query);
+        if (!is_array($ret)) return array();
+        if (!is_array($data)) $data = array();
+        foreach ($ret as $d) {
+            $data[$d->project_id][$d->worked]['hours'] += $d->hours;
+            $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
         }
         return $data;
     }
+
+
 
     /**
      * Where statement for employment dates

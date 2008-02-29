@@ -35,11 +35,21 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
-$this->totals = array();
-$headerColSpan = ($this->period["length"]+4);
+
+JHTML::_('behavior.tooltip');
+
+$this->totals     = array();
+if (empty($this->days)) $this->days = 7;
+
+$headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->days));
+
 $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
-if ($this->days == 0) $this->days = 7;
+$document        =& JFactory::getDocument();
+$dateFormat      = JText::_("DATE_FORMAT_LC1");
+$shortDateFormat = JText::_("DATE_FORMAT_LC3");
+$document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('date', $this->period["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period["end"], $shortDateFormat));
+
 ?>
 
 <form action="index.php" method="post" name="userform" autocomplete="off">
@@ -47,13 +57,14 @@ if ($this->days == 0) $this->days = 7;
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <theader>
             <strong>
-                <?php print JHTML::_('date', $this->period["start"], JText::_('DATE_FORMAT_LC1')); ?>
+                <?php print JHTML::_('date', $this->period["start"], $dateFormat); ?>
                 to
-                <?php print JHTML::_('date', $this->period["end"], JText::_('DATE_FORMAT_LC1')); ?>
+                <?php print JHTML::_('date', $this->period["end"], $dateFormat); ?>
             </strong>
         </theader>
 <?php
-    tableHeader($this);
+tableHeader($this);
+$rows = 0;
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published){
         $array = array_intersect_key($cat->subprojects, $this->hours);
@@ -69,7 +80,7 @@ foreach ($this->projects as $cat) {
         if (($proj->mine == false) || !$proj->published) {
             if (!array_key_exists($proj->id, $this->hours)) continue;
         }
-        projectRow($this, $proj);
+        projectRow($this, $proj, $cat);
     }
 }
     tableHeader($this);
@@ -149,8 +160,10 @@ function tableHeader(&$obj)
     $d = 0;
     foreach ($obj->period["dates"] as $key => $uDate) {
         $style = ($key == $today) ? "background: #00FF00; color: #000000;" : "";
+        $url = JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$obj->user->get("id"));
         print '            <td class="sectiontableheader" style="'.$obj->cellStyle.$style.'">';
-        print '                '.date($headerDateFormat, $uDate);
+        print '                <span class="hasTip" title="'.JText::_("Add hours").'">';
+        print '<a href="'.$url.'">'.date($headerDateFormat, $uDate)."</a></span>\n";
         print "            </td>\n";
         if ((++$d % $obj->days) == 0) {
             print '            <td class="sectiontableheader">';
@@ -169,24 +182,29 @@ function tableHeader(&$obj)
  *
  * @param object &$obj  Pass it $this
  * @param object &$proj Pass it the project to print
+ * @param object &$cat Pass it the category of the project
  *
  * @return null
  */ 
-function projectRow(&$obj, &$proj)
+function projectRow(&$obj, &$proj, &$cat)
 {
     print "        <tr class=\"sectiontablerow$k\">\n";
     print "            <td>\n";
-    print "                ".$proj->name."\n";
+    print '                <span class="hasTip" title="'.JText::_($proj->description).'">';
+    print "                ".JText::_($proj->name)."</span>\n";
     print "            </td>\n";
     $rowtotal = 0;
     $dtotal = 0;
     $d = 0;
     foreach ($obj->period["dates"] as $key => $uDate) {
-        $hours = ($obj->hours[$proj->id][$key]) ? $obj->hours[$proj->id][$key] : 0;
-        $rowtotal += $hours;
+        $hours              = ($obj->hours[$proj->id][$key]) ? $obj->hours[$proj->id][$key]['hours'] : 0;
+        $rowtotal          += $hours;
         $obj->totals[$key] += $hours;
-        $dtotal += $hours;
-        $link = $hours;
+        $dtotal            += $hours;
+        $tip                = ($hours == 0) ? "Add Hours for ".$proj->name." on ".$key : $obj->hours[$proj->id][$key]['notes'];
+        $url                = ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) ? null : JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id"));
+        $link               = is_null($url) ? $hours : '<a href="'.$url.'">'.$hours.'</a>';
+        $link               = '<span class="hasTip" title="'.JText::_($tip).'">'.$link.'</span>';
         print '            <td style="'.$obj->cellStyle.'">';
         print '                '.$link."\n";
         print "            </td>\n";

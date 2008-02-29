@@ -393,7 +393,7 @@ class TimeclockAdminModelProjects extends JModel
             if ($p->type != "UMBRELLA") {
                 $p->mine = array_key_exists($p->id, $uProj);
                 if ($p->mine) $projects[$p->parent_id]->mine = true;
-                if ($p->type == 'HOLIDAY') $p->noLink = true;
+                if ($p->type == 'HOLIDAY') $p->noHours = true;
                 $projects[$p->parent_id]->subprojects[$p->id] = $p;
             }
         }
