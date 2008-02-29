@@ -90,7 +90,7 @@ class TableTimeclockPrefs extends JTable
             "maxDailyHours" => 24,
             "firstPayPeriodStart" => "2000-12-11",
             "payPeriodType" => "FIXED",
-            "payPeriodLength" => 14,
+            "payPeriodLengthFixed" => 14,
             "wCompEnable" => 0,
             "wCompCodes" => '',
         ),
@@ -221,6 +221,7 @@ class TableTimeclockPrefs extends JTable
             $instance[$type]->load($oid);
         }
         if (isset($instance[$type]->prefs[$name])) return self::filterPref($name, $instance[$type]->prefs[$name]);
+        if (isset($instance[$type]->$name)) return self::filterPref($name, $instance[$type]->$name);
         if (isset(self::$_defaults[$type][$name])) return self::filterPref($name, self::$_defaults[$type][$name]);
         if ($type != "system") return self::getPref($name, "system");
         return self::filterPref($name, null);

@@ -38,6 +38,9 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+/** Include the project stuff */
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+
 /**
  * ComTimeclock model
  *
@@ -49,18 +52,251 @@ jimport('joomla.application.component.model');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelComTimeclock extends JModel
+class TimeclockModelTimeclock extends JModel
 {
+    /**
+     * Constructor that retrieves the ID from the request
+     *
+     * @return    void
+     */
+    function __construct()
+    {
+        parent::__construct();
+
+        $others = TableTimeclockPrefs::getPref("admin_otherTimesheets");
+        if ($others) $cid = JRequest::getVar('cid', 0, '', 'array');
+        if (empty($cid)) {
+            $u =& JFactory::getUser();
+            $cid = $u->get("id");
+        }
+        $this->setId($cid);
+
+        $date = JRequest::getVar('date', 0, '', 'string');
+        $this->setDate($date);
+
+    }
+    /**
+     * Method to set the id
+     *
+     * @param int $id The ID of the Project to get
+     *
+     * @return    void
+     */
+    function setId($id)
+    {
+        if (is_array($id)) {
+            $this->_id = (int)$id[0];
+        } else {
+            $this->_id = (int)$id;
+        }
+    }
+    /**
+     * Method to set the id
+     *
+     * @param int $date The date to set
+     *
+     * @return    void
+     */
+    function setDate($date)
+    {
+        if (empty($date)) {
+            $this->_date = date("Y-m-d");
+        } else {
+            $this->_date = self::_fixDate($date);
+        }
+    }
+
     /**
      * Method to display the view
      *
-     * @access public
      * @return string
      */
-    function getGateways()
+    function getData()
     {
-        return "Hello World";
+    
+            
+    
+        $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id
+                  FROM #__timeclock_timesheet as t
+                  LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
+                  WHERE ".$this->employmentDateWhere("t.worked")
+                  ." AND ".$this->periodWhere("t.worked")
+                  ." AND t.created_by='".$this->_id."'
+                  GROUP BY t.worked, t.project_id
+                  ";
+        $ret = $this->_getList($query);
+        if (!is_array($ret)) return array();
+        $data = array();
+        foreach ($ret as $d) {
+            $data[$d->project_id][$d->worked] += $d->hours;
+        }
+        return $data;
     }
+
+    /**
+     * Where statement for employment dates
+     *
+     * @param string $field The field to use
+     *
+     * @return string
+     */
+    function employmentDateWhere($field)
+    {
+        $Start = TableTimeclockPrefs::getPref("startDate");
+        $End = TableTimeclockPrefs::getPref("endDate");
+        $ret = "($field >= '$Start'";
+         
+        if (($End != '0000-00-00') && !empty($End)) $ret .= " AND $field <= '$End'";
+
+        $ret .= ")";
+        return $ret;    
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $field The field to use
+     *
+     * @return string
+     */
+    function periodWhere($field)
+    {
+        $this->getPeriod();
+        $start = $this->_period["start"];
+        $end = $this->_period["end"];
+        $ret = "($field >= '$start' AND $field <= '$end')";
+
+        return $ret;    
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
+     *                      the date read from the request variables is used.
+     *
+     * @return array
+     */ 
+    function getPeriod($date=null) {
+        // This should be the last one.
+        return self::_getPeriodFixed($date);
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @return array
+     */ 
+    private function _getPeriodFixed($date) {
+        static $periods;
+
+        $date = self::_getDate($date);
+
+        $start = self::_getPeriodFixedStart($date);        
+        $return =& $periods[$start];
+        if (!isset($return)) {
+            $start = explode("-", $start);
+            
+            $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
+    
+            $y = $start[0];
+            $m = $start[1];
+            $d = $start[2];
+
+            // These are all of the dates in the pay period
+            for ($i = 0; $i < $periodLength; $i++) {
+                $return['dates'][self::_date($m, $d+$i, $y)] = self::_dateUnix($m, $d+$i, $y);
+            }
+
+            // Get the start and end
+            $return['start']        = self::_date($m, $d, $y);
+            $return['end']          = self::_date($m, $d+$periodLength-1, $y);
+            $return['prev']         = self::_date($m, $d-$periodLength, $y);
+            $return['prevend']      = self::_date($m, $d-1, $y);
+            $return['next']         = self::_date($m, $d+$periodLength, $y);
+            $return['nextend']      = self::_date($m, $d+(2*$periodLength), $y);
+            $return['length']       = $periodLength;
+        }    
+        if (is_object($this)) $this->_period = $return;
+        return $return;
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @return array
+     */ 
+    private function _getPeriodFixedStart($date)
+    {
+        $uDate = strtotime($date." 06:00:00");
+        // Get the pay period start
+        $start = strtotime(TableTimeclockPrefs::getPref("firstPayPeriodStart", "system")." 06:00:00");
+        // Get the length
+        $len = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
+        // In Seconds
+        $lenS = $len * 86400;
+
+        // Get the time difference in seconds
+        $timeDiff = $uDate - $start;
+        // Get the offset to the end of the payperiod
+        $timeDiff = ($timeDiff % $lenS);
+
+
+        return date("Y-m-d", $uDate - $timeDiff);
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $m The month
+     * @param int $d The day
+     * @param int $y The year
+     *
+     * @return array
+     */ 
+    private function _dateUnix($m, $d, $y)
+    {
+        return mktime(6,0,0, $m, $d, $y);
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $m The month
+     * @param int $d The day
+     * @param int $y The year
+     *
+     * @return array
+     */ 
+    private function _date($m, $d, $y)
+    {
+        return date("Y-m-d", self::_dateUnix($m, $d, $y));
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s")
+     *
+     * @return array
+     */ 
+    function _getDate($date=null) {
+        $date = self::_fixDate($date);
+        if (!empty($date)) return $date;        
+        if (is_object($this)) return $this->_date;
+        return date("Y-m-d");
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s")
+     *
+     * @return array
+     */ 
+    function _fixDate($date) {
+        preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
+        return $ret[0];
+    }
+
+
 
 }
 

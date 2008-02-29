@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class TimeclockViewComTimeclock extends JView
+class TimeclockViewTimeclock extends JView
 {
     /**
      * The display function
@@ -61,11 +61,21 @@ class TimeclockViewComTimeclock extends JView
      */
     function display($tpl = null)
     {
-        $model =& $this->getModel();
-        $greeting = $model->getGateways();
-        $this->assignRef('greeting', $greeting);
+        $model   =& $this->getModel();
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
 
+        $hours   = $model->getData();
+        $period  = $model->getPeriod();
+        $user    = JFactory::getUser();
+        $user_id = $user->get("id");
+        $projects = $projModel->getUserProjects($user_id);
+
+        $this->assignRef("projects", $projects);        
+        $this->assignRef("user", $user);        
+        $this->assignRef("hours", $hours);        
+        $this->assignRef("period", $period);        
         parent::display($tpl);
+
     }
 }
 

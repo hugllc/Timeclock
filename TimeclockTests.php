@@ -42,6 +42,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 define('JPATH_COMPONENT_SITE', dirname(__FILE__)."/ComTimeclock/site");
+define('JPATH_COMPONENT_ADMINISTRATOR', dirname(__FILE__)."/ComTimeclock/admin");
 require_once 'ComTimeclock/test/ComTimeclockTests.php';
 
 /**

@@ -113,7 +113,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.integerList", 1, 31, 1, "prefs[payPeriodLength]", "", $this->prefs["payPeriodLength"]); ?>
+                <?php print JHTML::_("select.integerList", 1, 31, 1, "prefs[payPeriodLengthFixed]", "", $this->prefs["payPeriodLengthFixed"]); ?>
             </td>
             <td>
                 The length of the pay period in days for a fixed length pay period
@@ -167,3 +167,4 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="controller" value="config" />
 </form>
+?>

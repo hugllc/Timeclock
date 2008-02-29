@@ -255,7 +255,7 @@ class TimeclockAdminModelProjects extends JModel
             $user =& JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
-       
+
         // Bind the form fields to the hello table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
@@ -276,6 +276,19 @@ class TimeclockAdminModelProjects extends JModel
         return true;
     }
 
+    /**
+     * Checks the row
+     *
+     * @return array
+     */
+    function check()
+    {
+        if ($this->type == "UMBRELLA") $this->parent_id = 0;
+        if ($this->type == "VACATION") $this->parent_id = -1;
+        if ($this->type == "SICK") $this->parent_id = -1;
+        if ($this->type == "HOLIDAY") $this->parent_id = -1;
+        if ($this->type == "UNPAID") $this->parent_id = -2;        
+    }
 
     /**
      * Gets select options for parent projects
@@ -287,10 +300,9 @@ class TimeclockAdminModelProjects extends JModel
      */
     function getParentOptions($id, $selected=0)
     {
-        $parents = array(JHTML::_("select.option", 0, "None"));
-        if ($this->countParents($id) > 0) return $parents;
+        if ($this->countParents($id) > 0) return array(JHTML::_("select.option", 0, "None"));
         if (empty($this->_parents[$id])) {
-            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND published=1 AND (type='PROJECT' OR type='UMBRELLA') ORDER BY id asc";
+            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND published=1 AND type='UMBRELLA' ORDER BY id asc";
             $parentList = $this->_getList($query);
             if (!is_array($parentList)) return $parents;
             foreach ($parentList as $val) {
@@ -355,6 +367,37 @@ class TimeclockAdminModelProjects extends JModel
         $ret = $this->_getList($query, $limitstart, $limit);
         if (!is_array($ret)) return array();
         return $ret;
+    }
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid        User id
+     * @param int $limitstart The record to start on
+     * @param int $limit      The max number of records to retrieve 
+     *
+     * @return array
+     */
+    function getUserProjects($oid, $limitstart = null, $limit = null)
+    {
+        $query = "select * from #__timeclock_users as u
+                  WHERE u.user_id = ".(int)$oid."";
+        $ret = $this->_getList($query, $limitstart, $limit);
+        foreach ($ret as $p) $uProj[$p->id] = $p->user_id;
+
+        $proj = $this->getProjects("", null, null, "ORDER BY id asc");
+
+        foreach ($proj as $p) {
+            if ($p->type == "UMBRELLA") $projects[$p->id] = $p;
+        }
+        foreach ($proj as $p) {
+            if ($p->type != "UMBRELLA") {
+                $p->mine = array_key_exists($p->id, $uProj);
+                if ($p->mine) $projects[$p->parent_id]->mine = true;
+                if ($p->type == 'HOLIDAY') $p->noLink = true;
+                $projects[$p->parent_id]->subprojects[$p->id] = $p;
+            }
+        }
+        return $projects;
     }
 
 }
