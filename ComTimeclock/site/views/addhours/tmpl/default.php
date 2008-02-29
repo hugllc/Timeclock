@@ -88,6 +88,9 @@ foreach ($this->projects as $cat) {
             </th>
             <td>
                 <input class="text_area" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $this->data[$proj->id]->hours;?>" />
+                <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
+                <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
+                <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
             </td>
         </tr>
         <tr>
@@ -98,6 +101,15 @@ foreach ($this->projects as $cat) {
                 <textarea class="text_area"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"><?php echo $this->data[$proj->id]->notes;?></textarea>
             </td>
         </tr>
+        <tr>
+            <th style="vertical-align: top;">
+                 &nbsp;
+            </th>
+            <td>
+                <button onClick="this.form.task.value='applyhours';this.form.submit();">Apply</button>
+                <button onClick="this.form.task.value='savehours';this.form.submit();">Save</button>
+            </td>
+        </tr>    
 
         <?php        
     }
@@ -108,4 +120,7 @@ foreach ($this->projects as $cat) {
 ?>
     </table>
     <input type="hidden" name="referer" value="<?php print $this->referer; ?>" />
+    <input type="hidden" name="option" value="com_timeclock" />
+    <input type="hidden" name="task" value="savehours" />
+    <?php print JHTML::_("form.token"); ?>
 </form>

@@ -59,6 +59,7 @@ class TimeclockController extends JController
      */
     function display()
     {
+        JRequest::setVar('view', 'timeclock');
         parent::display();
     }
 
@@ -83,6 +84,11 @@ class TimeclockController extends JController
      */
     function savehours()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect("index.php", "Bad form token.  Please try again.", "error");
+            return;
+        }
+
         $model = $this->getModel("AddHours");
     
         if ($model->store()) {
@@ -91,7 +97,8 @@ class TimeclockController extends JController
             $msg = JText::_('Error Saving Hours');
         }
 
-        $referer = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+        $url = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+        $this->setRedirect($url, $msg);
     }
 
     /**
@@ -104,6 +111,18 @@ class TimeclockController extends JController
     function formatProjId($id)
     {
         return sprintf("%04d", (int)$id);
+    }
+    
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s")
+     *
+     * @return array
+     */ 
+    function fixDate($date) {
+        preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
+        return $ret[0];
     }
 
 }

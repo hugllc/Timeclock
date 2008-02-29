@@ -40,6 +40,7 @@ jimport('joomla.application.component.model');
 
 /** Include the project stuff */
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
 
 /**
  * ComTimeclock model
@@ -105,7 +106,7 @@ class TimeclockModelAddHours extends JModel
         if (empty($date)) {
             $this->_date = date("Y-m-d");
         } else {
-            $this->_date = self::_fixDate($date);
+            $this->_date = TimeclockController::fixDate($date);
         }
     }
 
@@ -173,18 +174,51 @@ class TimeclockModelAddHours extends JModel
     }
 
 
-    /**
-     * Where statement for the reporting period dates
-     *
-     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s")
-     *
-     * @return array
-     */ 
-    function _fixDate($date) {
-        preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
-        return $ret[0];
-    }
 
+    /**
+     * Checks in an item
+     *
+     * @return bool
+     */
+    function store()
+    {
+        $row = $this->getTable("TimeclockTimesheet");
+        $timesheet = JRequest::getVar('timesheet', array(), '', 'array');
+        $date = JRequest::getVar('date', '', '', 'string');
+        $user =& JFactory::getUser();        
+        if (empty($date)) return false;
+        
+        $ret = true;
+        foreach ($timesheet as $data) {
+            $data["hours"] = (int) $data["hours"];
+            if (empty($data["hours"])) continue; 
+
+            $data["id"] = (int) $data["id"];
+            $data["created_by"] = $user->get("id");
+            $data["worked"] = $date;
+            if (empty($data["created"])) $data["created"] = date("Y-m-d H:i:s");
+
+            if (!$row->bind($data)) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+            // Make sure the record is valid
+            if (!$row->check()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        
+            // Store the web link table to the database
+            if (!$row->store()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        }
+        return $ret;
+    }
 
 
 }

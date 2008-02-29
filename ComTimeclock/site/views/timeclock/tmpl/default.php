@@ -53,12 +53,12 @@ $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('da
 ?>
 
 <form action="index.php" method="post" name="userform" autocomplete="off">
-    <div class="componentheading">Timesheet for <?php print $this->user->get("name");?></div>
+    <div class="componentheading"><?php print JText::_("Timesheet for ").$this->user->get("name");?></div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <theader>
             <strong>
                 <?php print JHTML::_('date', $this->period["start"], $dateFormat); ?>
-                to
+                <?php print JText::_("to"); ?>
                 <?php print JHTML::_('date', $this->period["end"], $dateFormat); ?>
             </strong>
         </theader>
@@ -70,11 +70,13 @@ foreach ($this->projects as $cat) {
         $array = array_intersect_key($cat->subprojects, $this->hours);
         if (empty($array)) continue;
     }
-    print "        <tr>\n";
-    print "            <td class=\"sectiontableheader\" colspan=\"$headerColSpan\">\n";
-    print "                ".$cat->name."\n";
-    print "            </td>\n";
-    print "        </tr>\n";    
+    ?>
+        <tr>
+            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
+                <?php print JHTML::_('tooltip', $cat->description, 'Category', '', $cat->name); ?>
+            </td>
+        </tr>    
+    <?php
     if (array_key_exists($cat->id, $this->hours)) projectRow($this, $cat);
     foreach ($cat->subprojects as $pKey => $proj) {
         if (($proj->mine == false) || !$proj->published) {
@@ -83,28 +85,28 @@ foreach ($this->projects as $cat) {
         projectRow($this, $proj, $cat);
     }
 }
-    tableHeader($this);
+tableHeader($this);
 ?>
         <tr class="sectiontablerow<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
                 Subtotals
             </td>
 <?php
-    $d = 0;
-    foreach ($this->period["dates"] as $key => $uDate) {
-        $hours = ($this->totals[$key]) ? $this->totals[$key] : 0;
-        print '            <td style="'.$this->totalStyle.'">';
-        print '                '.$hours."\n";
+$d = 0;
+foreach ($this->period["dates"] as $key => $uDate) {
+    $hours = ($this->totals[$key]) ? $this->totals[$key] : 0;
+    print '            <td style="'.$this->totalStyle.'">';
+    print '                '.$hours."\n";
+    print "            </td>\n";
+    if ((++$d % $this->days) == 0) {
+        print '            <td class="sectiontableheader">';
+        print '                &nbsp;'."\n";
         print "            </td>\n";
-        if ((++$d % $this->days) == 0) {
-            print '            <td class="sectiontableheader">';
-            print '                &nbsp;'."\n";
-            print "            </td>\n";
-            $dtotal = 0;
-        }
+        $dtotal = 0;
     }
+}
 
-    $k = 1-$k;
+$k = 1-$k;
 ?>
             <td class="sectiontableheader">
                 &nbsp;
@@ -115,15 +117,17 @@ foreach ($this->projects as $cat) {
                 Periodic Subtotals
             </td>
 <?php
-    for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
-        print '            <td class="sectiontableheader" style="'.$this->cellStyle.'" colspan="'.$this->days.'">'."\n";
-        print "                &nbsp\n";
-        print "            </td>\n";
-        print '            <td style="'.$this->totalStyle.'">';
-        print '                '.$this->totals[$i]."\n";
-        print "            </td>\n";
-    }
-    $k = 1-$k;
+for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
+    ?>
+            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>" colspan="<?php print $this->days; ?>">
+                &nbsp
+            </td>
+            <td style="<?php print $this->totalStyle; ?>">
+                <?php print $this->totals[$i]; ?>
+            </td>
+    <?php
+}
+$k = 1-$k;
 
 ?>
             <td class="sectiontableheader">
@@ -161,14 +165,17 @@ function tableHeader(&$obj)
     foreach ($obj->period["dates"] as $key => $uDate) {
         $style = ($key == $today) ? "background: #00FF00; color: #000000;" : "";
         $url = JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$obj->user->get("id"));
-        print '            <td class="sectiontableheader" style="'.$obj->cellStyle.$style.'">';
-        print '                <span class="hasTip" title="'.JText::_("Add hours").'">';
-        print '<a href="'.$url.'">'.date($headerDateFormat, $uDate)."</a></span>\n";
-        print "            </td>\n";
+        ?>
+            <td class="sectiontableheader" style="<?php print $obj->cellStyle.$style; ?>">
+                <?php print JHTML::_('tooltip', $tip, 'Add Hours', '', date($headerDateFormat, $uDate), $url); ?>
+            </td>
+        <?php
         if ((++$d % $obj->days) == 0) {
-            print '            <td class="sectiontableheader">';
-            print '                Wk'.(int) ($d / $obj->days)."\n";
-            print "            </td>\n";
+            ?>
+            <td class="sectiontableheader">
+                Wk<?php print (int) ($d / $obj->days); ?>
+            </td>
+            <?php
             $dtotal = 0;
         }
     }
@@ -188,11 +195,12 @@ function tableHeader(&$obj)
  */ 
 function projectRow(&$obj, &$proj, &$cat)
 {
-    print "        <tr class=\"sectiontablerow$k\">\n";
-    print "            <td>\n";
-    print '                <span class="hasTip" title="'.JText::_($proj->description).'">';
-    print "                ".JText::_($proj->name)."</span>\n";
-    print "            </td>\n";
+    ?>
+        <tr class=\"sectiontablerow$k\">
+            <td>
+                <?php print JHTML::_('tooltip', $proj->description, 'Project', '', $proj->name); ?>
+            </td>
+    <?php
     $rowtotal = 0;
     $dtotal = 0;
     $d = 0;
@@ -201,27 +209,36 @@ function projectRow(&$obj, &$proj, &$cat)
         $rowtotal          += $hours;
         $obj->totals[$key] += $hours;
         $dtotal            += $hours;
-        $tip                = ($hours == 0) ? "Add Hours for ".$proj->name." on ".$key : $obj->hours[$proj->id][$key]['notes'];
-        $url                = ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) ? null : JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id"));
-        $link               = is_null($url) ? $hours : '<a href="'.$url.'">'.$hours.'</a>';
-        $link               = '<span class="hasTip" title="'.JText::_($tip).'">'.$link.'</span>';
-        print '            <td style="'.$obj->cellStyle.'">';
-        print '                '.$link."\n";
-        print "            </td>\n";
+        if ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) {
+            $link = $hours;
+        } else {
+            $tip                = ($hours == 0) ? "for ".$proj->name." on ".$key : $obj->hours[$proj->id][$key]['notes'];
+            $url                = 'index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id");
+            $link               = JHTML::_('tooltip', $tip, 'Add Hours', '', " $hours ", $url);
+        }
+        ?>
+            <td style="<?php print $obj->cellStyle;?>">
+                <?php print $link; ?>
+            </td>
+        <?php
         if ((++$d % $obj->days) == 0) {
-            print '            <td style="'.$obj->totalStyle.'">';
-            print '                '.$dtotal."\n";
-            print "            </td>\n";
+            ?>
+            <td style="<?php print $obj->totalStyle; ?>">
+                <?php print $dtotal; ?>
+            </td>
+            <?php
             $obj->totals[$d] += $dtotal;
             $dtotal = 0;
             
         }
     }
     $obj->totals["total"] += $rowtotal;
-    print '            <td style="'.$obj->totalStyle.'">';
-    print '                '.$rowtotal."\n";
-    print "            </td>\n";
-    print "        </tr>\n";
+    ?>
+            <td style="<?php print $obj->totalStyle; ?>">
+                <?php print $rowtotal; ?>
+            </td>
+        </tr>
+    <?php
     $k = 1-$k;
 }
 ?>

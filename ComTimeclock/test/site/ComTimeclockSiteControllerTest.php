@@ -80,6 +80,20 @@ class ComTimeclockSiteControllerTest extends JControllerTest
         parent::tearDown();
         unset($this->o);
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataDisplay()
+    {
+        return array(
+            array("display", array("view" => "timeclock")),
+            array("addhours", array("view" => "addhours", "hidemainmenu" => 1)),
+        );
+    }
+
+
 
 }
 
