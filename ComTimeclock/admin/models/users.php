@@ -54,7 +54,7 @@ class TimeclockAdminModelUsers extends JModel
     /** The ID to load */
     private $_id = -1;
     /** Query to get all records */
-    private $_allQuery = "SELECT u.*, p.*
+    private $_allQuery = "SELECT p.*, u.*
                       FROM #__users AS u 
                       LEFT JOIN #__timeclock_prefs as p ON u.id = p.id ";
 
