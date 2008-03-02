@@ -52,6 +52,18 @@ jimport('joomla.application.component.controller');
 class TimeclockController extends JController
 {
     /**
+     * Custom Constructor
+     *
+     * @param array $default The configuration array.
+     */
+    function __construct($default = array())
+    {
+        parent::__construct($default);
+
+        $this->registerTask('applyhours', 'savehours');
+
+    }
+    /**
      * Method to display the view
      *
      * @access public
@@ -97,7 +109,14 @@ class TimeclockController extends JController
             $msg = JText::_('Error Saving Hours');
         }
 
-        $url = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+        $referer = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+
+        $task = JRequest::getVar('task', '', '', 'word');
+        if ($task == 'applyhours') {
+            $url = $_SERVER["HTTP_REFERER"]."&referer=".urlencode($referer);
+        } else {
+            $url = $referer;
+        }
         $this->setRedirect($url, $msg);
     }
 

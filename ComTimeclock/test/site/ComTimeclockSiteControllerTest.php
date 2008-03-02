@@ -93,6 +93,17 @@ class ComTimeclockSiteControllerTest extends JControllerTest
         );
     }
 
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataRegisterTask()
+    {
+        return array(
+            array(array(array('applyhours', 'savehours'))),
+        );
+    }
 
 
 }

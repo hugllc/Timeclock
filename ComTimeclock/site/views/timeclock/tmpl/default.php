@@ -212,9 +212,10 @@ function projectRow(&$obj, &$proj, &$cat)
         if ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) {
             $link = $hours;
         } else {
+            $tipTitle           = ($hours == 0) ? "Add Hours" : "Work Notes";
             $tip                = ($hours == 0) ? "for ".$proj->name." on ".$key : $obj->hours[$proj->id][$key]['notes'];
             $url                = 'index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id");
-            $link               = JHTML::_('tooltip', $tip, 'Add Hours', '', " $hours ", $url);
+            $link               = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
         }
         ?>
             <td style="<?php print $obj->cellStyle;?>">
