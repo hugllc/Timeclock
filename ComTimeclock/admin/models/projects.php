@@ -387,6 +387,7 @@ class TimeclockAdminModelProjects extends JModel
         $proj = $this->getProjects("", null, null, "ORDER BY id asc");
 
         foreach ($proj as $p) {
+            $p->subprojects = array();
             if ($p->type == "CATEGORY") $projects[$p->id] = $p;
         }
         foreach ($proj as $p) {
