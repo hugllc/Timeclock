@@ -87,7 +87,8 @@ class TimeclockAdminViewProjects extends JView
         if ($search) {
             $where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
-
+        $where[] = 't.id > 0';
+        
         $where          = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
         $orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
 
