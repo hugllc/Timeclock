@@ -39,5 +39,5 @@ style-ComTimeclock:
 
 update:
 	${SVN} update 
-	${SVN} update ComTimeclock/test/JoomlaMock
+	${SVN} update ../JoomlaMock
 	

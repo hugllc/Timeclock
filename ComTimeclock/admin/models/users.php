@@ -141,10 +141,11 @@ class TimeclockAdminModelUsers extends JModel
      */
     function publish($publish)
     {
-        if (!is_array($this->_id)) $this->_id = array($this->_id);
-        foreach ($this->_id as $id) {
-            TableTimeclockPrefs::setPref("admin_active", (bool)$publish, $id);
-        }
+        $user =& JFactory::getUser();
+        $user_id = $user->get("id");
+        $table = $this->getTable("TimeclockPrefs");
+        $id = is_array($this->_id) ? $this->_id : array($this->_id);
+        return $table->publish($id, $publish, $user_id);
     }
 
     /**
