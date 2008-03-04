@@ -122,6 +122,7 @@ class TimeclockModelTimeclock extends JModel
                   WHERE ".$this->employmentDateWhere("t.worked")
                   ." AND ".$this->periodWhere("t.worked")
                   ." AND t.created_by='".$this->_id."'
+                     AND p.type <> 'HOLIDAY'
                   GROUP BY t.worked, t.project_id
                   ";
         $ret = $this->_getList($query);
