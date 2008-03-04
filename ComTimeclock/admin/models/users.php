@@ -305,7 +305,7 @@ class TimeclockAdminModelUsers extends JModel
                   LEFT JOIN #__timeclock_projects as p on u.id = p.id 
                   WHERE u.user_id = ".(int)$oid."
                      AND p.published = 1
-                     AND p.Type <> 'UMBRELLA'
+                     AND p.Type <> 'CATEGORY'
                   ORDER BY p.id asc
                   ";
         $ret = $this->_getList($query, $limitstart, $limit);

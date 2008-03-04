@@ -283,7 +283,7 @@ class TimeclockAdminModelProjects extends JModel
      */
     function check()
     {
-        if ($this->type == "UMBRELLA") $this->parent_id = 0;
+        if ($this->type == "CATEGORY") $this->parent_id = 0;
         if ($this->type == "VACATION") $this->parent_id = -1;
         if ($this->type == "SICK") $this->parent_id = -1;
         if ($this->type == "HOLIDAY") $this->parent_id = -1;
@@ -302,7 +302,7 @@ class TimeclockAdminModelProjects extends JModel
     {
         if ($this->countParents($id) > 0) return array(JHTML::_("select.option", 0, "None"));
         if (empty($this->_parents[$id])) {
-            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND published=1 AND type='UMBRELLA' ORDER BY id asc";
+            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND published=1 AND type='CATEGORY' ORDER BY id asc";
             $parentList = $this->_getList($query);
             if (!is_array($parentList)) return $parents;
             foreach ($parentList as $val) {
@@ -387,10 +387,10 @@ class TimeclockAdminModelProjects extends JModel
         $proj = $this->getProjects("", null, null, "ORDER BY id asc");
 
         foreach ($proj as $p) {
-            if ($p->type == "UMBRELLA") $projects[$p->id] = $p;
+            if ($p->type == "CATEGORY") $projects[$p->id] = $p;
         }
         foreach ($proj as $p) {
-            if ($p->type != "UMBRELLA") {
+            if ($p->type != "CATEGORY") {
                 $p->mine = array_key_exists($p->id, $uProj);
                 if ($p->mine) $projects[$p->parent_id]->mine = true;
                 if ($p->type == 'HOLIDAY') $p->noHours = true;
