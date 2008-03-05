@@ -65,8 +65,8 @@ class TimeclockAdminViewProject extends JView
         $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
         // Set this as the default model
         $this->setModel($model, true);
-        $row = $this->get("Data");
-
+        $row = $this->get("Data");        
+        if (!empty($row->parent_id)) $cat = $model->getData($row->parent_id);
         $user =& JFactory::getUser();
         
         $cid = JRequest::getVar('cid', 0, '', 'array');
@@ -107,6 +107,7 @@ class TimeclockAdminViewProject extends JView
         $this->assignRef("parentOptions", $parentOptions);
         $this->assignRef("typeOptions", $typeOptions);
         $this->assignRef("add", $add);
+        $this->assignRef("cat", $cat);
         $this->assignRef("row", $row);
         parent::display($tpl);
     }

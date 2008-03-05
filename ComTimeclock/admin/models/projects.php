@@ -87,10 +87,12 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function &getData()
+    function &getData($id = null)
     {
         $row = $this->getTable("TimeclockProjects");
-        $id = is_int($this->_id) ? $this->_id : $this->_id[0];
+        if (is_null($id)) {
+            $id = is_int($this->_id) ? $this->_id : $this->_id[0];
+        }
         $row->load($id);
         return $row;
     }
@@ -277,20 +279,6 @@ class TimeclockAdminModelProjects extends JModel
     }
 
     /**
-     * Checks the row
-     *
-     * @return array
-     */
-    function check()
-    {
-        if ($this->type == "CATEGORY") $this->parent_id = 0;
-        if ($this->type == "VACATION") $this->parent_id = -1;
-        if ($this->type == "SICK") $this->parent_id = -1;
-        if ($this->type == "HOLIDAY") $this->parent_id = -1;
-        if ($this->type == "UNPAID") $this->parent_id = -2;        
-    }
-
-    /**
      * Gets select options for parent projects
      *
      * @param int $id       The Id of the item to get the parent for
@@ -300,17 +288,14 @@ class TimeclockAdminModelProjects extends JModel
      */
     function getParentOptions($id, $selected=0)
     {
-        if ($this->countParents($id) > 0) return array(JHTML::_("select.option", 0, "None"));
-        if (empty($this->_parents[$id])) {
-            $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND published=1 AND type='CATEGORY' ORDER BY id asc";
-            $parentList = $this->_getList($query);
-            if (!is_array($parentList)) return $parents;
-            foreach ($parentList as $val) {
-                $parents[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
-            }
-            $this->_parents[$id] = $parents;
+        $parents = array(JHTML::_("select.option", 0, "None"));
+        $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND id > 0 AND published=1 AND type='CATEGORY' ORDER BY id asc";
+        $parentList = $this->_getList($query);
+        if (!is_array($parentList)) return $parents;
+        foreach ($parentList as $val) {
+            $parents[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
         }
-        return $this->_parents[$id];
+        return $parents;
     }
 
     /**
@@ -323,7 +308,7 @@ class TimeclockAdminModelProjects extends JModel
      */
     function getOptions($where, $text = "None")
     {
-        $ret = array(JHTML::_("select.option", 0, $text));
+        $ret = array(JHTML::_("select.option", -1, $text));
         $query = "SELECT id, name FROM #__timeclock_projects ".$where." ORDER BY id asc";
         $list = self::_getList($query);
         if (!is_array($list)) return $ret;
@@ -393,9 +378,10 @@ class TimeclockAdminModelProjects extends JModel
         foreach ($proj as $p) {
             if ($p->type != "CATEGORY") {
                 $p->mine = array_key_exists($p->id, $uProj);
-                if ($p->mine) $projects[$p->parent_id]->mine = true;
+                $cat = (is_array($projects[$p->parent_id])) ? $p->parent_id : -1;
+                if ($p->mine) $projects[$cat]->mine = true;
                 if ($p->type == 'HOLIDAY') $p->noHours = true;
-                $projects[$p->parent_id]->subprojects[$p->id] = $p;
+                $projects[$cat]->subprojects[$p->id] = $p;
             }
         }
         return $projects;
