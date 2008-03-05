@@ -63,8 +63,8 @@ JToolBarHelper::cancel();
         </tr>
         <tr>
             <td width="100" align="right" class="key">
-                <label for="Published">
-                    <?php echo JText::_('Name'); ?>:
+                <label for="name">
+                    <?php echo JText::_('Contact Name'); ?>:
                 </label>
             </td>
             <td>
@@ -76,7 +76,7 @@ JToolBarHelper::cancel();
         </tr>
         <tr>
             <td width="100" align="right" class="key">
-                <label for="Published">
+                <label for="company">
                     <?php echo JText::_('Company'); ?>:
                 </label>
             </td>
@@ -89,7 +89,7 @@ JToolBarHelper::cancel();
         </tr>
         <tr>
             <td width="100" align="right" class="key">
-                <label for="Published">
+                <label for="address1">
                     <?php echo JText::_('Address1'); ?>:
                 </label>
             </td>
