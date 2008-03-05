@@ -132,10 +132,13 @@ JToolBarHelper::cancel();
                 The category the project is in.
             </td>
         </tr>
+<?php 
+if ($this->lists["wCompEnable"] != 0) { 
+    ?>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="parent_id">
-                    <?php echo JText::_('Parent Project'); ?>:
+                    <?php echo JText::_('Workers Comp Code'); ?>:
                 </label>
             </td>
             <td>
@@ -145,6 +148,9 @@ JToolBarHelper::cancel();
                 The worker's comp code
             </td>
         </tr>
+    <?php
+}
+?>
         <tr>
             <td class="key">
                 <label for="Add User">

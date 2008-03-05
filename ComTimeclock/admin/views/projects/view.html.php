@@ -115,6 +115,7 @@ class TimeclockAdminViewProjects extends JView
         );
         $lists['search_options_default'] = 'name';       
         $lists["wCompCodes"] = TableTimeclockPrefs::getPref("wCompCodes");        
+        $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
 
         $this->assignRef("lists", $lists);
         $this->assignRef("user", JFactory::getUser());

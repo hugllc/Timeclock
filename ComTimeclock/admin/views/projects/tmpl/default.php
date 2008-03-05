@@ -82,7 +82,7 @@ JToolBarHelper::addNewX();
                         <?php echo JHTML::_('grid.sort', 'Active', 't.published', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
 <?php 
-if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
+if ($this->lists["wCompEnable"] != 0) { ?>
                     <th width="5%" align="center">
                         <?php echo JHTML::_('grid.sort', "Worker's Comp", 't.wcCode', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
@@ -161,7 +161,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 <?php echo $published;?>
             </td>
     <?php 
-    if (TableTimeclockPrefs::getPref("wCompEnable") != 0) { ?>
+    if ($this->lists["wCompEnable"] != 0) { ?>
             <td align="center">
                 <?php echo $row->wcCode;?>
             </td>

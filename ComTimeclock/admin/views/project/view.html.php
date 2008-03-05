@@ -100,9 +100,11 @@ class TimeclockAdminViewProject extends JView
                       AND (p.startDate <= '".date("Y-m-d")."' AND p.startDate > '0000-00-00')
                       AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
         $lists["users"] = $userModel->getOptions($userWhere, "Select User");
-                
+        $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
+
         $this->assignRef("lists", $lists);
 
+        $this->assignRef("lists", $lists);
         $this->assignRef("wCompCodeOptions", $wCompCodeOptions);
         $this->assignRef("parentOptions", $parentOptions);
         $this->assignRef("typeOptions", $typeOptions);
