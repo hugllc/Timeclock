@@ -145,7 +145,6 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
         return array(
             array(null, "store", true, array("id" => 13)),
             array("bind", "store", false, array("id" => 13)),
-            array("check", "store", false, array("id" => 13)),
             array("store", "store", false, array("id" => 13)),
 
             array(null, "adduser", true, array("id" => 13, "projid" => 10)),
