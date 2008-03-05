@@ -115,15 +115,15 @@ JToolBarHelper::cancel();
         </tr>
         <tr>
             <td width="100" align="right" class="key">
-                <label for="parent_id">
-                    <?php echo JText::_('Parent Project'); ?>:
+                <label for="category">
+                    <?php echo JText::_('Category'); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.genericList", $this->parentOptions, "parent_id", "", 'value', 'text', $this->row->parent_id); ?>
             </td>
             <td>
-                The parent project
+                The category the project is in.
             </td>
         </tr>
         <tr>

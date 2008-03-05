@@ -76,7 +76,7 @@ JToolBarHelper::addNewX();
                         <?php echo JHTML::_('grid.sort', 'Name', 't.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
                     <th align="center">
-                        <?php echo JHTML::_('grid.sort', 'Parent', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                        <?php echo JHTML::_('grid.sort', 'Category', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
                     <th width="1%" align="center">
                         <?php echo JHTML::_('grid.sort', 'Active', 't.published', @$this->lists['order_Dir'], @$this->lists['order']); ?>
