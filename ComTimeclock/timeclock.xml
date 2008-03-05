@@ -47,7 +47,7 @@
         <menu>Timeclock</menu>
         <submenu>
             <menu controller="config">Configure</menu>
-            <menu controller="users">Users</menu>
+            <menu controller="users">User Configurations</menu>
             <menu controller="customers">Customers</menu>
             <menu controller="projects">Projects</menu>
             <menu controller="holidays">Holidays</menu>
