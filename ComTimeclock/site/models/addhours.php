@@ -41,6 +41,7 @@ jimport('joomla.application.component.model');
 /** Include the project stuff */
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
 require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
+require_once "timeclock.php";
 
 /**
  * ComTimeclock model
@@ -132,7 +133,7 @@ class TimeclockModelAddHours extends JModel
         if (empty($project)) {
             $this->_project = null;
         } else {
-            $this->_project = self::_fixDate($date);
+            $this->_project = TimeclockModelTimeclock::_fixDate($date);
         }
     }
 
