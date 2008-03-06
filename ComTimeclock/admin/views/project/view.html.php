@@ -63,6 +63,8 @@ class TimeclockAdminViewProject extends JView
     {
         $model =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
+
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");        
@@ -99,7 +101,8 @@ class TimeclockAdminViewProject extends JView
         $userWhere = "WHERE p.published=1 
                       AND (p.startDate <= '".date("Y-m-d")."' AND p.startDate > '0000-00-00')
                       AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
-        $lists["users"] = $userModel->getOptions($userWhere, "Select User");
+        $lists["users"]       = $userModel->getOptions($userWhere, "Select User");
+        $lists["customers"]   = $customerModel->getOptions("WHERE published=1", "None");
         $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
 
         $this->assignRef("lists", $lists);

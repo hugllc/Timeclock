@@ -152,6 +152,19 @@ if ($this->lists["wCompEnable"] != 0) {
 }
 ?>
         <tr>
+            <td width="100" align="right" class="key">
+                <label for="customer">
+                    <?php echo JText::_('Customer'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->lists["customers"], "customer", "", 'value', 'text', (int)$this->row->customer); ?>
+            </td>
+            <td>
+                The customer this project should be billed to
+            </td>
+        </tr>
+        <tr>
             <td class="key">
                 <label for="Add User">
                     <?php echo JText::_('Add User'); ?>:

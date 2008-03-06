@@ -155,10 +155,10 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return array
      */
-    function customerOptions()
+    function getOptions($where = "", $name = "None")
     {
-        $ret = array();
-        $query = "SELECT id, name FROM #__timeclock_customers";
+        $ret = array(JHTML::_("select.option", 0, $name));
+        $query = "SELECT id, name FROM #__timeclock_customers ".$where;
         $proj = $this->_getList($query, $limitstart, $limit);
         if (!is_array($proj)) return $ret;
         foreach ($proj as $p) {
