@@ -143,9 +143,9 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function getHolidayHours($data = array())
+    function getHolidayHours($data = array(), $id = null)
     {
-    
+        $id = empty($id) ? $this->_id : $id;
         $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
                   FROM #__timeclock_timesheet as t
                   LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
@@ -157,10 +157,12 @@ class TimeclockModelTimeclock extends JModel
                   GROUP BY t.worked, t.project_id
                   ";
         $ret = $this->_getList($query);
+        $perc = TableTimeclockPrefs::getPref("admin_holidayperc", "user") / 100;
         if (!is_array($ret)) return array();
         if (!is_array($data)) $data = array();
         foreach ($ret as $d) {
-            $data[$d->project_id][$d->worked]['hours'] += $d->hours;
+            $hours = $d->hours * $perc;
+            $data[$d->project_id][$d->worked]['hours'] += $hours;
             $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
         }
         return $data;

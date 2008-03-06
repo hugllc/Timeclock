@@ -170,7 +170,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 15,
                 array(
                     "id" => 15,
-                    "prefs" => array(1,2,3,4),
+                    "prefs" => array("admin_holidayperc" => 100,1,2,3,4),
                     "published" => null,
                     "startDate" => null,
                     "endDate" => null,

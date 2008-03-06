@@ -112,7 +112,7 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
                 "post", 
                 array(
                     "id" => 15,
-                    "prefs" => "YTowOnt9",
+                    "prefs" => "YToxOntzOjE3OiJhZG1pbl9ob2xpZGF5cGVyYyI7aToxMDA7fQ==",
                     "published" => 1,
                     "startDate" => "2008-04-12",
                     "endDate" => "2009-04-12",

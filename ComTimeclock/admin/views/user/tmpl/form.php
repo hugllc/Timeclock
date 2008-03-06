@@ -112,6 +112,25 @@ JToolBarHelper::cancel();
                 The status of the user
             </td>
         </tr>
+<?php
+if ($this->row->prefs["admin_status"] == "PARTTIME") {
+    ?>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="holidayperc">
+                    <?php echo JText::_('Holiday Pay'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.integerList", 0, 100, 10, "admin_holidayperc", "", $this->row->prefs["admin_holidayperc"]); ?>%
+            </td>
+            <td>
+                The percentage of holiday pay this user gets
+            </td>
+        </tr>
+    <?php
+}
+?>
         <tr>
             <td class="key">
                 <label for="Projects">

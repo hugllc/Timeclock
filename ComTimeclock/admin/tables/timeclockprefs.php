@@ -95,6 +95,7 @@ class TableTimeclockPrefs extends JTable
             "wCompCodes" => '',
         ),
         "user" => array(
+            "admin_holidayperc" => 100,
         ),
         
     );
@@ -134,7 +135,8 @@ class TableTimeclockPrefs extends JTable
     function load($oid = -1)
     {
         $ret = parent::load($oid);
-        $this->prefs = self::decode($this->prefs);
+        $prefs = self::decode($this->prefs);
+        $this->prefs = array_merge(self::$_defaults["user"], $prefs);
         // If we don't find it create one
         if (!$ret) return $this->create($oid);
         return $ret;
