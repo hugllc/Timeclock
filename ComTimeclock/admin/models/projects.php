@@ -137,6 +137,8 @@ class TimeclockAdminModelProjects extends JModel
     {
         $row = $this->getTable("TimeclockUsers");
 
+        $this->store();
+
         $id = JRequest::getVar('id', 0, '', 'int');
         $user_id = JRequest::getVar('user_id', 0, '', 'int');
         if (!is_array($user_id)) $user_id = array($user_id);
@@ -177,6 +179,8 @@ class TimeclockAdminModelProjects extends JModel
      */
     function removeuser()
     {
+        $this->store();
+
         $row = $this->getTable("TimeclockUsers");
 
         $data = array(

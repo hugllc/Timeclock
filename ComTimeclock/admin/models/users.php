@@ -169,6 +169,8 @@ class TimeclockAdminModelUsers extends JModel
     function addproject()
     {
         $row = $this->getTable("TimeclockUsers");
+        
+        $this->store();
 
         $id = JRequest::getVar('projid', 0, 'post', 'int');
         $user_id = JRequest::getVar('id', 0, 'post', 'int');
@@ -209,6 +211,8 @@ class TimeclockAdminModelUsers extends JModel
      */
     function removeproject()
     {
+        $this->store();
+
         $row = $this->getTable("TimeclockUsers");
         $data = array(
             "id" => JRequest::getVar('projid', 0, '', 'int'),
