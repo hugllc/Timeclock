@@ -101,7 +101,7 @@ class TimeclockAdminViewProject extends JView
         $userWhere = "WHERE p.published=1 
                       AND (p.startDate <= '".date("Y-m-d")."' AND p.startDate > '0000-00-00')
                       AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
-        $lists["users"]       = $userModel->getOptions($userWhere, "Select User");
+        $lists["users"]       = $userModel->getOptions($userWhere, "Add User");
         $lists["customers"]   = $customerModel->getOptions("WHERE published=1", "None");
         $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
 

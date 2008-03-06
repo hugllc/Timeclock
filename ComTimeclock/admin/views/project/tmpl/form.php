@@ -46,6 +46,33 @@ JToolBarHelper::cancel();
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+<div style="float: right; width: 30%;">
+<?php
+$pane = JPane::getInstance("sliders");
+echo $pane->startPane("user-pane");  
+echo $pane->startPanel(JText::_("Users"), "user-page");
+?>
+<div style="padding: 5px;">
+<?php 
+foreach ($this->lists["projectUsers"] as $user) { ?>
+                    <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
+                    <?php print empty($user->name) ? $user->id : $user->name; ?><br />
+            <?php 
+} 
+?>
+</div>
+<?php
+echo $pane->endPanel();
+echo $pane->startPanel(JText::_("Add Users"), "adduser-page");
+?>
+<div style="padding: 5px;">
+    <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduser\';this.form.submit();"', 'value', 'text', 0); ?>
+</div>
+<?php
+echo $pane->endPanel();
+echo $pane->endPane(); 
+?>
+</div>
 <div>
     <table class="admintable">
         <tr>
@@ -162,32 +189,6 @@ if ($this->lists["wCompEnable"] != 0) {
             </td>
             <td>
                 The customer this project should be billed to
-            </td>
-        </tr>
-        <tr>
-            <td class="key">
-                <label for="Add User">
-                    <?php echo JText::_('Add User'); ?>:
-                </label>
-            </td>
-            <td>
-                <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduser\';this.form.submit();"', 'value', 'text', 0); ?>
-            </td>
-        </tr>
-        <tr>
-            <td class="key">
-                <label for="Users">
-                    <?php echo JText::_('Users'); ?>:
-                </label>
-            </td>
-            <td>
-            <?php 
-foreach ($this->lists["projectUsers"] as $user) { ?>
-                    <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
-                    <?php print empty($user->name) ? $user->id : $user->name; ?><br />
-            <?php 
-} 
-            ?>
             </td>
         </tr>
     </table>

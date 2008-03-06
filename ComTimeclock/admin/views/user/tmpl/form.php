@@ -44,6 +44,33 @@ JToolBarHelper::cancel();
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+<div style="float: right; width: 30%;">
+<?php
+$pane = JPane::getInstance("sliders");
+echo $pane->startPane("project-pane");  
+echo $pane->startPanel(JText::_("Projects"), "project-page");
+?>
+<div style="padding: 5px;">
+<?php 
+foreach ($this->lists["userProjects"] as $proj) { ?>
+                    <button onClick="this.form.task.value='removeproject';this.form.projid.value='<?php print $proj->id;?>';this.form.submit();">Remove</button>
+                    <?php print sprintf("%04d", $proj->id).": ".$proj->name; ?><br />
+    <?php
+} 
+?>
+</div>
+<?php
+echo $pane->endPanel();
+echo $pane->startPanel(JText::_("Add Projects"), "addproject-page");
+?>
+<div style="padding: 5px;">
+    <?php print JHTML::_("select.genericList", $this->lists["projects"], "projid", 'onChange="this.form.task.value=\'addproject\';this.form.submit();"', 'value', 'text', 0); ?>
+</div>
+<?php
+echo $pane->endPanel();
+echo $pane->endPane(); 
+?>
+</div>
 <div>
     <table class="admintable">
         <tr>
@@ -52,7 +79,7 @@ JToolBarHelper::cancel();
                     <?php echo JText::_('Start Date'); ?>:
                 </label>
             </td>
-            <td>
+            <td style="white-space:nowrap;">
                 <?php print JHTML::_("calendar", $this->row->startDate, "startDate", "startDate", "%Y-%m-%d", "");?>
             </td>
             <td>
@@ -65,7 +92,7 @@ JToolBarHelper::cancel();
                     <?php echo JText::_('End Date'); ?>:
                 </label>
             </td>
-            <td>
+            <td style="white-space:nowrap;">
                 <?php print JHTML::_("calendar", $this->row->endDate, "endDate", "endDate", "%Y-%m-%d", "");?>
             </td>
             <td>
@@ -131,32 +158,6 @@ if ($this->row->prefs["admin_status"] == "PARTTIME") {
     <?php
 }
 ?>
-        <tr>
-            <td class="key">
-                <label for="Projects">
-                    <?php echo JText::_('Add Project'); ?>:
-                </label>
-            </td>
-            <td>
-                <?php print JHTML::_("select.genericList", $this->lists["projects"], "projid", 'onChange="this.form.task.value=\'addproject\';this.form.submit();"', 'value', 'text', 0); ?>
-            </td>
-        </tr>
-        <tr>
-            <td class="key">
-                <label for="Projects">
-                    <?php echo JText::_('Projects'); ?>:
-                </label>
-            </td>
-            <td>
-            <?php 
-foreach ($this->lists["userProjects"] as $proj) { ?>
-                    <button onClick="this.form.task.value='removeproject';this.form.projid.value='<?php print $proj->id;?>';this.form.submit();">Remove</button>
-                    <?php print sprintf("%04d", $proj->id).": ".$proj->name; ?><br />
-    <?php
-} 
-?>
-            </td>
-        </tr>
     </table>
 
 </div>
