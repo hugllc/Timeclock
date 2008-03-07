@@ -88,8 +88,6 @@ class ComTimeclockSiteControllerTest extends JControllerTest
     public static function dataDisplay()
     {
         return array(
-            array("display", array("view" => "timeclock")),
-            array("addhours", array("view" => "addhours", "hidemainmenu" => 1)),
         );
     }
 

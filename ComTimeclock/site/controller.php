@@ -71,6 +71,16 @@ class TimeclockController extends JController
      */
     function display()
     {
+        require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $user    = JFactory::getUser();
+        $user_id = $user->get("id");
+
+        if ($projModel->getUserProjectsCount($user_id) == 0) {
+            $this->setRedirect("index.php", "No projects for you to put time into.", "error");
+            return;
+        }
+
         JRequest::setVar('view', 'timeclock');
         parent::display();
     }
@@ -83,6 +93,15 @@ class TimeclockController extends JController
      */
     function addhours()
     {
+        require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+        $projid   = JRequest::getVar('projid', null, '', 'string');
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $user    = JFactory::getUser();
+        $user_id = $user->get("id");
+        if ($projModel->userInProject($user_id, $projid) == false) {
+            $this->setRedirect(JRoute::_("index.php?option=com_timeclock&view=timeclock"), "You are not authorized to put time into that project.", "error");
+            return;
+        }
         JRequest::setVar('view', 'addhours');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
@@ -97,7 +116,7 @@ class TimeclockController extends JController
     function savehours()
     {
         if (!JRequest::checkToken()) {
-            $this->setRedirect("index.php", "Bad form token.  Please try again.", "error");
+            $this->setRedirect(JRoute::_("index.php"), "Bad form token.  Please try again.", "error");
             return;
         }
 

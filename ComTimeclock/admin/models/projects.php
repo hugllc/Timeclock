@@ -357,6 +357,7 @@ class TimeclockAdminModelProjects extends JModel
         if (!is_array($ret)) return array();
         return $ret;
     }
+
     /**
      * Get projects for a user
      *
@@ -390,6 +391,37 @@ class TimeclockAdminModelProjects extends JModel
         }
         return $projects;
     }
+
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid        User id
+     *
+     * @return array
+     */
+    function getUserProjectsCount($oid)
+    {
+        $query = "select * from #__timeclock_users as u
+                  WHERE u.user_id = ".(int)$oid."";
+        return $this->_getListCount($query);
+    }
+
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid    User id
+     * @param int $projid Project id
+     *
+     * @return array
+     */
+    function userInProject($oid, $projid)
+    {
+        $query = "select * from #__timeclock_users as u
+                  WHERE u.user_id = ".(int)$oid."
+                      AND u.id = ".(int)$projid."";
+        return $this->_getListCount($query);
+    }
+
 
 }
 

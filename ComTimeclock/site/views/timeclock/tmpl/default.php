@@ -38,6 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
+
 $this->totals     = array();
 if (empty($this->days)) $this->days = 7;
 
