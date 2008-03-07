@@ -95,16 +95,37 @@ class TimeclockController extends JController
     {
         require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
         $projid   = JRequest::getVar('projid', null, '', 'string');
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $user    = JFactory::getUser();
-        $user_id = $user->get("id");
-        if ($projModel->userInProject($user_id, $projid) == false) {
-            $this->setRedirect(JRoute::_("index.php?option=com_timeclock&view=timeclock"), "You are not authorized to put time into that project.", "error");
-            return;
+        if (!empty($projid)) {
+            $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+            $user    = JFactory::getUser();
+            $user_id = $user->get("id");
+            if ($projModel->userInProject($user_id, $projid) == false) {
+                $this->setRedirect(JRoute::_("index.php?option=com_timeclock&view=timeclock"), "You are not authorized to put time into that project.", "error");
+                return;
+            }
         }
+        $date = JRequest::getVar('date', null, '', 'string');
+        if (!$this->checkDates($date)) return;
         JRequest::setVar('view', 'addhours');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
+    }
+    /**
+     * Method to display the view
+     *
+     * @access public
+     * @return null
+     */
+    function checkDates($date)
+    {
+        $model = $this->getModel("Timeclock");
+        $date = $model->dateUnixSql($date);
+        $eDates = $model->getEmploymentDatesUnix();
+        if (($date < $eDates["start"]) || ($date > $eDates["end"])) {     
+            $this->setRedirect(JRoute::_("index.php?option=com_timeclock&view=timeclock"), "Time can not be entered before your employment start date or after your end date.", "error");
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -119,6 +140,9 @@ class TimeclockController extends JController
             $this->setRedirect(JRoute::_("index.php"), "Bad form token.  Please try again.", "error");
             return;
         }
+
+        $date = JRequest::getVar('date', null, '', 'string');
+        if (!$this->checkDates($date)) return;
 
         $model = $this->getModel("AddHours");
     

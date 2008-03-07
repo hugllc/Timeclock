@@ -165,10 +165,18 @@ function tableHeader(&$obj)
     $d = 0;
     foreach ($obj->period["dates"] as $key => $uDate) {
         $style = ($key == $today) ? "background: #00FF00; color: #000000;" : "";
-        $url = JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$obj->user->get("id"));
+        if (($uDate >= $obj->employmentDates["start"]) && ($uDate <= $obj->employmentDates["end"])) {     
+            $url = JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$obj->user->get("id"));
+            $tipTitle = "Add Hours";
+            $tip = "on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1"));
+        } else {
+            $url = "";
+            $tipTitle = "No Hours";
+            $tip = "Hours can not be entered before your employment start date or after your end date";
+        };
         ?>
             <td class="sectiontableheader" style="<?php print $obj->cellStyle.$style; ?>">
-                <?php print JHTML::_('tooltip', $tip, 'Add Hours', '', date($headerDateFormat, $uDate), $url); ?>
+                <?php print JHTML::_('tooltip', $tip, $tipTitle, '', date($headerDateFormat, $uDate), $url); ?>
             </td>
         <?php
         if ((++$d % $obj->days) == 0) {
@@ -213,10 +221,16 @@ function projectRow(&$obj, &$proj, &$cat)
         if ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) {
             $link = $hours;
         } else {
-            $tipTitle           = ($hours == 0) ? "Add Hours" : "Work Notes";
-            $tip                = ($hours == 0) ? "for ".$proj->name." on ".$key : $obj->hours[$proj->id][$key]['notes'];
-            $url                = 'index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id");
-            $link               = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
+            if (($uDate >= $obj->employmentDates["start"]) && ($uDate <= $obj->employmentDates["end"])) {     
+                $tipTitle           = ($hours == 0) ? "Add Hours" : "Work Notes";
+                $tip                = ($hours == 0) ? "for ".$proj->name." on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1")) : $obj->hours[$proj->id][$key]['notes'];
+                $url                = 'index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id");
+            } else {
+                $url = $hours;
+                $tipTitle = "No Hours";
+                $tip = "Hours can not be entered before your employment start date or after your end date";
+            };
+            $link = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
         }
         ?>
             <td style="<?php print $obj->cellStyle;?>">

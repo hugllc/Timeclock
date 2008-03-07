@@ -179,13 +179,40 @@ class TimeclockModelTimeclock extends JModel
      */
     function employmentDateWhere($field)
     {
-        $Start = TableTimeclockPrefs::getPref("startDate");
-        $End = TableTimeclockPrefs::getPref("endDate");
-        $ret = "($field >= '$Start'";
-         
-        if (($End != '0000-00-00') && !empty($End)) $ret .= " AND $field <= '$End'";
+        $dates = self::getEmploymentDates();
+        $ret = "($field >= '".$dates["start"]."'";
+        
+        if (($dates["end"] != '0000-00-00') && !empty($dates["end"])) $ret .= " AND $field <= '".$dates["end"]."'";
 
         $ret .= ")";
+        return $ret;    
+    }
+
+    /**
+     * Where statement for employment dates
+     *
+     * @return array
+     */
+    function getEmploymentDates()
+    {
+        $ret = array(
+            "start" => self::_fixDate(TableTimeclockPrefs::getPref("startDate")),
+            "end"   => self::_fixDate(TableTimeclockPrefs::getPref("endDate")),
+        );
+        return $ret;
+    }
+
+    /**
+     * Where statement for employment dates
+     *
+     * @return array
+     */
+    function getEmploymentDatesUnix()
+    {
+        $ret = self::getEmploymentDates();
+        foreach ($ret as $key => $val) {
+            $ret[$key] = self::dateUnixSql($val);
+        }
         return $ret;    
     }
 
@@ -230,17 +257,17 @@ class TimeclockModelTimeclock extends JModel
         $start = self::_getPeriodFixedStart($date);        
         $return =& $periods[$start];
         if (!isset($return)) {
-            $start = explode("-", $start);
+            $start = self::_explodeDate($start);
             
             $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
     
-            $y = $start[0];
-            $m = $start[1];
-            $d = $start[2];
+            $y = $start["y"];
+            $m = $start["m"];
+            $d = $start["d"];
 
             // These are all of the dates in the pay period
             for ($i = 0; $i < $periodLength; $i++) {
-                $return['dates'][self::_date($m, $d+$i, $y)] = self::_dateUnix($m, $d+$i, $y);
+                $return['dates'][self::_date($m, $d+$i, $y)] = self::dateUnix($m, $d+$i, $y);
             }
 
             // Get the start and end
@@ -288,7 +315,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    private function _dateUnix($m, $d, $y)
+    public function dateUnix($m, $d, $y)
     {
         return mktime(6,0,0, $m, $d, $y);
     }
@@ -302,9 +329,45 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
+    public function dateUnixSql($sqlDate)
+    {
+        $date = self::_explodeDate($sqlDate);
+
+        return self::dateUnix($date["m"], $date["d"], $date["y"]);
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $m The month
+     * @param int $d The day
+     * @param int $y The year
+     *
+     * @return array
+     */ 
+    private function _explodeDate($date)
+    {
+
+        $date = self::_fixDate($date);
+        $date = explode("-", $date);
+        
+        return array(
+            "y" => $date[0],
+            "m" => $date[1],
+            "d" => $date[2],
+        );
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $m The month
+     * @param int $d The day
+     * @param int $y The year
+     *
+     * @return array
+     */ 
     private function _date($m, $d, $y)
     {
-        return date("Y-m-d", self::_dateUnix($m, $d, $y));
+        return date("Y-m-d", self::dateUnix($m, $d, $y));
     }
 
     /**
