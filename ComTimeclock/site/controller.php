@@ -143,6 +143,18 @@ class TimeclockController extends JController
         preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
         return $ret[0];
     }
+    
+    /**
+     * Check to see if a user is authorized to view the timeclock
+     *
+     * @param string $task The task to authorize
+     *
+     * @return null
+     */
+    function authorize($task)
+    {
+        return TableTimeClockPrefs::getPref("published");
+    }
 
 }
 
