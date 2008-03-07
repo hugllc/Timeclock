@@ -169,13 +169,13 @@ class TimeclockAdminControllerProjects extends JController
     {
         $model = $this->getModel("Projects");
     
-        if ($model->store()) {
+        if ($id = $model->store()) {
             $msg = JText::_('Project Saved!');
+            $link = 'index.php?option=com_timeclock&controller=projects&task=edit&cid[]='.$id;
         } else {
             $msg = JText::_('Error Saving Project');
+            $link = $_SERVER["HTTP_REFERER"];
         }
-        $id = JRequest::getVar('id', 0, '', 'int');
-        $link = 'index.php?option=com_timeclock&controller=projects&task=edit&cid[]='.$id;
         $this->setRedirect($link, $msg);
     
     }

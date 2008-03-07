@@ -201,7 +201,7 @@ class TimeclockAdminModelCustomers extends JModel
             return false;
         }
     
-        return true;
+        return $row->id;
     }
     /**
      * Publishes or unpublishes an item

@@ -131,7 +131,7 @@ class ComTimeclockAdminModelHolidaysTest extends JModelTest
     public static function dataStoreRet()
     {
         return array(
-            array(null, "store", true, array("id" => 13)),
+            array(null, "store", 13, array("id" => 13)),
             array("bind", "store", false, array("id" => 13)),
             array("check", "store", false, array("id" => 13)),
             array("store", "store", false, array("id" => 13)),

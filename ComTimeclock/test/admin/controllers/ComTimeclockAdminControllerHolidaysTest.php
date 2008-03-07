@@ -118,8 +118,8 @@ class ComTimeclockAdminControllerHolidaysTest extends JControllerTest
         return array(
             array("save", true, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => "Holiday Saved!")),          
             array("save", false, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => "Error Saving Holiday")),          
-            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=holidays&task=edit&cid[]=0", "msg" => "Holiday Saved!")),          
-            array("apply", false, array("link" => "index.php?option=com_timeclock&controller=holidays&task=edit&cid[]=0", "msg" => "Error Saving Holiday")),          
+            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=holidays&task=edit&cid[]=1", "msg" => "Holiday Saved!")),          
+            array("apply", false, array("link" => null, "msg" => "Error Saving Holiday")),          
             array("reset", true, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => null)),          
             array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => null)),          
         );

@@ -115,13 +115,13 @@ class TimeclockAdminControllerHolidays extends JController
     {
         $model = $this->getModel("Holidays");
     
-        if ($model->store()) {
+        if ($id = $model->store()) {
             $msg = JText::_('Holiday Saved!');
+            $link = 'index.php?option=com_timeclock&controller=holidays&task=edit&cid[]='.$id;
         } else {
             $msg = JText::_('Error Saving Holiday');
+            $link = $_SERVER["HTTP_REFERER"];
         }
-        $id = JRequest::getVar('id', 0, '', 'int');
-        $link = 'index.php?option=com_timeclock&controller=holidays&task=edit&cid[]='.$id;
         $this->setRedirect($link, $msg);
     
     }
@@ -137,12 +137,11 @@ class TimeclockAdminControllerHolidays extends JController
     
         if ($model->store()) {
             $msg = JText::_('Holiday Saved!');
+            $model->checkin($id);
         } else {
             $msg = JText::_('Error Saving Holiday');
         }
-        $id = JRequest::getVar('id', 0, '', 'int');
-        $model->checkin($id);
-        $this->reset($msg);    
+        $this->reset($msg);
     
     }
 

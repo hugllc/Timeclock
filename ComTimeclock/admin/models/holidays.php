@@ -217,7 +217,7 @@ class TimeclockAdminModelHolidays extends JModel
             return false;
         }
     
-        return true;
+        return $row->id;
     }
 
 

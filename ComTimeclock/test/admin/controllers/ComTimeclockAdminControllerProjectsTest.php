@@ -117,8 +117,8 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
         return array(
             array("save", true, array("link" => "index.php?option=com_timeclock&controller=projects", "msg" => "Project Saved!")),          
             array("save", false, array("link" => "index.php?option=com_timeclock&controller=projects", "msg" => "Error Saving Project")),          
-            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=projects&task=edit&cid[]=0", "msg" => "Project Saved!")),          
-            array("apply", false, array("link" => "index.php?option=com_timeclock&controller=projects&task=edit&cid[]=0", "msg" => "Error Saving Project")),          
+            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=projects&task=edit&cid[]=1", "msg" => "Project Saved!")),          
+            array("apply", false, array("link" => null, "msg" => "Error Saving Project")),          
             array("reset", true, array("link" => "index.php?option=com_timeclock&controller=projects", "msg" => null)),          
             array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=projects", "msg" => null)),          
             array("publish", true, array("link" => "index.php?option=com_timeclock&controller=projects", "msg" => null)),          

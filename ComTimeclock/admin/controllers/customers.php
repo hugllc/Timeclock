@@ -115,13 +115,13 @@ class TimeclockAdminControllerCustomers extends JController
     {
         $model = $this->getModel("Customers");
     
-        if ($model->store()) {
+        if ($id = $model->store()) {
             $msg = JText::_('Customer Saved!');
+            $link = 'index.php?option=com_timeclock&controller=customers&task=edit&cid[]='.$id;
         } else {
             $msg = JText::_('Error Saving Customer');
+            $link = $_SERVER["HTTP_REFERER"];
         }
-        $id = JRequest::getVar('id', 0, '', 'int');
-        $link = 'index.php?option=com_timeclock&controller=customers&task=edit&cid[]='.$id;
         $this->setRedirect($link, $msg);
     
     }
