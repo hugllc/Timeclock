@@ -264,7 +264,7 @@ class TimeclockModelTimeclock extends JModel
     {
         static $periods;
 
-        $date = self::_getDate($date);
+        $date = self::getDate($date);
         if (empty($periods[$date])) {
             $start = self::_getPeriodFixedStart($date);        
             $return =& $periods[$start];
@@ -388,7 +388,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function _getDate($date=null)
+    function getDate($date=null)
     {
         $date = self::_fixDate($date);
         if (!empty($date)) return $date;        
