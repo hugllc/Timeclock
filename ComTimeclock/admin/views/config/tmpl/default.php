@@ -167,4 +167,3 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="controller" value="config" />
 </form>
-?>
