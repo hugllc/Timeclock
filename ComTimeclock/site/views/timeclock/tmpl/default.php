@@ -273,24 +273,38 @@ function nextprev(&$obj)
     $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
     $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
     $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock&date=".$obj->period["next"]);
-    $next = '<a href="'.$url.'">'.$text.'</a>';
+    $nextImg = '<a href="'.$url.'">'.$text.'</a>';
+    $next = '<a href="'.$url.'">'.JText::_("Next").'</a>';
 
     $tip = "Go to the previous pay period";
     $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
     $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
     $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock&date=".$obj->period["prev"]);
-    $prev = '<a href="'.$url.'">'.$text.'</a>';
+    $prevImg = '<a href="'.$url.'">'.$text.'</a>';
+    $prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
+
+    $text = JText::_('Today');
+    $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock&date=".date("Y-m-d"));
+    $today = '<a href="'.$url.'">'.$text.'</a>';
+
 ?>
 <table width="100%" id="nextprev">
     <tr>
-        <td width="33%" align="left"><?php print $prev; ?></td>
+        <td width="5px" align="left"><?php print $prevImg; ?></td>
+        <td width="20%" align="left" style="vertical-align: middle;"><?php print $prev; ?></td>
 
-        <td width="33%" align="center" style="white-space: nowrap;">
+        <td align="center" style="white-space: nowrap;">
+            <?php print $today; ?>
+<?php 
+/*
             <button onclick="document.getElementById('date').value='<?php print date("Y-m-d");?>';this.form.submit();"><?php echo JText::_('Today'); ?></button>
             <?php print JHTML::_("calendar", $obj->date, "date", "date", "%Y-%m-%d", array("onChange" => "this.submit();")); ?>    
             <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
+*/
+?>
         </td>
-        <td width="33%" align="right"><?php print $next; ?></td>
+        <td width="20%" align="right" style="vertical-align: middle;"><?php print $next; ?></td>
+        <td width="5px;" align="right"><?php print $nextImg; ?></td>
     </tr>
 </table>
 <?php
