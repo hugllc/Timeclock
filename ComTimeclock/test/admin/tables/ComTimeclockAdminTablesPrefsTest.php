@@ -184,6 +184,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
      *
      * @param array    $setup  Data to set into the class
      * @param int|null $oid    The optional ID
+     * @param string   $type   "system" or "user"
      * @param array    $expect The data in the database to expect
      *
      * @dataProvider dataLoad()

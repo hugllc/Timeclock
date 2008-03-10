@@ -49,13 +49,13 @@ JToolBarHelper::cancel();
 <?php
 if (!$this->add) {
     ?>
-<div style="float: right; width: 30%;">
+    <div style="float: right; width: 30%;">
     <?php
     $pane = JPane::getInstance("sliders");
     echo $pane->startPane("user-pane");  
     echo $pane->startPanel(JText::_("Users"), "user-page");
     ?>
-<div style="padding: 5px;">
+    <div style="padding: 5px;">
     <?php 
     foreach ($this->lists["projectUsers"] as $user) { ?>
                     <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
@@ -63,19 +63,19 @@ if (!$this->add) {
         <?php 
     } 
     ?>
-</div>
+    </div>
     <?php
     echo $pane->endPanel();
     echo $pane->startPanel(JText::_("Add Users"), "adduser-page");
     ?>
-<div style="padding: 5px;">
+    <div style="padding: 5px;">
     <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduser\';this.form.submit();"', 'value', 'text', 0); ?>
-</div>
+    </div>
     <?php
     echo $pane->endPanel();
     echo $pane->endPane(); 
     ?>
-</div>
+    </div>
     <?php
 }
 ?>
@@ -154,11 +154,11 @@ if (!$this->add) {
             </td>
             <td>
 <?php 
-    if ($this->row->parent_id < -1) {
-        print JText::_($this->cat->name);
-    } else {
-        print JHTML::_("select.genericList", $this->parentOptions, "parent_id", "", 'value', 'text', $this->row->parent_id);
-    }
+if ($this->row->parent_id < -1) {
+    print JText::_($this->cat->name);
+} else {
+    print JHTML::_("select.genericList", $this->parentOptions, "parent_id", "", 'value', 'text', $this->row->parent_id);
+}
 ?>
             </td>
             <td>

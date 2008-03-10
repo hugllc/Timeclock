@@ -161,22 +161,6 @@ class TimeclockModelAddHours extends JModel
 
 
     /**
-     * Where statement for the reporting period dates
-     *
-     * @param int $m The month
-     * @param int $d The day
-     * @param int $y The year
-     *
-     * @return array
-     */ 
-    private function _dateUnix($m, $d, $y)
-    {
-        return mktime(6,0,0, $m, $d, $y);
-    }
-
-
-
-    /**
      * Checks in an item
      *
      * @return bool

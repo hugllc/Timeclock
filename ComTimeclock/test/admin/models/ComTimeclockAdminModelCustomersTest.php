@@ -131,7 +131,7 @@ class ComTimeclockAdminModelCustomersTest extends JModelTest
                     "checked_out_time" => null,
                     "created_by" => 62,
                 ), 
-                store,
+                "store",
             ),
         );
     }

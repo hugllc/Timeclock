@@ -299,6 +299,8 @@ class TimeclockAdminModelUsers extends JModel
      * Fixes any inconsistancies in the prefs
      *
      * @param array &$prefs The prefs to check/fix
+     *
+     * @return null
      */
     private function _fixPrefs(&$prefs)
     {

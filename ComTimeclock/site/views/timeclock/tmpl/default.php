@@ -67,7 +67,7 @@ $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('da
 tableHeader($this);
 $rows = 0;
 foreach ($this->projects as $cat) {
-    if (($cat->mine == false) || !$cat->published){
+    if (($cat->mine == false) || !$cat->published) {
         $array = array_intersect_key($cat->subprojects, $this->hours);
         if (empty($array)) continue;
     }
@@ -198,7 +198,7 @@ function tableHeader(&$obj)
  *
  * @param object &$obj  Pass it $this
  * @param object &$proj Pass it the project to print
- * @param object &$cat Pass it the category of the project
+ * @param object &$cat  Pass it the category of the project
  *
  * @return null
  */ 

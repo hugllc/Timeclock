@@ -91,6 +91,8 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Method to display the view
      *
+     * @param int $id The id of the project to retrieve.
+     *
      * @return string
      */
     function &getData($id = null)

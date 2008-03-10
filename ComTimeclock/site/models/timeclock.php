@@ -139,12 +139,13 @@ class TimeclockModelTimeclock extends JModel
      * Method to display the view
      *
      * @param array $data Data to merge with
+     * @param int   $id   The id of the employee
      *
      * @return string
      */
     function getHolidayHours($data = array(), $id = null)
     {
-        $id = empty($id) ? $this->_id : $id;
+        $id = empty($id) ? (int)$this->_id : (int)$id;
         $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
                   FROM #__timeclock_timesheet as t
                   LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
@@ -247,16 +248,20 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function getPeriod($date=null) {
+    function getPeriod($date=null)
+    {
         // This should be the last one.
         return self::_getPeriodFixed($date);
     }
     /**
      * Where statement for the reporting period dates
      *
+     * @param int $date The date in Mysql ("Y-m-d") format.
+     *
      * @return array
      */ 
-    private function _getPeriodFixed($date) {
+    private function _getPeriodFixed($date)
+    {
         static $periods;
 
         $date = self::_getDate($date);
@@ -293,6 +298,8 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
+     * @param int $date The date in Mysql ("Y-m-d") format.
+     *
      * @return array
      */ 
     private function _getPeriodFixedStart($date)
@@ -324,15 +331,13 @@ class TimeclockModelTimeclock extends JModel
      */ 
     public function dateUnix($m, $d, $y)
     {
-        return mktime(6,0,0, (int)$m, (int)$d, (int)$y);
+        return mktime(6, 0, 0, (int)$m, (int)$d, (int)$y);
     }
 
     /**
      * Where statement for the reporting period dates
      *
-     * @param int $m The month
-     * @param int $d The day
-     * @param int $y The year
+     * @param int $sqlDate The date in Mysql ("Y-m-d") format.
      *
      * @return array
      */ 
@@ -346,9 +351,7 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param int $m The month
-     * @param int $d The day
-     * @param int $y The year
+     * @param int $date The date in Mysql ("Y-m-d") format.
      *
      * @return array
      */ 
@@ -385,7 +388,8 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function _getDate($date=null) {
+    function _getDate($date=null)
+    {
         $date = self::_fixDate($date);
         if (!empty($date)) return $date;        
         if (is_object($this)) return $this->_date;
@@ -399,7 +403,8 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function _fixDate($date) {
+    function _fixDate($date)
+    {
         static $fixDate;
         if (empty($fixDate[$date])) {
             preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);

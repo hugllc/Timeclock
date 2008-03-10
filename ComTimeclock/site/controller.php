@@ -71,7 +71,7 @@ class TimeclockController extends JController
      */
     function display()
     {
-        require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $user    = JFactory::getUser();
         $user_id = $user->get("id");
@@ -93,7 +93,7 @@ class TimeclockController extends JController
      */
     function addhours()
     {
-        require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
         $projid   = JRequest::getVar('projid', null, '', 'string');
         if (!empty($projid)) {
             $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
@@ -112,6 +112,8 @@ class TimeclockController extends JController
     }
     /**
      * Method to display the view
+     *
+     * @param string $date The date to enter time
      *
      * @access public
      * @return null
@@ -182,7 +184,8 @@ class TimeclockController extends JController
      *
      * @return array
      */ 
-    function fixDate($date) {
+    function fixDate($date)
+    {
         preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
         return $ret[0];
     }

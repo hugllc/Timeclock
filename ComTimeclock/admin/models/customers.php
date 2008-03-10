@@ -153,6 +153,9 @@ class TimeclockAdminModelCustomers extends JModel
     /**
      * Get the project options for a select list
      *
+     * @param string $where The where clause to use
+     * @param string $name  The name for the empty item
+     *
      * @return array
      */
     function getOptions($where = "", $name = "None")
