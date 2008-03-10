@@ -155,7 +155,9 @@ class TimeclockModelTimeclock extends JModel
                      AND u.user_id='".$this->_id."'
                   GROUP BY t.worked, t.project_id
                   ";
+
         $ret = $this->_getList($query);
+
         $perc = TableTimeclockPrefs::getPref("admin_holidayperc", "user") / 100;
         if (!is_array($ret)) return array();
         if (!is_array($data)) $data = array();
@@ -230,9 +232,9 @@ class TimeclockModelTimeclock extends JModel
      */
     function periodWhere($field)
     {
-        $this->getPeriod();
-        $start = $this->_period["start"];
-        $end = $this->_period["end"];
+        $period = $this->getPeriod();
+        $start = $period["start"];
+        $end = $period["end"];
         $ret = "($field >= '$start' AND $field <= '$end')";
 
         return $ret;    

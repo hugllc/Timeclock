@@ -270,6 +270,8 @@ class TimeclockAdminModelUsers extends JModel
         foreach ($data as $f => $v) {
             if (substr($f, 0, 6) == "admin_") $prefs["prefs"][$f] = $v;
         }
+        $this->_fixPrefs($prefs);        
+        
         foreach (array("published", "startDate", "endDate") as $key) {
             $prefs[$key] = $data[$key];
         }
@@ -293,6 +295,16 @@ class TimeclockAdminModelUsers extends JModel
     
         return true;
     }
+    /**
+     * Fixes any inconsistancies in the prefs
+     *
+     * @param array &$prefs The prefs to check/fix
+     */
+    private function _fixPrefs(&$prefs)
+    {
+         if ($prefs["prefs"]["admin_status"] != "PARTTIME") unset($prefs["prefs"]["admin_holidayperc"]);
+    }
+
 
     /**
      * Get projects for a user

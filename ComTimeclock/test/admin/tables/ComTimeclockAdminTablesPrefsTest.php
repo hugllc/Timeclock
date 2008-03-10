@@ -168,15 +168,35 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                     ),
                 ),
                 15,
+                "user",
                 array(
                     "id" => 15,
-                    "prefs" => array("admin_holidayperc" => 100,1,2,3,4),
+                    "prefs" => array(1,2,3,4),
                     "published" => null,
                     "startDate" => null,
                     "endDate" => null,
                 ), 
             ),
         );
+    }
+    /**
+     * This tests the encode and decode parameters
+     *
+     * @param array    $setup  Data to set into the class
+     * @param int|null $oid    The optional ID
+     * @param array    $expect The data in the database to expect
+     *
+     * @dataProvider dataLoad()
+     * @return null
+     */
+    function testLoad($setup, $oid, $type, $expect)
+    {
+        $GLOBALS["JTable"]["load"] = $setup;
+        $this->o->load($oid);
+        $ret = $this->objectToArray($this->o);
+        $defaults = $this->readAttribute("TableTimeclockPrefs", "_defaults");
+        $expect["prefs"] = array_merge($defaults[$type], $expect["prefs"]);
+        $this->assertSame($expect, $ret);
     }
 
 }

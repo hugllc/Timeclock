@@ -96,6 +96,7 @@ class TableTimeclockPrefs extends JTable
         ),
         "user" => array(
             "admin_holidayperc" => 100,
+            "admin_status" => "FULLTIME",
         ),
         
     );

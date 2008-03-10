@@ -51,6 +51,12 @@ jimport('joomla.application.component.model');
  */
 class TimeclockAdminModelProjects extends JModel
 {
+    /** The fixed categories and their IDs */
+    static $cat = array(
+        "general" => -1,
+        "special" => -2,
+        "unpaid" =>  -3,
+    );
     /** The ID to load */
     private $_id = -1;
     var $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name, p.checked_out as parent_checked_out
@@ -375,15 +381,17 @@ class TimeclockAdminModelProjects extends JModel
         foreach ($ret as $p) $uProj[$p->id] = $p->user_id;
 
         $proj = $this->getProjects("", null, null, "ORDER BY id asc");
-
         foreach ($proj as $p) {
-            $p->subprojects = array();
-            if ($p->type == "CATEGORY") $projects[$p->id] = $p;
+            if ($p->type == "CATEGORY") {
+                $p->subprojects = array();
+                $projects[$p->id] = $p;
+            }
         }
+
         foreach ($proj as $p) {
             if ($p->type != "CATEGORY") {
                 $p->mine = array_key_exists($p->id, $uProj);
-                $cat = (is_array($projects[$p->parent_id])) ? $p->parent_id : -1;
+                $cat = $this->_getProjectCategory($p, $projects);
                 if ($p->mine) $projects[$cat]->mine = true;
                 if ($p->type == 'HOLIDAY') $p->noHours = true;
                 $projects[$cat]->subprojects[$p->id] = $p;
@@ -395,7 +403,23 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Get projects for a user
      *
-     * @param int $oid        User id
+     * @param object &$proj The project to get the category for
+     * @param array  &$cats The categories to choose from
+     *
+     * @return array
+     */
+    private function _getProjectCategory(&$proj, &$cats)
+    {
+        if ($proj->type == "UNPAID") return self::$cat["unpaid"];
+        if ($proj->type == "HOLIDAY") return self::$cat["special"];
+        if ($proj->type == "SICK") return self::$cat["special"];
+        if ($proj->type == "VACATION") return self::$cat["special"];
+        return (is_array($cats[$p->parent_id])) ? $proj->parent_id : self::$cat["general"];
+    }
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid User id
      *
      * @return array
      */
