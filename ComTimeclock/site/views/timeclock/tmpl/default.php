@@ -165,7 +165,7 @@ function tableHeader(&$obj)
     $d = 0;
     foreach ($obj->period["dates"] as $key => $uDate) {
         $style = ($key == $today) ? "background: #00FF00; color: #000000;" : "";
-        if (($uDate >= $obj->employmentDates["start"]) && ($uDate <= $obj->employmentDates["end"])) {     
+        if ($obj->checkDate($uDate)) {     
             $url = JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$obj->user->get("id"));
             $tipTitle = "Add Hours";
             $tip = "on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1"));
@@ -221,7 +221,7 @@ function projectRow(&$obj, &$proj, &$cat)
         if ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) {
             $link = $hours;
         } else {
-            if (($uDate >= $obj->employmentDates["start"]) && ($uDate <= $obj->employmentDates["end"])) {     
+            if ($obj->checkDate($uDate)) {     
                 $tipTitle           = ($hours == 0) ? "Add Hours" : "Work Notes";
                 $tip                = ($hours == 0) ? "for ".$proj->name." on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1")) : $obj->hours[$proj->id][$key]['notes'];
                 $url                = 'index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id");

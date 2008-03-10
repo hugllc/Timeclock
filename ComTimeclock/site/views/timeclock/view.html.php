@@ -79,6 +79,20 @@ class TimeclockViewTimeclock extends JView
         parent::display($tpl);
 
     }
+    
+    /**
+     * Checks employment dates and says if the user can enter hours on that date or not
+     *
+     * @param int $date The unix date to check
+     *
+     * @return bool
+     */
+    function checkDate($date)
+    {
+        if ($date < $this->employmentDates["start"]) return false;
+        if (($date > $this->employmentDates["end"]) && !empty($this->employmentDates["end"])) return false;
+        return true;     
+    }
 }
 
 ?>

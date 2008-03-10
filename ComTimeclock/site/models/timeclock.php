@@ -113,27 +113,26 @@ class TimeclockModelTimeclock extends JModel
      */
     function getData()
     {
-    
-            
-    
-        $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
-                  FROM #__timeclock_timesheet as t
-                  LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                  WHERE ".$this->employmentDateWhere("t.worked")
-                  ." AND ".$this->periodWhere("t.worked")
-                  ." AND t.created_by='".$this->_id."'
-                     AND p.type <> 'HOLIDAY'
-                  GROUP BY t.worked, t.project_id
-                  ";
-        $ret = $this->_getList($query);
-        if (!is_array($ret)) return array();
-        $data = array();
-        foreach ($ret as $d) {
-            $data[$d->project_id][$d->worked]['hours'] += $d->hours;
-            $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
+        if (empty($this->data)) {
+            $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
+                      FROM #__timeclock_timesheet as t
+                      LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
+                      WHERE ".$this->employmentDateWhere("t.worked")
+                      ." AND ".$this->periodWhere("t.worked")
+                      ." AND t.created_by='".$this->_id."'
+                         AND p.type <> 'HOLIDAY'
+                      GROUP BY t.worked, t.project_id
+                      ";
+            $ret = $this->_getList($query);
+            if (!is_array($ret)) return array();
+            $data = array();
+            foreach ($ret as $d) {
+                $data[$d->project_id][$d->worked]['hours'] += $d->hours;
+                $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
+            }
+            $this->data = $this->getHolidayHours($data);
         }
-        $data = $this->getHolidayHours($data);
-        return $data;
+        return $this->data;
     }
 
     /**
@@ -195,11 +194,14 @@ class TimeclockModelTimeclock extends JModel
      */
     function getEmploymentDates()
     {
-        $ret = array(
-            "start" => self::_fixDate(TableTimeclockPrefs::getPref("startDate")),
-            "end"   => self::_fixDate(TableTimeclockPrefs::getPref("endDate")),
-        );
-        return $ret;
+        static $eDates;
+        if (empty($eDates)) {
+            $eDates = array(
+                "start" => self::_fixDate(TableTimeclockPrefs::getPref("startDate")),
+                "end"   => self::_fixDate(TableTimeclockPrefs::getPref("endDate")),
+            );
+        }
+        return $eDates;
     }
 
     /**
@@ -209,11 +211,14 @@ class TimeclockModelTimeclock extends JModel
      */
     function getEmploymentDatesUnix()
     {
-        $ret = self::getEmploymentDates();
-        foreach ($ret as $key => $val) {
-            $ret[$key] = self::dateUnixSql($val);
+        static $eDatesUnix;
+        if (empty($eDatesUnix)) {
+            $eDatesUnix = self::getEmploymentDates();
+            foreach ($eDatesUnix as $key => $val) {
+                $eDatesUnix[$key] = self::dateUnixSql($val);
+            }
         }
-        return $ret;    
+        return $eDatesUnix;    
     }
 
     /**
@@ -253,34 +258,35 @@ class TimeclockModelTimeclock extends JModel
         static $periods;
 
         $date = self::_getDate($date);
-
-        $start = self::_getPeriodFixedStart($date);        
-        $return =& $periods[$start];
-        if (!isset($return)) {
-            $start = self::_explodeDate($start);
-            
-            $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
-    
-            $y = $start["y"];
-            $m = $start["m"];
-            $d = $start["d"];
-
-            // These are all of the dates in the pay period
-            for ($i = 0; $i < $periodLength; $i++) {
-                $return['dates'][self::_date($m, $d+$i, $y)] = self::dateUnix($m, $d+$i, $y);
-            }
-
-            // Get the start and end
-            $return['start']        = self::_date($m, $d, $y);
-            $return['end']          = self::_date($m, $d+$periodLength-1, $y);
-            $return['prev']         = self::_date($m, $d-$periodLength, $y);
-            $return['prevend']      = self::_date($m, $d-1, $y);
-            $return['next']         = self::_date($m, $d+$periodLength, $y);
-            $return['nextend']      = self::_date($m, $d+(2*$periodLength), $y);
-            $return['length']       = $periodLength;
-        }    
-        if (is_object($this)) $this->_period = $return;
-        return $return;
+        if (empty($periods[$date])) {
+            $start = self::_getPeriodFixedStart($date);        
+            $return =& $periods[$start];
+            if (!isset($return)) {
+                $start = self::_explodeDate($start);
+                
+                $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
+        
+                $y = $start["y"];
+                $m = $start["m"];
+                $d = $start["d"];
+        
+                // These are all of the dates in the pay period
+                for ($i = 0; $i < $periodLength; $i++) {
+                    $return['dates'][self::_date($m, $d+$i, $y)] = self::dateUnix($m, $d+$i, $y);
+                }
+        
+                // Get the start and end
+                $return['start']        = self::_date($m, $d, $y);
+                $return['end']          = self::_date($m, $d+$periodLength-1, $y);
+                $return['prev']         = self::_date($m, $d-$periodLength, $y);
+                $return['prevend']      = self::_date($m, $d-1, $y);
+                $return['next']         = self::_date($m, $d+$periodLength, $y);
+                $return['nextend']      = self::_date($m, $d+(2*$periodLength), $y);
+                $return['length']       = $periodLength;
+            }    
+            $periods[$date] = $return;
+        }
+        return $periods[$date];
     }
     /**
      * Where statement for the reporting period dates
@@ -331,6 +337,7 @@ class TimeclockModelTimeclock extends JModel
     public function dateUnixSql($sqlDate)
     {
         $date = self::_explodeDate($sqlDate);
+        if (empty($date["y"])) return 0;
 
         return self::dateUnix($date["m"], $date["d"], $date["y"]);
     }
@@ -372,7 +379,7 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s")
+     * @param string $date Date to use in MySQL format ("Y-m-d")
      *
      * @return array
      */ 
@@ -391,8 +398,12 @@ class TimeclockModelTimeclock extends JModel
      * @return array
      */ 
     function _fixDate($date) {
-        preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
-        return $ret[0];
+        static $fixDate;
+        if (empty($fixDate[$date])) {
+            preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
+            $fixDate[$date] = $ret[0];
+        }
+        return $fixDate[$date];
     }
 
 
