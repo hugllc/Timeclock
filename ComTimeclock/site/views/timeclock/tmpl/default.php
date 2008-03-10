@@ -295,13 +295,6 @@ function nextprev(&$obj)
 
         <td align="center" style="white-space: nowrap;">
             <?php print $today; ?>
-<?php 
-/*
-            <button onclick="document.getElementById('date').value='<?php print date("Y-m-d");?>';this.form.submit();"><?php echo JText::_('Today'); ?></button>
-            <?php print JHTML::_("calendar", $obj->date, "date", "date", "%Y-%m-%d", array("onChange" => "this.submit();")); ?>    
-            <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-*/
-?>
         </td>
         <td width="20%" align="right" style="vertical-align: middle;"><?php print $next; ?></td>
         <td width="5px;" align="right"><?php print $nextImg; ?></td>
