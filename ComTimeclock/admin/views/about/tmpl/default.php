@@ -53,17 +53,21 @@ Timeclock was written by Scott Price (<a href="mailto:prices@hugllc.com">prices@
 <h2 style="clear:both;">Contributions and Thanks</h2>
 <p>
 <ul>
-<li>The clock icon was created by <a href="http://nuovext.pwsp.net/">Alexandre Moore</a> and posted on 
+<li>The clock icon was created by and &copy; <a href="http://nuovext.pwsp.net/">Alexandre Moore</a> and posted on 
 <a href="http://www.iconfinder.net">iconfinder.net</a>.  It is licensed
 under the GNU GPL.</li>
+<li>The next and previos icons were created by and &copy; <a href="http://www.notmart.org/">Marco Martin</a> and posted on 
+<a href="http://www.iconfinder.net">iconfinder.net</a>.  They are licensed
+under the GNU GPL.</li>
 <li>I based a significant portion of my code from base Joomla! components.  Some of it was copied and
-modified to fit my needs.  Most notably com_content and com_poll.</li>
+modified to fit my needs.  Most notably com_content and com_poll.  This code is &copy; Open Source Matters.</li>
 </ul>
 </p>
 <h2 style="clear:both;">License</h2>
 <a href="<?php echo COM_TIMECLOCK_FRONT.DS."LICENSE.TXT";?>">License File</a>
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a> is a Joomla! 1.5 component<br />
 Copyright &copy; 2008 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a><br />
+Portions &copy; Open Source Matters
 <p>
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
