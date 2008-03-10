@@ -289,21 +289,20 @@ class TimeclockModelTimeclock extends JModel
      */ 
     private function _getPeriodFixedStart($date)
     {
-        $uDate = strtotime($date." 06:00:00");
-        // Get the pay period start
-        $start = strtotime(TableTimeclockPrefs::getPref("firstPayPeriodStart", "system")." 06:00:00");
-        // Get the length
+        // Get this date in days
+        $uDate = round(self::dateUnixSql($date) / 86400);
+        $d = self::_explodeDate($date);
+
+        // Get the pay period start in days
+        $startTime = TableTimeclockPrefs::getPref("firstPayPeriodStart", "system");
+        $start = round(self::dateUnixSql($startTime) / 86400);
+        // Get the length in days
         $len = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
-        // In Seconds
-        $lenS = $len * 86400;
 
-        // Get the time difference in seconds
-        $timeDiff = $uDate - $start;
-        // Get the offset to the end of the payperiod
-        $timeDiff = ($timeDiff % $lenS);
+        // Get the time difference in days
+        $timeDiff = ($uDate - $start + 1) % $len;
 
-
-        return date("Y-m-d", $uDate - $timeDiff);
+        return self::_date($d["m"], ($d["d"] - $timeDiff), $d["y"]);
     }
 
     /**
@@ -317,7 +316,7 @@ class TimeclockModelTimeclock extends JModel
      */ 
     public function dateUnix($m, $d, $y)
     {
-        return mktime(6,0,0, $m, $d, $y);
+        return mktime(6,0,0, (int)$m, (int)$d, (int)$y);
     }
 
     /**
