@@ -100,7 +100,7 @@ class TimeclockModelTimeclock extends JModel
     function setDate($date)
     {
         $this->_date = TimeClockController::fixDate($date);
-        if (empty($this->date)) $this->_date = date("Y-m-d");
+        if (empty($this->_date)) $this->_date = date("Y-m-d");
     }
 
     /**
@@ -108,7 +108,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function getData()
+    function getTimesheetData()
     {
         if (empty($this->data)) {
             $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
@@ -346,6 +346,89 @@ class TimeclockModelTimeclock extends JModel
         if (!empty($date)) return $date;        
         if (is_object($this)) return $this->_date;
         return date("Y-m-d");
+    }
+    /**
+     * Method to set the id
+     *
+     * @param int $project The project to set
+     *
+     * @return    void
+     */
+    function setProject($project)
+    {
+        if (empty($project)) {
+            $this->_project = null;
+        } else {
+            $this->_project = TimeclockController::fixDate($date);
+        }
+    }
+
+    /**
+     * Method to display the view
+     *
+     * @return string
+     */
+    function getData()
+    {
+        $query = "SELECT t.*
+                  FROM #__timeclock_timesheet as t
+                  WHERE t.worked ='".$this->_date."'
+                     AND t.created_by = '".$this->_id."'
+                  ";
+
+        $ret = $this->_getList($query);
+        if (!is_array($ret)) return array();
+        $data = array();
+        foreach ($ret as $d) {
+            $data[$d->project_id] = $d;
+        }
+        return $data;
+    }
+
+
+    /**
+     * Checks in an item
+     *
+     * @return bool
+     */
+    function store()
+    {
+        $row = $this->getTable("TimeclockTimesheet");
+        $timesheet = JRequest::getVar('timesheet', array(), '', 'array');
+        $date = JRequest::getVar('date', '', '', 'string');
+        $user =& JFactory::getUser();        
+        if (empty($date)) return false;
+        
+        $ret = true;
+        foreach ($timesheet as $data) {
+            $data["hours"] = (int) $data["hours"];
+            if (empty($data["hours"])) continue; 
+
+            $data["id"] = (int) $data["id"];
+            $data["created_by"] = $user->get("id");
+            $data["worked"] = $date;
+            if (empty($data["created"])) $data["created"] = date("Y-m-d H:i:s");
+
+            if (!$row->bind($data)) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+            // Make sure the record is valid
+            if (!$row->check()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        
+            // Store the web link table to the database
+            if (!$row->store()) {
+                $this->setError($this->_db->getErrorMsg());
+                $ret = false;
+                continue;
+            }
+        }
+        return $ret;
     }
 
 }

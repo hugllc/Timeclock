@@ -61,11 +61,11 @@ class TimeclockViewTimeclock extends JView
      */
     function display($tpl = null)
     {
+        $layout = JRequest::getVar('layout');
+
         $model   =& $this->getModel();
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
 
-        $hours   = $model->getData();
-        $period  = $model->getPeriod();
         $user    = JFactory::getUser();
         $user_id = $user->get("id");
         $projects = $projModel->getUserProjects($user_id);
@@ -75,11 +75,53 @@ class TimeclockViewTimeclock extends JView
         $this->assignRef("employmentDates", $employmentDates);        
         $this->assignRef("projects", $projects);
         $this->assignRef("user", $user);        
-        $this->assignRef("hours", $hours);        
         $this->assignRef("date", $date);        
-        $this->assignRef("period", $period);        
+
+        $this->addhours($layout);
+        $this->timesheet($layout);
+
         parent::display($tpl);
 
+    }
+    /**
+     * The display function
+     *
+     * @param string $layout The template to use
+     *
+     * @return null
+     */
+    function timesheet($layout)
+    {
+        if ($layout == "addhours") return;
+
+        $model   =& $this->getModel();
+        $hours   = $model->getTimesheetData();
+        $period  = $model->getPeriod();
+
+        $this->assignRef("hours", $hours);
+        $this->assignRef("period", $period);        
+    }
+
+    /**
+     * The display function
+     *
+     * @param string $layout The template to use
+     *
+     * @return null
+     */
+    function addhours($layout)
+    {
+        if ($layout != "addhours") return;
+
+        $model   =& $this->getModel();
+        $data     = $model->getData();
+
+        $referer  = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+        $projid   = JRequest::getVar('projid', null, '', 'string');
+
+        $this->assignRef("projid", $projid);
+        $this->assignRef("referer", $referer);
+        $this->assignRef("data", $data);
     }
     
     /**

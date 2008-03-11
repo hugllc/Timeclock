@@ -106,7 +106,7 @@ class TimeclockController extends JController
         }
         $date = JRequest::getVar('date', null, '', 'string');
         if (!$this->checkDates($date)) return;
-        JRequest::setVar('view', 'addhours');
+        JRequest::setVar('layout', 'addhours');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
     }
