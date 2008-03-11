@@ -416,7 +416,8 @@ class TimeclockAdminModelProjects extends JModel
         if ($proj->type == "HOLIDAY") return self::$cat["special"];
         if ($proj->type == "SICK") return self::$cat["special"];
         if ($proj->type == "VACATION") return self::$cat["special"];
-        return (is_array($cats[$p->parent_id])) ? $proj->parent_id : self::$cat["general"];
+        $ret = (is_object($cats[$proj->parent_id])) ? $proj->parent_id : self::$cat["general"];
+	return $ret;
     }
     /**
      * Get projects for a user
