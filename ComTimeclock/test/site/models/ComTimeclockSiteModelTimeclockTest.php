@@ -32,12 +32,11 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-
 /** Require the JoomlaMock stuff */
-require_once dirname(__FILE__).'/../JoomlaMock/joomla.php';
-require_once dirname(__FILE__).'/../JoomlaMock/testCases/JControllerTest.php';
-/** Require the module under test */
-require_once dirname(__FILE__).'/../../site/controller.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelTest.php';
+require_once dirname(__FILE__).'/../../../site/models/timeclock.php';
+require_once dirname(__FILE__).'/ComTimeclockSiteModelAddHoursTest.php';
 
 /**
  * Test class for driver.
@@ -51,7 +50,7 @@ require_once dirname(__FILE__).'/../../site/controller.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockSiteControllerTest extends JControllerTest
+class ComTimeclockSiteModelTimeclockTest extends JModelTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -63,7 +62,12 @@ class ComTimeclockSiteControllerTest extends JControllerTest
      */
     protected function setUp() 
     {
-        $this->o = new TimeclockController();
+        $this->sqlFile = array(
+            dirname(__FILE__)."/../../../install/timeclock_timesheet.sql",
+            dirname(__FILE__)."/../../../install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+        );
+        $this->o = new TimeclockModelTimeclock();        
         parent::setUp();
     }
 
@@ -80,114 +84,68 @@ class ComTimeclockSiteControllerTest extends JControllerTest
         parent::tearDown();
         unset($this->o);
     }
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataDisplay()
-    {
-        return array(
-        );
-    }
 
     /**
      * Data provider
      *
      * @return array
      */
-    public static function dataRegisterTask()
+    public static function dataGetDataCache()
     {
         return array(
-            array(array(array('applyhours', 'savehours'))),
         );
     }
-
     /**
      * Data provider
      *
      * @return array
      */
-    public static function dataDateUnix()
+    public static function dataStore()
     {
         return array(
-            array("12", "12", "2005", 1134388800),
-            array("12", "80", "2005", 1140264000),
-            array("12", "25", "2036", 2113819200),
+//            array(array("id" => 1, "prefs" => array("hello" => "world")), "post", array("id" => 1, "prefs" => "YToxOntzOjU6ImhlbGxvIjtzOjU6IndvcmxkIjt9", "published" => null, "startDate" => null, "endDate" => null), "store"),
         );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreRet()
+    {
+        return array(
+/*
+            array(null, "store", false, array(), "post"),
+            array(null, "store", true, array("id" => 1, "prefs" => array()), "post"),
+            array("bind", "store", false, array("id" => 1, "prefs" => array()), "post"),
+            array("check", "store", false, array("id" => 1, "prefs" => array()), "post"),
+            array("store", "store", false, array("id" => 1, "prefs" => array()), "post"),
+*/
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataGetSetDate()
+    {
+        return ComTimeclockSiteModelAddHoursTest::dataGetSetDate();
     }
     
     /**
      * Tests get and set date
      *
-     * @param int    $m      The Month
-     * @param int    $d      The day
-     * @param int    $y      The Year
+     * @param string $date   The date to test
      * @param string $expect The date we expect returned
      *
-     * @dataProvider dataDateUnix()
+     * @dataProvider dataGetSetDate()
      * @return null
      */
-    function testDateUnix($m, $d, $y, $expect)
+    function testGetSetDate($date, $expect)
     {
-        $date = TimeclockController::dateUnix($m, $d, $y);
-        $this->assertSame($expect, $date);
-    }
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataDateUnixSql()
-    {
-        return array(
-            array("2005-12-12", 1134388800),
-            array("2000-12-25", 977745600),
-            array("2036-12-25", 2113819200),
-        );
-    }
-    
-    /**
-     * Tests get and set date
-     *
-     * @param int    $sqlDate The date in sql format ("Y-m-d")
-     * @param string $expect  The date we expect returned
-     *
-     * @dataProvider dataDateUnixSql()
-     * @return null
-     */
-    function testDateUnixSql($sqlDate, $expect)
-    {
-        $date = TimeclockController::dateUnixSql($sqlDate);
-        $this->assertSame($expect, $date);
-    }
-
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataFormatProjId()
-    {
-        return array(
-            array(1, "0001"),
-            array(12345, "12345"),
-            array(-2, "-002"),
-        );
-    }
-    
-    /**
-     * Tests get and set date
-     *
-     * @param int    $id     Id to print out
-     * @param string $expect The date we expect returned
-     *
-     * @dataProvider dataFormatProjId()
-     * @return null
-     */
-    function testFormatProjId($id, $expect)
-    {
-        $ret = TimeclockController::formatProjId($id);
+        $this->o->setDate($date);
+        $ret = $this->o->getDate($date);
         $this->assertSame($expect, $ret);
     }
 

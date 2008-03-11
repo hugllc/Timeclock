@@ -104,11 +104,8 @@ class TimeclockModelAddHours extends JModel
      */
     function setDate($date)
     {
-        if (empty($date)) {
-            $this->_date = date("Y-m-d");
-        } else {
-            $this->_date = TimeclockController::fixDate($date);
-        }
+        $this->_date = TimeclockController::fixDate($date);
+        if (empty($this->_date)) $this->_date = date("Y-m-d");
     }
 
     /**

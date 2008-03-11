@@ -55,6 +55,8 @@ require_once dirname(__FILE__)."/../../JoomlaMock/joomla.php";
 class ComTimeclockSiteModelTests
 {
     static $_tests = array(
+	"ComTimeclockSiteModelTimeclockTest",
+	"ComTimeclockSiteModelAddHoursTest",
     );
 
     /**

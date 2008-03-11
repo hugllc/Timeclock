@@ -186,9 +186,61 @@ class TimeclockController extends JController
      */ 
     function fixDate($date)
     {
-        preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
-        return $ret[0];
+        static $fixDate;
+        if (empty($fixDate[$date])) {
+            preg_match("/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/", $date, $ret);
+            $fixDate[$date] = $ret[0];
+        }
+        return $fixDate[$date];
     }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $m The month
+     * @param int $d The day
+     * @param int $y The year
+     *
+     * @return array
+     */ 
+    public function dateUnix($m, $d, $y)
+    {
+        return mktime(6, 0, 0, (int)$m, (int)$d, (int)$y);
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $sqlDate The date in Mysql ("Y-m-d") format.
+     *
+     * @return array
+     */ 
+    public function dateUnixSql($sqlDate)
+    {
+        $date = self::explodeDate($sqlDate);
+        if (empty($date["y"])) return 0;
+
+        return self::dateUnix($date["m"], $date["d"], $date["y"]);
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $date The date in Mysql ("Y-m-d") format.
+     *
+     * @return array
+     */ 
+    public function explodeDate($date)
+    {
+
+        $date = TimeclockController::fixDate($date);
+        $date = explode("-", $date);
+        
+        return array(
+            "y" => $date[0],
+            "m" => $date[1],
+            "d" => $date[2],
+        );
+    }
+    
     
     /**
      * Check to see if a user is authorized to view the timeclock
