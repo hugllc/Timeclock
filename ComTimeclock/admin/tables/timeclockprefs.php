@@ -168,6 +168,7 @@ class TableTimeclockPrefs extends JTable
         if ($oid > 0) $pref = "user";
         if ($oid <= 0) $pref = "system";
         $this->prefs = self::encode(self::$_defaults[$pref]);
+        // Default the start date to today if it is empty.
         if (($this->startDate == "0000-00-00") || empty($this->startDate)) $this->startDate = date("Y-m-d");
         $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
         $this->prefs = self::$_defaults[$pref];
