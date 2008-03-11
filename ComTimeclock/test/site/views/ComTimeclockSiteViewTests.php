@@ -56,7 +56,6 @@ class ComTimeclockSiteViewTests
 {
     static $_tests = array(
         "ComTimeclockSiteViewTimeclockTest",
-        "ComTimeclockSiteViewAddHoursTest",
     );
 
     /**

@@ -36,7 +36,6 @@
 require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
 require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelTest.php';
 require_once dirname(__FILE__).'/../../../site/models/timeclock.php';
-require_once dirname(__FILE__).'/ComTimeclockSiteModelAddHoursTest.php';
 
 /**
  * Test class for driver.
@@ -129,7 +128,14 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
      */
     public static function dataGetSetDate()
     {
-        return ComTimeclockSiteModelAddHoursTest::dataGetSetDate();
+        return array(
+            array("2009-05-12", "2009-05-12"),
+            array("2002-5-2", "2002-5-2"),
+            array("2002-05-22 21:24:52", "2002-05-22"),
+            array("2523422002-05-2225114", "2002-05-22"),
+            array("2523422002-052-2225114", date("Y-m-d")),
+            array(null, date("Y-m-d")),
+        );
     }
     
     /**
