@@ -164,13 +164,28 @@ class TableTimeclockPrefs extends JTable
      */
     function create($oid = -1)
     {
-        $this->id = $oid;
+        $this->id = (int) $oid;
         if ($oid > 0) $pref = "user";
-        if ($oid < 0) $pref = "system";
+        if ($oid <= 0) $pref = "system";
         $this->prefs = self::encode(self::$_defaults[$pref]);
+        if (($this->startDate == "0000-00-00") || empty($this->startDate)) $this->startDate = date("Y-m-d");
         $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
         $this->prefs = self::$_defaults[$pref];
         return $ret;
+    }
+    /**
+     * Load a row and bind it to the object
+     *
+     * @param int $oid Optional Id argument
+     *
+     * @return true
+     */
+    function publish($cid, $publish, $user_id)
+    {
+        foreach ($cid as $oid) {
+            self::load($oid);
+        }
+        return parent::publish($cid, $publish, $user_id);
     }
 
     /**
