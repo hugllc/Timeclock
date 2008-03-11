@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+        <layout title="Timesheet">
+                <message>
+                        Allows users to view and enter time in their timeclock.
+                </message>
+        </layout>
+        <state>
+                <name>Timesheet</name>
+                <description>Allows users to view and enter time in their timeclock.</description>
+                <params>
+                </params>
+        </state>
+</metadata>

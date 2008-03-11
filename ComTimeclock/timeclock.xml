@@ -17,10 +17,13 @@
         <filename>controller.php</filename>
         <filename>views/index.html</filename>
         <filename>views/timeclock/index.html</filename>
+        <filename>views/timeclock/metadata.xml</filename>
         <filename>views/timeclock/view.html.php</filename>
         <filename>views/timeclock/tmpl/index.html</filename>
         <filename>views/timeclock/tmpl/default.php</filename>
         <filename>views/timeclock/tmpl/addhours.php</filename>
+        <filename>views/timeclock/tmpl/default.xml</filename>
+        <filename>views/timeclock/tmpl/addhours.xml</filename>
         <filename>models/timeclock.php</filename>
         <filename>models/index.html</filename>
         <filename>images/index.html</filename>

@@ -40,6 +40,7 @@ jimport('joomla.application.component.model');
 
 /** Include the project stuff */
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
 
 /**
  * ComTimeclock model

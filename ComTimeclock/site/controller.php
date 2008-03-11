@@ -158,7 +158,7 @@ class TimeclockController extends JController
         $date = JRequest::getVar('date', null, '', 'string');
         if (!$this->checkDates($date)) return;
 
-        $model = $this->getModel("AddHours");
+        $model = $this->getModel("Timeclock");
     
         if ($model->store()) {
             $msg = JText::_('Hours Saved!');
