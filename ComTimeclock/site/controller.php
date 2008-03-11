@@ -251,6 +251,8 @@ class TimeclockController extends JController
      */
     function authorize($task)
     {
+        $user =& JFactory::getUser();
+        if ($user->get("id") < 1) return false;
         return TableTimeClockPrefs::getPref("published");
     }
 

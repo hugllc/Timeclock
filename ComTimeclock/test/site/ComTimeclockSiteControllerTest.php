@@ -190,6 +190,40 @@ class ComTimeclockSiteControllerTest extends JControllerTest
         $ret = TimeclockController::formatProjId($id);
         $this->assertSame($expect, $ret);
     }
+    
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataStoreTasks()
+    {
+        return array(
+            array("savehours", true, array("link" => null, "msg" => "Hours Saved!"), true),      
+            array("savehours", false, array("link" => null, "msg" => "Error Saving Hours"), true),      
+            array("savehours", false, array("link" => "index.php", "msg" => "Bad form token.  Please try again."), false),      
+        );
+    }
+    
+
+    /**
+     * Tests to make sure the store tasks are redirecting properly
+     *
+     * @param string $task       the method name to call
+     * @param bool   $storeRet   The return that "store" should give
+     * @param array  $expect     The expected return from setRedirect
+     * @param bool   $checkToken The return from JRequest::checkToken()
+     *
+     * @dataProvider dataStoreTasks()
+     * @return null
+     */
+    public function testStoreTasks($task, $storeRet, $expect, $checkToken=true)
+    {
+        $GLOBALS["JModel"]["actionReturn"] = $storeRet;
+        $GLOBALS["JRequest"]["checkToken"] = $checkToken;
+        $this->o->$task();
+        $this->assertSame($expect, $GLOBALS["JController"]["setRedirect"]);
+    }
 
 }
 

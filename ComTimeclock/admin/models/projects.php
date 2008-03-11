@@ -380,9 +380,12 @@ class TimeclockAdminModelProjects extends JModel
         $query = "select * from #__timeclock_users as u
                   WHERE u.user_id = ".(int)$oid."";
         $ret = $this->_getList($query, $limitstart, $limit);
+        if (!is_array($ret)) return array();
         foreach ($ret as $p) $uProj[$p->id] = $p->user_id;
 
         $proj = $this->getProjects("", null, null, "ORDER BY id asc");
+        if (!is_array($proj)) return array();
+        
         foreach ($proj as $p) {
             if ($p->type == "CATEGORY") {
                 $p->subprojects = array();
