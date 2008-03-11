@@ -91,9 +91,7 @@ class TimeclockViewTimeclock extends JView
      */
     function checkDate($date)
     {
-        if ($date < $this->employmentDates["start"]) return false;
-        if (($date > $this->employmentDates["end"]) && !empty($this->employmentDates["end"])) return false;
-        return true;     
+        return TimeclockController::checkEmploymentDates($this->employmentDates["start"], $this->employmentDates["end"], $date);
     }
 }
 

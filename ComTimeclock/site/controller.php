@@ -123,10 +123,20 @@ class TimeclockController extends JController
         $model = $this->getModel("Timeclock");
         $date = self::dateUnixSql($date);
         $eDates = $model->getEmploymentDatesUnix();
-        if (($date < $eDates["start"]) || (($date > $eDates["end"]) && !empty($eDates["end"]))) {     
-            $this->setRedirect(JRoute::_("index.php?option=com_timeclock&view=timeclock"), "Time can not be entered before your employment start date or after your end date.", "error");
-            return false;
-        }
+        return self::checkEmploymentDates($eDates["start"], $eDates["end"], $date);
+    }
+    /**
+     * Method to display the view
+     *
+     * @param string $date The date to enter time
+     *
+     * @access public
+     * @return null
+     */
+    function checkEmploymentDates($start, $end, $date)
+    {
+        if ($date < $start) return false;
+        if (($date > $end) && !empty($end)) return false; 
         return true;
     }
 
