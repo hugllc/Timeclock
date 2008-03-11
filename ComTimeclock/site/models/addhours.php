@@ -130,7 +130,7 @@ class TimeclockModelAddHours extends JModel
         if (empty($project)) {
             $this->_project = null;
         } else {
-            $this->_project = TimeclockModelTimeclock::_fixDate($date);
+            $this->_project = TimeclockController::fixDate($date);
         }
     }
 

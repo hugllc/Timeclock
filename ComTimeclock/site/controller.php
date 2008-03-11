@@ -121,9 +121,9 @@ class TimeclockController extends JController
     function checkDates($date)
     {
         $model = $this->getModel("Timeclock");
-        $date = $model->dateUnixSql($date);
+        $date = self::dateUnixSql($date);
         $eDates = $model->getEmploymentDatesUnix();
-        if (($date < $eDates["start"]) || ($date > $eDates["end"])) {     
+        if (($date < $eDates["start"]) || (($date > $eDates["end"]) && !empty($eDates["end"]))) {     
             $this->setRedirect(JRoute::_("index.php?option=com_timeclock&view=timeclock"), "Time can not be entered before your employment start date or after your end date.", "error");
             return false;
         }
