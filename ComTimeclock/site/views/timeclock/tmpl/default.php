@@ -263,7 +263,7 @@ function projectRow(&$obj, &$proj, &$cat)
 /**
  * Prints out next previous header
  *
- * @param object &$obj  Pass it $this
+ * @param object &$obj Pass it $this
  *
  * @return null
  */ 
@@ -287,19 +287,19 @@ function nextprev(&$obj)
     $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock");
     $today = '<a href="'.$url.'">'.$text.'</a>';
 
-?>
-<table width="100%" id="nextprev">
-    <tr>
-        <td width="5px" align="left"><?php print $prevImg; ?></td>
-        <td width="20%" align="left" style="vertical-align: middle;"><?php print $prev; ?></td>
-
-        <td align="center" style="white-space: nowrap;">
-            <?php print $today; ?>
-        </td>
-        <td width="20%" align="right" style="vertical-align: middle;"><?php print $next; ?></td>
-        <td width="5px;" align="right"><?php print $nextImg; ?></td>
-    </tr>
-</table>
-<?php
+    ?>
+    <table width="100%" id="nextprev">
+        <tr>
+            <td width="5px" align="left"><?php print $prevImg; ?></td>
+            <td width="20%" align="left" style="vertical-align: middle;"><?php print $prev; ?></td>
+    
+            <td align="center" style="white-space: nowrap;">
+                <?php print $today; ?>
+            </td>
+            <td width="20%" align="right" style="vertical-align: middle;"><?php print $next; ?></td>
+            <td width="5px;" align="right"><?php print $nextImg; ?></td>
+        </tr>
+    </table>
+    <?php
 }
 ?>

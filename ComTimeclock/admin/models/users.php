@@ -164,7 +164,8 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Checks in an item
      *
-     * @param array $id Projects to add
+     * @param array $id      Projects to add
+     * @param int   $user_id The user id to add the projects to
      *
      * @return bool
      */
@@ -353,8 +354,9 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Gets select options for parent projects
      *
-     * @param string $where The where clause to use.  Must include 'WHERE'
-     * @param string $text  The text of the first entry
+     * @param string $where  The where clause to use.  Must include 'WHERE'
+     * @param string $text   The text of the first entry
+     * @param array  $ignore Array of user id's to not show
      *
      * @return array
      */
@@ -367,7 +369,7 @@ class TimeclockAdminModelUsers extends JModel
         $list = self::_getList($query);
         if (!is_array($list)) return $ret;
         foreach ($list as $val) {
-            if (array_search($val->id, $ignore) !== FALSE) continue;
+            if (array_search($val->id, $ignore) !== false) continue;
             $ret[] = JHTML::_("select.option", $val->id, $val->name);
         }
         return $ret;

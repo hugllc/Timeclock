@@ -102,7 +102,6 @@ class ComTimeclockSiteModelAddHoursTest extends JModelTest
     public static function dataStore()
     {
         return array(
-//            array(array("id" => 1, "prefs" => array("hello" => "world")), "post", array("id" => 1, "prefs" => "YToxOntzOjU6ImhlbGxvIjtzOjU6IndvcmxkIjt9", "published" => null, "startDate" => null, "endDate" => null), "store"),
         );
     }
     /**

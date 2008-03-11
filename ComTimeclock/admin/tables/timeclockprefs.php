@@ -177,7 +177,9 @@ class TableTimeclockPrefs extends JTable
     /**
      * Load a row and bind it to the object
      *
-     * @param int $oid Optional Id argument
+     * @param int $cid     The id of the user to activate
+     * @param int $publish 0 = deactivate, 1 = activate
+     * @param int $user_id The id of the user making the change
      *
      * @return true
      */

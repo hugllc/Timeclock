@@ -128,7 +128,9 @@ class TimeclockController extends JController
     /**
      * Method to display the view
      *
-     * @param string $date The date to enter time
+     * @param string $start The date the employee started
+     * @param string $end   The date the employee ended
+     * @param string $date  The date to enter time
      *
      * @access public
      * @return null
