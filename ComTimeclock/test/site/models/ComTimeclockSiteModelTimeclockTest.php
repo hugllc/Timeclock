@@ -112,13 +112,12 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
     public static function dataStoreRet()
     {
         return array(
-            /*
-            array(null, "store", false, array(), "post"),
-            array(null, "store", true, array("id" => 1, "prefs" => array()), "post"),
-            array("bind", "store", false, array("id" => 1, "prefs" => array()), "post"),
-            array("check", "store", false, array("id" => 1, "prefs" => array()), "post"),
-            array("store", "store", false, array("id" => 1, "prefs" => array()), "post"),
-            */
+
+            array(null, "store", false, array(), ""),
+            array(null, "store", true, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
+            array("bind", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
+            array("check", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
+            array("store", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
         );
     }
     /**
