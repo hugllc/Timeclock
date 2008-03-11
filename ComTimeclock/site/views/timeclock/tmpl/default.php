@@ -284,7 +284,7 @@ function nextprev(&$obj)
     $prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
 
     $text = JText::_('Today');
-    $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock&date=".date("Y-m-d"));
+    $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock");
     $today = '<a href="'.$url.'">'.$text.'</a>';
 
 ?>

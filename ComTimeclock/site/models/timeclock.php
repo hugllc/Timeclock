@@ -304,20 +304,22 @@ class TimeclockModelTimeclock extends JModel
      */ 
     private function _getPeriodFixedStart($date)
     {
-        // Get this date in days
-        $uDate = round(self::dateUnixSql($date) / 86400);
+        // Get this date
+        $uDate = self::dateUnixSql($date);
         $d = self::_explodeDate($date);
 
-        // Get the pay period start in days
+        // Get the pay period start
         $startTime = TableTimeclockPrefs::getPref("firstPayPeriodStart", "system");
-        $start = round(self::dateUnixSql($startTime) / 86400);
+        $start = self::dateUnixSql($startTime);
+
         // Get the length in days
         $len = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
 
         // Get the time difference in days
-        $timeDiff = ($uDate - $start + 1) % $len;
+        $timeDiff = round(($uDate - $start) / 86400);
+	$days = $timeDiff % $len;
 
-        return self::_date($d["m"], ($d["d"] - $timeDiff), $d["y"]);
+        return self::_date($d["m"], ($d["d"] - $days), $d["y"]);
     }
 
     /**
@@ -407,7 +409,7 @@ class TimeclockModelTimeclock extends JModel
     {
         static $fixDate;
         if (empty($fixDate[$date])) {
-            preg_match("/[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]/", $date, $ret);
+            preg_match("/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/", $date, $ret);
             $fixDate[$date] = $ret[0];
         }
         return $fixDate[$date];
