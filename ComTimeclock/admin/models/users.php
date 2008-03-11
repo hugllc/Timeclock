@@ -208,7 +208,7 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Checks in an item
      *
-     * @param array $id      Projects to add
+     * @param array $projid  Projects to add
      * @param int   $user_id The user id to add the projects to
      *
      * @return bool

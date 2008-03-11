@@ -96,7 +96,8 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Method to set the id
      *
-     * @param int $date The date to set
+     * @param string $date  The date to set
+     * @param string $field The field to set
      *
      * @return    void
      */
@@ -356,7 +357,8 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $date Date to use in MySQL format ("Y-m-d")
+     * @param string $date  Date to use in MySQL format ("Y-m-d")
+     * @param string $field The field to set
      *
      * @return array
      */ 

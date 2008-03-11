@@ -326,7 +326,7 @@ class TimeclockAdminModelProjects extends JModel
         $list = self::_getList($query);
         if (!is_array($list)) return $ret;
         foreach ($list as $val) {
-            if (array_search($val->id, $exclude) !== FALSE) continue;
+            if (array_search($val->id, $exclude) !== false) continue;
             $ret[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
         }
         return $ret;
