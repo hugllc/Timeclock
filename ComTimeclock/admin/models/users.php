@@ -172,7 +172,7 @@ class TimeclockAdminModelUsers extends JModel
         
         $this->store();
 
-        $id = JRequest::getVar('projid', 0, 'post', 'int');
+        $id = JRequest::getVar('projid', array(0), 'post', 'array');
         $user_id = JRequest::getVar('id', 0, 'post', 'int');
         if (!is_array($id)) $id = array($id);
 
@@ -214,8 +214,11 @@ class TimeclockAdminModelUsers extends JModel
         $this->store();
 
         $row = $this->getTable("TimeclockUsers");
+
+        $projid = JRequest::getVar('projid', array(0), '', 'array');
+
         $data = array(
-            "id" => JRequest::getVar('projid', 0, '', 'int'),
+            "id" => $projid[0],
             "user_id" => JRequest::getVar('id', 0, '', 'int'),
         );
         

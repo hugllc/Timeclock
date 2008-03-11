@@ -69,7 +69,11 @@ if (!$this->add) {
     echo $pane->startPanel(JText::_("Add Users"), "adduser-page");
     ?>
     <div style="padding: 5px;">
-    <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduser\';this.form.submit();"', 'value', 'text', 0); ?>
+    <?php 
+        array_shift($this->lists["users"]);
+        print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple"', 'value', 'text', 0); 
+    ?><br />
+        <button onClick="this.form.task.value='adduser';this.form.submit();">Add Users</button>
     </div>
     <?php
     echo $pane->endPanel();

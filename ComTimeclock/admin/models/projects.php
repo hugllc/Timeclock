@@ -72,7 +72,6 @@ class TimeclockAdminModelProjects extends JModel
     function __construct()
     {
         parent::__construct();
-    
         $array = JRequest::getVar('cid', 0, '', 'array');
         $this->setId($array);
     }
@@ -85,7 +84,7 @@ class TimeclockAdminModelProjects extends JModel
      */
     function setId($id)
     {
-        $this->_id      = $id;
+        $this->_id = $id;
     }
 
     /**
@@ -148,7 +147,7 @@ class TimeclockAdminModelProjects extends JModel
         $this->store();
 
         $id = JRequest::getVar('id', 0, '', 'int');
-        $user_id = JRequest::getVar('user_id', 0, '', 'int');
+        $user_id = JRequest::getVar('user_id', array(0), '', 'array');
         if (!is_array($user_id)) $user_id = array($user_id);
 
         $ret = true;
@@ -190,12 +189,13 @@ class TimeclockAdminModelProjects extends JModel
         $this->store();
 
         $row = $this->getTable("TimeclockUsers");
+        $user_id = JRequest::getVar('user_id', array(0), '', 'array');
+        if (!is_array($user_id)) $user_id = array($user_id);
 
         $data = array(
             "id" => JRequest::getVar('id', 0, '', 'int'),
-            "user_id" => JRequest::getVar('user_id', 0, '', 'int'),
+            "user_id" => $user_id[0],
         );
-
         // Bind the form fields to the hello table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());

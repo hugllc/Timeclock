@@ -59,12 +59,15 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
 } 
 ?>
 </div>
+<div style="padding: 5px;">
 <?php
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_("Add Projects"), "addproject-page");
-?>
-<div style="padding: 5px;">
-    <?php print JHTML::_("select.genericList", $this->lists["projects"], "projid", 'onChange="this.form.task.value=\'addproject\';this.form.submit();"', 'value', 'text', 0); ?>
+array_shift($this->lists["projects"]);
+print JHTML::_("select.genericList", $this->lists["projects"], "projid[]", 'multiple="multiple"', 'value', 'text', 0); 
+    ?><br />
+        <button onClick="this.form.task.value='addproject';this.form.submit();">Add Projects</button>
+    <?php /* print JHTML::_("select.genericList", $this->lists["projects"], "projid", 'onChange="this.form.task.value=\'addproject\';this.form.submit();"', 'value', 'text', 0); */ ?>
 </div>
 <?php
 echo $pane->endPanel();
