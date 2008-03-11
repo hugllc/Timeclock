@@ -85,7 +85,11 @@ class TimeclockAdminViewUser extends JView
         );
 
         $lists["userProjects"] = $model->getUserProjects($cid[0]);
-        $lists["projects"] = $projectModel->getOptions("WHERE published=1 AND Type <> 'CATEGORY'", "Add Project");
+        $uProj = array();
+        foreach ($lists["userProjects"] as $p) {
+            $uProj[] = $p->id;
+        }
+        $lists["projects"] = $projectModel->getOptions("WHERE published=1 AND Type <> 'CATEGORY'", "Add Project", $uProj);
         $lists["users"]       = $userModel->getOptions($userWhere, "Select User", $cid);
 
         $this->assignRef("user", $user);

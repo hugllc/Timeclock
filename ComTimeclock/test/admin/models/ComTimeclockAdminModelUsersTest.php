@@ -134,9 +134,6 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
             array("check", "store", false, array("id" => 13)),
             array("store", "store", false, array("id" => 13)),
 
-            array(null, "removeproject", true, array("id" => 13, "projid" => 10)),
-            array("bind", "removeproject", false, array("id" => 13, "projid" => 10)),
-
         );
     }
     /**
@@ -150,6 +147,9 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
             array(null, "addproject", true, array("id" => 13, "projid" => 10)),
             array("bind", "addproject", false, array("id" => 13, "projid" => 10)),
             array("check", "addproject", false, array("id" => 13, "projid" => 10)),
+
+            array(null, "removeproject", true, array("id" => 13, "projid" => array(10))),
+            array("bind", "removeproject", false, array("id" => 13, "projid" => array(10))),
         );
     }
 
@@ -168,7 +168,7 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
     {
         if (!empty($bad)) $GLOBALS["JTable"][$bad]["return"] = false;
         JRequest::set($data, $hash);
-        $ret = $this->o->$function($data["id"], $data["projid"]);
+        $ret = $this->o->$function($data["projid"], $data["id"]);
         $this->assertSame($expect, $ret);
     }
 

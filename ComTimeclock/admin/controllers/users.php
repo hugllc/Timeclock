@@ -164,8 +164,13 @@ class TimeclockAdminControllerUsers extends JController
      */
     function removeproject()
     {
+        $projid = JRequest::getVar('remove_projid', array(0), '', 'array');
+
+        $user_id = JRequest::getVar('id', 0, '', 'int');
+        
+
         $model = $this->getModel("Users");
-        if ($model->removeproject()) {
+        if ($model->removeproject($projid, $user_id)) {
             $msg = "Project Removed";
         } else {
             $msg = "Project remove failed.";

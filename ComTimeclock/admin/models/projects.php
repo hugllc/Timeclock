@@ -313,18 +313,20 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Gets select options for parent projects
      *
-     * @param string $where The where clause to use.  Must include 'WHERE'
-     * @param string $text  The text of the first entry
+     * @param string $where   The where clause to use.  Must include 'WHERE'
+     * @param string $text    The text of the first entry
+     * @param array  $exclude Projects to exclude
      *
      * @return array
      */
-    function getOptions($where, $text = "None")
+    function getOptions($where, $text = "None", $exclude=array())
     {
         $ret = array(JHTML::_("select.option", -1, $text));
         $query = "SELECT id, name FROM #__timeclock_projects ".$where." ORDER BY id asc";
         $list = self::_getList($query);
         if (!is_array($list)) return $ret;
         foreach ($list as $val) {
+            if (array_search($val->id, $exclude) !== FALSE) continue;
             $ret[] = JHTML::_("select.option", $val->id, sprintf("%04d", $val->id).": ".$val->name);
         }
         return $ret;

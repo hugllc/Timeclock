@@ -48,28 +48,20 @@ JToolBarHelper::cancel();
 <?php
 $pane = JPane::getInstance("sliders");
 echo $pane->startPane("project-pane");  
-echo $pane->startPanel(JText::_("Projects"), "project-page");
-?>
-<div style="padding: 5px;">
-<?php 
-foreach ($this->lists["userProjects"] as $proj) { ?>
-                    <button onClick="this.form.task.value='removeproject';this.form.projid.value='<?php print $proj->id;?>';this.form.submit();">Remove</button>
-                    <?php print sprintf("%04d", $proj->id).": ".$proj->name; ?><br />
-    <?php
-} 
-?>
-</div>
-<?php
-echo $pane->endPanel();
 echo $pane->startPanel(JText::_("Add Projects"), "addproject-page");
 ?>
 <div style="padding: 5px;">
 <?php
 array_shift($this->lists["projects"]);
-print JHTML::_("select.genericList", $this->lists["projects"], "projid[]", 'multiple="multiple"', 'value', 'text', 0); 
+if (count($this->lists["projects"])) {
+    print JHTML::_("select.genericList", $this->lists["projects"], "projid[]", 'multiple="multiple"', 'value', 'text', 0); 
     ?><br />
         <button onClick="this.form.task.value='addproject';this.form.submit();">Add Projects</button>
-    <?php /* print JHTML::_("select.genericList", $this->lists["projects"], "projid", 'onChange="this.form.task.value=\'addproject\';this.form.submit();"', 'value', 'text', 0); */ ?>
+    <?php
+} else {
+    print JText::_("No Projects to add");
+}
+?>
 </div>    
 <?php
 echo $pane->endPanel();
@@ -78,6 +70,20 @@ echo $pane->startPanel(JText::_("Add Projects from User"), "adduserproject-page"
 <div style="padding: 5px;">
     <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduserproject\';this.form.submit();"', 'value', 'text', 0); ?>
 </div>    
+<?php
+echo $pane->endPanel();
+echo $pane->startPanel(JText::_("Remove Projects"), "project-page");
+?>
+<div style="padding: 5px;">
+<?php
+$options = array(); 
+foreach ($this->lists["userProjects"] as $proj) {
+     $options[] = JHTML::_("select.option", $proj->id, $proj->name);
+} 
+print JHTML::_("select.genericList", $options, "remove_projid[]", 'multiple="multiple"', 'value', 'text', 0); 
+    ?><br />
+        <button onClick="this.form.task.value='removeproject';this.form.submit();">Remove Projects</button>
+</div>
 <?php
 echo $pane->endPanel();
 echo $pane->endPane(); 
@@ -170,6 +176,26 @@ if ($this->row->prefs["admin_status"] == "PARTTIME") {
     <?php
 }
 ?>
+        <tr>
+            <td width="100" align="right" class="key" style="vertical-align:top;">
+                <label for="projects">
+                    <?php echo JText::_('Projects'); ?>:
+                </label>
+            </td>
+            <td style="white-space: nowrap;">
+<?php 
+foreach ($this->lists["userProjects"] as $proj) { ?>
+                    <?php print sprintf("%04d", $proj->id).": ".$proj->name; ?><br />
+    <?php
+} 
+?>
+            </td>
+            <td>
+                This is just a list of projects.
+            </td>
+        </tr>
+
+
     </table>
 
 </div>
