@@ -63,6 +63,7 @@ class TimeclockAdminViewUser extends JView
     {
         $model =& JModel::getInstance("Users", "TimeclockAdminModel");
         $projectModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
 
         // Set this as the default model
         $this->setModel($model, true);
@@ -85,6 +86,7 @@ class TimeclockAdminViewUser extends JView
 
         $lists["userProjects"] = $model->getUserProjects($cid[0]);
         $lists["projects"] = $projectModel->getOptions("WHERE published=1 AND Type <> 'CATEGORY'", "Add Project");
+        $lists["users"]       = $userModel->getOptions($userWhere, "Select User", $cid);
 
         $this->assignRef("user", $user);
         $this->assignRef("lists", $lists);

@@ -116,12 +116,45 @@ class TimeclockAdminControllerUsers extends JController
      *
      * @return void
      */
+    function adduserproject()
+    {
+        $model = $this->getModel("Users");
+        
+        $id = JRequest::getVar('user_id', 0, 'post', 'int');
+        $projects = $model->getUserProjectIds($id);
+        $user_id = JRequest::getVar('id', 0, 'post', 'int');
+        $link = TimeclockAdminController::referer();
+
+        if (empty($projects)) {
+            $msg = "No projects to add.";
+            $type = "error";
+        } else if ($model->addproject($projects, $user_id)) {
+            $msg = "Projects Added";
+        } else {
+            $msg = "Project add failed.";
+            $type = "error";
+        }
+        $this->setRedirect($link, $msg, $type);
+    }
+
+    /**
+     * Publishes an item
+     *
+     * @return void
+     */
     function addproject()
     {
         $model = $this->getModel("Users");
-        $model->addproject();
+        $projid = JRequest::getVar('projid', array(0), 'post', 'array');
+        $user_id = JRequest::getVar('id', 0, 'post', 'int');
+        if ($model->addproject($projid, $user_id)) {
+            $msg = "Projects Added";
+        } else {
+            $msg = "Project add failed.";
+            $type = "error";
+        }
         $link = TimeclockAdminController::referer();
-        $this->setRedirect($link, $msg);
+        $this->setRedirect($link, $msg, $type);
     }
 
     /**
@@ -132,9 +165,14 @@ class TimeclockAdminControllerUsers extends JController
     function removeproject()
     {
         $model = $this->getModel("Users");
-        $model->removeproject();
+        if ($model->removeproject()) {
+            $msg = "Project Removed";
+        } else {
+            $msg = "Project remove failed.";
+            $type = "error";
+        }
         $link = TimeclockAdminController::referer();
-        $this->setRedirect($link, $msg);
+        $this->setRedirect($link, $msg, $type);
     }
 
 

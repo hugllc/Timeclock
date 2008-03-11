@@ -123,8 +123,10 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
             array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
             array("publish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
             array("unpublish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
-            array("addproject", true, array("link" => "index.php", "msg" => null)),          
-            array("removeproject", false, array("link" => "index.php", "msg" => null)),          
+            array("addproject", true, array("link" => "index.php", "msg" => "Project add failed.")),          
+            array("addproject", false, array("link" => "index.php", "msg" => "Project add failed.")),          
+            array("removeproject", true, array("link" => "index.php", "msg" => "Project remove failed.")),          
+            array("removeproject", false, array("link" => "index.php", "msg" => "Project remove failed.")),          
         );
     }
 

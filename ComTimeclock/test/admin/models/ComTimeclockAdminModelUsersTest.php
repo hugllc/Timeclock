@@ -134,17 +134,43 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
             array("check", "store", false, array("id" => 13)),
             array("store", "store", false, array("id" => 13)),
 
-            array(null, "addproject", true, array("id" => 13, "projid" => 10)),
-            array("bind", "addproject", false, array("id" => 13, "projid" => 10)),
-            array("check", "addproject", false, array("id" => 13, "projid" => 10)),
-
             array(null, "removeproject", true, array("id" => 13, "projid" => 10)),
             array("bind", "removeproject", false, array("id" => 13, "projid" => 10)),
 
         );
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataAddProjectRet()
+    {
+        return array(
+            array(null, "addproject", true, array("id" => 13, "projid" => 10)),
+            array("bind", "addproject", false, array("id" => 13, "projid" => 10)),
+            array("check", "addproject", false, array("id" => 13, "projid" => 10)),
+        );
+    }
 
-
+    /**
+     * Test the store function
+     *
+     * @param string $bad      The part to make fail (bind, check, store, null)
+     * @param string $function The function to test
+     * @param bool   $expect   The expected return
+     * @param array  $data     The input data array
+     *
+     * @dataProvider dataAddProjectRet
+     * @return none
+     */
+    public function testAddProjectRet($bad, $function, $expect, $data=array())
+    {
+        if (!empty($bad)) $GLOBALS["JTable"][$bad]["return"] = false;
+        JRequest::set($data, $hash);
+        $ret = $this->o->$function($data["id"], $data["projid"]);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 

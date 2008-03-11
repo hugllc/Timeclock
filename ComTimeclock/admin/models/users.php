@@ -164,16 +164,16 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Checks in an item
      *
+     * @param array $id Projects to add
+     *
      * @return bool
      */
-    function addproject()
+    function addproject($id = array(), $user_id = 0)
     {
         $row = $this->getTable("TimeclockUsers");
         
         $this->store();
 
-        $id = JRequest::getVar('projid', array(0), 'post', 'array');
-        $user_id = JRequest::getVar('id', 0, 'post', 'int');
         if (!is_array($id)) $id = array($id);
 
         $ret = true;
@@ -309,8 +309,6 @@ class TimeclockAdminModelUsers extends JModel
     {
          if ($prefs["prefs"]["admin_status"] != "PARTTIME") unset($prefs["prefs"]["admin_holidayperc"]);
     }
-
-
     /**
      * Get projects for a user
      *
@@ -333,6 +331,25 @@ class TimeclockAdminModelUsers extends JModel
         if (!is_array($ret)) return array();
         return $ret;
     }
+
+
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid        User id
+     * @param int $limitstart The record to start on
+     * @param int $limit      The max number of records to retrieve 
+     *
+     * @return array
+     */
+    function getUserProjectIds($oid, $limitstart = null, $limit = null)
+    {
+        $projects = $this->getUserProjects($oid, $limitstart, $limit);
+        foreach ($projects as $p) {
+            $proj[] = $p->id;
+        }
+        return $proj;
+    }
     /**
      * Gets select options for parent projects
      *
@@ -341,7 +358,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function getOptions($where, $text = "None")
+    function getOptions($where, $text = "None", $ignore = array())
     {
         $ret = array(JHTML::_("select.option", 0, $text));
         $query = "SELECT u.id, u.name FROM #__users AS u 
@@ -350,6 +367,7 @@ class TimeclockAdminModelUsers extends JModel
         $list = self::_getList($query);
         if (!is_array($list)) return $ret;
         foreach ($list as $val) {
+            if (array_search($val->id, $ignore) !== FALSE) continue;
             $ret[] = JHTML::_("select.option", $val->id, $val->name);
         }
         return $ret;
