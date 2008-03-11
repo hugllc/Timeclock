@@ -222,10 +222,11 @@ function projectRow(&$obj, &$proj, &$cat)
         $obj->totals[$key] += $hours;
         $dtotal            += $hours;
         if ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) {
-            $link = $hours;
+            $tip                = $obj->hours[$proj->id][$key]['notes'];
+            $link = ($hours == 0) ? $hours : JHTML::_('tooltip', $tip, "Notes", '', " $hours ", $url);
         } else {
             if ($obj->checkDate($uDate)) {     
-                $tipTitle           = ($hours == 0) ? "Add Hours" : "Work Notes";
+                $tipTitle           = ($hours == 0) ? "Add Hours" : "Notes";
                 $tip                = ($hours == 0) ? "for ".$proj->name." on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1")) : $obj->hours[$proj->id][$key]['notes'];
                 $url                = 'index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id");
             } else {
