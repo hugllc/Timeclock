@@ -66,6 +66,35 @@ class TimeclockViewReports extends JView
         $model   =& $this->getModel();
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
 
+        $projects = $projModel->getUserProjects($user_id);
+        $dates["start"] = $model->getStartDate();
+        $dates["end"] = $model->getEndDate();
+        
+        $this->assignRef("employmentDates", $employmentDates);        
+        $this->assignRef("projects", $projects);
+        $this->assignRef("user", $user);        
+        $this->assignRef("dates", $dates);        
+
+        $this->addhours($layout);
+        $this->timesheet($layout);
+
+        parent::display($tpl);
+
+    }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return null
+     */
+    function payroll($tpl = null)
+    {
+        $layout = JRequest::getVar('layout');
+
+        $model   =& $this->getModel();
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+
         $user    = JFactory::getUser();
         $user_id = $user->get("id");
         $projects = $projModel->getUserProjects($user_id);

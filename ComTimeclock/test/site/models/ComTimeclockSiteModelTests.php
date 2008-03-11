@@ -56,6 +56,7 @@ class ComTimeclockSiteModelTests
 {
     static $_tests = array(
         "ComTimeclockSiteModelTimeclockTest",
+        "ComTimeclockSiteModelReportsTest",
     );
 
     /**

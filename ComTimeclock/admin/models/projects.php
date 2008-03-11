@@ -381,6 +381,7 @@ class TimeclockAdminModelProjects extends JModel
                   WHERE u.user_id = ".(int)$oid."";
         $ret = $this->_getList($query, $limitstart, $limit);
         if (!is_array($ret)) return array();
+        $uProj = array();
         foreach ($ret as $p) $uProj[$p->id] = $p->user_id;
 
         $proj = $this->getProjects("", null, null, "ORDER BY id asc");

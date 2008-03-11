@@ -100,10 +100,10 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return    void
      */
-    function setDate($date)
+    function setDate($date, $field="_date")
     {
-        $this->_date = TimeClockController::fixDate($date);
-        if (empty($this->_date)) $this->_date = date("Y-m-d");
+        $this->$field = TimeClockController::fixDate($date);
+        if (empty($this->$field)) $this->$field = date("Y-m-d");
     }
 
     /**
@@ -360,11 +360,11 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function getDate($date=null)
+    function getDate($date=null, $field="_date")
     {
         $date = TimeclockController::fixDate($date);
         if (!empty($date)) return $date;        
-        if (is_object($this)) return $this->_date;
+        if (is_object($this)) return $this->$field;
         return date("Y-m-d");
     }
 

@@ -71,6 +71,19 @@ class TimeclockController extends JController
      */
     function display()
     {
+        $view = JRequest::getVar('view', "timesheet", '', 'word');
+
+        if ($this->reports($view)) return;
+        $this->timesheet();
+    }
+    /**
+     * Method to display the view
+     *
+     * @access public
+     * @return true
+     */
+    function timesheet()
+    {
         include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $user    = JFactory::getUser();
@@ -83,6 +96,22 @@ class TimeclockController extends JController
 
         JRequest::setVar('view', 'timeclock');
         parent::display();
+        return true;
+    }
+    /**
+     * Method to display the view
+     *
+     * @param string $view The view we are looking for
+     *
+     * @access public
+     * @return bool
+     */
+    function reports($view)
+    {
+        if ($view != "reports") return false; 
+        JRequest::setVar('view', 'reports');
+        parent::display();
+        return true;
     }
 
     /**
@@ -110,6 +139,8 @@ class TimeclockController extends JController
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
     }
+
+
     /**
      * Method to display the view
      *
