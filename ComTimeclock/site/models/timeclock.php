@@ -75,6 +75,8 @@ class TimeclockModelTimeclock extends JModel
         $date = JRequest::getVar('date', 0, '', 'string');
         $this->setDate($date);
 
+        $project = JRequest::getVar('projid', 0, '', 'string');
+        $this->setProject($project);
     }
     /**
      * Method to set the id
@@ -102,6 +104,23 @@ class TimeclockModelTimeclock extends JModel
     {
         $this->_date = TimeClockController::fixDate($date);
         if (empty($this->_date)) $this->_date = date("Y-m-d");
+    }
+
+    /**
+     * Method to set the id
+     *
+     * @param int $project The project to set
+     *
+     * @return    void
+     */
+    function setProject($project)
+    {
+        $project = (int) $project;
+        if (empty($project)) {
+            $this->_project = null;
+        } else {
+            $this->_project = $project;
+        }
     }
 
     /**
@@ -347,21 +366,6 @@ class TimeclockModelTimeclock extends JModel
         if (!empty($date)) return $date;        
         if (is_object($this)) return $this->_date;
         return date("Y-m-d");
-    }
-    /**
-     * Method to set the id
-     *
-     * @param int $project The project to set
-     *
-     * @return    void
-     */
-    function setProject($project)
-    {
-        if (empty($project)) {
-            $this->_project = null;
-        } else {
-            $this->_project = TimeclockController::fixDate($date);
-        }
     }
 
     /**

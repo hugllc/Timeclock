@@ -153,6 +153,38 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
         $this->assertSame($expect, $ret);
     }
 
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataSetProject()
+    {
+        return array(
+            array("1002", 1002),
+            array(null, null),
+            array(0, null),
+            array("asdf", null),
+        );
+    }
+    
+    /**
+     * Tests get and set date
+     *
+     * @param mixed $proj   The project
+     * @param int   $expect The date we expect returned
+     *
+     * @dataProvider dataSetProject()
+     * @return null
+     */
+    function testSetProject($proj, $expect)
+    {
+        $this->o->setProject($proj);
+        $ret = $this->readAttribute($this->o, "_project");
+        $this->assertSame($expect, $ret);
+    }
+
+
 }
 
 ?>
