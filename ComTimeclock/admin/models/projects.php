@@ -420,8 +420,7 @@ class TimeclockAdminModelProjects extends JModel
     {
         if ($proj->type == "UNPAID") return self::$cat["unpaid"];
         if ($proj->type == "HOLIDAY") return self::$cat["special"];
-        if ($proj->type == "SICK") return self::$cat["special"];
-        if ($proj->type == "VACATION") return self::$cat["special"];
+        if ($proj->type == "PTO") return self::$cat["special"];
         return (is_object($cats[$proj->parent_id])) ? $proj->parent_id : self::$cat["general"];
     }
     /**

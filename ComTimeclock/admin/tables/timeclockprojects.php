@@ -149,8 +149,7 @@ class TableTimeclockProjects extends JTable
     function check()
     {
         if ($this->type == "CATEGORY") $this->parent_id = 0;
-        if ($this->type == "VACATION") $this->parent_id = -2;
-        if ($this->type == "SICK") $this->parent_id = -2;
+        if ($this->type == "PTO") $this->parent_id = -2;
         if ($this->type == "HOLIDAY") $this->parent_id = -2;
         if ($this->type == "UNPAID") $this->parent_id = -3;
         if (($this->type == "PROJECT") && ($this->parent_id < -1)) $this->parent_id = 0;

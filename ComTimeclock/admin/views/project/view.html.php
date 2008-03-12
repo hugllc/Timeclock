@@ -84,8 +84,7 @@ class TimeclockAdminViewProject extends JView
         $typeOptions = array(
             JHTML::_("select.option", "PROJECT", "Project"),
             JHTML::_("select.option", "CATEGORY", "Category"),
-            JHTML::_("select.option", "VACATION", "Vacation"),
-            JHTML::_("select.option", "SICK", "Sick"),
+            JHTML::_("select.option", "PTO", "Paid Time Off"),
             JHTML::_("select.option", "HOLIDAY", "Holiday"),
             JHTML::_("select.option", "UNPAID", "Unpaid"),
         );
