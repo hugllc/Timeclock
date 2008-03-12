@@ -283,35 +283,40 @@ class TimeclockModelTimeclock extends JModel
         static $periods;
 
         $date = self::getDate($date);
-        if (empty($periods[$date])) {
-            $start = self::_getPeriodFixedStart($date);        
-            $return =& $periods[$start];
-            if (!isset($return)) {
-                $start = TimeclockController::explodeDate($start);
-                
-                $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
-        
-                $y = $start["y"];
-                $m = $start["m"];
-                $d = $start["d"];
-        
-                // These are all of the dates in the pay period
-                for ($i = 0; $i < $periodLength; $i++) {
-                    $return['dates'][self::_date($m, $d+$i, $y)] = TimeclockController::dateUnix($m, $d+$i, $y);
-                }
-        
-                // Get the start and end
-                $return['start']        = self::_date($m, $d, $y);
-                $return['end']          = self::_date($m, $d+$periodLength-1, $y);
-                $return['prev']         = self::_date($m, $d-$periodLength, $y);
-                $return['prevend']      = self::_date($m, $d-1, $y);
-                $return['next']         = self::_date($m, $d+$periodLength, $y);
-                $return['nextend']      = self::_date($m, $d+(2*$periodLength), $y);
-                $return['length']       = $periodLength;
-            }    
-            $periods[$date] = $return;
-        }
-        return $periods[$date];
+
+        $start = self::_getPeriodFixedStart($date);        
+        $return =& $periods[$start];
+        if (!isset($return)) {
+            $start = TimeclockController::explodeDate($start);
+            
+            $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
+    
+            $y = $start["y"];
+            $m = $start["m"];
+            $d = $start["d"];
+    
+            // These are all of the dates in the pay period
+            for ($i = 0; $i < $periodLength; $i++) {
+                $return['dates'][self::_date($m, $d+$i, $y)] = TimeclockController::dateUnix($m, $d+$i, $y);
+            }
+    
+            // Get the start and end
+            $return['unix']['start']        = TimeclockController::dateUnix($m, $d, $y);
+            $return['unix']['end']          = TimeclockController::dateUnix($m, $d+$periodLength-1, $y);
+            $return['unix']['prev']         = TimeclockController::dateUnix($m, $d-$periodLength, $y);
+            $return['unix']['prevend']      = TimeclockController::dateUnix($m, $d-1, $y);
+            $return['unix']['next']         = TimeclockController::dateUnix($m, $d+$periodLength, $y);
+            $return['unix']['nextend']      = TimeclockController::dateUnix($m, $d+(2*$periodLength), $y);
+            $return['start']        = self::_date($return['unix']['start']);
+            $return['end']          = self::_date($return['unix']['end']);
+            $return['prev']         = self::_date($return['unix']['prev']);
+            $return['prevend']      = self::_date($return['unix']['prevend']);
+            $return['next']         = self::_date($return['unix']['next']);
+            $return['nextend']      = self::_date($return['unix']['nextend']);
+
+            $return['length']       = $periodLength;
+        }    
+        return $return;
     }
     /**
      * Where statement for the reporting period dates
@@ -343,15 +348,16 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param int $m The month
+     * @param int $m The month or the unix date if $d and $y are null
      * @param int $d The day
      * @param int $y The year
      *
      * @return array
      */ 
-    private function _date($m, $d, $y)
+    private function _date($m, $d=null, $y=null)
     {
-        return date("Y-m-d", TimeclockController::dateUnix($m, $d, $y));
+        if (!(is_null($d) && is_null($y))) $m = TimeclockController::dateUnix($m, $d, $y);
+        return date("Y-m-d", $m);
     }
 
     /**

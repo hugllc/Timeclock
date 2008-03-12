@@ -49,7 +49,7 @@ $this->totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
-$document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('date', $this->period["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period["end"], $shortDateFormat));
+$document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
 
 ?>
 
@@ -58,9 +58,9 @@ $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('da
     <?php nextprev($this); ?>
     <div id="dateheader" style="clear:both;">
         <strong>
-            <?php print JHTML::_('date', $this->period["start"], $dateFormat); ?>
+            <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
             <?php print JText::_("to"); ?>
-            <?php print JHTML::_('date', $this->period["end"], $dateFormat); ?>
+            <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
         </strong>
     </div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
