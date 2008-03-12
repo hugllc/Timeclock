@@ -189,25 +189,29 @@ class TimeclockAdminModelProjects extends JModel
         $this->store();
 
         $row = $this->getTable("TimeclockUsers");
-        $user_id = JRequest::getVar('user_id', array(0), '', 'array');
+
+        $id = JRequest::getVar('id', 0, '', 'int');
+        $user_id = JRequest::getVar('remove_user_id', array(0), '', 'array');
         if (!is_array($user_id)) $user_id = array($user_id);
 
-        $data = array(
-            "id" => JRequest::getVar('id', 0, '', 'int'),
-            "user_id" => $user_id[0],
-        );
-        // Bind the form fields to the hello table
-        if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-        // Store the web link table to the database
-        if (!$row->delete()) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-    
-        return true;
+        $ret = true;
+        foreach ($user_id as $u) {
+            $data = array(
+                "id" => $id,
+                "user_id" => $u,
+            );
+            // Bind the form fields to the hello table
+            if (!$row->bind($data)) {
+                $this->setError($this->_db->getErrorMsg());
+                return $ret;
+            }
+            // Store the web link table to the database
+            if (!$row->delete()) {
+                $this->setError($this->_db->getErrorMsg());
+                return $ret;
+            }
+        }    
+        return $ret;
     }
 
     /**

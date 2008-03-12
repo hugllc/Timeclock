@@ -53,19 +53,6 @@ if (!$this->add) {
     <?php
     $pane = JPane::getInstance("sliders");
     echo $pane->startPane("user-pane");  
-    echo $pane->startPanel(JText::_("Users"), "user-page");
-    ?>
-    <div style="padding: 5px;">
-    <?php 
-    foreach ($this->lists["projectUsers"] as $user) { ?>
-                    <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
-                    <?php print empty($user->name) ? $user->id : $user->name; ?><br />
-        <?php 
-    } 
-    ?>
-    </div>
-    <?php
-    echo $pane->endPanel();
     echo $pane->startPanel(JText::_("Add Users"), "adduser-page");
     ?>
     <div style="padding: 5px;">
@@ -74,6 +61,31 @@ if (!$this->add) {
         print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple"', 'value', 'text', 0); 
     ?><br />
         <button onClick="this.form.task.value='adduser';this.form.submit();">Add Users</button>
+    </div>
+    <?php
+    echo $pane->endPanel();
+    echo $pane->startPanel(JText::_("Remove Users"), "removeuser-page");
+    ?>
+    <div style="padding: 5px;">
+    <?php 
+    $options = array(); 
+    foreach ($this->lists["projectUsers"] as $user) {
+         $options[] = JHTML::_("select.option", $user->id, $user->name);
+    } 
+    print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple"', 'value', 'text', 0); 
+        ?><br />
+            <button onClick="this.form.task.value='removeuser';this.form.submit();">Remove Users</button>
+    </div>
+    <?php
+
+    /*
+    foreach ($this->lists["projectUsers"] as $user) { ?>
+                    <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
+                    <?php print empty($user->name) ? $user->id : $user->name; ?><br />
+        <?php 
+    } 
+    */
+    ?>
     </div>
     <?php
     echo $pane->endPanel();
@@ -199,6 +211,24 @@ if ($this->lists["wCompEnable"] != 0) {
             </td>
             <td>
                 The customer this project should be billed to
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key" style="vertical-align:top;">
+                <label for="users">
+                    <?php echo JText::_('Users'); ?>:
+                </label>
+            </td>
+            <td style="white-space: nowrap;">
+<?php 
+foreach ($this->lists["projectUsers"] as $user) { ?>
+                    <?php print $user->name; ?><br />
+    <?php
+} 
+?>
+            </td>
+            <td>
+                This is just a list of projects.
             </td>
         </tr>
     </table>
