@@ -151,8 +151,8 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
             array("bind", "adduser", false, array("id" => 13, "projid" => 10)),
             array("check", "adduser", false, array("id" => 13, "projid" => 10)),
 
-            array(null, "removeuser", true, array("id" => 13, "projid" => 10)),
-            array("bind", "removeuser", false, array("id" => 13, "projid" => 10)),
+            array(null, "removeuser", true, array("id" => 13, "remove_user_id" => 10)),
+            array("bind", "removeuser", false, array("id" => 13, "remove_user_id" => 10)),
 
         );
     }

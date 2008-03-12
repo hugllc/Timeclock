@@ -80,6 +80,9 @@ JToolBarHelper::addNewX();
             <th width="1%" nowrap="nowrap">
                 <?php echo JHTML::_('grid.sort', 'Active', 'c.published', @$this->lists['order_Dir'], @$this->lists['order']); ?>
             </th>
+            <th width="1%" nowrap="nowrap">
+                <?php echo JHTML::_('grid.sort', 'Bill PTO', 'c.bill_pto', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+            </th>
             <th nowrap="nowrap">
                 <?php echo JHTML::_('grid.sort', 'Notes', 'c.notes', @$this->lists['order_Dir'], @$this->lists['order']); ?>
             </th>
@@ -102,6 +105,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 
     $checked        = JHTML::_('grid.checkedout', $row, $i);
     $published      = JHTML::_('grid.published', $row, $i);
+    $bill_pto       = ($row->bill_pto == 0) ? "NO" : "YES";
     $notes          = substr($row->notes, 0, 60);
     ?>
         <tr class="<?php echo "row$k"; ?>">
@@ -129,6 +133,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
             </td>
             <td align="center">
                     <?php echo $published; ?>
+            </td>
+            <td align="center">
+                    <?php echo $bill_pto; ?>
             </td>
             <td>
                     <?php echo $row->notes; ?>

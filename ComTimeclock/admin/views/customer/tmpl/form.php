@@ -63,6 +63,20 @@ JToolBarHelper::cancel();
         </tr>
         <tr>
             <td width="100" align="right" class="key">
+                <label for="bill_pto">
+                    <?php echo JText::_('Bill for Paid Time Off'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.booleanList", "bill_pto", "", $this->row->bill_pto); ?>
+            </td>
+            <td>
+                Should the billing report show a percentage of PTO based on how many hours the user worked
+                on this project?
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
                 <label for="name">
                     <?php echo JText::_('Contact Name'); ?>:
                 </label>

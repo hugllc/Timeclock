@@ -113,6 +113,7 @@ class ComTimeclockAdminModelCustomersTest extends JModelTest
                     "country" => "h",
                     "notes" => "i",
                     "published" => "j",
+                    "bill_pto" => 1,
                 ), 
                 "post", 
                 array(
@@ -130,6 +131,7 @@ class ComTimeclockAdminModelCustomersTest extends JModelTest
                     "checked_out" => null,
                     "checked_out_time" => null,
                     "created_by" => 62,
+                    "bill_pto" => 1,
                 ), 
                 "store",
             ),

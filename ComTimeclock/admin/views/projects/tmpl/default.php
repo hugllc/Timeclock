@@ -78,6 +78,9 @@ JToolBarHelper::addNewX();
                     <th align="center">
                         <?php echo JHTML::_('grid.sort', 'Category', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
+                    <th align="center">
+                        <?php echo JHTML::_('grid.sort', 'Customer', 'c.company', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                    </th>
                     <th width="1%" align="center">
                         <?php echo JHTML::_('grid.sort', 'Active', 't.published', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
@@ -115,6 +118,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 
     $link           = JRoute::_('index.php?option=com_timeclock&controller=projects&task=edit&cid[]='. $row->id);
     $parentlink     = JRoute::_('index.php?option=com_timeclock&controller=projects&task=edit&cid[]='. $row->parent_id);
+    $customerlink   = JRoute::_('index.php?option=com_timeclock&controller=customers&task=edit&cid[]='. $row->customer);
 
     $checked        = JHTML::_('grid.checkedout', $row, $i);
     $published      = JHTML::_('grid.published', $row, $i);
@@ -150,6 +154,23 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
             <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->parentname; ?>">
             <a href="<?php echo $parentlink  ?>">
             <?php echo $row->parentname; ?></a></span>
+            <?php
+        }
+    } else {
+        echo JText::_("None");
+    }
+            ?>
+            </td>
+            <td>
+            <?php
+    if ($row->customer > 0) {
+        if (JTable::isCheckedOut($this->user->get('id'), $row->customer_checked_out)) {
+                echo $row->customer_name;
+        } else {
+            ?>
+            <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Customer');?>::<?php echo $row->customer_name; ?>">
+            <a href="<?php echo $customerlink  ?>">
+            <?php echo $row->customer_name; ?></a></span>
             <?php
         }
     } else {

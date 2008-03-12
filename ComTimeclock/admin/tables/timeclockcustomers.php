@@ -141,6 +141,12 @@ class TableTimeclockCustomers extends JTable
      * @var string
      */
     public $created = '';
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $bill_pto = null;
 
     
     /**
