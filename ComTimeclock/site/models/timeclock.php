@@ -415,7 +415,9 @@ class TimeclockModelTimeclock extends JModel
         $ret = true;
         foreach ($timesheet as $data) {
             $data["hours"] = (int) $data["hours"];
-            if (empty($data["hours"])) continue; 
+            // If there are no hours don't create a record.
+            // If there is already a record allow 0 hours.
+            if (empty($data["hours"]) && empty($data["id"])) continue; 
 
             $data["id"] = (int) $data["id"];
             $data["created_by"] = $user->get("id");

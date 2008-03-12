@@ -61,9 +61,9 @@ $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('d
     <div class="componentheading">Add Hours</div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr>
-            <th>
+            <th align="right">
                 <label id="date_label" for="date">
-                    <?php print JText::_("Date");?>: *
+                    *<?php print JText::_("Date"); ?>:
                 </label>
             </th>
             <td>
@@ -86,6 +86,7 @@ foreach ($this->projects as $cat) {
         if (!$proj->published) continue;
         if ($proj->noHours) continue;
         if (!is_null($this->projid) && !($this->projid == $proj->id)) continue;
+        $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0;
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
@@ -93,20 +94,20 @@ foreach ($this->projects as $cat) {
             </td>
         </tr>    
         <tr>
-            <th>
+            <th align="right">
                 <label id="hours_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_hours">
                     <?php print JText::_("Hours");?>:
                 </label>
             </th>
             <td>
-                <input class="inputbox validate-numeric" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $this->data[$proj->id]->hours;?>" />
+                <input class="inputbox validate-numeric" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $hours;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
             </td>
         </tr>
         <tr>
-            <th style="vertical-align: top;" id="notes_<?php print $proj->id;?>_label">
+            <th style="vertical-align: top;"  align="right" id="notes_<?php print $proj->id;?>_label">
                 <label id="notes_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_notes">
                     <?php echo JText::_('Notes'); ?>:
                 </label>
@@ -142,3 +143,7 @@ foreach ($this->projects as $cat) {
 <!--    <input type="hidden" name="task" value="savehours" />-->
     <?php print JHTML::_("form.token"); ?>
 </form>
+<div>
+    <a name="required_field" />
+* <?php print JText::_("Required field"); ?>
+</div>
