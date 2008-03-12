@@ -46,15 +46,28 @@ $document        =& JFactory::getDocument();
 $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date, $shortDateFormat));
 
 ?>
+<script type="text/javascript">
+        Window.onDomReady(function(){
+            document.formvalidator.setHandler('dateverify', 
+                function (value) {
+                    regex=/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/;
+                    return regex.test(value); 
+                }     
+            );
+        });
+</script>
+
 <form action="index.php" method="post" name="userform" autocomplete="off" class="form-validate">
     <div class="componentheading">Add Hours</div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr>
             <th>
-                <?php print JText::_("Date");?>:
+                <label id="date_label" for="date">
+                    <?php print JText::_("Date");?>: *
+                </label>
             </th>
             <td>
-                <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", 'class="inputbox required"');?>
+                <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"');?>
             </td>
         </tr>
 <?php
@@ -81,7 +94,9 @@ foreach ($this->projects as $cat) {
         </tr>    
         <tr>
             <th>
-                <?php print JText::_("Hours");?>:
+                <label id="hours_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_hours">
+                    <?php print JText::_("Hours");?>:
+                </label>
             </th>
             <td>
                 <input class="inputbox validate-numeric" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $this->data[$proj->id]->hours;?>" />
@@ -91,8 +106,10 @@ foreach ($this->projects as $cat) {
             </td>
         </tr>
         <tr>
-            <th style="vertical-align: top;">
-                 <?php echo JText::_('Notes'); ?>:
+            <th style="vertical-align: top;" id="notes_<?php print $proj->id;?>_label">
+                <label id="notes_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_notes">
+                    <?php echo JText::_('Notes'); ?>:
+                </label>
             </th>
             <td>
                 <textarea class="inputbox validate-notes"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"><?php echo $this->data[$proj->id]->notes;?></textarea>
