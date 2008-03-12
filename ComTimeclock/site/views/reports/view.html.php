@@ -78,6 +78,8 @@ class TimeclockViewReports extends JView
         $this->addhours($layout);
         $this->timesheet($layout);
 
+        JHTML::_('behavior.formvalidation');
+
         parent::display($tpl);
 
     }

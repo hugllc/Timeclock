@@ -55,4 +55,5 @@ $document->setTitle(JText::_("Timeclock Reports"));
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="componentheading"><?php print JText::_("Timeclock Reports");?></div>
+
 </form>

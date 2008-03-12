@@ -122,6 +122,9 @@ class TimeclockViewTimeclock extends JView
         $this->assignRef("projid", $projid);
         $this->assignRef("referer", $referer);
         $this->assignRef("data", $data);
+
+        JHTML::_('behavior.tooltip');
+        JHTML::_('behavior.formvalidation');
     }
     
     /**

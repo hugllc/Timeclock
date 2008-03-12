@@ -36,8 +36,6 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-JHTML::_('behavior.tooltip');
-
 $headerColSpan = 2;
 $this->totals     = array();
 if (empty($this->days)) $this->days = 7;
@@ -48,8 +46,7 @@ $document        =& JFactory::getDocument();
 $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date, $shortDateFormat));
 
 ?>
-
-<form action="index.php" method="post" name="userform" autocomplete="off">
+<form action="index.php" method="post" name="userform" autocomplete="off" class="form-validate">
     <div class="componentheading">Add Hours</div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr>
@@ -57,7 +54,7 @@ $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('d
                 <?php print JText::_("Date");?>:
             </th>
             <td>
-                <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", "");?>
+                <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", 'class="inputbox required"');?>
             </td>
         </tr>
 <?php
@@ -87,7 +84,7 @@ foreach ($this->projects as $cat) {
                 <?php print JText::_("Hours");?>:
             </th>
             <td>
-                <input class="text_area" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $this->data[$proj->id]->hours;?>" />
+                <input class="inputbox validate-numeric" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $this->data[$proj->id]->hours;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
@@ -98,7 +95,7 @@ foreach ($this->projects as $cat) {
                  <?php echo JText::_('Notes'); ?>:
             </th>
             <td>
-                <textarea class="text_area"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"><?php echo $this->data[$proj->id]->notes;?></textarea>
+                <textarea class="inputbox validate-notes"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"><?php echo $this->data[$proj->id]->notes;?></textarea>
             </td>
         </tr>
         <tr>
@@ -106,8 +103,12 @@ foreach ($this->projects as $cat) {
                  &nbsp;
             </th>
             <td>
-                <button onClick="this.form.task.value='applyhours';this.form.submit();">Apply</button>
-                <button onClick="this.form.task.value='savehours';this.form.submit();">Save</button>
+<!--
+                <button onClick="this.form.task.value='applyhours';this.form.submit();" class="button validate"><?php print JText::_("Apply"); ?></button>
+                <button onClick="this.form.task.value='savehours';this.form.submit();" class="button validate"><?php print JText::_("Save"); ?></button>
+-->
+                <button type="submit" name="task" value="applyhours" class="button validate"><?php print JText::_("Apply"); ?></button>
+                <button type="submit" name="task" value="savehours" class="button validate"><?php print JText::_("Save"); ?></button>
             </td>
         </tr>    
 
@@ -121,6 +122,6 @@ foreach ($this->projects as $cat) {
     </table>
     <input type="hidden" name="referer" value="<?php print $this->referer; ?>" />
     <input type="hidden" name="option" value="com_timeclock" />
-    <input type="hidden" name="task" value="savehours" />
+<!--    <input type="hidden" name="task" value="savehours" />-->
     <?php print JHTML::_("form.token"); ?>
 </form>
