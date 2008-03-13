@@ -112,7 +112,7 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
                 "post", 
                 array(
                     "id" => 15,
-                    "prefs" => "YToxOntzOjEyOiJhZG1pbl9zdGF0dXMiO3M6ODoiRlVMTFRJTUUiO30=",
+                    "prefs" => "YToyOntzOjE3OiJhZG1pbl9ob2xpZGF5cGVyYyI7aToxMDA7czoxMjoiYWRtaW5fc3RhdHVzIjtzOjg6IkZVTExUSU1FIjt9",
                     "published" => 1,
                     "startDate" => "2008-04-12",
                     "endDate" => "2009-04-12",
@@ -120,6 +120,25 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
                 "store",
             ),
         );
+    }
+    /**
+     * Test the store function
+     *
+     * @param array  $data     The input data array
+     * @param string $hash     The hash to use for the input
+     * @param bool   $expect   The expected return
+     * @param string $function The function to test
+     *
+     * @dataProvider dataStore
+     * @return none
+     */
+    public function testStore($data, $hash, $expect, $function = "store")
+    {
+        JRequest::set($data, $hash);
+        $this->o->$function();
+        $array = $GLOBALS["JTable"]["store"]["bind"];
+        unset($array["history"]);
+        $this->assertSame($expect, $array);
     }
     /**
      * Data provider

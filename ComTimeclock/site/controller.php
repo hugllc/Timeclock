@@ -253,7 +253,24 @@ class TimeclockController extends JController
     /**
      * Where statement for the reporting period dates
      *
-     * @param int $sqlDate The date in Mysql ("Y-m-d") format.
+     * @param string $date The first date in Mysql ("Y-m-d") format.
+     * @param string $date The second date in Mysql ("Y-m-d") format.
+     *
+     * @return array
+     */ 
+    public function compareDates($date1, $date2)
+    {
+        $date1 = self::dateUnixSql($date1);
+        $date2 = self::dateUnixSql($date2);
+        if ($date1 < $date2) return -1;
+        if ($date1 > $date2) return 1;
+        return 0;
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $sqlDate The date in Mysql ("Y-m-d") format.
      *
      * @return array
      */ 
@@ -274,7 +291,7 @@ class TimeclockController extends JController
     public function explodeDate($date)
     {
 
-        $date = TimeclockController::fixDate($date);
+        $date = self::fixDate($date);
         $date = explode("-", $date);
         
         return array(

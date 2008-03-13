@@ -147,6 +147,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                     "published" => 0,
                     "startDate" => null,
                     "endDate" => null,
+                    "history" => "YTowOnt9",
                 ),
             ),
         );
@@ -175,6 +176,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                     "published" => null,
                     "startDate" => null,
                     "endDate" => null,
+                    "history" => array(),
                 ), 
             ),
         );

@@ -194,8 +194,30 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
                 This is just a list of projects.
             </td>
         </tr>
-
-
+        <tr>
+            <td class="key" style="vertical-align:top;">
+                <?php print JText::_("Change History"); ?>:<br />
+                (<?php print JText::_("Old Values"); ?>)
+            </td>
+            <td colspan="2">
+<?php 
+if (!is_array($this->row->history["timestamps"])) $this->row->history["timestamps"] = array();
+krsort($this->row->history["timestamps"]);
+foreach ($this->row->history["timestamps"] as $date => $user) { ?>
+                <p ><div><strong><?php print $user." <br /> ".$date; ?>:</strong></div>
+    <?php
+    foreach ($this->row->history as $key => $value) {
+        if (!array_key_exists($date, $value)) continue;
+        if ($key == "timestamps") continue;
+        print $key." = ".$value[$date]."<br />";
+    } 
+    ?>
+    </p>
+    <?php
+} 
+?>
+            </td>
+        </tr>
     </table>
 
 </div>

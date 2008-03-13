@@ -271,16 +271,13 @@ class TimeclockAdminModelUsers extends JModel
         $prefs = array(
             "prefs" => $row->prefs,
             "id" => $data["id"],
+            "startDate" => $row->startDate,
+            "endDate" => $row->endDate,
+            "published" => $row->published,
+            "history" => $row->history,
         );
-        // Load the new data
-        foreach ($data as $f => $v) {
-            if (substr($f, 0, 6) == "admin_") $prefs["prefs"][$f] = $v;
-        }
-        $this->_fixPrefs($prefs);        
-        
-        foreach (array("published", "startDate", "endDate") as $key) {
-            $prefs[$key] = $data[$key];
-        }
+        $this->_fixPrefs($prefs, $data);        
+        $this->_loadData($prefs, $data);        
 
         // Bind the form fields to the hello table
         if (!$row->bind($prefs)) {
@@ -305,13 +302,48 @@ class TimeclockAdminModelUsers extends JModel
      * Fixes any inconsistancies in the prefs
      *
      * @param array &$prefs The prefs to check/fix
+     * @param array &$data   The new data
      *
      * @return null
      */
-    private function _fixPrefs(&$prefs)
+    private function _fixPrefs(&$prefs, &$data)
     {
-         if ($prefs["prefs"]["admin_status"] != "PARTTIME") unset($prefs["prefs"]["admin_holidayperc"]);
+        if ($data["admin_status"] != "PARTTIME") $data["admin_holidayperc"] = TableTimeclockPrefs::getDefaultPref("admin_holidayperc", "user");
     }
+    
+    
+    /**
+     * Loads incoming data into the prefs array
+     *
+     * @param array &$prefs The prefs to check/fix
+     * @param array &$data   The new data
+     *
+     * @return null
+     */
+    private function _loadData(&$prefs, &$data)
+    {
+        // Load the new data
+        $timestamp = date("Y-m-d H:i:s");
+        $user =& JFactory::getUser();
+        $id = $user->get("name");
+        foreach ($data as $f => $v) {
+            if (substr($f, 0, 6) == "admin_") {
+                if ($v != $prefs["prefs"][$f]) {
+                    $prefs["history"][$f][$timestamp] = $prefs["prefs"][$f];
+                    $prefs["history"]["timestamps"][$timestamp] = $id;
+                }
+                $prefs["prefs"][$f] = $v;
+            }
+        }
+        foreach (array("published", "startDate", "endDate") as $key) {
+            if ($data[$key] != $prefs[$key]) {
+                $prefs["history"][$key][$timestamp] = $prefs[$key];
+                $prefs["history"]["timestamps"][$timestamp] = $id;
+            }
+            $prefs[$key] = $data[$key];
+        }
+    }    
+    
     /**
      * Get projects for a user
      *

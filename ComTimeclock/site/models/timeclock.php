@@ -171,25 +171,50 @@ class TimeclockModelTimeclock extends JModel
                   WHERE ".$this->employmentDateWhere("t.worked")
                   ." AND ".$this->periodWhere("t.worked")
                   ." AND p.type='HOLIDAY'
-                     AND u.user_id='".$this->_id."'
+                     AND u.user_id='".$id."'
                   GROUP BY t.worked, t.project_id
                   ";
 
         $ret = $this->_getList($query);
 
-        $perc = TableTimeclockPrefs::getPref("admin_holidayperc", "user") / 100;
         if (!is_array($ret)) return array();
         if (!is_array($data)) $data = array();
         foreach ($ret as $d) {
-            $hours = $d->hours * $perc;
+            $hours = $d->hours * $this->getHolidayPerc($id, $d->worked);
             $data[$d->project_id][$d->worked]['hours'] += $hours;
             $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
         }
         return $data;
     }
 
-
-
+    /**
+     * Gets the perc of holiday pay this user should get
+     *
+     * @param int    $id   The user id to check
+     * @param string $date The date to check
+     *
+     * @return int
+     */
+    function getHolidayPerc($id, $date)
+    {
+        static $perc;
+        $key = $id.$date;
+        if (!isset($perc[$key])) {
+            $hist = TableTimeclockPrefs::getPref("history", "user", $id);
+            if (is_array($hist["admin_holidayperc"])) {
+                ksort($hist["admin_holidayperc"]);
+                foreach ($hist["admin_holidayperc"] as $d => $h) {
+                    if (TimeclockController::compareDates($date, $d) < 0) {
+                        $perc[$key] = $h/100;
+                        break;
+                    }
+                }
+            }
+            if (!isset($perc[$key])) $perc[$key] = TableTimeclockPrefs::getPref("admin_holidayperc", "user", $id) / 100;
+        }
+        return $perc[$key];
+    }
+    
     /**
      * Where statement for employment dates
      *

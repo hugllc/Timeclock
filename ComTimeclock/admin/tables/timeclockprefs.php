@@ -80,6 +80,12 @@ class TableTimeclockPrefs extends JTable
      * @var int
      */
     public $endDate = null;
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $history = array();
 
     /**
      * @var array The defaults for everything
@@ -138,6 +144,7 @@ class TableTimeclockPrefs extends JTable
         $ret = parent::load($oid);
         $prefs = self::decode($this->prefs);
         $this->prefs = array_merge(self::$_defaults["user"], $prefs);
+        $this->history = self::decode($this->history);
         // If we don't find it create one
         if (!$ret) return $this->create($oid);
         return $ret;
@@ -168,10 +175,12 @@ class TableTimeclockPrefs extends JTable
         if ($oid > 0) $pref = "user";
         if ($oid <= 0) $pref = "system";
         $this->prefs = self::encode(self::$_defaults[$pref]);
+        $this->history = self::encode($this->history);
         // Default the start date to today if it is empty.
         if (($this->startDate == "0000-00-00") || empty($this->startDate)) $this->startDate = date("Y-m-d");
         $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
         $this->prefs = self::$_defaults[$pref];
+        $this->history = self::decode($this->history);
         return $ret;
     }
     /**
@@ -200,9 +209,13 @@ class TableTimeclockPrefs extends JTable
     {
         $this->_prefs = $this->prefs;
         $this->prefs = self::encode($this->prefs);
+        $this->_history = $this->history;
+        $this->history = self::encode($this->history);
         $ret = parent::store();
         $this->prefs = $this->_prefs;
         unset($this->_prefs);
+        $this->history = $this->_history;
+        unset($this->_history);
         return $ret;
     }
     
@@ -224,30 +237,44 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function getPref($name, $type="user")
+    function getPref($name, $type="user", $oid = null)
     {
         static $instance;
         
         if ($type == "system") {
             $oid = -1;
         } else {
-            $u =& JFactory::getUser();
-            $oid = $u->get("id");
+            if (empty($oid)) {
+                $u =& JFactory::getUser();
+                $oid = $u->get("id");
+            }
             if (empty($oid)) return self::_prefCache($name);
             $type = "user";
         }        
         
-        if (empty($instance[$type])) {
-            $instance[$type] = JTable::getInstance("TimeclockPrefs", "Table");
-            $instance[$type]->load($oid);
+        $inst =& $instance[$type][$id];
+        if (empty($inst)) {
+            $inst = JTable::getInstance("TimeclockPrefs", "Table");
+            $inst->load($oid);
         }
-        if (isset($instance[$type]->prefs[$name])) return self::filterPref($name, $instance[$type]->prefs[$name]);
-        if (isset($instance[$type]->$name)) return self::filterPref($name, $instance[$type]->$name);
-        if (isset(self::$_defaults[$type][$name])) return self::filterPref($name, self::$_defaults[$type][$name]);
-        if ($type != "system") return self::getPref($name, "system");
+        if (isset($inst->prefs[$name])) return self::filterPref($name, $inst->prefs[$name]);
+        if (isset($inst->$name)) return self::filterPref($name, $inst->$name);
+        if (isset(self::$_defaults[$type][$name])) return self::getDefaultPref($name, $type);
+        if ($type != "system") return self::getPref($name, "system", $oid);
         return self::filterPref($name, null);
     }
-
+    /**
+     * Gets preferences
+     *
+     * @param string $name The name of the pref to get
+     * @param string $type The type of param to get
+     *
+     * @return mixed The value of the parameter.
+     */
+    function getDefaultPref($name, $type="user")
+    {
+        return self::filterPref($name, self::$_defaults[$type][$name]);
+    }
 
     /**
      * Filter a pref
@@ -289,6 +316,7 @@ class TableTimeclockPrefs extends JTable
         }
         return $ret;
     }
+        
     /**
      * Sets preferences
      *
