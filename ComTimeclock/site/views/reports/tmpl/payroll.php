@@ -51,6 +51,17 @@ $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle(JText::_("Timeclock Reports"));
 
+$report = array();
+// Make the data into something usefull for this particular report
+foreach ($this->data as $user_id => $projdata) {
+    foreach ($projdata as $proj_id => $dates) {
+        $d = 0;
+        foreach ($this->period["dates"] as $key => $uDate) {
+            $week = ++$d % $this->days;
+            $report[$user_id][$week]++;
+        }
+    }
+}
 ?>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">

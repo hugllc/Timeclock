@@ -61,24 +61,39 @@ class TimeclockViewReports extends JView
      */
     function display($tpl = null)
     {
-        $layout = JRequest::getVar('layout');
+        global $mainframe, $option;
+        $this->layout = JRequest::getVar('layout');
+        $this->model   =& $this->getModel();
 
-        $model   =& $this->getModel();
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $db =& JFactory::getDBO();
+        $filter_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', 'u.name', 'cmd');
+        $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
+        $filter_state     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_state", 'filter_state', '', 'word');
+        $search           = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'search', '', 'string');
+        $search           = JString::strtolower($search);
+        $search_filter    = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'search_filter', 'notes', 'string');
+                
+        $this->where = array();
 
-        $projects = $projModel->getUserProjects($user_id);
-        $dates["start"] = $model->getStartDate();
-        $dates["end"] = $model->getEndDate();
+        if ($search) {
+            $this->where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+        }
+
+
+
+        $this->where          = (count($this->where) ? ' WHERE ' . implode(' AND ', $this->where) : '');
+        $orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+
+        $data = $this->model->getTimesheetData($where, $orderby);
         
-        $this->assignRef("employmentDates", $employmentDates);        
-        $this->assignRef("projects", $projects);
+        $dates["start"] = $this->model->getStartDate();
+        $dates["end"] = $this->model->getEndDate();
+        
+        $this->assignRef("data", $data);        
         $this->assignRef("user", $user);        
         $this->assignRef("dates", $dates);        
 
-        $this->addhours($layout);
-        $this->timesheet($layout);
-
-        JHTML::_('behavior.formvalidation');
+        $this->payroll($layout);
 
         parent::display($tpl);
 
@@ -90,28 +105,14 @@ class TimeclockViewReports extends JView
      *
      * @return null
      */
-    function payroll($tpl = null)
+    function payroll()
     {
-        $layout = JRequest::getVar('layout');
-
-        $model   =& $this->getModel();
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-
-        $user    = JFactory::getUser();
-        $user_id = $user->get("id");
-        $projects = $projModel->getUserProjects($user_id);
-        $employmentDates = $model->getEmploymentDatesUnix();
-        $date    = $model->getDate();
+        if ($this->layout !== "payroll") return;
         
-        $this->assignRef("employmentDates", $employmentDates);        
-        $this->assignRef("projects", $projects);
-        $this->assignRef("user", $user);        
-        $this->assignRef("date", $date);        
-
-        $this->addhours($layout);
-        $this->timesheet($layout);
-
-        parent::display($tpl);
+        $this->where[] = $this->model->periodWhere("t.worked");
+        
+        $period  = $this->model->getPeriod();
+        $this->assignRef("period", $period);        
 
     }
     /**

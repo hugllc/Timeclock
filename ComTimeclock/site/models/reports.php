@@ -120,6 +120,49 @@ class TimeclockModelReports extends TimeclockModelTimeclock
         parent::setDate($date, "_endDate");
     }
 
+    /**
+     * Method to display the view
+     *
+     * @return string
+     */
+    function getTimesheetData($where, $orderby="")
+    {
+        $key = base64_encode($where.$orderby);
+        if (empty($this->data[$key])) {
+            $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes,
+                      u.name as user_name, p.name as project_name, t.created_by as user_id
+                      FROM #__timeclock_timesheet as t
+                      LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
+                      LEFT JOIN #__users as u on t.created_by = u.id
+                      ".$where."
+                      GROUP BY t.created_by, t.worked, t.project_id
+                      ".$orderby;
+            $ret = $this->_getList($query);
+            if (!is_array($ret)) return array();
+            $this->data[$key] = array();
+            foreach ($ret as $d) {
+                $this->data[$key][$d->user_id][$d->project_id][$d->worked]['hours'] += $d->hours;
+                $this->data[$key][$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
+                $this->data[$key][$d->user_id][$d->project_id][$d->worked]['rec'] = $d;
+            }
+        }
+        return $this->data[$key];
+    }
+    /**
+     * Method to display the view
+     *
+     * @param array $data Data to merge with
+     * @param int   $id   The id of the employee
+     *
+     * @return string
+     */
+    function getHolidayHours($where, $orderby)
+    {
+        $key = base64_encode($where.$orderby);
+        
+
+    }
+
 }
 
 ?>
