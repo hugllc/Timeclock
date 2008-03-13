@@ -39,6 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 
 $this->totals     = array();
+if (empty($this->days)) $this->days = 7;
 
 $headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->days));
 
@@ -47,7 +48,30 @@ $this->totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
-$document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
+$document->setTitle(JText::_("Timeclock Reports"));
+
+$report = array();
+$weeks = round($this->period["length"] / $this->days);
+// Make the data into something usefull for this particular report
+foreach ($this->data as $user_id => $projdata) {
+    foreach ($projdata as $proj_id => $dates) {
+        $d = 0;
+        foreach ($this->period["dates"] as $key => $uDate) {
+            $week = (int)($d++ / $this->days);
+            if (!array_key_exists($key, $dates)) continue;
+            $type = $dates[$key]["rec"]->type;
+            $report[$user_id][$week][$type]["hours"] += $dates[$key]["hours"];
+            $report[$user_id][$week]["TOTAL"]["hours"] += $dates[$key]["hours"];
+            $report[$user_id]["TOTAL"] += $dates[$key]["hours"];
+            if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->user_name;
+
+            $projname = $dates[$key]["rec"]->project_name;
+            $username = $dates[$key]["rec"]->user_name;
+            $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
+            $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
+        }
+    }
+}
 
 ?>
 
@@ -55,7 +79,7 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
     <div class="componentheading"><?php print JText::_("Timeclock Payroll Report");?></div>
     <table style="padding-bottom: 3em;">
         <tr>
-            <td colspan="<?php print (($this->weeks *4) + 3); ?>">
+            <td colspan="<?php print (($weeks *4) + 3); ?>">
                 <?php nextPrev($this); ?>
                 <div id="dateheader" style="clear:both;">
                    <strong>
@@ -69,7 +93,7 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
         <tr>
             <td class="sectiontableheader" rowspan="2"><?php print JText::_("Employee"); ?></td>
 <?php
-for ($w = 0; $w < $this->weeks; $w++) {
+for ($w = 0; $w < $weeks; $w++) {
     ?>
             <td class="sectiontableheader" colspan="4" align="center"><?php print JText::_("Week")." ".($w+1); ?> </td>            
     <?php
@@ -80,7 +104,7 @@ for ($w = 0; $w < $this->weeks; $w++) {
         </tr>
         <tr>
 <?php
-for ($w = 0; $w < $this->weeks; $w++) {
+for ($w = 0; $w < $weeks; $w++) {
     ?>
             <td class="sectiontableheader"><?php print JText::_("Worked"); ?> </td>            
             <td class="sectiontableheader"><?php print JText::_("PTO"); ?> </td>            
@@ -93,12 +117,12 @@ for ($w = 0; $w < $this->weeks; $w++) {
 <?php
 $k = 0;
 $totals = array();
-foreach ($this->report as $id => $time) {
+foreach ($report as $id => $time) {
     ?>
         <tr>
             <td class="sectiontablerow<?php print $k;?>" align="right"><?php print $time["name"]; ?></td>
     <?php
-    for ($w = 0; $w < $this->weeks; $w++) {
+    for ($w = 0; $w < $weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
             $hours = (empty($time[$w][$type]["hours"])) ? 0 : $time[$w][$type]["hours"];
             $totals[$w][$type] += $hours;
@@ -125,7 +149,7 @@ foreach ($this->report as $id => $time) {
         <tr>
             <td class="sectiontableheader" align="right"><?php print JText::_("Total"); ?></td>
     <?php
-    for ($w = 0; $w < $this->weeks; $w++) {
+    for ($w = 0; $w < $weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
             $hours = (empty($totals[$w][$type])) ? 0 : $totals[$w][$type];
             ?>
@@ -148,7 +172,7 @@ foreach ($this->report as $id => $time) {
 <h3>Notes</h3>
 <dl>
 <?php
-foreach($this->notes as $user => $projects) {
+foreach($notes as $user => $projects) {
     ?>
     <dt><h4><?php print $user; ?></h4></dt>
     <dd>

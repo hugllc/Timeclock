@@ -63,7 +63,7 @@ class TimeclockViewReports extends JView
     {
         global $mainframe, $option;
         $layout = JRequest::getVar('layout');
-        $this->model   =& $this->getModel();
+        $model   =& $this->getModel();
 
         $db =& JFactory::getDBO();
         $filter_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', 'u.name', 'cmd');
@@ -82,19 +82,18 @@ class TimeclockViewReports extends JView
         }
 
         if (method_exists($this, $layout)) {
-            $this->$layout();
+            $this->$layout($tpl);
         } else {
             $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
-            $this->_data = $this->model->getTimesheetData($this->_where, $orderby);
+            $data = $model->getTimesheetData($this->_where, $orderby);
+            $dates["start"] = $model->getStartDate();
+            $dates["end"] = $model->getEndDate();
+
+            $this->assignRef("data", $data);        
+            $this->assignRef("dates", $dates);        
+            parent::display($tpl);
         }        
-        $dates["start"] = $this->model->getStartDate();
-        $dates["end"] = $this->model->getEndDate();
         
-        $this->assignRef("data", $this->_data);        
-        $this->assignRef("dates", $dates);        
-
-        parent::display($tpl);
-
     }
     /**
      * The display function
@@ -103,70 +102,52 @@ class TimeclockViewReports extends JView
      *
      * @return null
      */
-    function payroll()
+    function payroll($tpl = null)
     {
        
-        $this->_where[] = $this->model->periodWhere("t.worked");
+        $model   =& $this->getModel();
+        $this->_where[] = $model->periodWhere("t.worked");
 
         $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
-        $this->_data = $this->model->getTimesheetData($this->_where, $orderby);
+        $data = $model->getTimesheetData($this->_where, $orderby);
 
-        $period  = $this->model->getPeriod();
+        $period  = $model->getPeriod();
+        $days = 7;
+        
+        $report = array();
+        $weeks = round($period["length"] / $days);
+        // Make the data into something usefull for this particular report
+        foreach ($data as $user_id => $projdata) {
+            foreach ($projdata as $proj_id => $dates) {
+                $d = 0;
+                foreach ($period["dates"] as $key => $uDate) {
+                    $week = (int)($d++ / $days);
+                    if (!array_key_exists($key, $dates)) continue;
+                    $type = $dates[$key]["rec"]->type;
+                    $report[$user_id][$week][$type]["hours"] += $dates[$key]["hours"];
+                    $report[$user_id][$week]["TOTAL"]["hours"] += $dates[$key]["hours"];
+                    $report[$user_id]["TOTAL"] += $dates[$key]["hours"];
+                    if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->user_name;
+        
+                    $projname = $dates[$key]["rec"]->project_name;
+                    $username = $dates[$key]["rec"]->user_name;
+                    $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
+                    $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
+                }
+            }
+        }
+
+        $this->assignRef("weeks", $weeks);        
+        $this->assignRef("days", $days);        
+        $this->assignRef("report", $report);        
+        $this->assignRef("notes", $notes);        
         $this->assignRef("period", $period);
 
-    }
-    /**
-     * The display function
-     *
-     * @param string $layout The template to use
-     *
-     * @return null
-     */
-    function timesheet($layout)
-    {
-        if ($layout == "addhours") return;
+        parent::display($tpl);
 
-        $model   =& $this->getModel();
-        $hours   = $model->getTimesheetData();
-        $period  = $model->getPeriod();
-
-        $this->assignRef("hours", $hours);
-        $this->assignRef("period", $period);        
     }
 
-    /**
-     * The display function
-     *
-     * @param string $layout The template to use
-     *
-     * @return null
-     */
-    function addhours($layout)
-    {
-        if ($layout != "addhours") return;
 
-        $model   =& $this->getModel();
-        $data     = $model->getData();
-
-        $referer  = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
-        $projid   = JRequest::getVar('projid', null, '', 'string');
-
-        $this->assignRef("projid", $projid);
-        $this->assignRef("referer", $referer);
-        $this->assignRef("data", $data);
-    }
-    
-    /**
-     * Checks employment dates and says if the user can enter hours on that date or not
-     *
-     * @param int $date The unix date to check
-     *
-     * @return bool
-     */
-    function checkDate($date)
-    {
-        return TimeclockController::checkEmploymentDates($this->employmentDates["start"], $this->employmentDates["end"], $date);
-    }
 }
 
 ?>

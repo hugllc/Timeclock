@@ -93,45 +93,9 @@ class ComTimeclockSiteViewReportsTest extends JViewTest
     {
         return array(
             array("display", null),
+            array("payroll", null),
         );
     }
-
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataCheckDate()
-    {
-        return array(
-            array(25, 85, 90, false),
-            array(25, 85, 80, true),
-            array(25, 0, 90, true),
-            array(25, null, 90, true),
-        );
-    }
-    /**
-     * Tests get and set date
-     *
-     * @param int  $start  The start date
-     * @param int  $end    The end date
-     * @param int  $date   The date to check
-     * @param bool $expect The date we expect returned
-     *
-     * @dataProvider dataCheckDate()
-     * @return null
-     */
-    function testCheckDate($start, $end, $date, $expect)
-    {
-        $this->o->employmentDates = array(
-            "start" => $start,
-            "end"   => $end,
-        );
-        $ret = $this->o->checkDate($date);
-        $this->assertSame($expect, $ret);
-    }
-
-
 
 }
 
