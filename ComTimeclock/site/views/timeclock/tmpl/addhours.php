@@ -36,7 +36,9 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-$headerColSpan = 2;
+JHTML::_('behavior.tooltip'); 
+
+$headerColSpan = 3;
 $this->totals     = array();
 if (empty($this->days)) $this->days = 7;
 
@@ -69,6 +71,9 @@ $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('d
             <td>
                 <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"');?>
             </td>
+            <td>
+                <?php print JText::_("Required.  The date worked.  Should be of the form yyyy-mm-dd"); ?>
+            </td>
         </tr>
 <?php
 foreach ($this->projects as $cat) {
@@ -90,6 +95,20 @@ foreach ($this->projects as $cat) {
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
+<script>
+        Window.onDomReady(function(){
+            document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
+                function (value) {
+                    if (document.getElementById('timesheet_<?php print $proj->id;?>_hours').value > 0) {
+                        return (value.length > 10);
+                    } else {
+                        return true;
+                    } 
+                }     
+            );
+        });
+</script>
+
                 <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>
         </tr>    
@@ -105,6 +124,9 @@ foreach ($this->projects as $cat) {
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
             </td>
+            <td>
+                <?php print JText::_("The number of hours worked.  Must be numeric."); ?>            
+            </td>
         </tr>
         <tr>
             <th style="vertical-align: top;"  align="right" id="notes_<?php print $proj->id;?>_label">
@@ -113,7 +135,10 @@ foreach ($this->projects as $cat) {
                 </label>
             </th>
             <td>
-                <textarea class="inputbox validate-notes"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"><?php echo $this->data[$proj->id]->notes;?></textarea>
+                <textarea class="inputbox validate-noteverify<?php print $proj->id;?>"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"> <?php echo $this->data[$proj->id]->notes;?> </textarea>
+            </td>
+            <td>
+                <?php print JText::_("This should be a description of what was done in the hours posted.  Minimum 10 characters."); ?>            
             </td>
         </tr>
         <tr>
@@ -121,10 +146,6 @@ foreach ($this->projects as $cat) {
                  &nbsp;
             </th>
             <td>
-<!--
-                <button onClick="this.form.task.value='applyhours';this.form.submit();" class="button validate"><?php print JText::_("Apply"); ?></button>
-                <button onClick="this.form.task.value='savehours';this.form.submit();" class="button validate"><?php print JText::_("Save"); ?></button>
--->
                 <button type="submit" name="task" value="applyhours" class="button validate"><?php print JText::_("Apply"); ?></button>
                 <button type="submit" name="task" value="savehours" class="button validate"><?php print JText::_("Save"); ?></button>
             </td>

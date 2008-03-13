@@ -419,6 +419,8 @@ class TimeclockModelTimeclock extends JModel
             // If there is already a record allow 0 hours.
             if (empty($data["hours"]) && empty($data["id"])) continue; 
 
+            // Remove white space from the notes
+            $data["notes"] = trim($data["notes"]);
             $data["id"] = (int) $data["id"];
             $data["created_by"] = $user->get("id");
             $data["worked"] = $date;
