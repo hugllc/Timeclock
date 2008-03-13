@@ -72,6 +72,8 @@ class TimeclockViewReports extends JView
         $search           = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'search', '', 'string');
         $search           = JString::strtolower($search);
         $search_filter    = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'search_filter', 'notes', 'string');
+
+        $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
                 
         $this->where = array();
 
@@ -79,18 +81,16 @@ class TimeclockViewReports extends JView
             $this->_where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
-        if (method_exists($this, $layout)) $this->$layout();
-
-        $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
-
-        $orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
-
-        $data = $this->model->getTimesheetData($this->_where, $orderby);
-        
+        if (method_exists($this, $layout)) {
+            $this->$layout();
+        } else {
+            $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
+            $this->_data = $this->model->getTimesheetData($this->_where, $orderby);
+        }        
         $dates["start"] = $this->model->getStartDate();
         $dates["end"] = $this->model->getEndDate();
         
-        $this->assignRef("data", $data);        
+        $this->assignRef("data", $this->_data);        
         $this->assignRef("dates", $dates);        
 
         parent::display($tpl);
@@ -107,6 +107,9 @@ class TimeclockViewReports extends JView
     {
        
         $this->_where[] = $this->model->periodWhere("t.worked");
+
+        $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
+        $this->_data = $this->model->getTimesheetData($this->_where, $orderby);
 
         $period  = $this->model->getPeriod();
         $this->assignRef("period", $period);

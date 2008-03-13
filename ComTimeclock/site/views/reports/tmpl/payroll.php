@@ -64,6 +64,11 @@ foreach ($this->data as $user_id => $projdata) {
             $report[$user_id][$week]["TOTAL"]["hours"] += $dates[$key]["hours"];
             $report[$user_id]["TOTAL"] += $dates[$key]["hours"];
             if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->user_name;
+
+            $projname = $dates[$key]["rec"]->project_name;
+            $username = $dates[$key]["rec"]->user_name;
+            $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
+            $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
         }
     }
 }
@@ -164,7 +169,40 @@ foreach ($report as $id => $time) {
         </tr>
     </table>
 </form>
-<?php 
+<h3>Notes</h3>
+<dl>
+<?php
+foreach($notes as $user => $projects) {
+    ?>
+    <dt><h4><?php print $user; ?></h4></dt>
+    <dd>
+        <dl>
+    <?php
+    foreach($projects as $project => $dates) {
+        ?>
+            <dt style="font-weight: bold;"><?php print $project; ?></dt>
+            <dd>
+                <dl>
+        
+        <?php
+        foreach($dates as $date => $note) {
+            ?>
+                    <dt><?php print $date." (".$note['hours'];?> h)</dt>
+                    <dd><?php print $note['notes']; ?></dd>
+            <?php
+        }
+        ?>
+                </dl>
+            </dd>
+        <?php
+    }
+    ?>
+        </dl>
+    </dd>
+</dl>
+<?php
+}
+
 /**
  * Prints out next previous header
  *
