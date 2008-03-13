@@ -39,39 +39,13 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 
 $this->totals     = array();
-if (empty($this->days)) $this->days = 7;
-
-$headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->days));
 
 $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
-$document->setTitle(JText::_("Timeclock Reports"));
-
-$report = array();
-$weeks = round($this->period["length"] / $this->days);
-// Make the data into something usefull for this particular report
-foreach ($this->data as $user_id => $projdata) {
-    foreach ($projdata as $proj_id => $dates) {
-        $d = 0;
-        foreach ($this->period["dates"] as $key => $uDate) {
-            $week = (int)($d++ / $this->days);
-            if (!array_key_exists($key, $dates)) continue;
-            $type = $dates[$key]["rec"]->type;
-            $report[$user_id][$week][$type]["hours"] += $dates[$key]["hours"];
-            $report[$user_id][$week]["TOTAL"]["hours"] += $dates[$key]["hours"];
-            $report[$user_id]["TOTAL"] += $dates[$key]["hours"];
-            if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->user_name;
-
-            $projname = $dates[$key]["rec"]->project_name;
-            $username = $dates[$key]["rec"]->user_name;
-            $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
-            $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
-        }
-    }
-}
+$document->setTitle(JText::_("Timeclock Notes"));
 
 ?>
 

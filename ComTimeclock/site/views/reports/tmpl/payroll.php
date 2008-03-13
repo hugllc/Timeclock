@@ -40,10 +40,10 @@ JHTML::_('behavior.tooltip');
 
 $this->totals     = array();
 
-$headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->days));
+$headerColSpan    = ($this->weeks * 4) + 3;
 
-$this->cellStyle  = "text-align:center; padding: 1px;";
-$this->totalStyle = $this->cellStyle." font-weight: bold;";
+$cellStyle  = "text-align:center; padding: 1px;";
+$totalStyle = $cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
@@ -55,7 +55,7 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
     <div class="componentheading"><?php print JText::_("Timeclock Payroll Report");?></div>
     <table style="padding-bottom: 3em;">
         <tr>
-            <td colspan="<?php print (($this->weeks *4) + 3); ?>">
+            <td colspan="<?php print $headerColSpan; ?>">
                 <?php nextPrev($this); ?>
                 <div id="dateheader" style="clear:both;">
                    <strong>
@@ -67,25 +67,25 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
            </td>        
         </tr>
         <tr>
-            <td class="sectiontableheader" rowspan="2"><?php print JText::_("Employee"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader" colspan="4" align="center"><?php print JText::_("Week")." ".($w+1); ?> </td>            
+            <td class="sectiontableheader" colspan="4" align="center" style="<?php print $cellStyle; ?>"><?php print JText::_("Week")." ".($w+1); ?> </td>            
     <?php
 }
 ?>
-            <td class="sectiontableheader" rowspan="2"><?php print JText::_("Employee"); ?></td>
-            <td class="sectiontableheader" rowspan="2"><?php print JText::_("Total"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?></td>
         </tr>
         <tr>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader"><?php print JText::_("Worked"); ?> </td>            
-            <td class="sectiontableheader"><?php print JText::_("PTO"); ?> </td>            
-            <td class="sectiontableheader"><?php print JText::_("Holiday"); ?> </td>            
-            <td class="sectiontableheader"><?php print JText::_("Total"); ?> </td>            
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Worked"); ?> </td>            
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("PTO"); ?> </td>            
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Holiday"); ?> </td>            
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?> </td>            
     <?php
 }
 ?>
@@ -96,52 +96,52 @@ $totals = array();
 foreach ($this->report as $id => $time) {
     ?>
         <tr>
-            <td class="sectiontablerow<?php print $k;?>" align="right"><?php print $time["name"]; ?></td>
+            <td class="sectiontablerow<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
     <?php
     for ($w = 0; $w < $this->weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
             $hours = (empty($time[$w][$type]["hours"])) ? 0 : $time[$w][$type]["hours"];
             $totals[$w][$type] += $hours;
             ?>
-                <td class="sectiontablerow<?php print $k;?>" align="center"><?php print $hours; ?></td>
+                <td class="sectiontablerow<?php print $k;?>" align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
             <?php
         }
         $hours = (empty($time[$w]["TOTAL"]["hours"])) ? 0 : $time[$w]["TOTAL"]["hours"];
         $totals[$w]["TOTAL"] += $hours;
         ?>
-                <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
+                <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     $k = 1 - $k;
     $hours = (empty($time["TOTAL"])) ? 0 : $time["TOTAL"];
     $totals["TOTAL"] += $hours;
     ?>
-            <td class="sectiontablerow<?php print $k;?>" align="right"><?php print $time["name"]; ?></td>
-            <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
+            <td class="sectiontablerow<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>""><?php print $time["name"]; ?></td>
+            <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     <?php
 }
 ?>
         <tr>
-            <td class="sectiontableheader" align="right"><?php print JText::_("Total"); ?></td>
+            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
     <?php
     for ($w = 0; $w < $this->weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
             $hours = (empty($totals[$w][$type])) ? 0 : $totals[$w][$type];
             ?>
-                <td class="sectiontablerow<?php print $k;?>" align="center"><?php print $hours; ?></td>
+                <td class="sectiontablerow<?php print $k;?>" align="center" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
             <?php
         }
         $hours = (empty($totals[$w]["TOTAL"])) ? 0 : $totals[$w]["TOTAL"];
         ?>
-                <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
+                <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     $k = 1 - $k;
     $hours = (empty($totals["TOTAL"])) ? 0 : $totals["TOTAL"];
     ?>
-            <td class="sectiontableheader" align="right"><?php print JText::_("Total"); ?></td>
-            <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
+            <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
+            <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     </table>
 </form>

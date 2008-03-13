@@ -115,6 +115,7 @@ class TimeclockViewReports extends JView
         $days = 7;
         
         $report = array();
+        $notes = array();
         $weeks = round($period["length"] / $days);
         // Make the data into something usefull for this particular report
         foreach ($data as $user_id => $projdata) {
@@ -142,6 +143,40 @@ class TimeclockViewReports extends JView
         $this->assignRef("report", $report);        
         $this->assignRef("notes", $notes);        
         $this->assignRef("period", $period);
+
+        parent::display($tpl);
+
+    }
+
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return null
+     */
+    function notes($tpl = null)
+    {
+       
+        $model   =& $this->getModel();
+
+        $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
+        $data = $model->getTimesheetData($this->_where, $orderby);
+
+        $notes = array();
+        // Make the data into something usefull for this particular report
+        foreach ($data as $user_id => $projdata) {
+            foreach ($projdata as $proj_id => $dates) {
+                foreach ($period["dates"] as $key => $uDate) {
+                    $projname = $dates[$key]["rec"]->project_name;
+                    $username = $dates[$key]["rec"]->user_name;
+                    $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
+                    $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
+                }
+            }
+        }
+
+        $this->assignRef("notes", $notes);        
 
         parent::display($tpl);
 
