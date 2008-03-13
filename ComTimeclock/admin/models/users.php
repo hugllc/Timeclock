@@ -302,7 +302,7 @@ class TimeclockAdminModelUsers extends JModel
      * Fixes any inconsistancies in the prefs
      *
      * @param array &$prefs The prefs to check/fix
-     * @param array &$data   The new data
+     * @param array &$data  The new data
      *
      * @return null
      */
@@ -316,7 +316,7 @@ class TimeclockAdminModelUsers extends JModel
      * Loads incoming data into the prefs array
      *
      * @param array &$prefs The prefs to check/fix
-     * @param array &$data   The new data
+     * @param array &$data  The new data
      *
      * @return null
      */

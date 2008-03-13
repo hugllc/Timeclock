@@ -95,19 +95,19 @@ foreach ($this->projects as $cat) {
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
-<script>
-        Window.onDomReady(function(){
-            document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
-                function (value) {
-                    if (document.getElementById('timesheet_<?php print $proj->id;?>_hours').value > 0) {
-                        return (value.length > 10);
-                    } else {
-                        return true;
-                    } 
-                }     
-            );
-        });
-</script>
+                <script>
+                        Window.onDomReady(function(){
+                            document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
+                                function (value) {
+                                    if (document.getElementById('timesheet_<?php print $proj->id;?>_hours').value > 0) {
+                                        return (value.length > 10);
+                                    } else {
+                                        return true;
+                                    } 
+                                }     
+                            );
+                        });
+                </script>
 
                 <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>

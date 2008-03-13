@@ -135,8 +135,8 @@ class ComTimeclockSiteModelReportsTest extends ComTimeclockSiteModelTimeclockTes
      *
      * @param string $date   The date to test
      * @param string $expect The date we expect returned
-     * @param string $set    The function to use to set
      * @param string $get    The function to use to get
+     * @param string $set    The function to use to set
      *
      * @dataProvider dataGetSetDate()
      * @return null

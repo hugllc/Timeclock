@@ -253,8 +253,8 @@ class TimeclockController extends JController
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $date The first date in Mysql ("Y-m-d") format.
-     * @param string $date The second date in Mysql ("Y-m-d") format.
+     * @param string $date1 The first date in Mysql ("Y-m-d") format.
+     * @param string $date2 The second date in Mysql ("Y-m-d") format.
      *
      * @return array
      */ 

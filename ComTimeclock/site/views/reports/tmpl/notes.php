@@ -122,22 +122,22 @@ foreach ($report as $id => $time) {
 ?>
         <tr>
             <td class="sectiontableheader" align="right"><?php print JText::_("Total"); ?></td>
-    <?php
-    for ($w = 0; $w < $weeks; $w++) {
-        foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
-            $hours = (empty($totals[$w][$type])) ? 0 : $totals[$w][$type];
-            ?>
-                <td class="sectiontablerow<?php print $k;?>" align="center"><?php print $hours; ?></td>
-            <?php
-        }
-        $hours = (empty($totals[$w]["TOTAL"])) ? 0 : $totals[$w]["TOTAL"];
+<?php
+for ($w = 0; $w < $weeks; $w++) {
+    foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
+        $hours = (empty($totals[$w][$type])) ? 0 : $totals[$w][$type];
         ?>
-                <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
+            <td class="sectiontablerow<?php print $k;?>" align="center"><?php print $hours; ?></td>
         <?php
     }
-    $k = 1 - $k;
-    $hours = (empty($totals["TOTAL"])) ? 0 : $totals["TOTAL"];
+    $hours = (empty($totals[$w]["TOTAL"])) ? 0 : $totals[$w]["TOTAL"];
     ?>
+            <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
+    <?php
+}
+$k = 1 - $k;
+$hours = (empty($totals["TOTAL"])) ? 0 : $totals["TOTAL"];
+?>
             <td class="sectiontableheader" align="right"><?php print JText::_("Total"); ?></td>
             <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
         </tr>
@@ -146,20 +146,20 @@ foreach ($report as $id => $time) {
 <h3>Notes</h3>
 <dl>
 <?php
-foreach($notes as $user => $projects) {
+foreach ($notes as $user => $projects) {
     ?>
     <dt><h4><?php print $user; ?></h4></dt>
     <dd>
         <dl>
     <?php
-    foreach($projects as $project => $dates) {
+    foreach ($projects as $project => $dates) {
         ?>
             <dt style="font-weight: bold;"><?php print $project; ?></dt>
             <dd>
                 <dl>
         
         <?php
-        foreach($dates as $date => $note) {
+        foreach ($dates as $date => $note) {
             ?>
                     <dt><?php print $date." (".$note['hours'];?> h)</dt>
                     <dd><?php print $note['notes']; ?></dd>
@@ -173,8 +173,8 @@ foreach($notes as $user => $projects) {
     ?>
         </dl>
     </dd>
-</dl>
-<?php
+    </dl>
+    <?php
 }
 
 /**

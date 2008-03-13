@@ -234,6 +234,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @param string $name The name of the pref to get
      * @param string $type The type of param to get
+     * @param int    $oid  Optional Id argument
      *
      * @return mixed The value of the parameter.
      */
