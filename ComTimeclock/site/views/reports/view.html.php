@@ -62,7 +62,7 @@ class TimeclockViewReports extends JView
     function display($tpl = null)
     {
         global $mainframe, $option;
-        $this->layout = JRequest::getVar('layout');
+        $layout = JRequest::getVar('layout');
         $this->model   =& $this->getModel();
 
         $db =& JFactory::getDBO();
@@ -76,24 +76,22 @@ class TimeclockViewReports extends JView
         $this->where = array();
 
         if ($search) {
-            $this->where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            $this->_where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
+        if (method_exists($this, $layout)) $this->$layout();
 
+        $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
 
-        $this->where          = (count($this->where) ? ' WHERE ' . implode(' AND ', $this->where) : '');
         $orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
 
-        $data = $this->model->getTimesheetData($where, $orderby);
+        $data = $this->model->getTimesheetData($this->_where, $orderby);
         
         $dates["start"] = $this->model->getStartDate();
         $dates["end"] = $this->model->getEndDate();
         
         $this->assignRef("data", $data);        
-        $this->assignRef("user", $user);        
         $this->assignRef("dates", $dates);        
-
-        $this->payroll($layout);
 
         parent::display($tpl);
 
@@ -107,12 +105,11 @@ class TimeclockViewReports extends JView
      */
     function payroll()
     {
-        if ($this->layout !== "payroll") return;
-        
-        $this->where[] = $this->model->periodWhere("t.worked");
-        
+       
+        $this->_where[] = $this->model->periodWhere("t.worked");
+
         $period  = $this->model->getPeriod();
-        $this->assignRef("period", $period);        
+        $this->assignRef("period", $period);
 
     }
     /**

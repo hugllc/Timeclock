@@ -252,7 +252,7 @@ class TableTimeclockPrefs extends JTable
             $type = "user";
         }        
         
-        $inst =& $instance[$type][$id];
+        $inst =& $instance[$type][$oid];
         if (empty($inst)) {
             $inst = JTable::getInstance("TimeclockPrefs", "Table");
             $inst->load($oid);
