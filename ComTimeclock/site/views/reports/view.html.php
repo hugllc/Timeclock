@@ -108,8 +108,8 @@ class TimeclockViewReports extends JView
         $model   =& $this->getModel();
         $this->_where[] = $model->periodWhere("t.worked");
 
-        $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
-        $data = $model->getTimesheetData($this->_where, $orderby);
+        $where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
+        $data = $model->getTimesheetData($where, $orderby);
 
         $period  = $model->getPeriod();
         $days = 7;
@@ -128,10 +128,10 @@ class TimeclockViewReports extends JView
                     $report[$user_id][$week][$type]["hours"] += $dates[$key]["hours"];
                     $report[$user_id][$week]["TOTAL"]["hours"] += $dates[$key]["hours"];
                     $report[$user_id]["TOTAL"] += $dates[$key]["hours"];
-                    if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->user_name;
+                    if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->author;
         
                     $projname = $dates[$key]["rec"]->project_name;
-                    $username = $dates[$key]["rec"]->user_name;
+                    $username = $dates[$key]["rec"]->author;
                     $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
                     $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
                 }
@@ -160,22 +160,18 @@ class TimeclockViewReports extends JView
        
         $model   =& $this->getModel();
 
-        $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
-        $data = $model->getTimesheetData($this->_where, $orderby);
+        $where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
+        $data = $model->getTimesheetData($where, $orderby);
 
         $notes = array();
         // Make the data into something usefull for this particular report
         foreach ($data as $user_id => $projdata) {
             foreach ($projdata as $proj_id => $dates) {
-                foreach ($period["dates"] as $key => $uDate) {
-                    $projname = $dates[$key]["rec"]->project_name;
-                    $username = $dates[$key]["rec"]->user_name;
-                    $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
-                    $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
+                foreach ($dates as $key => $val) {
+                    $notes[$key][] = $val["rec"];
                 }
             }
         }
-
         $this->assignRef("notes", $notes);        
 
         parent::display($tpl);

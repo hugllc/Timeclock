@@ -38,185 +38,34 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$this->totals     = array();
-
-$this->cellStyle  = "text-align:center; padding: 1px;";
-$this->totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle(JText::_("Timeclock Notes"));
 
 ?>
-
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
-    <div class="componentheading"><?php print JText::_("Timeclock Payroll Report");?></div>
-    <table style="padding-bottom: 3em;">
-        <tr>
-            <td colspan="<?php print (($weeks *4) + 3); ?>">
-                <?php nextPrev($this); ?>
-                <div id="dateheader" style="clear:both;">
-                   <strong>
-                       <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
-                       <?php print JText::_("to"); ?>
-                       <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
-                   </strong>
-               </div>
-           </td>        
-        </tr>
-        <tr>
-            <td class="sectiontableheader" rowspan="2"><?php print JText::_("Employee"); ?></td>
+<div class="componentheading"><?php print JText::_("Notes"); ?></div>
+<div>
 <?php
-for ($w = 0; $w < $weeks; $w++) {
-    ?>
-            <td class="sectiontableheader" colspan="4" align="center"><?php print JText::_("Week")." ".($w+1); ?> </td>            
-    <?php
-}
-?>
-            <td class="sectiontableheader" rowspan="2"><?php print JText::_("Employee"); ?></td>
-            <td class="sectiontableheader" rowspan="2"><?php print JText::_("Total"); ?></td>
-        </tr>
-        <tr>
-<?php
-for ($w = 0; $w < $weeks; $w++) {
-    ?>
-            <td class="sectiontableheader"><?php print JText::_("Worked"); ?> </td>            
-            <td class="sectiontableheader"><?php print JText::_("PTO"); ?> </td>            
-            <td class="sectiontableheader"><?php print JText::_("Holiday"); ?> </td>            
-            <td class="sectiontableheader"><?php print JText::_("Total"); ?> </td>            
-    <?php
-}
-?>
-        </tr>
-<?php
-$k = 0;
-$totals = array();
-foreach ($report as $id => $time) {
-    ?>
-        <tr>
-            <td class="sectiontablerow<?php print $k;?>" align="right"><?php print $time["name"]; ?></td>
-    <?php
-    for ($w = 0; $w < $weeks; $w++) {
-        foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
-            $hours = (empty($time[$w][$type]["hours"])) ? 0 : $time[$w][$type]["hours"];
-            $totals[$w][$type] += $hours;
-            ?>
-                <td class="sectiontablerow<?php print $k;?>" align="center"><?php print $hours; ?></td>
-            <?php
-        }
-        $hours = (empty($time[$w]["TOTAL"]["hours"])) ? 0 : $time[$w]["TOTAL"]["hours"];
-        $totals[$w]["TOTAL"] += $hours;
+foreach ($this->notes as $key => $notes) {
+    foreach ($notes as $note) {
         ?>
-                <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
-        <?php
+    <div class="contentpaneopen">        
+        <div>
+            <div>
+                <span class="contentheading"><?php print $note->project_name; ?></span>
+                <span class="small"> <?php print JText::_('by')." ".$note->author; ?></span>
+            </div>
+            <div class="createdate">
+                <?php echo JText::_("Worked")." ".JHTML::_('date', $note->worked, JText::_('DATE_FORMAT_LC1')); ?>
+                (<?php echo JText::_("Entered")." ".JHTML::_('date', $note->created, JText::_('DATE_FORMAT_LC2')); ?>)
+            </div>
+        </div>
+        <div><?php print $note->notes; ?></div>
+    </div>
+    <span class="article_separator">&nbsp;</span>
+    <?php
     }
-    $k = 1 - $k;
-    $hours = (empty($time["TOTAL"])) ? 0 : $time["TOTAL"];
-    $totals["TOTAL"] += $hours;
-    ?>
-            <td class="sectiontablerow<?php print $k;?>" align="right"><?php print $time["name"]; ?></td>
-            <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
-        </tr>
-    <?php
 }
 ?>
-        <tr>
-            <td class="sectiontableheader" align="right"><?php print JText::_("Total"); ?></td>
-<?php
-for ($w = 0; $w < $weeks; $w++) {
-    foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
-        $hours = (empty($totals[$w][$type])) ? 0 : $totals[$w][$type];
-        ?>
-            <td class="sectiontablerow<?php print $k;?>" align="center"><?php print $hours; ?></td>
-        <?php
-    }
-    $hours = (empty($totals[$w]["TOTAL"])) ? 0 : $totals[$w]["TOTAL"];
-    ?>
-            <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
-    <?php
-}
-$k = 1 - $k;
-$hours = (empty($totals["TOTAL"])) ? 0 : $totals["TOTAL"];
-?>
-            <td class="sectiontableheader" align="right"><?php print JText::_("Total"); ?></td>
-            <td class="sectiontablerow<?php print $k;?>" style="font-weight: bold; text-align: center;"><?php print $hours; ?></td>
-        </tr>
-    </table>
-</form>
-<h3>Notes</h3>
-<dl>
-<?php
-foreach ($notes as $user => $projects) {
-    ?>
-    <dt><h4><?php print $user; ?></h4></dt>
-    <dd>
-        <dl>
-    <?php
-    foreach ($projects as $project => $dates) {
-        ?>
-            <dt style="font-weight: bold;"><?php print $project; ?></dt>
-            <dd>
-                <dl>
-        
-        <?php
-        foreach ($dates as $date => $note) {
-            ?>
-                    <dt><?php print $date." (".$note['hours'];?> h)</dt>
-                    <dd><?php print $note['notes']; ?></dd>
-            <?php
-        }
-        ?>
-                </dl>
-            </dd>
-        <?php
-    }
-    ?>
-        </dl>
-    </dd>
-    </dl>
-    <?php
-}
-
-/**
- * Prints out next previous header
- *
- * @param object &$obj Pass it $this
- *
- * @return null
- */ 
-function nextprev(&$obj)
-{
-    $tip = "Go to the next pay period";
-    $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
-    $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["next"]);
-    $nextImg = '<a href="'.$url.'">'.$text.'</a>';
-    $next = '<a href="'.$url.'">'.JText::_("Next").'</a>';
-
-    $tip = "Go to the previous pay period";
-    $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
-    $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["prev"]);
-    $prevImg = '<a href="'.$url.'">'.$text.'</a>';
-    $prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
-
-    $text = JText::_('Today');
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll");
-    $today = '<a href="'.$url.'">'.$text.'</a>';
-
-    ?>
-    <table width="100%" id="nextprev">
-        <tr>
-            <td width="5px" align="left"><?php print $prevImg; ?></td>
-            <td width="20%" align="left" style="vertical-align: middle;"><?php print $prev; ?></td>
-    
-            <td align="center" style="white-space: nowrap;">
-                <?php print $today; ?>
-            </td>
-            <td width="20%" align="right" style="vertical-align: middle;"><?php print $next; ?></td>
-            <td width="5px;" align="right"><?php print $nextImg; ?></td>
-        </tr>
-    </table>
-    <?php
-}
-?>
+</div>

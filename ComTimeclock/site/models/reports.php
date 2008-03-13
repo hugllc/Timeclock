@@ -134,7 +134,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
         $key = base64_encode($where.$orderby);
         if (empty($this->data[$key])) {
             $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes,
-                      u.name as user_name, p.name as project_name, t.created_by as user_id,
+                      u.name as author, p.name as project_name, t.created_by as user_id,
                       p.type as type
                       FROM #__timeclock_timesheet as t
                       LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
@@ -169,7 +169,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
         
         $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes,
                   j.user_id as user_id, p.name as project_name, p.type as type, 
-                  u.name as user_name
+                  u.name as author
                   FROM #__timeclock_timesheet as t
                   LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
                   JOIN #__timeclock_users as j on j.id = p.id
