@@ -47,7 +47,7 @@ JToolBarHelper::cancel();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <?php
-if (!$this->add) {
+if (!$this->add && ($this->row->type !== "CATEGORY")) {
     ?>
     <div style="float: right; width: 30%;">
     <?php
