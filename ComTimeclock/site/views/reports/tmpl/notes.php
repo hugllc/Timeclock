@@ -45,27 +45,36 @@ $document->setTitle(JText::_("Timeclock Notes"));
 
 ?>
 <div class="componentheading"><?php print JText::_("Notes"); ?></div>
+<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="adminForm">
 <div>
 <?php
-foreach ($this->notes as $key => $notes) {
-    foreach ($notes as $note) {
-        ?>
+foreach ($this->notes as $key => $note) {
+    $title = $note->project_name;
+    $title = (empty($note->category_name)) ? $title : $note->category_name." : ".$title; 
+    $title = (empty($note->company_name)) ? $title : $note->company_name." : ".$title; 
+    ?>
     <div class="contentpaneopen">        
         <div>
-            <div>
-                <span class="contentheading"><?php print $note->project_name; ?></span>
-                <span class="small"> <?php print JText::_('by')." ".$note->author; ?></span>
-            </div>
-            <div class="createdate">
-                <?php echo JText::_("Worked")." ".JHTML::_('date', $note->worked, JText::_('DATE_FORMAT_LC1')); ?>
-                (<?php echo JText::_("Entered")." ".JHTML::_('date', $note->created, JText::_('DATE_FORMAT_LC2')); ?>)
-            </div>
+            <div class="contentheading"><?php print $title; ?></div>
+            <div class="small"> <?php print JText::_('by')." ".$note->author; ?> <span>(<?php print $note->hours." ".JText::_("hours");?>)</span></div>
+            <div class="createdate"><?php echo JText::_("Worked")." ".JHTML::_('date', $note->worked, JText::_('DATE_FORMAT_LC1')); ?></div>
+<!--            <div class="createdate"><?php echo JText::_("Entered")." ".JHTML::_('date', $note->created, JText::_('DATE_FORMAT_LC2')); ?></div>-->
         </div>
         <div><?php print $note->notes; ?></div>
     </div>
     <span class="article_separator">&nbsp;</span>
     <?php
-    }
 }
 ?>
+    <div align="center">
+        <div style="text-align: center;"><?php echo JText::_("Display Num").$this->pagination->getLimitBox(); ?></div>
+        <div style="text-align: center;"><?php echo $this->pagination->getPagesLinks(); ?></div>
+        <div style="text-align: center;"><?php echo $this->pagination->getPagesCounter(); ?></div>
+    </div>
 </div>
+<input type="hidden" name="option" value="com_timeclock" />
+<input type="hidden" name="layout" value="notes" />
+<input type="hidden" name="view" id="view" value="reports" />
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+</form>

@@ -123,6 +123,36 @@ class TimeclockModelTimeclock extends JModel
             $this->_project = $project;
         }
     }
+    /**
+     * Gets this hugely complex SQL query
+     *
+     * @param string $where1 The where clause to add. Must NOT include "WHERE"
+     * @param string $where2 The where clause to add. Must NOT include "WHERE"
+     *
+     * @return string
+     */ 
+    protected function sqlQuery($where1, $where2=null)
+    {
+        if (is_null($where2)) $where2 = $where1;
+        return "SELECT t.hours as hours, t.worked, t.project_id, t.notes,
+                      j.user_id as user_id, p.name as project_name, p.type as type, 
+                      u.name as author, pc.name as category_name, c.company as company_name,
+                      c.name as contact_name
+                      FROM #__timeclock_timesheet as t
+                      LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
+                      RIGHT JOIN #__timeclock_users as j on j.id = p.id
+                      LEFT JOIN #__users as u on j.user_id = u.id
+                      LEFT JOIN #__timeclock_prefs as tp on tp.id = u.id
+                      LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
+                      LEFT JOIN #__timeclock_customers as c on p.customer = c.id
+                      WHERE 
+                          (".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO') AND t.created_by = j.user_id)
+                          OR
+                          (".$where2." AND p.type = 'HOLIDAY'
+                          AND ((t.worked >= tp.startDate) AND ((t.worked <= tp.endDate) OR (tp.endDate = '0000-00-00'))))
+                      ";
+    }
+
 
     /**
      * Method to display the view
@@ -132,60 +162,25 @@ class TimeclockModelTimeclock extends JModel
     function getTimesheetData()
     {
         if (empty($this->data)) {
-            $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
-                      FROM #__timeclock_timesheet as t
-                      LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                      WHERE ".$this->employmentDateWhere("t.worked")
-                      ." AND ".$this->periodWhere("t.worked")
-                      ." AND t.created_by='".$this->_id."'
-                         AND p.type <> 'HOLIDAY'
-                      GROUP BY t.worked, t.project_id
-                      ";
+            $where = array(
+                "j.user_id = ".$this->_id,
+                $this->employmentDateWhere("t.worked"),
+                $this->periodWhere("t.worked"),
+            );
+            $where = implode(" AND ", $where);
+            $query = $this->sqlQuery($where);
             $ret = $this->_getList($query);
             if (!is_array($ret)) return array();
-            $data = array();
+            $this->data = array();
             foreach ($ret as $d) {
-                $data[$d->project_id][$d->worked]['hours'] += $d->hours;
-                $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
+                $hours = ($d->type == "HOLIDAY") ? $d->hours * $this->getHolidayPerc($id, $d->worked) : $d->hours;
+                $this->data[$d->project_id][$d->worked]['hours'] += $hours;
+                $this->data[$d->project_id][$d->worked]['notes'] .= $d->notes;
             }
-            $this->data = $this->getHolidayHours($data);
         }
         return $this->data;
     }
 
-    /**
-     * Method to display the view
-     *
-     * @param array $data Data to merge with
-     * @param int   $id   The id of the employee
-     *
-     * @return string
-     */
-    function getHolidayHours($data = array(), $id = null)
-    {
-        $id = empty($id) ? (int)$this->_id : (int)$id;
-        $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes
-                  FROM #__timeclock_timesheet as t
-                  LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                  JOIN #__timeclock_users as u on u.id = p.id
-                  WHERE ".$this->employmentDateWhere("t.worked")
-                  ." AND ".$this->periodWhere("t.worked")
-                  ." AND p.type='HOLIDAY'
-                     AND u.user_id='".$id."'
-                  GROUP BY t.worked, t.project_id
-                  ";
-
-        $ret = $this->_getList($query);
-
-        if (!is_array($ret)) return array();
-        if (!is_array($data)) $data = array();
-        foreach ($ret as $d) {
-            $hours = $d->hours * $this->getHolidayPerc($id, $d->worked);
-            $data[$d->project_id][$d->worked]['hours'] += $hours;
-            $data[$d->project_id][$d->worked]['notes'] .= $d->notes;
-        }
-        return $data;
-    }
 
     /**
      * Gets the perc of holiday pay this user should get

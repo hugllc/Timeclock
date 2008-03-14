@@ -46,7 +46,7 @@ JToolBarHelper::editListX();
 JToolBarHelper::addNewX();
 
 ?>
-<form action="index.php?option=com_timeclock&controller=projects" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm">
 <table>
     <tr>
         <td align="left" width="100%">

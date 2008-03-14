@@ -61,30 +61,13 @@ class TimeclockViewReports extends JView
      */
     function display($tpl = null)
     {
-        global $mainframe, $option;
         $layout = JRequest::getVar('layout');
         $model   =& $this->getModel();
-
-        $db =& JFactory::getDBO();
-        $filter_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', 'u.name', 'cmd');
-        $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
-        $filter_state     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_state", 'filter_state', '', 'word');
-        $search           = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'search', '', 'string');
-        $search           = JString::strtolower($search);
-        $search_filter    = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'search_filter', 'notes', 'string');
-
-        $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
-                
-        $this->where = array();
-
-        if ($search) {
-            $this->_where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
-        }
 
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
         } else {
-            $this->_where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
+            $this->_where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
             $data = $model->getTimesheetData($this->_where, $orderby);
             $dates["start"] = $model->getStartDate();
             $dates["end"] = $model->getEndDate();
@@ -96,6 +79,66 @@ class TimeclockViewReports extends JView
         
     }
     /**
+     * filter, search and pagination
+     *
+     * @return null
+     */
+    function filter()
+    {
+        global $mainframe, $option;
+        $layout = JRequest::getVar('layout');
+        $db =& JFactory::getDBO();
+
+        $filter_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', 't.worked', 'cmd');
+        $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', 'desc', 'word');
+        $filter_state     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_state", 'filter_state', '', 'word');
+        $search           = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'search', '', 'string');
+        $search           = JString::strtolower($search);
+        $search_filter    = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'search_filter', 'notes', 'string');
+
+        $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+
+        $this->_where = array();
+
+        if ($search) {
+            $this->_where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+        }
+
+
+        // state filter
+        $this->_lists['state'] = JHTML::_('grid.state', $filter_state, "Active", "Inactive");
+
+        // table ordering
+        $this->_lists['order_Dir']      = $filter_order_Dir;
+        $this->_lists['order']          = $filter_order;
+
+        // search filter
+        $this->_lists['search']         = $search;
+        $this->_lists['search_filter']  = $search_filter;
+
+        $this->assignRef("lists", $this->_lists);
+    
+    }
+    /**
+     * pagination
+     *
+     * @param int $total The total number of items.
+     *
+     * @return null
+     */
+    function pagination($total)
+    {
+        global $mainframe, $option;
+        jimport('joomla.html.pagination');
+
+        $this->_limit            = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+        $this->_limitstart       = $mainframe->getUserStateFromRequest($option.'.projects.limitstart', 'limitstart', 0, 'int');
+
+        $pagination = new JPagination($total, $this->_limitstart, $this->_limit);
+
+        $this->assignRef("pagination", $pagination);
+    }
+    /**
      * The display function
      *
      * @param string $tpl The template to use
@@ -104,12 +147,19 @@ class TimeclockViewReports extends JView
      */
     function payroll($tpl = null)
     {
-       
+        
         $model   =& $this->getModel();
         $this->_where[] = $model->periodWhere("t.worked");
 
-        $where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
-        $data = $model->getTimesheetData($where, $orderby);
+        $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
+        $ret = $model->getTimesheetData($where, $this->_limitstart, $this->_limit, $this->_orderby);
+        $data = array();
+        foreach ($ret as $d) {
+            $hours = ($d->type == "HOLIDAY") ? $d->hours * $model->getHolidayPerc($d->user_id, $d->worked) : $d->hours;
+            $data[$d->user_id][$d->project_id][$d->worked]['hours'] += $hours;
+            $data[$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
+            $data[$d->user_id][$d->project_id][$d->worked]['rec'] = $d;
+        }
 
         $period  = $model->getPeriod();
         $days = 7;
@@ -159,19 +209,13 @@ class TimeclockViewReports extends JView
     {
        
         $model   =& $this->getModel();
+        $this->filter();
+        
+        $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 
-        $where          = (count($this->_where) ? ' WHERE ' . implode(' AND ', $this->_where) : '');
-        $data = $model->getTimesheetData($where, $orderby);
-
-        $notes = array();
-        // Make the data into something usefull for this particular report
-        foreach ($data as $user_id => $projdata) {
-            foreach ($projdata as $proj_id => $dates) {
-                foreach ($dates as $key => $val) {
-                    $notes[$key][] = $val["rec"];
-                }
-            }
-        }
+        $total = $model->getTimesheetDataCount($where);
+        $this->pagination($total);
+        $notes = $model->getTimesheetData($where, $this->_limitstart, $this->_limit, $this->_orderby);
         $this->assignRef("notes", $notes);        
 
         parent::display($tpl);

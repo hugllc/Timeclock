@@ -123,73 +123,41 @@ class TimeclockModelReports extends TimeclockModelTimeclock
     /**
      * Method to display the view
      *
-     * @param string $where   The where clause to add. Must include "WHERE"
-     * @param string $orderby The orderby clause.  Must include "ORDER BY"
+     * @param string $where      The where clause to add. Must NOT include "WHERE"
+     * @param int    $limitstart The record to start on
+     * @param int    $limit      The max number of records to retrieve 
+     * @param string $orderby    The orderby clause.  Must include "ORDER BY"
      *
      * @return string
      */
-    function getTimesheetData($where, $orderby="")
+    function getTimesheetData($where, $limitstart=null, $limit=null, $orderby="")
     {
-        if (empty($where)) $where = " WHERE 1 ";
+        if (empty($where)) $where = " 1 ";
         $key = base64_encode($where.$orderby);
         if (empty($this->data[$key])) {
-            $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes,
-                      u.name as author, p.name as project_name, t.created_by as user_id,
-                      p.type as type
-                      FROM #__timeclock_timesheet as t
-                      LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                      LEFT JOIN #__users as u on t.created_by = u.id
-                      ".$where." AND (p.type = 'PROJECT' OR p.type = 'PTO')
-                      GROUP BY t.created_by, t.worked, t.project_id
-                      ".$orderby;
-            $ret = $this->_getList($query);
-            if (!is_array($ret)) return array();
-            $this->data[$key] = array();
-            foreach ($ret as $d) {
-                $this->data[$key][$d->user_id][$d->project_id][$d->worked]['hours'] += $d->hours;
-                $this->data[$key][$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
-                $this->data[$key][$d->user_id][$d->project_id][$d->worked]['rec'] = $d;
-            }
-            $this->getHolidayHours($where, $orderby, $key);
+            $query = $this->sqlQuery($where).$orderby;
+            $this->data[$key] = $this->_getList($query, $limitstart, $limit);
+
+            if (!is_array($this->data[$key])) return array();
         }
         return $this->data[$key];
     }
     /**
      * Method to display the view
      *
-     * @param string $where   The where clause to add. Must include "WHERE"
-     * @param string $orderby The orderby clause.  Must include "ORDER BY"
-     * @param string $key     The data key to use
+     * @param string $where      The where clause to add. Must NOT include "WHERE"
      *
      * @return string
      */
-    function getHolidayHours($where, $orderby, $key = null)
+    function getTimesheetDataCount($where)
     {
-        if (empty($key)) $key = base64_encode($where.$orderby);
-        
-        $query = "SELECT SUM(t.hours) as hours, t.worked, t.project_id, t.notes,
-                  j.user_id as user_id, p.name as project_name, p.type as type, 
-                  u.name as author
-                  FROM #__timeclock_timesheet as t
-                  LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                  JOIN #__timeclock_users as j on j.id = p.id
-                  LEFT JOIN #__users as u on j.user_id = u.id
-                  LEFT JOIN #__timeclock_prefs as tp on tp.id = u.id
-                  ".$where." AND p.type = 'HOLIDAY'
-                  AND ((t.worked >= tp.startDate) AND ((t.worked <= tp.endDate) OR (tp.endDate = '0000-00-00')))
-                  GROUP BY j.user_id, t.worked, t.project_id
-                  ".$orderby;
-
-        $ret = $this->_getList($query);
-
-        if (!is_array($ret)) return array();
-        foreach ($ret as $d) {
-            $hours = $d->hours * $this->getHolidayPerc($d->user_id, $d->worked);
-            $this->data[$key][$d->user_id][$d->project_id][$d->worked]['hours'] += $hours;
-            $this->data[$key][$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
-            $this->data[$key][$d->user_id][$d->project_id][$d->worked]['rec'] = $d;
+        if (empty($where)) $where = " 1 ";
+        $key = base64_encode($where);
+        if (empty($this->countData[$key])) {
+            $query = $this->sqlQuery($where);
+            $this->countData[$key] = $this->_getListCount($query);
         }
-
+        return $this->countData[$key];
     }
 
 }

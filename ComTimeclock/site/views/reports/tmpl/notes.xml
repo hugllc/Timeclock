@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-        <layout title="Payroll">
+        <layout title="Project Notes">
                 <message>
                         This is a blog-like report of the notes attached to hours
                 </message>
         </layout>
         <state>
-                <name>Reports</name>
+                <name>Project Notes</name>
                 <description>This is a blog-like report of the notes attached to hours</description>
                 <params>
                 </params>
