@@ -92,18 +92,17 @@ class TimeclockViewReports extends JView
         $filter_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', 't.worked', 'cmd');
         $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', 'desc', 'word');
         $filter_state     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_state", 'filter_state', '', 'word');
-        $search           = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'search', '', 'string');
+        $search           = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'report_search', '', 'string');
         $search           = JString::strtolower($search);
-        $search_filter    = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'search_filter', 'notes', 'string');
+        $search_filter    = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'report_search_filter', '', 'string');
 
         $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
 
         $this->_where = array();
 
         if ($search) {
-            $this->_where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            $this->_where[] = 'LOWER('.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
-
 
         // state filter
         $this->_lists['state'] = JHTML::_('grid.state', $filter_state, "Active", "Inactive");
@@ -213,6 +212,15 @@ class TimeclockViewReports extends JView
         
         $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 
+        $this->_lists["search_options"] = array(
+            JHTML::_('select.option', 't.notes', 'Notes'),
+            JHTML::_('select.option', 't.worked', 'Date Worked'),
+            JHTML::_('select.option', 'p.name', 'Project Name'),
+            JHTML::_('select.option', 'u.name', "User Name"),
+            JHTML::_('select.option', 'pc.name', "Category Name"),
+            JHTML::_('select.option', 'c.company', "Company Name"),
+            JHTML::_('select.option', 'c.name', "Company Contact"),
+        );
         $total = $model->getTimesheetDataCount($where);
         $this->pagination($total);
         $notes = $model->getTimesheetData($where, $this->_limitstart, $this->_limit, $this->_orderby);
