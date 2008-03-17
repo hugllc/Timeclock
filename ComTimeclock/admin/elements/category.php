@@ -53,17 +53,27 @@ require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_timeclock'.DS.'models'.
  */
 class JElementCategory extends JElement
 {
-	/**
-	 * Element name
-	 * @access	protected
-	 * @var		string
-	 */
-	var	$_name = 'Category';
+    /**
+     * Element name
+     *
+     * @var string
+     */
+    var    $_name = 'Category';
 
-	function fetchElement($name, $value, &$node, $control_name)
-	{
-	    $model =& JModel::getInstance("Projects", "TimeclockAdminModel");
-	    $options = $model->getParentOptions(0, $value, "All");
-	    return JHTML::_("select.genericList", $options, $control_name.'['.$name.']', "", 'value', 'text', $value);
-	}
+    /**
+     * Get the element
+     *
+     * @param string $name         The name of the element
+     * @param mixed  $value        The current value
+     * @param object &$node        No idea what this is for
+     * @param string $control_name The name of the overall variable
+     *
+     * @return string
+     */
+    function fetchElement($name, $value, &$node, $control_name)
+    {
+        $model =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $options = $model->getParentOptions(0, $value, "All");
+        return JHTML::_("select.genericList", $options, $control_name.'['.$name.']', "", 'value', 'text', $value);
+    }
 }

@@ -299,8 +299,9 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Gets select options for parent projects
      *
-     * @param int $id       The Id of the item to get the parent for
-     * @param int $selected The Id of the item to be selected
+     * @param int    $id       The Id of the item to get the parent for
+     * @param int    $selected The Id of the item to be selected
+     * @param string $text     The text to put in the default entry
      *
      * @return array
      */
@@ -319,9 +320,10 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Gets select options for parent projects
      *
-     * @param string $where   The where clause to use.  Must include 'WHERE'
-     * @param string $text    The text of the first entry
-     * @param array  $exclude Projects to exclude
+     * @param string $where     The where clause to use.  Must include 'WHERE'
+     * @param string $text      The text of the first entry
+     * @param array  $exclude   Projects to exclude
+     * @param int    $textValue The value to go with the text
      *
      * @return array
      */

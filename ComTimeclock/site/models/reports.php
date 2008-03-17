@@ -145,7 +145,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
     /**
      * Method to display the view
      *
-     * @param string $where      The where clause to add. Must NOT include "WHERE"
+     * @param string $where The where clause to add. Must NOT include "WHERE"
      *
      * @return string
      */
