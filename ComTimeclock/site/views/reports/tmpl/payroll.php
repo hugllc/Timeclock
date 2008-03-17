@@ -52,8 +52,12 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
 ?>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
-    <div class="componentheading"><?php print JText::_("Timeclock Payroll Report");?></div>
-    <table style="padding-bottom: 3em;">
+    <?php if ($this->params->get('show_page_title')) : ?>
+    <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
+            <?php echo $this->escape($this->params->get('page_title')); ?>
+    </div>
+    <?php endif; ?>
+    <table style="padding-bottom: 3em;" class="contentpaneopen<?php echo $this->params->get('pageclass_sfx');?>">
         <tr>
             <td colspan="<?php print $headerColSpan; ?>">
                 <?php nextPrev($this); ?>
