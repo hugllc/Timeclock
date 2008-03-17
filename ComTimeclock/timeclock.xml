@@ -72,6 +72,13 @@
             <filename>controller.php</filename>
             <filename>tables/index.html</filename>
             <filename>tables/timeclockprefs.php</filename>
+            <filename>tables/timeclockcustomers.php</filename>
+            <filename>tables/timeclockprojects.php</filename>
+            <filename>tables/timeclockusers.php</filename>
+            <filename>elements/index.html</filename>
+            <filename>elements/project.php</filename>
+            <filename>elements/customer.php</filename>
+            <filename>elements/category.php</filename>
             <filename>images/index.html</filename>
             <filename>images/clock-48.png</filename>
             <filename>controllers/index.html</filename>
@@ -131,9 +138,6 @@
             <filename>views/users/tmpl/index.html</filename>
             <filename>views/users/tmpl/default.php</filename>
             <filename>views/users/view.html.php</filename>
-            <filename>tables/timeclockcustomers.php</filename>
-            <filename>tables/timeclockprojects.php</filename>
-            <filename>tables/timeclockusers.php</filename>
         </files>  
     </administration>
 </install>

@@ -304,9 +304,9 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getParentOptions($id, $selected=0)
+    function getParentOptions($id=0, $selected=0, $text = "None")
     {
-        $parents = array(JHTML::_("select.option", 0, "None"));
+        $parents = array(JHTML::_("select.option", 0, $text));
         $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0 AND id > 0 AND published=1 AND type='CATEGORY' ORDER BY id asc";
         $parentList = $this->_getList($query);
         if (!is_array($parentList)) return $parents;
@@ -325,9 +325,9 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getOptions($where, $text = "None", $exclude=array())
+    function getOptions($where, $text = "None", $exclude=array(), $textValue = -1)
     {
-        $ret = array(JHTML::_("select.option", -1, $text));
+        $ret = array(JHTML::_("select.option", $textValue, $text));
         $query = "SELECT id, name FROM #__timeclock_projects ".$where." ORDER BY id asc";
         $list = self::_getList($query);
         if (!is_array($list)) return $ret;

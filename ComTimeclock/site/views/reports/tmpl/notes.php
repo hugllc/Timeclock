@@ -44,7 +44,11 @@ $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle(JText::_("Timeclock Notes"));
 
 ?>
-<div class="componentheading"><?php print JText::_("Notes"); ?></div>
+<?php if ($this->params->get('show_page_title')) : ?>
+<div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
+        <?php echo $this->escape($this->params->get('page_title')); ?>
+</div>
+<?php endif; ?>
 <form action="<?php print JROUTE::_("index.php"); ?>" method="post" name="userform">
 <div>
 <?php
@@ -60,13 +64,17 @@ foreach ($this->notes as $key => $note) {
             <div class="createdate"><?php echo JText::_("Worked")." ".JHTML::_('date', $note->worked, JText::_('DATE_FORMAT_LC1')); ?></div>
         </div>
         <div><?php print $note->notes; ?></div>
+        <?php if ($this->params->get('show_entered_date')) : ?>
         <div class="modifydate"><?php echo JText::_("Entered")." ".JHTML::_('date', $note->created, JText::_('DATE_FORMAT_LC2')); ?></div>
+        <?php endif; ?>
     </div>
     <span class="article_separator">&nbsp;</span>
     <?php
 }
+if (count($this->notes) == 0) print "No notes found";
 ?>
     <div style="text-align: center; padding: 10px;">
+        <?php if ($this->params->get('show_filter')) : ?>
         <div style="padding: 3px;">
             <?php echo JText::_('Filter'); ?>:
             <input class="inputbox" type="text" id="report_search" name="report_search" size="30" maxlength="255" value="<?php echo $this->lists["search"];?>" />
@@ -75,9 +83,12 @@ foreach ($this->notes as $key => $note) {
             <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
             <button onclick="document.getElementById('report_search').value='';document.getElementById('report_search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
         </div>
-        <div style="text-align: center;"><?php echo JText::_("Display Num").$this->pagination->getLimitBox(); ?></div>
+        <?php endif; ?>
+        <?php if ($this->params->get('show_pagination')) : ?>
+        <div style="text-align: center;"><?php echo JText::_("Display Num").": ".$this->pagination->getLimitBox(); ?></div>
         <div style="text-align: center;"><?php echo $this->pagination->getPagesLinks(); ?></div>
         <div style="text-align: center;"><?php echo $this->pagination->getPagesCounter(); ?></div>
+        <?php endif; ?>
     </div>
 </div>
 <input type="hidden" name="option" value="com_timeclock" />

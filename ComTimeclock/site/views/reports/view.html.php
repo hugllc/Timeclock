@@ -61,8 +61,11 @@ class TimeclockViewReports extends JView
      */
     function display($tpl = null)
     {
-        $layout = JRequest::getVar('layout');
-        $model   =& $this->getModel();
+        global $mainframe;
+        $layout        = $this->getLayout();
+        $model         =& $this->getModel();
+        $this->_params =& $mainframe->getParams('com_timeclock');
+        $this->assignRef("params", $this->_params);
 
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
@@ -76,7 +79,6 @@ class TimeclockViewReports extends JView
             $this->assignRef("dates", $dates);        
             parent::display($tpl);
         }        
-        
     }
     /**
      * filter, search and pagination
@@ -86,17 +88,26 @@ class TimeclockViewReports extends JView
     function filter()
     {
         global $mainframe, $option;
-        $layout = JRequest::getVar('layout');
+        $layout = $this->getLayout();
         $db =& JFactory::getDBO();
 
-        $filter_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', 't.worked', 'cmd');
-        $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', 'desc', 'word');
-        $filter_state     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_state", 'filter_state', '', 'word');
-        $search           = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'report_search', '', 'string');
-        $search           = JString::strtolower($search);
-        $search_filter    = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'report_search_filter', '', 'string');
+        $filter_order      = $this->_params->get("filter_order");
+        $filter_order_Dir  = $this->_params->get("filter_order");
+
+        $filter_order      = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', $this->_params->get("filter_order"), 'cmd');
+        $filter_order_Dir  = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', $this->_params->get("filter_order_dir"), 'word');
+        $filter2_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter2_order", 'filter2_order', $this->_params->get("filter2_order"), 'cmd');
+        $filter2_order_Dir = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter2_order_Dir", 'filter2_order_Dir', $this->_params->get("filter2_order_dir"), 'word');
+        $filter3_order     = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter3_order", 'filter3_order', $this->_params->get("filter3_order"), 'cmd');
+        $filter3_order_Dir = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter3_order_Dir", 'filter3_order_Dir', $this->_params->get("filter3_order_dir"), 'word');
+        $filter_state      = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_state", 'filter_state', '', 'word');
+        $search            = $mainframe->getUserStateFromRequest("$option.reports.$layout.search", 'report_search', '', 'string');
+        $search            = JString::strtolower($search);
+        $search_filter     = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'report_search_filter', '', 'string');
 
         $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+        if (!empty($filter2_order)) $this->_orderby .= ", ". $filter2_order .' '. $filter2_order_Dir;
+        if (!empty($filter3_order)) $this->_orderby .= ", ". $filter3_order .' '. $filter3_order_Dir;
 
         $this->_where = array();
 
@@ -206,9 +217,14 @@ class TimeclockViewReports extends JView
      */
     function notes($tpl = null)
     {
-       
         $model   =& $this->getModel();
         $this->filter();
+        $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
+        if (!empty($cat_id)) $this->_where[] = "pc.id = ".(int)$cat_id;
+        $cust_id = JRequest::getVar('cust_id', "0", '', 'int');
+        if (!empty($cust_id)) $this->_where[] = "c.id = ".(int)$cust_id;
+        $proj_id = JRequest::getVar('proj_id', "0", '', 'int');
+        if (!empty($proj_id)) $this->_where[] = "p.id = ".(int)$proj_id;
         
         $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 

@@ -8,40 +8,35 @@
     <state>
         <name>Project Notes</name>
         <description>This is a blog-like report of the notes attached to hours</description>
+        <url addpath="/administrator/components/com_timeclock/elements">
+            <param name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
+            <param name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
+            <param name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
+        </url>
         <params>
-            <param name="show_description" type="radio" default="0" label="Description" description="Show/Hide the Category Description">
-                <option value="0">Hide</option>
-                <option value="1">Show</option>
-            </param>
-            <param name="show_description_image" type="radio" default="0" label="Description Image" description="Show/Hide the Category Description">
+            <param name="@spacer" type="spacer" default="" label="" description="" />
+            <param name="show_entered_time" type="radio" default="0" label="Time Entered" description="Show/Hide the date and time the entry was created.">
                 <option value="0">Hide</option>
                 <option value="1">Show</option>
             </param>
 
-            <param name="@spacer" type="spacer" default="" label="" description="" />
+            <!--
             <param name="num_leading_articles" type="text" size="3" default="1" label="Num Leading" description="PARAMLEADING" />
             <param name="num_intro_articles" type="text" size="3" default="4" label="Num Intro" description="PARAMINTRO" />
             <param name="num_columns" type="text" size="3" default="2" label="Columns" description="PARAMCOLUMNS" />
             <param name="num_links" type="text" size="3" default="4" label="Num Links" description="Number of Items to display as Links." />
+            -->
         </params>
         <advanced>
-            <param name="orderby_pri" type="list" default="" label="Category Order" description="Order items by category">
-                <option value="">No, order by Primary Order only</option>
-                <option value="alpha">Title Alphabetical</option>
-                <option value="ralpha">Title Reverse-Alphabetical</option>
-                <option value="order">Ordering</option>
+            <param name="filter_order" type="list" default="" label="Filter Order" description="The order items are presented in.">
+                <option value="t.worked">Date Worked</option>
+                <option value="p.name">Project Name</option>
+                <option value="u.name">User Name</option>
+                <option value="c.company">Company Name</option>
             </param>
-            <param name="orderby_sec" type="list" default="" label="Primary Order" description="Order that the items will be displayed in.">
-                <option value="">Default</option>
-                <option value="date">Oldest first</option>
-                <option value="rdate">Most recent first</option>
-                <option value="alpha">Title Alphabetical</option>
-                <option value="ralpha">Title Reverse-Alphabetical</option>
-                <option value="author">Author Alphabetical</option>
-                <option value="rauthor">Author Reverse-Alphabetical</option>
-                <option value="hits">Most Hits</option>
-                <option value="rhits">Least Hits</option>
-                <option value="order">Ordering</option>
+            <param name="filter_order_dir" type="list" default="" label="Filter Order Direction" description="The direction of the sorting">
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
             </param>
 
             <param name="@spacer" type="spacer" default="" label="" description="" />
@@ -50,13 +45,9 @@
                 <option value="1">Show</option>
                 <option value="2">Auto</option>
             </param>
-            <param name="show_pagination_results" type="radio" default="1" label="Pagination Results" description="PARAMPAGINATIONRESULTS">
-                <option value="0">Hide</option>
+            <param name="show_filter" type="radio" default="1" label="Filter" description="Show filter">
                 <option value="1">Show</option>
-            </param>
-            <param name="show_feed_link" type="radio" default="1" label="Show a feed link" description="PARAMSHOWFEEDLINK">
                 <option value="0">Hide</option>
-                <option value="1">Show</option>
             </param>
         </advanced>
     </state>
