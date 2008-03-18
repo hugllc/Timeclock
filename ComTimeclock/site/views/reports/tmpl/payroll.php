@@ -182,6 +182,9 @@ foreach ($this->notes as $user => $projects) {
     </dl>
     <?php
 }
+?>
+</dl>
+<?php
 
 /**
  * Prints out next previous header

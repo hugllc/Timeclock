@@ -67,6 +67,8 @@ class TimeclockViewReports extends JView
         $this->_params =& $mainframe->getParams('com_timeclock');
         $this->assignRef("params", $this->_params);
 
+        $this->_where = array();
+
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
         } else {
@@ -105,11 +107,11 @@ class TimeclockViewReports extends JView
         $search            = JString::strtolower($search);
         $search_filter     = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'report_search_filter', '', 'string');
 
-        $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
-        if (!empty($filter2_order)) $this->_orderby .= ", ". $filter2_order .' '. $filter2_order_Dir;
-        if (!empty($filter3_order)) $this->_orderby .= ", ". $filter3_order .' '. $filter3_order_Dir;
-
-        $this->_where = array();
+        if (!empty($filter_order)) {
+            $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+            if (!empty($filter2_order)) $this->_orderby .= ", ". $filter2_order .' '. $filter2_order_Dir;
+            if (!empty($filter3_order)) $this->_orderby .= ", ". $filter3_order .' '. $filter3_order_Dir;
+        }
 
         if ($search) {
             $this->_where[] = 'LOWER('.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
@@ -162,7 +164,7 @@ class TimeclockViewReports extends JView
         $this->_where[] = $model->periodWhere("t.worked");
 
         $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
-        $ret = $model->getTimesheetData($where, $this->_limitstart, $this->_limit, $this->_orderby);
+        $ret = $model->getTimesheetData($where, null, null, $this->_orderby);
         $data = array();
         foreach ($ret as $d) {
             $hours = ($d->type == "HOLIDAY") ? $d->hours * $model->getHolidayPerc($d->user_id, $d->worked) : $d->hours;
@@ -245,8 +247,88 @@ class TimeclockViewReports extends JView
         parent::display($tpl);
 
     }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return null
+     */
+    function report($tpl = null)
+    {
+        $model   =& $this->getModel();
+        $this->_reportGetPeriod();
+        
+        $this->filter();
+        $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
+        if (!empty($cat_id)) $this->_where[] = "pc.id = ".(int)$cat_id;
+        $cust_id = JRequest::getVar('cust_id', "0", '', 'int');
+        if (!empty($cust_id)) $this->_where[] = "c.id = ".(int)$cust_id;
+        $proj_id = JRequest::getVar('proj_id', "0", '', 'int');
+        if (!empty($proj_id)) $this->_where[] = "p.id = ".(int)$proj_id;
 
+        $this->_lists["search_options"] = array(
+            JHTML::_('select.option', 't.notes', 'Notes'),
+            JHTML::_('select.option', 't.worked', 'Date Worked'),
+            JHTML::_('select.option', 'p.name', 'Project Name'),
+            JHTML::_('select.option', 'u.name', "User Name"),
+            JHTML::_('select.option', 'pc.name', "Category Name"),
+            JHTML::_('select.option', 'c.company', "Company Name"),
+            JHTML::_('select.option', 'c.name', "Company Contact"),
+        );
 
+        $this->_reportGetData();
+        $cell_fill = $this->_params->get("cell_fill");
+        if ($cell_fill == " ") $cell_fill = "&nbsp;";
+        $this->assignRef("cell_fill", $cell_fill);
+
+        parent::display($tpl);
+
+    }
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function _reportGetData()
+    {
+        $model    =& $this->getModel();
+        $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
+        $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
+        $report   = array();
+        $totals   = array();
+        $cat_name = "category_name";
+        foreach ($ret as $d) {
+            $hours = ($d->type == "HOLIDAY") ? $d->hours * $model->getHolidayPerc($d->user_id, $d->worked) : $d->hours;
+            $user  = $d->author;
+            $proj  = $d->project_name;
+            $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+            
+            $report[$cat][$proj][$user] += $hours;
+            $totals["proj"][$proj]      += $hours;
+            $totals["user"][$user]      += $hours;
+            $total                      += $hours;
+        }
+        $this->assignRef("report", $report);
+        $this->assignRef("totals", $totals);
+        $this->assignRef("total", $total);
+
+    }
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function _reportGetPeriod()
+    {
+        $model   =& $this->getModel();
+        $period  = $model->getPeriodDates();
+        $this->_where[] = $model->dateWhere("t.worked", $period["start"], $period["end"]);
+        $this->assignRef("period", $period);
+
+    }
+    
 }
 
 ?>

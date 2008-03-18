@@ -159,7 +159,17 @@ class TimeclockModelReports extends TimeclockModelTimeclock
         }
         return $this->countData[$key];
     }
-
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $date The date in Mysql ("Y-m-d") format.
+     *
+     * @return array
+     */ 
+    function getPeriodDates()
+    {
+        return parent::getPeriodDates($this->_startDate, $this->_endDate);
+    }
 }
 
 ?>

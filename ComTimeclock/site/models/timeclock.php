@@ -220,9 +220,21 @@ class TimeclockModelTimeclock extends JModel
     function employmentDateWhere($field)
     {
         $dates = self::getEmploymentDates();
-        $ret = "($field >= '".$dates["start"]."'";
+        return self::dateWhere($field, $dates["start"], $dates["end"]);    
+    }
+
+    /**
+     * Where statement for dates
+     *
+     * @param string $field The field to use
+     *
+     * @return string
+     */
+    function dateWhere($field, $start, $end="")
+    {
+        $ret = "($field >= '$start'";
         
-        if (($dates["end"] != '0000-00-00') && !empty($dates["end"])) $ret .= " AND $field <= '".$dates["end"]."'";
+        if (($end != '0000-00-00') && !empty($end)) $ret .= " AND $field <= '$end'";
 
         $ret .= ")";
         return $ret;    
@@ -272,11 +284,7 @@ class TimeclockModelTimeclock extends JModel
     function periodWhere($field)
     {
         $period = $this->getPeriod();
-        $start = $period["start"];
-        $end = $period["end"];
-        $ret = "($field >= '$start' AND $field <= '$end')";
-
-        return $ret;    
+        return self::dateWhere($field, $period["start"], $period["end"]);    
     }
     /**
      * Where statement for the reporting period dates
@@ -289,7 +297,7 @@ class TimeclockModelTimeclock extends JModel
     function getPeriod($date=null)
     {
         // This should be the last one.
-        return self::_getPeriodFixed($date);
+        return self::_getPayPeriodFixed($date);
     }
     /**
      * Where statement for the reporting period dates
@@ -298,22 +306,40 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    private function _getPeriodFixed($date)
+    private function _getPayPeriodFixed($date)
     {
-        static $periods;
 
         $date = self::getDate($date);
 
         $start = self::_getPeriodFixedStart($date);        
-        $return =& $periods[$start];
-        if (!isset($return)) {
-            $start = TimeclockController::explodeDate($start);
             
-            $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
-    
-            $y = $start["y"];
-            $m = $start["m"];
-            $d = $start["d"];
+        $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
+        $return = self::getPeriodDates($start, null, $periodLength);
+        return $return;
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int $date The date in Mysql ("Y-m-d") format.
+     *
+     * @return array
+     */ 
+    function getPeriodDates($startDate, $endDate=null, $periodLength=null)
+    {
+        static $periods;
+
+        $key = $startDate.$endDate.$periodLength;
+        $return =& $periods[$key];
+        if (!isset($return)) {
+            $startUnix = TimeclockController::dateUnixSql($startDate);
+            $endUnix = TimeclockController::dateUnixSql($endDate);
+            if (empty($periodLength)) $periodLength = round(($endUnix - $startUnix) / 86400);
+            $start = TimeclockController::explodeDate($startDate);
+            $end = TimeclockController::explodeDate($endDate);
+            
+            $y =& $start["y"];
+            $m =& $start["m"];
+            $d =& $start["d"];
     
             // These are all of the dates in the pay period
             for ($i = 0; $i < $periodLength; $i++) {
@@ -321,21 +347,20 @@ class TimeclockModelTimeclock extends JModel
             }
     
             // Get the start and end
-            $return['unix']['start']        = TimeclockController::dateUnix($m, $d, $y);
-            $return['unix']['end']          = TimeclockController::dateUnix($m, $d+$periodLength-1, $y);
-            $return['unix']['prev']         = TimeclockController::dateUnix($m, $d-$periodLength, $y);
-            $return['unix']['prevend']      = TimeclockController::dateUnix($m, $d-1, $y);
-            $return['unix']['next']         = TimeclockController::dateUnix($m, $d+$periodLength, $y);
-            $return['unix']['nextend']      = TimeclockController::dateUnix($m, $d+(2*$periodLength), $y);
-            $return['start']        = self::_date($return['unix']['start']);
-            $return['end']          = self::_date($return['unix']['end']);
-            $return['prev']         = self::_date($return['unix']['prev']);
-            $return['prevend']      = self::_date($return['unix']['prevend']);
-            $return['next']         = self::_date($return['unix']['next']);
-            $return['nextend']      = self::_date($return['unix']['nextend']);
-
-            $return['length']       = $periodLength;
-        }    
+            $return['unix']['start']   = TimeclockController::dateUnix($m, $d, $y);
+            $return['unix']['end']     = TimeclockController::dateUnix($m, $d+$periodLength-1, $y);
+            $return['unix']['prev']    = TimeclockController::dateUnix($m, $d-$periodLength, $y);
+            $return['unix']['prevend'] = TimeclockController::dateUnix($m, $d-1, $y);
+            $return['unix']['next']    = TimeclockController::dateUnix($m, $d+$periodLength, $y);
+            $return['unix']['nextend'] = TimeclockController::dateUnix($m, $d+(2*$periodLength), $y);
+            $return['start']           = self::_date($return['unix']['start']);
+            $return['end']             = self::_date($return['unix']['end']);
+            $return['prev']            = self::_date($return['unix']['prev']);
+            $return['prevend']         = self::_date($return['unix']['prevend']);
+            $return['next']            = self::_date($return['unix']['next']);
+            $return['nextend']         = self::_date($return['unix']['nextend']);
+            $return['length']          = $periodLength;
+        }
         return $return;
     }
     /**
