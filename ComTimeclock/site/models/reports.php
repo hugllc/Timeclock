@@ -54,6 +54,25 @@ require_once "timeclock.php";
  */
 class TimeclockModelReports extends TimeclockModelTimeclock
 {
+    /** @var string The type of period */
+    private $_periodType = "month";
+
+    /** @var string The type of period */
+    private $_periods = array(
+        "month" => array(
+            "start" => "Y-m-01",
+            "end" => "Y-m-t",
+        ),
+        "year" => array(
+            "start" => "Y-01-01",
+            "end" => "Y-12-31",
+        ),
+        "day" => array(
+            "start" => "Y-m-d",
+            "end" => "Y-m-d",
+        ),
+    );
+    
     /**
      * Constructor that retrieves the ID from the request
      *
@@ -65,11 +84,13 @@ class TimeclockModelReports extends TimeclockModelTimeclock
 
         $y = (int)date("Y");
 
-        $startDate = JRequest::getVar('startDate', "$y-1-1", '', 'string');
+        $this->_periodType = JRequest::getVar('period', "month", '', 'word');
+        $date = JRequest::getVar('date', "", '', 'string');
+        $date = TimeclockController::fixDate($date);
+        $startDate = !empty($date) ? $date : JRequest::getVar('startDate', "", '', 'string');
         $this->setStartDate($startDate);
-        $endDate = JRequest::getVar('endDate', "$y-12-31", '', 'string');
+        $endDate = !empty($date) ? $date : JRequest::getVar('endDate', "", '', 'string');
         $this->setEndDate($endDate);
-        
     }
 
     /**
@@ -97,6 +118,16 @@ class TimeclockModelReports extends TimeclockModelTimeclock
     }
 
     /**
+     * Get the type of period
+     *
+     * @return string
+     */ 
+    function getPeriodType()
+    {
+        return $this->_periodType;
+    }
+
+    /**
      * Where statement for the reporting period dates
      *
      * @param string $date Date to use in MySQL format ("Y-m-d")
@@ -105,6 +136,12 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      */ 
     function setStartDate($date)
     {
+        $date = TimeclockController::fixDate($date);
+        $method = "_startDate".$this->_periodType;
+        if (empty($date)) $date = date("Y-m-d");
+        $unixDate = TimeclockController::dateUnixSql($date);
+        $sdate = date($this->_periods[$this->_periodType]["start"], $unixDate);
+        $date = method_exists($this, $method) ? $this->$method($date) : $sdate;
         parent::setDate($date, "_startDate");
     }
 
@@ -117,6 +154,11 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      */ 
     function setEndDate($date)
     {
+        $date = TimeclockController::fixDate($date);
+        $method = "_endDate".$this->_periodType;
+        if (empty($date)) $date = date("Y-m-d");
+        $unixDate = TimeclockController::dateUnixSql($date);
+        $date = method_exists($this, $method) ? $this->$method($date) : date($this->_periods[$this->_periodType]["end"], $unixDate);
         parent::setDate($date, "_endDate");
     }
 

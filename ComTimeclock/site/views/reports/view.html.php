@@ -322,10 +322,12 @@ class TimeclockViewReports extends JView
      */
     function _reportGetPeriod()
     {
-        $model   =& $this->getModel();
-        $period  = $model->getPeriodDates();
+        $model          =& $this->getModel();
+        $period         = $model->getPeriodDates();
+        $periodType     = $model->getPeriodType();
         $this->_where[] = $model->dateWhere("t.worked", $period["start"], $period["end"]);
         $this->assignRef("period", $period);
+        $this->assignRef("periodType", $periodType);
 
     }
     

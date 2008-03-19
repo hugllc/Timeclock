@@ -118,15 +118,15 @@ class ComTimeclockSiteModelReportsTest extends ComTimeclockSiteModelTimeclockTes
             array("2002-5-2", "2002-5-2", "getStartDate", "setStartDate"),
             array("2002-05-22 21:24:52", "2002-05-22", "getStartDate", "setStartDate"),
             array("2523422002-05-2225114", "2002-05-22", "getStartDate", "setStartDate"),
-            array("2523422002-052-2225114", date("Y-m-d"), "getStartDate", "setStartDate"),
-            array(null, date("Y-m-d"), "getStartDate", "setStartDate"),
+            array("2523422002-052-2225114", date("Y-m-01"), "getStartDate", "setStartDate"),
+            array(null, date("Y-m-01"), "getStartDate", "setStartDate"),
             // End Date
             array("2009-05-12", "2009-05-12", "getEndDate", "setEndDate"),
             array("2002-5-2", "2002-5-2", "getEndDate", "setEndDate"),
             array("2002-05-22 21:24:52", "2002-05-22", "getEndDate", "setEndDate"),
             array("2523422002-05-2225114", "2002-05-22", "getEndDate", "setEndDate"),
-            array("2523422002-052-2225114", date("Y-m-d"), "getEndDate", "setEndDate"),
-            array(null, date("Y-m-d"), "getEndDate", "setEndDate"),
+            array("2523422002-052-2225114", date("Y-m-t"), "getEndDate", "setEndDate"),
+            array(null, date("Y-m-t"), "getEndDate", "setEndDate"),
         );
     }
     

@@ -48,6 +48,7 @@ $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
 
+
 ?>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
@@ -60,7 +61,7 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
         <tr>
             <td colspan="<?php print $headerColSpan; ?>">
                 <?php nextPrev($this); ?>
-                <div id="dateheader" style="clear:both;">
+                <div id="dateheader" style="clear:both; white-space: nowrap;">
                    <strong>
                        <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
                        <?php print JText::_("to"); ?>
@@ -69,6 +70,7 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
                </div>
            </td>        
         </tr>
+        <?php if (count($this->report) > 0) : ?>
         <tr>
             <td class="sectiontableheader" width="50px" style="<?php print $cellStyle; ?>"><?php print JText::_("Project"); ?></td>
             <?php foreach (array_keys($this->totals["user"]) as $user) : ?>
@@ -117,6 +119,11 @@ foreach ($this->report as $cat => $projArray) {
             <?php endforeach; ?>            
             <td class="sectiontableheader" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
         </tr>
+        <?php else : ?>
+        <tr>
+            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $cellStyle; ?>"><?php print JText::_("No data found"); ?></td>
+        </tr>
+        <?php endif; ?>
     </table>
 </form>
 <?php
@@ -129,22 +136,23 @@ foreach ($this->report as $cat => $projArray) {
  */ 
 function nextprev(&$obj)
 {
+    $baseurl = "index.php?option=com_timeclock&view=reports&layout=report&period=".$obj->periodType;
     $tip = "Go to the next pay period";
     $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
     $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=report&date=".$obj->period["next"]);
+    $url = JROUTE::_($baseurl."&date=".$obj->period["next"]);
     $nextImg = '<a href="'.$url.'">'.$text.'</a>';
     $next = '<a href="'.$url.'">'.JText::_("Next").'</a>';
 
     $tip = "Go to the previous pay period";
     $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
     $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=report&date=".$obj->period["prev"]);
+    $url = JROUTE::_($baseurl."&period=".$obj->periodType."&date=".$obj->period["prevend"]);
     $prevImg = '<a href="'.$url.'">'.$text.'</a>';
     $prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
 
     $text = JText::_('Today');
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=report");
+    $url = JROUTE::_($baseurl);
     $today = '<a href="'.$url.'">'.$text.'</a>';
 
     ?>

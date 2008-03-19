@@ -333,7 +333,7 @@ class TimeclockModelTimeclock extends JModel
         if (!isset($return)) {
             $startUnix = TimeclockController::dateUnixSql($startDate);
             $endUnix = TimeclockController::dateUnixSql($endDate);
-            if (empty($periodLength)) $periodLength = round(($endUnix - $startUnix) / 86400);
+            if (empty($periodLength)) $periodLength = round(($endUnix - $startUnix) / 86400) + 1;
             $start = TimeclockController::explodeDate($startDate);
             $end = TimeclockController::explodeDate($endDate);
             
