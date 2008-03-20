@@ -45,6 +45,14 @@ require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
 /**
  * ComTimeclock model
  *
+ * Dates are set by either the parameter "date" and a period type (i.e. "month")
+ * or by two date parameters ("startDate" and "endDate").  This should be sent
+ * on the URL.  
+ *
+ * All of the basic number crunching on the dates is done when the class is 
+ * created.  This creates two internal variables: _startDate and _endDate.  These
+ * are where the dates are actually stored.
+ *
  * @category   UI
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
@@ -55,6 +63,29 @@ require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
  */
 class TimeclockModelTimeclock extends JModel
 {
+    /** @var string The type of period */
+    protected $periodType = "payperiod";
+
+    /** @var string The type of period */
+    protected $periods = array(
+        "month" => array(
+            "start" => "Y-m-01",
+            "end" => "Y-m-t",
+        ),
+        "year" => array(
+            "start" => "Y-01-01",
+            "end" => "Y-12-31",
+        ),
+        "day" => array(
+            "start" => "Y-m-d",
+            "end" => "Y-m-d",
+        ),
+    );
+    /** @var string The start date in MySQL format */
+    protected $_startDate = null;
+    /** @var string The end date in MySQL format */
+    protected $_endDate = null;
+
     /**
      * Constructor that retrieves the ID from the request
      *
@@ -72,8 +103,14 @@ class TimeclockModelTimeclock extends JModel
         }
         $this->setId($cid);
 
-        $date = JRequest::getVar('date', 0, '', 'string');
-        $this->setDate($date);
+        $date = JRequest::getVar('date', "", '', 'string');
+        $date = TimeclockController::fixDate($date);
+        $startDate = !empty($date) ? $date : JRequest::getVar('startDate', "", '', 'string');
+        $this->setStartDate($startDate);
+        $endDate = !empty($date) ? $date : JRequest::getVar('endDate', "", '', 'string');
+        $this->setEndDate($endDate);
+
+
 
         $project = JRequest::getVar('projid', 0, '', 'string');
         $this->setProject($project);
@@ -105,6 +142,81 @@ class TimeclockModelTimeclock extends JModel
     {
         $this->$field = TimeClockController::fixDate($date);
         if (empty($this->$field)) $this->$field = date("Y-m-d");
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d")
+     *
+     * @return array
+     */ 
+    function getStartDate($date=null)
+    {
+        return self::getDate($date, "_startDate");
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d")
+     *
+     * @return array
+     */ 
+    function getEndDate($date=null)
+    {
+        return self::getDate($date, "_endDate");
+    }
+
+    /**
+     * Get the type of period
+     *
+     * @return string
+     */ 
+    function getPeriodType()
+    {
+        return $this->periodType;
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d")
+     *
+     * @return null
+     */ 
+    function setStartDate($date, $field = "_startDate", $type = "start")
+    {
+        return self::setPeriodDate($date, "_startDate", "start");
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d")
+     *
+     * @return null
+     */ 
+    function setEndDate($date)
+    {
+        return self::setPeriodDate($date, "_endDate", "end");
+    }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d")
+     *
+     * @return null
+     */ 
+    function setPeriodDate($date, $field, $type)
+    {
+        $date = TimeclockController::fixDate($date);
+        if (empty($date)) $date = date("Y-m-d");
+        $method = "get".$field.$this->periodType;
+        $unixDate = TimeclockController::dateUnixSql($date);
+        $sdate = date($this->periods[$this->periodType][$type], $unixDate);
+        $date = method_exists($this, $method) ? $this->$method($date) : $sdate;
+        return self::setDate($date, $field);
     }
 
     /**
@@ -173,7 +285,7 @@ class TimeclockModelTimeclock extends JModel
             if (!is_array($ret)) return array();
             $this->data = array();
             foreach ($ret as $d) {
-                $hours = ($d->type == "HOLIDAY") ? $d->hours * $this->getHolidayPerc($id, $d->worked) : $d->hours;
+                $hours = ($d->type == "HOLIDAY") ? $d->hours * $this->getHolidayPerc($d->user_id, $d->worked) : $d->hours;
                 $this->data[$d->project_id][$d->worked]['hours'] += $hours;
                 $this->data[$d->project_id][$d->worked]['notes'] .= $d->notes;
             }
@@ -283,7 +395,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function periodWhere($field)
     {
-        $period = $this->getPeriod();
+        $period = $this->getPeriodDates();
         return self::dateWhere($field, $period["start"], $period["end"]);    
     }
     /**
@@ -294,11 +406,55 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function getPeriod($date=null)
+    function get_startDatePayPeriod($date)
     {
-        // This should be the last one.
-        return self::_getPayPeriodFixed($date);
+        return self::_getPayPeriodFixedStart($date); 
     }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
+     *                      the date read from the request variables is used.
+     *
+     * @return array
+     */ 
+    function get_endDatePayPeriod($date)
+    {
+        return self::_getPayPeriodFixedEnd($date); 
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
+     *                      the date read from the request variables is used.
+     *
+     * @return array
+     */ 
+    function get_startDateQuarter($date)
+    {
+        $date = TimeclockController::explodeDate($date);
+        if ($date["m"] < 4) return date("Y-01-01");
+        if ($date["m"] < 7) return date("Y-04-01");
+        if ($date["m"] < 10) return date("Y-07-01");
+        return date("Y-10-01");
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
+     *                      the date read from the request variables is used.
+     *
+     * @return array
+     */ 
+    function get_endDateQuarter($date)
+    {
+        $date = TimeclockController::explodeDate($date);
+        if ($date["m"] < 4) return date("Y-03-31");
+        if ($date["m"] < 7) return date("Y-06-30");
+        if ($date["m"] < 10) return date("Y-09-30");
+        return date("Y-12-31");
+    }
+
     /**
      * Where statement for the reporting period dates
      *
@@ -306,16 +462,16 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    private function _getPayPeriodFixed($date)
+    private function _getPayPeriodFixedEnd($date)
     {
 
         $date = self::getDate($date);
 
-        $start = self::_getPeriodFixedStart($date);        
-            
+        $start = self::_getPayPeriodFixedStart($date);        
+        $start = TimeclockController::explodeDate($start);
+        
         $periodLength = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
-        $return = self::getPeriodDates($start, null, $periodLength);
-        return $return;
+        return self::_date($start["m"], $start["d"]+$periodLength-1, $start["y"]);
     }
     /**
      * Where statement for the reporting period dates
@@ -324,16 +480,17 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function getPeriodDates($startDate, $endDate=null, $periodLength=null)
+    function getPeriodDates()
     {
         static $periods;
 
-        $key = $startDate.$endDate.$periodLength;
-        $return =& $periods[$key];
+        $return =& $periods;
         if (!isset($return)) {
+            $startDate =& $this->_startDate;
+            $endDate =& $this->_endDate;
             $startUnix = TimeclockController::dateUnixSql($startDate);
             $endUnix = TimeclockController::dateUnixSql($endDate);
-            if (empty($periodLength)) $periodLength = round(($endUnix - $startUnix) / 86400) + 1;
+            $periodLength = round(($endUnix - $startUnix) / 86400) + 1;
             $start = TimeclockController::explodeDate($startDate);
             $end = TimeclockController::explodeDate($endDate);
             
@@ -348,11 +505,11 @@ class TimeclockModelTimeclock extends JModel
     
             // Get the start and end
             $return['unix']['start']   = TimeclockController::dateUnix($m, $d, $y);
-            $return['unix']['end']     = TimeclockController::dateUnix($m, $d+$periodLength-1, $y);
+            $return['unix']['end']     = TimeclockController::dateUnix($end["m"], $end["d"], $end["y"]);
             $return['unix']['prev']    = TimeclockController::dateUnix($m, $d-$periodLength, $y);
             $return['unix']['prevend'] = TimeclockController::dateUnix($m, $d-1, $y);
-            $return['unix']['next']    = TimeclockController::dateUnix($m, $d+$periodLength, $y);
-            $return['unix']['nextend'] = TimeclockController::dateUnix($m, $d+(2*$periodLength), $y);
+            $return['unix']['next']    = TimeclockController::dateUnix($end["m"], $end["d"]+1, $end["y"]);
+            $return['unix']['nextend'] = TimeclockController::dateUnix($end["m"], $end["d"]+$periodLength, $end["y"]);
             $return['start']           = self::_date($return['unix']['start']);
             $return['end']             = self::_date($return['unix']['end']);
             $return['prev']            = self::_date($return['unix']['prev']);
@@ -370,7 +527,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    private function _getPeriodFixedStart($date)
+    private function _getPayPeriodFixedStart($date)
     {
         // Get this date
         $uDate = TimeclockController::dateUnixSql($date);

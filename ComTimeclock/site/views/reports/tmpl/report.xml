@@ -18,7 +18,6 @@
             <param name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
             <param name="period" type="list" default="month" label="Default Period" description="The default period of time to show">
                 <option value="day">Day</option>
-                <option value="week">Week</option>
                 <option value="payperiod">Pay Period</option>
                 <option value="month">Month</option>
                 <option value="quarter">Quarter</option>

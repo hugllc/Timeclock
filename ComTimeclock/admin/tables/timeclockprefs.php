@@ -258,8 +258,8 @@ class TableTimeclockPrefs extends JTable
             $inst = JTable::getInstance("TimeclockPrefs", "Table");
             $inst->load($oid);
         }
-        if (isset($inst->prefs[$name])) return self::filterPref($name, $inst->prefs[$name]);
         if (isset($inst->$name)) return self::filterPref($name, $inst->$name);
+        if (isset($inst->prefs[$name])) return self::filterPref($name, $inst->prefs[$name]);
         if (isset(self::$_defaults[$type][$name])) return self::getDefaultPref($name, $type);
         if ($type != "system") return self::getPref($name, "system", $oid);
         return self::filterPref($name, null);

@@ -38,8 +38,6 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$this->totals     = array();
-
 $headerColSpan    = ($this->weeks * 4) + 3;
 
 $cellStyle  = "text-align:center; padding: 1px;";
@@ -48,7 +46,6 @@ $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
-
 ?>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
@@ -104,21 +101,18 @@ foreach ($this->report as $id => $time) {
     <?php
     for ($w = 0; $w < $this->weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
-            $hours = (empty($time[$w][$type]["hours"])) ? 0 : $time[$w][$type]["hours"];
-            $totals[$w][$type] += $hours;
+            $hours = (empty($time[$w][$type]["hours"])) ? $this->cell_fill : $time[$w][$type]["hours"];
             ?>
                 <td class="sectiontablerow<?php print $k;?>" align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
             <?php
         }
-        $hours = (empty($time[$w]["TOTAL"]["hours"])) ? 0 : $time[$w]["TOTAL"]["hours"];
-        $totals[$w]["TOTAL"] += $hours;
+        $hours = (empty($time[$w]["TOTAL"]["hours"])) ? $this->cell_fill : $time[$w]["TOTAL"]["hours"];
         ?>
                 <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     $k = 1 - $k;
-    $hours = (empty($time["TOTAL"])) ? 0 : $time["TOTAL"];
-    $totals["TOTAL"] += $hours;
+    $hours = (empty($this->totals["user"][$id])) ? 0 : $this->totals["user"][$id];
     ?>
             <td class="sectiontablerow<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>""><?php print $time["name"]; ?></td>
             <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
@@ -131,18 +125,18 @@ foreach ($this->report as $id => $time) {
     <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
-        $hours = (empty($totals[$w][$type])) ? 0 : $totals[$w][$type];
+        $hours = (empty($this->totals["type"][$w][$type])) ? 0 : $this->totals["type"][$w][$type];
         ?>
             <td class="sectiontablerow<?php print $k;?>" align="center" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
-    $hours = (empty($totals[$w]["TOTAL"])) ? 0 : $totals[$w]["TOTAL"];
+    $hours = (empty($this->totals["type"][$w]["TOTAL"])) ? 0 : $this->totals["type"][$w]["TOTAL"];
     ?>
             <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
     <?php
 }
 $k = 1 - $k;
-$hours = (empty($totals["TOTAL"])) ? 0 : $totals["TOTAL"];
+$hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
 ?>
             <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
             <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>

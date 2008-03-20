@@ -96,7 +96,7 @@ class TimeclockViewTimeclock extends JView
 
         $model   =& $this->getModel();
         $hours   = $model->getTimesheetData();
-        $period  = $model->getPeriod();
+        $period  = $model->getPeriodDates();
 
         $this->assignRef("hours", $hours);
         $this->assignRef("period", $period);        

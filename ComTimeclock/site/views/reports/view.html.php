@@ -68,6 +68,7 @@ class TimeclockViewReports extends JView
         $this->assignRef("params", $this->_params);
 
         $this->_where = array();
+        $this->cellFill();
 
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
@@ -81,6 +82,34 @@ class TimeclockViewReports extends JView
             $this->assignRef("dates", $dates);        
             parent::display($tpl);
         }        
+    }
+
+    /**
+     * filter, search and pagination
+     *
+     * @return null
+     */
+    function where()
+    {
+        $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
+        if (!empty($cat_id)) $this->_where[] = "pc.id = ".(int)$cat_id;
+        $cust_id = JRequest::getVar('cust_id', "0", '', 'int');
+        if (!empty($cust_id)) $this->_where[] = "c.id = ".(int)$cust_id;
+        $proj_id = JRequest::getVar('proj_id', "0", '', 'int');
+        if (!empty($proj_id)) $this->_where[] = "p.id = ".(int)$proj_id;    
+    }
+
+    /**
+     * filter, search and pagination
+     *
+     * @return null
+     */
+    function cellFill()
+    {
+        $cell_fill = " ";
+        if (is_object($this->_params)) $cell_fill = $this->_params->get("cell_fill");
+        if ($cell_fill == " ") $cell_fill = "&nbsp;";
+        $this->assignRef("cell_fill", $cell_fill);
     }
     /**
      * filter, search and pagination
@@ -167,17 +196,17 @@ class TimeclockViewReports extends JView
         $ret = $model->getTimesheetData($where, null, null, $this->_orderby);
         $data = array();
         foreach ($ret as $d) {
-            $hours = ($d->type == "HOLIDAY") ? $d->hours * $model->getHolidayPerc($d->user_id, $d->worked) : $d->hours;
-            $data[$d->user_id][$d->project_id][$d->worked]['hours'] += $hours;
+            $data[$d->user_id][$d->project_id][$d->worked]['hours'] += $d->hours;
             $data[$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
             $data[$d->user_id][$d->project_id][$d->worked]['rec'] = $d;
         }
 
-        $period  = $model->getPeriod();
+        $period  = $model->getPeriodDates();
         $days = 7;
         
         $report = array();
         $notes = array();
+        $totals = array();
         $weeks = round($period["length"] / $days);
         // Make the data into something usefull for this particular report
         foreach ($data as $user_id => $projdata) {
@@ -186,16 +215,22 @@ class TimeclockViewReports extends JView
                 foreach ($period["dates"] as $key => $uDate) {
                     $week = (int)($d++ / $days);
                     if (!array_key_exists($key, $dates)) continue;
+                    $hours = $dates[$key]["hours"];
                     $type = $dates[$key]["rec"]->type;
-                    $report[$user_id][$week][$type]["hours"] += $dates[$key]["hours"];
-                    $report[$user_id][$week]["TOTAL"]["hours"] += $dates[$key]["hours"];
-                    $report[$user_id]["TOTAL"] += $dates[$key]["hours"];
+                    $report[$user_id][$week][$type]["hours"] += $hours;
+                    $report[$user_id][$week]["TOTAL"]["hours"] += $hours;
                     if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->author;
         
                     $projname = $dates[$key]["rec"]->project_name;
                     $username = $dates[$key]["rec"]->author;
+
                     $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
                     $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
+
+                    $totals["type"][$week][$type] += $hours;
+                    $totals["type"][$week]["TOTAL"] += $hours;
+                    $totals["user"][$user_id]     += $hours;
+                    $totals["total"]              += $hours;
                 }
             }
         }
@@ -203,6 +238,7 @@ class TimeclockViewReports extends JView
         $this->assignRef("weeks", $weeks);        
         $this->assignRef("days", $days);        
         $this->assignRef("report", $report);        
+        $this->assignRef("totals", $totals);        
         $this->assignRef("notes", $notes);        
         $this->assignRef("period", $period);
 
@@ -221,12 +257,7 @@ class TimeclockViewReports extends JView
     {
         $model   =& $this->getModel();
         $this->filter();
-        $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
-        if (!empty($cat_id)) $this->_where[] = "pc.id = ".(int)$cat_id;
-        $cust_id = JRequest::getVar('cust_id', "0", '', 'int');
-        if (!empty($cust_id)) $this->_where[] = "c.id = ".(int)$cust_id;
-        $proj_id = JRequest::getVar('proj_id', "0", '', 'int');
-        if (!empty($proj_id)) $this->_where[] = "p.id = ".(int)$proj_id;
+        $this->where();
         
         $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 
@@ -260,12 +291,7 @@ class TimeclockViewReports extends JView
         $this->_reportGetPeriod();
         
         $this->filter();
-        $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
-        if (!empty($cat_id)) $this->_where[] = "pc.id = ".(int)$cat_id;
-        $cust_id = JRequest::getVar('cust_id', "0", '', 'int');
-        if (!empty($cust_id)) $this->_where[] = "c.id = ".(int)$cust_id;
-        $proj_id = JRequest::getVar('proj_id', "0", '', 'int');
-        if (!empty($proj_id)) $this->_where[] = "p.id = ".(int)$proj_id;
+        $this->where();
 
         $this->_lists["search_options"] = array(
             JHTML::_('select.option', 't.notes', 'Notes'),
@@ -278,9 +304,6 @@ class TimeclockViewReports extends JView
         );
 
         $this->_reportGetData();
-        $cell_fill = $this->_params->get("cell_fill");
-        if ($cell_fill == " ") $cell_fill = "&nbsp;";
-        $this->assignRef("cell_fill", $cell_fill);
 
         parent::display($tpl);
 
@@ -300,7 +323,7 @@ class TimeclockViewReports extends JView
         $totals   = array();
         $cat_name = "category_name";
         foreach ($ret as $d) {
-            $hours = ($d->type == "HOLIDAY") ? $d->hours * $model->getHolidayPerc($d->user_id, $d->worked) : $d->hours;
+            $hours = $d->hours;
             $user  = $d->author;
             $proj  = $d->project_name;
             $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;

@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-        <layout title="Payroll">
-                <message>
-                        This is the payroll report
-                </message>
-        </layout>
-        <state>
-                <name>Reports</name>
-                <description>This is the payroll report.</description>
-                <params>
-                </params>
-        </state>
+    <layout title="Payroll">
+        <message>
+            This is the payroll report
+        </message>
+    </layout>
+    <state>
+        <name>Reports</name>
+        <description>This is the payroll report.</description>
+        <url addpath="/administrator/components/com_timeclock/elements">
+            <param name="period" type="list" default="payperiod" label="Default Period" description="The default period of time to show">
+                <option value="day">Day</option>
+                <option value="payperiod">Pay Period</option>
+                <option value="month">Month</option>
+                <option value="quarter">Quarter</option>
+                <option value="year">Year</option>
+            </param>
+        </url>
+        <params addpath="/administrator/components/com_timeclock/elements">
+            <param name="cell_fill" type="list" default=" " label="Cell Fill Character" description="This is what will be in the cell if there are 0 hours.">
+                <option value=" ">None</option>
+                <option value="0">0</option>
+            </param>
+        </params>
+    </state>
 </metadata>

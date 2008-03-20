@@ -55,24 +55,8 @@ require_once "timeclock.php";
 class TimeclockModelReports extends TimeclockModelTimeclock
 {
     /** @var string The type of period */
-    private $_periodType = "month";
+    protected $periodType = "month";
 
-    /** @var string The type of period */
-    private $_periods = array(
-        "month" => array(
-            "start" => "Y-m-01",
-            "end" => "Y-m-t",
-        ),
-        "year" => array(
-            "start" => "Y-01-01",
-            "end" => "Y-12-31",
-        ),
-        "day" => array(
-            "start" => "Y-m-d",
-            "end" => "Y-m-d",
-        ),
-    );
-    
     /**
      * Constructor that retrieves the ID from the request
      *
@@ -80,87 +64,11 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      */
     function __construct()
     {
+        $this->periodType = JRequest::getVar('period', $this->periodType, '', 'word');
         parent::__construct();
 
-        $y = (int)date("Y");
-
-        $this->_periodType = JRequest::getVar('period', "month", '', 'word');
-        $date = JRequest::getVar('date', "", '', 'string');
-        $date = TimeclockController::fixDate($date);
-        $startDate = !empty($date) ? $date : JRequest::getVar('startDate', "", '', 'string');
-        $this->setStartDate($startDate);
-        $endDate = !empty($date) ? $date : JRequest::getVar('endDate', "", '', 'string');
-        $this->setEndDate($endDate);
     }
 
-    /**
-     * Where statement for the reporting period dates
-     *
-     * @param string $date Date to use in MySQL format ("Y-m-d")
-     *
-     * @return array
-     */ 
-    function getStartDate($date=null)
-    {
-        return parent::getDate($date, "_startDate");
-    }
-
-    /**
-     * Where statement for the reporting period dates
-     *
-     * @param string $date Date to use in MySQL format ("Y-m-d")
-     *
-     * @return array
-     */ 
-    function getEndDate($date=null)
-    {
-        return parent::getDate($date, "_endDate");
-    }
-
-    /**
-     * Get the type of period
-     *
-     * @return string
-     */ 
-    function getPeriodType()
-    {
-        return $this->_periodType;
-    }
-
-    /**
-     * Where statement for the reporting period dates
-     *
-     * @param string $date Date to use in MySQL format ("Y-m-d")
-     *
-     * @return null
-     */ 
-    function setStartDate($date)
-    {
-        $date = TimeclockController::fixDate($date);
-        $method = "_startDate".$this->_periodType;
-        if (empty($date)) $date = date("Y-m-d");
-        $unixDate = TimeclockController::dateUnixSql($date);
-        $sdate = date($this->_periods[$this->_periodType]["start"], $unixDate);
-        $date = method_exists($this, $method) ? $this->$method($date) : $sdate;
-        parent::setDate($date, "_startDate");
-    }
-
-    /**
-     * Where statement for the reporting period dates
-     *
-     * @param string $date Date to use in MySQL format ("Y-m-d")
-     *
-     * @return null
-     */ 
-    function setEndDate($date)
-    {
-        $date = TimeclockController::fixDate($date);
-        $method = "_endDate".$this->_periodType;
-        if (empty($date)) $date = date("Y-m-d");
-        $unixDate = TimeclockController::dateUnixSql($date);
-        $date = method_exists($this, $method) ? $this->$method($date) : date($this->_periods[$this->_periodType]["end"], $unixDate);
-        parent::setDate($date, "_endDate");
-    }
 
     /**
      * Method to display the view
@@ -181,6 +89,13 @@ class TimeclockModelReports extends TimeclockModelTimeclock
             $this->data[$key] = $this->_getList($query, $limitstart, $limit);
 
             if (!is_array($this->data[$key])) return array();
+
+            foreach ($this->data[$key] as $k => $d) {
+                if ($d->type != "HOLIDAY") continue;
+                $this->data[$key][$k]->hours =  $d->hours * $this->getHolidayPerc($d->user_id, $d->worked);
+            
+            }
+
         }
         return $this->data[$key];
     }
@@ -200,17 +115,6 @@ class TimeclockModelReports extends TimeclockModelTimeclock
             $this->countData[$key] = $this->_getListCount($query);
         }
         return $this->countData[$key];
-    }
-    /**
-     * Where statement for the reporting period dates
-     *
-     * @param int $date The date in Mysql ("Y-m-d") format.
-     *
-     * @return array
-     */ 
-    function getPeriodDates()
-    {
-        return parent::getPeriodDates($this->_startDate, $this->_endDate);
     }
 }
 
