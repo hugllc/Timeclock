@@ -41,7 +41,7 @@ JHTML::_('behavior.tooltip');
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
-$document->setTitle(JText::_("Timeclock Notes"));
+$document->setTitle($this->params->get('page_title'));
 
 ?>
 <?php if ($this->params->get('show_page_title')) : ?>

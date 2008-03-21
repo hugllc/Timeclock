@@ -40,6 +40,7 @@ jimport('joomla.application.component.model');
 
 /** Include the project stuff */
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'customers.php';
 require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
 
 /**
@@ -203,7 +204,7 @@ class TimeclockModelTimeclock extends JModel
     function setPeriodDate($date, $field)
     {
         $date = TimeclockController::fixDate($date);
-        $this->set($date, $field);
+        $this->setDate($date, $field);
         if ($this->get($field)) return;
 
         $date = $this->get("date");

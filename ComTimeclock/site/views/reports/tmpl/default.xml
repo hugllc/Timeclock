@@ -25,6 +25,10 @@
             </param>
         </url>
         <params addpath="/administrator/components/com_timeclock/elements">
+            <param name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
+                <option value="1">Show</option>
+                <option value="0">Hide</option>
+            </param>
             <param name="show_filter" type="radio" default="1" label="Filter" description="Show filter">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>

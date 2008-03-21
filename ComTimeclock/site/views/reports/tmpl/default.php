@@ -46,7 +46,7 @@ $totalStyle = $cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
-$document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
+$document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_("to")." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
 
 
 ?>
@@ -60,7 +60,12 @@ $document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix'
     <table style="padding-bottom: 3em;" class="contentpaneopen<?php echo $this->params->get('pageclass_sfx');?>">
         <tr>
             <td colspan="<?php print $headerColSpan; ?>">
-                <?php nextPrev($this); ?>
+                <?php if (is_array($this->controls)) : ?>
+                    <?php print $this->loadTemplate("controls"); ?>
+                <?php else : ?>
+                    <?php print $this->loadTemplate("nextprev"); ?>
+                <?php endif; ?>                
+
                 <div id="dateheader" style="clear:both; white-space: nowrap;">
                    <strong>
                        <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
@@ -126,48 +131,3 @@ foreach ($this->report as $cat => $projArray) {
         <?php endif; ?>
     </table>
 </form>
-<?php
-/**
- * Prints out next previous header
- *
- * @param object &$obj Pass it $this
- *
- * @return null
- */ 
-function nextprev(&$obj)
-{
-    $baseurl = "index.php?option=com_timeclock&view=reports&layout=report&period=".$obj->periodType;
-    $tip = "Go to the next pay period";
-    $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
-    $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-    $url = JROUTE::_($baseurl."&date=".$obj->period["next"]);
-    $nextImg = '<a href="'.$url.'">'.$text.'</a>';
-    $next = '<a href="'.$url.'">'.JText::_("Next").'</a>';
-
-    $tip = "Go to the previous pay period";
-    $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
-    $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-    $url = JROUTE::_($baseurl."&period=".$obj->periodType."&date=".$obj->period["prevend"]);
-    $prevImg = '<a href="'.$url.'">'.$text.'</a>';
-    $prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
-
-    $text = JText::_('Today');
-    $url = JROUTE::_($baseurl);
-    $today = '<a href="'.$url.'">'.$text.'</a>';
-
-    ?>
-    <table width="100%" id="nextprev">
-        <tr>
-            <td width="5px" align="left"><?php print $prevImg; ?></td>
-            <td width="20%" align="left" style="vertical-align: middle;"><?php print $prev; ?></td>
-    
-            <td align="center" style="white-space: nowrap;">
-                <?php print $today; ?>
-            </td>
-            <td width="20%" align="right" style="vertical-align: middle;"><?php print $next; ?></td>
-            <td width="5px;" align="right"><?php print $nextImg; ?></td>
-        </tr>
-    </table>
-    <?php
-}
-?>

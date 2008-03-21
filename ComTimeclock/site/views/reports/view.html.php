@@ -88,10 +88,13 @@ class TimeclockViewReports extends JView
     {
         $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
         if (!empty($cat_id)) $this->_where[] = "pc.id = ".(int)$cat_id;
+        $this->assignRef("cat_id", $cat_id);
         $cust_id = JRequest::getVar('cust_id', "0", '', 'int');
         if (!empty($cust_id)) $this->_where[] = "c.id = ".(int)$cust_id;
+        $this->assignRef("cust_id", $cust_id);
         $proj_id = JRequest::getVar('proj_id', "0", '', 'int');
         if (!empty($proj_id)) $this->_where[] = "p.id = ".(int)$proj_id;    
+        $this->assignRef("proj_id", $proj_id);
     }
 
     /**
@@ -298,6 +301,9 @@ class TimeclockViewReports extends JView
 
         $this->_reportGetData();
 
+        $control = $this->_params->get("show_controls");
+        if ($control) $this->_reportControls();
+
         parent::display($tpl);
 
     }
@@ -346,7 +352,23 @@ class TimeclockViewReports extends JView
         $this->assignRef("periodType", $periodType);
 
     }
-    
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function _reportControls()
+    {
+        $projectModel         =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $controls["category"] = $projectModel->getParentOptions(0, $value, "Select Category");
+        $controls["project"]  = $projectModel->getOptions("WHERE type <> 'CATEGORY'", "Select Project", array(), 0);
+
+        $customerModel        =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $controls["customer"] = $customerModel->getOptions("", "Select Customer");
+
+        $this->assignRef("controls", $controls);
+
+    }    
 }
 
 ?>
