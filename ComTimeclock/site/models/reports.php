@@ -66,7 +66,6 @@ class TimeclockModelReports extends TimeclockModelTimeclock
     {
         $this->periodType = JRequest::getVar('period', $this->periodType, '', 'word');
         parent::__construct();
-
     }
 
 

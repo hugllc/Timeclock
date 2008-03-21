@@ -128,28 +128,30 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
     public static function dataGetSetDate()
     {
         return array(
-            array("2009-05-12", "2009-05-12"),
-            array("2002-5-2", "2002-5-2"),
-            array("2002-05-22 21:24:52", "2002-05-22"),
-            array("2523422002-05-2225114", "2002-05-22"),
-            array("2523422002-052-2225114", date("Y-m-d")),
-            array(null, date("Y-m-d")),
+            array("2009-05-12", false, "2009-05-12"),
+            array("2002-5-2", false, "2002-5-2"),
+            array("2002-05-22 21:24:52", false, "2002-05-22"),
+            array("2523422002-05-2225114", false, "2002-05-22"),
+            array("2523422002-052-2225114", false, null),
+            array(null, false, null),
+            array("2523422002-052-2225114", true, date("Y-m-d")),
+            array(null, true, date("Y-m-d")),
         );
     }
-    
     /**
      * Tests get and set date
      *
      * @param string $date   The date to test
+     * @param bool   $force  Force a valid date no matter what
      * @param string $expect The date we expect returned
      *
      * @dataProvider dataGetSetDate()
      * @return null
      */
-    function testGetSetDate($date, $expect)
+    function testGetSetDate($date, $force, $expect)
     {
-        $this->o->setDate($date);
-        $ret = $this->o->getDate($date);
+        $this->o->setDate($date, "date", $force);
+        $ret = $this->o->get("date");
         $this->assertSame($expect, $ret);
     }
 
@@ -181,6 +183,129 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
     {
         $this->o->setProject($proj);
         $ret = $this->readAttribute($this->o, "_project");
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataGetSetPeriodDate()
+    {
+        return array(
+            // Start Date
+            array("2009-05-12", "month", "start", "2009-05-12"),
+            array("2002-5-2", "year", "start", "2002-5-2"),
+            array("2002-05-22 21:24:52", "month", "start", "2002-05-22"),
+            array("2523422002-05-2225114", "month", "start", "2002-05-22"),
+            array("2523422002-052-2225114", "month", "start", date("Y-m-01")),
+            array(null, "month", "start", date("Y-m-01")),
+            array(null, "asdf", "start", date("Y-m-01")),
+            array(null, "year", "start", date("Y-01-01")),
+            array(null, "day", "start", date("Y-m-d")),
+            array(null, "payperiod", "start", "2008-03-10", "2008-3-20"),
+            // End Date
+            array("2009-05-12", "month", "end", "2009-05-12"),
+            array("2002-5-2", "month", "end", "2002-5-2"),
+            array("2002-05-22 21:24:52", "month", "end", "2002-05-22"),
+            array("2523422002-05-2225114", "month", "end", "2002-05-22"),
+            array("2523422002-052-2225114", "month", "end", date("Y-m-t")),
+            array(null, "month", "end", date("Y-m-t")),
+            array(null, "asdf", "end", date("Y-m-t")),
+            array(null, "year", "end", date("Y-12-31")),
+            array(null, "day", "end", date("Y-m-d")),
+            array(null, "payperiod", "end", "2008-03-23", "2008-3-20"),
+        );
+    }
+    
+    /**
+     * Tests get and set date
+     *
+     * @param string $date      The date to test
+     * @param string $type      The type to test (month, day, year, quarter, etc)
+     * @param string $field     The field to save
+     * @param string $expect    The date we expect returned
+     *
+     * @dataProvider dataGetSetPeriodDate()
+     * @return null
+     */
+    function testGetSetPeriodDate($date, $type, $field, $expect, $today=null)
+    {
+        $this->o->set($type, "type");
+        if (!empty($today)) $this->o->set($today, "date");
+        $this->o->setPeriodDate($date, $field);
+        $ret = $this->o->get($field);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataGetPeriodDates()
+    {
+        return array(
+            array(
+                "2007-12-12", 
+                "2007-12-25", 
+                array(
+                    "type" => "payperiod",
+                    "unix" => array(
+                        "date"    => mktime(6,0,0,date("m"), date("d"), date("Y")),
+                        "start"   => 1197460800,
+                        "end"     => 1198584000,
+                        "prev"    => 1196251200,
+                        "prevend" => 1197374400,
+                        "next"    => 1198670400,
+                        "nextend" => 1199793600,
+                    ),
+                    "date" => date("Y-m-d"),
+                    "start" => "2007-12-12",
+                    "end" => "2007-12-25",
+                    "length" => 14,
+                    "dates" => array(
+                        "2007-12-12" => 1197460800,
+                        "2007-12-13" => 1197547200,
+                        "2007-12-14" => 1197633600,
+                        "2007-12-15" => 1197720000,
+                        "2007-12-16" => 1197806400,
+                        "2007-12-17" => 1197892800,
+                        "2007-12-18" => 1197979200,
+                        "2007-12-19" => 1198065600,
+                        "2007-12-20" => 1198152000,
+                        "2007-12-21" => 1198238400,
+                        "2007-12-22" => 1198324800,
+                        "2007-12-23" => 1198411200,
+                        "2007-12-24" => 1198497600,
+                        "2007-12-25" => 1198584000,
+                    ),
+                    "prev"    => "2007-11-28",
+                    "prevend" => "2007-12-11",
+                    "next"    => "2007-12-26",
+                    "nextend" => "2008-01-08",
+                    "_done" => true,
+                ),
+            ),
+        );
+    }
+    
+    /**
+     * Tests get and set date
+     *
+     * @param string $start      The date to test
+     * @param string $end      The date to test
+     * @param string $expect    The date we expect returned
+     *
+     * @dataProvider dataGetPeriodDates()
+     * @return null
+     */
+    function testGetPeriodDates($start, $end, $expect)
+    {
+        $this->o->setDate($start, "start");
+        $this->o->setDate($end, "end");
+        $ret = $this->o->getPeriodDates();
         $this->assertSame($expect, $ret);
     }
 

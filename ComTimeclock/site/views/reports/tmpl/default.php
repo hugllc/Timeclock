@@ -50,10 +50,61 @@ $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle(JText::_("Timeclock Reports"));
+JHTML::_('behavior.tooltip');
+JHTML::_('behavior.formvalidation');
 
 ?>
+<script type="text/javascript">
+        Window.onDomReady(function(){
+            document.formvalidator.setHandler('dateverify', 
+                function (value) {
+                    regex=/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/;
+                    return regex.test(value); 
+                }     
+            );
+        });
+</script>
 
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
+<form action="<?php JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
+    <input type="hidden" name="option" value="com_timeclock" />
+    <input type="hidden" name="task" value="reports" />
+    <input type="hidden" name="view" value="reports" />
     <div class="componentheading"><?php print JText::_("Timeclock Reports");?></div>
-
+    <table>
+        <tr>
+            <td width="100" align="right" class="sectiontableheader">
+                <label for="startDate">
+                    <?php echo JText::_('Start Date'); ?>:
+                </label>
+            </td>
+            <td style="white-space:nowrap;">
+                <?php print JHTML::_("calendar", $this->period["start"], "startDate", "startDate", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"');?>
+            </td>
+            <td>
+                The date to start the report
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="sectiontableheader">
+                <label for="endDate">
+                    <?php echo JText::_('End Date'); ?>:
+                </label>
+            </td>
+            <td style="white-space:nowrap;">
+                <?php print JHTML::_("calendar", $this->period["end"], "endDate", "endDate", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"');?>
+            </td>
+            <td>
+                The date to end the report
+            </td>
+        </tr>
+        <tr>
+            <th style="vertical-align: top;">
+                 &nbsp;
+            </th>
+            <td>
+                <button type="submit" class="button validate"><?php print JText::_("Apply"); ?></button>
+            </td>
+        </tr>    
+    </table>
 </form>
+<?php include "report.php"; ?>

@@ -106,9 +106,8 @@ class TimeclockController extends JController
      * @access public
      * @return bool
      */
-    function reports($view)
+    function reports()
     {
-        if ($view != "reports") return false; 
         JRequest::setVar('view', 'reports');
         parent::display();
         return true;

@@ -105,48 +105,6 @@ class ComTimeclockSiteModelReportsTest extends ComTimeclockSiteModelTimeclockTes
         return array(
         );
     }
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataGetSetDate()
-    {
-        return array(
-            // Start Date
-            array("2009-05-12", "2009-05-12", "getStartDate", "setStartDate"),
-            array("2002-5-2", "2002-5-2", "getStartDate", "setStartDate"),
-            array("2002-05-22 21:24:52", "2002-05-22", "getStartDate", "setStartDate"),
-            array("2523422002-05-2225114", "2002-05-22", "getStartDate", "setStartDate"),
-            array("2523422002-052-2225114", date("Y-m-01"), "getStartDate", "setStartDate"),
-            array(null, date("Y-m-01"), "getStartDate", "setStartDate"),
-            // End Date
-            array("2009-05-12", "2009-05-12", "getEndDate", "setEndDate"),
-            array("2002-5-2", "2002-5-2", "getEndDate", "setEndDate"),
-            array("2002-05-22 21:24:52", "2002-05-22", "getEndDate", "setEndDate"),
-            array("2523422002-05-2225114", "2002-05-22", "getEndDate", "setEndDate"),
-            array("2523422002-052-2225114", date("Y-m-t"), "getEndDate", "setEndDate"),
-            array(null, date("Y-m-t"), "getEndDate", "setEndDate"),
-        );
-    }
-    
-    /**
-     * Tests get and set date
-     *
-     * @param string $date   The date to test
-     * @param string $expect The date we expect returned
-     * @param string $get    The function to use to get
-     * @param string $set    The function to use to set
-     *
-     * @dataProvider dataGetSetDate()
-     * @return null
-     */
-    function testGetSetDate($date, $expect, $get="getDate", $set="setDate")
-    {
-        $this->o->$set($date);
-        $ret = $this->o->$get($date);
-        $this->assertSame($expect, $ret);
-    }
 
 
 }

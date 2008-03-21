@@ -73,10 +73,9 @@ class TimeclockViewReports extends JView
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
         } else {
+            $this->_reportGetPeriod();
             $this->_where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
             $data = $model->getTimesheetData($this->_where, $orderby);
-            $dates["start"] = $model->getStartDate();
-            $dates["end"] = $model->getEndDate();
 
             $this->assignRef("data", $data);        
             $this->assignRef("dates", $dates);        
@@ -347,7 +346,7 @@ class TimeclockViewReports extends JView
     {
         $model          =& $this->getModel();
         $period         = $model->getPeriodDates();
-        $periodType     = $model->getPeriodType();
+        $periodType     = $model->get("type");
         $this->_where[] = $model->dateWhere("t.worked", $period["start"], $period["end"]);
         $this->assignRef("period", $period);
         $this->assignRef("periodType", $periodType);
