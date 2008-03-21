@@ -80,7 +80,7 @@ class TimeclockModelTimeclock extends JModel
         ),
     );
     /** @var string The start date in MySQL format */
-    protected $_period = array(
+    protected $period = array(
         "type" => "payperiod",
     );
 
@@ -101,11 +101,11 @@ class TimeclockModelTimeclock extends JModel
         }
         $this->setId($cid);
 
-        $date = JRequest::getWord('date', date("Y-m-d"));
-        $this->setDate(TimeclockController::fixDate($date), "date", force);
-        $startDate = JRequest::getWord('startDate');
+        $date = JRequest::getString('date', date("Y-m-d"));
+        $this->setDate(TimeclockController::fixDate($date), "date", true);
+        $startDate = JRequest::getString('startDate');
         $this->setPeriodDate($startDate, "start");
-        $endDate = JRequest::getWord('endDate');
+        $endDate = JRequest::getString('endDate');
         $this->setPeriodDate($endDate, "end");
 
 
@@ -139,7 +139,7 @@ class TimeclockModelTimeclock extends JModel
      */ 
     function set($data, $field)
     {
-        return $this->_period[$field] = $data;
+        return $this->period[$field] = $data;
     }
     /**
      * Get the type of period
@@ -151,7 +151,7 @@ class TimeclockModelTimeclock extends JModel
      */ 
     function setUnix($data, $field)
     {
-        return $this->_period["unix"][$field] = $data;
+        return $this->period["unix"][$field] = $data;
     }
     /**
      * Where statement for the reporting period dates
@@ -162,7 +162,7 @@ class TimeclockModelTimeclock extends JModel
      */ 
     function get($field)
     {
-        return $this->_period[$field];
+        return $this->period[$field];
     }
     /**
      * Where statement for the reporting period dates
@@ -173,13 +173,14 @@ class TimeclockModelTimeclock extends JModel
      */ 
     function getUnix($field)
     {
-        return $this->_period["unix"][$field];
+        return $this->period["unix"][$field];
     }
     /**
      * Where statement for the reporting period dates
      *
      * @param string $date  Date to use if it is set in MySQL format ("Y-m-d")
      * @param string $field The field to save the date in
+     * @param bool   $force Make it return a valid date no matter what
      *
      * @return null
      */ 
@@ -336,6 +337,8 @@ class TimeclockModelTimeclock extends JModel
      * Where statement for dates
      *
      * @param string $field The field to use
+     * @param string $start The start date
+     * @param string $end   The end date
      *
      * @return string
      */
@@ -427,7 +430,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function get_startDateQuarter($date)
+    function getQuarterStart($date)
     {
         $date = TimeclockController::explodeDate($date);
         if ($date["m"] < 4) return date("Y-01-01");
@@ -443,7 +446,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */ 
-    function get_endDateQuarter($date)
+    function getQuarterEnd($date)
     {
         $date = TimeclockController::explodeDate($date);
         if ($date["m"] < 4) return date("Y-03-31");
@@ -462,7 +465,6 @@ class TimeclockModelTimeclock extends JModel
     private function _getPayPeriodFixedEnd($date)
     {
 
-//        $date = self::get();
         $s = self::_getPayPeriodFixedStart($date);        
         $s = TimeclockController::explodeDate($s);
         $length = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
@@ -473,8 +475,6 @@ class TimeclockModelTimeclock extends JModel
 
     /**
      * Where statement for the reporting period dates
-     *
-     * @param int $date The date in Mysql ("Y-m-d") format.
      *
      * @return array
      */ 
@@ -489,8 +489,6 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param int $date The date in Mysql ("Y-m-d") format.
-     *
      * @return array
      */ 
     function getPeriodDates()
@@ -504,12 +502,10 @@ class TimeclockModelTimeclock extends JModel
             $length = $this->getLength();
             // These are all of the dates in the pay period
             for ($i = 0; $i < $length; $i++) {
-                $this->_period['dates'][self::_date($s["m"], $s["d"]+$i, $s["y"])] = TimeclockController::dateUnix($s["m"], $s["d"]+$i, $s["y"]);
+                $this->period['dates'][self::_date($s["m"], $s["d"]+$i, $s["y"])] = TimeclockController::dateUnix($s["m"], $s["d"]+$i, $s["y"]);
             }
                 
             // Get the start and end
-//            $this->getUnix('start']   = TimeclockController::dateUnix($m, $d, $y);
-//            $this->getUnix('end']     = TimeclockController::dateUnix($e["m"], $e["d"], $e["y"]);
             $this->setUnix(TimeclockController::dateUnix($s["m"], $s["d"]-$length, $s["y"]), "prev");
             $this->setUnix(TimeclockController::dateUnix($s["m"], $s["d"]-1, $s["y"]), "prevend");
             $this->setUnix(TimeclockController::dateUnix($e["m"], $e["d"]+1, $e["y"]), "next");
@@ -520,7 +516,7 @@ class TimeclockModelTimeclock extends JModel
             $this->set(self::_date($this->getUnix('nextend')), "nextend");
             $this->set(true, "_done");
         }
-        return $this->_period;
+        return $this->period;
     }
     /**
      * Where statement for the reporting period dates

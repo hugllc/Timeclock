@@ -205,6 +205,11 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
             array(null, "year", "start", date("Y-01-01")),
             array(null, "day", "start", date("Y-m-d")),
             array(null, "payperiod", "start", "2008-03-10", "2008-3-20"),
+            array(null, "payperiod", "start", "2008-02-25", "2008-03-01"),
+            array(null, "quarter", "start", "2008-01-01", "2008-3-20"),
+            array(null, "quarter", "start", "2008-04-01", "2008-6-20"),
+            array(null, "quarter", "start", "2008-07-01", "2008-9-20"),
+            array(null, "quarter", "start", "2008-10-01", "2008-11-20"),
             // End Date
             array("2009-05-12", "month", "end", "2009-05-12"),
             array("2002-5-2", "month", "end", "2002-5-2"),
@@ -216,16 +221,22 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
             array(null, "year", "end", date("Y-12-31")),
             array(null, "day", "end", date("Y-m-d")),
             array(null, "payperiod", "end", "2008-03-23", "2008-3-20"),
+            array(null, "payperiod", "end", "2008-03-09", "2008-3-01"), // DST
+            array(null, "quarter", "end", "2008-03-31", "2008-3-20"),
+            array(null, "quarter", "end", "2008-06-30", "2008-6-20"),
+            array(null, "quarter", "end", "2008-09-30", "2008-9-20"),
+            array(null, "quarter", "end", "2008-12-31", "2008-11-20"),
         );
     }
     
     /**
      * Tests get and set date
      *
-     * @param string $date      The date to test
-     * @param string $type      The type to test (month, day, year, quarter, etc)
-     * @param string $field     The field to save
-     * @param string $expect    The date we expect returned
+     * @param string $date   The date to test
+     * @param string $type   The type to test (month, day, year, quarter, etc)
+     * @param string $field  The field to save
+     * @param string $expect The date we expect returned
+     * @param string $today  What to tell set the current date to
      *
      * @dataProvider dataGetSetPeriodDate()
      * @return null
@@ -253,7 +264,7 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
                 array(
                     "type" => "payperiod",
                     "unix" => array(
-                        "date"    => mktime(6,0,0,date("m"), date("d"), date("Y")),
+                        "date"    => mktime(6, 0, 0, date("m"), date("d"), date("Y")),
                         "start"   => 1197460800,
                         "end"     => 1198584000,
                         "prev"    => 1196251200,

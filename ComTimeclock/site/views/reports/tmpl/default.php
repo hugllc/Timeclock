@@ -107,4 +107,4 @@ JHTML::_('behavior.formvalidation');
         </tr>    
     </table>
 </form>
-<?php include "report.php"; ?>
+<?php require "report.php"; ?>

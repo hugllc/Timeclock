@@ -55,7 +55,7 @@ require_once "timeclock.php";
 class TimeclockModelReports extends TimeclockModelTimeclock
 {
     /** @var string The start date in MySQL format */
-    protected $_period = array(
+    protected $period = array(
         "type" => "month",
     );
 
