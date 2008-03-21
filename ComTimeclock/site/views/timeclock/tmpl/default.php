@@ -38,14 +38,13 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-
-$this->totals     = array();
 if (empty($this->days)) $this->days = 7;
 
 $headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->days));
 
 $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
+$this->catStyle   = "font-weight: bold; padding: 1px;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
@@ -55,7 +54,7 @@ $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('da
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="componentheading"><?php print JText::_("Timesheet for ").$this->user->get("name");?></div>
-    <?php nextprev($this); ?>
+    <?php print $this->loadTemplate("nextprev"); ?>
     <div id="dateheader" style="clear:both;">
         <strong>
             <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
@@ -64,17 +63,18 @@ $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('da
         </strong>
     </div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
+    <?php print $this->loadTemplate("header"); ?>
 <?php
-tableHeader($this);
 $rows = 0;
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) {
         $array = array_intersect_key($cat->subprojects, $this->hours);
         if (empty($array)) continue;
     }
+    $this->cat  =& $cat;
     ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
+            <td class="sectiontableheader" style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
                 <?php print JHTML::_('tooltip', $cat->description, 'Category', '', $cat->name); ?>
             </td>
         </tr>    
@@ -84,10 +84,11 @@ foreach ($this->projects as $cat) {
         if (($proj->mine == false) || !$proj->published) {
             if (!array_key_exists($proj->id, $this->hours)) continue;
         }
-        projectRow($this, $proj, $cat);
+        $this->proj =& $proj;
+        print $this->loadTemplate("row");
     }
 }
-tableHeader($this);
+print $this->loadTemplate("header");
 ?>
         <tr class="sectiontablerow<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
@@ -96,7 +97,7 @@ tableHeader($this);
 <?php
 $d = 0;
 foreach ($this->period["dates"] as $key => $uDate) {
-    $hours = ($this->totals[$key]) ? $this->totals[$key] : 0;
+    $hours = ($this->totals["worked"][$key]) ? $this->totals["worked"][$key] : 0;
     print '            <td style="'.$this->totalStyle.'">';
     print '                '.$hours."\n";
     print "            </td>\n";
@@ -148,159 +149,3 @@ $k = 1-$k;
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="view" value="timeclock" />
 </form>
-
-<?php
-/**
- * Prints out the header
- *
- * @param object &$obj Pass it $this
- *
- * @return null
- */ 
-function tableHeader(&$obj)
-{
-    $headerDateFormat = 'D <b\r/>M<b\r>d';
-    ?>
-        <tr>
-            <td class="sectiontableheader">Project</td>
-    <?php
-    $today = date("Y-m-d");
-    $d = 0;
-    foreach ($obj->period["dates"] as $key => $uDate) {
-        $style = ($key == $today) ? "background: #00FF00; color: #000000;" : "";
-        if ($obj->checkDate($uDate)) {     
-            $url = JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$obj->user->get("id"));
-            $tipTitle = "Add Hours";
-            $tip = "on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1"));
-        } else {
-            $url = "";
-            $tipTitle = "No Hours";
-            $tip = "Hours can not be entered before your employment start date or after your end date";
-        };
-        ?>
-            <td class="sectiontableheader" style="<?php print $obj->cellStyle.$style; ?>">
-                <?php print JHTML::_('tooltip', $tip, $tipTitle, '', date($headerDateFormat, $uDate), $url); ?>
-            </td>
-        <?php
-        if ((++$d % $obj->days) == 0) {
-            ?>
-            <td class="sectiontableheader">
-                Wk<?php print (int) ($d / $obj->days); ?>
-            </td>
-            <?php
-            $dtotal = 0;
-        }
-    }
-    ?>
-            <td class="sectiontableheader"><?php print JText::_("Total"); ?></td>
-        </tr>
-    <?php
-}
-/**
- * Prints out the header
- *
- * @param object &$obj  Pass it $this
- * @param object &$proj Pass it the project to print
- * @param object &$cat  Pass it the category of the project
- *
- * @return null
- */ 
-function projectRow(&$obj, &$proj, &$cat)
-{
-    ?>
-        <tr class=\"sectiontablerow$k\">
-            <td>
-                <?php print JHTML::_('tooltip', $proj->description, 'Project', '', $proj->name); ?>
-            </td>
-    <?php
-    $rowtotal = 0;
-    $dtotal = 0;
-    $d = 0;
-    foreach ($obj->period["dates"] as $key => $uDate) {
-        $hours              = ($obj->hours[$proj->id][$key]) ? $obj->hours[$proj->id][$key]['hours'] : 0;
-        $rowtotal          += $hours;
-        $obj->totals[$key] += $hours;
-        $dtotal            += $hours;
-        if ($proj->noHours || !$proj->published || !$proj->mine || !$cat->published) {
-            $tip                = $obj->hours[$proj->id][$key]['notes'];
-            $link = ($hours == 0) ? $hours : JHTML::_('tooltip', $tip, "Notes", '', " $hours ", $url);
-        } else {
-            if ($obj->checkDate($uDate)) {     
-                $tipTitle           = ($hours == 0) ? "Add Hours" : "Notes";
-                $tip                = ($hours == 0) ? "for ".$proj->name." on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1")) : $obj->hours[$proj->id][$key]['notes'];
-                $url                = 'index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$proj->id.'&id='.(int)$obj->user->get("id");
-            } else {
-                $url = $hours;
-                $tipTitle = "No Hours";
-                $tip = "Hours can not be entered before your employment start date or after your end date";
-            };
-            $link = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
-        }
-        ?>
-            <td style="<?php print $obj->cellStyle;?>">
-                <?php print $link; ?>
-            </td>
-        <?php
-        if ((++$d % $obj->days) == 0) {
-            ?>
-            <td style="<?php print $obj->totalStyle; ?>">
-                <?php print $dtotal; ?>
-            </td>
-            <?php
-            $obj->totals[$d] += $dtotal;
-            $dtotal = 0;
-            
-        }
-    }
-    $obj->totals["total"] += $rowtotal;
-    ?>
-            <td style="<?php print $obj->totalStyle; ?>">
-                <?php print $rowtotal; ?>
-            </td>
-        </tr>
-    <?php
-    $k = 1-$k;
-}
-/**
- * Prints out next previous header
- *
- * @param object &$obj Pass it $this
- *
- * @return null
- */ 
-function nextprev(&$obj)
-{
-    $tip = "Go to the next pay period";
-    $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
-    $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock&date=".$obj->period["next"]);
-    $nextImg = '<a href="'.$url.'">'.$text.'</a>';
-    $next = '<a href="'.$url.'">'.JText::_("Next").'</a>';
-
-    $tip = "Go to the previous pay period";
-    $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
-    $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock&date=".$obj->period["prev"]);
-    $prevImg = '<a href="'.$url.'">'.$text.'</a>';
-    $prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
-
-    $text = JText::_('Today');
-    $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock");
-    $today = '<a href="'.$url.'">'.$text.'</a>';
-
-    ?>
-    <table width="100%" id="nextprev">
-        <tr>
-            <td width="5px" align="left"><?php print $prevImg; ?></td>
-            <td width="20%" align="left" style="vertical-align: middle;"><?php print $prev; ?></td>
-    
-            <td align="center" style="white-space: nowrap;">
-                <?php print $today; ?>
-            </td>
-            <td width="20%" align="right" style="vertical-align: middle;"><?php print $next; ?></td>
-            <td width="5px;" align="right"><?php print $nextImg; ?></td>
-        </tr>
-    </table>
-    <?php
-}
-?>

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-        <layout title="Timesheet">
-                <message>
-                        Allows users to view and enter time in their timeclock.
-                </message>
-        </layout>
-        <state>
-                <name>Timesheet</name>
-                <description>Allows users to view and enter time in their timeclock.</description>
-                <params>
-                </params>
-        </state>
+    <layout title="Timesheet">
+        <message>
+            Allows users to view and enter time in their timeclock.
+        </message>
+    </layout>
+    <state>
+        <name>Timesheet</name>
+        <description>Allows users to view and enter time in their timeclock.</description>
+        <params>
+            <param name="today_background" type="text" default="#00FF00" label="Today Background" description="Mark today with this color in the background" />
+            <param name="today_color" type="text" default="black" label="Today Foreground" description="Mark today with this color in the foreground" />
+        </params>
+    </state>
 </metadata>

@@ -248,7 +248,7 @@ class TimeclockModelTimeclock extends JModel
         return "SELECT t.hours as hours, t.worked, t.project_id, t.notes,
                       j.user_id as user_id, p.name as project_name, p.type as type, 
                       u.name as author, pc.name as category_name, c.company as company_name,
-                      c.name as contact_name
+                      c.name as contact_name, p.id as project_id
                       FROM #__timeclock_timesheet as t
                       LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
                       RIGHT JOIN #__timeclock_users as j on j.id = p.id
@@ -280,13 +280,11 @@ class TimeclockModelTimeclock extends JModel
             );
             $where = implode(" AND ", $where);
             $query = $this->sqlQuery($where);
-            $ret = $this->_getList($query);
-            if (!is_array($ret)) return array();
-            $this->data = array();
-            foreach ($ret as $d) {
-                $hours = ($d->type == "HOLIDAY") ? $d->hours * $this->getHolidayPerc($d->user_id, $d->worked) : $d->hours;
-                $this->data[$d->project_id][$d->worked]['hours'] += $hours;
-                $this->data[$d->project_id][$d->worked]['notes'] .= $d->notes;
+            $this->data = $this->_getList($query);
+            if (!is_array($this->data)) return array();
+            foreach ($this->data as $k => $d) {
+                if ($d->type != "HOLIDAY") continue;
+                $this->data[$k]->hours =  $d->hours * $this->getHolidayPerc($d->user_id, $d->worked);
             }
         }
         return $this->data;

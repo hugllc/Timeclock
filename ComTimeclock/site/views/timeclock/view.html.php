@@ -61,6 +61,8 @@ class TimeclockViewTimeclock extends JView
      */
     function display($tpl = null)
     {
+        global $mainframe;
+        
         $layout          = JRequest::getVar('layout');
         $model           =& $this->getModel();
         $projModel       =& JModel::getInstance("Projects", "TimeclockAdminModel");
@@ -69,7 +71,8 @@ class TimeclockViewTimeclock extends JView
         $projects        = $projModel->getUserProjects($user_id);
         $employmentDates = $model->getEmploymentDatesUnix();
         $date            = $model->get("date");
-        
+        $this->_params   =& $mainframe->getParams('com_timeclock');
+
         $this->assignRef("employmentDates", $employmentDates);        
         $this->assignRef("projects", $projects);
         $this->assignRef("user", $user);        
@@ -91,11 +94,19 @@ class TimeclockViewTimeclock extends JView
      */
     function timesheet($tpl = null)
     {
+        global $mainframe;
+        
         $model   =& $this->getModel();
-        $hours   = $model->getTimesheetData();
         $period  = $model->getPeriodDates();
+        $this->_timesheetData();
+        
+        if (!is_object($this->_params)) $this->_params =& $mainframe->getParams('com_timeclock');
 
-        $this->assignRef("hours", $hours);
+        $today_color      = $this->_params->get("today_color");
+        $today_background = $this->_params->get("today_background");
+        
+        $this->assignRef("today_color", $today_color);
+        $this->assignRef("today_background", $today_background);
         $this->assignRef("period", $period);        
 
         parent::display($tpl);
@@ -136,6 +147,28 @@ class TimeclockViewTimeclock extends JView
     function checkDate($date)
     {
         return TimeclockController::checkEmploymentDates($this->employmentDates["start"], $this->employmentDates["end"], $date);
+    }
+
+
+    /**
+     * Get timesheet data
+     *
+     * @return null
+     */
+    private function _timesheetData()
+    {
+        $model =& $this->getModel();
+        $data  = $model->getTimesheetData();
+        $hours = array();
+        foreach ($data as $d) {
+            $hours[$d->project_id][$d->worked]['hours'] += $d->hours;
+            $hours[$d->project_id][$d->worked]['notes'] .= $d->notes;
+            $totals["proj"][$d->project_id]              += $d->hours;
+            $totals["worked"][$d->worked]                += $d->hours;
+            $totals["total"]                             += $d->hours;
+        }
+        $this->assignRef("hours", $hours);  
+        $this->assignRef("totals", $totals);  
     }
 }
 
