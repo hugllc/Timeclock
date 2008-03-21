@@ -75,13 +75,7 @@ class TimeclockViewReports extends JView
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
         } else {
-            $this->_reportGetPeriod();
-            $this->_where = (count($this->_where) ? implode(' AND ', $this->_where) : '');
-            $data         = $model->getTimesheetData($this->_where, $orderby);
-
-            $this->assignRef("data", $data);        
-            $this->assignRef("dates", $dates);        
-            parent::display($tpl);
+            $this->report($tpl);
         }        
     }
 

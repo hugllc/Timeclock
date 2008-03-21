@@ -34,8 +34,6 @@
         <filename>views/reports/tmpl/payroll.xml</filename>
         <filename>views/reports/tmpl/notes.php</filename>
         <filename>views/reports/tmpl/notes.xml</filename>
-        <filename>views/reports/tmpl/report.php</filename>
-        <filename>views/reports/tmpl/report.xml</filename>
         <filename>models/timeclock.php</filename>
         <filename>models/reports.php</filename>
         <filename>models/index.html</filename>
