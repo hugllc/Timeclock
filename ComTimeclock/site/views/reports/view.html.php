@@ -190,7 +190,6 @@ class TimeclockViewReports extends JView
         
         $model          =& $this->getModel();
         $this->_where[] = $model->periodWhere("t.worked");
-
         $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
         $ret            = $model->getTimesheetData($where, null, null, $this->_orderby);
         $data           = array();
@@ -201,13 +200,13 @@ class TimeclockViewReports extends JView
             $data[$d->user_id][$d->project_id][$d->worked]['rec']    = $d;
         }
 
-        $period  = $model->getPeriodDates();
-        $days    = 7;
+        $period = $model->getPeriodDates();
+        $days   = 7;
         
-        $report  = array();
-        $notes   = array();
-        $totals  = array();
-        $weeks   = round($period["length"] / $days);
+        $report = array();
+        $notes  = array();
+        $totals = array();
+        $weeks  = round($period["length"] / $days);
         // Make the data into something usefull for this particular report
         foreach ($data as $user_id => $projdata) {
             foreach ($projdata as $proj_id => $dates) {
