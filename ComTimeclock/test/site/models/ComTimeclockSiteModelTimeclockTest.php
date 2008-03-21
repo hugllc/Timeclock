@@ -294,17 +294,19 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
     /**
      * Tests get and set date
      *
-     * @param string $start      The date to test
-     * @param string $end      The date to test
-     * @param string $expect    The date we expect returned
+     * @param string $start  The date to test
+     * @param string $end    The date to test
+     * @param string $expect The date we expect returned
+     * @param string $type   The type of period
      *
      * @dataProvider dataGetPeriodDates()
      * @return null
      */
-    function testGetPeriodDates($start, $end, $expect)
+    function testGetPeriodDates($start, $end, $expect, $type = "payperiod")
     {
         $this->o->setDate($start, "start");
         $this->o->setDate($end, "end");
+        $this->o->set($type, "type");
         $ret = $this->o->getPeriodDates();
         $this->assertSame($expect, $ret);
     }

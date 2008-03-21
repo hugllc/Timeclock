@@ -213,7 +213,7 @@ class TimeclockModelTimeclock extends JModel
         if (empty($dateFormat)) $dateFormat = $this->periods["default"][$field];
         $date = date($dateFormat, $unixDate);
 
-        return self::set($date, $field); 
+        return self::setDate($date, $field); 
     }
 
     /**

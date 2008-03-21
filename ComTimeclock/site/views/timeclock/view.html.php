@@ -70,7 +70,7 @@ class TimeclockViewTimeclock extends JView
         $user_id = $user->get("id");
         $projects = $projModel->getUserProjects($user_id);
         $employmentDates = $model->getEmploymentDatesUnix();
-        $date    = $model->getDate();
+        $date    = $model->get("date");
         
         $this->assignRef("employmentDates", $employmentDates);        
         $this->assignRef("projects", $projects);

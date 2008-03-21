@@ -54,8 +54,10 @@ require_once "timeclock.php";
  */
 class TimeclockModelReports extends TimeclockModelTimeclock
 {
-    /** @var string The type of period */
-    protected $periodType = "month";
+    /** @var string The start date in MySQL format */
+    protected $_period = array(
+        "type" => "month",
+    );
 
     /**
      * Constructor that retrieves the ID from the request
@@ -64,7 +66,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      */
     function __construct()
     {
-        $this->periodType = JRequest::getVar('period', $this->periodType, '', 'word');
+        $this->set(JRequest::getVar('period', $this->get("type"), '', 'word'), "type");
         parent::__construct();
     }
 
