@@ -121,8 +121,10 @@ class TimeclockViewReports extends JView
         $layout = $this->getLayout();
         $db =& JFactory::getDBO();
 
+        if (!is_object($this->_params)) $this->_params =& $mainframe->getParams('com_timeclock');
+
         $filter_order      = $this->_params->get("filter_order");
-        $filter_order_Dir  = $this->_params->get("filter_order");
+        $filter_order_Dir  = $this->_params->get("filter_order_dir");
 
         $filter_order      = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', $this->_params->get("filter_order"), 'cmd');
         $filter_order_Dir  = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', $this->_params->get("filter_order_dir"), 'word');

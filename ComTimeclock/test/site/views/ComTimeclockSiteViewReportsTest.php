@@ -94,6 +94,8 @@ class ComTimeclockSiteViewReportsTest extends JViewTest
         return array(
             array("display", null),
             array("payroll", null),
+            array("notes", null),
+            array("report", null),
         );
     }
 
