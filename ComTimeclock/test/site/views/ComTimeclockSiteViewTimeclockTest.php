@@ -93,6 +93,8 @@ class ComTimeclockSiteViewTimeclockTest extends JViewTest
     {
         return array(
             array("display", null),
+            array("timesheet", null),
+            array("addhours", null),
         );
     }
 

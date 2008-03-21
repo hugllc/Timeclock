@@ -62,9 +62,11 @@ class TimeclockViewReports extends JView
     function display($tpl = null)
     {
         global $mainframe;
+
         $layout        = $this->getLayout();
         $model         =& $this->getModel();
         $this->_params =& $mainframe->getParams('com_timeclock');
+
         $this->assignRef("params", $this->_params);
 
         $this->_where = array();
@@ -74,8 +76,8 @@ class TimeclockViewReports extends JView
             $this->$layout($tpl);
         } else {
             $this->_reportGetPeriod();
-            $this->_where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
-            $data = $model->getTimesheetData($this->_where, $orderby);
+            $this->_where = (count($this->_where) ? implode(' AND ', $this->_where) : '');
+            $data         = $model->getTimesheetData($this->_where, $orderby);
 
             $this->assignRef("data", $data);        
             $this->assignRef("dates", $dates);        
@@ -119,12 +121,9 @@ class TimeclockViewReports extends JView
     {
         global $mainframe, $option;
         $layout = $this->getLayout();
-        $db =& JFactory::getDBO();
+        $db     =& JFactory::getDBO();
 
         if (!is_object($this->_params)) $this->_params =& $mainframe->getParams('com_timeclock');
-
-        $filter_order      = $this->_params->get("filter_order");
-        $filter_order_Dir  = $this->_params->get("filter_order_dir");
 
         $filter_order      = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order", 'filter_order', $this->_params->get("filter_order"), 'cmd');
         $filter_order_Dir  = $mainframe->getUserStateFromRequest("$option.reports.$layout.filter_order_Dir", 'filter_order_Dir', $this->_params->get("filter_order_dir"), 'word');
@@ -138,7 +137,7 @@ class TimeclockViewReports extends JView
         $search_filter     = $mainframe->getUserStateFromRequest("$option.reports.$layout.search_filter", 'report_search_filter', '', 'string');
 
         if (!empty($filter_order)) {
-            $this->_orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+            $this->_orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
             if (!empty($filter2_order)) $this->_orderby .= ", ". $filter2_order .' '. $filter2_order_Dir;
             if (!empty($filter3_order)) $this->_orderby .= ", ". $filter3_order .' '. $filter3_order_Dir;
         }
@@ -148,15 +147,15 @@ class TimeclockViewReports extends JView
         }
 
         // state filter
-        $this->_lists['state'] = JHTML::_('grid.state', $filter_state, "Active", "Inactive");
+        $this->_lists['state']         = JHTML::_('grid.state', $filter_state, "Active", "Inactive");
 
         // table ordering
-        $this->_lists['order_Dir']      = $filter_order_Dir;
-        $this->_lists['order']          = $filter_order;
+        $this->_lists['order_Dir']     = $filter_order_Dir;
+        $this->_lists['order']         = $filter_order;
 
         // search filter
-        $this->_lists['search']         = $search;
-        $this->_lists['search_filter']  = $search_filter;
+        $this->_lists['search']        = $search;
+        $this->_lists['search_filter'] = $search_filter;
 
         $this->assignRef("lists", $this->_lists);
     
@@ -173,10 +172,9 @@ class TimeclockViewReports extends JView
         global $mainframe, $option;
         jimport('joomla.html.pagination');
 
-        $this->_limit            = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-        $this->_limitstart       = $mainframe->getUserStateFromRequest($option.'.projects.limitstart', 'limitstart', 0, 'int');
-
-        $pagination = new JPagination($total, $this->_limitstart, $this->_limit);
+        $this->_limit      = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+        $this->_limitstart = $mainframe->getUserStateFromRequest($option.'.projects.limitstart', 'limitstart', 0, 'int');
+        $pagination        = new JPagination($total, $this->_limitstart, $this->_limit);
 
         $this->assignRef("pagination", $pagination);
     }
@@ -190,25 +188,26 @@ class TimeclockViewReports extends JView
     function payroll($tpl = null)
     {
         
-        $model   =& $this->getModel();
+        $model          =& $this->getModel();
         $this->_where[] = $model->periodWhere("t.worked");
 
         $where          = (count($this->_where) ? implode(' AND ', $this->_where) : '');
-        $ret = $model->getTimesheetData($where, null, null, $this->_orderby);
-        $data = array();
+        $ret            = $model->getTimesheetData($where, null, null, $this->_orderby);
+        $data           = array();
+        
         foreach ($ret as $d) {
             $data[$d->user_id][$d->project_id][$d->worked]['hours'] += $d->hours;
             $data[$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
-            $data[$d->user_id][$d->project_id][$d->worked]['rec'] = $d;
+            $data[$d->user_id][$d->project_id][$d->worked]['rec']    = $d;
         }
 
         $period  = $model->getPeriodDates();
-        $days = 7;
+        $days    = 7;
         
-        $report = array();
-        $notes = array();
-        $totals = array();
-        $weeks = round($period["length"] / $days);
+        $report  = array();
+        $notes   = array();
+        $totals  = array();
+        $weeks   = round($period["length"] / $days);
         // Make the data into something usefull for this particular report
         foreach ($data as $user_id => $projdata) {
             foreach ($projdata as $proj_id => $dates) {
@@ -216,9 +215,9 @@ class TimeclockViewReports extends JView
                 foreach ($period["dates"] as $key => $uDate) {
                     $week = (int)($d++ / $days);
                     if (!array_key_exists($key, $dates)) continue;
-                    $hours = $dates[$key]["hours"];
-                    $type = $dates[$key]["rec"]->type;
-                    $report[$user_id][$week][$type]["hours"] += $hours;
+                    $hours                                      = $dates[$key]["hours"];
+                    $type                                       = $dates[$key]["rec"]->type;
+                    $report[$user_id][$week][$type]["hours"]   += $hours;
                     $report[$user_id][$week]["TOTAL"]["hours"] += $hours;
                     if (empty($report[$user_id]["name"])) $report[$user_id]["name"] = $dates[$key]["rec"]->author;
         
@@ -228,10 +227,10 @@ class TimeclockViewReports extends JView
                     $notes[$username][$projname][$key]["hours"] += $dates[$key]["hours"];
                     $notes[$username][$projname][$key]["notes"] .= $dates[$key]["notes"];
 
-                    $totals["type"][$week][$type] += $hours;
+                    $totals["type"][$week][$type]   += $hours;
                     $totals["type"][$week]["TOTAL"] += $hours;
-                    $totals["user"][$user_id]     += $hours;
-                    $totals["total"]              += $hours;
+                    $totals["user"][$user_id]       += $hours;
+                    $totals["total"]                += $hours;
                 }
             }
         }

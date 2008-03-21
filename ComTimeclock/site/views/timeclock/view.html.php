@@ -61,61 +61,58 @@ class TimeclockViewTimeclock extends JView
      */
     function display($tpl = null)
     {
-        $layout = JRequest::getVar('layout');
-
-        $model   =& $this->getModel();
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-
-        $user    = JFactory::getUser();
-        $user_id = $user->get("id");
-        $projects = $projModel->getUserProjects($user_id);
+        $layout          = JRequest::getVar('layout');
+        $model           =& $this->getModel();
+        $projModel       =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $user            = JFactory::getUser();
+        $user_id         = $user->get("id");
+        $projects        = $projModel->getUserProjects($user_id);
         $employmentDates = $model->getEmploymentDatesUnix();
-        $date    = $model->get("date");
+        $date            = $model->get("date");
         
         $this->assignRef("employmentDates", $employmentDates);        
         $this->assignRef("projects", $projects);
         $this->assignRef("user", $user);        
         $this->assignRef("date", $date);        
 
-        $this->addhours($layout);
-        $this->timesheet($layout);
-
-        parent::display($tpl);
+        if (method_exists($this, $layout)) {
+            $this->$layout($tpl);
+        } else {
+            $this->timesheet($tpl);
+        }
 
     }
     /**
      * The display function
      *
-     * @param string $layout The template to use
+     * @param string $tpl The template to use
      *
      * @return null
      */
-    function timesheet($layout)
+    function timesheet($tpl = null)
     {
-        if ($layout == "addhours") return;
-
         $model   =& $this->getModel();
         $hours   = $model->getTimesheetData();
         $period  = $model->getPeriodDates();
 
         $this->assignRef("hours", $hours);
         $this->assignRef("period", $period);        
+
+        parent::display($tpl);
     }
 
     /**
      * The display function
      *
-     * @param string $layout The template to use
+     * @param string $tpl The template to use
      *
      * @return null
      */
-    function addhours($layout)
+    function addhours($tpl = null)
     {
-        if ($layout != "addhours") return;
 
-        $model   =& $this->getModel();
+        $model    =& $this->getModel();
         $data     = $model->getData();
-
         $referer  = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
         $projid   = JRequest::getVar('projid', null, '', 'string');
 
@@ -125,6 +122,8 @@ class TimeclockViewTimeclock extends JView
 
         JHTML::_('behavior.tooltip');
         JHTML::_('behavior.formvalidation');
+
+        parent::display($tpl);
     }
     
     /**
