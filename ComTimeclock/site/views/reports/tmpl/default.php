@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$headerColSpan    = 3 + count($this->totals);
+$headerColSpan    = 2 + count($this->totals["user"]);
 
 $cellStyle  = "text-align:center; padding: 1px;";
 $projStyle  = "text-align:right; padding: 1px;";
