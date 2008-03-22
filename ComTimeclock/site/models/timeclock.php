@@ -569,10 +569,9 @@ class TimeclockModelTimeclock extends JModel
     {
         $query = "SELECT t.*
                   FROM #__timeclock_timesheet as t
-                  WHERE t.worked ='".$this->_date."'
+                  WHERE t.worked ='".$this->get("date")."'
                      AND t.created_by = '".$this->_id."'
                   ";
-
         $ret = $this->_getList($query);
         if (!is_array($ret)) return array();
         $data = array();
