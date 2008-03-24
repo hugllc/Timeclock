@@ -127,9 +127,14 @@ class TimeclockViewTimeclock extends JView
         $referer  = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
         $projid   = JRequest::getVar('projid', null, '', 'string');
 
+        $maxHours = TableTimeclockPrefs::getPref("maxDailyHours", "system");
+        $decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+
         $this->assignRef("projid", $projid);
         $this->assignRef("referer", $referer);
         $this->assignRef("data", $data);
+        $this->assignRef("maxHours", $maxHours);
+        $this->assignRef("decimalPlaces", $decimalPlaces);
 
         JHTML::_('behavior.tooltip');
         JHTML::_('behavior.formvalidation');

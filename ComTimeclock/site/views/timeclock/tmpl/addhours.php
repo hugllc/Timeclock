@@ -96,17 +96,35 @@ foreach ($this->projects as $cat) {
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
                 <script>
-                        Window.onDomReady(function(){
-                            document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
-                                function (value) {
-                                    if (document.getElementById('timesheet_<?php print $proj->id;?>_hours').value > 0) {
-                                        return (value.length > 10);
-                                    } else {
-                                        return true;
-                                    } 
-                                }     
-                            );
-                        });
+                    Window.onDomReady(function(){
+                        document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
+                            function (value) {
+                                if (document.getElementById('timesheet_<?php print $proj->id;?>_hours').value > 0) {
+                                    return (value.length > 10);
+                                } else {
+                                    return true;
+                                } 
+                            }     
+                        );
+                    });
+                    Window.onDomReady(function(){
+                        document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>', 
+                            function (value) {
+                                hours = document.getElementById('timesheet_<?php print $proj->id;?>_hours');
+                                regex=/[0-9]{0,2}([.][0-9]{0,<?php print $this->decimalPlaces;?>}){0,1}/;
+                                var v = regex.exec(value);
+                                if (v[0] != value) {
+                                    hours.value = v[0];
+                                }
+                                if (!hours.value) return false;
+                                var max = <?php print $this->maxHours; ?>;
+                                if (hours.value > max) {
+                                    hours.value = max;
+                                }
+                                return true;
+                            }     
+                        );
+                    });
                 </script>
 
                 <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
@@ -119,7 +137,7 @@ foreach ($this->projects as $cat) {
                 </label>
             </th>
             <td>
-                <input class="inputbox validate-numeric" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $hours;?>" />
+                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $hours;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
