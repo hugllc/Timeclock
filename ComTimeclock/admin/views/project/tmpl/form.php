@@ -228,7 +228,7 @@ foreach ($this->lists["projectUsers"] as $user) { ?>
 ?>
             </td>
             <td>
-                This is just a list of projects.
+                This is the list of users that are attached to this project.
             </td>
         </tr>
     </table>
