@@ -35,16 +35,18 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
-$style = "writing-mode: tb-rl; white-space: nowrap;";
+$style = "writing-mode: tb-rl; filter: flipv() fliph(); white-space: nowrap; vertical-align: center; height: 1.1em; ";
 ?>
         <tr>
-            <td class="sectiontableheader" width="50px" style="<?php print $this->cellStyle; ?>"><?php print JText::_("Project"); ?></td>
+            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+                <?php print JText::_("Project"); ?>
+            </td>
             <?php foreach ($this->users as $user) : ?>
-            <td class="sectiontableheader" width="5px" style="<?php print $this->cellStyle; ?>">
+            <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
                 <div style="<?php print $style; ?>"><?php print $user; ?></div>
             </td>
             <?php endforeach; ?>            
-            <td class="sectiontableheader" width="5px" style="<?php print $this->cellStyle; ?>">
+            <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
                 <div style="<?php print $style; ?>"><?php print JText::_("Total"); ?></div>
             </td>
         </tr>

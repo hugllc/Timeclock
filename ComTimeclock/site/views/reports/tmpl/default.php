@@ -40,7 +40,7 @@ JHTML::_('behavior.tooltip');
 
 $headerColSpan    = 2 + count($this->totals["user"]);
 
-$this->cellStyle  = "text-align:center; padding: 1px;";
+$this->cellStyle  = "text-align:center; padding: 1px; vertical-align: center;";
 $projStyle  = "text-align:right; padding: 1px;";
 $totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
