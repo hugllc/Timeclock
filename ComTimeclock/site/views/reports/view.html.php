@@ -332,9 +332,11 @@ class TimeclockViewReports extends JView
             $totals["user"][$user]      += $hours;
             $total                      += $hours;
         }
+        $users = array_keys($totals["user"]);
         $this->assignRef("report", $report);
         $this->assignRef("totals", $totals);
         $this->assignRef("total", $total);
+        $this->assignRef("users", $users);
 
     }
     /**

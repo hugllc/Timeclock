@@ -40,9 +40,9 @@ JHTML::_('behavior.tooltip');
 
 $headerColSpan    = 2 + count($this->totals["user"]);
 
-$cellStyle  = "text-align:center; padding: 1px;";
+$this->cellStyle  = "text-align:center; padding: 1px;";
 $projStyle  = "text-align:right; padding: 1px;";
-$totalStyle = $cellStyle." font-weight: bold;";
+$totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
@@ -76,15 +76,8 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
            </td>        
         </tr>
         <?php if (count($this->report) > 0) : ?>
-        <tr>
-            <td class="sectiontableheader" width="50px" style="<?php print $cellStyle; ?>"><?php print JText::_("Project"); ?></td>
-            <?php foreach (array_keys($this->totals["user"]) as $user) : ?>
-            <?php $user = implode("<br />", str_split($user, 1)); ?>
-            <td class="sectiontableheader" width="5px" style="<?php print $cellStyle; ?> vertical-align: bottom;"><?php print $user; ?></td>
-            <?php endforeach; ?>            
-            <?php $total = implode("<br />", str_split(JText::_("Totals"), 1)); ?>
-            <td class="sectiontableheader" width="5px" style="<?php print $cellStyle; ?> vertical-align: bottom;"><?php print $total; ?></td>
-        </tr>
+        <?php print $this->loadTemplate("header"); ?>
+
 <?php
 $k = 0;
 $totals = array();
@@ -92,7 +85,7 @@ foreach ($this->report as $cat => $projArray) {
     if (!empty($cat)) {
         ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $cellStyle; ?>"><?php print JText::_($cat); ?></td>
+            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_($cat); ?></td>
         </tr>
         <?php
     }
@@ -105,7 +98,7 @@ foreach ($this->report as $cat => $projArray) {
         foreach (array_keys($this->totals["user"]) as $user) {
             $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
             ?>
-            <td class="sectiontablerow<?php print $k; ?>" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
+            <td class="sectiontablerow<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
             <?php           
         }
         ?>
@@ -126,7 +119,7 @@ foreach ($this->report as $cat => $projArray) {
         </tr>
         <?php else : ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $cellStyle; ?>"><?php print JText::_("No data found"); ?></td>
+            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_("No data found"); ?></td>
         </tr>
         <?php endif; ?>
     </table>

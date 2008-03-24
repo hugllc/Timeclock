@@ -24,6 +24,7 @@
         <filename>views/timeclock/tmpl/default_header.php</filename>
         <filename>views/timeclock/tmpl/default_row.php</filename>
         <filename>views/timeclock/tmpl/default_nextprev.php</filename>
+        <filename>views/timeclock/tmpl/default_header.php</filename>
         <filename>views/timeclock/tmpl/addhours.php</filename>
         <filename>views/timeclock/tmpl/default.xml</filename>
         <filename>views/timeclock/tmpl/addhours.xml</filename>
