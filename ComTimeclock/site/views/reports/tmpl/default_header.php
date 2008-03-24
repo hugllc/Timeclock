@@ -36,7 +36,6 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 $style = "writing-mode: tb-rl; white-space: nowrap;";
-*/
 ?>
         <tr>
             <td class="sectiontableheader" width="50px" style="<?php print $this->cellStyle; ?>"><?php print JText::_("Project"); ?></td>

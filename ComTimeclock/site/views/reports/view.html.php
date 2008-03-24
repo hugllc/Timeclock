@@ -319,7 +319,7 @@ class TimeclockViewReports extends JView
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
-        $totals   = array();
+        $totals   = array("user" => array(), "proj" => array());
         $cat_name = "category_name";
         foreach ($ret as $d) {
             $hours = $d->hours;
