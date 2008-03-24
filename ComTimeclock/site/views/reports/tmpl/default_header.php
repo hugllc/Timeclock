@@ -44,8 +44,7 @@ $style = "writing-mode: tb-rl; white-space: nowrap;";
                 <div style="<?php print $style; ?>"><?php print $user; ?></div>
             </td>
             <?php endforeach; ?>            
-            <?php $total = implode("<br />", str_split(JText::_("Totals"), 1)); ?>
             <td class="sectiontableheader" width="5px" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print $total; ?></div>
+                <div style="<?php print $style; ?>"><?php print JText::_("Total"); ?></div>
             </td>
         </tr>
