@@ -69,26 +69,26 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
                </div>
            </td>        
         </tr>
-        <tr>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
+        <tr class="sectiontableheader">
+            <td rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader" colspan="4" align="center" style="<?php print $cellStyle; ?>"><?php print JText::_("Week")." ".($w+1); ?> </td>            
+            <td colspan="4" align="center" style="<?php print $cellStyle; ?>"><?php print JText::_("Week")." ".($w+1); ?> </td>            
     <?php
 }
 ?>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?></td>
+            <td rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
+            <td rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?></td>
         </tr>
-        <tr>
+        <tr class="sectiontableheader">
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Worked"); ?> </td>            
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("PTO"); ?> </td>            
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Holiday"); ?> </td>            
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?> </td>            
+            <td style="<?php print $cellStyle; ?>"><?php print JText::_("Worked"); ?> </td>            
+            <td style="<?php print $cellStyle; ?>"><?php print JText::_("PTO"); ?> </td>            
+            <td style="<?php print $cellStyle; ?>"><?php print JText::_("Holiday"); ?> </td>            
+            <td style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?> </td>            
     <?php
 }
 ?>
@@ -98,28 +98,28 @@ $k = 0;
 $totals = array();
 foreach ($this->report as $id => $time) {
     ?>
-        <tr>
-            <td class="sectiontableentry<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
+        <tr class="sectiontableentry<?php print $k;?>">
+            <td align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
     <?php
     for ($w = 0; $w < $this->weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
             $hours = (empty($time[$w][$type]["hours"])) ? $this->cell_fill : $time[$w][$type]["hours"];
             ?>
-                <td class="sectiontableentry<?php print $k;?>" align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
+                <td align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
             <?php
         }
         $hours = (empty($time[$w]["TOTAL"]["hours"])) ? $this->cell_fill : $time[$w]["TOTAL"]["hours"];
         ?>
-                <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+                <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
-    $k = 1 - $k;
     $hours = (empty($this->totals["user"][$id])) ? 0 : $this->totals["user"][$id];
     ?>
-            <td class="sectiontableentry<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>""><?php print $time["name"]; ?></td>
-            <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td align="right" style="<?php print $cellStyle; ?>""><?php print $time["name"]; ?></td>
+            <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     <?php
+    $k = 1 - $k;
 }
 ?>
         <tr>
@@ -137,7 +137,6 @@ for ($w = 0; $w < $this->weeks; $w++) {
             <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
     <?php
 }
-$k = 1 - $k;
 $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
 ?>
             <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
