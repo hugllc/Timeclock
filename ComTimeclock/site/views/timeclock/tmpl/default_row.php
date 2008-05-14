@@ -82,7 +82,8 @@ foreach ($this->period["dates"] as $key => $uDate) {
 }
 ?>
         <td style="<?php print $this->totalStyle; ?>">
-            <?php print $this->totals["proj"][$this->proj->id]; ?>
+            <?php $total = empty($this->totals["proj"][$this->proj->id]) ? 0 : $this->totals["proj"][$this->proj->id]; ?>
+            <?php print $total; ?>
         </td>
     </tr>
 <?php $this->rowk = 1-$this->rowk; ?>
