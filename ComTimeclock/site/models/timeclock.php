@@ -594,10 +594,10 @@ class TimeclockModelTimeclock extends JModel
         $date = JRequest::getVar('date', '', '', 'string');
         $user =& JFactory::getUser();        
         if (empty($date)) return false;
-        
+
         $ret = true;
         foreach ($timesheet as $data) {
-            $data["hours"] = (int) $data["hours"];
+            $data["hours"] = (float) $data["hours"];
             // If there are no hours don't create a record.
             // If there is already a record allow 0 hours.
             if (empty($data["hours"]) && empty($data["id"])) continue; 
