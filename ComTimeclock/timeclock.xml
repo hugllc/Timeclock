@@ -2,13 +2,13 @@
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
 <install type="component" version="1.5.0">
     <name>Timeclock</name>
-    <creationDate>2008 03 12</creationDate>
+    <creationDate>2008 05 14</creationDate>
     <author>Scott Price</author>
     <authorEmail>prices@hugllc.com</authorEmail>
     <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
     <copyright>2008 Hunt Utilities Group, LLC</copyright>
     <license>GNU Public License V3</license>
-    <version>0.5.3</version>
+    <version>0.5.4</version>
     <description>This component implements a timeclock for employees to track time.</description>
     
     <files folder="site">
