@@ -82,6 +82,7 @@ class TimeclockAdminViewUser extends JView
             JHTML::_("select.option", "CONTRACTOR", "Contractor"),
             JHTML::_("select.option", "TEMPORARY", "Temporary"),
             JHTML::_("select.option", "TERMINATED", "Terminated"),
+            JHTML::_("select.option", "RETIRED", "Retired"),
         );
 
         $lists["userProjects"] = $model->getUserProjects($cid[0]);
