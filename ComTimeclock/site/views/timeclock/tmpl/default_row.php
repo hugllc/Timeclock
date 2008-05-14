@@ -35,9 +35,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
-
+if (empty($this->rowk)) $rowk = 0;
 ?>
-    <tr class="sectiontableentry<?php print $k; ?>">
+    <tr class="sectiontableentry<?php print $this->rowk; ?>">
         <td>
             <?php print JHTML::_('tooltip', $this->proj->description, 'Project', '', $this->proj->name); ?>
         </td>
@@ -85,4 +85,4 @@ foreach ($this->period["dates"] as $key => $uDate) {
             <?php print $this->totals["proj"][$this->proj->id]; ?>
         </td>
     </tr>
-<?php $k = 1-$k; ?>
+<?php $this->rowk = 1-$this->rowk; ?>
