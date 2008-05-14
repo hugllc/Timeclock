@@ -99,25 +99,25 @@ $totals = array();
 foreach ($this->report as $id => $time) {
     ?>
         <tr>
-            <td class="sectiontablerow<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
+            <td class="sectiontableentry<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
     <?php
     for ($w = 0; $w < $this->weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
             $hours = (empty($time[$w][$type]["hours"])) ? $this->cell_fill : $time[$w][$type]["hours"];
             ?>
-                <td class="sectiontablerow<?php print $k;?>" align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
+                <td class="sectiontableentry<?php print $k;?>" align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
             <?php
         }
         $hours = (empty($time[$w]["TOTAL"]["hours"])) ? $this->cell_fill : $time[$w]["TOTAL"]["hours"];
         ?>
-                <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+                <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     $k = 1 - $k;
     $hours = (empty($this->totals["user"][$id])) ? 0 : $this->totals["user"][$id];
     ?>
-            <td class="sectiontablerow<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>""><?php print $time["name"]; ?></td>
-            <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td class="sectiontableentry<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>""><?php print $time["name"]; ?></td>
+            <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     <?php
 }
@@ -129,19 +129,19 @@ for ($w = 0; $w < $this->weeks; $w++) {
     foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
         $hours = (empty($this->totals["type"][$w][$type])) ? 0 : $this->totals["type"][$w][$type];
         ?>
-            <td class="sectiontablerow<?php print $k;?>" align="center" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td class="sectiontableentry<?php print $k;?>" align="center" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     $hours = (empty($this->totals["type"][$w]["TOTAL"])) ? 0 : $this->totals["type"][$w]["TOTAL"];
     ?>
-            <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
     <?php
 }
 $k = 1 - $k;
 $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
 ?>
             <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
-            <td class="sectiontablerow<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     </table>
 </form>

@@ -37,7 +37,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 ?>
-    <tr class=\"sectiontablerow$k\">
+    <tr class=\"sectiontableentry$k\">
         <td>
             <?php print JHTML::_('tooltip', $this->proj->description, 'Project', '', $this->proj->name); ?>
         </td>

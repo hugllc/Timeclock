@@ -90,7 +90,7 @@ foreach ($this->projects as $cat) {
 }
 print $this->loadTemplate("header");
 ?>
-        <tr class="sectiontablerow<?php echo $k?>">
+        <tr class="sectiontableentry<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
                 Subtotals
             </td>
@@ -115,7 +115,7 @@ $k = 1-$k;
                 &nbsp;
             </td>
         </tr>
-        <tr class="sectiontablerow<?php echo $k?>">
+        <tr class="sectiontableentry<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
                 Periodic Subtotals
             </td>

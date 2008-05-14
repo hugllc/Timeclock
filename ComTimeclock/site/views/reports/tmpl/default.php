@@ -93,16 +93,16 @@ foreach ($this->report as $cat => $projArray) {
     foreach ($projArray as $proj => $userArray) {
         ?>
         <tr>
-            <td class="sectiontablerow<?php print $k; ?>" style="<?php print $projStyle; ?>"><?php print JText::_($proj); ?></td>
+            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $projStyle; ?>"><?php print JText::_($proj); ?></td>
         <?php
         foreach (array_keys($this->totals["user"]) as $user) {
             $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
             ?>
-            <td class="sectiontablerow<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
+            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
             <?php           
         }
         ?>
-            <td class="sectiontablerow<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->totals["proj"][$proj]; ?></td>
+            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->totals["proj"][$proj]; ?></td>
         </tr>
         <?php
         $k = 1-$k;
@@ -113,7 +113,7 @@ foreach ($this->report as $cat => $projArray) {
         <tr>
             <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
             <?php foreach ($this->totals["user"] as $user => $hours) : ?>
-            <td class="sectiontablerow<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
             <?php endforeach; ?>            
             <td class="sectiontableheader" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
         </tr>
