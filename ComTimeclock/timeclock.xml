@@ -8,7 +8,7 @@
     <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
     <copyright>2008 Hunt Utilities Group, LLC</copyright>
     <license>GNU Public License V3</license>
-    <version>0.5.2</version>
+    <version>0.5.3</version>
     <description>This component implements a timeclock for employees to track time.</description>
     
     <files folder="site">
