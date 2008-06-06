@@ -43,9 +43,8 @@ $this->totals     = array();
 if (empty($this->days)) $this->days = 7;
 
 $headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->days));
-
 $document        =& JFactory::getDocument();
-$document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date, $shortDateFormat));
+$document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date." 06:00:00", $shortDateFormat));
 
 ?>
 <script type="text/javascript">
