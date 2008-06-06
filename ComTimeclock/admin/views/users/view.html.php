@@ -79,13 +79,13 @@ class TimeclockAdminViewUsers extends JView
 
         if ($filter_state) {
             if ($filter_state == 'P') {
-                $where[] = 't.published = 1';
+                $where[] = 'p.published = 1';
             } else if ($filter_state == 'U') {
-                $where[] = 't.published = 0';
+                $where[] = 'p.published = 0';
             }
         }
         if ($search) {
-            $where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            $where[] = 'LOWER('.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where          = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
