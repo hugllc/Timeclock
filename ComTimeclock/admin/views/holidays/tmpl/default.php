@@ -72,6 +72,9 @@ JToolBarHelper::addNewX();
                         <th  class="title">
                             <?php echo JHTML::_('grid.sort', 'Notes', 't.notes', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
+                        <th width="10%">
+                            <?php echo JHTML::_('grid.sort', 'Project', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                        </th>
                         <th width="5%" nowrap="nowrap">
                             <?php echo JHTML::_('grid.sort', 'Worked', 't.worked', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                         </th>
@@ -125,6 +128,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
         <?php
     }
             ?>
+            </td>
+            <td align="center">
+                    <?php echo $row->project_name; ?>
             </td>
             <td align="center">
                     <?php echo $row->worked; ?>
