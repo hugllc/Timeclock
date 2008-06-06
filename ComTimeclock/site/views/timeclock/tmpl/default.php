@@ -146,6 +146,7 @@ $k = 1-$k;
             </td>
         </tr>
     </table>
+    <?php print $this->loadTemplate("nextprev"); ?>
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="view" value="timeclock" />
 </form>
