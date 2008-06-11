@@ -307,6 +307,76 @@ class TimeclockViewReports extends JView
         parent::display($tpl);
 
     }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return null
+     */
+
+    function hours($tpl = null)
+    {
+        $model   =& $this->getModel();
+        $this->_reportGetPeriod();
+        
+        $this->filter();
+        $this->where();
+
+        $this->_lists["search_options"] = array(
+            JHTML::_('select.option', 't.notes', 'Notes'),
+            JHTML::_('select.option', 't.worked', 'Date Worked'),
+            JHTML::_('select.option', 'p.name', 'Project Name'),
+            JHTML::_('select.option', 'u.name', "User Name"),
+            JHTML::_('select.option', 'pc.name', "Category Name"),
+            JHTML::_('select.option', 'c.company', "Company Name"),
+            JHTML::_('select.option', 'c.name', "Company Contact"),
+        );
+
+        $this->_hoursGetData();
+        unset($this->report["Special"]);
+
+        $control = $this->_params->get("show_controls");
+        if ($control) $this->_reportControls();
+
+        parent::display($tpl);
+
+    }
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function _hoursGetData()
+    {
+        $model    =& $this->getModel();
+
+        $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
+
+        $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
+        $report   = array();
+        $totals   = array("user" => array(), "proj" => array());
+        $cat_name = "category_name";
+        foreach ($ret as $d) {
+            if ($d->category_name == "Special") continue;
+            $hours = $d->hours;
+            $user  = $d->author;
+            $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+            
+            $report[$user][$cat] += $hours;
+            $totals["user"][$user]      += $hours;
+            $totals["cat"][$cat]        += $hours;
+            $total                      += $hours;
+        }
+        $users = array_keys($totals["user"]);
+        $this->assignRef("report", $report);
+        $this->assignRef("totals", $totals);
+        $this->assignRef("total", $total);
+        $this->assignRef("users", $users);
+
+    }
+
 
     /**
      * The display function

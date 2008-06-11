@@ -153,6 +153,26 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
             </td>
         </tr>
     </table>
+<?php
+    echo $pane->endPanel();
+    echo $pane->startPanel(JText::_("Extras"), "extras-pane");
+?>
+    <table class="admintable">
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="wCompEnable">
+                    <?php echo JText::_('JPGraph Path'); ?>:
+                </label>
+            </td>
+            <td>
+                <input class="text_area" type="text" size="50" maxlength="100" name="prefs[JPGraphPath]" id="prefs_JPGraphPath" value="<?php echo $this->prefs["JPGraphPath"];?>" />
+            </td>
+            <td>
+                Enter the path to jpgraph.php.
+            </td>
+        </tr>
+    </table>
+
 
 <?php
     echo $pane->endPanel();
