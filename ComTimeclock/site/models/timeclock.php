@@ -257,7 +257,7 @@ class TimeclockModelTimeclock extends JModel
                       LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
                       LEFT JOIN #__timeclock_customers as c on p.customer = c.id
                       WHERE 
-                          (".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO'))
+                          (".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO') AND (j.user_id = t.created_by OR j.user_id IS NULL))
                           OR
                           (".$where2." AND p.type = 'HOLIDAY'
                           AND ((t.worked >= tp.startDate) AND ((t.worked <= tp.endDate) OR (tp.endDate = '0000-00-00'))))
