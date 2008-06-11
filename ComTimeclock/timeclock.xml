@@ -30,6 +30,8 @@
         <filename>views/reports/index.html</filename>
         <filename>views/reports/metadata.xml</filename>
         <filename>views/reports/view.html.php</filename>
+        <filename>views/reports/view.csv.php</filename>
+        <filename>views/reports/view.php</filename>
         <filename>views/reports/tmpl/index.html</filename>
         <filename>views/reports/tmpl/default.php</filename>
         <filename>views/reports/tmpl/default_controls.php</filename>

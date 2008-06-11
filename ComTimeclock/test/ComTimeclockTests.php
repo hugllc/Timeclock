@@ -50,20 +50,6 @@ $_SESSION["JoomlaMockBaseDir"] = $dir;
 require_once dirname(__FILE__)."/site/ComTimeclockSiteTests.php";
 require_once dirname(__FILE__)."/admin/ComTimeclockAdminTests.php";
 
-/** THis includes everything so we get a real idea on the code coverage */
-$dirs = array(
-    "admin/models", 
-    "admin/controllers", 
-    "admin/tables/", 
-    "admin/views",
-    "site/models", 
-    "site/controllers", 
-    "site/tables/", 
-    "site/views",
-);
-foreach ($dirs as $d) {
-    includeRecursive($dir."/".$d, 1);
-}
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
