@@ -102,6 +102,22 @@ class TimeclockViewReports extends JView
      *
      * @return null
      */
+    function catBy()
+    {
+        if (!is_object($this->_params)) $this->_params =& $mainframe->getParams('com_timeclock');
+
+        $catBy = JRequest::getVar('cat_by', $this->_params->get("cat_by"), '', 'word');
+        $catBy = trim(strtolower($catBy));
+        $this->assignRef("cat_by", $catBy);
+        if ($catBy == "category") return "category_name";
+        return "company_name";
+    }
+
+    /**
+     * filter, search and pagination
+     *
+     * @return null
+     */
     function cellFill()
     {
         $cell_fill = " ";
@@ -357,7 +373,7 @@ class TimeclockViewReports extends JView
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
         $totals   = array("user" => array(), "proj" => array());
-        $cat_name = "category_name";
+        $cat_name = $this->catBy();
         foreach ($ret as $d) {
             if ($d->category_name == "Special") continue;
             $hours = $d->hours;
@@ -390,7 +406,7 @@ class TimeclockViewReports extends JView
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
         $totals   = array("user" => array(), "proj" => array());
-        $cat_name = "category_name";
+        $cat_name = $this->catBy();
         foreach ($ret as $d) {
             $hours = $d->hours;
             $user  = $d->author;
@@ -437,6 +453,10 @@ class TimeclockViewReports extends JView
 
         $customerModel        =& JModel::getInstance("Customers", "TimeclockAdminModel");
         $controls["customer"] = $customerModel->getOptions("", "Select Customer");
+        $controls["cat_by"] = array(
+            JHTML::_('select.option', 'category', 'Category'),
+            JHTML::_('select.option', 'customer', 'Customer'),
+        );
 
         $this->assignRef("controls", $controls);
 

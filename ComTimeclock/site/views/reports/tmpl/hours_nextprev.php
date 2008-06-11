@@ -37,6 +37,8 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 $baseurl = "index.php?option=com_timeclock&view=reports&layout=hours&period=".$this->periodType;
+if (!empty($this->cat_by)) $baseurl .= "&cat_by=".$this->cat_by;
+
 $tip = "Go to the next pay period";
 $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
