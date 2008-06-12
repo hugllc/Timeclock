@@ -89,8 +89,8 @@ foreach ($this->report as $user => $catArray) {
     <?php
     $k = 0;
     $total = $this->totals["user"][$user];
-    foreach ($catArray as $cat => $hours) {
-        $hours = empty($hours) ? $this->cell_fill : $hours;
+    foreach (array_keys($this->totals["cat"]) as $cat) {
+        $hours = empty($catArray[$cat]) ? $this->cell_fill : $catArray[$cat];
         $perc = round(($hours/$total)*100);
         ?>
         <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
