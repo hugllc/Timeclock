@@ -52,6 +52,11 @@ require_once "view.php";
 
 class TimeclockViewReports extends TimeclockViewReportsBase
 {
+    /** This is the character(s) that separate the variables */
+    public $separator = ",";
+    /** This is the character(s) that separate lines */
+    public $lineSep = "\r\n";
+    
     /**
      * The display function
      *
@@ -62,7 +67,108 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     function display($tpl = null)
     {
         parent::pdisplay($tpl);
+        $layout        = $this->getLayout();
+
+        $function = $layout."CSV";
+        $filename = $layout."Report.csv";
+
+//        header("Content-Type: text/plain");
+        header("Content-Type: text/csv");
+        header("Content-Disposition: attachment; filename=".$filename);
+        header("Pragma: no-cache");
+        header("Cache-Control: no-cache");
+        
+        if (method_exists($this, $function)) {
+            $this->$function();
+        } else {
+            $this->reportCSV();
+        }
+        die();
     }
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function reportCSV()
+    {
+        $this->dateCSV();
+        $this->reportCSV_header();
+
+        $totals = array();
+        foreach ($this->report as $cat => $projArray) {
+            print $this->quoteCSV("Category: ".$cat);
+            print $this->lineSep;
+            foreach ($projArray as $proj => $userArray) {
+                print $this->quoteCSV($proj);
+                print $this->separator;
+                foreach (array_keys($this->totals["user"]) as $user) {
+                    $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
+                    print $this->quoteCSV($hours);
+                    print $this->separator;
+                }
+                print $this->quoteCSV($this->totals["proj"][$proj]);
+                print $this->lineSep;
+            }
+        }
+        print $this->quoteCSV("Total");
+        print $this->separator;
+        foreach ($this->totals["user"] as $user => $hours) {
+            print $this->quoteCSV($hours);
+            print $this->separator;
+        }
+        print $this->quoteCSV($this->total);
+        print $this->lineSep;
+    }
+
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function dateCSV()
+    {
+        print $this->quoteCSV($this->period["start"]);
+        print $this->separator;
+        print $this->quoteCSV("to");
+        print $this->separator;
+        print $this->quoteCSV($this->period["end"]);
+        print $this->lineSep;
+    }        
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function reportCSV_header()
+    {
+        print $this->quoteCSV("Project");
+        print $this->separator;
+        foreach ($this->users as $user) {
+            print $this->quoteCSV($user);
+            print $this->separator;
+        }
+        print $this->quoteCSV("Total");
+        print $this->lineSep;
+    }
+    
+    /**
+     * Quotes things that need it
+     *
+     * @param string $str The string to use
+     *
+     * @return string
+     */
+    function quoteCSV($str)
+    {
+        if (is_string($str)) return '"'.JText::_($str).'"';
+        return $str;
+    }
+    
+    
+    
 }
 
 ?>

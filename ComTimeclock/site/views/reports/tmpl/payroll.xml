@@ -22,6 +22,10 @@
                 <option value=" ">None</option>
                 <option value="0">0</option>
             </param>
+            <param name="show_export" type="radio" default="1" label="Export" description="Show the export line">
+                <option value="1">Show</option>
+                <option value="0">Hide</option>
+            </param>
         </params>
     </state>
 </metadata>

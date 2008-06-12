@@ -35,15 +35,18 @@
         <filename>views/reports/tmpl/index.html</filename>
         <filename>views/reports/tmpl/default.php</filename>
         <filename>views/reports/tmpl/default_controls.php</filename>
+        <filename>views/reports/tmpl/default_export.php</filename>
         <filename>views/reports/tmpl/default_nextprev.php</filename>
         <filename>views/reports/tmpl/default_header.php</filename>
         <filename>views/reports/tmpl/default.xml</filename>
         <filename>views/reports/tmpl/hours.php</filename>
         <filename>views/reports/tmpl/hours_controls.php</filename>
+        <filename>views/reports/tmpl/hours_export.php</filename>
         <filename>views/reports/tmpl/hours_nextprev.php</filename>
         <filename>views/reports/tmpl/hours_header.php</filename>
         <filename>views/reports/tmpl/hours.xml</filename>
         <filename>views/reports/tmpl/payroll.php</filename>
+        <filename>views/reports/tmpl/payroll_export.php</filename>
         <filename>views/reports/tmpl/payroll.xml</filename>
         <filename>views/reports/tmpl/notes.php</filename>
         <filename>views/reports/tmpl/notes.xml</filename>

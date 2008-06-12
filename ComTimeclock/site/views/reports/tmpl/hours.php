@@ -66,6 +66,8 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
                     <?php print $this->loadTemplate("nextprev"); ?>
                 <?php endif; ?>                
 
+               <?php print $this->loadTemplate("export"); ?>
+
                 <div id="dateheader" style="clear:both; white-space: nowrap;">
                    <strong>
                        <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>

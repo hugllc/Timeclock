@@ -32,6 +32,10 @@
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
             </param>
+            <param name="show_export" type="radio" default="1" label="Export" description="Show the export line">
+                <option value="1">Show</option>
+                <option value="0">Hide</option>
+            </param>
             <param name="cat_by" type="list" default="category" label="Group Projects By" description="This shows how projects are grouped.">
                 <option value="category">Category</option>
                 <option value="customer">Customer</option>
