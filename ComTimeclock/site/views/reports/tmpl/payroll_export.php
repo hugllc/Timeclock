@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 
 if (!$this->params->get("show_export")) return;
-$baseurl = "index.php?option=com_timeclock&view=reports&layout=report&period=".$this->periodType;
+$baseurl = "index.php?option=com_timeclock&view=reports&layout=payroll&period=".$this->periodType;
 $baseurl .= "&startDate=".$this->period["start"];
 $baseurl .= "&endDate=".$this->period["end"];
 if (!empty($this->cat_by)) $baseurl .= "&cat_by=".$this->cat_by;

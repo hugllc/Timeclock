@@ -114,7 +114,7 @@ foreach ($this->report as $user => $catArray) {
             <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
             <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $perc; ?>%</td>
             <?php endforeach; ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $total; ?></td>
+            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
             <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>">100%</td>
         </tr>
         <?php else : ?>

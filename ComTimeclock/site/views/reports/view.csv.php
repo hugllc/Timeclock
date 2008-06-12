@@ -121,6 +121,138 @@ class TimeclockViewReports extends TimeclockViewReportsBase
         print $this->lineSep;
     }
 
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function payrollCSV()
+    {
+        $this->dateCSV();
+        $this->payrollCSV_header();
+
+        foreach ($this->report as $id => $time) {
+            print $this->quoteCSV($time["name"]);
+            print $this->separator;
+            for ($w = 0; $w < $this->weeks; $w++) {
+                foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
+                    $hours = (empty($time[$w][$type]["hours"])) ? $this->cell_fill : $time[$w][$type]["hours"];
+                    print $this->quoteCSV($hours);
+                    print $this->separator;
+                }
+                $hours = (empty($time[$w]["TOTAL"]["hours"])) ? $this->cell_fill : $time[$w]["TOTAL"]["hours"];
+                print $this->quoteCSV($hours);
+                print $this->separator;
+            }
+            $hours = (empty($this->totals["user"][$id])) ? 0 : $this->totals["user"][$id];
+            print $this->quoteCSV($hours);
+            print $this->lineSep;
+        }
+        print $this->quoteCSV("Total");
+        print $this->separator;
+        for ($w = 0; $w < $this->weeks; $w++) {
+            foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
+                $hours = (empty($this->totals["type"][$w][$type])) ? 0 : $this->totals["type"][$w][$type];
+                print $this->quoteCSV($hours);
+                print $this->separator;
+            }
+            $hours = (empty($this->totals["type"][$w]["TOTAL"])) ? 0 : $this->totals["type"][$w]["TOTAL"];
+            print $this->quoteCSV($hours);
+            print $this->separator;
+        }
+        $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
+        print $this->quoteCSV($hours);
+        print $this->lineSep;
+
+    }
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function payrollCSV_header()
+    {
+        print $this->quoteCSV("Project");
+        print $this->separator;
+        for ($w = 0; $w < $this->weeks; $w++) {
+            $week = $w + 1;
+            print $this->quoteCSV("Week ".$week." Worked");
+            print $this->separator;
+            print $this->quoteCSV("Week ".$week." PTO");
+            print $this->separator;
+            print $this->quoteCSV("Week ".$week." Holiday");
+            print $this->separator;
+            print $this->quoteCSV("Week ".$week." Total");
+            print $this->separator;
+        }
+        print $this->quoteCSV("Total");
+        print $this->lineSep;
+    }
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function hoursCSV()
+    {
+        $this->dateCSV();
+        $this->hoursCSV_header();
+        foreach ($this->report as $user => $catArray) {
+            print $this->quoteCSV($user);
+            print $this->separator;
+            $total = $this->totals["user"][$user];
+            foreach ($catArray as $cat => $hours) {
+                $hours = empty($hours) ? $this->cell_fill : $hours;
+                $perc = round(($hours/$total)*100);
+                print $this->quoteCSV($hours);
+                print $this->separator;
+                print $this->quoteCSV($perc."%");
+                print $this->separator;
+            }
+            print $this->quoteCSV($this->total);
+            print $this->separator;
+            print $this->quoteCSV("100%");
+            print $this->lineSep;
+        
+        }
+        print $this->quoteCSV("Total");
+        print $this->separator;
+        foreach ($this->totals["cat"] as $cat => $hours) {
+            $hours = empty($hours) ? $this->cell_fill : $hours;
+            $perc = round(($hours/$total)*100);
+            print $this->quoteCSV($hours);
+            print $this->separator;
+            print $this->quoteCSV($perc."%");
+            print $this->separator;
+        }
+        print $this->quoteCSV($this->total);
+        print $this->separator;
+        print $this->quoteCSV("100%");
+        print $this->lineSep;
+
+    }
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function hoursCSV_header()
+    {
+        print $this->quoteCSV("User");
+        print $this->separator;
+        foreach (array_keys($this->totals["cat"]) as $cat) {
+            print $this->quoteCSV($cat." Hours"); 
+            print $this->separator;
+            print $this->quoteCSV($cat." %"); 
+            print $this->separator;
+        }
+        print $this->quoteCSV("Total Hours");
+        print $this->separator;
+        print $this->quoteCSV("Total %");
+        print $this->lineSep;
+    }
 
     /**
      * The display function
