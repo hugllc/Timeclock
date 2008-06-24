@@ -241,22 +241,22 @@ class TimeclockModelTimeclock extends JModel
      * @param string $where2 The where clause to add. Must NOT include "WHERE"
      *
      * @return string
-     */ 
+     */
     protected function sqlQuery($where1, $where2=null)
     {
-        if (is_null($where2)) $where2 = $where1;
-        return "SELECT t.hours as hours, t.worked, t.project_id, t.notes,
-                      t.created_by as user_id, p.name as project_name, p.type as type, 
+        if (empty($where2)) $where2 = $where1;
+        return "SELECT DISTINCT t.id as id, t.hours as hours, t.worked, t.project_id, t.notes,
+                      t.created_by as created_by, p.name as project_name, p.type as type,
                       u.name as author, pc.name as category_name, c.company as company_name,
-                      c.name as contact_name, p.id as project_id
+                      c.name as contact_name, p.id as project_id, j.user_id as user_id
                       FROM #__timeclock_timesheet as t
                       LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                      LEFT OUTER JOIN #__timeclock_users as j on j.id = p.id
-                      LEFT JOIN #__users as u on t.created_by = u.id
+                      LEFT JOIN #__timeclock_users as j on j.id = p.id
+                      LEFT JOIN #__users as u on j.user_id = u.id
                       LEFT JOIN #__timeclock_prefs as tp on tp.id = u.id
                       LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
                       LEFT JOIN #__timeclock_customers as c on p.customer = c.id
-                      WHERE 
+                      WHERE
                           (".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO') AND (j.user_id = t.created_by OR j.user_id IS NULL))
                           OR
                           (".$where2." AND p.type = 'HOLIDAY'
@@ -278,8 +278,14 @@ class TimeclockModelTimeclock extends JModel
                 $this->employmentDateWhere("t.worked"),
                 $this->periodWhere("t.worked"),
             );
+            $holidaywhere = array(
+                "j.user_id = ".$this->_id,
+                $this->employmentDateWhere("t.worked"),
+                $this->periodWhere("t.worked"),
+            );
             $where = implode(" AND ", $where);
-            $query = $this->sqlQuery($where);
+            $holidaywhere = implode(" AND ", $holidaywhere);
+            $query = $this->sqlQuery($where, $holidaywhere);
             $this->data = $this->_getList($query);
             if (!is_array($this->data)) return array();
             foreach ($this->data as $k => $d) {
@@ -289,7 +295,6 @@ class TimeclockModelTimeclock extends JModel
         }
         return $this->data;
     }
-
 
     /**
      * Gets the perc of holiday pay this user should get
