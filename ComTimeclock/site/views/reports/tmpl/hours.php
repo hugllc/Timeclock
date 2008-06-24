@@ -83,11 +83,11 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 <?php
 $k = 0;
 foreach ($this->report as $user => $catArray) {
+    $name =  empty($this->users[$user]) ? $user : $this->users[$user];
     ?>
     <tr>
-        <td class="sectiontableheader" align="right" style="<?php print $this->cellStyle; ?>"><?php print $user; ?></td>
+        <td class="sectiontableheader" align="right" style="<?php print $this->cellStyle; ?>"><?php print $name; ?></td>
     <?php
-    $k = 0;
     $total = $this->totals["user"][$user];
     foreach (array_keys($this->totals["cat"]) as $cat) {
         $hours = empty($catArray[$cat]) ? $this->cell_fill : $catArray[$cat];

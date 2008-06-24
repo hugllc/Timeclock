@@ -366,18 +366,19 @@ class TimeclockViewReportsBase extends JView
         $report   = array();
         $totals   = array("user" => array(), "proj" => array());
         $cat_name = $this->catBy();
+        $users = array();
         foreach ($ret as $d) {
             if ($d->category_name == "Special") continue;
             $hours = $d->hours;
-            $user  = $d->author;
+            $user  = $d->created_by;
             $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+            if (empty($users[$user])) $users[$user] = $d->author;            
             
             $report[$user][$cat] += $hours;
             $totals["user"][$user]      += $hours;
             $totals["cat"][$cat]        += $hours;
             $total                      += $hours;
         }
-        $users = array_keys($totals["user"]);
         $this->assignRef("report", $report);
         $this->assignRef("totals", $totals);
         $this->assignRef("total", $total);
