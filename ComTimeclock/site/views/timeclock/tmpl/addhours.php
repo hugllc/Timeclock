@@ -58,7 +58,7 @@ $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('d
         });
 </script>
 
-<form action="index.php" method="post" name="userform" autocomplete="off" class="form-validate">
+<form action="<?php JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
     <div class="componentheading"><?php print JText::_("Add Hours"); ?></div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr>
