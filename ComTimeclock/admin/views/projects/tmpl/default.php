@@ -99,7 +99,7 @@ if ($this->lists["wCompEnable"] != 0) { ?>
                         <?php echo JHTML::_('grid.sort', 'Research', 't.research', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
                     <th width="5%" nowrap="nowrap">
-                        <?php echo JHTML::_('grid.sort', 'Created By', 't.created_by', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                        <?php echo JHTML::_('grid.sort', 'Manager', 't.manager', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                     </th>
             </tr>
     </thead>
@@ -122,7 +122,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 
     $checked        = JHTML::_('grid.checkedout', $row, $i);
     $published      = JHTML::_('grid.published', $row, $i);
-    $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
+    $author         = empty($row->manager_name) ? "None" : $row->manager_name;
 
     $wcCode = $sep  = "";
     for ($j = 1; $j < 7; $j++) {

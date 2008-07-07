@@ -59,11 +59,13 @@ class TimeclockAdminModelProjects extends JModel
     );
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name, p.checked_out as parent_checked_out,
+    var $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name, m.name as manager_name, 
+                      p.checked_out as parent_checked_out,
                       c.company as customer_name, c.name as customer_contact, c.checked_out as customer_checked_out
                       FROM #__timeclock_projects AS t 
                       LEFT JOIN #__timeclock_projects as p ON t.parent_id = p.id
                       LEFT JOIN #__users as u ON t.created_by = u.id 
+                      LEFT JOIN #__users as m ON t.manager = m.id 
                       LEFT JOIN #__timeclock_customers as c ON c.id = t.customer
                       ";
     /**

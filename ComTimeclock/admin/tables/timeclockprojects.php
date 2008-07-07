@@ -85,6 +85,12 @@ class TableTimeclockProjects extends JTable
      *
      * @var int
      */
+    public $manager = 0;
+    /**
+     * Variable
+     *
+     * @var int
+     */
     public $research = 0;
     /**
      * Variable

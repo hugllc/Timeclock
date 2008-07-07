@@ -126,6 +126,19 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Research">
+                    <?php echo JText::_('Manager'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->lists["allUsers"], "manager", '', 'value', 'text', $this->row->manager);  ?>
+            </td>
+            <td>
+                Who is the project manager?
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="Research">
                     <?php echo JText::_('Research'); ?>:
                 </label>
             </td>
