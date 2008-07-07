@@ -85,7 +85,11 @@ class TimeclockAdminViewProjects extends JView
             }
         }
         if ($search) {
-            $where[] = 'LOWER('.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            if (($search_filter == "m.name") && (trim(strtolower($search)) == "none")) {
+                $where[] = "t.manager = 0";
+            } else {
+                $where[] = 'LOWER('.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            }
         }
         $where[] = 't.id > 0';
         

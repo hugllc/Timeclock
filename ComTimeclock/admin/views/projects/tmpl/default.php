@@ -105,7 +105,7 @@ if ($this->lists["wCompEnable"] != 0) { ?>
     </thead>
     <tfoot>
             <tr>
-                    <td colspan="9">
+                    <td colspan="10">
                             <?php echo $this->pagination->getListFooter(); ?>
                     </td>
             </tr>
