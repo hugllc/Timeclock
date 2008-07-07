@@ -123,6 +123,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
     $checked        = JHTML::_('grid.checkedout', $row, $i);
     $published      = JHTML::_('grid.published', $row, $i);
     $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
+
+    $wcCode = $sep  = "";
+    for ($j = 1; $j < 7; $j++) {
+        $var = "wcCode".$j;
+        if ($row->$var == 0) continue;
+        $wcCode .= $sep.$row->$var;
+        $sep = ", ";
+    }
+
     ?>
         <tr class="<?php echo "row$k"; ?>">
             <td>
@@ -184,7 +193,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
     <?php 
     if ($this->lists["wCompEnable"] != 0) { ?>
             <td align="center">
-                <?php echo $row->wcCode;?>
+                <?php echo $wcCode;?>
             </td>
         <?php 
     } 

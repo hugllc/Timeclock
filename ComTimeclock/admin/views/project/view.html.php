@@ -91,7 +91,7 @@ class TimeclockAdminViewProject extends JView
         $parentOptions = $model->getParentOptions($row->id, $row->parent_id);
         
         $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");        
-        $wCompCodeOptions = array();
+        $wCompCodeOptions = array(JHTML::_("select.option", 0, "None"));
         foreach ($wCompCodes as $code => $desc) {
             $wCompCodeOptions[] = JHTML::_("select.option", $code, $code.": ".htmlspecialchars($desc));
         }

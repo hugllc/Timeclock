@@ -187,14 +187,20 @@ if ($this->lists["wCompEnable"] != 0) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="parent_id">
-                    <?php echo JText::_('Workers Comp Code'); ?>:
+                    <?php echo JText::_('Workers Comp Codes'); ?>:
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.genericList", $this->wCompCodeOptions, "wcCode", "", 'value', 'text', (int)$this->row->wcCode); ?>
+                <?php for ($i = 1; $i < 7; $i++): ?>
+                <?php $var = "wcCode".$i; ?>
+                <div>
+                    <strong><?php print $i; ?>:</strong>
+                    <?php print JHTML::_("select.genericList", $this->wCompCodeOptions, $var, "", 'value', 'text', (int)$this->row->$var); ?>
+                </div>
+                <?php endfor; ?>
             </td>
             <td>
-                The worker's comp code
+                The worker's comp codes.  Each code will be listed as a separate hours entry in the timeclock.
             </td>
         </tr>
     <?php

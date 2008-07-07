@@ -103,7 +103,37 @@ class TableTimeclockProjects extends JTable
      *
      * @var string
      */
-    public $wcCode = '8803';
+    public $wcCode1 = 0;
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $wcCode2 = 0;
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $wcCode3 = 0;
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $wcCode4 = 0;
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $wcCode5 = 0;
+    /**
+     * Variable
+     *
+     * @var string
+     */
+    public $wcCode6 = 0;
     /**
      * Variable
      *

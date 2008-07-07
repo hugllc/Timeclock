@@ -73,7 +73,37 @@ class TableTimeclockTimesheet extends JTable
      *
      * @var float
      */
-    public $hours = 0;
+    public $hours1 = 0;
+    /**
+     * Variable
+     *
+     * @var float
+     */
+    public $hours2 = 0;
+    /**
+     * Variable
+     *
+     * @var float
+     */
+    public $hours3 = 0;
+    /**
+     * Variable
+     *
+     * @var float
+     */
+    public $hours4 = 0;
+    /**
+     * Variable
+     *
+     * @var float
+     */
+    public $hours5 = 0;
+    /**
+     * Variable
+     *
+     * @var float
+     */
+    public $hours6 = 0;
     /**
      * Variable
      *

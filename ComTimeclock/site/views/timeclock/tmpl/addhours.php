@@ -42,10 +42,10 @@ $headerColSpan = 3;
 $this->totals     = array();
 if (empty($this->days)) $this->days = 7;
 
-$headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->days));
+$headerColSpan    = 3;
 $document        =& JFactory::getDocument();
 $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date." 06:00:00", $shortDateFormat));
-
+$wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 ?>
 <script type="text/javascript">
         Window.onDomReady(function(){
@@ -90,7 +90,6 @@ foreach ($this->projects as $cat) {
         if (!$proj->published) continue;
         if ($proj->noHours) continue;
         if (!is_null($this->projid) && !($this->projid == $proj->id)) continue;
-        $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0;
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
@@ -128,23 +127,27 @@ foreach ($this->projects as $cat) {
 
                 <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>
-        </tr>    
+        </tr>
+        <?php for ($i = 1; $i < 7; $i++): ?>
+        <?php $var = "hours".$i; ?>
+        <?php $wcVar = "wcCode".$i; ?>
+        <?php if ($proj->$wcVar == 0) continue; ?>
+        <?php $wcName = empty($wCompCodes[$proj->$wcVar]) ? $proj->$wcVar : $wCompCodes[$proj->$wcVar] ; ?>
+        <?php $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0; ?>
         <tr>
-            <th align="right">
-                <label id="hours_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_hours">
-                    <?php print JText::_("Hours");?>:
+            <th style="white-space:nowrap;" align="right">
+                <label id="hours_<?php print $i; ?>_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_hours_<?php print $i; ?>">
+                    <?php print JText::_($wcName);?>:
                 </label>
             </th>
             <td>
-                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="timesheet_<?php print $proj->id;?>_hours" name="timesheet[<?php print $proj->id;?>][hours]" size="10" maxlength="10" value="<?php echo $hours;?>" />
-                <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
-                <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
-                <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
+                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="timesheet_<?php print $proj->id;?>_hours_<?php print $i; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
             </td>
             <td>
-                <?php print JText::_("The number of hours worked.  Must be numeric."); ?>            
+                <?php print JText::_("Hours worked."); ?>            
             </td>
         </tr>
+        <?php endfor; ?>
         <tr>
             <th style="vertical-align: top;"  align="right" id="notes_<?php print $proj->id;?>_label">
                 <label id="notes_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_notes">
@@ -153,6 +156,9 @@ foreach ($this->projects as $cat) {
             </th>
             <td>
                 <textarea class="inputbox validate-noteverify<?php print $proj->id;?>"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"> <?php echo $this->data[$proj->id]->notes;?> </textarea>
+                <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
+                <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
+                <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
             </td>
             <td>
                 <?php print JText::_("This should be a description of what was done in the hours posted.  Minimum 10 characters."); ?>            

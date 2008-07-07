@@ -245,7 +245,8 @@ class TimeclockModelTimeclock extends JModel
     protected function sqlQuery($where1, $where2=null)
     {
         if (empty($where2)) $where2 = $where1;
-        return "SELECT DISTINCT t.id as id, t.hours as hours, t.worked, t.project_id, t.notes,
+        return "SELECT DISTINCT t.id as id, (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6) as hours, t.worked, t.project_id, t.notes,
+                      t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3, t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6, 
                       t.created_by as created_by, p.name as project_name, p.type as type,
                       u.name as author, pc.name as category_name, c.company as company_name,
                       c.name as contact_name, p.id as project_id, j.user_id as user_id
@@ -602,10 +603,14 @@ class TimeclockModelTimeclock extends JModel
 
         $ret = true;
         foreach ($timesheet as $data) {
-            $data["hours"] = (float) $data["hours"];
+            $htotal = 0;
+            for ($i = 1; $i < 7; $i++) {
+                $data["hours".$i] = (float) $data["hours".$i];
+                $htotal += $data["hours".$i];
+            }
             // If there are no hours don't create a record.
             // If there is already a record allow 0 hours.
-            if (empty($data["hours"]) && empty($data["id"])) continue; 
+            if (empty($htotal) && empty($data["id"])) continue; 
 
             // Remove white space from the notes
             $data["notes"] = trim($data["notes"]);
