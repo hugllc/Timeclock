@@ -85,7 +85,7 @@ class TimeclockAdminViewProjects extends JView
             }
         }
         if ($search) {
-            $where[] = 'LOWER(t.'.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            $where[] = 'LOWER('.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
         $where[] = 't.id > 0';
         
@@ -109,9 +109,11 @@ class TimeclockAdminViewProjects extends JView
         $lists['search']         = $search;
         $lists['search_filter']  = $search_filter;
         $lists['search_options'] = array(
-            JHTML::_('select.option', 'name', 'Name'),
-            JHTML::_('select.option', 'type', 'Type'),
-            JHTML::_('select.option', 'wcCode', "Worker's Comp Code"),
+            JHTML::_('select.option', 't.name', 'Name'),
+            JHTML::_('select.option', 't.type', 'Type'),
+            JHTML::_('select.option', 'm.name', "Manager Name"),
+            JHTML::_('select.option', 'c.company', "Customer Name"),
+            JHTML::_('select.option', 'p.name', "Category"),
         );
         $lists['search_options_default'] = 'name';       
         $lists["wCompCodes"] = TableTimeclockPrefs::getPref("wCompCodes");        
