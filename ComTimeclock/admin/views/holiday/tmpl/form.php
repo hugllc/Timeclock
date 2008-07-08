@@ -44,6 +44,7 @@ JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
+$wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div>
@@ -74,19 +75,26 @@ JToolBarHelper::cancel();
                 When the first pay period starts
             </td>
         </tr>
+        <?php for ($i = 1; $i < 7; $i++): ?>
+        <?php $var = "hours".$i; ?>
+        <?php $wcVar = "wcCode".$i; ?>
+        <?php if (($this->project->$wcVar == 0) && ($i > 1)) continue; ?>
+        <?php $wcName = empty($wCompCodes[$this->project->$wcVar]) ? "Hours" : $wCompCodes[$this->project->$wcVar] ; ?>
+        <?php $hours = ($this->row->$var) ? $this->row->$var : 0; ?>
         <tr>
             <td width="100" align="right" class="key">
-                <label for="hours">
-                    <?php echo JText::_('Hours'); ?>:
+                <label for="<?php print $var; ?>">
+                    <?php echo JText::_($wcName); ?>:
                 </label>
             </td>
             <td>
-                <input class="text_area" type="text" name="hours" id="hours" size="10" maxlength="10" value="<?php echo $this->row->hours;?>" />
+                <input class="text_area" type="text" name="<?php print $var; ?>" id="<?php print $var; ?>" size="10" maxlength="10" value="<?php print $hours; ?>" />
             </td>
             <td>
-                The number of hours of holiday for this day
+                The number of hours
             </td>
         </tr>
+        <?php endfor; ?>
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="notes">

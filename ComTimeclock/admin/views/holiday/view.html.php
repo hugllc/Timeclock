@@ -62,6 +62,7 @@ class TimeclockAdminViewHoliday extends JView
     function display($tpl = null)
     {
         $model =& JModel::getInstance("Holidays", "TimeclockAdminModel");
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");
@@ -76,10 +77,13 @@ class TimeclockAdminViewHoliday extends JView
         }
         $model->checkout($user->get("id"), $cid[0]);
         
+        $project = $projModel->getData($row->project_id);        
+        
         $add = empty($row->id);
 
         $lists['projects'] = $model->projectOptions();
 
+        $this->assignRef("project", $project);
         $this->assignRef("lists", $lists);
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
