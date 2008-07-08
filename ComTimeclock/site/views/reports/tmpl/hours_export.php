@@ -43,6 +43,9 @@ $baseurl  = "index.php?option=com_timeclock&view=reports&layout=hours&period=".$
 $baseurl .= "&startDate=".$this->period["start"];
 $baseurl .= "&endDate=".$this->period["end"];
 if (!empty($this->cat_by)) $baseurl .= "&cat_by=".$this->cat_by;
+if (!empty($this->cat_id)) $baseurl .= "&cat_id=".$this->cat_id;
+if (!empty($this->proj_id)) $baseurl .= "&proj_id=".$this->proj_id;
+if (!empty($this->cust_id)) $baseurl .= "&cust_id=".$this->cust_id;
 ?>
 <div>
     <strong><?php print JText::_("Export to"); ?>:</strong>
