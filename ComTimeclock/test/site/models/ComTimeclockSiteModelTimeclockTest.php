@@ -114,10 +114,10 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
         return array(
 
             array(null, "store", false, array(), ""),
-            array(null, "store", true, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
-            array("bind", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
-            array("check", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
-            array("store", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours" => 5))), ""),
+            array(null, "store", true, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
+            array("bind", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
+            array("check", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
+            array("store", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
         );
     }
     /**
