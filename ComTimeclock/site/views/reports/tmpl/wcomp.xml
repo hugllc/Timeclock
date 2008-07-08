@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="Report">
+    <layout title="Worker's Comp Report">
         <message>
-            This is a generic timeclock report.  It shows users in columns and projects in
-            rows and shows the hours for each user in each project.
+            This report shows how many hours employees have put into any one worker's comp code.
         </message>
     </layout>
     <state>
-        <name>Report</name>
+        <name>Worker's Comp Report</name>
         <description>
-            This is a generic timeclock report.  It shows users in columns and projects in
-            rows and shows the hours for each user in each project.
+            This report shows how many hours employees have put into any one worker's comp code.
         </description>
         <url addpath="/administrator/components/com_timeclock/elements">
             <param name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />

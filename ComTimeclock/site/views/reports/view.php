@@ -350,6 +350,79 @@ class TimeclockViewReportsBase extends JView
         if ($control) $this->_reportControls();
 
     }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return null
+     */
+    function wcomp($tpl = null)
+    {
+        $model   =& $this->getModel();
+        $this->_reportGetPeriod();
+        
+        $this->filter();
+        $this->where();
+
+        $this->_lists["search_options"] = array(
+            JHTML::_('select.option', 't.notes', 'Notes'),
+            JHTML::_('select.option', 't.worked', 'Date Worked'),
+            JHTML::_('select.option', 'p.name', 'Project Name'),
+            JHTML::_('select.option', 'u.name', "User Name"),
+            JHTML::_('select.option', 'pc.name', "Category Name"),
+            JHTML::_('select.option', 'c.company', "Company Name"),
+            JHTML::_('select.option', 'c.name', "Company Contact"),
+        );
+
+        $this->_wcompGetData();
+
+        $control = $this->_params->get("show_controls");
+        if ($control) $this->_reportControls();
+
+    }
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function _wcompGetData()
+    {
+        $model    =& $this->getModel();
+
+        $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
+
+        $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
+        $report   = array();
+        $totals   = array("user" => array(), "proj" => array());
+        $cat_name = $this->catBy();
+        $users = array();
+        $codes = array();
+        foreach ($ret as $d) {
+            if ($d->category_name == "Special") continue;
+            for ($i = 1; $i < 7; $i++) {
+                $var = "hours".$i;
+                $wcVar = "wcCode".$i;
+                $hours = $d->$var;
+                $user  = $d->author;
+                $code  = $d->$wcVar;
+                if (empty($code)) continue;
+                $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+                if (empty($codes[$code])) $codes[$code] = $code;            
+                
+                $report[$user][$code]  += $hours;
+                $totals["user"][$user] += $hours;
+                $totals["code"][$code] += $hours;
+                $total                 += $hours;
+            }
+        }
+        $this->assignRef("report", $report);
+        $this->assignRef("totals", $totals);
+        $this->assignRef("total", $total);
+        $this->assignRef("codes", $codes);
+
+    }
 
     /**
      * The display function

@@ -247,6 +247,7 @@ class TimeclockModelTimeclock extends JModel
         if (empty($where2)) $where2 = $where1;
         return "SELECT DISTINCT t.id as id, (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6) as hours, t.worked, t.project_id, t.notes,
                       t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3, t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6, 
+                      p.wcCode1 as wcCode1, p.wcCode2 as wcCode2, p.wcCode3 as wcCode3, p.wcCode4 as wcCode4, p.wcCode5 as wcCode5, p.wcCode6 as wcCode6, 
                       t.created_by as created_by, p.name as project_name, p.type as type,
                       u.name as author, pc.name as category_name, c.company as company_name,
                       c.name as contact_name, p.id as project_id, j.user_id as user_id

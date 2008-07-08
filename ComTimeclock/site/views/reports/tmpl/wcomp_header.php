@@ -39,11 +39,11 @@ $style = "writing-mode: tb-rl; filter: flipv() fliph(); white-space: nowrap; ver
 ?>
         <tr>
             <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Project"); ?>
+                <?php print JText::_("User"); ?>
             </td>
-            <?php foreach ($this->users as $user) : ?>
+            <?php foreach ($this->codes as $code) : ?>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print $user; ?></div>
+                <div style="<?php print $style; ?>"><?php print $code; ?></div>
             </td>
             <?php endforeach; ?>            
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">

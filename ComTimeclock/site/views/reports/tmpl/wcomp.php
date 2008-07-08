@@ -48,7 +48,6 @@ $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_("to")." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
 
-
 ?>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
@@ -83,38 +82,28 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 <?php
 $k = 0;
 $totals = array();
-foreach ($this->report as $cat => $projArray) {
-    if (!empty($cat)) {
+foreach ($this->report as $user => $codeArray) {
+    ?>
+    <tr>
+        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $projStyle; ?>"><?php print $user; ?></td>
+    <?php
+    foreach ($codeArray as $hours) {
+//        $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
         ?>
-        <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_($cat); ?></td>
-        </tr>
-        <?php
+        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
+        <?php           
     }
-    $k = 0;
-    foreach ($projArray as $proj => $userArray) {
-        ?>
-        <tr>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $projStyle; ?>"><?php print JText::_($proj); ?></td>
-        <?php
-        foreach (array_keys($this->totals["user"]) as $user) {
-            $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
-            ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
-            <?php           
-        }
-        ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->totals["proj"][$proj]; ?></td>
-        </tr>
-        <?php
-        $k = 1-$k;
-    }
+    ?>
+        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->totals["user"][$user]; ?></td>
+    </tr>
+    <?php
+    $k = 1-$k;
 
 }
 ?>
         <tr>
             <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
-            <?php foreach ($this->totals["user"] as $user => $hours) : ?>
+            <?php foreach ($this->totals["code"] as $code => $hours) : ?>
             <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
             <?php endforeach; ?>            
             <td class="sectiontableheader" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>

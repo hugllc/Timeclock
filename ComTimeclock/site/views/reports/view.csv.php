@@ -285,6 +285,57 @@ class TimeclockViewReports extends TimeclockViewReportsBase
         print $this->quoteCSV("Total");
         print $this->lineSep;
     }
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function wcompCSV()
+    {
+        $this->dateCSV();
+        $this->wcompCSV_header();
+        foreach ($this->report as $user => $codeArray) {
+            print $this->quoteCSV($user);
+            print $this->separator;
+            $total = $this->totals["user"][$user];
+            foreach ($codeArray as $code => $hours) {
+                if (empty($hours)) $hours = $this->cell_fill;
+                print $this->quoteCSV($hours);
+                print $this->separator;
+            }
+            print $this->quoteCSV($total);
+            print $this->lineSep;
+        
+        }
+        print $this->quoteCSV("Total");
+        print $this->separator;
+        foreach ($this->totals["code"] as $code => $hours) {
+            $hours = empty($hours) ? $this->cell_fill : $hours;
+            print $this->quoteCSV($hours);
+            print $this->separator;
+        }
+        print $this->quoteCSV($this->total);
+        print $this->separator;
+
+    }
+
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function wcompCSV_header()
+    {
+        print $this->quoteCSV("User");
+        print $this->separator;
+        foreach ($this->codes as $code) {
+            print $this->quoteCSV($code); 
+            print $this->separator;
+        }
+        print $this->quoteCSV("Total");
+        print $this->lineSep;
+    }
     
     /**
      * Quotes things that need it
