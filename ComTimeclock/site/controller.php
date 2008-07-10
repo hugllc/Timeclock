@@ -313,6 +313,8 @@ class TimeclockController extends JController
     {
         $user =& JFactory::getUser();
         if ($user->get("id") < 1) return false;
+        $view = JRequest::getVar('view', "timesheet", '', 'word');
+        if (($view == "reports") && !TableTimeClockPrefs::getPref("admin_reports")) return false;
         return TableTimeClockPrefs::getPref("published");
     }
 
