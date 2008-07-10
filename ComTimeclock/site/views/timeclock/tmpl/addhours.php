@@ -128,12 +128,22 @@ foreach ($this->projects as $cat) {
                 <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>
         </tr>
-        <?php for ($i = 1; $i < 7; $i++): ?>
-        <?php $var = "hours".$i; ?>
-        <?php $wcVar = "wcCode".$i; ?>
-        <?php if ($proj->$wcVar == 0) continue; ?>
-        <?php $wcName = empty($wCompCodes[$proj->$wcVar]) ? $proj->$wcVar : $wCompCodes[$proj->$wcVar] ; ?>
-        <?php $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0; ?>
+        <?php 
+        for ($i = 1; $i < 7; $i++): 
+            if (TableTimeclockPrefs::getPref("wCompEnable", "system")) {
+                $var = "hours".$i; 
+                $wcVar = "wcCode".$i; 
+                if ($proj->$wcVar == 0) continue; 
+                $wcName = empty($wCompCodes[$proj->$wcVar]) ? $proj->$wcVar : $wCompCodes[$proj->$wcVar] ; 
+                $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0; 
+            } else {
+                if ($i > 1) break;
+                $var = "hours1";
+                $wcName = "Hours";
+                $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0; 
+var_dump(                $this->data[$proj->id]);
+            }
+            ?>
         <tr>
             <th style="white-space:nowrap;" align="right">
                 <label id="hours_<?php print $i; ?>_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_hours_<?php print $i; ?>">

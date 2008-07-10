@@ -307,6 +307,9 @@ class TableTimeclockPrefs extends JTable
      */
     function filterPrefWCompCodes($value)
     {
+        $enabled = self::getPref("wCompEnable", "system");
+        if (!$enabled) return array(0 => "Hours");
+        
         $ret = array();
         $v = explode("\n", $value);
         foreach ($v as $line) {

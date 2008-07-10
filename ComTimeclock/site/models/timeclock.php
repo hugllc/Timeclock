@@ -574,7 +574,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function getData()
     {
-        $query = "SELECT t.*
+        $query = "SELECT t.*, (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6) as hours
                   FROM #__timeclock_timesheet as t
                   WHERE t.worked ='".$this->get("date")."'
                      AND t.created_by = '".$this->_id."'
