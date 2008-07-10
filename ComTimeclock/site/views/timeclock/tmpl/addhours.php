@@ -46,6 +46,7 @@ $headerColSpan    = 3;
 $document        =& JFactory::getDocument();
 $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date." 06:00:00", $shortDateFormat));
 $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
+$wCompEnabled = TableTimeclockPrefs::getPref("wCompEnable", "system");
 ?>
 <script type="text/javascript">
         Window.onDomReady(function(){
@@ -130,7 +131,7 @@ foreach ($this->projects as $cat) {
         </tr>
         <?php 
         for ($i = 1; $i < 7; $i++): 
-            if (TableTimeclockPrefs::getPref("wCompEnable", "system")) {
+            if ($wCompEnabled) {
                 $var = "hours".$i; 
                 $wcVar = "wcCode".$i; 
                 if ($proj->$wcVar == 0) continue; 
