@@ -171,6 +171,33 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 Enter the path to jpgraph.php.
             </td>
         </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="timeclockDisable">
+                    <?php echo JText::_('Disable Timeclock'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.booleanList", "prefs[timeclockDisable]", "", $this->prefs["timeclockDisable"]); ?>
+            </td>
+            <td>
+                This allows the timeclock system to be taken down for maintenance without taking the rest of your
+                website down.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key" style="vertical-align: top;">
+                <label for="prefs_timeclockDisableMessage">
+                    <?php echo JText::_('Disable Message'); ?>:
+                </label>
+            </td>
+            <td>
+                <textarea class="text_area" type="text" name="prefs[timeclockDisableMessage]" id="prefs_timeclockDisableMessage" cols="50" rows="5"><?php echo $this->prefs["timeclockDisableMessage"];?></textarea>
+            </td>
+            <td>
+                This is the message that timeclock users will receive if the timeclock is down for maintenance.
+            </td>
+        </tr>
     </table>
 
 

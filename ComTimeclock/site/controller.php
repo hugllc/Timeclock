@@ -71,6 +71,12 @@ class TimeclockController extends JController
      */
     function display()
     {
+        if (TableTimeclockPrefs::getPref("timeclockDisable", "system")) {
+            print "<div><strong>";
+            print JText::_(TableTimeclockPrefs::getPref("timeclockDisableMessage", "system"));
+            print "</strong></div>";
+            return;
+        }
         $view = JRequest::getVar('view', "timesheet", '', 'word');
 
         if ($this->reports($view)) return;

@@ -99,6 +99,8 @@ class TableTimeclockPrefs extends JTable
             "payPeriodLengthFixed" => 14,
             "wCompEnable" => 0,
             "wCompCodes" => '',
+            "timeclockDisable" => 0,
+            "timeclockDisableMessage" => "The timeclock system is currently down for maintenance.  Please try again later.",
         ),
         "user" => array(
             "admin_holidayperc" => 100,
