@@ -92,8 +92,8 @@ foreach ($this->report as $user => $codeArray) {
     <tr>
         <td class="sectiontableentry<?php print $k; ?>" style="<?php print $projStyle; ?>"><?php print $user; ?></td>
     <?php
-    foreach ($codeArray as $hours) {
-//        $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
+    foreach ($this->codes as $code) {
+        $hours = empty($codeArray[$code]) ? $this->cell_fill : $codeArray[$code];
         ?>
         <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
         <?php           
