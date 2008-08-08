@@ -87,6 +87,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
         $key = base64_encode($where.$orderby);
         if (empty($this->data[$key])) {
             $query = $this->sqlQuery($where).$orderby;
+
             $this->data[$key] = $this->_getList($query, $limitstart, $limit);
 
             if (!is_array($this->data[$key])) return array();
