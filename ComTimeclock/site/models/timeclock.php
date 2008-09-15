@@ -84,6 +84,8 @@ class TimeclockModelTimeclock extends JModel
     protected $period = array(
         "type" => "payperiod",
     );
+    /** @var int The project we are dealing with */
+    private $_project = 0;      
 
     /**
      * Constructor that retrieves the ID from the request
