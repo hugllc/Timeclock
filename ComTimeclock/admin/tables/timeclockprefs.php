@@ -318,7 +318,7 @@ class TableTimeclockPrefs extends JTable
             $line = trim($line);
             $key = substr($line, 0, 4);
             $val = substr($line, 4);
-            $ret[$key] = $val;
+            $ret[(int)$key] = $val;
         }
         return $ret;
     }
