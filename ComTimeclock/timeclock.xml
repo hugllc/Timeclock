@@ -10,7 +10,8 @@
     <license>GNU Public License V3</license>
     <version>0.6.5</version>
     <description>This component implements a timeclock for employees to track time.</description>
-    
+    <installfile>install.timeclock.php</installfile>
+    <uninstallfile>uninstall.timeclock.php</uninstallfile>
     <files folder="site">
         <filename>index.html</filename>
         <filename>timeclock.php</filename>
@@ -67,16 +68,6 @@
         <filename>tables/index.html</filename>
         <filename>LICENSE.TXT</filename>
     </files>
-    <install>
-        <sql>
-<!--            <file charset="utf8" driver="mysql">install/timeclock_prefs.sql</file>-->
-        </sql>
-    </install>
-    <uninstall>
-        <sql>
-<!--     <file charset="utf8" driver="mysqli">uninstall.sql</file>-->
-        </sql>
-    </uninstall>   
     <administration>
         <menu>Timeclock</menu>
         <submenu>
@@ -87,7 +78,7 @@
             <menu controller="holidays">Holidays</menu>
             <menu task="about">About</menu>
         </submenu>
-  
+
         <files folder="admin">
             <filename>index.html</filename>
             <filename>admin.timeclock.php</filename>
@@ -103,6 +94,11 @@
             <filename>elements/category.php</filename>
             <filename>images/index.html</filename>
             <filename>images/clock-48.png</filename>
+            <filename>install/timeclock_customers.sql</filename>
+            <filename>install/timeclock_prefs.sql</filename>
+            <filename>install/timeclock_projects.sql</filename>
+            <filename>install/timeclock_timesheet.sql</filename>
+            <filename>install/timeclock_users.sql</filename>
             <filename>controllers/index.html</filename>
             <filename>controllers/customers.php</filename>
             <filename>controllers/config.php</filename>
@@ -160,6 +156,6 @@
             <filename>views/users/tmpl/index.html</filename>
             <filename>views/users/tmpl/default.php</filename>
             <filename>views/users/view.html.php</filename>
-        </files>  
+        </files>
     </administration>
 </install>

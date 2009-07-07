@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `jos_timeclock_prefs` (
+CREATE TABLE IF NOT EXISTS `#__timeclock_prefs` (
   `id` int(11) NOT NULL,
   `prefs` text,
   `published` smallint(6) NOT NULL default '0',
@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_prefs` (
   `endDate` date NOT NULL default '0000-00-00',
   `history` longtext,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+);

@@ -46,26 +46,20 @@ function Com_install()
 {
     $database =& JFactory::getDBO();
     $adminDir = dirname(__FILE__);
-    foreach (array("HUGnetDisplay.php", "HUGnetDisplay.xml") as $file) {
-        $from = $adminDir.DS."plugins".DS.$file;
-        $to   = JPATH_ROOT.DS."plugins".DS."content".DS.$file;
-        rename($from, $to);
-    }
-    $database->setQuery(
-        "INSERT INTO `#__plugins` "
-        ."(`name`,`element`, `folder`, `access`, `ordering`, "
-        ."`published`, `iscore`, `client_id`, `checked_out`, "
-        ."`checked_out_time`, `params`) "
-        ." VALUES ('Content - HUGnetDisply', 'HUGnetDisplay', "
-        ."'content', 0, 99, 1, 0, 0, 0, '0000-00-00 00:00:00', '');"
-    );
-    $result = $database->query();
 
-    $sql_files = array("hugnet_images", "hugnet_imagepoints", "hugnet_prefs");
+    $sql_files = array(
+        "timeclock_customers",
+        "timeclock_prefs",
+        "timeclock_projects",
+        "timeclock_timesheet",
+        "timeclock_users",
+    );
     foreach ($sql_files as $file) {
         $sql = file_get_contents($adminDir.DS."install".DS.$file.".sql");
-        $database->setQuery($sql);
-        $result = $database->query();
+        if (!empty($sql)) {
+            $database->setQuery($sql);
+            $result = $database->query();
+        }
     }
 
 }

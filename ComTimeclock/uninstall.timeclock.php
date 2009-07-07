@@ -45,12 +45,6 @@ function Com_uninstall()
 {
     $database =& JFactory::getDBO();
     $adminDir = dirname(__FILE__);
-    foreach (array("HUGnetDisplay.php", "HUGnetDisplay.xml") as $file) {
-        $to = JPATH_ROOT.DS."plugins".DS."content".DS.$file;
-        @unlink($to);
-    }
-    $database->setQuery("DELETE FROM `#__plugins` WHERE `element`='HUGnetDisplay';");
-    $database->query();
 
 }
 ?>

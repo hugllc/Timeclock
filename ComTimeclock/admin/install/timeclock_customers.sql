@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `jos_timeclock_customers` (
+CREATE TABLE IF NOT EXISTS `#__timeclock_customers` (
   `id` int(11) NOT NULL auto_increment,
   `company` varchar(64) NOT NULL default '',
   `name` varchar(64) NOT NULL default '',
@@ -9,5 +9,11 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_customers` (
   `zip` varchar(10) NOT NULL default '',
   `country` varchar(64) NOT NULL default 'US',
   `notes` text NOT NULL,
+  `checked_out` int(11) NOT NULL,
+  `checked_out_time` datetime NOT NULL,
+  `published` smallint(6) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  `bill_pto` tinyint(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+);
