@@ -7,17 +7,17 @@
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 /** Require the JoomlaMock stuff */
@@ -59,14 +59,14 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->sqlFile = array(
-            dirname(__FILE__)."/../../../install/timeclock_timesheet.sql",
-            dirname(__FILE__)."/../../../install/timeclock_users.sql",
-            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_timesheet.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_prefs.sql",
         );
-        $this->o = new TimeclockModelTimeclock();        
+        $this->o = new TimeclockModelTimeclock();
         parent::setUp();
     }
 
@@ -78,7 +78,7 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
@@ -169,7 +169,7 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
             array("asdf", null),
         );
     }
-    
+
     /**
      * Tests get and set date
      *
@@ -228,7 +228,7 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
             array(null, "quarter", "end", date("Y-12-31"), "2008-11-20"),
         );
     }
-    
+
     /**
      * Tests get and set date
      *
@@ -259,8 +259,8 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
     {
         return array(
             array(
-                "2007-12-12", 
-                "2007-12-25", 
+                "2007-12-12",
+                "2007-12-25",
                 array(
                     "type" => "payperiod",
                     "unix" => array(
@@ -301,7 +301,7 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
             ),
         );
     }
-    
+
     /**
      * Tests get and set date
      *

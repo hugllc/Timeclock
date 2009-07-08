@@ -99,6 +99,7 @@
             <filename>install/timeclock_projects.sql</filename>
             <filename>install/timeclock_timesheet.sql</filename>
             <filename>install/timeclock_users.sql</filename>
+            <filename>install/index.html</filename>
             <filename>controllers/index.html</filename>
             <filename>controllers/customers.php</filename>
             <filename>controllers/config.php</filename>
