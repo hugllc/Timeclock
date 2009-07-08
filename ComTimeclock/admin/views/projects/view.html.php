@@ -61,6 +61,26 @@ class TimeclockAdminViewProjects extends JView
      */
     function display($tpl = null)
     {
+        $layout = $this->getLayout();
+        if (method_exists($this, $layout)) {
+            $this->$layout();
+        } else {
+            $this->showList();
+        }
+        parent::display($tpl);
+
+    }
+
+
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function showList($tpl = null)
+    {
         global $mainframe, $option;
         $model = $this->getModel("Projects");
 
@@ -170,6 +190,93 @@ class TimeclockAdminViewProjects extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+        parent::display($tpl);
+    }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function form($tpl = null)
+    {
+        $model =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
+
+        // Set this as the default model
+        $this->setModel($model, true);
+        $row = $this->get("Data");
+        if (!empty($row->parent_id)) {
+            $cat = $model->getData($row->parent_id);
+        }
+        $user =& JFactory::getUser();
+
+        $cid = JRequest::getVar('cid', 0, '', 'array');
+        // fail if checked out not by 'me'
+        if ($row->isCheckedOut($user->get('id'))) {
+                $msg = JText::sprintf(
+                    'DESCBEINGEDITTED',
+                    JText::_('The poll'),
+                    $poll->title
+                );
+                $this->setRedirect(
+                    'index.php?option=com_timeclock&controller=projects',
+                    $msg
+                );
+        }
+        $model->checkout($user->get("id"), $cid[0]);
+
+        $add = empty($row->id);
+
+        $typeOptions = array(
+            JHTML::_("select.option", "PROJECT", "Project"),
+            JHTML::_("select.option", "CATEGORY", "Category"),
+            JHTML::_("select.option", "PTO", "Paid Time Off"),
+            JHTML::_("select.option", "HOLIDAY", "Holiday"),
+            JHTML::_("select.option", "UNPAID", "Unpaid"),
+        );
+        $parentOptions = $model->getParentOptions($row->id, $row->parent_id);
+
+        $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
+        $wCompCodeOptions = array(JHTML::_("select.option", 0, "None"));
+        foreach ($wCompCodes as $code => $desc) {
+            $wCompCodeOptions[] = JHTML::_(
+                "select.option",
+                $code,
+                $code.": ".htmlspecialchars($desc)
+            );
+        }
+
+        $lists["projectUsers"] = $model->getProjectUsers($cid[0]);
+        $uUser = array();
+        foreach ($lists["projectUsers"] as $u) {
+            $uUser[] = $u->id;
+        }
+
+        $userWhere = "WHERE p.published=1
+              AND (p.startDate <= '".date("Y-m-d")."' AND p.startDate > '0000-00-00')
+              AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
+        $lists["allUsers"] = $userModel->getOptions($userWhere, "None");
+        $lists["users"]    = $userModel->getOptions($userWhere, "Add User", $uUser);
+
+        $lists["customers"] = $customerModel->getOptions(
+            "WHERE published=1",
+            "None"
+        );
+
+        $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
+
+        $this->assignRef("lists", $lists);
+
+        $this->assignRef("lists", $lists);
+        $this->assignRef("wCompCodeOptions", $wCompCodeOptions);
+        $this->assignRef("parentOptions", $parentOptions);
+        $this->assignRef("typeOptions", $typeOptions);
+        $this->assignRef("add", $add);
+        $this->assignRef("cat", $cat);
+        $this->assignRef("row", $row);
         parent::display($tpl);
     }
 }

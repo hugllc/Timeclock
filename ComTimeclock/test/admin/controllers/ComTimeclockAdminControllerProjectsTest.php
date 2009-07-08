@@ -93,7 +93,15 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
     {
         return array(
             array("display", array("view" => "projects")),
-            array("edit", array("model" => "projects", "view" => "project", "layout" => "form", "hidemainmenu" => 1)),
+            array(
+                "edit",
+                array(
+                    "model" => "projects",
+                    "view" => "projects",
+                    "layout" => "form",
+                    "hidemainmenu" => 1
+                )
+            ),
         );
     }
     /**

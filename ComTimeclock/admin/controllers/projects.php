@@ -87,7 +87,7 @@ class TimeclockAdminControllerProjects extends JController
     function edit()
     {
         JRequest::setVar('model', 'projects');
-        JRequest::setVar('view', 'project');
+        JRequest::setVar('view', 'projects');
         JRequest::setVar('layout', 'form');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();

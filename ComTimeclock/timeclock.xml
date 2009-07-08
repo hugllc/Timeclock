@@ -121,11 +121,7 @@
             <filename>views/about/tmpl/index.html</filename>
             <filename>views/about/tmpl/default.php</filename>
             <filename>views/about/view.html.php</filename>
-            <filename>views/project/index.html</filename>
-            <filename>views/project/tmpl/index.html</filename>
-            <filename>views/project/tmpl/default.php</filename>
-            <filename>views/project/tmpl/form.php</filename>
-            <filename>views/project/view.html.php</filename>
+            <filename>views/projects/tmpl/form.php</filename>
             <filename>views/projects/index.html</filename>
             <filename>views/projects/tmpl/index.html</filename>
             <filename>views/projects/tmpl/default.php</filename>
