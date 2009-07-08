@@ -91,7 +91,7 @@ class TimeclockAdminControllerUsers extends JController
     function edit()
     {
         JRequest::setVar('model', 'users');
-        JRequest::setVar('view', 'user');
+        JRequest::setVar('view', 'users');
         JRequest::setVar('layout', 'form');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();

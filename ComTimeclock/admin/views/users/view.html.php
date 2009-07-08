@@ -52,6 +52,7 @@ jimport('joomla.application.component.view');
  */
 class TimeclockAdminViewUsers extends JView
 {
+
     /**
      * The display function
      *
@@ -60,6 +61,25 @@ class TimeclockAdminViewUsers extends JView
      * @return none
      */
     function display($tpl = null)
+    {
+        $layout = $this->getLayout();
+        if (method_exists($this, $layout)) {
+            $this->$layout();
+        } else {
+            $this->showList();
+        }
+        parent::display($tpl);
+
+    }
+
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function showList($tpl = null)
     {
         global $mainframe, $option;
         $model = $this->getModel("Users");
@@ -159,8 +179,66 @@ class TimeclockAdminViewUsers extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
-        parent::display($tpl);
     }
+
+        /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function form($tpl = null)
+    {
+        $model =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $projectModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
+
+        // Set this as the default model
+        $this->setModel($model, true);
+        $row = $this->get("Data");
+
+        $user =& JFactory::getUser();
+
+        $cid = JRequest::getVar('cid', 0, '', 'array');
+        if ($cid[0] < 1) {
+            $this->setRedirect(
+                'index.php?option=com_timeclock&controller=users',
+                JText::_("No User given!")
+            );
+        };
+        $user =& JFactory::getUser($cid[0]);
+
+        $lists["status"] = array(
+            JHTML::_("select.option", "FULLTIME", "Full Time"),
+            JHTML::_("select.option", "PARTTIME", "Part Time"),
+            JHTML::_("select.option", "CONTRACTOR", "Contractor"),
+            JHTML::_("select.option", "TEMPORARY", "Temporary"),
+            JHTML::_("select.option", "TERMINATED", "Terminated"),
+            JHTML::_("select.option", "RETIRED", "Retired"),
+        );
+
+        $lists["userProjects"] = $model->getUserProjects($cid[0]);
+        $uProj = array();
+        foreach ($lists["userProjects"] as $p) {
+            $uProj[] = $p->id;
+        }
+        $lists["projects"] = $projectModel->getOptions(
+            "WHERE published=1 AND Type <> 'CATEGORY'",
+            "Add Project",
+            $uProj
+        );
+        $lists["users"] = $userModel->getOptions(
+            $userWhere,
+            "Select User",
+            $cid
+        );
+
+        $this->assignRef("user", $user);
+        $this->assignRef("lists", $lists);
+        $this->assignRef("row", $row);
+    }
+
 }
 
 ?>

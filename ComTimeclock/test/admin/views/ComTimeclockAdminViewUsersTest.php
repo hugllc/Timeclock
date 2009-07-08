@@ -92,6 +92,8 @@ class ComTimeclockAdminViewUsersTest extends JViewTest
     {
         return array(
             array("display", null),
+            array("showList", null),
+            array("form", null),
         );
     }
 
