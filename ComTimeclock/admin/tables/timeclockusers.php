@@ -7,20 +7,20 @@
  * <pre>
  * com_Preferences is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
@@ -70,8 +70,8 @@ class TableTimeclockUsers extends JTable
     function __construct(&$db)
     {
         parent::__construct('#__timeclock_users', "id", $db);
-    }    
-    
+    }
+
     /**
      * Stores data
      *
@@ -80,7 +80,7 @@ class TableTimeclockUsers extends JTable
     function store()
     {
         $this->delete($this->id, $this->user_id);
-        return $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);    
+        return $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
     }
 
     /**
@@ -90,10 +90,11 @@ class TableTimeclockUsers extends JTable
      */
     function delete()
     {
-        $query = "DELETE FROM ".$this->_tbl." WHERE id=".(int)$this->id." AND user_id=".(int)$this->user_id;
+        $query = "DELETE FROM ".$this->_tbl
+                ." WHERE id=".(int)$this->id." AND user_id=".(int)$this->user_id;
         $this->_db->setQuery($query);
         return (bool) $this->_db->query();
     }
-    
-     
+
+
 }

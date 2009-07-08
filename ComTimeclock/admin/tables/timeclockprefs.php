@@ -7,20 +7,20 @@
  * <pre>
  * com_Preferences is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
@@ -100,13 +100,14 @@ class TableTimeclockPrefs extends JTable
             "wCompEnable" => 0,
             "wCompCodes" => '',
             "timeclockDisable" => 0,
-            "timeclockDisableMessage" => "The timeclock system is currently down for maintenance.  Please try again later.",
+            "timeclockDisableMessage" =>
+                "The timeclock system is currently down for maintenance.  Please try again later.",
         ),
         "user" => array(
             "admin_holidayperc" => 100,
             "admin_status" => "FULLTIME",
         ),
-        
+
     );
 
     /**
@@ -129,8 +130,12 @@ class TableTimeclockPrefs extends JTable
      */
     public function decode($value)
     {
-        if (is_array($value)) return $value;
-        if (!is_string($value)) return array();
+        if (is_array($value)) {
+            return $value;
+        }
+        if (!is_string($value)) {
+            return array();
+        }
         return unserialize(base64_decode($value));
     }
 
@@ -148,7 +153,9 @@ class TableTimeclockPrefs extends JTable
         $this->prefs = array_merge(self::$_defaults["user"], $prefs);
         $this->history = self::decode($this->history);
         // If we don't find it create one
-        if (!$ret) return $this->create($oid);
+        if (!$ret) {
+            return $this->create($oid);
+        }
         return $ret;
     }
 
@@ -174,12 +181,18 @@ class TableTimeclockPrefs extends JTable
     function create($oid = -1)
     {
         $this->id = (int) $oid;
-        if ($oid > 0) $pref = "user";
-        if ($oid <= 0) $pref = "system";
+        if ($oid > 0) {
+            $pref = "user";
+        }
+        if ($oid <= 0) {
+            $pref = "system";
+        }
         $this->prefs = self::encode(self::$_defaults[$pref]);
         $this->history = self::encode($this->history);
         // Default the start date to today if it is empty.
-        if (($this->startDate == "0000-00-00") || empty($this->startDate)) $this->startDate = date("Y-m-d");
+        if (($this->startDate == "0000-00-00") || empty($this->startDate)) {
+            $this->startDate = date("Y-m-d");
+        }
         $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
         $this->prefs = self::$_defaults[$pref];
         $this->history = self::decode($this->history);
@@ -220,7 +233,7 @@ class TableTimeclockPrefs extends JTable
         unset($this->_history);
         return $ret;
     }
-    
+
     /**
      * Constructor
      *
@@ -230,7 +243,7 @@ class TableTimeclockPrefs extends JTable
     {
         parent::__construct('#__timeclock_prefs', "id", $db);
     }
-    
+
     /**
      * Gets preferences
      *
@@ -243,7 +256,7 @@ class TableTimeclockPrefs extends JTable
     function getPref($name, $type="user", $oid = null)
     {
         static $instance;
-        
+
         if ($type == "system") {
             $oid = -1;
         } else {
@@ -251,19 +264,29 @@ class TableTimeclockPrefs extends JTable
                 $u =& JFactory::getUser();
                 $oid = $u->get("id");
             }
-            if (empty($oid)) return self::_prefCache($name);
+            if (empty($oid)) {
+                return self::_prefCache($name);
+            }
             $type = "user";
-        }        
-        
+        }
+
         $inst =& $instance[$type][$oid];
         if (empty($inst)) {
             $inst = JTable::getInstance("TimeclockPrefs", "Table");
             $inst->load($oid);
         }
-        if (isset($inst->$name)) return self::filterPref($name, $inst->$name);
-        if (isset($inst->prefs[$name])) return self::filterPref($name, $inst->prefs[$name]);
-        if (isset(self::$_defaults[$type][$name])) return self::getDefaultPref($name, $type);
-        if ($type != "system") return self::getPref($name, "system", $oid);
+        if (isset($inst->$name)) {
+            return self::filterPref($name, $inst->$name);
+        }
+        if (isset($inst->prefs[$name])) {
+            return self::filterPref($name, $inst->prefs[$name]);
+        }
+        if (isset(self::$_defaults[$type][$name])) {
+            return self::getDefaultPref($name, $type);
+        }
+        if ($type != "system") {
+            return self::getPref($name, "system", $oid);
+        }
         return self::filterPref($name, null);
     }
     /**
@@ -290,7 +313,9 @@ class TableTimeclockPrefs extends JTable
     function filterPref($name, $value)
     {
         // Protect it from calling itself.
-        if (empty($name)) return $value;
+        if (empty($name)) {
+            return $value;
+        }
         $function = "filterPref".ucfirst($name);
 
         $methods = get_class_methods("TableTimeclockPrefs");
@@ -310,8 +335,9 @@ class TableTimeclockPrefs extends JTable
     function filterPrefWCompCodes($value)
     {
         $enabled = self::getPref("wCompEnable", "system");
-        if (!$enabled) return array(0 => "Hours");
-        
+        if (!$enabled) {
+            return array(0 => "Hours");
+        }
         $ret = array();
         $v = explode("\n", $value);
         foreach ($v as $line) {
@@ -322,7 +348,7 @@ class TableTimeclockPrefs extends JTable
         }
         return $ret;
     }
-        
+
     /**
      * Sets preferences
      *
@@ -331,7 +357,8 @@ class TableTimeclockPrefs extends JTable
      *
      * @param string $name  The name of the pref to get
      * @param string $value The value of the pref to set
-     * @param int    $oid   The user ID to set the prefs for.  null sets them for the current user.
+     * @param int    $oid   The user ID to set the prefs for.  null sets them for
+     *                      the current user.
      *
      * @return mixed The value of the parameter.
      */
@@ -341,8 +368,9 @@ class TableTimeclockPrefs extends JTable
             $u =& JFactory::getUser();
             $oid = $u->id;
         }
-        if (empty($oid)) return self::_prefCache($name, $value);
-        
+        if (empty($oid)) {
+            return self::_prefCache($name, $value);
+        }
         $p = JTable::getInstance("TimeclockPrefs", "Table");
         $p->load($oid);
         $p->prefs[$name] = $value;
@@ -360,8 +388,8 @@ class TableTimeclockPrefs extends JTable
      * the administrator panel.
      *
      * @param string $name  The name of the pref to get/set
-     * @param string $value The value of the pref to set.  If this is null the preferences
-     *                      is gotten instead of set.
+     * @param string $value The value of the pref to set.  If this is null the
+     *                      preferences is gotten instead of set.
      *
      * @return mixed The value of the parameter if get, true if set.
      */
@@ -369,8 +397,12 @@ class TableTimeclockPrefs extends JTable
     {
         $prefs =& $_SESSION["TimeclockPrefs"];
         if (is_null($value)) {
-            if (isset($prefs[$name])) return $prefs[$name];
-            if (isset(self::$_defaults["user"][$name])) return self::$_defaults["user"][$name];
+            if (isset($prefs[$name])) {
+                return $prefs[$name];
+            }
+            if (isset(self::$_defaults["user"][$name])) {
+                return self::$_defaults["user"][$name];
+            }
             return self::getPref($name, "system");
         } else {
             $prefs[$name] = $value;

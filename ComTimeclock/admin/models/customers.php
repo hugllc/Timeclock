@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,10 +30,10 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
@@ -63,7 +63,7 @@ class TimeclockAdminModelCustomers extends JModel
     function __construct()
     {
         parent::__construct();
-    
+
         $array = JRequest::getVar('cid', 0, '', 'array');
         $this->setId($array);
     }
@@ -97,7 +97,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @param string $where      The where clause to use.  Must include 'WHERE'
      * @param int    $limitstart The record to start on
-     * @param int    $limit      The max number of records to retrieve 
+     * @param int    $limit      The max number of records to retrieve
      * @param string $orderby    The order by clause.  Must include 'ORDER BY'
      *
      * @return string
@@ -163,7 +163,9 @@ class TimeclockAdminModelCustomers extends JModel
         $ret = array(JHTML::_("select.option", 0, $name));
         $query = "SELECT id, name, company FROM #__timeclock_customers ".$where;
         $proj = $this->_getList($query, $limitstart, $limit);
-        if (!is_array($proj)) return $ret;
+        if (!is_array($proj)) {
+            return $ret;
+        }
         foreach ($proj as $p) {
             $ret[] = JHTML::_("select.option", $p->id, $p->company.": ".$p->name);
         }
@@ -178,15 +180,15 @@ class TimeclockAdminModelCustomers extends JModel
      */
     function store()
     {
-        $row =& $this->getTable("TimeclockCustomers"); 
+        $row =& $this->getTable("TimeclockCustomers");
         $data = JRequest::get('post');
-    
+
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
             $user =& JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
-        
+
         // Bind the form fields to the hello table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
@@ -197,13 +199,13 @@ class TimeclockAdminModelCustomers extends JModel
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-    
+
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-    
+
         return $row->id;
     }
     /**

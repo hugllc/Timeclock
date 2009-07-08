@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,10 +30,10 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
@@ -73,13 +73,17 @@ class TimeclockController extends JController
     {
         if (TableTimeclockPrefs::getPref("timeclockDisable", "system")) {
             print "<div><strong>";
-            print JText::_(TableTimeclockPrefs::getPref("timeclockDisableMessage", "system"));
+            print JText::_(
+                TableTimeclockPrefs::getPref("timeclockDisableMessage", "system")
+            );
             print "</strong></div>";
             return;
         }
         $view = JRequest::getVar('view', "timesheet", '', 'word');
 
-        if ($this->reports($view)) return;
+        if ($this->reports($view)) {
+            return;
+        }
         $this->timesheet();
     }
     /**
@@ -96,7 +100,11 @@ class TimeclockController extends JController
         $user_id = $user->get("id");
 
         if ($projModel->getUserProjectsCount($user_id) == 0) {
-            $this->setRedirect("index.php", "No projects for you to put time into.", "error");
+            $this->setRedirect(
+                "index.php",
+                JText::_("No projects for you to put time into."),
+                "error"
+            );
             return;
         }
 
@@ -114,7 +122,9 @@ class TimeclockController extends JController
      */
     function reports($view)
     {
-        if ($view != "reports") return false;
+        if ($view != "reports") {
+            return false;
+        }
         JRequest::setVar('view', 'reports');
         parent::display();
         return true;
@@ -132,15 +142,21 @@ class TimeclockController extends JController
         $projid   = JRequest::getVar('projid', null, '', 'string');
         if (!empty($projid)) {
             $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-            $user    = JFactory::getUser();
-            $user_id = $user->get("id");
+            $user      = JFactory::getUser();
+            $user_id   = $user->get("id");
             if ($projModel->userInProject($user_id, $projid) == false) {
-                $this->setRedirect(JRoute::_("index.php?option=com_timeclock&view=timeclock"), "You are not authorized to put time into that project.", "error");
+                $this->setRedirect(
+                    JRoute::_("index.php?option=com_timeclock&view=timeclock"),
+                    JText::_("You are not authorized to put time in that project."),
+                    "error"
+                );
                 return;
             }
         }
         $date = JRequest::getVar('date', null, '', 'string');
-        if (!$this->checkDates($date)) return;
+        if (!$this->checkDates($date)) {
+            return;
+        }
         JRequest::setVar('layout', 'addhours');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
@@ -174,8 +190,12 @@ class TimeclockController extends JController
      */
     function checkEmploymentDates($start, $end, $date)
     {
-        if ($date < $start) return false;
-        if (($date > $end) && !empty($end)) return false; 
+        if ($date < $start) {
+            return false;
+        }
+        if (($date > $end) && !empty($end)) {
+            return false;
+        }
         return true;
     }
 
@@ -188,22 +208,32 @@ class TimeclockController extends JController
     function savehours()
     {
         if (!JRequest::checkToken()) {
-            $this->setRedirect(JRoute::_("index.php"), "Bad form token.  Please try again.", "error");
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
             return;
         }
 
         $date = JRequest::getVar('date', null, '', 'string');
-        if (!$this->checkDates($date)) return;
-
+        if (!$this->checkDates($date)) {
+            return;
+        }
         $model = $this->getModel("Timeclock");
-    
+
         if ($model->store()) {
             $msg = JText::_('Hours Saved!');
         } else {
             $msg = JText::_('Error Saving Hours');
         }
 
-        $referer = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+        $referer = JRequest::getVar(
+            'referer',
+            $_SERVER["HTTP_REFERER"],
+            '',
+            'string'
+        );
 
         $task = JRequest::getVar('task', '', '', 'word');
         if ($task == 'applyhours') {
@@ -225,19 +255,23 @@ class TimeclockController extends JController
     {
         return sprintf("%04d", (int)$id);
     }
-    
+
     /**
      * Where statement for the reporting period dates
      *
      * @param string $date Date to use in MySQL format ("Y-m-d H:i:s")
      *
      * @return array
-     */ 
+     */
     function fixDate($date)
     {
         static $fixDate;
         if (empty($fixDate[$date])) {
-            preg_match("/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/", $date, $ret);
+            preg_match(
+                "/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/",
+                $date,
+                $ret
+            );
             $fixDate[$date] = $ret[0];
         }
         return $fixDate[$date];
@@ -250,7 +284,7 @@ class TimeclockController extends JController
      * @param int $y The year
      *
      * @return array
-     */ 
+     */
     public function dateUnix($m, $d, $y)
     {
         return mktime(6, 0, 0, (int)$m, (int)$d, (int)$y);
@@ -263,13 +297,17 @@ class TimeclockController extends JController
      * @param string $date2 The second date in Mysql ("Y-m-d") format.
      *
      * @return array
-     */ 
+     */
     public function compareDates($date1, $date2)
     {
         $date1 = self::dateUnixSql($date1);
         $date2 = self::dateUnixSql($date2);
-        if ($date1 < $date2) return -1;
-        if ($date1 > $date2) return 1;
+        if ($date1 < $date2) {
+            return -1;
+        }
+        if ($date1 > $date2) {
+            return 1;
+        }
         return 0;
     }
 
@@ -279,12 +317,13 @@ class TimeclockController extends JController
      * @param string $sqlDate The date in Mysql ("Y-m-d") format.
      *
      * @return array
-     */ 
+     */
     public function dateUnixSql($sqlDate)
     {
         $date = self::explodeDate($sqlDate);
-        if (empty($date["y"])) return 0;
-
+        if (empty($date["y"])) {
+            return 0;
+        }
         return self::dateUnix($date["m"], $date["d"], $date["y"]);
     }
     /**
@@ -293,21 +332,21 @@ class TimeclockController extends JController
      * @param int $date The date in Mysql ("Y-m-d") format.
      *
      * @return array
-     */ 
+     */
     public function explodeDate($date)
     {
 
         $date = self::fixDate($date);
         $date = explode("-", $date);
-        
+
         return array(
             "y" => $date[0],
             "m" => $date[1],
             "d" => $date[2],
         );
     }
-    
-    
+
+
     /**
      * Check to see if a user is authorized to view the timeclock
      *
@@ -318,9 +357,13 @@ class TimeclockController extends JController
     function authorize($task)
     {
         $user =& JFactory::getUser();
-        if ($user->get("id") < 1) return false;
+        if ($user->get("id") < 1) {
+            return false;
+        }
         $view = JRequest::getVar('view', "timesheet", '', 'word');
-        if (($view == "reports") && !TableTimeClockPrefs::getPref("admin_reports")) return false;
+        if (($view == "reports") && !TableTimeClockPrefs::getPref("admin_reports")) {
+            return false;
+        }
         return TableTimeClockPrefs::getPref("published");
     }
 
