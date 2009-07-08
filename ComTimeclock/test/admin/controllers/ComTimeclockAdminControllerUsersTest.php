@@ -7,17 +7,17 @@
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
@@ -61,11 +61,11 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->sqlFile = array(
-            dirname(__FILE__)."/../../../install/timeclock_users.sql",
-            dirname(__FILE__)."/../../../install/timeclock_prefs.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_prefs.sql",
         );
         $this->o = new TimeclockAdminControllerUsers();
         parent::setUp();
@@ -79,7 +79,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
@@ -115,18 +115,18 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
     public static function dataStoreTasks()
     {
         return array(
-            array("save", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => "User Settings Saved!")),          
-            array("save", false, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => "Error Saving User Settings")),          
-            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=users&task=edit&cid[]=0", "msg" => "User Settings Saved!")),          
-            array("apply", false, array("link" => "index.php?option=com_timeclock&controller=users&task=edit&cid[]=0", "msg" => "Error Saving User Settings")),          
-            array("reset", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
-            array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
-            array("publish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
-            array("unpublish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),          
-            array("addproject", true, array("link" => "index.php", "msg" => "Project add failed.")),          
-            array("addproject", false, array("link" => "index.php", "msg" => "Project add failed.")),          
-            array("removeproject", true, array("link" => "index.php", "msg" => "Project remove failed.")),          
-            array("removeproject", false, array("link" => "index.php", "msg" => "Project remove failed.")),          
+            array("save", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => "User Settings Saved!")),
+            array("save", false, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => "Error Saving User Settings")),
+            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=users&task=edit&cid[]=0", "msg" => "User Settings Saved!")),
+            array("apply", false, array("link" => "index.php?option=com_timeclock&controller=users&task=edit&cid[]=0", "msg" => "Error Saving User Settings")),
+            array("reset", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),
+            array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),
+            array("publish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),
+            array("unpublish", true, array("link" => "index.php?option=com_timeclock&controller=users", "msg" => null)),
+            array("addproject", true, array("link" => "index.php", "msg" => "Project add failed.")),
+            array("addproject", false, array("link" => "index.php", "msg" => "Project add failed.")),
+            array("removeproject", true, array("link" => "index.php", "msg" => "Project remove failed.")),
+            array("removeproject", false, array("link" => "index.php", "msg" => "Project remove failed.")),
         );
     }
 
