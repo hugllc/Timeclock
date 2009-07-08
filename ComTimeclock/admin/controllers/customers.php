@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,10 +30,10 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
@@ -103,7 +103,7 @@ class TimeclockAdminControllerCustomers extends JController
     {
         $link = 'index.php?option=com_timeclock&controller=customers';
         $this->setRedirect($link, $msg);
-    
+
     }
 
     /**
@@ -114,16 +114,17 @@ class TimeclockAdminControllerCustomers extends JController
     function apply()
     {
         $model = $this->getModel("Customers");
-    
+
         if ($id = $model->store()) {
-            $msg = JText::_('Customer Saved!');
-            $link = 'index.php?option=com_timeclock&controller=customers&task=edit&cid[]='.$id;
+            $msg   = JText::_('Customer Saved!');
+            $link  = 'index.php?option=com_timeclock&controller=customers&task=edit';
+            $link .= '&cid[]='.$id;
         } else {
-            $msg = JText::_('Error Saving Customer');
+            $msg  = JText::_('Error Saving Customer');
             $link = $_SERVER["HTTP_REFERER"];
         }
         $this->setRedirect($link, $msg);
-    
+
     }
 
     /**
@@ -134,7 +135,7 @@ class TimeclockAdminControllerCustomers extends JController
     function save()
     {
         $model = $this->getModel("Customers");
-    
+
         if ($model->store()) {
             $msg = JText::_('Customer Saved!');
         } else {
@@ -142,8 +143,8 @@ class TimeclockAdminControllerCustomers extends JController
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
-        $this->reset($msg);    
-    
+        $this->reset($msg);
+
     }
 
     /**
@@ -156,8 +157,8 @@ class TimeclockAdminControllerCustomers extends JController
         $model = $this->getModel("Customers");
         $cid = JRequest::getVar('cid', 0, '', 'array');
         $model->checkin($cid[0]);
-        $this->reset();    
-    
+        $this->reset();
+
     }
     /**
      * Publishes an item
@@ -170,7 +171,7 @@ class TimeclockAdminControllerCustomers extends JController
         $user = JFactory::getUser();
 
         $model->publish(1, $user->get("id"));
-        $this->reset();    
+        $this->reset();
     }
 
     /**
@@ -184,7 +185,7 @@ class TimeclockAdminControllerCustomers extends JController
         $user = JFactory::getUser();
 
         $model->publish(0, $user->get("id"));
-        $this->reset();        
+        $this->reset();
     }
 
 }

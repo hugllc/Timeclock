@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,10 +30,10 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
- 
+
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
@@ -108,7 +108,7 @@ class TimeclockAdminControllerUsers extends JController
     {
         $link = 'index.php?option=com_timeclock&controller=users';
         $this->setRedirect($link, $msg);
-    
+
     }
 
     /**
@@ -119,7 +119,7 @@ class TimeclockAdminControllerUsers extends JController
     function adduserproject()
     {
         $model = $this->getModel("Users");
-        
+
         $id = JRequest::getVar('user_id', 0, 'post', 'int');
         $projects = $model->getUserProjectIds($id);
         $user_id = JRequest::getVar('id', 0, 'post', 'int');
@@ -167,7 +167,7 @@ class TimeclockAdminControllerUsers extends JController
         $projid = JRequest::getVar('remove_projid', array(0), '', 'array');
 
         $user_id = JRequest::getVar('id', 0, '', 'int');
-        
+
 
         $model = $this->getModel("Users");
         if ($model->removeproject($projid, $user_id)) {
@@ -190,7 +190,7 @@ class TimeclockAdminControllerUsers extends JController
     {
         $model = $this->getModel("Users");
         $model->publish(1);
-        $this->reset();    
+        $this->reset();
     }
 
     /**
@@ -203,7 +203,7 @@ class TimeclockAdminControllerUsers extends JController
         $model = $this->getModel("Users");
 
         $model->publish(0);
-        $this->reset();        
+        $this->reset();
     }
 
     /**
@@ -214,16 +214,17 @@ class TimeclockAdminControllerUsers extends JController
     function apply()
     {
         $model = $this->getModel("Users");
-    
+
         if ($model->store()) {
             $msg = JText::_('User Settings Saved!');
         } else {
             $msg = JText::_('Error Saving User Settings');
         }
-        $id = JRequest::getVar('id', 0, '', 'int');
-        $link = 'index.php?option=com_timeclock&controller=users&task=edit&cid[]='.$id;
+        $id    = JRequest::getVar('id', 0, '', 'int');
+        $link  = 'index.php?option=com_timeclock&controller=users&task=edit';
+        $link .= '&cid[]='.$id;
         $this->setRedirect($link, $msg);
-    
+
     }
 
     /**
@@ -234,7 +235,7 @@ class TimeclockAdminControllerUsers extends JController
     function save()
     {
         $model = $this->getModel("Users");
-    
+
         if ($model->store()) {
             $msg = JText::_('User Settings Saved!');
         } else {
@@ -242,8 +243,8 @@ class TimeclockAdminControllerUsers extends JController
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
-        $this->reset($msg);    
-    
+        $this->reset($msg);
+
     }
 
     /**
@@ -256,8 +257,8 @@ class TimeclockAdminControllerUsers extends JController
         $model = $this->getModel("Users");
         $cid = JRequest::getVar('cid', 0, '', 'array');
         $model->checkin($cid[0]);
-        $this->reset();    
-    
+        $this->reset();
+
     }
 
 }

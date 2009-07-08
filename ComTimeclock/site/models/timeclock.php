@@ -97,7 +97,9 @@ class TimeclockModelTimeclock extends JModel
         parent::__construct();
 
         $others = TableTimeclockPrefs::getPref("admin_otherTimesheets");
-        if ($others) $cid = JRequest::getVar('cid', 0, '', 'array');
+        if ($others) {
+            $cid = JRequest::getVar('cid', 0, '', 'array');
+        }
         if (empty($cid)) {
             $u =& JFactory::getUser();
             $cid = $u->get("id");
@@ -190,7 +192,9 @@ class TimeclockModelTimeclock extends JModel
     function setDate($date, $field, $force=false)
     {
         $date = TimeclockController::fixDate($date);
-        if (empty($date) && $force) $date = date("Y-m-d");
+        if (empty($date) && $force) {
+            $date = date("Y-m-d");
+        }
         $this->setUnix(TimeclockController::dateUnixSql($date), $field);
         return $this->set($date, $field);
     }
@@ -207,14 +211,21 @@ class TimeclockModelTimeclock extends JModel
     {
         $date = TimeclockController::fixDate($date);
         $this->setDate($date, $field);
-        if ($this->get($field)) return;
-
+        if ($this->get($field)) {
+            return;
+        }
         $date = $this->get("date");
         $type = $this->get("type");
         $method = "get".$type.$field;
         $unixDate = TimeclockController::dateUnixSql($date);
-        $dateFormat = method_exists($this, $method) ? $this->$method($date) : $this->periods[$type][$field];
-        if (empty($dateFormat)) $dateFormat = $this->periods["default"][$field];
+        if (method_exists($this, $method)) {
+            $dateFormat = $this->$method($date);
+        } else {
+            $dateFormat = $this->periods[$type][$field];
+        }
+        if (empty($dateFormat)) {
+            $dateFormat = $this->periods["default"][$field];
+        }
         $date = date($dateFormat, $unixDate);
 
         return self::setDate($date, $field);
@@ -246,48 +257,41 @@ class TimeclockModelTimeclock extends JModel
      */
     protected function sqlQuery($where1, $where2=null)
     {
-        if (empty($where2)) $where2 = $where1;
-        return "SELECT DISTINCT t.id as id, (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6) as hours, t.worked, t.project_id, t.notes,
-                      t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3, t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6,
-                      p.wcCode1 as wcCode1, p.wcCode2 as wcCode2, p.wcCode3 as wcCode3, p.wcCode4 as wcCode4, p.wcCode5 as wcCode5, p.wcCode6 as wcCode6,
-                      t.created_by as created_by, p.name as project_name, p.type as type,
-                      u.name as author, pc.name as category_name, c.company as company_name,
-                      c.name as contact_name, p.id as project_id, u.id as user_id
-                      FROM      #__timeclock_timesheet as t
-                      LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                      LEFT JOIN #__timeclock_users as j on (j.id = p.id OR p.type != 'HOLIDAY')
-                      LEFT JOIN #__users as u on j.user_id = u.id
-                      LEFT JOIN #__timeclock_prefs as tp on tp.id = u.id
-                      LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
-                      LEFT JOIN #__timeclock_customers as c on p.customer = c.id
-                      WHERE
-                          (".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO') AND (j.user_id = t.created_by OR j.user_id IS NULL))
-                          OR
-                          (".$where2." AND p.type = 'HOLIDAY'
-                          AND ((t.worked >= tp.startDate) AND ((t.worked <= tp.endDate) OR (tp.endDate = '0000-00-00'))))
-                      ";
-/*
-        return "SELECT DISTINCT t.id as id, (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6) as hours, t.worked, t.project_id, t.notes,
-                      t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3, t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6,
-                      p.wcCode1 as wcCode1, p.wcCode2 as wcCode2, p.wcCode3 as wcCode3, p.wcCode4 as wcCode4, p.wcCode5 as wcCode5, p.wcCode6 as wcCode6,
-                      t.created_by as created_by, p.name as project_name, p.type as type,
-                      u.name as author, pc.name as category_name, c.company as company_name,
-                      c.name as contact_name, p.id as project_id, j.user_id as user_id
-                      FROM #__timeclock_timesheet as t
-                      LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-                      LEFT JOIN #__timeclock_users as j on j.id = p.id
-                      LEFT JOIN #__users as u on j.user_id = u.id
-                      LEFT JOIN #__timeclock_prefs as tp on tp.id = u.id
-                      LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
-                      LEFT JOIN #__timeclock_customers as c on p.customer = c.id
-                      WHERE
-                          (".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO') AND (j.user_id = t.created_by OR j.user_id IS NULL))
-                          OR
-                          (".$where2." AND p.type = 'HOLIDAY'
-                          AND ((t.worked >= tp.startDate) AND ((t.worked <= tp.endDate) OR (tp.endDate = '0000-00-00'))))
-                      ";
-
-*/
+        if (empty($where2)) {
+            $where2 = $where1;
+        }
+        return "SELECT DISTINCT t.id as id,
+            (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
+            as hours,
+            t.worked, t.project_id, t.notes,
+            t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3,
+            t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6,
+            p.wcCode1 as wcCode1, p.wcCode2 as wcCode2, p.wcCode3 as wcCode3,
+            p.wcCode4 as wcCode4, p.wcCode5 as wcCode5, p.wcCode6 as wcCode6,
+            t.created_by as created_by, p.name as project_name, p.type as type,
+            u.name as author, pc.name as category_name, c.company as company_name,
+            c.name as contact_name, p.id as project_id, u.id as user_id
+            FROM      #__timeclock_timesheet as t
+            LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
+            LEFT JOIN #__timeclock_users as j on (j.id = p.id OR p.type != 'HOLIDAY')
+            LEFT JOIN #__users as u on j.user_id = u.id
+            LEFT JOIN #__timeclock_prefs as tp on tp.id = u.id
+            LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
+            LEFT JOIN #__timeclock_customers as c on p.customer = c.id
+            WHERE
+            (
+                ".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO')
+                AND (j.user_id = t.created_by OR j.user_id IS NULL)
+            )
+            OR
+            (
+                ".$where2." AND p.type = 'HOLIDAY'
+                AND (
+                    (t.worked >= tp.startDate)
+                    AND ((t.worked <= tp.endDate) OR (tp.endDate = '0000-00-00'))
+                )
+            )
+            ";
     }
 
 
@@ -313,10 +317,15 @@ class TimeclockModelTimeclock extends JModel
             $holidaywhere = implode(" AND ", $holidaywhere);
             $query = $this->sqlQuery($where, $holidaywhere);
             $this->data = $this->_getList($query);
-            if (!is_array($this->data)) return array();
+            if (!is_array($this->data)) {
+                return array();
+            }
             foreach ($this->data as $k => $d) {
-                if ($d->type != "HOLIDAY") continue;
-                $this->data[$k]->hours =  $d->hours * $this->getHolidayPerc($d->user_id, $d->worked);
+                if ($d->type != "HOLIDAY") {
+                    continue;
+                }
+                $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
+                $this->data[$k]->hours =  $d->hours * $hperc;
             }
         }
         return $this->data;
@@ -345,7 +354,14 @@ class TimeclockModelTimeclock extends JModel
                     }
                 }
             }
-            if (!isset($perc[$key])) $perc[$key] = TableTimeclockPrefs::getPref("admin_holidayperc", "user", $id) / 100;
+            if (!isset($perc[$key])) {
+                $hperc = TableTimeclockPrefs::getPref(
+                    "admin_holidayperc",
+                    "user",
+                    $id
+                );
+                $perc[$key] = $hperc / 100;
+            }
         }
         return $perc[$key];
     }
@@ -376,8 +392,9 @@ class TimeclockModelTimeclock extends JModel
     {
         $ret = "($field >= '$start'";
 
-        if (($end != '0000-00-00') && !empty($end)) $ret .= " AND $field <= '$end'";
-
+        if (($end != '0000-00-00') && !empty($end)) {
+            $ret .= " AND $field <= '$end'";
+        }
         $ret .= ")";
         return $ret;
     }
@@ -392,8 +409,12 @@ class TimeclockModelTimeclock extends JModel
         static $eDates;
         if (empty($eDates)) {
             $eDates = array(
-                "start" => TimeclockController::fixDate(TableTimeclockPrefs::getPref("startDate")),
-                "end"   => TimeclockController::fixDate(TableTimeclockPrefs::getPref("endDate")),
+                "start" => TimeclockController::fixDate(
+                    TableTimeclockPrefs::getPref("startDate")
+                ),
+                "end"   => TimeclockController::fixDate(
+                    TableTimeclockPrefs::getPref("endDate")
+                ),
             );
         }
         return $eDates;
@@ -431,8 +452,8 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
-     *                      the date read from the request variables is used.
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
      *
      * @return array
      */
@@ -443,8 +464,8 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
-     *                      the date read from the request variables is used.
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
      *
      * @return array
      */
@@ -455,33 +476,45 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
-     *                      the date read from the request variables is used.
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
      *
      * @return array
      */
     function getQuarterStart($date)
     {
         $date = TimeclockController::explodeDate($date);
-        if ($date["m"] < 4) return date("Y-01-01");
-        if ($date["m"] < 7) return date("Y-04-01");
-        if ($date["m"] < 10) return date("Y-07-01");
+        if ($date["m"] < 4) {
+            return date("Y-01-01");
+        }
+        if ($date["m"] < 7) {
+            return date("Y-04-01");
+        }
+        if ($date["m"] < 10) {
+            return date("Y-07-01");
+        }
         return date("Y-10-01");
     }
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left blank
-     *                      the date read from the request variables is used.
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
      *
      * @return array
      */
     function getQuarterEnd($date)
     {
         $date = TimeclockController::explodeDate($date);
-        if ($date["m"] < 4) return date("Y-03-31");
-        if ($date["m"] < 7) return date("Y-06-30");
-        if ($date["m"] < 10) return date("Y-09-30");
+        if ($date["m"] < 4) {
+            return date("Y-03-31");
+        }
+        if ($date["m"] < 7) {
+            return date("Y-06-30");
+        }
+        if ($date["m"] < 10) {
+            return date("Y-09-30");
+        }
         return date("Y-12-31");
     }
 
@@ -532,14 +565,27 @@ class TimeclockModelTimeclock extends JModel
             $length = $this->getLength();
             // These are all of the dates in the pay period
             for ($i = 0; $i < $length; $i++) {
-                $this->period['dates'][self::_date($s["m"], $s["d"]+$i, $s["y"])] = TimeclockController::dateUnix($s["m"], $s["d"]+$i, $s["y"]);
+                $this->period['dates'][self::_date($s["m"], $s["d"]+$i, $s["y"])]
+                    = TimeclockController::dateUnix($s["m"], $s["d"]+$i, $s["y"]);
             }
 
             // Get the start and end
-            $this->setUnix(TimeclockController::dateUnix($s["m"], $s["d"]-$length, $s["y"]), "prev");
-            $this->setUnix(TimeclockController::dateUnix($s["m"], $s["d"]-1, $s["y"]), "prevend");
-            $this->setUnix(TimeclockController::dateUnix($e["m"], $e["d"]+1, $e["y"]), "next");
-            $this->setUnix(TimeclockController::dateUnix($e["m"], $e["d"]+$length, $e["y"]), "nextend");
+            $this->setUnix(
+                TimeclockController::dateUnix($s["m"], $s["d"]-$length, $s["y"]),
+                "prev"
+            );
+            $this->setUnix(
+                TimeclockController::dateUnix($s["m"], $s["d"]-1, $s["y"]),
+                "prevend"
+            );
+            $this->setUnix(
+                TimeclockController::dateUnix($e["m"], $e["d"]+1, $e["y"]),
+                "next"
+            );
+            $this->setUnix(
+                TimeclockController::dateUnix($e["m"], $e["d"]+$length, $e["y"]),
+                "nextend"
+            );
             $this->set(self::_date($this->getUnix('prev')), "prev");
             $this->set(self::_date($this->getUnix('prevend')), "prevend");
             $this->set(self::_date($this->getUnix('next')), "next");

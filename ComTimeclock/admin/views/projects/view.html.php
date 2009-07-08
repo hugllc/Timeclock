@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 /** Check to make sure we are under Joomla */
@@ -65,15 +65,50 @@ class TimeclockAdminViewProjects extends JView
         $model = $this->getModel("Projects");
 
         $db =& JFactory::getDBO();
-        $filter_order     = $mainframe->getUserStateFromRequest("$option.projects.filter_order", 'filter_order', 't.id', 'cmd');
-        $filter_order_Dir = $mainframe->getUserStateFromRequest("$option.projects.filter_order_Dir", 'filter_order_Dir', '', 'word');
-        $filter_state     = $mainframe->getUserStateFromRequest("$option.projects.filter_state", 'filter_state', '', 'word');
-        $search           = $mainframe->getUserStateFromRequest("$option.projects.search", 'search', '', 'string');
-        $search           = JString::strtolower($search);
-        $search_filter    = $mainframe->getUserStateFromRequest("$option.projects.search_filter", 'search_filter', 'name', 'string');
-                
-        $limit            = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-        $limitstart       = $mainframe->getUserStateFromRequest($option.'.projects.limitstart', 'limitstart', 0, 'int');
+        $filter_order = $mainframe->getUserStateFromRequest(
+            "$option.projects.filter_order",
+            'filter_order',
+            't.id',
+            'cmd'
+        );
+        $filter_order_Dir = $mainframe->getUserStateFromRequest(
+            "$option.projects.filter_order_Dir",
+            'filter_order_Dir',
+            '',
+            'word'
+        );
+        $filter_state = $mainframe->getUserStateFromRequest(
+            "$option.projects.filter_state",
+            'filter_state',
+            '',
+            'word'
+        );
+        $search = $mainframe->getUserStateFromRequest(
+            "$option.projects.search",
+            'search',
+            '',
+            'string'
+        );
+        $search        = JString::strtolower($search);
+        $search_filter = $mainframe->getUserStateFromRequest(
+            "$option.projects.search_filter",
+            'search_filter',
+            'name',
+            'string'
+        );
+
+        $limit      = $mainframe->getUserStateFromRequest(
+            'global.list.limit',
+            'limit',
+            $mainframe->getCfg('list_limit'),
+            'int'
+        );
+        $limitstart = $mainframe->getUserStateFromRequest(
+            $option.'.projects.limitstart',
+            'limitstart',
+            0,
+            'int'
+        );
 
         $where = array();
 
@@ -85,16 +120,19 @@ class TimeclockAdminViewProjects extends JView
             }
         }
         if ($search) {
-            if (($search_filter == "m.name") && (trim(strtolower($search)) == "none")) {
+            if (($search_filter == "m.name")
+                && (trim(strtolower($search)) == "none")
+            ) {
                 $where[] = "t.manager = 0";
             } else {
-                $where[] = 'LOWER('.$search_filter.') LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+                $where[] = 'LOWER('.$search_filter.') LIKE '
+                    .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
             }
         }
         $where[] = 't.id > 0';
-        
-        $where          = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $orderby        = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+
+        $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
+        $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
 
         $rows = $model->getProjects($where, $limitstart, $limit, $orderby);
         $total = $model->countProjects($where);
@@ -103,7 +141,12 @@ class TimeclockAdminViewProjects extends JView
         $pagination = new JPagination($total, $limitstart, $limit);
 
         // state filter
-        $lists['state'] = JHTML::_('grid.state', $filter_state, "Active", "Inactive");
+        $lists['state'] = JHTML::_(
+            'grid.state',
+            $filter_state,
+            "Active",
+            "Inactive"
+        );
 
         // table ordering
         $lists['order_Dir']      = $filter_order_Dir;
@@ -119,8 +162,8 @@ class TimeclockAdminViewProjects extends JView
             JHTML::_('select.option', 'c.company', "Customer Name"),
             JHTML::_('select.option', 'p.name', "Category"),
         );
-        $lists['search_options_default'] = 'name';       
-        $lists["wCompCodes"] = TableTimeclockPrefs::getPref("wCompCodes");        
+        $lists['search_options_default'] = 'name';
+        $lists["wCompCodes"] = TableTimeclockPrefs::getPref("wCompCodes");
         $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
 
         $this->assignRef("lists", $lists);

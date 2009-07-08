@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 /** Check to make sure we are under Joomla */
@@ -70,12 +70,16 @@ class TimeclockAdminViewUser extends JView
         $row = $this->get("Data");
 
         $user =& JFactory::getUser();
-        
-        $cid = JRequest::getVar('cid', 0, '', 'array');
-        if ($cid[0] < 1) $this->setRedirect('index.php?option=com_timeclock&controller=holidayss', "No User given!");
 
+        $cid = JRequest::getVar('cid', 0, '', 'array');
+        if ($cid[0] < 1) {
+            $this->setRedirect(
+                'index.php?option=com_timeclock&controller=holidays',
+                JText::_("No User given!")
+            );
+        };
         $user =& JFactory::getUser($cid[0]);
-        
+
         $lists["status"] = array(
             JHTML::_("select.option", "FULLTIME", "Full Time"),
             JHTML::_("select.option", "PARTTIME", "Part Time"),
@@ -90,8 +94,16 @@ class TimeclockAdminViewUser extends JView
         foreach ($lists["userProjects"] as $p) {
             $uProj[] = $p->id;
         }
-        $lists["projects"] = $projectModel->getOptions("WHERE published=1 AND Type <> 'CATEGORY'", "Add Project", $uProj);
-        $lists["users"]       = $userModel->getOptions($userWhere, "Select User", $cid);
+        $lists["projects"] = $projectModel->getOptions(
+            "WHERE published=1 AND Type <> 'CATEGORY'",
+            "Add Project",
+            $uProj
+        );
+        $lists["users"] = $userModel->getOptions(
+            $userWhere,
+            "Select User",
+            $cid
+        );
 
         $this->assignRef("user", $user);
         $this->assignRef("lists", $lists);
