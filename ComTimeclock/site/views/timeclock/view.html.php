@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
@@ -62,7 +62,7 @@ class TimeclockViewTimeclock extends JView
     function display($tpl = null)
     {
         global $mainframe;
-        
+
         $layout          = JRequest::getVar('layout');
         $model           =& $this->getModel();
         $projModel       =& JModel::getInstance("Projects", "TimeclockAdminModel");
@@ -73,10 +73,10 @@ class TimeclockViewTimeclock extends JView
         $date            = $model->get("date");
         $this->_params   =& $mainframe->getParams('com_timeclock');
 
-        $this->assignRef("employmentDates", $employmentDates);        
+        $this->assignRef("employmentDates", $employmentDates);
         $this->assignRef("projects", $projects);
-        $this->assignRef("user", $user);        
-        $this->assignRef("date", $date);        
+        $this->assignRef("user", $user);
+        $this->assignRef("date", $date);
 
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
@@ -95,19 +95,20 @@ class TimeclockViewTimeclock extends JView
     function timesheet($tpl = null)
     {
         global $mainframe;
-        
+
         $model   =& $this->getModel();
         $period  = $model->getPeriodDates();
         $this->_timesheetData();
-        
-        if (!is_object($this->_params)) $this->_params =& $mainframe->getParams('com_timeclock');
 
+        if (!is_object($this->_params)) {
+            $this->_params =& $mainframe->getParams('com_timeclock');
+        }
         $today_color      = $this->_params->get("today_color");
         $today_background = $this->_params->get("today_background");
-        
+
         $this->assignRef("today_color", $today_color);
         $this->assignRef("today_background", $today_background);
-        $this->assignRef("period", $period);        
+        $this->assignRef("period", $period);
 
         parent::display($tpl);
     }
@@ -124,7 +125,12 @@ class TimeclockViewTimeclock extends JView
 
         $model    =& $this->getModel();
         $data     = $model->getData();
-        $referer  = JRequest::getVar('referer', $_SERVER["HTTP_REFERER"], '', 'string');
+        $referer  = JRequest::getVar(
+            'referer',
+            $_SERVER["HTTP_REFERER"],
+            '',
+            'string'
+        );
         $projid   = JRequest::getVar('projid', null, '', 'string');
 
         $maxHours = TableTimeclockPrefs::getPref("maxDailyHours", "system");
@@ -141,9 +147,9 @@ class TimeclockViewTimeclock extends JView
 
         parent::display($tpl);
     }
-    
+
     /**
-     * Checks employment dates and says if the user can enter hours on that date or not
+     * Checks employment dates and says if the user can enter hours on that date
      *
      * @param int $date The unix date to check
      *
@@ -151,7 +157,11 @@ class TimeclockViewTimeclock extends JView
      */
     function checkDate($date)
     {
-        return TimeclockController::checkEmploymentDates($this->employmentDates["start"], $this->employmentDates["end"], $date);
+        return TimeclockController::checkEmploymentDates(
+            $this->employmentDates["start"],
+            $this->employmentDates["end"],
+            $date
+        );
     }
 
 
@@ -172,8 +182,8 @@ class TimeclockViewTimeclock extends JView
             $totals["worked"][$d->worked]                += $d->hours;
             $totals["total"]                             += $d->hours;
         }
-        $this->assignRef("hours", $hours);  
-        $this->assignRef("totals", $totals);  
+        $this->assignRef("hours", $hours);
+        $this->assignRef("totals", $totals);
     }
 }
 

@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
@@ -56,7 +56,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     public $separator = ",";
     /** This is the character(s) that separate lines */
     public $lineSep = "\r\n";
-    
+
     /**
      * The display function
      *
@@ -72,12 +72,11 @@ class TimeclockViewReports extends TimeclockViewReportsBase
         $function = $layout."CSV";
         $filename = $layout."Report.csv";
 
-//        header("Content-Type: text/plain");
         header("Content-Type: text/csv");
         header("Content-Disposition: attachment; filename=".$filename);
         header("Pragma: no-cache");
         header("Cache-Control: no-cache");
-        
+
         if (method_exists($this, $function)) {
             $this->$function();
         } else {
@@ -93,7 +92,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     function reportCSV()
     {
         $this->dateCSV();
-        $this->reportCSV_header();
+        $this->reportCSVHeader();
 
         $totals = array();
         foreach ($this->report as $cat => $projArray) {
@@ -103,7 +102,11 @@ class TimeclockViewReports extends TimeclockViewReportsBase
                 print $this->quoteCSV($proj);
                 print $this->separator;
                 foreach (array_keys($this->totals["user"]) as $user) {
-                    $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
+                    if (empty($userArray[$user])) {
+                        $hours = $this->cell_fill;
+                    } else {
+                        $hours = $userArray[$user];
+                    }
                     print $this->quoteCSV($hours);
                     print $this->separator;
                 }
@@ -129,22 +132,34 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     function payrollCSV()
     {
         $this->dateCSV();
-        $this->payrollCSV_header();
+        $this->payrollCSVHeader();
 
         foreach ($this->report as $id => $time) {
             print $this->quoteCSV($time["name"]);
             print $this->separator;
             for ($w = 0; $w < $this->weeks; $w++) {
                 foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
-                    $hours = (empty($time[$w][$type]["hours"])) ? $this->cell_fill : $time[$w][$type]["hours"];
+                    if (empty($time[$w][$type]["hours"])) {
+                        $hours = $this->cell_fill;
+                    } else {
+                        $hours = $time[$w][$type]["hours"];
+                    }
                     print $this->quoteCSV($hours);
                     print $this->separator;
                 }
-                $hours = (empty($time[$w]["TOTAL"]["hours"])) ? $this->cell_fill : $time[$w]["TOTAL"]["hours"];
+                if (empty($time[$w]["TOTAL"]["hours"])) {
+                    $hours = $this->cell_fill;
+                } else {
+                    $hours = $time[$w]["TOTAL"]["hours"];
+                }
                 print $this->quoteCSV($hours);
                 print $this->separator;
             }
-            $hours = (empty($this->totals["user"][$id])) ? 0 : $this->totals["user"][$id];
+            if (empty($this->totals["user"][$id])) {
+                $hours = 0;
+            } else {
+                $hours = $this->totals["user"][$id];
+            }
             print $this->quoteCSV($hours);
             print $this->lineSep;
         }
@@ -152,11 +167,19 @@ class TimeclockViewReports extends TimeclockViewReportsBase
         print $this->separator;
         for ($w = 0; $w < $this->weeks; $w++) {
             foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
-                $hours = (empty($this->totals["type"][$w][$type])) ? 0 : $this->totals["type"][$w][$type];
+                if (empty($this->totals["type"][$w][$type])) {
+                    $hours = 0;
+                } else {
+                    $hours = $this->totals["type"][$w][$type];
+                }
                 print $this->quoteCSV($hours);
                 print $this->separator;
             }
-            $hours = (empty($this->totals["type"][$w]["TOTAL"])) ? 0 : $this->totals["type"][$w]["TOTAL"];
+            if (empty($this->totals["type"][$w]["TOTAL"])) {
+                $hours = 0;
+            } else {
+                $hours = $this->totals["type"][$w]["TOTAL"];
+            }
             print $this->quoteCSV($hours);
             print $this->separator;
         }
@@ -171,7 +194,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function payrollCSV_header()
+    function payrollCSVHeader()
     {
         print $this->quoteCSV("Project");
         print $this->separator;
@@ -197,7 +220,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     function hoursCSV()
     {
         $this->dateCSV();
-        $this->hoursCSV_header();
+        $this->hoursCSVHeader();
         foreach ($this->report as $user => $catArray) {
             print $this->quoteCSV($user);
             print $this->separator;
@@ -214,7 +237,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
             print $this->separator;
             print $this->quoteCSV("100%");
             print $this->lineSep;
-        
+
         }
         print $this->quoteCSV("Total");
         print $this->separator;
@@ -238,14 +261,14 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function hoursCSV_header()
+    function hoursCSVHeader()
     {
         print $this->quoteCSV("User");
         print $this->separator;
         foreach (array_keys($this->totals["cat"]) as $cat) {
-            print $this->quoteCSV($cat." Hours"); 
+            print $this->quoteCSV($cat." Hours");
             print $this->separator;
-            print $this->quoteCSV($cat." %"); 
+            print $this->quoteCSV($cat." %");
             print $this->separator;
         }
         print $this->quoteCSV("Total Hours");
@@ -267,14 +290,14 @@ class TimeclockViewReports extends TimeclockViewReportsBase
         print $this->separator;
         print $this->quoteCSV($this->period["end"]);
         print $this->lineSep;
-    }        
+    }
 
     /**
      * The display function
      *
      * @return null
      */
-    function reportCSV_header()
+    function reportCSVHeader()
     {
         print $this->quoteCSV("Project");
         print $this->separator;
@@ -294,19 +317,21 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     function wcompCSV()
     {
         $this->dateCSV();
-        $this->wcompCSV_header();
+        $this->wcompCSVHeader();
         foreach ($this->report as $user => $codeArray) {
             print $this->quoteCSV($user);
             print $this->separator;
             $total = $this->totals["user"][$user];
             foreach ($codeArray as $code => $hours) {
-                if (empty($hours)) $hours = $this->cell_fill;
+                if (empty($hours)) {
+                    $hours = $this->cell_fill;
+                }
                 print $this->quoteCSV($hours);
                 print $this->separator;
             }
             print $this->quoteCSV($total);
             print $this->lineSep;
-        
+
         }
         print $this->quoteCSV("Total");
         print $this->separator;
@@ -325,18 +350,18 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function wcompCSV_header()
+    function wcompCSVHeader()
     {
         print $this->quoteCSV("User");
         print $this->separator;
         foreach ($this->codes as $code) {
-            print $this->quoteCSV($code); 
+            print $this->quoteCSV($code);
             print $this->separator;
         }
         print $this->quoteCSV("Total");
         print $this->lineSep;
     }
-    
+
     /**
      * Quotes things that need it
      *
@@ -346,12 +371,14 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      */
     function quoteCSV($str)
     {
-        if (is_string($str)) return '"'.JText::_($str).'"';
+        if (is_string($str)) {
+            return '"'.JText::_($str).'"';
+        }
         return $str;
     }
-    
-    
-    
+
+
+
 }
 
 ?>
