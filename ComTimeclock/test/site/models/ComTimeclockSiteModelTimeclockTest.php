@@ -290,7 +290,9 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
     function testGetSetPeriodDate($date, $type, $field, $expect, $today=null)
     {
         $this->o->set($type, "type");
-        if (!empty($today)) $this->o->set($today, "date");
+        if (!empty($today)) {
+            $this->o->set($today, "date");
+        }
         $this->o->setPeriodDate($date, $field);
         $ret = $this->o->get($field);
         $this->assertSame($expect, $ret);

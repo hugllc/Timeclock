@@ -57,13 +57,9 @@ class ComTimeclockAdminViewTests
     static $_tests = array(
         "ComTimeclockAdminViewAboutTest",
         "ComTimeclockAdminViewConfigTest",
-//        "ComTimeclockAdminViewProjectTest",
         "ComTimeclockAdminViewProjectsTest",
-//        "ComTimeclockAdminViewUserTest",
         "ComTimeclockAdminViewUsersTest",
-//        "ComTimeclockAdminViewHolidayTest",
         "ComTimeclockAdminViewHolidaysTest",
-//        "ComTimeclockAdminViewCustomerTest",
         "ComTimeclockAdminViewCustomersTest",
     );
 

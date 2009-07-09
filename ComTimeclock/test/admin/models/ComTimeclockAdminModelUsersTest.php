@@ -226,7 +226,9 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
      */
     public function testAddProjectRet($bad, $function, $expect, $data=array())
     {
-        if (!empty($bad)) $GLOBALS["JTable"][$bad]["return"] = false;
+        if (!empty($bad)) {
+            $GLOBALS["JTable"][$bad]["return"] = false;
+        }
         JRequest::set($data, $hash);
         $ret = $this->o->$function($data["projid"], $data["id"]);
         $this->assertSame($expect, $ret);

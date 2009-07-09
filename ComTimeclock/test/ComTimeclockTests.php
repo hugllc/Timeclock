@@ -113,7 +113,7 @@ function includeRecursive($dir, $recursive=0, $level=0)
     if ($level > $recursive) {
         return false;
     }
-    if(!is_dir($dir)) {
+    if (!is_dir($dir)) {
         return false;
     }
     $dh = opendir($dir);
