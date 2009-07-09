@@ -86,7 +86,7 @@ class TimeclockAdminControllerHolidays extends JController
     function edit()
     {
         JRequest::setVar('model', 'holidays');
-        JRequest::setVar('view', 'holiday');
+        JRequest::setVar('view', 'holidays');
         JRequest::setVar('layout', 'form');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();

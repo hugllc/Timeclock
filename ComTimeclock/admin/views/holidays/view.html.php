@@ -61,6 +61,24 @@ class TimeclockAdminViewHolidays extends JView
      */
     function display($tpl = null)
     {
+        $layout = $this->getLayout();
+        if (method_exists($this, $layout)) {
+            $this->$layout();
+        } else {
+            $this->showList();
+        }
+        parent::display($tpl);
+    }
+
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function showList($tpl = null)
+    {
         global $mainframe, $option;
         $model = $this->getModel("Holidays");
 
@@ -152,6 +170,50 @@ class TimeclockAdminViewHolidays extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+        parent::display($tpl);
+    }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function form($tpl = null)
+    {
+        $model =& JModel::getInstance("Holidays", "TimeclockAdminModel");
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        // Set this as the default model
+        $this->setModel($model, true);
+        $row = $this->get("Data");
+
+        $user =& JFactory::getUser();
+
+        $cid = JRequest::getVar('cid', 0, '', 'array');
+        // fail if checked out not by 'me'
+        if ($row->isCheckedOut($user->get('id'))) {
+                $msg = JText::sprintf(
+                    'DESCBEINGEDITTED',
+                    JText::_('The poll'),
+                    $poll->title
+                );
+                $this->setRedirect(
+                    'index.php?option=com_timeclock&controller=holidays',
+                    $msg
+                );
+        }
+        $model->checkout($user->get("id"), $cid[0]);
+
+        $project = $projModel->getData($row->project_id);
+
+        $add = empty($row->id);
+
+        $lists['projects'] = $model->projectOptions();
+
+        $this->assignRef("project", $project);
+        $this->assignRef("lists", $lists);
+        $this->assignRef("add", $add);
+        $this->assignRef("row", $row);
         parent::display($tpl);
     }
 }

@@ -126,11 +126,7 @@
             <filename>views/projects/tmpl/index.html</filename>
             <filename>views/projects/tmpl/default.php</filename>
             <filename>views/projects/view.html.php</filename>
-            <filename>views/holiday/index.html</filename>
-            <filename>views/holiday/tmpl/index.html</filename>
-            <filename>views/holiday/tmpl/default.php</filename>
-            <filename>views/holiday/tmpl/form.php</filename>
-            <filename>views/holiday/view.html.php</filename>
+            <filename>views/holidays/tmpl/form.php</filename>
             <filename>views/holidays/index.html</filename>
             <filename>views/holidays/tmpl/index.html</filename>
             <filename>views/holidays/tmpl/default.php</filename>

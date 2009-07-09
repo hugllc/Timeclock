@@ -93,7 +93,15 @@ class ComTimeclockAdminControllerHolidaysTest extends JControllerTest
     {
         return array(
             array("display", array("view" => "holidays")),
-            array("edit", array("model" => "holidays", "view" => "holiday", "layout" => "form", "hidemainmenu" => 1)),
+            array(
+                "edit",
+                array(
+                    "model" => "holidays",
+                    "view" => "holidays",
+                    "layout" => "form",
+                    "hidemainmenu" => 1
+                )
+            ),
         );
     }
     /**
