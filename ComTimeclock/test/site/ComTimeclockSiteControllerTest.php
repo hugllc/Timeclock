@@ -7,17 +7,17 @@
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
@@ -61,7 +61,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new TimeclockController();
         parent::setUp();
@@ -75,7 +75,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
@@ -116,7 +116,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
             array("12", "25", "2036", 2113819200),
         );
     }
-    
+
     /**
      * Tests get and set date
      *
@@ -146,7 +146,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
             array("2036-12-25", 2113819200),
         );
     }
-    
+
     /**
      * Tests get and set date
      *
@@ -175,7 +175,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
             array(-2, "-002"),
         );
     }
-    
+
     /**
      * Tests get and set date
      *
@@ -190,7 +190,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
         $ret = TimeclockController::formatProjId($id);
         $this->assertSame($expect, $ret);
     }
-    
+
     /**
      * Data provider
      *
@@ -199,12 +199,36 @@ class ComTimeclockSiteControllerTest extends JControllerTest
     public static function dataStoreTasks()
     {
         return array(
-            array("savehours", true, array("link" => null, "msg" => "Hours Saved!"), true),      
-            array("savehours", false, array("link" => null, "msg" => "Error Saving Hours"), true),      
-            array("savehours", false, array("link" => "index.php", "msg" => "Bad form token.  Please try again."), false),      
+            array(
+                "savehours",
+                true,
+                array(
+                    "link" => null,
+                    "msg" => "Hours Saved!"
+                ),
+                true
+            ),
+            array(
+                "savehours",
+                false,
+                array(
+                    "link" => null,
+                    "msg" => "Error Saving Hours"
+                ),
+                true
+            ),
+            array(
+                "savehours",
+                false,
+                array(
+                    "link" => "index.php",
+                    "msg" => "Bad form token.  Please try again."
+                ),
+                false
+            ),
         );
     }
-    
+
 
     /**
      * Tests to make sure the store tasks are redirecting properly

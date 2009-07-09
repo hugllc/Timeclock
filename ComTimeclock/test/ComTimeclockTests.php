@@ -7,17 +7,17 @@
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
@@ -77,7 +77,7 @@ class ComTimeclockTests
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
- 
+
     /**
      * test suite
      *
@@ -87,7 +87,7 @@ class ComTimeclockTests
     {
         PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');
         $suite = new PHPUnit_Framework_TestSuite('ComTimeclock');
-        
+
         foreach (self::$_tests as $test) {
             include_once dirname(__FILE__).'/'.$test.'.php';
             $suite->addTestSuite($test);
@@ -110,11 +110,17 @@ class ComTimeclockTests
  */
 function includeRecursive($dir, $recursive=0, $level=0)
 {
-    if ($level > $recursive) return false;
-    if(!is_dir($dir)) return false;
+    if ($level > $recursive) {
+        return false;
+    }
+    if(!is_dir($dir)) {
+        return false;
+    }
     $dh = opendir($dir);
     while (false !== ($file = readdir($dh))) {
-        if (substr($file, 0, 1) == ".") continue;
+        if (substr($file, 0, 1) == ".") {
+            continue;
+        }
         if (is_file("$dir/$file") && (substr($file, -4) == ".php")) {
             include_once "$dir/$file";
         } else if (is_dir("$dir/$file")) {

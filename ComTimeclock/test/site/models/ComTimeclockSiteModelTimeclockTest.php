@@ -113,11 +113,57 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
     {
         return array(
 
-            array(null, "store", false, array(), ""),
-            array(null, "store", true, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
-            array("bind", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
-            array("check", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
-            array("store", "store", false, array("id" => 1, "date" => "2007-12-25", "timesheet" => array(5 => array("hours1" => 5))), ""),
+            array(
+                null,
+                "store",
+                false,
+                array(),
+                ""
+            ),
+            array(
+                null,
+                "store",
+                true,
+                array(
+                    "id" => 1,
+                    "date" => "2007-12-25",
+                    "timesheet" => array(5 => array("hours1" => 5))
+                ),
+                ""
+            ),
+            array(
+                "bind",
+                "store",
+                false,
+                array(
+                    "id" => 1,
+                    "date" => "2007-12-25",
+                    "timesheet" => array(5 => array("hours1" => 5))
+                ),
+                ""
+            ),
+            array(
+                "check",
+                "store",
+                false,
+                array(
+                    "id" => 1,
+                    "date" => "2007-12-25",
+                    "timesheet" => array(5 => array("hours1" => 5))
+                ),
+                ""
+            ),
+            array(
+                "store",
+                "store",
+                false,
+                array(
+                    "id" => 1,
+                    "date" => "2007-12-25",
+                    "timesheet" => array(5 => array("hours1" => 5))
+                ),
+                ""
+            ),
         );
     }
     /**
@@ -264,7 +310,14 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
                 array(
                     "type" => "payperiod",
                     "unix" => array(
-                        "date"    => mktime(6, 0, 0, date("m"), date("d"), date("Y")),
+                        "date"    => mktime(
+                            6,
+                            0,
+                            0,
+                            date("m"),
+                            date("d"),
+                            date("Y")
+                        ),
                         "start"   => 1197460800,
                         "end"     => 1198584000,
                         "prev"    => 1196251200,
