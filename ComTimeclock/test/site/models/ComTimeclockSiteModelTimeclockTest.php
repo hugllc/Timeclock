@@ -376,7 +376,83 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
         $ret = $this->o->getPeriodDates();
         $this->assertSame($expect, $ret);
     }
+    public static function dataGetHolidayPerc()
+    {
+        return array(
+            array(
+                array(),
+                49,
+                '2007-12-21',
+                1,
+            ),
+            array(
+                array(
+                    "id" => 48,
+                    "prefs" => array(
+                        "admin_holidayperc" => 50,
+                    ),
+                ),
+                48,
+                '2007-12-21',
+                0.5,
+            ),
+            array(
+                array(
+                    "id" => 47,
+                    "prefs" => array(
+                        "admin_holidayperc" => 100,
+                    ),
+                    "history" => array(
+                        "admin_holidayperc" => array(
+                            "2006-04-25" => 50,
+                            "2008-05-12" => 90,
+                            "2009-12-05" => 30,
+                        ),
+                    ),
+                ),
+                47,
+                '2007-12-21',
+                0.9,
+            ),
+            array(
+                array(
+                    "id" => 46,
+                    "prefs" => array(
+                        "admin_holidayperc" => 100,
+                    ),
+                    "history" => array(
+                        "admin_holidayperc" => array(
+                            "2006-04-25" => 50,
+                            "2008-05-12" => 90,
+                            "2009-12-05" => 30,
+                        ),
+                    ),
+                ),
+                46,
+                '2008-05-12',
+                0.3,
+            ),
 
+
+        );
+    }
+    /**
+     * Tests get and set date
+     *
+     * @param array  $preload Data to preload into the database
+     * @param int    $id      The user ID
+     * @param string $date    The date to use
+     * @param int    $expect  The expected return
+     *
+     * @dataProvider dataGetHolidayPerc()
+     * @return null
+     */
+    function testGetHolidayPerc($preload, $id, $date, $expect)
+    {
+        $GLOBALS["JTable"]["load"][$id] = $preload;
+        $ret = $this->o->getHolidayPerc($id, $date);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 
