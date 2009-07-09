@@ -53,13 +53,33 @@ jimport('joomla.application.component.view');
 class TimeclockAdminViewCustomers extends JView
 {
     /**
-     * The display function
-     *
-     * @param string $tpl The template to use
-     *
-     * @return none
-     */
+    * The display function
+    *
+    * @param string $tpl The template to use
+    *
+    * @return none
+    */
     function display($tpl = null)
+    {
+        $layout = $this->getLayout();
+        if (method_exists($this, $layout)) {
+            $this->$layout();
+        } else {
+            $this->showList();
+        }
+        parent::display($tpl);
+
+    }
+
+
+    /**
+    * The display function
+    *
+    * @param string $tpl The template to use
+    *
+    * @return none
+    */
+    function showList($tpl = null)
     {
         global $mainframe, $option;
         $model = $this->getModel("Customers");
@@ -152,6 +172,44 @@ class TimeclockAdminViewCustomers extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+        parent::display($tpl);
+    }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function form($tpl = null)
+    {
+        $model =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        // Set this as the default model
+        $this->setModel($model, true);
+        $row = $this->get("Data");
+
+        $user =& JFactory::getUser();
+
+        $cid = JRequest::getVar('cid', 0, '', 'array');
+        // fail if checked out not by 'me'
+        if ($row->isCheckedOut($user->get('id'))) {
+                $msg = JText::sprintf(
+                    'DESCBEINGEDITTED',
+                    JText::_('The poll'),
+                    $poll->title
+                );
+                $this->setRedirect(
+                    'index.php?option=com_timeclock&controller=customers',
+                    $msg
+                );
+        }
+        $model->checkout($user->get("id"), $cid[0]);
+
+        $add = empty($row->id);
+
+        $this->assignRef("lists", $lists);
+        $this->assignRef("add", $add);
+        $this->assignRef("row", $row);
         parent::display($tpl);
     }
 }

@@ -86,7 +86,7 @@ class TimeclockAdminControllerCustomers extends JController
     function edit()
     {
         JRequest::setVar('model', 'customers');
-        JRequest::setVar('view', 'customer');
+        JRequest::setVar('view', 'customers');
         JRequest::setVar('layout', 'form');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
