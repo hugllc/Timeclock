@@ -103,8 +103,22 @@ class ComTimeclockAdminControllerConfigTest extends JControllerTest
     public static function dataStoreTasks()
     {
         return array(
-            array("save", true, array("link" => "index.php?option=com_timeclock&controller=config", "msg" => "Preferences Saved!")),
-            array("save", false, array("link" => "index.php?option=com_timeclock&controller=config", "msg" => "Error Saving Preferences")),
+            array(
+                "save",
+                true,
+                array(
+                    "link" => "index.php?option=com_timeclock&controller=config",
+                    "msg" => "Preferences Saved!"
+                )
+            ),
+            array(
+                "save",
+                false,
+                array(
+                    "link" => "index.php?option=com_timeclock&controller=config",
+                    "msg" => "Error Saving Preferences"
+                )
+            ),
         );
     }
 

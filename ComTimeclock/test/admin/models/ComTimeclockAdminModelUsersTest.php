@@ -112,7 +112,8 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
                 "post",
                 array(
                     "id" => 15,
-                    "prefs" => "YToyOntzOjE3OiJhZG1pbl9ob2xpZGF5cGVyYyI7aToxMDA7czoxMjoiYWRtaW5fc3RhdHVzIjtzOjg6IkZVTExUSU1FIjt9",
+                    "prefs" => "YToyOntzOjE3OiJhZG1pbl9ob2xpZGF5cGVyYyI7aToxMDA7czox"
+                        ."MjoiYWRtaW5fc3RhdHVzIjtzOjg6IkZVTExUSU1FIjt9",
                     "published" => 1,
                     "startDate" => "2008-04-12",
                     "endDate" => "2009-04-12",
@@ -163,12 +164,52 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
     public static function dataAddProjectRet()
     {
         return array(
-            array(null, "addproject", true, array("id" => 13, "projid" => 10)),
-            array("bind", "addproject", false, array("id" => 13, "projid" => 10)),
-            array("check", "addproject", false, array("id" => 13, "projid" => 10)),
+            array(
+                null,
+                "addproject",
+                true,
+                array(
+                    "id" => 13,
+                    "projid" => 10
+                )
+            ),
+            array(
+                "bind",
+                "addproject",
+                false,
+                array(
+                    "id" => 13,
+                    "projid" => 10
+                )
+            ),
+            array(
+                "check",
+                "addproject",
+                false,
+                array(
+                    "id" => 13,
+                    "projid" => 10
+                )
+            ),
 
-            array(null, "removeproject", true, array("id" => 13, "projid" => array(10))),
-            array("bind", "removeproject", false, array("id" => 13, "projid" => array(10))),
+            array(
+                null,
+                "removeproject",
+                true,
+                array(
+                    "id" => 13,
+                    "projid" => array(10)
+                )
+            ),
+            array(
+                "bind",
+                "removeproject",
+                false,
+                array(
+                    "id" => 13,
+                    "projid" => array(10)
+                )
+            ),
         );
     }
 

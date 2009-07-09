@@ -155,16 +155,77 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     public static function dataStoreRet()
     {
         return array(
-            array(null, "store", 13, array("id" => 13)),
-            array("bind", "store", false, array("id" => 13)),
-            array("store", "store", false, array("id" => 13)),
+            array(
+                null,
+                "store",
+                13,
+                array(
+                    "id" => 13
+                )
+            ),
+            array(
+                "bind",
+                "store",
+                false,
+                array(
+                    "id" => 13
+                )
+            ),
+            array(
+                "store",
+                "store",
+                false,
+                array(
+                    "id" => 13
+                )
+            ),
 
-            array(null, "adduser", true, array("id" => 13, "projid" => 10)),
-            array("bind", "adduser", false, array("id" => 13, "projid" => 10)),
-            array("check", "adduser", false, array("id" => 13, "projid" => 10)),
+            array(
+                null,
+                "adduser",
+                true,
+                array(
+                    "id" => 13,
+                    "projid" => 10
+                )
+            ),
+            array(
+                "bind",
+                "adduser",
+                false,
+                array(
+                    "id" => 13,
+                    "projid" => 10
+                )
+            ),
+            array(
+                "check",
+                "adduser",
+                false,
+                array(
+                    "id" => 13,
+                    "projid" => 10
+                )
+            ),
 
-            array(null, "removeuser", true, array("id" => 13, "remove_user_id" => 10)),
-            array("bind", "removeuser", false, array("id" => 13, "remove_user_id" => 10)),
+            array(
+                null,
+                "removeuser",
+                true,
+                array(
+                    "id" => 13,
+                    "remove_user_id" => 10
+                )
+            ),
+            array(
+                "bind",
+                "removeuser",
+                false,
+                array(
+                    "id" => 13,
+                    "remove_user_id" => 10
+                )
+            ),
 
         );
     }

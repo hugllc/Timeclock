@@ -7,17 +7,17 @@
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
@@ -71,7 +71,7 @@ class ComTimeclockAdminControllerTests
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
- 
+
     /**
      * test suite
      *
@@ -82,7 +82,7 @@ class ComTimeclockAdminControllerTests
         PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');
         $suite = new PHPUnit_Framework_TestSuite('Com_Timeclock');
 
-        
+
 
         foreach (self::$_tests as $test) {
             include_once dirname(__FILE__).'/'.$test.'.php';
@@ -90,22 +90,6 @@ class ComTimeclockAdminControllerTests
         }
         // Base class tests
         return $suite;
-    }
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataStoreTasks()
-    {
-        return array(
-            array("save", true, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => "Holiday Saved!")),          
-            array("save", false, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => "Error Saving Holiday")),          
-            array("apply", true, array("link" => "index.php?option=com_timeclock&controller=holidays&task=edit&cid[]=0", "msg" => "Holiday Saved!")),          
-            array("apply", false, array("link" => "index.php?option=com_timeclock&controller=holidays&task=edit&cid[]=0", "msg" => "Error Saving Holiday")),          
-            array("reset", true, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => null)),          
-            array("cancel", true, array("link" => "index.php?option=com_timeclock&controller=holidays", "msg" => null)),          
-        );
     }
 }
 

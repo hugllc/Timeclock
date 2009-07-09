@@ -101,7 +101,24 @@ class ComTimeclockAdminModelConfigTest extends JModelTest
     public static function dataStore()
     {
         return array(
-            array(array("id" => 1, "prefs" => array("hello" => "world")), "post", array("id" => 1, "prefs" => "YToxOntzOjU6ImhlbGxvIjtzOjU6IndvcmxkIjt9", "published" => null, "startDate" => null, "endDate" => null, "history" => "Tjs="), "store"),
+            array(
+                array(
+                    "id" => 1,
+                    "prefs" => array(
+                        "hello" => "world"
+                    )
+                ),
+                "post",
+                array(
+                    "id" => 1,
+                    "prefs" => "YToxOntzOjU6ImhlbGxvIjtzOjU6IndvcmxkIjt9",
+                    "published" => null,
+                    "startDate" => null,
+                    "endDate" => null,
+                    "history" => "Tjs="
+                ),
+                "store"
+            ),
         );
     }
     /**
@@ -112,11 +129,53 @@ class ComTimeclockAdminModelConfigTest extends JModelTest
     public static function dataStoreRet()
     {
         return array(
-            array(null, "store", false, array(), "post"),
-            array(null, "store", true, array("id" => 1, "prefs" => array()), "post"),
-            array("bind", "store", false, array("id" => 1, "prefs" => array()), "post"),
-            array("check", "store", false, array("id" => 1, "prefs" => array()), "post"),
-            array("store", "store", false, array("id" => 1, "prefs" => array()), "post"),
+            array(
+                null,
+                "store",
+                false,
+                array(),
+                "post"
+            ),
+            array(
+                null,
+                "store",
+                true,
+                array(
+                    "id" => 1,
+                    "prefs" => array()
+                ),
+                "post"
+            ),
+            array(
+                "bind",
+                "store",
+                false,
+                array(
+                    "id" => 1,
+                    "prefs" => array()
+                ),
+                "post"
+            ),
+            array(
+                "check",
+                "store",
+                false,
+                array(
+                    "id" => 1,
+                    "prefs" => array()
+                ),
+                "post"
+            ),
+            array(
+                "store",
+                "store",
+                false,
+                array(
+                    "id" => 1,
+                    "prefs" => array()
+                ),
+                "post"
+            ),
         );
     }
 

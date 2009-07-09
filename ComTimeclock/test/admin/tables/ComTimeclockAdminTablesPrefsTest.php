@@ -143,7 +143,8 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 ),
                 array(
                     "id" => 12,
-                    "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo0O30=",
+                    "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo"
+                        ."0O30=",
                     "published" => 0,
                     "startDate" => null,
                     "endDate" => null,
@@ -165,7 +166,8 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 array(
                     15 => array(
                         "id" => 15,
-                        "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo0O30=",
+                        "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aT"
+                            ."o0O30=",
                     ),
                 ),
                 15,

@@ -7,17 +7,17 @@
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
@@ -56,10 +56,10 @@ class ComTimeclockXmlTest extends ComponentXmlTest
 {
     /** @var string The name of the xml file */
     static $xml = "timeclock.xml";
-    
+
     /** @var string another place to get this file name */
     public $xmlfile = "timeclock.xml";
-    
+
     /** @var string The name of the component */
     public $comName = "Timeclock";
     /**
@@ -70,11 +70,11 @@ class ComTimeclockXmlTest extends ComponentXmlTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
         $dir = dirname(__FILE__);
-        $this->basedir = substr($dir, 0, strlen($dir) - 4);        
+        $this->basedir = substr($dir, 0, strlen($dir) - 4);
     }
 
     /**
@@ -85,11 +85,11 @@ class ComTimeclockXmlTest extends ComponentXmlTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
     }
-    
+
 
     /**
      * Data provider for testFiles
@@ -98,7 +98,7 @@ class ComTimeclockXmlTest extends ComponentXmlTest
      */
     public static function dataFiles()
     {
-        return self::getDataFiles(dirname(__FILE__)."/../".self::$xml);    
+        return self::getDataFiles(dirname(__FILE__)."/../".self::$xml);
     }
 
     /**
@@ -108,13 +108,13 @@ class ComTimeclockXmlTest extends ComponentXmlTest
      */
     static public function dataFilePresent()
     {
-            
+
         return array(
             array("LICENSE.TXT"),
         );
     }
 
-    
+
     /**
      * Data provider for testFiles
      *
@@ -122,8 +122,16 @@ class ComTimeclockXmlTest extends ComponentXmlTest
      */
     static public function dataFilePresentXml()
     {
-        $site = ComTimeclockXmlTest::getFilesInDir(dirname(__FILE__)."/../site", true, "");
-        $admin = ComTimeclockXmlTest::getFilesInDir(dirname(__FILE__)."/../admin", true, "");
+        $site = ComTimeclockXmlTest::getFilesInDir(
+            dirname(__FILE__)."/../site",
+            true,
+            ""
+        );
+        $admin = ComTimeclockXmlTest::getFilesInDir(
+            dirname(__FILE__)."/../admin",
+            true,
+            ""
+        );
         $ret = array();
         foreach ($site as $file) {
             $ret[] = array("site", $file);
