@@ -376,6 +376,11 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
         $ret = $this->o->getPeriodDates();
         $this->assertSame($expect, $ret);
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
     public static function dataGetHolidayPerc()
     {
         return array(
