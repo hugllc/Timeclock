@@ -65,6 +65,9 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
             dirname(__FILE__)."/../../../admin/install/timeclock_projects.sql",
             dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
             dirname(__FILE__)."/../../../admin/install/timeclock_prefs.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_timesheet.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_customers.sql",
+            dirname(__FILE__)."/users.sql",
         );
         $this->o = new TimeclockAdminModelProjects();
         parent::setUp();
@@ -230,6 +233,425 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
         );
     }
 
+    /**
+     * Data provider for testFiles
+     *
+     * @return array()
+     */
+    static public function dataGetUserProjects()
+    {
+        $res[9] = toStdClass(
+            array(
+                id => "6",
+                name => "Test Project 2",
+                description => "This is a sample second test project",
+                created_by => "1",
+                created => "2009-04-12 12:34:12",
+                manager => "2",
+                research => "1",
+                type => "PROJECT",
+                parent_id => "0",
+                wcCode1 => "1234",
+                wcCode2 => "4321",
+                wcCode3 => "12",
+                wcCode4 => "45",
+                wcCode5 => "16",
+                wcCode6 => "0",
+                customer => "0",
+                checked_out => "0",
+                checked_out_time => "0000-00-00 00:00:00",
+                published => "1",
+                parentname => null,
+                created_by_name => null,
+                manager_name => null,
+                parent_checked_out => null,
+                customer_name => null,
+                customer_contact => null,
+                customer_checked_out => null,
+                mine => false,
+            )
+        );
+        $res[8] = toStdClass(
+            array(
+                subprojects => array(
+                        6 => $res[9],
+                    ),
+            )
+        );
+        $res[7] = toStdClass(
+            array(
+                id => "4",
+                name => "Test Unpaid",
+                description => "This is a sample test unpaid",
+                created_by => "1",
+                created => "2009-04-12 12:32:12",
+                manager => "2",
+                research => "0",
+                type => "UNPAID",
+                parent_id => "0",
+                wcCode1 => "12",
+                wcCode2 => "0",
+                wcCode3 => "0",
+                wcCode4 => "0",
+                wcCode5 => "0",
+                wcCode6 => "0",
+                customer => "0",
+                checked_out => "0",
+                checked_out_time => "0000-00-00 00:00:00",
+                published => "1",
+                parentname => null,
+                created_by_name => null,
+                manager_name => null,
+                parent_checked_out => null,
+                customer_name => null,
+                customer_contact => null,
+                customer_checked_out => null,
+                mine => false,
+            )
+        );
+        $res[6] = toStdClass(
+            array(
+                subprojects => array(
+                        4 => $res[7],
+                    ),
+            )
+        );
+        $res[5] = toStdClass(
+            array(
+                id => "5",
+                name => "Test PTO",
+                description => "This is a sample test pto",
+                created_by => "1",
+                created => "2009-04-12 12:32:12",
+                manager => "2",
+                research => "0",
+                type => "PTO",
+                parent_id => "0",
+                wcCode1 => "12",
+                wcCode2 => "0",
+                wcCode3 => "0",
+                wcCode4 => "0",
+                wcCode5 => "0",
+                wcCode6 => "0",
+                customer => "0",
+                checked_out => "0",
+                checked_out_time => "0000-00-00 00:00:00",
+                published => "1",
+                parentname => null,
+                created_by_name => null,
+                manager_name => null,
+                parent_checked_out => null,
+                customer_name => null,
+                customer_contact => null,
+                customer_checked_out => null,
+                mine => false,
+            )
+        );
+        $res[4] = toStdClass(
+            array(
+                id => "3",
+                name => "Test Holiday",
+                description => "This is a sample test holiday",
+                created_by => "1",
+                created => "2009-04-12 12:32:12",
+                manager => "2",
+                research => "0",
+                type => "HOLIDAY",
+                parent_id => "0",
+                wcCode1 => "12",
+                wcCode2 => "0",
+                wcCode3 => "0",
+                wcCode4 => "0",
+                wcCode5 => "0",
+                wcCode6 => "0",
+                customer => "0",
+                checked_out => "0",
+                checked_out_time => "0000-00-00 00:00:00",
+                published => "1",
+                parentname => null,
+                created_by_name => null,
+                manager_name => null,
+                parent_checked_out => null,
+                customer_name => null,
+                customer_contact => null,
+                customer_checked_out => null,
+                mine => false,
+                noHours => true,
+            )
+        );
+        $res[3] = toStdClass(
+            array(
+                subprojects => array(
+                        3 => $res[4],
+                        5 => $res[5],
+                    ),
+            )
+        );
+        $res[2] = toStdClass(
+            array(
+                id => "1",
+                name => "Test Project 1",
+                description => "This is a sample test project",
+                created_by => "1",
+                created => "2009-04-12 12:34:12",
+                manager => "2",
+                research => "1",
+                type => "PROJECT",
+                parent_id => "2",
+                wcCode1 => "1234",
+                wcCode2 => "4321",
+                wcCode3 => "12",
+                wcCode4 => "45",
+                wcCode5 => "16",
+                wcCode6 => "0",
+                customer => "0",
+                checked_out => "0",
+                checked_out_time => "0000-00-00 00:00:00",
+                published => "1",
+                parentname => "Test Category 1",
+                created_by_name => null,
+                manager_name => null,
+                parent_checked_out => "0",
+                customer_name => null,
+                customer_contact => null,
+                customer_checked_out => null,
+                mine => true,
+            )
+        );
+        $res[1] = toStdClass(
+            array(
+                id => "2",
+                name => "Test Category 1",
+                description => "This is a sample test category",
+                created_by => "1",
+                created => "2009-04-12 12:32:12",
+                manager => "2",
+                research => "0",
+                type => "CATEGORY",
+                parent_id => "0",
+                wcCode1 => "0",
+                wcCode2 => "0",
+                wcCode3 => "0",
+                wcCode4 => "0",
+                wcCode5 => "0",
+                wcCode6 => "0",
+                customer => "0",
+                checked_out => "0",
+                checked_out_time => "0000-00-00 00:00:00",
+                published => "1",
+                parentname => null,
+                created_by_name => null,
+                manager_name => null,
+                parent_checked_out => null,
+                customer_name => null,
+                customer_contact => null,
+                customer_checked_out => null,
+                subprojects => array(
+                        1 => $res[2],
+                    ),
+                mine => true,
+            )
+        );
+        $ret = array(
+            2 => $res[1],
+            -2 => $res[3],
+            -3 => $res[6],
+            -1 => $res[8],
+        );
+        return array(
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                5,
+                null,
+                null,
+                $ret,
+            ),
+        );
+    }
+
+    /**
+     * Tests the users name
+     *
+     * @param string $file The file name to check
+     *
+     * @return null
+     *
+     * @dataProvider dataGetUserProjects()
+     */
+    public function testGetUserProjects($preload, $oid, $limitstart, $limit, $expect)
+    {
+        $this->_db->joomlaMockPreloadXML($preload);
+        $ret = $this->o->getUserProjects($oid, $limitstart, $limit);
+//        print joomlaMockOutputXML($ret);
+        $this->assertEquals($expect, $ret);
+    }
+
+    /**
+     * Data provider for testFiles
+     *
+     * @return array()
+     */
+    static public function dataGetProjectUsers()
+    {
+        $res[] = toStdClass(
+            array(
+                "proj_id"       => "1",
+                "id"            => "5",
+                "name"          => null,
+                "username"      => null,
+                "email"         => null,
+                "password"      => null,
+                "usertype"      => null,
+                "block"         => null,
+                "sendEmail"     => null,
+                "gid"           => null,
+                "registerDate"  => null,
+                "lastvisitDate" => null,
+                "activation"    => null,
+                "params"        => null,
+            )
+        );
+        return array(
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                1,
+                null,
+                null,
+                $res,
+            ),
+        );
+    }
+
+    /**
+     * Tests the users name
+     *
+     * @param string $file The file name to check
+     *
+     * @return null
+     *
+     * @dataProvider dataGetProjectUsers()
+     */
+    public function testGetProjectUsers($preload, $oid, $limitstart, $limit, $expect)
+    {
+        $this->_db->joomlaMockPreloadXML($preload);
+        $ret = $this->o->getProjectUsers($oid, $limitstart, $limit);
+        $this->assertEquals($expect, $ret);
+    }
+
+
+    /**
+     * Data provider for testFiles
+     *
+     * @return array()
+     */
+    static public function dataCountParents()
+    {
+        return array(
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                2,
+                1,
+            ),
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                1,
+                0,
+            ),
+        );
+    }
+
+    /**
+     * Tests the users name
+     *
+     * @param string $file The file name to check
+     *
+     * @return null
+     *
+     * @dataProvider dataCountParents()
+     */
+    public function testCountParents($preload, $oid, $expect)
+    {
+        $this->_db->joomlaMockPreloadXML($preload);
+        $ret = $this->o->countParents($oid);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * Data provider for testFiles
+     *
+     * @return array()
+     */
+    static public function dataGetUserProjectsCount()
+    {
+        return array(
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                5,
+                1,
+            ),
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                1,
+                0,
+            ),
+        );
+    }
+
+    /**
+     * Tests the users name
+     *
+     * @param string $file The file name to check
+     *
+     * @return null
+     *
+     * @dataProvider dataGetUserProjectsCount()
+     */
+    public function testGetUserProjectsCount($preload, $oid, $expect)
+    {
+        $this->_db->joomlaMockPreloadXML($preload);
+        $ret = $this->o->getUserProjectsCount($oid);
+        $this->assertSame($expect, $ret);
+    }
+
+
+    /**
+     * Data provider for testFiles
+     *
+     * @return array()
+     */
+    static public function dataUserInProject()
+    {
+        return array(
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                5,
+                1,
+                1,
+            ),
+            array(
+                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                1,
+                1,
+                0,
+            ),
+        );
+    }
+
+    /**
+     * Tests the users name
+     *
+     * @param string $file The file name to check
+     *
+     * @return null
+     *
+     * @dataProvider dataUserInProject()
+     */
+    public function testUserInProject($preload, $oid, $projid, $expect)
+    {
+        $this->_db->joomlaMockPreloadXML($preload);
+        $ret = $this->o->userInProject($oid, $projid);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 

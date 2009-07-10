@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="#__timeclock_projects">
+        <column>id</column>
+        <column>name</column>
+        <column>description</column>
+        <column>created_by</column>
+        <column>created</column>
+        <column>manager</column>
+        <column>research</column>
+        <column>type</column>
+        <column>parent_id</column>
+        <column>wcCode1</column>
+        <column>wcCode2</column>
+        <column>wcCode3</column>
+        <column>wcCode4</column>
+        <column>wcCode5</column>
+        <column>wcCode6</column>
+        <column>customer</column>
+        <column>checked_out</column>
+        <column>checked_out_time</column>
+        <column>published</column>
+        <row>
+            <value>1</value>     <!-- id -->
+            <value>Test Project 1</value>     <!-- name -->
+            <value>This is a sample test project</value>     <!-- description -->
+            <value>1</value>     <!-- created_by -->
+            <value>2009-04-12 12:34:12</value>     <!-- created -->
+            <value>2</value>     <!-- manager -->
+            <value>1</value>     <!-- research -->
+            <value>PROJECT</value>     <!-- type -->
+            <value>2</value>     <!-- parent_id -->
+            <value>1234</value>     <!-- wcCode1 -->
+            <value>4321</value>     <!-- wcCode2 -->
+            <value>12</value>     <!-- wcCode3 -->
+            <value>45</value>     <!-- wcCode4 -->
+            <value>16</value>     <!-- wcCode5 -->
+            <value>0</value>     <!-- wcCode6 -->
+            <value>0</value>     <!-- customer -->
+            <value>0</value>     <!-- checked_out -->
+            <value>0000-00-00 00:00:00</value>     <!-- checked_out_time -->
+            <value>1</value>     <!-- published -->
+        </row>
+        <row>
+            <value>2</value>     <!-- id -->
+            <value>Test Category 1</value>     <!-- name -->
+            <value>This is a sample test category</value>     <!-- description -->
+            <value>1</value>     <!-- created_by -->
+            <value>2009-04-12 12:32:12</value>     <!-- created -->
+            <value>2</value>     <!-- manager -->
+            <value>0</value>     <!-- research -->
+            <value>CATEGORY</value>     <!-- type -->
+            <value>0</value>     <!-- parent_id -->
+            <value>0</value>     <!-- wcCode1 -->
+            <value>0</value>     <!-- wcCode2 -->
+            <value>0</value>     <!-- wcCode3 -->
+            <value>0</value>     <!-- wcCode4 -->
+            <value>0</value>     <!-- wcCode5 -->
+            <value>0</value>     <!-- wcCode6 -->
+            <value>0</value>     <!-- customer -->
+            <value>0</value>     <!-- checked_out -->
+            <value>0000-00-00 00:00:00</value>     <!-- checked_out_time -->
+            <value>1</value>     <!-- published -->
+        </row>
+        <row>
+            <value>3</value>     <!-- id -->
+            <value>Test Holiday</value>     <!-- name -->
+            <value>This is a sample test holiday</value>     <!-- description -->
+            <value>1</value>     <!-- created_by -->
+            <value>2009-04-12 12:32:12</value>     <!-- created -->
+            <value>2</value>     <!-- manager -->
+            <value>0</value>     <!-- research -->
+            <value>HOLIDAY</value>     <!-- type -->
+            <value>0</value>     <!-- parent_id -->
+            <value>12</value>     <!-- wcCode1 -->
+            <value>0</value>     <!-- wcCode2 -->
+            <value>0</value>     <!-- wcCode3 -->
+            <value>0</value>     <!-- wcCode4 -->
+            <value>0</value>     <!-- wcCode5 -->
+            <value>0</value>     <!-- wcCode6 -->
+            <value>0</value>     <!-- customer -->
+            <value>0</value>     <!-- checked_out -->
+            <value>0000-00-00 00:00:00</value>     <!-- checked_out_time -->
+            <value>1</value>     <!-- published -->
+        </row>
+        <row>
+            <value>4</value>     <!-- id -->
+            <value>Test Unpaid</value>     <!-- name -->
+            <value>This is a sample test unpaid</value>     <!-- description -->
+            <value>1</value>     <!-- created_by -->
+            <value>2009-04-12 12:32:12</value>     <!-- created -->
+            <value>2</value>     <!-- manager -->
+            <value>0</value>     <!-- research -->
+            <value>UNPAID</value>     <!-- type -->
+            <value>0</value>     <!-- parent_id -->
+            <value>12</value>     <!-- wcCode1 -->
+            <value>0</value>     <!-- wcCode2 -->
+            <value>0</value>     <!-- wcCode3 -->
+            <value>0</value>     <!-- wcCode4 -->
+            <value>0</value>     <!-- wcCode5 -->
+            <value>0</value>     <!-- wcCode6 -->
+            <value>0</value>     <!-- customer -->
+            <value>0</value>     <!-- checked_out -->
+            <value>0000-00-00 00:00:00</value>     <!-- checked_out_time -->
+            <value>1</value>     <!-- published -->
+        </row>
+        <row>
+            <value>5</value>     <!-- id -->
+            <value>Test PTO</value>     <!-- name -->
+            <value>This is a sample test pto</value>     <!-- description -->
+            <value>1</value>     <!-- created_by -->
+            <value>2009-04-12 12:32:12</value>     <!-- created -->
+            <value>2</value>     <!-- manager -->
+            <value>0</value>     <!-- research -->
+            <value>PTO</value>     <!-- type -->
+            <value>0</value>     <!-- parent_id -->
+            <value>12</value>     <!-- wcCode1 -->
+            <value>0</value>     <!-- wcCode2 -->
+            <value>0</value>     <!-- wcCode3 -->
+            <value>0</value>     <!-- wcCode4 -->
+            <value>0</value>     <!-- wcCode5 -->
+            <value>0</value>     <!-- wcCode6 -->
+            <value>0</value>     <!-- customer -->
+            <value>0</value>     <!-- checked_out -->
+            <value>0000-00-00 00:00:00</value>     <!-- checked_out_time -->
+            <value>1</value>     <!-- published -->
+        </row>
+        <row>
+            <value>6</value>     <!-- id -->
+            <value>Test Project 2</value>     <!-- name -->
+            <value>This is a sample second test project</value>     <!-- description -->
+            <value>1</value>     <!-- created_by -->
+            <value>2009-04-12 12:34:12</value>     <!-- created -->
+            <value>2</value>     <!-- manager -->
+            <value>1</value>     <!-- research -->
+            <value>PROJECT</value>     <!-- type -->
+            <value>0</value>     <!-- parent_id -->
+            <value>1234</value>     <!-- wcCode1 -->
+            <value>4321</value>     <!-- wcCode2 -->
+            <value>12</value>     <!-- wcCode3 -->
+            <value>45</value>     <!-- wcCode4 -->
+            <value>16</value>     <!-- wcCode5 -->
+            <value>0</value>     <!-- wcCode6 -->
+            <value>0</value>     <!-- customer -->
+            <value>0</value>     <!-- checked_out -->
+            <value>0000-00-00 00:00:00</value>     <!-- checked_out_time -->
+            <value>1</value>     <!-- published -->
+        </row>
+    </table>
+    <table name="#__timeclock_users">
+        <column>id</column>
+        <column>user_id</column>
+        <row>
+            <value>1</value>     <!-- id -->
+            <value>5</value>     <!-- user_id -->
+        </row>
+    </table>
+
+</dataset>

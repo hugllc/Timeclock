@@ -63,9 +63,12 @@ class ComTimeclockSiteModelReportsTest extends JModelTest
     {
         parent::setUp();
         $this->sqlFile = array(
-            dirname(__FILE__)."/../../../admin/install/timeclock_timesheet.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_projects.sql",
             dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
             dirname(__FILE__)."/../../../admin/install/timeclock_prefs.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_timesheet.sql",
+            dirname(__FILE__)."/../../../admin/install/timeclock_customers.sql",
+            dirname(__FILE__)."/../../admin/models/users.sql",
         );
         $this->o = new TimeclockModelReports();
     }

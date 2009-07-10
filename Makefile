@@ -5,6 +5,8 @@ PHPCS=`which phpcs`
 SVN=`which svn`
 SVN_SERVER=https://svn.hugllc.com
 
+all: test-php
+
 UItest: UItest-CoreUI
 
 UItest-CoreUI:
