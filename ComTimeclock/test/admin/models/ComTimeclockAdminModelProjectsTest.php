@@ -459,6 +459,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
             -1 => $res[8],
         );
         return array(
+/*
             array(
                 dirname(__FILE__).DS."ProjectDataSet01.xml",
                 5,
@@ -466,6 +467,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
                 null,
                 $ret,
             ),
+*/
         );
     }
 
