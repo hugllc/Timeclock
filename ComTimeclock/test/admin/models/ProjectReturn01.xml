@@ -1,6 +1,6 @@
 <array>
     <value name="2" type="object">
-        <class name="stdClass">
+        <object class="stdClass">
             <value name="id" type="string">
                 2
             </value>
@@ -68,7 +68,7 @@
             <value name="subprojects" type="array">
                 <array>
                     <value name="1" type="object">
-                        <class name="stdClass">
+                        <object class="stdClass">
                             <value name="id" type="string">
                                 1
                             </value>
@@ -150,11 +150,11 @@
         </object>
     </value>
     <value name="-2" type="object">
-        <class name="stdClass">
+        <object class="stdClass">
             <value name="subprojects" type="array">
                 <array>
                     <value name="3" type="object">
-                        <class name="stdClass">
+                        <object class="stdClass">
                             <value name="id" type="string">
                                 3
                             </value>
@@ -228,7 +228,7 @@
                         </object>
                     </value>
                     <value name="5" type="object">
-                        <class name="stdClass">
+                        <object class="stdClass">
                             <value name="id" type="string">
                                 5
                             </value>
@@ -303,11 +303,11 @@
         </object>
     </value>
     <value name="-3" type="object">
-        <class name="stdClass">
+        <object class="stdClass">
             <value name="subprojects" type="array">
                 <array>
                     <value name="4" type="object">
-                        <class name="stdClass">
+                        <object class="stdClass">
                             <value name="id" type="string">
                                 4
                             </value>
@@ -382,11 +382,11 @@
         </object>
     </value>
     <value name="-1" type="object">
-        <class name="stdClass">
+        <object class="stdClass">
             <value name="subprojects" type="array">
                 <array>
                     <value name="6" type="object">
-                        <class name="stdClass">
+                        <object class="stdClass">
                             <value name="id" type="string">
                                 6
                             </value>
