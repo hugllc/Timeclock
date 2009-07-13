@@ -422,7 +422,7 @@ class TimeclockAdminModelProjects extends JModel
         foreach ($ret as $p) {
             $uProj[$p->id] = $p->user_id;
         }
-        $proj = $this->getProjects("", null, null, "ORDER BY id asc");
+        $proj = $this->getProjects("", null, null, "ORDER BY p.id asc");
         if (!is_array($proj)) {
             return array();
         }
