@@ -61,6 +61,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
      */
     protected function setUp()
     {
+/*
         $this->sqlFile = array(
             dirname(__FILE__)."/../../../admin/install/timeclock_projects.sql",
             dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
@@ -69,6 +70,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
             dirname(__FILE__)."/../../../admin/install/timeclock_customers.sql",
             dirname(__FILE__)."/users.sql",
         );
+        */
         $this->o = new TimeclockAdminModelProjects();
         parent::setUp();
     }
