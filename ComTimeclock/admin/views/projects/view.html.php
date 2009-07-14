@@ -218,8 +218,8 @@ class TimeclockAdminViewProjects extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_('The poll'),
-                    $poll->title
+                    JText::_('The project'),
+                    $row->name
                 );
                 $this->setRedirect(
                     'index.php?option=com_timeclock&controller=projects',
