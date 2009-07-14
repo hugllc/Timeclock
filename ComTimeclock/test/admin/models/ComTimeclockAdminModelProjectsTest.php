@@ -61,16 +61,6 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
      */
     protected function setUp()
     {
-/*
-        $this->sqlFile = array(
-            dirname(__FILE__)."/../../../admin/install/timeclock_projects.sql",
-            dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
-            dirname(__FILE__)."/../../../admin/install/timeclock_prefs.sql",
-            dirname(__FILE__)."/../../../admin/install/timeclock_timesheet.sql",
-            dirname(__FILE__)."/../../../admin/install/timeclock_customers.sql",
-            dirname(__FILE__)."/users.sql",
-        );
-        */
         $this->o = new TimeclockAdminModelProjects();
         parent::setUp();
     }
@@ -242,7 +232,11 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
      */
     static public function dataGetUserProjects()
     {
-        $data1 = new SimpleXMLElement(dirname(__FILE__).DS."ProjectReturn01.xml", NULL, TRUE);
+        $data1 = new SimpleXMLElement(
+            dirname(__FILE__).DS."ProjectReturn01.xml",
+            null,
+            true
+        );
 
         return array(
             array(
@@ -258,7 +252,11 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     /**
      * Tests the users name
      *
-     * @param string $file The file name to check
+     * @param string $preload    The file to preload the database with
+     * @param int    $oid        The id of the user
+     * @param int    $limitstart The first entry to return
+     * @param int    $limit      The number of entries to return
+     * @param int    $expect     The expected return
      *
      * @return null
      *
@@ -310,7 +308,11 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     /**
      * Tests the users name
      *
-     * @param string $file The file name to check
+     * @param string $preload    The file to preload the database with
+     * @param int    $oid        The id of the user
+     * @param int    $limitstart The first entry to return
+     * @param int    $limit      The number of entries to return
+     * @param int    $expect     The expected return
      *
      * @return null
      *
@@ -348,7 +350,9 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     /**
      * Tests the users name
      *
-     * @param string $file The file name to check
+     * @param string $preload The file to preload the database with
+     * @param int    $oid     The id of the user
+     * @param int    $expect  The expected return
      *
      * @return null
      *
@@ -385,7 +389,9 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     /**
      * Tests the users name
      *
-     * @param string $file The file name to check
+     * @param string $preload The file to preload the database with
+     * @param int    $oid     The id of the user
+     * @param int    $expect  The expected return
      *
      * @return null
      *
@@ -425,7 +431,10 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     /**
      * Tests the users name
      *
-     * @param string $file The file name to check
+     * @param string $preload The file to preload the database with
+     * @param int    $oid     The id of the user
+     * @param int    $projid  The id of the project
+     * @param int    $expect  The expected return
      *
      * @return null
      *
