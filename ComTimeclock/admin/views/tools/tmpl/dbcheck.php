@@ -36,20 +36,45 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockAdminController::title(JText::_('Timeclock Tools'));
+TimeclockAdminController::title(JText::_('Check Database'));
 
 $baseUrl = "index.php?option=com_timeclock&controller=tools";
 ?>
 <div style="width: 500px;">
-<p>
-These tools are to help keep the timeclock database healthy.
-</p>
-<ol>
-    <li>
-        <a href="<?php print JRoute::_($baseUrl."&task=dbcheck"); ?>">
-            Check Database
-        </a>
-    </li>
-</ol>
+<h2><?php print JText::_("Checking your Database"); ?>...</h2>
+<h3><?php print JText::_("Preferences"); ?></h3>
+<?php if ($this->results["prefs"] === true): ?>
+    <div class="success"><?php print JText::_("No Errors"); ?></div>
+<?php else: ?>
 
+<?php endif; ?>
+<h3><?php print JText::_("Customers"); ?></h3>
+<?php if ($this->results["customers"] === true): ?>
+    <div class="success"><?php print JText::_("No Errors"); ?></div>
+<?php else: ?>
+
+<?php endif; ?>
+<h3><?php print JText::_("Projects"); ?></h3>
+<?php if ($this->results["projects"] === true): ?>
+    <div class="success"><?php print JText::_("No Errors"); ?></div>
+<?php else: ?>
+
+<?php endif; ?>
+<h3><?php print JText::_("Holidays"); ?></h3>
+<?php if ($this->results["holidays"] === true): ?>
+    <div class="success"><?php print JText::_("No Errors"); ?></div>
+<?php else: ?>
+
+<?php endif; ?>
+<h3><?php print JText::_("Users"); ?></h3>
+<?php if ($this->results["users"] === true): ?>
+    <div class="success"><?php print JText::_("No Errors"); ?></div>
+<?php else: ?>
+
+<?php endif; ?>
+
+<h3><?php print JText::_("Debug"); ?></h3>
+<pre>
+<?php var_dump($this->results); ?>
+</pre>
 </div>

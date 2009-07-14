@@ -56,173 +56,82 @@ class TimeclockAdminModelTools extends JModel
     var $_allQuery = "SELECT c.*
                       FROM #__timeclock_customers AS c ";
     /**
-     * Constructor that retrieves the ID from the request
-     *
-     * @return    void
-     */
+    * Constructor that retrieves the ID from the request
+    *
+    * @return    void
+    */
     function __construct()
     {
         parent::__construct();
 
-        $array = JRequest::getVar('cid', 0, '', 'array');
-        $this->setId($array);
-    }
-    /**
-     * Method to set the id
-     *
-     * @param int $id The ID of the Project to get
-     *
-     * @return    void
-     */
-    function setId($id)
-    {
-        $this->_id      = $id;
     }
 
     /**
-     * Method to display the view
-     *
-     * @return string
-     */
-    function &getData()
+    * This function goes through and checks all of the databases
+    *
+    * @return array The problem array
+    */
+    function dbCheck()
     {
-        $row = $this->getTable("TimeclockCustomers");
-        $id = is_int($this->_id) ? $this->_id : $this->_id[0];
-        $row->load($id);
-        return $row;
-    }
-
-    /**
-     * Method to display the view
-     *
-     * @param string $where      The where clause to use.  Must include 'WHERE'
-     * @param int    $limitstart The record to start on
-     * @param int    $limit      The max number of records to retrieve
-     * @param string $orderby    The order by clause.  Must include 'ORDER BY'
-     *
-     * @return string
-     */
-    function getCustomers($where = "", $limitstart=null, $limit=null, $orderby = "")
-    {
-        $query = $this->_allQuery." "
-                .$where." "
-                .$orderby;
-        return $this->_getList($query, $limitstart, $limit);
-    }
-
-    /**
-     * Method to display the view
-     *
-     * @param string $where The where clause to use.  Must include 'WHERE'
-     *
-     * @return string
-     */
-    function countCustomers($where="")
-    {
-        $query = $this->_allQuery." ".$where;
-        return $this->_getListCount($query);
-    }
-
-    /**
-     * Checks in an item
-     *
-     * @param int $oid The id of the item to save
-     *
-     * @return bool
-     */
-    function checkin($oid)
-    {
-        $table = $this->getTable("TimeclockCustomers");
-        return $table->checkin($oid);
-    }
-
-    /**
-     * Publishes or unpublishes an item
-     *
-     * @param int $who The uid of the person doing the checkout
-     * @param int $oid The id of the item to save
-     *
-     * @return bool
-     */
-    function checkout($who, $oid)
-    {
-        $table = $this->getTable("TimeclockCustomers");
-        return $table->checkout($who, $oid);
-    }
-
-    /**
-     * Get the project options for a select list
-     *
-     * @param string $where The where clause to use
-     * @param string $name  The name for the empty item
-     *
-     * @return array
-     */
-    function getOptions($where = "", $name = "None")
-    {
-        $ret = array(JHTML::_("select.option", 0, $name));
-        $query = "SELECT id, name, company FROM #__timeclock_customers ".$where;
-        $proj = $this->_getList($query, $limitstart, $limit);
-        if (!is_array($proj)) {
-            return $ret;
-        }
-        foreach ($proj as $p) {
-            $ret[] = JHTML::_("select.option", $p->id, $p->company.": ".$p->name);
-        }
+        $ret = array();
+        $ret["prefs"] = $this->_dbCheckPrefs();
+        $ret["customers"] = $this->_dbCheckCustomers();
+        $ret["projects"] = $this->_dbCheckProjects();
+        $ret["holidays"] = $this->_dbCheckHolidays();
+        $ret["users"] = $this->_dbCheckUsers();
         return $ret;
     }
 
+
     /**
-     * Method to store a record
-     *
-     * @access    public
-     * @return    boolean    True on success
-     */
-    function store()
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckPrefs()
     {
-        $row =& $this->getTable("TimeclockCustomers");
-        $data = JRequest::get('post');
-
-        if (empty($data['id'])) {
-            $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
-            $data["created_by"] = $user->get("id");
-        }
-
-        // Bind the form fields to the hello table
-        if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-
-        return $row->id;
-    }
-    /**
-     * Publishes or unpublishes an item
-     *
-     * @param int $publish 1 to publish, 0 to unpublish
-     * @param int $user_id The user ID to change
-     *
-     * @return bool
-     */
-    function publish($publish, $user_id)
-    {
-        $table = $this->getTable("TimeclockCustomers");
-        $id = is_array($this->_id) ? $this->_id : array($this->_id);
-        return $table->publish($id, $publish, $user_id);
+        return true;
     }
 
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckCustomers()
+    {
+        return true;
+    }
+
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckProjects()
+    {
+        return true;
+    }
+
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckHolidays()
+    {
+        return true;
+    }
+
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckUsers()
+    {
+        return true;
+    }
 
 }
 

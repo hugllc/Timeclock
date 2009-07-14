@@ -80,6 +80,22 @@ class TimeclockAdminViewTools extends JView
     {
         parent::display($tpl);
     }
+
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    function dbcheck($tpl = null)
+    {
+        $model = $this->getModel();
+        $results = $model->dbCheck();
+        $this->assignRef("results", $results);
+        parent::display($tpl);
+    }
+
 }
 
 ?>

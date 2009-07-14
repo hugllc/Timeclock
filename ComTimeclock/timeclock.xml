@@ -126,6 +126,7 @@
             <filename>views/tools/index.html</filename>
             <filename>views/tools/tmpl/index.html</filename>
             <filename>views/tools/tmpl/default.php</filename>
+            <filename>views/tools/tmpl/dbcheck.php</filename>
             <filename>views/tools/view.html.php</filename>
             <filename>views/projects/tmpl/form.php</filename>
             <filename>views/projects/index.html</filename>

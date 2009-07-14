@@ -88,6 +88,7 @@ class ComTimeclockAdminViewToolsTest extends JViewTest
         return array(
             array("display", null),
             array("defaultLayout", null),
+            array("dbcheck", null),
         );
     }
 

@@ -109,7 +109,7 @@ class ComTimeclockAdminControllerToolsTest extends JControllerTest
     public static function dataStoreTasks()
     {
         return array(
-/*
+            /*
             array(
                 "save",
                 true,
@@ -175,7 +175,7 @@ class ComTimeclockAdminControllerToolsTest extends JControllerTest
                     "msg" => null
                 )
             ),
-*/
+            */
         );
     }
 

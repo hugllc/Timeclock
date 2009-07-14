@@ -86,6 +86,19 @@ class TimeclockAdminControllerTools extends JController
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
     }
+    /**
+     * Method to display the view
+     *
+     * @access public
+     * @return null
+     */
+    function dbcheck()
+    {
+        JRequest::setVar('model', 'tools');
+        JRequest::setVar('view', 'tools');
+        JRequest::setVar('layout', 'dbcheck');
+        parent::display();
+    }
 
     /**
      * redirects to a default url
