@@ -96,6 +96,74 @@ class ComTimeclockAdminViewProjectsTest extends JViewTest
         );
     }
 
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataAssignRef()
+    {
+        // $function, $key, $expect, $dbpreload=null, $post=null, $hash="post",
+        return array(
+            array(
+                "showList",
+                "lists",
+                array(
+                    state => "grid.state",
+                    order_Dir => "",
+                    order => "t.id",
+                    search => "hello",
+                    search_filter => "p.name",
+                    search_options => array(
+                        0 => "select.option",
+                        1 => "select.option",
+                        2 => "select.option",
+                        3 => "select.option",
+                        4 => "select.option",
+                    ),
+                    search_options_default => "name",
+                    wCompCodes => array(
+                        0 => "Hours",
+                    ),
+                    wCompEnable => 0,
+                ),
+                null,
+                array(
+                    "filter_state" => "P",
+                    "search" => "hello",
+                ),
+            ),
+            array(
+                "showList",
+                "lists",
+                array(
+                    state => "grid.state",
+                    order_Dir => "",
+                    order => "t.id",
+                    search => "none",
+                    search_filter => "m.name",
+                    search_options => array(
+                        0 => "select.option",
+                        1 => "select.option",
+                        2 => "select.option",
+                        3 => "select.option",
+                        4 => "select.option",
+                    ),
+                    search_options_default => "name",
+                    wCompCodes => array(
+                        0 => "Hours",
+                    ),
+                    wCompEnable => 0,
+                ),
+                null,
+                array(
+                    "filter_state" => "U",
+                    "search" => "none",
+                    "search_filter" => "m.name",
+                ),
+            ),
+        );
+    }
 
 }
 

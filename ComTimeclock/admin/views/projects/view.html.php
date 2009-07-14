@@ -113,7 +113,7 @@ class TimeclockAdminViewProjects extends JView
         $search_filter = $mainframe->getUserStateFromRequest(
             "$option.projects.search_filter",
             'search_filter',
-            'name',
+            'p.name',
             'string'
         );
 
