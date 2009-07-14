@@ -63,10 +63,6 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
      */
     protected function setUp()
     {
-        $this->sqlFile = array(
-            dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
-            dirname(__FILE__)."/../../../admin/install/timeclock_prefs.sql",
-        );
         $this->o = new TimeclockAdminControllerProjects();
         parent::setUp();
     }
