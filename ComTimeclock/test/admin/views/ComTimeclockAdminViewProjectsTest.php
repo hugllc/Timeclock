@@ -109,23 +109,23 @@ class ComTimeclockAdminViewProjectsTest extends JViewTest
                 "showList",
                 "lists",
                 array(
-                    state => "grid.state",
-                    order_Dir => "",
-                    order => "t.id",
-                    search => "hello",
-                    search_filter => "p.name",
-                    search_options => array(
+                    "state" => "grid.state",
+                    "order_Dir" => "",
+                    "order" => "t.id",
+                    "search" => "hello",
+                    "search_filter" => "p.name",
+                    "search_options" => array(
                         0 => "select.option",
                         1 => "select.option",
                         2 => "select.option",
                         3 => "select.option",
                         4 => "select.option",
                     ),
-                    search_options_default => "name",
-                    wCompCodes => array(
+                    "search_options_default" => "name",
+                    "wCompCodes" => array(
                         0 => "Hours",
                     ),
-                    wCompEnable => 0,
+                    "wCompEnable" => 0,
                 ),
                 null,
                 array(
@@ -137,23 +137,23 @@ class ComTimeclockAdminViewProjectsTest extends JViewTest
                 "showList",
                 "lists",
                 array(
-                    state => "grid.state",
-                    order_Dir => "",
-                    order => "t.id",
-                    search => "none",
-                    search_filter => "m.name",
-                    search_options => array(
+                    "state" => "grid.state",
+                    "order_Dir" => "",
+                    "order" => "t.id",
+                    "search" => "none",
+                    "search_filter" => "m.name",
+                    "search_options" => array(
                         0 => "select.option",
                         1 => "select.option",
                         2 => "select.option",
                         3 => "select.option",
                         4 => "select.option",
                     ),
-                    search_options_default => "name",
-                    wCompCodes => array(
+                    "search_options_default" => "name",
+                    "wCompCodes" => array(
                         0 => "Hours",
                     ),
-                    wCompEnable => 0,
+                    "wCompEnable" => 0,
                 ),
                 null,
                 array(
