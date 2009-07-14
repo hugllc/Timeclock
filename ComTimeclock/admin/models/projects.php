@@ -412,6 +412,7 @@ class TimeclockAdminModelProjects extends JModel
      */
     function getUserProjects($oid, $limitstart = null, $limit = null)
     {
+        $projects = array();
         $query = "select * from #__timeclock_users as u
                   WHERE u.user_id = ".(int)$oid."";
         $ret = $this->_getList($query, $limitstart, $limit);

@@ -244,7 +244,14 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
                 5,
                 null,
                 null,
-                 joomlaMockXMLToArray($data1),
+                joomlaMockXMLToArray($data1),
+            ),
+            array(
+                "",
+                -1,
+                null,
+                null,
+                array(),
             ),
         );
     }
