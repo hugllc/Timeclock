@@ -67,5 +67,6 @@ $controller->redirect();
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
 Copyright &copy; 2008 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
 <br /><?php print JText::_("Found a bug in ComTimeclock?"); ?>
-<a href="https://dev.hugllc.com/bugs"><?php print JText::_("Report it here"); ?></a>
+<a href="https://dev.hugllc.com/bugs/project_page.php?project_id=7">
+<?php print JText::_("Report it here"); ?></a>
 </p>
