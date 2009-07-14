@@ -105,12 +105,14 @@
             <filename>controllers/config.php</filename>
             <filename>controllers/projects.php</filename>
             <filename>controllers/holidays.php</filename>
+            <filename>controllers/tools.php</filename>
             <filename>controllers/users.php</filename>
             <filename>models/index.html</filename>
             <filename>models/customers.php</filename>
             <filename>models/config.php</filename>
             <filename>models/projects.php</filename>
             <filename>models/holidays.php</filename>
+            <filename>models/tools.php</filename>
             <filename>models/users.php</filename>
             <filename>views/index.html</filename>
             <filename>views/config/index.html</filename>
@@ -121,6 +123,10 @@
             <filename>views/about/tmpl/index.html</filename>
             <filename>views/about/tmpl/default.php</filename>
             <filename>views/about/view.html.php</filename>
+            <filename>views/tools/index.html</filename>
+            <filename>views/tools/tmpl/index.html</filename>
+            <filename>views/tools/tmpl/default.php</filename>
+            <filename>views/tools/view.html.php</filename>
             <filename>views/projects/tmpl/form.php</filename>
             <filename>views/projects/index.html</filename>
             <filename>views/projects/tmpl/index.html</filename>

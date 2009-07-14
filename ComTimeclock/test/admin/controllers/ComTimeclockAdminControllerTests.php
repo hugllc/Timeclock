@@ -59,6 +59,7 @@ class ComTimeclockAdminControllerTests
         "ComTimeclockAdminControllerProjectsTest",
         "ComTimeclockAdminControllerHolidaysTest",
         "ComTimeclockAdminControllerCustomersTest",
+        "ComTimeclockAdminControllerToolsTest",
         "ComTimeclockAdminControllerUsersTest",
     );
 
