@@ -64,11 +64,10 @@ class TimeclockAdminViewUsers extends JView
     {
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
-            $this->$layout();
+            $this->$layout($tpl);
         } else {
-            $this->showList();
+            $this->showList($tpl);
         }
-        parent::display($tpl);
 
     }
 
@@ -179,6 +178,7 @@ class TimeclockAdminViewUsers extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+        parent::display($tpl);
     }
 
         /**
@@ -237,6 +237,7 @@ class TimeclockAdminViewUsers extends JView
         $this->assignRef("user", $user);
         $this->assignRef("lists", $lists);
         $this->assignRef("row", $row);
+        parent::display($tpl);
     }
 
 }

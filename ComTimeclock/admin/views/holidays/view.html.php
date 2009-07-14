@@ -63,11 +63,10 @@ class TimeclockAdminViewHolidays extends JView
     {
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
-            $this->$layout();
+            $this->$layout($tpl);
         } else {
-            $this->showList();
+            $this->showList($tpl);
         }
-        parent::display($tpl);
     }
 
     /**

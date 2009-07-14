@@ -63,12 +63,10 @@ class TimeclockAdminViewProjects extends JView
     {
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
-            $this->$layout();
+            $this->$layout($tpl);
         } else {
-            $this->showList();
+            $this->showList($tpl);
         }
-        parent::display($tpl);
-
     }
 
 
@@ -219,7 +217,7 @@ class TimeclockAdminViewProjects extends JView
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
                     JText::_('The project'),
-                    $row->name
+                    $row->names
                 );
                 $this->setRedirect(
                     'index.php?option=com_timeclock&controller=projects',
