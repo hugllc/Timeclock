@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,11 +30,11 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
 TimeclockAdminController::title(JText::_("User Configuration: <small><small>[ ".$this->user->name." ]</small></small>"));
@@ -47,14 +47,14 @@ JToolBarHelper::cancel();
 <div style="float: right; width: 30%;">
 <?php
 $pane = JPane::getInstance("sliders");
-echo $pane->startPane("project-pane");  
+echo $pane->startPane("project-pane");
 echo $pane->startPanel(JText::_("Add Projects"), "addproject-page");
 ?>
 <div style="padding: 5px;">
 <?php
 array_shift($this->lists["projects"]);
 if (count($this->lists["projects"])) {
-    print JHTML::_("select.genericList", $this->lists["projects"], "projid[]", 'multiple="multiple"', 'value', 'text', 0); 
+    print JHTML::_("select.genericList", $this->lists["projects"], "projid[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
         <button onClick="this.form.task.value='addproject';this.form.submit();">Add Projects</button>
     <?php
@@ -62,31 +62,31 @@ if (count($this->lists["projects"])) {
     print JText::_("No Projects to add");
 }
 ?>
-</div>    
+</div>
 <?php
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_("Add Projects from User"), "adduserproject-page");
 ?>
 <div style="padding: 5px;">
     <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduserproject\';this.form.submit();"', 'value', 'text', 0); ?>
-</div>    
+</div>
 <?php
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_("Remove Projects"), "project-page");
 ?>
 <div style="padding: 5px;">
 <?php
-$options = array(); 
+$options = array();
 foreach ($this->lists["userProjects"] as $proj) {
      $options[] = JHTML::_("select.option", $proj->id, $proj->name);
-} 
-print JHTML::_("select.genericList", $options, "remove_projid[]", 'multiple="multiple"', 'value', 'text', 0); 
+}
+print JHTML::_("select.genericList", $options, "remove_projid[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
         <button onClick="this.form.task.value='removeproject';this.form.submit();">Remove Projects</button>
 </div>
 <?php
 echo $pane->endPanel();
-echo $pane->endPane(); 
+echo $pane->endPane();
 ?>
 </div>
 <div>
@@ -146,6 +146,19 @@ echo $pane->endPane();
         </tr>
         <tr>
             <td width="100" align="right" class="key">
+                <label for="manager">
+                    <?php echo JText::_('Manager'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->lists["users"], "admin_manager", '', 'value', 'text', $this->row->prefs["admin_manager"]); ?>
+            </td>
+            <td>
+                Can this user view reports.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
                 <label for="type">
                     <?php echo JText::_('User Type'); ?>:
                 </label>
@@ -183,11 +196,11 @@ if ($this->row->prefs["admin_status"] == "PARTTIME") {
                 </label>
             </td>
             <td style="white-space: nowrap;">
-<?php 
+<?php
 foreach ($this->lists["userProjects"] as $proj) { ?>
                     <?php print sprintf("%04d", $proj->id).": ".$proj->name; ?><br />
     <?php
-} 
+}
 ?>
             </td>
             <td>
@@ -200,7 +213,7 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
                 (<?php print JText::_("Old Values"); ?>)
             </td>
             <td colspan="2">
-<?php 
+<?php
 if (!is_array($this->row->history["timestamps"])) $this->row->history["timestamps"] = array();
 krsort($this->row->history["timestamps"]);
 foreach ($this->row->history["timestamps"] as $date => $user) { ?>
@@ -210,11 +223,11 @@ foreach ($this->row->history["timestamps"] as $date => $user) { ?>
         if (!array_key_exists($date, $value)) continue;
         if ($key == "timestamps") continue;
         print $key." = ".$value[$date]."<br />";
-    } 
+    }
     ?>
     </p>
     <?php
-} 
+}
 ?>
             </td>
         </tr>
