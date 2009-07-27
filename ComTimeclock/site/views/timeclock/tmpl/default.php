@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,13 +30,14 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
+jimport("joomla.html.pane");
 
 if (empty($this->days)) $this->days = 7;
 
@@ -45,12 +46,28 @@ $headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->d
 $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
 $this->catStyle   = "font-weight: bold; padding: 1px;";
-$document        =& JFactory::getDocument();
-$dateFormat      = JText::_("DATE_FORMAT_LC1");
-$shortDateFormat = JText::_("DATE_FORMAT_LC3");
+$document         =& JFactory::getDocument();
+$dateFormat       = JText::_("DATE_FORMAT_LC1");
+$shortDateFormat  = JText::_("DATE_FORMAT_LC3");
 $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
 
+$pane = JPane::getInstance("sliders");
+
 ?>
+    <script type="text/javascript">
+        function showHide(cat) {
+            var tbody = document.getElementById(cat+'_cat')
+            var span = document.getElementById(cat+'_cat_span')
+            if ( tbody.style.display != 'none' ) {
+                tbody.style.display = 'none';
+                span.innerHTML = '+';
+            } else {
+                tbody.style.display = '';
+                span.innerHTML = '-';
+            }
+
+        }
+    </script>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="componentheading"><?php print JText::_("Timesheet for ").$this->user->get("name");?></div>
@@ -72,12 +89,17 @@ foreach ($this->projects as $cat) {
         if (empty($array)) continue;
     }
     $this->cat  =& $cat;
+    $safeName = str_replace(" ", "_", $cat->name);
     ?>
         <tr>
             <td class="sectiontableheader" style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
-                <?php print JHTML::_('tooltip', $cat->description, 'Category', '', $cat->name); ?>
+                <a href="JavaScript: showHide('<?php print $safeName; ?>');">
+                <span id="<?php print $safeName; ?>_cat_span"> - </span>
+                </a>
+                    <?php print JHTML::_('tooltip', $cat->description, 'Category', '', $cat->name); ?>
             </td>
-        </tr>    
+        </tr>
+        <tbody id="<?php print $safeName; ?>_cat" class="pane">
     <?php
     if (array_key_exists($cat->id, $this->hours)) projectRow($this, $cat);
     foreach ($cat->subprojects as $pKey => $proj) {
@@ -87,6 +109,9 @@ foreach ($this->projects as $cat) {
         $this->proj =& $proj;
         print $this->loadTemplate("row");
     }
+    ?>
+    </tbody>
+    <?php
 }
 print $this->loadTemplate("header");
 ?>
