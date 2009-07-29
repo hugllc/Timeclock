@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,13 +30,13 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip'); 
+JHTML::_('behavior.tooltip');
 
 $headerColSpan = 3;
 $this->totals     = array();
@@ -47,14 +47,17 @@ $document        =& JFactory::getDocument();
 $document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date." 06:00:00", $shortDateFormat));
 $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 $wCompEnabled = TableTimeclockPrefs::getPref("wCompEnable", "system");
+
+JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
+
 ?>
 <script type="text/javascript">
         Window.onDomReady(function(){
-            document.formvalidator.setHandler('dateverify', 
+            document.formvalidator.setHandler('dateverify',
                 function (value) {
                     regex=/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/;
-                    return regex.test(value); 
-                }     
+                    return regex.test(value);
+                }
             );
         });
 </script>
@@ -79,12 +82,27 @@ $wCompEnabled = TableTimeclockPrefs::getPref("wCompEnable", "system");
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) continue;
     if (!is_null($this->projid) && !array_key_exists($this->projid, $cat->subprojects)) continue;
+    $safeName = str_replace(" ", "_", $cat->name);
+    if ($cat->show === "true") {
+        // We are told to show this
+        $initFunction = "timeclockCatShow('".$safeName."');";
+    } else if ($cat->show === "false") {
+        // We are told to hide this
+        $initFunction = "timeclockCatHide('".$safeName."');";
+    } else {
+        // If $cat->show doesn't exist, go with the cookie
+        $initFunction = "timeclockCatShowHide('".$safeName."', true);";
+    }
     ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
-                <h2><?php print JText::_("Category").": ".JText::_($cat->name); ?></h2>
+                <h2><a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
+                    <span id="<?php print $safeName; ?>_cat_span"> - </span>
+                    <?php print JText::_("Category").": ".JText::_($cat->name); ?>
+                </a></h2>
             </td>
-        </tr>    
+        </tr>
+        <tbody id="<?php print $safeName; ?>_cat" class="pane">
     <?php
     foreach ($cat->subprojects as $pKey => $proj) {
         if ($proj->mine == false) continue;
@@ -102,12 +120,12 @@ foreach ($this->projects as $cat) {
                                     return (value.length > 10);
                                 } else {
                                     return true;
-                                } 
-                            }     
+                                }
+                            }
                         );
                     });
                     Window.onDomReady(function(){
-                        document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>', 
+                        document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>',
                             function (value) {
                                 hours = document.getElementById('timesheet_<?php print $proj->id;?>_hours');
                                 regex=/[0-9]{0,2}([.][0-9]{0,<?php print $this->decimalPlaces;?>}){0,1}/;
@@ -121,7 +139,7 @@ foreach ($this->projects as $cat) {
                                     hours.value = max;
                                 }
                                 return true;
-                            }     
+                            }
                         );
                     });
                 </script>
@@ -129,20 +147,20 @@ foreach ($this->projects as $cat) {
                 <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>
         </tr>
-        <?php 
-        for ($i = 1; $i < 7; $i++): 
+        <?php
+        for ($i = 1; $i < 7; $i++):
             if ($wCompEnabled) {
-                $var = "hours".$i; 
-                $wcVar = "wcCode".$i; 
-                if ($proj->$wcVar == 0) continue; 
-                $wcName = empty($wCompCodes[$proj->$wcVar]) ? $proj->$wcVar : $wCompCodes[$proj->$wcVar] ; 
-                $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0; 
+                $var = "hours".$i;
+                $wcVar = "wcCode".$i;
+                if ($proj->$wcVar == 0) continue;
+                $wcName = empty($wCompCodes[$proj->$wcVar]) ? $proj->$wcVar : $wCompCodes[$proj->$wcVar] ;
+                $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0;
             } else {
                 if ($i > 1) break;
                 $var = "hours1";
                 $wcName = "Hours";
-                $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0; 
-var_dump(                $this->data[$proj->id]);
+                $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0;
+//var_dump(                $this->data[$proj->id]);
             }
             ?>
         <tr>
@@ -155,7 +173,7 @@ var_dump(                $this->data[$proj->id]);
                 <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="timesheet_<?php print $proj->id;?>_hours_<?php print $i; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
             </td>
             <td>
-                <?php print JText::_("Hours worked."); ?>            
+                <?php print JText::_("Hours worked."); ?>
             </td>
         </tr>
         <?php endfor; ?>
@@ -172,7 +190,7 @@ var_dump(                $this->data[$proj->id]);
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
             </td>
             <td>
-                <?php print JText::_("This should be a description of what was done in the hours posted.  Minimum 10 characters."); ?>            
+                <?php print JText::_("This should be a description of what was done in the hours posted.  Minimum 10 characters."); ?>
             </td>
         </tr>
         <tr>
@@ -183,10 +201,14 @@ var_dump(                $this->data[$proj->id]);
                 <button type="submit" name="task" value="applyhours" class="button validate"><?php print JText::_("Apply"); ?></button>
                 <button type="submit" name="task" value="savehours" class="button validate"><?php print JText::_("Save"); ?></button>
             </td>
-        </tr>    
+        </tr>
 
-        <?php        
+        <?php
     }
+    ?>
+    </tbody>
+    <script type="text/javascript"><?php print $initFunction; ?></script>
+    <?php
 }
 
 
