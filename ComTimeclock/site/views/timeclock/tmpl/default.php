@@ -52,23 +52,10 @@ $shortDateFormat  = JText::_("DATE_FORMAT_LC3");
 $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
 
 $pane = JPane::getInstance("sliders");
+$initPanes = array();
+JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
 
 ?>
-    <script type="text/javascript">
-        function showHide(cat) {
-            var tbody = document.getElementById(cat+'_cat')
-            var span = document.getElementById(cat+'_cat_span')
-            if ( tbody.style.display != 'none' ) {
-                tbody.style.display = 'none';
-                span.innerHTML = '+';
-            } else {
-                tbody.style.display = '';
-                span.innerHTML = '-';
-            }
-
-        }
-    </script>
-
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="componentheading"><?php print JText::_("Timesheet for ").$this->user->get("name");?></div>
     <?php print $this->loadTemplate("nextprev"); ?>
@@ -90,10 +77,17 @@ foreach ($this->projects as $cat) {
     }
     $this->cat  =& $cat;
     $safeName = str_replace(" ", "_", $cat->name);
+    if ($cat->show === "true") {
+        $initFunction = "timeclockCatShow('".$safeName."');";
+    } else if ($cat->show === "false") {
+        $initFunction = "timeclockCatHide('".$safeName."');";
+    } else {
+        $initFunction = "timeclockCatShowHide('".$safeName."', true);";
+    }
     ?>
         <tr>
             <td class="sectiontableheader" style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
-                <a href="JavaScript: showHide('<?php print $safeName; ?>');">
+                <a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
                 <span id="<?php print $safeName; ?>_cat_span"> - </span>
                 </a>
                     <?php print JHTML::_('tooltip', $cat->description, 'Category', '', $cat->name); ?>
@@ -111,6 +105,7 @@ foreach ($this->projects as $cat) {
     }
     ?>
     </tbody>
+    <script type="text/javascript"><?php print $initFunction; ?></script>
     <?php
 }
 print $this->loadTemplate("header");
