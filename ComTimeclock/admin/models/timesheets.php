@@ -59,7 +59,7 @@ require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelTimeclock extends JModel
+class TimeclockAdminModelTimesheets extends JModel
 {
 
     /** @var string The type of period */

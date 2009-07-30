@@ -61,6 +61,7 @@ class ComTimeclockAdminModelTests
         "ComTimeclockAdminModelHolidaysTest",
         "ComTimeclockAdminModelUsersTest",
         "ComTimeclockAdminModelToolsTest",
+        "ComTimeclockAdminModelTimesheetsTest",
     );
 
     /**

@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminControllerHolidays extends JController
+class TimeclockAdminControllerTimesheets extends JController
 {
     /**
      * Custom Constructor
@@ -74,7 +74,7 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function display()
     {
-        JRequest::setVar('view', 'holidays');
+        JRequest::setVar('view', 'timesheets');
         parent::display();
     }
     /**
@@ -85,8 +85,8 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function edit()
     {
-        JRequest::setVar('model', 'holidays');
-        JRequest::setVar('view', 'holidays');
+        JRequest::setVar('model', 'timesheets');
+        JRequest::setVar('view', 'timesheets');
         JRequest::setVar('layout', 'form');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
@@ -101,7 +101,7 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function reset($msg=null)
     {
-        $link = 'index.php?option=com_timeclock&controller=holidays';
+        $link = 'index.php?option=com_timeclock&controller=timesheets';
         $this->setRedirect($link, $msg);
 
     }
@@ -113,14 +113,14 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function apply()
     {
-        $model = $this->getModel("Holidays");
+        $model = $this->getModel("Timesheets");
 
         if ($id = $model->store()) {
-            $msg   = JText::_('Holiday Saved!');
-            $link  = 'index.php?option=com_timeclock&controller=holidays&task=edit';
+            $msg   = JText::_('Timesheet Saved!');
+            $link  = 'index.php?option=com_timeclock&controller=timesheets&task=edit';
             $link .= '&cid[]='.$id;
         } else {
-            $msg  = JText::_('Error Saving Holiday');
+            $msg  = JText::_('Error Saving Timesheet');
             $link = $_SERVER["HTTP_REFERER"];
         }
         $this->setRedirect($link, $msg);
@@ -134,13 +134,13 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function save()
     {
-        $model = $this->getModel("Holidays");
+        $model = $this->getModel("Timesheets");
 
         if ($model->store()) {
-            $msg = JText::_('Holiday Saved!');
+            $msg = JText::_('Timesheet Saved!');
             $model->checkin($id);
         } else {
-            $msg = JText::_('Error Saving Holiday');
+            $msg = JText::_('Error Saving Timesheet');
         }
         $this->reset($msg);
 
@@ -153,7 +153,7 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function cancel()
     {
-        $model = $this->getModel("Holidays");
+        $model = $this->getModel("Timesheets");
         $cid = JRequest::getVar('cid', 0, '', 'array');
         $model->checkin($cid[0]);
         $this->reset();

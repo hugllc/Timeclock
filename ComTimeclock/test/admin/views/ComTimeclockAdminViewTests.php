@@ -62,6 +62,7 @@ class ComTimeclockAdminViewTests
         "ComTimeclockAdminViewHolidaysTest",
         "ComTimeclockAdminViewCustomersTest",
         "ComTimeclockAdminViewToolsTest",
+        "ComTimeclockAdminViewTimesheetsTest",
     );
 
     /**

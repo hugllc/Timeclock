@@ -106,6 +106,7 @@
             <filename>controllers/config.php</filename>
             <filename>controllers/projects.php</filename>
             <filename>controllers/holidays.php</filename>
+            <filename>controllers/timesheets.php</filename>
             <filename>controllers/tools.php</filename>
             <filename>controllers/users.php</filename>
             <filename>models/index.html</filename>
@@ -113,6 +114,7 @@
             <filename>models/config.php</filename>
             <filename>models/projects.php</filename>
             <filename>models/holidays.php</filename>
+            <filename>models/timesheets.php</filename>
             <filename>models/tools.php</filename>
             <filename>models/users.php</filename>
             <filename>views/index.html</filename>
@@ -139,6 +141,11 @@
             <filename>views/holidays/tmpl/index.html</filename>
             <filename>views/holidays/tmpl/default.php</filename>
             <filename>views/holidays/view.html.php</filename>
+            <filename>views/timesheets/tmpl/form.php</filename>
+            <filename>views/timesheets/index.html</filename>
+            <filename>views/timesheets/tmpl/index.html</filename>
+            <filename>views/timesheets/tmpl/default.php</filename>
+            <filename>views/timesheets/view.html.php</filename>
             <filename>views/customers/tmpl/form.php</filename>
             <filename>views/customers/index.html</filename>
             <filename>views/customers/tmpl/index.html</filename>
