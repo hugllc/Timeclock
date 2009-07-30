@@ -632,6 +632,7 @@ class TimeclockViewReportsBase extends JView
     {
         $userModel    =& JModel::getInstance("Users", "TimeclockAdminModel");
         $projectModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
 
         $controls["category"] = $projectModel->getParentOptions(
             0,
@@ -650,9 +651,11 @@ class TimeclockViewReportsBase extends JView
             array()
         );
 
-        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
 
-        $controls["customer"] = $customerModel->getOptions("", "Select Customer");
+        $controls["customer"] = $customerModel->getOptions(
+            "WHERE published = 1",
+            "Select Customer"
+        );
         $controls["cat_by"]   = array(
             JHTML::_('select.option', 'category', 'Category'),
             JHTML::_('select.option', 'customer', 'Customer'),
