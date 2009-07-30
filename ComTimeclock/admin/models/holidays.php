@@ -56,7 +56,9 @@ class TimeclockAdminModelHolidays extends JModel
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, u.name as created_by_name, p.name as project_name
+    var $_allQuery = "SELECT t.*, u.name as created_by_name, p.name as project_name,
+                      (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5
+                      + t.hours6) as hours
                       FROM #__timeclock_timesheet AS t
                       LEFT JOIN #__timeclock_projects as p ON t.project_id = p.id
                       LEFT JOIN #__users as u ON t.created_by = u.id ";
