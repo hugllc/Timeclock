@@ -76,10 +76,10 @@ foreach ($this->projects as $cat) {
         if (empty($array)) continue;
     }
     $this->cat  =& $cat;
-    $safeName = str_replace(" ", "_", $cat->name);
-    if ($cat->show === "true") {
+    $safeName = "Category".$cat->id;
+    if ($cat->show === true) {
         $initFunction = "timeclockCatShow('".$safeName."');";
-    } else if ($cat->show === "false") {
+    } else if ($cat->show === false) {
         $initFunction = "timeclockCatHide('".$safeName."');";
     } else {
         $initFunction = "timeclockCatShowHide('".$safeName."', true);";
@@ -88,9 +88,9 @@ foreach ($this->projects as $cat) {
         <tr>
             <td class="sectiontableheader" style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
                 <a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
-                <span id="<?php print $safeName; ?>_cat_span"> - </span>
-                </a>
+                    <span id="<?php print $safeName; ?>_cat_span"> - </span>
                     <?php print JHTML::_('tooltip', $cat->description, 'Category', '', $cat->name); ?>
+                </a>
             </td>
         </tr>
         <tbody id="<?php print $safeName; ?>_cat" class="pane">

@@ -37,6 +37,7 @@
 function timeclockCatShowHide(cat,init) {
     var pane = Cookie.get('Timeclock_'+cat);
     var show = (init) ? pane == 'closed' : pane != 'closed';
+    var myCookie  = Cookie.set('Timeclock_Set', 'save', {duration: 1});
     if ( show ) {
         timeclockCatHide(cat);
     } else {

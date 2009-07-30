@@ -82,7 +82,7 @@ JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timecl
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) continue;
     if (!is_null($this->projid) && !array_key_exists($this->projid, $cat->subprojects)) continue;
-    $safeName = str_replace(" ", "_", $cat->name);
+    $safeName = "Category".$cat->id;
     if ($cat->show === "true") {
         // We are told to show this
         $initFunction = "timeclockCatShow('".$safeName."');";

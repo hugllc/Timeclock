@@ -63,18 +63,17 @@ class TimeclockViewTimeclock extends JView
     {
         global $mainframe;
 
+        $this->_getCookies();
+
         $layout          = JRequest::getVar('layout');
         $model           =& $this->getModel();
-        $projModel       =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $user            = JFactory::getUser();
         $user_id         = $user->get("id");
-        $projects        = $projModel->getUserProjects($user_id);
         $employmentDates = $model->getEmploymentDatesUnix();
         $date            = $model->get("date");
         $this->_params   =& $mainframe->getParams('com_timeclock');
-
+        $this->_getProjects($user_id);
         $this->assignRef("employmentDates", $employmentDates);
-        $this->assignRef("projects", $projects);
         $this->assignRef("user", $user);
         $this->assignRef("date", $date);
 
@@ -85,6 +84,8 @@ class TimeclockViewTimeclock extends JView
         }
 
     }
+
+
     /**
      * The display function
      *
@@ -164,7 +165,50 @@ class TimeclockViewTimeclock extends JView
         );
     }
 
+    /**
+     * Get timesheet data
+     *
+     * @param int $user_id The ID of the user to get projects for
+     *
+     * @return null
+     */
+    private function _getProjects($user_id)
+    {
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $projects  = $projModel->getUserProjects($user_id);
+        $cats      = TableTimeclockPrefs::getPref("Timeclock_Category");
+        foreach ($projects as $k => $p) {
+            if (isset($cats[$p->id])) {
+                $projects[$k]->show = false;
+            } else {
+                $projects[$k]->show = true;
+            }
+        }
 
+        $this->assignRef("projects", $projects);
+    }
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function _getCookies()
+    {
+        $set = JRequest::getVar('Timeclock_Set', null, '', 'string', "COOKIE");
+        if (!is_array($_COOKIE) || is_null($set)) {
+            return;
+        }
+        $cookie = array();
+        foreach ($_COOKIE as $name => $value) {
+            if (strtolower(substr(trim($name),0,18)) == "timeclock_category") {
+                if (trim(strtolower($value)) == "closed") {
+                    $key = (int)substr(trim($name), 18);
+                    $cookie[$key] = "closed";
+                }
+            }
+        }
+        TableTimeclockPrefs::setPref("Timeclock_Category", $cookie);
+    }
     /**
      * Get timesheet data
      *
@@ -175,12 +219,12 @@ class TimeclockViewTimeclock extends JView
         $model =& $this->getModel();
         $data  = $model->getTimesheetData();
         $hours = array();
-        foreach ($data as $d) {
+        foreach ($data as $k => $d) {
             $hours[$d->project_id][$d->worked]['hours'] += $d->hours;
             $hours[$d->project_id][$d->worked]['notes'] .= $d->notes;
-            $totals["proj"][$d->project_id]              += $d->hours;
-            $totals["worked"][$d->worked]                += $d->hours;
-            $totals["total"]                             += $d->hours;
+            $totals["proj"][$d->project_id]             += $d->hours;
+            $totals["worked"][$d->worked]               += $d->hours;
+            $totals["total"]                            += $d->hours;
         }
         $this->assignRef("hours", $hours);
         $this->assignRef("totals", $totals);
