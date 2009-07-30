@@ -102,6 +102,7 @@ class TableTimeclockPrefs extends JTable
             "timeclockDisable" => 0,
             "timeclockDisableMessage" =>
                 "The timeclock system is currently down for maintenance.  Please try again later.",
+            "userTypes" => "FULLTIME:Full Time\nPARTTIME:Part Time\nCONTRACTOR:Contractor\nTEMPORARY:Temporary\nTERMINATED:Terminated\nRETIRED:Retired\nUNPAID:Unpaid Leave",
         ),
         "user" => array(
             "admin_holidayperc" => 100,
@@ -347,6 +348,38 @@ class TableTimeclockPrefs extends JTable
             $key = substr($line, 0, 4);
             $val = substr($line, 4);
             $ret[(int)$key] = $val;
+        }
+        return $ret;
+    }
+    /**
+     * Filter
+     *
+     * @param string $value The string to parse
+     *
+     * @return array
+     */
+    function filterPrefUserTypes($value)
+    {
+        $ret = array();
+        if (empty($value)) {
+            $value = self::$_defaults["system"]["userTypes"];
+        }
+
+        $v = explode("\n", $value);
+        foreach ($v as $line) {
+            $line = strip_tags(trim($line));
+            if (empty($line)) {
+                continue;
+            }
+            $line = explode(":", $line);
+            if (count($line) > 1) {
+                $key = strtoupper(str_replace(" ", "", trim($line[0])));
+                $ret[$key] = trim($line[1]);
+            } else {
+                $line = trim($line[0]);
+                $key = strtoupper(str_replace(" ", "", substr($line, 0, 16)));
+                $ret[$key] = $line;
+            }
         }
         return $ret;
     }

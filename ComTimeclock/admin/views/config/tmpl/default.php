@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,11 +30,11 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
 TimeclockAdminController::title(JText::_('Timeclock Preferences'));
@@ -44,7 +44,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
 <div>
 <?php
     $pane = JPane::getInstance("tabs");
-    echo $pane->startPane("config-pane");  
+    echo $pane->startPane("config-pane");
     echo $pane->startPanel(JText::_("User Settings"), "user-page");
 ?>
     <table class="admintable">
@@ -72,6 +72,21 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
             </td>
             <td>
                 Default number of decimal places to show.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key" style="vertical-align: top;">
+                <label for="userTypes">
+                    <?php echo JText::_('User Types'); ?>:
+                </label>
+            </td>
+            <td>
+                <textarea class="text_area" type="text" name="prefs[userTypes]" id="prefs_userTypes" cols="50" rows="5"><?php echo $this->prefs["userTypes"];?></textarea>
+            </td>
+            <td>
+                One type per line.  It can either be: shortname:longname or just
+                longname.  The order they show up here is the order they will be
+                in the pulldown dialog.
             </td>
         </tr>
     </table>

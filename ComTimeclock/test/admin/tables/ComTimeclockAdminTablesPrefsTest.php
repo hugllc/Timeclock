@@ -242,6 +242,28 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 24,
             ),
             array(
+                "userTypes",
+                0,
+                null,
+                array(
+                    "FULLTIME"   => "Full Time",
+                    "PARTTIME"   => "Part Time",
+                    "CONTRACTOR" => "Contractor",
+                    "TEMPORARY"  => "Temporary",
+                    "TERMINATED" => "Terminated",
+                    "RETIRED"    => "Retired",
+                    "UNPAID"     => "Unpaid Leave",
+                ),
+            ),
+            array(
+                "wCompCodes",
+                0,
+                "1234 code 1\n2458 code 2\n 5345 code 3",
+                array(
+                    0 => "Hours",
+                ),
+            ),
+            array(
                 "admin_holidayperc",
                 0,
                 null,

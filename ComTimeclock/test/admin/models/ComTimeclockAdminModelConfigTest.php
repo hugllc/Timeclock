@@ -115,7 +115,9 @@ class ComTimeclockAdminModelConfigTest extends JModelTest
                 "post",
                 array(
                     "id" => 1,
-                    "prefs" => "YToxOntzOjU6ImhlbGxvIjtzOjU6IndvcmxkIjt9",
+                    "prefs" => "YTozOntzOjU6ImhlbGxvIjtzOjU6IndvcmxkIjtzOjk6InVzZ"
+                              ."XJUeXBlcyI7czowOiIiO3M6MTA6IndDb21wQ29kZXMiO3M6MD"
+                              ."oiIjt9",
                     "published" => null,
                     "startDate" => null,
                     "endDate" => null,

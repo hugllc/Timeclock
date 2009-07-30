@@ -209,6 +209,13 @@ class TimeclockAdminViewUsers extends JView
         };
         $user =& JFactory::getUser($cid[0]);
 
+        $status = TableTimeclockPrefs::getPref("userTypes");
+        if (is_array($status)) {
+            foreach ($status as $key => $value) {
+                $lists["status"][] = JHTML::_("select.option", $key, $value);
+            }
+        }
+/*
         $lists["status"] = array(
             JHTML::_("select.option", "FULLTIME", "Full Time"),
             JHTML::_("select.option", "PARTTIME", "Part Time"),
@@ -216,8 +223,9 @@ class TimeclockAdminViewUsers extends JView
             JHTML::_("select.option", "TEMPORARY", "Temporary"),
             JHTML::_("select.option", "TERMINATED", "Terminated"),
             JHTML::_("select.option", "RETIRED", "Retired"),
+            JHTML::_("select.option", "UNPAID", "Unpaid Leave"),
         );
-
+*/
         $lists["userProjects"] = $model->getUserProjects($cid[0]);
         $uProj = array();
         foreach ($lists["userProjects"] as $p) {

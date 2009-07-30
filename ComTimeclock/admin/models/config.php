@@ -79,6 +79,15 @@ class TimeclockAdminModelConfig extends JModel
         if (!is_array($data["prefs"])) {
             return false;
         }
+
+        $clean = array(
+            "userTypes",
+            "wCompCodes",
+        );
+        foreach ($clean as $c) {
+            $data["prefs"][$c] = strip_tags(trim($data["prefs"][$c]));
+        }
+
         // Merge in prefs that are hidden
         $row->load($data["id"]);
         $data = array_merge($row->prefs, $data);
