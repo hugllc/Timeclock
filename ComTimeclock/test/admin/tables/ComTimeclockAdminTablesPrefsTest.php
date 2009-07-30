@@ -222,9 +222,9 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     /**
     * Tests setPref
     *
-    * @param string $name   The name of the pref
-    * @param int    $user   The user id to use
-    * @param mixed  $value  The value of the pref
+    * @param string $name  The name of the pref
+    * @param int    $user  The user id to use
+    * @param mixed  $value The value of the pref
     *
     * @return none
     * @dataProvider dataGetSetPref()
