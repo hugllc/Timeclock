@@ -79,36 +79,36 @@ class TimeclockAdminViewTimesheets extends JView
     function showList($tpl = null)
     {
         global $mainframe, $option;
-        $model = $this->getModel("Holidays");
+        $model = $this->getModel();
 
         $db           =& JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
-            "$option.holidays.filter_order",
+            "$option.timesheets.filter_order",
             'filter_order',
             't.worked',
             'cmd'
         );
         $filter_order_Dir = $mainframe->getUserStateFromRequest(
-            "$option.holidays.filter_order_Dir",
+            "$option.timesheets.filter_order_Dir",
             'filter_order_Dir',
             'desc',
             'word'
         );
         $filter_state = $mainframe->getUserStateFromRequest(
-            "$option.holidays.filter_state",
+            "$option.timesheets.filter_state",
             'filter_state',
             '',
             'word'
         );
         $search = $mainframe->getUserStateFromRequest(
-            "$option.holidays.search",
+            "$option.timesheets.search",
             'search',
             '',
             'string'
         );
         $search        = JString::strtolower($search);
         $search_filter = $mainframe->getUserStateFromRequest(
-            "$option.holidays.search_filter",
+            "$option.timesheets.search_filter",
             'search_filter',
             'notes',
             'string'
@@ -121,14 +121,14 @@ class TimeclockAdminViewTimesheets extends JView
             'int'
         );
         $limitstart = $mainframe->getUserStateFromRequest(
-            $option.'.holidays.limitstart',
+            $option.'.timesheets.limitstart',
             'limitstart',
             0,
             'int'
         );
 
         $where = array();
-
+        /*
         if ($filter_state) {
             if ($filter_state == 'P') {
                 $where[] = 't.published = 1';
@@ -136,16 +136,17 @@ class TimeclockAdminViewTimesheets extends JView
                 $where[] = 't.published = 0';
             }
         }
+        */
         if ($search) {
-            $where[] = 'LOWER(t.'.$search_filter.') LIKE '
+            $where[] = 'LOWER('.$search_filter.') LIKE '
                        .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
         $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
 
-        $rows  = $model->getHolidays($where, $limitstart, $limit, $orderby);
-        $total = $model->countHolidays($where);
+        $rows  = $model->getTimesheets($where, $limitstart, $limit, $orderby);
+        $total = $model->countTimesheets($where);
 
         jimport('joomla.html.pagination');
         $pagination = new JPagination($total, $limitstart, $limit);
@@ -164,6 +165,13 @@ class TimeclockAdminViewTimesheets extends JView
 
         // search filter
         $lists['search']         = $search;
+        $lists['search_options'] = array(
+            JHTML::_('select.option', 'u.name', "User Name"),
+            JHTML::_('select.option', 't.notes', 'Notes'),
+            JHTML::_('select.option', 'p.name', 'Project'),
+            JHTML::_('select.option', 't.worked', "Date Worked"),
+            JHTML::_('select.option', 't.created', "Date Created"),
+        );
 
         $this->assignRef("lists", $lists);
         $this->assignRef("user", JFactory::getUser());
@@ -197,7 +205,7 @@ class TimeclockAdminViewTimesheets extends JView
                     $poll->title
                 );
                 $this->setRedirect(
-                    'index.php?option=com_timeclock&controller=holidays',
+                    'index.php?option=com_timeclock&controller=timesheets',
                     $msg
                 );
         }

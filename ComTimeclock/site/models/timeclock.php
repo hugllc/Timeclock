@@ -38,8 +38,11 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-/** Include the parent class stuff */
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'timesheets.php';
+/** Include the project stuff */
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'users.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'customers.php';
+require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
 
 /**
  * ComTimeclock model
@@ -56,7 +59,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'timesheets.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelTimeclock extends TimeclockAdminModelTimesheets
+class TimeclockModelTimeclock extends JModel
 {
 
     /** @var string The type of period */
