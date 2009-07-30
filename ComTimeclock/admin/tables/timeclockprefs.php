@@ -262,8 +262,9 @@ class TableTimeclockPrefs extends JTable
                 $u =& JFactory::getUser();
                 $oid = $u->get("id");
             }
+            // Unauthenticated user.  We don't care
             if (empty($oid)) {
-                return self::_prefCache($name);
+                return null;
             }
             $type = "user";
         }
@@ -370,48 +371,16 @@ class TableTimeclockPrefs extends JTable
             $oid = $u->id;
         }
         if (empty($oid)) {
-            return self::_prefCache($name, $value);
+            return false;
         }
         $p = JTable::getInstance("TimeclockPrefs", "Table");
         $p->load($oid);
         $p->prefs[$name] = $value;
         $ret = $p->store();
         if ($ret) {
-            $stuff = self::getPref($name, "user", $oid, true);
+            self::getPref($name, "user", $oid, true);
         }
         return $ret;
     }
 
-    /**
-     * Sets preferences cache.
-     *
-     * This is for unauthenticated users.  It doesn't make sense to permanently store
-     * things for them, so we store it in their session.  That way changes that they
-     * make stick at least until they leave the page.
-     *
-     * Preferences set this way are ALWAYS user prefs.  System prefs are set through
-     * the administrator panel.
-     *
-     * @param string $name  The name of the pref to get/set
-     * @param string $value The value of the pref to set.  If this is null the
-     *                      preferences is gotten instead of set.
-     *
-     * @return mixed The value of the parameter if get, true if set.
-     */
-    function _prefCache($name, $value = null)
-    {
-        $prefs =& $_SESSION["TimeclockPrefs"];
-        if (is_null($value)) {
-            if (isset($prefs[$name])) {
-                return $prefs[$name];
-            }
-            if (isset(self::$_defaults["user"][$name])) {
-                return self::$_defaults["user"][$name];
-            }
-            return self::getPref($name, "system");
-        } else {
-            $prefs[$name] = $value;
-            return true;
-        }
-    }
 }

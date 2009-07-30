@@ -215,6 +215,37 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 "hello",
                 12,
                 "here",
+                "here",
+            ),
+            array(
+                "maxDailyHours",
+                15,
+                null,
+                24,
+            ),
+            array(
+                "admin_holidayperc",
+                22,
+                null,
+                100,
+            ),
+            array(
+                "hello",
+                0,
+                "here",
+                null,
+            ),
+            array(
+                "maxDailyHours",
+                0,
+                null,
+                24,
+            ),
+            array(
+                "admin_holidayperc",
+                0,
+                null,
+                null,
             ),
         );
     }
@@ -222,14 +253,15 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     /**
     * Tests setPref
     *
-    * @param string $name  The name of the pref
-    * @param int    $user  The user id to use
-    * @param mixed  $value The value of the pref
+    * @param string $name   The name of the pref
+    * @param int    $user   The user id to use
+    * @param mixed  $value  The value of the pref
+    * @param mixed  $expect The value we expect returned
     *
     * @return none
     * @dataProvider dataGetSetPref()
     */
-    function testGetSetPref($name, $user, $value)
+    function testGetSetPref($name, $user, $value, $expect)
     {
         $u     = new JUser();
         $u->id = $user;
@@ -237,9 +269,11 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
         $GLOBALS["JFactory"]["getUser"]["current"] =& $u;
         $GLOBALS["JFactory"]["getUser"][$user]     =& $u;
 
-        $this->o->setPref($name, $value, $user);
+        if (!is_null($value)) {
+            $this->o->setPref($name, $value, $user);
+        }
         $ret = $this->o->getPref($name, $user);
-        $this->assertSame($value, $ret);
+        $this->assertSame($expect, $ret);
     }
 
 
