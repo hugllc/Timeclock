@@ -203,6 +203,94 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
         $expect["prefs"] = array_merge($defaults[$type], $expect["prefs"]);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider
+    *
+    * @return array
+    */
+    public static function dataGetSetPref()
+    {
+        return array(
+            array(
+                "hello",
+                12,
+                "here",
+            ),
+        );
+    }
+
+    /**
+    * Tests setPref
+    *
+    * @param string $name   The name of the pref
+    * @param int    $user   The user id to use
+    * @param mixed  $value  The value of the pref
+    * @param array  $expect The expected return value
+    *
+    * @return none
+    * @dataProvider dataGetSetPref()
+    */
+    function testGetSetPref($name, $user, $value)
+    {
+        $u     = new JUser();
+        $u->id = $user;
+
+        $GLOBALS["JFactory"]["getUser"]["current"] =& $u;
+        $GLOBALS["JFactory"]["getUser"][$user]     =& $u;
+
+        $this->o->setPref($name, $value, $user);
+        $ret = $this->o->getPref($name, $user);
+        $this->assertSame($value, $ret);
+    }
+
+
+
+    /**
+    * Data provider
+    *
+    * @return array
+    */
+    public static function dataGetPrefSet()
+    {
+        return array(
+            array(
+                "hello",
+                12,
+                "nope",
+                array(
+                    "id" => 12,
+                    "prefs" => "YToxOntzOjU6ImhlbGxvIjtzOjQ6ImhlcmUiO30=",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * Tests setPref
+    *
+    * @param string $name   The name of the pref
+    * @param int    $user   The user id to use
+    * @param mixed  $value  The value of the pref
+    * @param array  $expect The expected return value
+    *
+    * @return none
+    * @dataProvider dataGetPrefSet()
+    */
+    function testGetPrefSet($name, $user, $expect, $preset)
+    {
+        $u     = new JUser();
+        $u->id = $user;
+
+        $GLOBALS["JFactory"]["getUser"]["current"] =& $u;
+        $GLOBALS["JFactory"]["getUser"][$user]     =& $u;
+
+//        $GLOBALS["JTable"]["load"][$user] = $preset;
+
+        $ret = $this->o->getPref($name);
+        $this->o->setPref($name, $expect);
+        $ret = $this->o->getPref($name);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 
