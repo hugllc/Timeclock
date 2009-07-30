@@ -39,7 +39,7 @@ jimport("joomla.html.pane");
 
 $title = ($this->add) ? "Add" : "Edit";
 
-TimeclockAdminController::title(JText::_("Timeclock Holidays: <small><small>[ ".$title." ]</small></small>"));
+TimeclockAdminController::title(JText::_("Timeclock Timesheets: <small><small>[ ".$title." ]</small></small>"));
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -105,7 +105,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                 <textarea class="text_area" type="text" name="notes" id="notes" cols="30" rows="5"><?php echo $this->row->notes;?></textarea>
             </td>
             <td>
-                A description of the holiday
+                A description of the hours
             </td>
         </tr>
     </table>
@@ -118,5 +118,5 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 <input type="hidden" name="created" value="<?php print $this->row->created; ?>" />
 <input type="hidden" name="created_by" value="<?php print $this->row->created_by; ?>" />
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="holidays" />
+<input type="hidden" name="controller" value="timesheets" />
 </form>

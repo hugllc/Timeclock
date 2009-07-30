@@ -40,6 +40,8 @@ jimport('joomla.application.component.model');
 
 /** Get the timesheet table */
 require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
+/** Get the projects model */
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
 
 /**
  * ComTimeclock model
@@ -167,25 +169,6 @@ class TimeclockAdminModelTimesheets extends JModel
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkout($who, $oid);
-    }
-
-    /**
-     * Get the project options for a select list
-     *
-     * @return array
-     */
-    function projectOptions()
-    {
-        $ret = array();
-        $query = "SELECT id, name FROM #__timeclock_projects";
-        $proj = $this->_getList($query, $limitstart, $limit);
-        if (!is_array($proj)) {
-            return $ret;
-        }
-        foreach ($proj as $p) {
-            $ret[] = JHTML::_("select.option", $p->id, $p->name);
-        }
-        return $ret;
     }
 
     /**

@@ -39,7 +39,7 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip');
 
-TimeclockAdminController::title(JText::_('Timeclock Holidays'));
+TimeclockAdminController::title(JText::_('Timeclock Timesheets'));
 JToolBarHelper::editListX();
 JToolBarHelper::addNewX();
 

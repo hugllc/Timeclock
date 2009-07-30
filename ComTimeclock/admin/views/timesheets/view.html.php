@@ -188,10 +188,8 @@ class TimeclockAdminViewTimesheets extends JView
      */
     function form($tpl = null)
     {
-        $model =& JModel::getInstance("Holidays", "TimeclockAdminModel");
+        $model = $this->getModel();
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        // Set this as the default model
-        $this->setModel($model, true);
         $row = $this->get("Data");
 
         $user =& JFactory::getUser();
@@ -215,7 +213,12 @@ class TimeclockAdminViewTimesheets extends JView
 
         $add = empty($row->id);
 
-        $lists['projects'] = $model->projectOptions();
+        $lists['projects'] = $projModel->getOptions(
+            "WHERE u.user_id = ".(int)$row->created_by
+            ." AND p.type <> 'HOLIDAY' "
+            ." AND p.type <> 'CATEGORY' ",
+            null
+        );
 
         $this->assignRef("project", $project);
         $this->assignRef("lists", $lists);

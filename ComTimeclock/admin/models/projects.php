@@ -342,8 +342,11 @@ class TimeclockAdminModelProjects extends JModel
      */
     function getOptions($where, $text = "None", $exclude=array(), $textValue = -1)
     {
-        $ret = array(JHTML::_("select.option", $textValue, $text));
-        $query = "SELECT id, name FROM #__timeclock_projects "
+        if (!is_null($text)) {
+            $ret = array(JHTML::_("select.option", $textValue, $text));
+        }
+        $query = "SELECT p.id as id, p.name as name FROM #__timeclock_projects as p "
+                ."LEFT JOIN #__timeclock_users as u ON p.id = u.id "
                  .$where." ORDER BY id asc";
         $list = self::_getList($query);
         if (!is_array($list)) {
