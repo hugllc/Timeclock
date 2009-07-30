@@ -193,9 +193,6 @@ class TableTimeclockPrefs extends JTable
         if (($this->startDate == "0000-00-00") || empty($this->startDate)) {
             $this->startDate = date("Y-m-d");
         }
-//        $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-//        $this->prefs = self::$_defaults[$pref];
-//        $this->history = self::decode($this->history);
         $ret = $this->store();
         return $ret;
     }

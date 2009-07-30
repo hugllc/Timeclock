@@ -225,7 +225,6 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     * @param string $name   The name of the pref
     * @param int    $user   The user id to use
     * @param mixed  $value  The value of the pref
-    * @param array  $expect The expected return value
     *
     * @return none
     * @dataProvider dataGetSetPref()
@@ -257,10 +256,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 "hello",
                 12,
                 "nope",
-                array(
-                    "id" => 12,
-                    "prefs" => "YToxOntzOjU6ImhlbGxvIjtzOjQ6ImhlcmUiO30=",
-                ),
+                "here",
             ),
         );
     }
@@ -270,8 +266,8 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     *
     * @param string $name   The name of the pref
     * @param int    $user   The user id to use
-    * @param mixed  $value  The value of the pref
-    * @param array  $expect The expected return value
+    * @param mixed  $expect The value of the pref
+    * @param array  $preset The expected return value
     *
     * @return none
     * @dataProvider dataGetPrefSet()
@@ -284,8 +280,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
         $GLOBALS["JFactory"]["getUser"]["current"] =& $u;
         $GLOBALS["JFactory"]["getUser"][$user]     =& $u;
 
-//        $GLOBALS["JTable"]["load"][$user] = $preset;
-
+        $this->o->setPref($name, $preset);
         $ret = $this->o->getPref($name);
         $this->o->setPref($name, $expect);
         $ret = $this->o->getPref($name);

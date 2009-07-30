@@ -200,7 +200,7 @@ class TimeclockViewTimeclock extends JView
         }
         $cookie = array();
         foreach ($_COOKIE as $name => $value) {
-            if (strtolower(substr(trim($name),0,18)) == "timeclock_category") {
+            if (strtolower(substr(trim($name), 0, 18)) == "timeclock_category") {
                 if (trim(strtolower($value)) == "closed") {
                     $key = (int)substr(trim($name), 18);
                     $cookie[$key] = "closed";
