@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,11 +30,11 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
@@ -44,11 +44,11 @@ JHTML::_('behavior.formvalidation');
 ?>
 <script type="text/javascript">
         Window.onDomReady(function(){
-            document.formvalidator.setHandler('dateverify', 
+            document.formvalidator.setHandler('dateverify',
                 function (value) {
                     regex=/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/;
-                    return regex.test(value); 
-                }     
+                    return regex.test(value);
+                }
             );
         });
 </script>
@@ -68,7 +68,10 @@ JHTML::_('behavior.formvalidation');
         <?php print JHTML::_("select.genericList", $this->controls["project"], "proj_id", "", 'value', 'text', $this->proj_id); ?>
     </div>
     <div>
-        <?php print JHTML::_("select.genericList", $this->controls["customer"], "cust_id", "", 'value', 'text', $this->cust_id); ?>
+        <strong>Customer: </strong> <?php print JHTML::_("select.genericList", $this->controls["customer"], "cust_id", "", 'value', 'text', $this->cust_id); ?>
+    </div>
+    <div>
+        <strong>Project Manager: </strong> <?php print JHTML::_("select.genericList", $this->controls["projManager"], "projManager", "", 'value', 'text', $this->projManager); ?>
     </div>
     <div>
         <strong><?php print JText::_("Group By"); ?>:</strong>

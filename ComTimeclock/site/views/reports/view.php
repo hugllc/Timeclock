@@ -101,6 +101,11 @@ class TimeclockViewReportsBase extends JView
             $this->_where[] = "p.id = ".(int)$proj_id;
         }
         $this->assignRef("proj_id", $proj_id);
+        $projManager = JRequest::getVar('projManager', "0", '', 'int');
+        if (!empty($projManager)) {
+            $this->_where[] = "p.manager = ".(int)$projManager;
+        }
+        $this->assignRef("projManager", $projManager);
     }
 
     /**
@@ -625,6 +630,7 @@ class TimeclockViewReportsBase extends JView
      */
     function _reportControls()
     {
+        $userModel    =& JModel::getInstance("Users", "TimeclockAdminModel");
         $projectModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
 
         $controls["category"] = $projectModel->getParentOptions(
@@ -637,6 +643,11 @@ class TimeclockViewReportsBase extends JView
             "Select Project",
             array(),
             0
+        );
+        $controls["projManager"]  = $userModel->getOptions(
+            "WHERE p.published = 1",
+            "Select Project Manager",
+            array()
         );
 
         $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
