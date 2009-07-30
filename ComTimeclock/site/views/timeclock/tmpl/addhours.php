@@ -83,10 +83,10 @@ foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) continue;
     if (!is_null($this->projid) && !array_key_exists($this->projid, $cat->subprojects)) continue;
     $safeName = "Category".$cat->id;
-    if ($cat->show === "true") {
+    if ($cat->show === true) {
         // We are told to show this
         $initFunction = "timeclockCatShow('".$safeName."');";
-    } else if ($cat->show === "false") {
+    } else if ($cat->show === false) {
         // We are told to hide this
         $initFunction = "timeclockCatHide('".$safeName."');";
     } else {
