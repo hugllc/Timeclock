@@ -423,24 +423,31 @@ class TimeclockAdminModelProjects extends JModel
         foreach ($ret as $p) {
             $uProj[$p->id] = $p->user_id;
         }
+        $sProj = array(
+            self::_getSpecialCategory("special"),
+            self::_getSpecialCategory("general"),
+            self::_getSpecialCategory("unpaid"),
+        );
         $proj = $this->getProjects("", null, null, "ORDER BY p.id asc");
         if (!is_array($proj)) {
-            return array();
+            return $sProj;
         }
-
+        $proj = array_merge($sProj, $proj);
         foreach ($proj as $p) {
             if ($p->type == "CATEGORY") {
                 $p->subprojects = array();
                 $projects[$p->id] = $p;
             }
         }
-
         foreach ($proj as $p) {
             if ($p->type != "CATEGORY") {
                 $p->mine = array_key_exists($p->id, $uProj);
                 $cat = $this->_getProjectCategory($p, $projects);
                 if ($p->mine) {
                     $projects[$cat]->mine = true;
+                    // Force publishing of categories that the user has active
+                    // projects in
+                    $projects[$cat]->published = 1;
                 }
                 if ($p->type == 'HOLIDAY') {
                     $p->noHours = true;
@@ -475,6 +482,87 @@ class TimeclockAdminModelProjects extends JModel
         }
         return self::$cat["general"];
     }
+    /**
+     * Returns a stdClass with the special projects in it.
+     *
+     * @param object $type The type of class to create
+     *
+     * @return stdClass
+     */
+    private function _getSpecialCategory($type)
+    {
+        $type = trim(strtoupper($type));
+        if ($type == "UNPAID") {
+            return self::_getSpecialCategoryUnpaid();
+        } else if ($type == "SPECIAL") {
+            return self::_getSpecialCategorySpecial();
+        }
+        return self::_getSpecialCategoryGeneral();
+    }
+
+    /**
+     * Returns a stdClass with the special projects in it.
+     *
+     * @param object $type The type of class to create
+     *
+     * @return stdClass
+     */
+    private function _getSpecialCategoryUnpaid()
+    {
+        $class = new stdClass();
+        $class->id = self::$cat["unpaid"];
+        $class->name = "Unpaid Time";
+        $class->description = "This time is not used for billing customers or for "
+                             ."payroll reports.";
+        $class->type = "CATEGORY";
+        $class->parent_id = 0;
+        $class->published = 0;
+        $class->customer = 0;
+        return $class;
+    }
+
+    /**
+     * Returns a stdClass with the special projects in it.
+     *
+     * @param object $type The type of class to create
+     *
+     * @return stdClass
+     */
+    private function _getSpecialCategoryGeneral()
+    {
+        $class = new stdClass();
+        $class->id = self::$cat["general"];
+        $class->name = "General";
+        $class->description = "This is uncategorized projects.  "
+                             ."Everything without a category goes here.";
+        $class->type = "CATEGORY";
+        $class->parent_id = 0;
+        $class->published = 0;
+        $class->customer = 0;
+        return $class;
+    }
+
+    /**
+     * Returns a stdClass with the special projects in it.
+     *
+     * @param object $type The type of class to create
+     *
+     * @return stdClass
+     */
+    private function _getSpecialCategorySpecial()
+    {
+        $class = new stdClass();
+        $class->id = self::$cat["special"];
+        $class->name = "Special";
+        $class->description = "This category is for PTO and Holiday time.";
+        $class->type = "CATEGORY";
+        $class->parent_id = 0;
+        $class->published = 0;
+        $class->customer = 0;
+        return $class;
+    }
+
+
     /**
      * Get projects for a user
      *

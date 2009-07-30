@@ -237,6 +237,11 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
             null,
             true
         );
+        $data2 = new SimpleXMLElement(
+            dirname(__FILE__).DS."ProjectReturn02.xml",
+            null,
+            true
+        );
 
         return array(
             array(
@@ -251,7 +256,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
                 -1,
                 null,
                 null,
-                array(),
+                joomlaMockXMLToArray($data2),
             ),
         );
     }
