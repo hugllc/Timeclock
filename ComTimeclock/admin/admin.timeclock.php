@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
- * Copyright (C) 2008 Hunt Utilities Group, LLC
+ * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008 Hunt Utilities Group, LLC
+ * @copyright  2008-2009 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -65,7 +65,7 @@ $controller->redirect();
 ?>
 <p class="copyright">
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
-Copyright &copy; 2008 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
+Copyright &copy; 2008-2009 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
 <br /><?php print JText::_("Found a bug in ComTimeclock?"); ?>
 <a href="https://dev.hugllc.com/bugs/project_page.php?project_id=7">
 <?php print JText::_("Report it here"); ?></a>
