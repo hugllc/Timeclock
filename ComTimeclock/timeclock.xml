@@ -77,7 +77,7 @@
             <menu controller="customers">Customers</menu>
             <menu controller="projects">Projects</menu>
             <menu controller="holidays">Holidays</menu>
-            <menu controller="holidays">Timesheets</menu>
+            <menu controller="timesheets">Timesheets</menu>
             <menu task="about">About</menu>
         </submenu>
 
