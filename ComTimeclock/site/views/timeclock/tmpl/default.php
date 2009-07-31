@@ -70,6 +70,7 @@ JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timecl
     <?php print $this->loadTemplate("header"); ?>
 <?php
 $rows = 0;
+//var_dump($this->projects);
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) {
         $array = array_intersect_key($cat->subprojects, $this->hours);

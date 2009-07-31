@@ -441,6 +441,7 @@ class TimeclockAdminModelProjects extends JModel
         foreach ($proj as $p) {
             if ($p->type == "CATEGORY") {
                 $p->subprojects = array();
+                $p->published = 0;
                 $projects[$p->id] = $p;
             }
         }
@@ -451,8 +452,10 @@ class TimeclockAdminModelProjects extends JModel
                 if ($p->mine) {
                     $projects[$cat]->mine = true;
                     // Force publishing of categories that the user has active
-                    // projects in
-                    $projects[$cat]->published = 1;
+                    // projects in,
+                    if ($p->published) {
+                        $projects[$cat]->published = 1;
+                    }
                 }
                 if ($p->type == 'HOLIDAY') {
                     $p->noHours = true;
