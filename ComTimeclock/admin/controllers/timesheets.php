@@ -109,6 +109,8 @@ class TimeclockAdminControllerTimesheets extends JController
     /**
      * save a record (and redirect to main page)
      *
+     * @param bool $apply Set to true if we are applying and going back to editing
+     *
      * @return void
      */
     function save($apply=false)

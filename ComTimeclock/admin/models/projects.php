@@ -511,8 +511,6 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Returns a stdClass with the special projects in it.
      *
-     * @param object $type The type of class to create
-     *
      * @return stdClass
      */
     private function _getSpecialCategoryUnpaid()
@@ -532,8 +530,6 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Returns a stdClass with the special projects in it.
      *
-     * @param object $type The type of class to create
-     *
      * @return stdClass
      */
     private function _getSpecialCategoryGeneral()
@@ -552,8 +548,6 @@ class TimeclockAdminModelProjects extends JModel
 
     /**
      * Returns a stdClass with the special projects in it.
-     *
-     * @param object $type The type of class to create
      *
      * @return stdClass
      */

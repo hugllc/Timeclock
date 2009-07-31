@@ -215,7 +215,7 @@ class TimeclockAdminViewUsers extends JView
                 $lists["status"][] = JHTML::_("select.option", $key, $value);
             }
         }
-/*
+        /*
         $lists["status"] = array(
             JHTML::_("select.option", "FULLTIME", "Full Time"),
             JHTML::_("select.option", "PARTTIME", "Part Time"),
@@ -225,7 +225,7 @@ class TimeclockAdminViewUsers extends JView
             JHTML::_("select.option", "RETIRED", "Retired"),
             JHTML::_("select.option", "UNPAID", "Unpaid Leave"),
         );
-*/
+        */
         $lists["userProjects"] = $model->getUserProjects($cid[0]);
         $uProj = array();
         foreach ($lists["userProjects"] as $p) {
