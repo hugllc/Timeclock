@@ -111,19 +111,32 @@ class TimeclockAdminControllerTimesheets extends JController
      *
      * @return void
      */
-    function apply()
+    function save($apply=false)
     {
         $model = $this->getModel("Timesheets");
 
+        $link  = 'index.php?option=com_timeclock&controller=timesheets';
         if ($id = $model->store()) {
             $msg   = JText::_('Timesheet Saved!');
-            $link  = 'index.php?option=com_timeclock&controller=timesheets&task=edit';
-            $link .= '&cid[]='.$id;
+            $link .= '&task=edit&cid[]='.(int)$id;
+            $type = "message";
+            if (!$apply) {
+                $this->reset($msg);
+                return;
+            }
         } else {
             $msg  = JText::_('Error Saving Timesheet');
-            $link = $_SERVER["HTTP_REFERER"];
+            if (is_string($model->lastError)) {
+                $msg .= " (".JText::_($model->lastError).")";
+            }
+            $type = "error";
+            if (empty($model->lastStoreId)) {
+                $link .= "&task=add";
+            } else {
+                $link .= "&task=edit&cid[]=".(int)$model->lastStoreId;
+            }
         }
-        $this->setRedirect($link, $msg);
+        $this->setRedirect($link, $msg, $type);
 
     }
 
@@ -132,18 +145,9 @@ class TimeclockAdminControllerTimesheets extends JController
      *
      * @return void
      */
-    function save()
+    function apply()
     {
-        $model = $this->getModel("Timesheets");
-
-        if ($model->store()) {
-            $msg = JText::_('Timesheet Saved!');
-            $model->checkin($id);
-        } else {
-            $msg = JText::_('Error Saving Timesheet');
-        }
-        $this->reset($msg);
-
+        $this->save(true);
     }
 
     /**

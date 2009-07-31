@@ -52,6 +52,19 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
+                    <?php echo JText::_('User'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->lists["users"], "created_by", 'onChange="document.getElementById(\'task\').value=\'apply\';this.form.submit();"', 'value', 'text', $this->row->created_by); ?>
+            </td>
+            <td>
+                The user.  <strong>Select the user before the project or check the project after selecting the user</strong>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="Published">
                     <?php echo JText::_('Project'); ?>:
                 </label>
             </td>
@@ -116,7 +129,6 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="id" value="<?php print $this->row->id; ?>" />
 <input type="hidden" name="created" value="<?php print $this->row->created; ?>" />
-<input type="hidden" name="created_by" value="<?php print $this->row->created_by; ?>" />
-<input type="hidden" name="task" value="" />
+<input type="hidden" id="task" name="task" value="" />
 <input type="hidden" name="controller" value="timesheets" />
 </form>

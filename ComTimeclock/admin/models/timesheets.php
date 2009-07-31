@@ -63,7 +63,8 @@ class TimeclockAdminModelTimesheets extends JModel
                       + t.hours6) as hours,
                       p.name as project_name
                       FROM #__timeclock_timesheet AS t
-                      LEFT JOIN #__timeclock_projects as p ON t.project_id = p.id
+                      LEFT JOIN #__timeclock_projects as p
+                        ON (t.project_id = p.id OR p.id = 0)
                       LEFT JOIN #__users as u ON t.created_by = u.id ";
 
     /**
@@ -116,7 +117,7 @@ class TimeclockAdminModelTimesheets extends JModel
     function getTimesheets($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         if (empty($where)) {
-            $where = " WHERE p.Type<>'HOLIDAY' ";
+            $where = " WHERE p.Type<>'HOLIDAY'";
         } else {
             $where .= " AND p.Type<>'HOLIDAY' ";
         }
@@ -180,12 +181,27 @@ class TimeclockAdminModelTimesheets extends JModel
     function store()
     {
         $row =& $this->getTable("TimeclockTimesheet");
+        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $data = JRequest::get('post');
+        $this->lastError = null;
+        $this->lastStoreId = $data['id'];
+
+        // Can't have an empty project id.
+        if (empty($data["project_id"])) {
+            $this->lastError = "Project doesn't exist";
+            return false;
+        }
+        if ($projModel->getUserProjectsCount($data["created_by"]) == 0) {
+            $this->lastError = "User has no projects!";
+            return false;
+        }
 
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
-            $data["created_by"] = $user->get("id");
+            if (empty($data["created_by"])) {
+                $user =& JFactory::getUser();
+                $data["created_by"] = $user->get("id");
+            }
         }
 
         // Bind the form fields to the hello table

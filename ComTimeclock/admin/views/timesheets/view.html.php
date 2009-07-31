@@ -190,6 +190,7 @@ class TimeclockAdminViewTimesheets extends JView
     {
         $model = $this->getModel();
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
         $row = $this->get("Data");
 
         $user =& JFactory::getUser();
@@ -199,8 +200,8 @@ class TimeclockAdminViewTimesheets extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_('The poll'),
-                    $poll->title
+                    JText::_('The timesheet'),
+                    ''
                 );
                 $this->setRedirect(
                     'index.php?option=com_timeclock&controller=timesheets',
@@ -212,13 +213,21 @@ class TimeclockAdminViewTimesheets extends JView
         $project = $projModel->getData($row->project_id);
 
         $add = empty($row->id);
+        if (($row->worked == "0000-00-00") || empty($row->worked)) {
+            $row->worked = date("Y-m-d");
+        }
 
+        $projWhere  = " WHERE ";
+        if (!empty($row->created_by)) {
+            $projWhere .= " u.user_id = ".(int)$row->created_by." AND ";
+        }
+        $projWhere .= " p.type <> 'HOLIDAY' AND p.type <> 'CATEGORY'";
         $lists['projects'] = $projModel->getOptions(
-            "WHERE u.user_id = ".(int)$row->created_by
-            ." AND p.type <> 'HOLIDAY' "
-            ." AND p.type <> 'CATEGORY' ",
+            $projWhere,
             null
         );
+        $userWhere = "WHERE p.published=1";
+        $lists["users"]    = $userModel->getOptions($userWhere, "Select User");
 
         $this->assignRef("project", $project);
         $this->assignRef("lists", $lists);

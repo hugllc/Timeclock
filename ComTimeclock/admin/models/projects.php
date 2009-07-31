@@ -344,6 +344,8 @@ class TimeclockAdminModelProjects extends JModel
     {
         if (!is_null($text)) {
             $ret = array(JHTML::_("select.option", $textValue, $text));
+        } else {
+            $ret = array();
         }
         $query = "SELECT p.id as id, p.name as name FROM #__timeclock_projects as p "
                 ."LEFT JOIN #__timeclock_users as u ON p.id = u.id "

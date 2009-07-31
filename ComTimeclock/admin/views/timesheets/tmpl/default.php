@@ -44,7 +44,7 @@ JToolBarHelper::editListX();
 JToolBarHelper::addNewX();
 
 ?>
-<form action="index.php?option=com_timeclock&controller=holidays" method="post" name="adminForm">
+<form action="index.php?option=com_timeclock&controller=timesheets" method="post" name="adminForm">
 <table>
         <tr>
                 <td align="left" width="100%">

@@ -407,7 +407,11 @@ class TimeclockAdminModelUsers extends JModel
      */
     function getOptions($where, $text = "None", $ignore = array())
     {
-        $ret = array(JHTML::_("select.option", 0, $text));
+        if (!is_null($text)) {
+            $ret = array(JHTML::_("select.option", 0, $text));
+        } else {
+            $ret = array();
+        }
         $query = "SELECT u.id, u.name FROM #__users AS u
                   LEFT JOIN #__timeclock_prefs AS p ON u.id = p.id "
                   .$where." ORDER BY u.id asc";
