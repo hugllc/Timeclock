@@ -59,7 +59,7 @@ class TableTimeclockPrefs extends JTable
     /**
      * Variable
      *
-     * @var int
+     * @var string
      */
     public $prefs = array();
     /**
@@ -71,15 +71,21 @@ class TableTimeclockPrefs extends JTable
     /**
      * Variable
      *
-     * @var int
+     * @var string
      */
     public $startDate = null;
     /**
      * Variable
      *
-     * @var int
+     * @var string
      */
     public $endDate = null;
+    /**
+     * Variable
+     *
+     * @var int
+     */
+    public $manager = 0;
     /**
      * Variable
      *

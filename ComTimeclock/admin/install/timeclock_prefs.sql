@@ -7,3 +7,6 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_prefs` (
   `history` longtext,
   PRIMARY KEY  (`id`)
 );
+
+-- This is for upgrading.  It will fail on a new installation.
+ALTER TABLE `jos_timeclock_prefs` ADD `manager` INT NOT NULL DEFAULT '0' AFTER `endDate`;

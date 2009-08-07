@@ -151,7 +151,7 @@ echo $pane->endPane();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.genericList", $this->lists["users"], "admin_manager", '', 'value', 'text', $this->row->prefs["admin_manager"]); ?>
+                <?php print JHTML::_("select.genericList", $this->lists["users"], "manager", '', 'value', 'text', $this->row->manager); ?>
             </td>
             <td>
                 This is to set the supervisor for this user.  It is used in the reports.

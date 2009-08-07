@@ -277,6 +277,7 @@ class TimeclockAdminModelUsers extends JModel
             "id" => $data["id"],
             "startDate" => $row->startDate,
             "endDate" => $row->endDate,
+            "manager" => $row->manager,
             "published" => $row->published,
             "history" => $row->history,
         );
@@ -344,7 +345,7 @@ class TimeclockAdminModelUsers extends JModel
                 $prefs["prefs"][$f] = $v;
             }
         }
-        foreach (array("published", "startDate", "endDate") as $key) {
+        foreach (array("published", "startDate", "endDate", "manager") as $key) {
             if ($data[$key] != $prefs[$key]) {
                 $prefs["history"][$key][$timestamp] = $prefs[$key];
                 $prefs["history"]["timestamps"][$timestamp] = $id;
