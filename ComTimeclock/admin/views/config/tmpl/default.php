@@ -97,8 +97,8 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
-                <label for="payPeriodLength">
-                    <?php echo JText::_('Pay Period Length'); ?>:
+                <label for="firstPayPeriodStart">
+                    <?php echo JText::_('First Pay Period Start'); ?>:
                 </label>
             </td>
             <td>
@@ -110,8 +110,8 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         </tr>
         <tr>
             <td width="100" align="right" class="key">
-                <label for="payPeriodLength">
-                    <?php echo JText::_('Pay Period Length'); ?>:
+                <label for="payPeriodType">
+                    <?php echo JText::_('Pay Period Type'); ?>:
                 </label>
             </td>
             <td>
