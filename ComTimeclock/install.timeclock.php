@@ -56,9 +56,9 @@ function Com_install()
     );
     foreach ($sql_files as $file) {
         $sql = file_get_contents($adminDir.DS."install".DS.$file.".sql");
-        if (!empty($sql)) {
-            $q = explode(";", $sql);
-            foreach ($q as $query) {
+        $q = explode(";", $sql);
+        foreach ($q as $query) {
+            if (!empty($query)) {
                 $database->setQuery($query);
                 $result = $database->query();
             }
