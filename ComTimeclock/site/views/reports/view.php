@@ -371,7 +371,9 @@ class TimeclockViewReportsBase extends JView
         $this->filter();
         $this->where();
 
-        $where = (count($this->_where) ? implode(' AND ', $this->_where) : '');
+        $this->_where[] = "(p.type <> 'HOLIDAY')";
+
+        $where = implode(' AND ', $this->_where);
 
         $this->_lists["search_options"] = array(
             JHTML::_('select.option', 't.notes', 'Notes'),
