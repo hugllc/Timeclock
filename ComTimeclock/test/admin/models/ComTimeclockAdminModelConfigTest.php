@@ -121,6 +121,7 @@ class ComTimeclockAdminModelConfigTest extends JModelTest
                     "published" => null,
                     "startDate" => null,
                     "endDate" => null,
+                    "manager" => null,
                     "history" => "Tjs="
                 ),
                 "store"
