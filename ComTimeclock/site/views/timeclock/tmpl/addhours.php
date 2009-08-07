@@ -83,7 +83,9 @@ foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) continue;
     if (!is_null($this->projid) && !array_key_exists($this->projid, $cat->subprojects)) continue;
     $safeName = "Category".$cat->id;
-    if ($cat->show === true) {
+    if (empty($this->projid)) {
+        // Do nothing here.
+    } else if ($cat->show === true) {
         // We are told to show this
         $initFunction = "timeclockCatShow('".$safeName."');";
     } else if ($cat->show === false) {
@@ -96,10 +98,16 @@ foreach ($this->projects as $cat) {
     ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
-                <h2><a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
-                    <span id="<?php print $safeName; ?>_cat_span"> - </span>
-                    <?php print JText::_("Category").": ".JText::_($cat->name); ?>
-                </a></h2>
+                <h2>
+                    <?php if (empty($this->projid)):?>
+                    <a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
+                        <span id="<?php print $safeName; ?>_cat_span"> - </span>
+                    <?php endif; ?>
+                        <?php print JText::_("Category").": ".JText::_($cat->name); ?>
+                    <?php if (empty($this->projid)): ?>
+                    </a>
+                    <?php endif; ?>
+                </h2>
             </td>
         </tr>
         <tbody id="<?php print $safeName; ?>_cat" class="pane">
@@ -160,7 +168,6 @@ foreach ($this->projects as $cat) {
                 $var = "hours1";
                 $wcName = "Hours";
                 $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0;
-//var_dump(                $this->data[$proj->id]);
             }
             ?>
         <tr>
