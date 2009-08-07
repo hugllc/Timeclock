@@ -184,6 +184,7 @@ class TableTimeclockProjects extends JTable
      */
     function check()
     {
+
         if ($this->type == "CATEGORY") {
             $this->parent_id = 0;
         }
