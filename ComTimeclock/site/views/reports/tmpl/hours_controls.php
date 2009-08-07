@@ -74,6 +74,9 @@ JHTML::_('behavior.formvalidation');
         <strong>Project Manager: </strong> <?php print JHTML::_("select.genericList", $this->controls["projManager"], "projManager", "", 'value', 'text', $this->projManager); ?>
     </div>
     <div>
+        <strong>User Manager: </strong> <?php print JHTML::_("select.genericList", $this->controls["userManager"], "userManager", "", 'value', 'text', $this->userManager); ?>
+    </div>
+    <div>
         <strong><?php print JText::_("Group By"); ?>:</strong>
         <?php print JHTML::_("select.genericList", $this->controls["cat_by"], "cat_by", "", 'value', 'text', $this->cat_by); ?>
     </div>

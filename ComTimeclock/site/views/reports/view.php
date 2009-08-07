@@ -106,6 +106,11 @@ class TimeclockViewReportsBase extends JView
             $this->_where[] = "p.manager = ".(int)$projManager;
         }
         $this->assignRef("projManager", $projManager);
+        $userManager = JRequest::getVar('userManager', "0", '', 'int');
+        if (!empty($userManager)) {
+            $this->_where[] = "tp.manager = ".(int)$userManager;
+        }
+        $this->assignRef("userManager", $userManager);
     }
 
     /**
@@ -648,6 +653,11 @@ class TimeclockViewReportsBase extends JView
         $controls["projManager"]  = $userModel->getOptions(
             "WHERE p.published = 1",
             "Select Project Manager",
+            array()
+        );
+        $controls["userManager"]  = $userModel->getOptions(
+            "WHERE p.published = 1",
+            "Select User Manager",
             array()
         );
 
