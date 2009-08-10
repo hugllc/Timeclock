@@ -224,17 +224,17 @@ class TimeclockViewReportsBase extends JView
         );
 
         if (!empty($filter_order)) {
-            $this->_orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+            $this->_orderby = ' ORDER BY '. $db->Quote($filter_order) .' '. $db->Quote($filter_order_Dir);
             if (!empty($filter2_order)) {
-                $this->_orderby .= ", ". $filter2_order .' '. $filter2_order_Dir;
+                $this->_orderby .= ", ". $db->Quote($filter2_order) .' '. $db->Quote($filter2_order_Dir);
             }
             if (!empty($filter3_order)) {
-                $this->_orderby .= ", ". $filter3_order .' '. $filter3_order_Dir;
+                $this->_orderby .= ", ". $db->Quote($filter3_order) .' '. $db->Quote($filter3_order_Dir);
             }
         }
 
         if ($search) {
-            $this->_where[] = 'LOWER('.$search_filter.') LIKE '
+            $this->_where[] = 'LOWER(.$db->Quote($search_filter).) LIKE '
                         .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
@@ -269,13 +269,13 @@ class TimeclockViewReportsBase extends JView
         global $mainframe, $option;
         jimport('joomla.html.pagination');
 
-        $this->_limit = $mainframe->getUserStateFromRequest(
+        $this->_limit = (int)$mainframe->getUserStateFromRequest(
             'global.list.limit',
             'limit',
             $mainframe->getCfg('list_limit'),
             'int'
         );
-        $this->_limitstart = $mainframe->getUserStateFromRequest(
+        $this->_limitstart = (int)$mainframe->getUserStateFromRequest(
             $option.'.projects.limitstart',
             'limitstart',
             0,

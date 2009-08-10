@@ -305,12 +305,12 @@ class TimeclockModelTimeclock extends JModel
     {
         if (empty($this->data)) {
             $where = array(
-                "t.created_by = ".$this->_id,
+                "t.created_by = ".$this->_db->Quote($this->_id),
                 $this->employmentDateWhere("t.worked"),
                 $this->periodWhere("t.worked"),
             );
             $holidaywhere = array(
-                "j.user_id = ".$this->_id,
+                "j.user_id = ".$this->_db->Quote($this->_id),
                 $this->employmentDateWhere("t.worked"),
                 $this->periodWhere("t.worked"),
             );
@@ -391,10 +391,10 @@ class TimeclockModelTimeclock extends JModel
      */
     function dateWhere($field, $start, $end="")
     {
-        $ret = "($field >= '$start'";
+        $ret = "($field >= ".$this->_db->Quote($start)."";
 
         if (($end != '0000-00-00') && !empty($end)) {
-            $ret .= " AND $field <= '$end'";
+            $ret .= " AND $field <= ".$this->_db->Quote($end)."";
         }
         $ret .= ")";
         return $ret;
@@ -651,8 +651,8 @@ class TimeclockModelTimeclock extends JModel
                   (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
                   as hours
                   FROM #__timeclock_timesheet as t
-                  WHERE t.worked ='".$this->get("date")."'
-                     AND t.created_by = '".$this->_id."'
+                  WHERE t.worked =".$this->_db->Quote($this->get("date"))."
+                     AND t.created_by = ".$this->_db->Quote($this->_id)."
                   ";
         $ret = $this->_getList($query);
         if (!is_array($ret)) {
