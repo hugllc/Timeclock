@@ -50,6 +50,8 @@ $wCompEnabled = TableTimeclockPrefs::getPref("wCompEnable", "system");
 
 JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
 
+$hoursSum = array();
+
 ?>
 <script type="text/javascript">
         Window.onDomReady(function(){
@@ -59,9 +61,12 @@ JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timecl
                     return regex.test(value);
                 }
             );
+            calculateHourTotal();
         });
 </script>
-
+<div style="position: fixed; left: 0px; top: 0px; background: white; border: 3px solid black; padding: .5em;">
+    <?php print JText::_("Total Hours"); ?>: <span id="hoursTotal"> - </span>
+</div>
 <form action="<?php JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
     <div class="componentheading"><?php print JText::_("Add Hours"); ?></div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
@@ -120,38 +125,6 @@ foreach ($this->projects as $cat) {
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
-                <script>
-                    Window.onDomReady(function(){
-                        document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
-                            function (value) {
-                                if (document.getElementById('timesheet_<?php print $proj->id;?>_hours').value > 0) {
-                                    return (value.length > 10);
-                                } else {
-                                    return true;
-                                }
-                            }
-                        );
-                    });
-                    Window.onDomReady(function(){
-                        document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>',
-                            function (value) {
-                                hours = document.getElementById('timesheet_<?php print $proj->id;?>_hours');
-                                regex=/[0-9]{0,2}([.][0-9]{0,<?php print $this->decimalPlaces;?>}){0,1}/;
-                                var v = regex.exec(value);
-                                if (v[0] != value) {
-                                    hours.value = v[0];
-                                }
-                                if (!hours.value) return false;
-                                var max = <?php print $this->maxHours; ?>;
-                                if (hours.value > max) {
-                                    hours.value = max;
-                                }
-                                return true;
-                            }
-                        );
-                    });
-                </script>
-
                 <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>
         </tr>
@@ -169,18 +142,52 @@ foreach ($this->projects as $cat) {
                 $wcName = "Hours";
                 $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0;
             }
+            $hoursId = "timesheet_".$proj->id."_hours_".$i;
+            $hoursSum[] = $hoursId;
             ?>
         <tr>
             <th style="white-space:nowrap;" align="right">
-                <label id="hours_<?php print $i; ?>_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_hours_<?php print $i; ?>">
+                <label id="hours_<?php print $i; ?>_<?php print $proj->id;?>_label" for="<?php print $hoursId; ?>">
                     <?php print JText::_($wcName);?>:
                 </label>
             </th>
             <td>
-                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="timesheet_<?php print $proj->id;?>_hours_<?php print $i; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
+                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="<?php print $hoursId; ?>" onBlur="calculateHourTotal();" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
             </td>
             <td>
                 <?php print JText::_("Hours worked."); ?>
+                <script>
+                    Window.onDomReady(function(){
+                        document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
+                            function (value) {
+                                if (document.getElementById('<?php print $hoursId; ?>').value > 0) {
+                                    return (value.length > 10);
+                                } else {
+                                    return true;
+                                }
+                            }
+                        );
+                    });
+                    Window.onDomReady(function(){
+                        document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>',
+                            function (value) {
+                                hours = document.getElementById('<?php print $hoursId; ?>');
+                                regex=/[0-9]{0,2}([.][0-9]{0,<?php print $this->decimalPlaces;?>}){0,1}/;
+                                var v = regex.exec(value);
+                                if (v[0] != value) {
+                                    hours.value = v[0];
+                                }
+                                if (!hours.value) return false;
+                                var max = <?php print $this->maxHours; ?>;
+                                if (hours.value > max) {
+                                    hours.value = max;
+                                }
+                                return true;
+                            }
+                        );
+                    });
+                </script>
+
             </td>
         </tr>
         <?php endfor; ?>
@@ -231,3 +238,16 @@ foreach ($this->projects as $cat) {
     <a name="required_field" />
 * <?php print JText::_("Required field"); ?>
 </div>
+<script type="text/javascript">
+    function calculateHourTotal() {
+        var total = 0;
+        <?php
+            foreach ($hoursSum as $hours) {
+                print "        value = parseInt(document.getElementById('".$hours."').value, 10);\n";
+                print "        if (isNaN(value)) value = 0;\n";
+                print "        total = total + value;\n";
+            }
+        ?>
+        document.getElementById('hoursTotal').innerHTML = total;
+    }
+</script>
