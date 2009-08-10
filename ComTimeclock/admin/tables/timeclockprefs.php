@@ -202,7 +202,7 @@ class TableTimeclockPrefs extends JTable
         }
         $query = 'SELECT *'
                 .' FROM '.$this->_tbl
-                .' WHERE '.$this->_tbl_key.' = '.$this->_db->Quote($oid);
+                .' WHERE '.$this->_db->NameQuote($this->_tbl_key).' = '.$this->_db->Quote($oid);
         $this->_db->setQuery($query);
 
         if ($this->_db->loadAssocList()) {

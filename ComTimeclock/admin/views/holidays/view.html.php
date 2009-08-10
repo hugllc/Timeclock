@@ -137,18 +137,19 @@ class TimeclockAdminViewHolidays extends JView
             }
         }
         if ($search) {
-            $where[] = 'LOWER(t.'.$search_filter.') LIKE '
+            $where[] = 'LOWER('.$search_filter.') LIKE '
                        .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+        $orderby = ' ORDER BY '. $filter_order
+                  .' '.$filter_order_Dir;
 
         $rows  = $model->getHolidays($where, $limitstart, $limit, $orderby);
         $total = $model->countHolidays($where);
 
         jimport('joomla.html.pagination');
-        $pagination = new JPagination($total, $limitstart, $limit);
+        $pagination = new JPagination($total, (int)$limitstart, (int)$limit);
 
         // state filter
         $lists['state'] = JHTML::_(

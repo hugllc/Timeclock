@@ -152,7 +152,7 @@ class TimeclockAdminModelProjects extends JModel
 
         $this->store();
 
-        $id = JRequest::getVar('id', 0, '', 'int');
+        $id = (int) JRequest::getVar('id', 0, '', 'int');
         $user_id = JRequest::getVar('user_id', array(0), '', 'array');
         if (!is_array($user_id)) {
             $user_id = array($user_id);
@@ -161,7 +161,7 @@ class TimeclockAdminModelProjects extends JModel
         foreach ($user_id as $u) {
             $data = array(
                 "id" => $id,
-                "user_id" => $u,
+                "user_id" => (int)$u,
             );
 
             if (!$row->bind($data)) {
@@ -197,7 +197,7 @@ class TimeclockAdminModelProjects extends JModel
 
         $row = $this->getTable("TimeclockUsers");
 
-        $id = JRequest::getVar('id', 0, '', 'int');
+        $id = (int) JRequest::getVar('id', 0, '', 'int');
         $user_id = JRequest::getVar('remove_user_id', array(0), '', 'array');
         if (!is_array($user_id)) {
             $user_id = array($user_id);
@@ -206,7 +206,7 @@ class TimeclockAdminModelProjects extends JModel
         foreach ($user_id as $u) {
             $data = array(
                 "id" => $id,
-                "user_id" => $u,
+                "user_id" => (int)$u,
             );
             // Bind the form fields to the hello table
             if (!$row->bind($data)) {

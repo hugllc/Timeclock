@@ -183,8 +183,8 @@ class TimeclockAdminModelUsers extends JModel
         $ret = true;
         foreach ($id as $p) {
             $data = array(
-                "id" => $p,
-                "user_id" => $user_id,
+                "id" =>(int) $p,
+                "user_id" => (int) $user_id,
             );
 
             if (!$row->bind($data)) {
@@ -225,8 +225,8 @@ class TimeclockAdminModelUsers extends JModel
         $ret = true;
         foreach ($projid as $p) {
             $data = array(
-                "id" => $p,
-                "user_id" => $user_id,
+                "id" => (int)$p,
+                "user_id" => (int)$user_id,
             );
             // Bind the form fields to the hello table
             if (!$row->bind($data)) {

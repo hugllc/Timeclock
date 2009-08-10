@@ -224,17 +224,20 @@ class TimeclockViewReportsBase extends JView
         );
 
         if (!empty($filter_order)) {
-            $this->_orderby = ' ORDER BY '. $db->Quote($filter_order) .' '. $db->Quote($filter_order_Dir);
+            $this->_orderby = ' ORDER BY '.$filter_order
+                             .' '.$filter_order_Dir;
             if (!empty($filter2_order)) {
-                $this->_orderby .= ", ". $db->Quote($filter2_order) .' '. $db->Quote($filter2_order_Dir);
+                $this->_orderby .= ", ".$filter2_order
+                                  .' '.$filter2_order_Dir;
             }
             if (!empty($filter3_order)) {
-                $this->_orderby .= ", ". $db->Quote($filter3_order) .' '. $db->Quote($filter3_order_Dir);
+                $this->_orderby .= ", ".$filter3_order
+                                  .' '. $filter3_order_Dir;
             }
         }
 
         if ($search) {
-            $this->_where[] = 'LOWER(.$db->Quote($search_filter).) LIKE '
+            $this->_where[] = 'LOWER('.$db->NameQuote($search_filter).') LIKE '
                         .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 

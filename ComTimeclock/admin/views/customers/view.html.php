@@ -138,12 +138,12 @@ class TimeclockAdminViewCustomers extends JView
             }
         }
         if ($search) {
-            $where[] = 'LOWER(t.'.$search_filter.') LIKE '
+            $where[] = 'LOWER('.$search_filter.') LIKE '
                        .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+        $orderby = ' ORDER BY '. $filter_order.' '.$filter_order_Dir;
 
         $rows = $model->getCustomers($where, $limitstart, $limit, $orderby);
         $total = $model->countCustomers($where);
