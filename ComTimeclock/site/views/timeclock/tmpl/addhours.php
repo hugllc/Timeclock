@@ -133,9 +133,11 @@ foreach ($this->projects as $cat) {
             if ($wCompEnabled) {
                 $var = "hours".$i;
                 $wcVar = "wcCode".$i;
-                if ($proj->$wcVar == 0) continue;
-                $wcName = empty($wCompCodes[$proj->$wcVar]) ? $proj->$wcVar : $wCompCodes[$proj->$wcVar] ;
                 $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0;
+                if (($proj->$wcVar == 0) && ($hours == 0)) {
+                    continue;
+                }
+                $wcName = empty($wCompCodes[$proj->$wcVar]) ? "Unknown[".$i."]" : $wCompCodes[$proj->$wcVar] ;
             } else {
                 if ($i > 1) break;
                 $var = "hours1";
