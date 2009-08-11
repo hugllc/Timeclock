@@ -157,6 +157,17 @@
             <filename>views/users/tmpl/default.php</filename>
             <filename>views/users/tmpl/form.php</filename>
             <filename>views/users/view.html.php</filename>
+            <filename>modules/index.html</filename>
+            <filename>modules/mod_timeclockmenu/mod_timeclockmenu.xml</filename>
+            <filename>modules/mod_timeclockmenu/mod_timeclockmenu.php</filename>
+            <filename>modules/mod_timeclockmenu/index.html</filename>
+            <filename>modules/mod_timeclockmenu/tmpl/default.php</filename>
+            <filename>modules/mod_timeclockmenu/tmpl/index.html</filename>
+            <filename>modules/mod_timeclockinfo/mod_timeclockinfo.xml</filename>
+            <filename>modules/mod_timeclockinfo/mod_timeclockinfo.php</filename>
+            <filename>modules/mod_timeclockinfo/index.html</filename>
+            <filename>modules/mod_timeclockinfo/tmpl/default.php</filename>
+            <filename>modules/mod_timeclockinfo/tmpl/index.html</filename>
         </files>
     </administration>
 </install>

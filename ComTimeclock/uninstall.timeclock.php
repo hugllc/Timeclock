@@ -46,5 +46,16 @@ function Com_uninstall()
     $database =& JFactory::getDBO();
     $adminDir = dirname(__FILE__);
 
+    // Move the modules back to the component so they get deleted with everything
+    foreach (array("mod_timeclockmenu") as $file) {
+        $to   = $adminDir.DS."modules".DS.$file;
+        $from = JPATH_ROOT.DS."modules".DS.$file;
+        rename($from, $to);
+    }
+    $database->setQuery(
+        "DELETE FROM `#__modules` WHERE `module`='mod_timeclockmenu';"
+    );
+    $database->query();
+
 }
 ?>

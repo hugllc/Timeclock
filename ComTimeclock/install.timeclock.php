@@ -47,6 +47,23 @@ function Com_install()
     $database =& JFactory::getDBO();
     $adminDir = dirname(__FILE__);
 
+    foreach (array("mod_timeclockmenu") as $file) {
+        $from = $adminDir.DS."modules".DS.$file;
+        $to   = JPATH_ROOT.DS."modules".DS.$file;
+        rename($from, $to);
+    }
+    $database->setQuery(
+        "INSERT INTO `jos_modules` (`title`, `content`, `ordering`,
+        `position`, `checked_out`, `checked_out_time`, `published`, `module`,
+        `numnews`, `access`, `showtitle`, `params`,
+        `iscore`, `client_id`, `control`)
+        VALUES ('Timeclock Menu', '', 1,
+        'left', 0, '0000-00-00 00:00:00', 1, 'mod_timeclockmenu',
+        0, 0, 1, '',
+        1, 0, '');"
+    );
+    $result = $database->query();
+
     $sql_files = array(
         "timeclock_customers",
         "timeclock_prefs",
@@ -54,6 +71,8 @@ function Com_install()
         "timeclock_timesheet",
         "timeclock_users",
     );
+    $debug = $database->get("_debug");
+    $database->debug(0);
     foreach ($sql_files as $file) {
         $sql = file_get_contents($adminDir.DS."install".DS.$file.".sql");
         $q = explode(";", $sql);
@@ -64,6 +83,7 @@ function Com_install()
             }
         }
     }
+    $database->debug($debug);
 
 }
 
