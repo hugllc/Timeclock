@@ -47,7 +47,7 @@ function Com_uninstall()
     $adminDir = dirname(__FILE__);
 
     // Move the modules back to the component so they get deleted with everything
-    foreach (array("mod_timeclockmenu", "mod_timeclockinfo") as $file) {
+    foreach (array("mod_timeclockinfo") as $file) {
         $to   = $adminDir.DS."modules".DS.$file;
         $from = JPATH_ROOT.DS."modules".DS.$file;
         rename($from, $to);
