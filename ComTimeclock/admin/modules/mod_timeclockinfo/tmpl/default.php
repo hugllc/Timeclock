@@ -44,7 +44,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 foreach ($stuff as $item => $value) {
-    print "<strong>".$item.":</strong> ".$value."<br />\n";
+    print "<strong>".JText::_($item).":</strong> ".$value."<br />\n";
 }
 
 ?>

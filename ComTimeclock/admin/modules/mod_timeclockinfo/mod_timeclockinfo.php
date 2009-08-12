@@ -47,8 +47,12 @@ defined('_JEXEC') or die('Restricted access');
 // Include the helper function
 require_once (dirname(__FILE__).DS.'helper.php');
 
+$params->def('showYTDHours', 1);
+$params->def('showHoursPerWeek', 1);
+$params->def('showNextHoliday', 1);
 
-$stuff = modTimeclockInfoHelper::getDisplay();
+
+$stuff = modTimeclockInfoHelper::getDisplay($params);
 
 require(JModuleHelper::getLayoutPath('mod_timeclockinfo'));
 

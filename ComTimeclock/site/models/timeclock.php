@@ -702,6 +702,27 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
+    function getNextHoliday($where=1)
+    {
+        $key = urlencode(date("Ymd").$where);
+        if (!isset($this->_holidays[$key])) {
+            $query = $this->sqlQuery("0", $where);
+            $ret = $this->_getList($query);
+            if (!is_array($ret)) {
+                $this->_holidays[$key] = false;
+            } else {
+                $this->_holidays[$key] = $ret[0]->worked;
+            }
+        }
+        return $this->_holidays[$key];
+    }
+
+
+    /**
+     * Method to display the view
+     *
+     * @return string
+     */
     function daysSinceStart($id=null)
     {
         if  (empty($id)) {

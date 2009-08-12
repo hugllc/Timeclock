@@ -50,7 +50,12 @@ require_once $path.DS."models".DS."timeclock.php";
 
 class modTimeclockInfoHelper
 {
-    public function getDisplay()
+    /**
+    *  Sets the stuff to display for this module
+    *
+    * @param object $params The module parameters
+    */
+    public function getDisplay($params)
     {
         $list = array();
 
@@ -58,13 +63,26 @@ class modTimeclockInfoHelper
 
         $timeclockModel =& JModel::getInstance("Timeclock", "TimeclockModel");
         $ytdWhere = " `t`.`worked` >= '".date("Y")."-1-1'";
-        $list["YTD Hours"] = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
+        $ytdhours = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
+        if ($params->get("showYTDHours") == 1) {
+            $list["YTD Hours"] = $ytdhours;
+        }
         $days = $timeclockModel->daysSinceStart();
         if ($days > date("z")) {
             $days = date("z");
         }
         $week = $days/7;
-        $list["Hours/Week"] = round($list["YTD Hours"] / $week, $decimalPlaces);
+        if ($params->get("showHoursPerWeek") == 1) {
+            $list["Hours/Week"] = round($ytdhours / $week, $decimalPlaces);
+        }
+        $nextHoliday = $timeclockModel->getNextHoliday();
+        if ($nextHoliday == false) {
+            $nextHoliday = "None";
+        }
+        if ($params->get("showNextHoliday") == 1) {
+            $list["Next Holiday"] = JHTML::_('date', $nextHoliday, JText::_('DATE_FORMAT_LC'));
+        }
+
 
         // Do stuff here
         return $list;

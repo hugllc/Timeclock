@@ -49,6 +49,11 @@ foreach ($this->period["dates"] as $key => $uDate) {
     $hours               = ($this->hours[$this->proj->id][$key]) ? $this->hours[$this->proj->id][$key]['hours'] : 0;
     $rowtotal           += $hours;
     $dtotal             += $hours;
+    if (($this->proj->type == "HOLIDAY") && ($hours > 0)) {
+        $holidayStyle = "background: ".$this->holiday_background."; color: ".$this->holiday_color.";";
+    } else {
+        $holidayStyle = "";
+    }
     if ($this->proj->noHours || !$this->proj->published || !$this->proj->mine || !$this->cat->published) {
         $tip                = $this->hours[$this->proj->id][$key]['notes'];
         $link = ($hours == 0) ? $hours : JHTML::_('tooltip', $tip, "Notes", '', " $hours ", $url);
@@ -65,7 +70,7 @@ foreach ($this->period["dates"] as $key => $uDate) {
         $link = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
     }
     ?>
-        <td style="<?php print $this->cellStyle;?>">
+        <td style="<?php print $this->cellStyle." ".$holidayStyle;?>">
             <?php print $link; ?>
         </td>
     <?php

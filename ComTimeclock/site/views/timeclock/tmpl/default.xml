@@ -11,6 +11,8 @@
         <params>
             <param name="today_background" type="text" default="#00FF00" label="Today Background" description="Mark today with this color in the background" />
             <param name="today_color" type="text" default="black" label="Today Foreground" description="Mark today with this color in the foreground" />
+            <param name="holiday_background" type="text" default="#FF0000" label="Holiday Background" description="Mark holidays with this color in the background" />
+            <param name="holiday_color" type="text" default="black" label="Today Foreground" description="Mark holidays with this color in the foreground" />
         </params>
     </state>
 </metadata>

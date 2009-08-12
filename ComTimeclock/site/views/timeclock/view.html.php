@@ -106,9 +106,13 @@ class TimeclockViewTimeclock extends JView
         }
         $today_color      = $this->_params->get("today_color");
         $today_background = $this->_params->get("today_background");
+        $holiday_color      = $this->_params->get("holiday_color");
+        $holiday_background = $this->_params->get("holiday_background");
 
         $this->assignRef("today_color", $today_color);
         $this->assignRef("today_background", $today_background);
+        $this->assignRef("holiday_color", $holiday_color);
+        $this->assignRef("holiday_background", $holiday_background);
         $this->assignRef("period", $period);
 
         parent::display($tpl);
