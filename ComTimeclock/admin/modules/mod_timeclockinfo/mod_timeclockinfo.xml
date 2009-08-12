@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0">
-	<name>Timeclock Menu</name>
+	<name>Timeclock Info</name>
 	<author>Scott Price</author>
 	<creationDate>08 11 2009</creationDate>
 	<copyright>
@@ -10,10 +10,10 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>prices@hugllc.com</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>0.1</version>
+	<version>-</version>
 	<description>Displays a timeclock menu.</description>
 	<files>
-		<filename module="mod_mainmenu">mod_mainmenu.php</filename>
+		<filename module="mod_timeclockinfo">mod_timeclockinfo.php</filename>
 	</files>
 	<params>
 		<param name="menutype" type="mos_menu" default="" label="Menu Name" description="The name of the menu (default is mainmenu)" />

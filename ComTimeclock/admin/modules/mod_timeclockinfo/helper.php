@@ -43,8 +43,18 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-foreach ($stuff as $item => $value) {
-    print "<strong>".$item.":</strong> ".$value."<br />\n";
+class modTimeclockInfoHelper
+{
+    public function getDisplay()
+    {
+        $list = array("Test" => 45);
+        // Do stuff here
+        return $list;
+
+    }
+
+
 }
+
 
 ?>

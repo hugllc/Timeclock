@@ -1,42 +1,55 @@
 <?php
 /**
-* @version		$Id: mod_mainmenu.php 10381 2008-06-01 03:35:53Z pasamio $
-* @package		Joomla
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * This component is the user interface for the endpoints
+ *
+ * PHP Version 5
+ *
+ * This module was copied and modified from mod_stats.  That is the reason for
+ * the OSM Copyright.
+ *
+ * <pre>
+ * mod_timeclockinfo is a Joomla! 1.5 module
+ * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2009 Scott Price
+ * Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   UI
+ * @package    ComHUGnet
+ * @subpackage Com_HUGnet
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @copyright  Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$
+ * @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
+ */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-// Include the syndicate functions only once
+// Include the helper function
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$params->def('menutype', 			'mainmenu');
-$params->def('class_sfx', 			'');
-$params->def('menu_images', 		0);
-$params->def('menu_images_align', 	0);
-$params->def('expand_menu', 		0);
-$params->def('activate_parent', 	0);
-$params->def('indent_image', 		0);
-$params->def('indent_image1', 		'indent1.png');
-$params->def('indent_image2', 		'indent2.png');
-$params->def('indent_image3', 		'indent3.png');
-$params->def('indent_image4', 		'indent4.png');
-$params->def('indent_image5', 		'indent5.png');
-$params->def('indent_image6', 		'indent.png');
-$params->def('spacer', 				'');
-$params->def('end_spacer', 			'');
-$params->def('full_active_id', 		0);
 
-// Added in 1.5
-$params->def('startLevel', 			0);
-$params->def('endLevel', 			0);
-$params->def('showAllChildren', 	0);
+$stuff = modTimeclockInfoHelper::getDisplay();
 
-require(JModuleHelper::getLayoutPath('mod_mainmenu'));
+require(JModuleHelper::getLayoutPath('mod_timeclockinfo'));
+
+?>

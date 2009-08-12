@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_HUGnet is a Joomla! 1.5 component
+ * com_timeclock is a Joomla! 1.5 component
  * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
  * Copyright 2009 Scott Price
  *
@@ -47,15 +47,15 @@ function Com_uninstall()
     $adminDir = dirname(__FILE__);
 
     // Move the modules back to the component so they get deleted with everything
-    foreach (array("mod_timeclockmenu") as $file) {
+    foreach (array("mod_timeclockmenu", "mod_timeclockinfo") as $file) {
         $to   = $adminDir.DS."modules".DS.$file;
         $from = JPATH_ROOT.DS."modules".DS.$file;
         rename($from, $to);
+        $database->setQuery(
+            "DELETE FROM `#__modules` WHERE `module`='".$file."';"
+        );
+        $database->query();
     }
-    $database->setQuery(
-        "DELETE FROM `#__modules` WHERE `module`='mod_timeclockmenu';"
-    );
-    $database->query();
 
 }
 ?>

@@ -4,14 +4,10 @@
  *
  * PHP Version 5
  *
- * This module was copied and modified from mod_stats.  That is the reason for
- * the OSM Copyright.
- *
  * <pre>
- * mod_timeclockinfo is a Joomla! 1.5 module
+ * com_timeclock is a Joomla! 1.5 component
  * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
- * Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * Copyright 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -43,8 +39,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-foreach ($stuff as $item => $value) {
-    print "<strong>".$item.":</strong> ".$value."<br />\n";
+class modTimeclockMenuHelper
+{
+
+
+
 }
+
 
 ?>

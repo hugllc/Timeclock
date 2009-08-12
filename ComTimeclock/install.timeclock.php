@@ -47,7 +47,7 @@ function Com_install()
     $database =& JFactory::getDBO();
     $adminDir = dirname(__FILE__);
 
-    foreach (array("mod_timeclockmenu") as $file) {
+    foreach (array("mod_timeclockmenu", "mod_timeclockinfo") as $file) {
         $from = $adminDir.DS."modules".DS.$file;
         $to   = JPATH_ROOT.DS."modules".DS.$file;
         rename($from, $to);
@@ -57,8 +57,19 @@ function Com_install()
         `position`, `checked_out`, `checked_out_time`, `published`, `module`,
         `numnews`, `access`, `showtitle`, `params`,
         `iscore`, `client_id`, `control`)
-        VALUES ('Timeclock Menu', '', 1,
+        VALUES ('Timeclock Menu', '', 101,
         'left', 0, '0000-00-00 00:00:00', 1, 'mod_timeclockmenu',
+        0, 0, 1, '',
+        1, 0, '');"
+    );
+    $result = $database->query();
+    $database->setQuery(
+        "INSERT INTO `jos_modules` (`title`, `content`, `ordering`,
+        `position`, `checked_out`, `checked_out_time`, `published`, `module`,
+        `numnews`, `access`, `showtitle`, `params`,
+        `iscore`, `client_id`, `control`)
+        VALUES ('Timeclock Information', '', 101,
+        'left', 0, '0000-00-00 00:00:00', 1, 'mod_timeclockinfo',
         0, 0, 1, '',
         1, 0, '');"
     );
@@ -71,6 +82,8 @@ function Com_install()
         "timeclock_timesheet",
         "timeclock_users",
     );
+    // If debug is on under certain conditions this will crash because a query
+    // failed.  This prevents that from happening.
     $debug = $database->get("_debug");
     $database->debug(0);
     foreach ($sql_files as $file) {
@@ -83,6 +96,7 @@ function Com_install()
             }
         }
     }
+    // Set debug back to what it was.
     $database->debug($debug);
 
 }
