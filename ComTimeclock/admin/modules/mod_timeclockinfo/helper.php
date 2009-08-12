@@ -42,12 +42,30 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+$path = JPATH_ROOT.DS."components".DS."com_timeclock";
+
+require_once $path.DS."models".DS."timeclock.php";
+
+
 
 class modTimeclockInfoHelper
 {
     public function getDisplay()
     {
-        $list = array("Test" => 45);
+        $list = array();
+
+        $decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+
+        $timeclockModel =& JModel::getInstance("Timeclock", "TimeclockModel");
+        $ytdWhere = " `t`.`worked` >= '".date("Y")."-1-1'";
+        $list["YTD Hours"] = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
+        $days = $timeclockModel->daysSinceStart();
+        if ($days > date("z")) {
+            $days = date("z");
+        }
+        $week = $days/7;
+        $list["Hours/Week"] = round($list["YTD Hours"] / $week, $decimalPlaces);
+
         // Do stuff here
         return $list;
 

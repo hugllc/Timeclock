@@ -39,10 +39,16 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /** Include the project stuff */
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'users.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'customers.php';
-require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
+
+$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
+$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+
+require_once $adminbase.DS.'models'.DS.'users.php';
+require_once $adminbase.DS.'tables'.DS.'timeclockprefs.php';
+require_once $adminbase.DS.'models'.DS.'projects.php';
+require_once $adminbase.DS.'models'.DS.'customers.php';
+require_once $base.DS.'tables'.DS.'timeclocktimesheet.php';
+require_once $base.DS.'controller.php';
 
 /**
  * ComTimeclock model
@@ -664,6 +670,48 @@ class TimeclockModelTimeclock extends JModel
         }
         return $data;
     }
+    /**
+     * Method to display the view
+     *
+     * @return string
+     */
+    function getTotal($where)
+    {
+        $key = urlencode($where);
+        if (!isset($this->_totals[$key])) {
+            $query = "SELECT t.*,
+                    SUM(t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
+                    as hours
+                    FROM #__timeclock_timesheet as t
+                    WHERE t.created_by = ".$this->_db->Quote($this->_id);
+            if (!empty($where)) {
+                $query .= " AND ".$where;
+            }
+            $ret = $this->_getList($query);
+            if (!is_array($ret)) {
+                $this->_totals[$key] = 0;
+            } else {
+                $this->_totals[$key] = $ret[0]->hours;
+            }
+        }
+        return $this->_totals[$key];
+    }
+
+    /**
+     * Method to display the view
+     *
+     * @return string
+     */
+    function daysSinceStart($id=null)
+    {
+        if  (empty($id)) {
+            $id = $this->_id;
+        }
+        $start = TableTimeclockPrefs::getPref("startDate", "user", $id);
+        $diff = time() - strtotime($start);
+        return $diff/86400;
+    }
+
 
 
     /**
@@ -680,6 +728,9 @@ class TimeclockModelTimeclock extends JModel
         if (empty($date)) {
             return false;
         }
+        // This makes the totals recompute
+        unset($this->_totals);
+
         $ret = true;
         foreach ($timesheet as $data) {
             $htotal = 0;
