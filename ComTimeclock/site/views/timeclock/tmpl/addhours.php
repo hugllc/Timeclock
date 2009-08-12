@@ -129,8 +129,16 @@ foreach ($this->projects as $cat) {
             </td>
         </tr>
         <?php
+        // Check for any codes
+        $code = false;
+        for ($i = 1; $i < 7; $i++) {
+            $var = "hours".$i;
+            $wcVar = "wcCode".$i;
+            $code |= (($proj->$var > 0) || ($proj->$wcVar != 0));
+        }
+        // Now do something about the codes
         for ($i = 1; $i < 7; $i++):
-            if ($wCompEnabled) {
+            if (($wCompEnabled) && ($code)) {
                 $var = "hours".$i;
                 $wcVar = "wcCode".$i;
                 $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0;
