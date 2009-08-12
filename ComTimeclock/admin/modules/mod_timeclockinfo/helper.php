@@ -61,11 +61,13 @@ class modTimeclockInfoHelper
 
         $decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
 
+        $user =& JFactory::getUser();
         $timeclockModel =& JModel::getInstance("Timeclock", "TimeclockModel");
+        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
         $ytdWhere = " `t`.`worked` >= '".date("Y")."-1-1'";
         $ytdhours = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
         if ($params->get("showYTDHours") == 1) {
-            $list["YTD Hours"] = $ytdhours;
+            $list["YTD"] = $ytdhours." hours";
         }
         $days = $timeclockModel->daysSinceStart();
         if ($days > date("z")) {
@@ -83,11 +85,18 @@ class modTimeclockInfoHelper
             $list["Next Holiday"] = JHTML::_('date', $nextHoliday, JText::_('DATE_FORMAT_LC'));
         }
 
+        $ptoWhere = " `p`.`type` = 'PTO'";
+        $pto = round($timeclockModel->getTotal($ptoWhere), $decimalPlaces);
+        $ptoYTD = round($userModel->getPTO($user->get("id")), $decimalPlaces);
+        if ($params->get("showPTO") == 1) {
+            $list["PTO"] = $pto."/".$ptoYTD." hours";
+        }
 
         // Do stuff here
         return $list;
 
     }
+
 
 
 }

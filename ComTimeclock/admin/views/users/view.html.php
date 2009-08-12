@@ -82,6 +82,7 @@ class TimeclockAdminViewUsers extends JView
     {
         global $mainframe, $option;
         $model = $this->getModel("Users");
+        $timeclockModel =& JModel::getInstance("Timeclock", "TimeclockModel");
 
         $db =& JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
@@ -147,6 +148,11 @@ class TimeclockAdminViewUsers extends JView
 
         $rows = $model->getUsers($where, $limitstart, $limit, $orderby);
         $total = $model->countUsers($where);
+
+        foreach ($rows as $k => $row) {
+            $rows[$k]->pto = round($timeclockModel->getTotal(" `p`.`type` = 'PTO'", $row->id), $decimalPlaces);
+            $rows[$k]->ptoYTD = round($model->getPTO($row->id), $decimalPlaces);
+        }
 
         jimport('joomla.html.pagination');
         $pagination = new JPagination($total, $limitstart, $limit);

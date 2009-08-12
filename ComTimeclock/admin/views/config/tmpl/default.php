@@ -137,6 +137,95 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
     </table>
 <?php
     echo $pane->endPanel();
+    echo $pane->startPanel(JText::_("Paid Time Off"), "pto-pane");
+?>
+    <table class="admintable">
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="firstPayPeriodStart">
+                    <?php echo JText::_('Accrue PTO'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.booleanList", "prefs[ptoEnable]", "", $this->prefs["ptoEnable"]); ?>
+            </td>
+            <td>
+                Select whether timeclock should keep track of PTO accrual.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key" style="vertical-align: top;">
+                <label for="userTypes">
+                    <?php echo JText::_('Accrual Rates'); ?>:
+                </label>
+            </td>
+            <td>
+                <textarea class="text_area" type="text" name="prefs[ptoAccrualRates]" id="prefs_ptoAccrualRates" cols="50" rows="10"><?php echo $this->prefs["ptoAccrualRates"];?></textarea>
+            </td>
+            <td>
+                The first line is a colon separated list of user types.  Every line
+                after that each line is a colon separated list:
+                <pre>
+[years of service]:[accrual rate for 1st type]:[accrual rate for 2nd type]...
+                </pre>
+                The service is in years.  The accrual rates are in days per year.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="ptoAccrualWait">
+                    <?php echo JText::_('Days Before Accrual Begins'); ?>:
+                </label>
+            </td>
+            <td>
+                <input class="text_area" type="text" size="10" maxlength="100" name="prefs[ptoAccrualWait]" id="prefs_ptoAccrualWait" value="<?php echo $this->prefs["ptoAccrualWait"];?>" />
+            </td>
+            <td>
+                This is the number of days an employee has to work before PTO shows up.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="ptoHoursPerDay">
+                    <?php echo JText::_('PTO Hours / Day'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.integerList", 1, 24, 1, "prefs[ptoHoursPerDay]", "", $this->prefs["ptoHoursPerDay"]); ?>
+            </td>
+            <td>
+                How many PTO hours does the user get per day listed above.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="ptoAccrualPeriod">
+                    <?php echo JText::_('Accrual Period'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->ptoAccrualPeriodOptions, "prefs[ptoAccrualPeriod]", "", 'value', 'text', $this->prefs["ptoAccrualPeriod"]); ?>
+            </td>
+            <td>
+                The user gets PTO hours periodically on this time frame
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="ptoAccrualTime">
+                    <?php echo JText::_('Accrual Time'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->ptoAccrualTimeOptions, "prefs[ptoAccrualTime]", "", 'value', 'text', $this->prefs["ptoAccrualTime"]); ?>
+            </td>
+            <td>
+                When during the period is the time accrued
+            </td>
+        </tr>
+    </table>
+<?php
+    echo $pane->endPanel();
     echo $pane->startPanel(JText::_("Worker's Compensation"), "wcomp-pane");
 ?>
     <table class="admintable">

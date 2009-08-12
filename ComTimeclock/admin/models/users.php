@@ -38,6 +38,11 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
+$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
+$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+
+require_once $base.DS.'models'.DS.'timeclock.php';
+
 /**
  * ComTimeclock model
  *
@@ -354,6 +359,7 @@ class TimeclockAdminModelUsers extends JModel
         }
     }
 
+
     /**
      * Get projects for a user
      *
@@ -427,6 +433,185 @@ class TimeclockAdminModelUsers extends JModel
             $ret[] = JHTML::_("select.option", $val->id, $val->name);
         }
         return $ret;
+    }
+
+    /**
+     * Gets select options for parent projects
+     *
+     * @param int $oid The user to get the PTO for.
+     * @param string $date The date to check
+     *
+     * @return array
+     */
+    function getPTO($oid, $date=null)
+    {
+        if (empty($date)) {
+            $date = date("Y-m-d");
+        }
+        $period = TableTimeclockPrefs::getPref("ptoAccrualPeriod", "system");
+        $wait = TableTimeclockPrefs::getPref("ptoAccrualWait", "system");
+        $dailyHours = (int)TableTimeclockPrefs::getPref("ptoHoursPerDay", "system");
+        $ret = 0;
+        $service = self::getServiceLength($oid, $date);
+        if (($wait/365.25) > $service) {
+            return 0;
+        }
+        switch($period) {
+        case "week":
+            $ret = self::_getPTOWeek($oid, $date);
+            break;
+        case "month":
+            $ret = self::_getPTOMonth($oid, $date);
+            break;
+        case "year":
+            $ret = self::_getPTOYear($oid, $date);
+            break;
+        }
+        return $ret * $dailyHours;
+    }
+
+    /**
+    * Gets select options for parent projects
+    *
+    * @param int $oid The user to get the PTO for.
+     * @param string $date The date to check
+    *
+    * @return array
+    */
+    function _getPTOWeek($oid, $date=null)
+    {
+        $accTime = (int)TableTimeclockPrefs::getPref("ptoAccrualTime", "system");
+        $date = strtotime($date);
+        $weeks = round(date("z", $date)/7, 0);
+        $weeks += $accTime;
+        $hours = 0;
+        for ($i = 0; $i < $weeks; $i++) {
+            $time = mktime(6, 0, 0, 1, 1+($i * 7), date("Y", $date));
+            $hours += self::getPTOAccrualRate($id, $time) / 52;
+        }
+        return $hours;
+    }
+    /**
+    * Gets select options for parent projects
+    *
+    * @param int $oid The user to get the PTO for.
+     * @param string $date The date to check
+    *
+    * @return array
+    */
+    function _getPTOMonth($oid, $date=null)
+    {
+        $accTime = (int)TableTimeclockPrefs::getPref("ptoAccrualTime", "system");
+        $date = strtotime($date);
+        $months = date("m", $date);
+        $months += $accTime;
+        $hours = 0;
+        for ($i = 1; $i <= $months; $i++) {
+            $time = mktime(6, 0, 0, $i, 1, date("Y", $date));
+            $hours += self::getPTOAccrualRate($id, $time) / 12;
+        }
+        return $hours;
+    }
+
+    /**
+    * Gets select options for parent projects
+    *
+    * @param int $oid The user to get the PTO for.
+     * @param string $date The date to check
+    *
+    * @return array
+    */
+    function _getPTOYear($oid, $date=null)
+    {
+        $date = strtotime($date);
+        $time = mktime(6, 0, 0, 1, 1, date("Y", $date));
+        $hours += self::getPTOAccrualRate($id, $time);
+
+        return $hours;
+    }
+
+    /**
+     * Gets the perc of holiday pay this user should get
+     *
+     * @param int    $id   The user id to check
+     * @param string $date The date to check
+     *
+     * @return int
+     */
+    function getPTOAccrualRate($id, $date)
+    {
+        static $rate;
+        $key = $id.$date;
+        $rates = TableTimeclockPrefs::getPref("ptoAccrualRates", "system");
+        $service = self::getServiceLength($oid, $date);
+        $status = self::getStatus($id, $date);
+
+        if (!is_array($rates[$status])) {
+            return 0;
+        }
+        foreach($rates[$status] as $s => $r) {
+            if ($service < $s) {
+                return $r;
+            }
+        }
+        return $r;
+    }
+
+    /**
+     * Gets the perc of holiday pay this user should get
+     *
+     * @param int    $id   The user id to check
+     * @param string $date The date to check
+     *
+     * @return int
+     */
+    function getStatus($id, $date)
+    {
+        static $status;
+        $key = $id.$date;
+        if (!isset($status[$key])) {
+            $hist = TableTimeclockPrefs::getPref("history", "user", $id);
+            if (is_array($hist["admin_status"])) {
+                ksort($hist["admin_status"]);
+                foreach ($hist["admin_status"] as $d => $r) {
+                    if (TimeclockController::compareDates($date, $d) < 0) {
+                        $status[$key] = $r;
+                        break;
+                    }
+                }
+            }
+            if (!isset($status[$key])) {
+                $status[$key] = TableTimeclockPrefs::getPref(
+                    "admin_status",
+                    "user",
+                    $id
+                );
+            }
+        }
+        return $status[$key];
+    }
+
+    /**
+     * Gets select options for parent projects
+     *
+     * @param int $oid The user to get the PTO for.
+     *
+     * @return array
+     */
+    function getServiceLength($oid, $date=null)
+    {
+        if (empty($date)) {
+            $date = time();
+        } else if (!is_numeric($date)) {
+            $date = strtotime($date);
+        }
+        $start = TableTimeclockPrefs::getPref("startDate", "user", $oid);
+        $start = strtotime($start);
+        if ($date < $start) {
+            return 0;
+        }
+        $length = $date - $start;
+        return $length / (60*60*24*365.25);
     }
 
 }

@@ -673,17 +673,24 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Method to display the view
      *
+     * @param string $where The where clause to use
+     * @param int    $id    The user id to use
+     *
      * @return string
      */
-    function getTotal($where)
+    function getTotal($where, $id=null)
     {
-        $key = urlencode($where);
+        if (empty($id)) {
+            $id = $this->_id;
+        }
+        $key = urlencode($id.$where);
         if (!isset($this->_totals[$key])) {
-            $query = "SELECT t.*,
+            $query = "SELECT
                     SUM(t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
                     as hours
                     FROM #__timeclock_timesheet as t
-                    WHERE t.created_by = ".$this->_db->Quote($this->_id);
+                    LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
+                    WHERE t.created_by = ".$this->_db->Quote($id);
             if (!empty($where)) {
                 $query .= " AND ".$where;
             }

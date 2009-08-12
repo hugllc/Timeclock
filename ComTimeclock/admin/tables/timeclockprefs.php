@@ -109,6 +109,11 @@ class TableTimeclockPrefs extends JTable
             "timeclockDisableMessage" =>
                 "The timeclock system is currently down for maintenance.  Please try again later.",
             "userTypes" => "FULLTIME:Full Time\nPARTTIME:Part Time\nCONTRACTOR:Contractor\nTEMPORARY:Temporary\nTERMINATED:Terminated\nRETIRED:Retired\nUNPAID:Unpaid Leave",
+            "ptoHoursPerDay" => 8,
+            "ptoEnable" => 0,
+            "ptoAccrualPeriod" => "week",
+            "ptoAccrualTime" => "end",
+            "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:10:5\n6:15:7.5\n21:20:10\n99:25:12.5",
         ),
         "user" => array(
             "admin_holidayperc" => 100,
@@ -399,6 +404,36 @@ class TableTimeclockPrefs extends JTable
         }
         return $ret;
     }
+    /**
+     * Filter
+     *
+     * @param string $value The string to parse
+     *
+     * @return array
+     */
+    function filterPrefPtoAccrualRates($value)
+    {
+        $enabled = self::getPref("ptoEnable", "system");
+        if (!$enabled) {
+            return array();
+        }
+        $ret = array();
+
+        foreach (explode("\n", $value) as $line) {
+            $line = trim($line);
+            if (!isset($keys)) {
+                $keys = explode(":", $line);
+            } else {
+                $line = explode(":", $line);
+                foreach($keys as $k => $name) {
+                    $ret[$name][$line[0]] = $line[$k+1];
+                }
+            }
+        }
+        return $ret;
+    }
+
+
 
     /**
      * Sets preferences
