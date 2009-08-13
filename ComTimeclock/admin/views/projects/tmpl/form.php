@@ -216,6 +216,9 @@ if ($this->lists["wCompEnable"] != 0) {
             </td>
             <td>
                 The worker's comp codes.  Each code will be listed as a separate hours entry in the timeclock.
+                <strong>Make sure you know what you are doing if you change these.  Time is stored
+                in one of six slots.  If you change the worker's comp code on that slot it will
+                change everything in the past and future that is attached to that slot.</strong>
             </td>
         </tr>
     <?php
