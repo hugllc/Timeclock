@@ -134,18 +134,22 @@ foreach ($this->projects as $cat) {
         for ($i = 1; $i < 7; $i++) {
             $var = "hours".$i;
             $wcVar = "wcCode".$i;
-            $code |= (($proj->$var > 0) || ($proj->$wcVar != 0));
+            $code |= (($proj->$var > 0) || ($proj->$wcVar > 0));
         }
         // Now do something about the codes
         for ($i = 1; $i < 7; $i++):
+            $wcNote = "";
             if (($wCompEnabled) && ($code)) {
                 $var = "hours".$i;
                 $wcVar = "wcCode".$i;
                 $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0;
-                if (($proj->$wcVar == 0) && ($hours == 0)) {
+                if (($proj->$wcVar <= 0) && ($hours == 0)) {
                     continue;
                 }
-                $wcName = empty($wCompCodes[$proj->$wcVar]) ? "Unknown[".$i."]" : $wCompCodes[$proj->$wcVar] ;
+                $wcName = empty($wCompCodes[abs($proj->$wcVar)]) ? JText::_("Unknown")."[".$i."]" : $wCompCodes[abs($proj->$wcVar)];
+                if ($proj->$wcVar < 0) {
+                    $wcNote = JText::_('No New Hours');
+                }
             } else {
                 if ($i > 1) break;
                 $var = "hours1";
@@ -163,6 +167,7 @@ foreach ($this->projects as $cat) {
             </th>
             <td>
                 <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="<?php print $hoursId; ?>" onBlur="calculateHourTotal();" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
+                <span><?php print $wcNote; ?></span>
             </td>
             <td>
                 <?php print JText::_("Hours worked."); ?>

@@ -642,7 +642,7 @@ class TimeclockViewReportsBase extends JView
                 $wcVar = "wcCode".$i;
                 $hours = $d->$var;
                 $user  = $d->author;
-                $code  = $d->$wcVar;
+                $code  = abs($d->$wcVar);
                 if (empty($code)) {
                     continue;
                 }

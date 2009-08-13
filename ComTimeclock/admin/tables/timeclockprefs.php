@@ -366,8 +366,10 @@ class TableTimeclockPrefs extends JTable
         $v = explode("\n", $value);
         foreach ($v as $line) {
             $line = trim($line);
-            $key = substr($line, 0, 4);
-            $val = substr($line, 4);
+            $line = explode(" ", $line);
+            $key = abs($line[0]);
+            unset($line[0]);
+            $val = implode(" ", $line);
             $ret[(int)$key] = $val;
         }
         return $ret;

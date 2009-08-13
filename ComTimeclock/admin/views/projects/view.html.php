@@ -246,6 +246,11 @@ class TimeclockAdminViewProjects extends JView
                 $code.": ".htmlspecialchars($desc)
             );
         }
+        $wCompCodeEnOptions = array(
+            JHTML::_("select.option", 1, "enable"),
+            JHTML::_("select.option", 0, "disable"),
+        );
+        $this->assignRef("wCompCodeEnOptions", $wCompCodeEnOptions);
 
         $lists["projectUsers"] = $model->getProjectUsers($cid[0]);
         $uUser = array();

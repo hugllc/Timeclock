@@ -89,11 +89,12 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
             </td>
         </tr>
         <?php for ($i = 1; $i < 7; $i++): ?>
-        <?php $var = "hours".$i; ?>
-        <?php $wcVar = "wcCode".$i; ?>
-        <?php if (($this->project->$wcVar == 0) && ($i > 1)) {continue;} ?>
-        <?php $wcName = empty($wCompCodes[$this->project->$wcVar]) ? "Hours" : $wCompCodes[$this->project->$wcVar] ; ?>
-        <?php $hours = ($this->row->$var) ? $this->row->$var : 0; ?>
+            <?php $var = "hours".$i; ?>
+            <?php $wcVar = "wcCode".$i; ?>
+            <?php if (($this->project->$wcVar == 0) && ($i > 1)) {continue;} ?>
+            <?php $wcName = empty($wCompCodes[abs($this->project->$wcVar)]) ? JText::_("Hours") : $wCompCodes[abs($this->project->$wcVar)] ; ?>
+            <?php $wcNote =($this->project->$wcVar < 0) ? JText::_("Code Currently Disabled") : "" ; ?>
+            <?php $hours = ($this->row->$var) ? $this->row->$var : 0; ?>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="<?php print $var; ?>">
@@ -102,6 +103,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
             </td>
             <td>
                 <input class="text_area" type="text" name="<?php print $var; ?>" id="<?php print $var; ?>" size="10" maxlength="10" value="<?php print $hours; ?>" />
+                <span><?php print $wcNote; ?></span>
             </td>
             <td>
                 The number of hours

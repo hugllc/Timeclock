@@ -276,6 +276,12 @@ class TimeclockAdminModelProjects extends JModel
         $row =& $this->getTable("TimeclockProjects");
         $data = JRequest::get('post');
 
+        for ($i = 1; $i < 7; $i++) {
+            if ($data["wcCode".$i."En"] == 0) {
+                $data["wcCode".$i] *= -1;
+            }
+        }
+
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
             $user =& JFactory::getUser();
