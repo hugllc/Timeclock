@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
             <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
             <?php foreach ($this->totals["cat"] as $cat => $hours) : ?>
             <?php $hours = empty($hours) ? $this->cell_fill : $hours; ?>
-            <?php $perc = round(($hours/$this->total)*100); ?>
+            <?php $perc = round(($hours/$this->total)*100, 1); ?>
             <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
             <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $perc; ?>%</td>
             <?php endforeach; ?>

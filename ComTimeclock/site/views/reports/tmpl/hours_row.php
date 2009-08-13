@@ -34,15 +34,23 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined('_JEXEC') or die('Restricted access');
-    $name =  empty($this->users[$this->userid]) ? $this->userid : $this->users[$this->userid];
-    ?>
+$name =  empty($this->users[$this->userid]) ? $this->userid : $this->users[$this->userid];
+if ($this->report_type == "graph") {
+    $nameRowspan = 2;
+} else {
+    $nameRowspan = 1;
+}
+
+?>
     <tr>
-        <td class="sectiontableheader" align="right" style="<?php print $this->cellStyle; ?>"><?php print $name; ?></td>
+        <td rowspan="<?php print $nameRowspan; ?>" class="sectiontableheader" align="right" style="<?php print $this->cellStyle; ?>">
+            <?php print $name; ?>
+        </td>
     <?php
     $total = $this->totals["user"][$this->userid];
     foreach (array_keys($this->totals["cat"]) as $cat):
         $hours = empty($this->catArray[$cat]) ? $this->cell_fill : $this->catArray[$cat];
-        $perc = ($hours == 0) || ($total == 0) ? $this->cell_fill : round(($hours/$total)*100);
+        $perc = ($hours == 0) || ($total == 0) ? $this->cell_fill : round(($hours/$total)*100, 1);
         if (!empty($perc)) $perc .= "%";
         ?>
         <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
@@ -51,4 +59,8 @@ defined('_JEXEC') or die('Restricted access');
         <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>"><?php print $total; ?></td>
         <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>">100%</td>
     </tr>
+    <?php if ($this->report_type == "graph"): ?>
+        <?php print $this->loadTemplate("rowgraph"); ?>
+        <?php print $this->loadTemplate("header"); ?>
+    <?php endif; ?>
     <?php  $this->k = 1-$this->k; ?>

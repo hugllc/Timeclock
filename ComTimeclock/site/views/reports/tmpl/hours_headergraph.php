@@ -35,24 +35,23 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-$style = "writing-mode: tb-rl; filter: flipv() fliph(); white-space: nowrap; vertical-align: center; height: 1.1em; ";
 ?>
         <tr>
             <td rowspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_("User"); ?>
             </td>
-            <td rowspan="2" class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print JText::_("Graph"); ?></div>
+            <td rowspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+                <?php print JText::_("Graph"); ?>
             </td>
-            <td colspan="2" class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print JText::_("Total"); ?></div>
+            <td colspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+                <?php print JText::_("Total"); ?>
             </td>
         </tr>
         <tr>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print JText::_("Hours"); ?></div>
+                <?php print JText::_("Hours"); ?>
             </td>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print JText::_("%"); ?></div>
+                <?php print JText::_("%"); ?>
             </td>
         </tr>

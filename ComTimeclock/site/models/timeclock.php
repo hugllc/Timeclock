@@ -277,7 +277,8 @@ class TimeclockModelTimeclock extends JModel
             p.wcCode4 as wcCode4, p.wcCode5 as wcCode5, p.wcCode6 as wcCode6,
             t.created_by as created_by, p.name as project_name, p.type as type,
             u.name as author, pc.name as category_name, c.company as company_name,
-            c.name as contact_name, p.id as project_id, u.id as user_id
+            c.name as contact_name, p.id as project_id, u.id as user_id,
+            p.parent_id as category_id
             FROM      #__timeclock_timesheet as t
             LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
             LEFT JOIN #__timeclock_users as j on (j.id = p.id OR p.type != 'HOLIDAY')

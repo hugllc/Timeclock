@@ -482,6 +482,114 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
+
+    function hoursgraph($tpl = null)
+    {
+
+        $model   =& $this->getModel();
+        $this->_reportGetPeriod();
+
+        $this->filter();
+        $this->where();
+
+        $report_type = JRequest::getVar(
+            'report_type',
+            $this->_params->get("report_type"),
+            '',
+            'word'
+        );
+        $this->assignRef("report_type", $report_type);
+
+        $this->_lists["search_options"] = array(
+            JHTML::_('select.option', 't.notes', 'Notes'),
+            JHTML::_('select.option', 't.worked', 'Date Worked'),
+            JHTML::_('select.option', 'p.name', 'Project Name'),
+            JHTML::_('select.option', 'u.name', "User Name"),
+            JHTML::_('select.option', 'pc.name', "Category Name"),
+            JHTML::_('select.option', 'c.company', "Company Name"),
+            JHTML::_('select.option', 'c.name', "Company Contact"),
+        );
+
+        $jpgraph_path = TableTimeclockPrefs::getPref("JPGraphPath", "system");
+        $this->assignRef("jpgraph_path", $jpgraph_path);
+        $width  = (int)JRequest::getInt('graphwidth', 0);
+        $height = (int)JRequest::getInt('graphheight', 0);
+        $this->assignRef("graphwidth", $width);
+        $this->assignRef("graphheight", $height);
+        $doLegend = (bool) JRequest::getInt('dolegend', 1);
+        $this->assignRef("doLegend", $doLegend);
+        $margintop = JRequest::getInt('margintop', 0);
+        $this->assignref("margintop", $margintop);
+        $marginbottom = JRequest::getInt('marginbottom', 0);
+        $this->assignref("marginbottom", $marginbottom);
+        $marginleft = JRequest::getInt('marginleft', 0);
+        $this->assignref("marginleft", $marginleft);
+        $marginright = JRequest::getInt('marginright', 0);
+        $this->assignref("marginright", $marginright);
+
+
+        $this->_hoursgraphGetData();
+
+        $control = $this->_params->get("show_controls");
+        if ($control) {
+            $this->_reportControls();
+        }
+    }
+    /**
+     * The display function
+     *
+     * @return null
+     */
+    function _hoursgraphGetData()
+    {
+        $model    =& $this->getModel();
+        $this->assignRef("cat_id", $cat_id);
+        $user_id = JRequest::getVar('userid', "0", '', 'int');
+        if (!empty($user_id)) {
+            $this->_where[] = "t.created_by = ".(int)$user_id;
+        }
+
+        $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
+
+        $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
+        $report   = array();
+        $cat_name = $this->catBy();
+        $cats = array();
+        $index = 0;
+
+        foreach ($ret as $d) {
+            if ($d->category_id < -1) {
+                continue;
+            }
+            $hours = $d->hours;
+            $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+            if (!isset($cats[$cat])) {
+                $cats[$cat] = $index++;
+            }
+            if (empty($user)) {
+                $user = $d->author;
+            }
+            $data[$cats[$cat]] += $hours;
+        }
+        $cats = array_flip($cats);
+
+        foreach ($cats as $key => $cat) {
+            $cats[$key] = "%.1f%% ".$cat;
+        }
+
+        $this->assignRef("data", $data);
+        $this->assignRef("cats", $cats);
+        $this->assignRef("user", $user);
+
+    }
+
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return null
+     */
     function wcomp($tpl = null)
     {
         $model =& $this->getModel();
@@ -526,7 +634,7 @@ class TimeclockViewReportsBase extends JView
         $users = array();
         $codes = array();
         foreach ($ret as $d) {
-            if ($d->category_name == "Special") {
+            if ($d->category_id < -1) {
                 continue;
             }
             for ($i = 1; $i < 7; $i++) {
@@ -572,7 +680,7 @@ class TimeclockViewReportsBase extends JView
         $cat_name = $this->catBy();
         $users = array();
         foreach ($ret as $d) {
-            if ($d->category_name == "Special") {
+            if ($d->category_id < -1) {
                 continue;
             }
             $hours = $d->hours;

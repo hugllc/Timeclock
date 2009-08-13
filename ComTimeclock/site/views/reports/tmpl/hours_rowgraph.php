@@ -41,8 +41,14 @@ defined('_JEXEC') or die('Restricted access');
 $url  = "index.php?option=com_timeclock&view=reports&layout=hoursgraph";
 $url .= "&startDate=".JHTML::_("date", $this->startDate, $this->sqlDateFormat);
 $url .= "&endDate=".JHTML::_("date", $this->endDate, $this->sqlDateFormat);
-$url .= "&userid=".(int)$this->userid;
+$url .= "&cat_by=".urlencode($this->cat_by);
 $styles = array(
+                "userid",
+                "proj_id",
+                "cat_id",
+                "cust_id",
+                "projManager",
+                "userManager",
                 "graphwidth",
                 "graphheight",
                 "margintop",
@@ -55,15 +61,10 @@ foreach ($styles as $key) {
         $url .= "&$key=".(int)$this->$key;
     }
 }
-    $name =  empty($this->users[$this->userid]) ? $this->userid : $this->users[$this->userid];
-    $total = $this->totals["user"][$this->userid];
-    ?>
+?>
     <tr>
-        <td class="sectiontableheader" align="right" style="<?php print $this->cellStyle; ?>"><?php print $name; ?></td>
-        <td>
+        <td align="center" colspan="<?php print $this->graphColSpan; ?>">
             <img src="<?php print JRoute::_($url); ?>" alt="Data Graph Failed." align="center"/>
         </td>
-        <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>"><?php print $total; ?></td>
-        <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>">100%</td>
     </tr>
     <?php  $this->k = 1-$this->k; ?>

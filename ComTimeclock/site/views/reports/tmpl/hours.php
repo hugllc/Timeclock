@@ -48,7 +48,7 @@ $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_("to")." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
 
-
+$this->graphColSpan = 2 + (count($this->totals["cat"])*2);
 ?>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
@@ -80,30 +80,15 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
         <?php if (count($this->report) > 0) : ?>
 
 <?php
-if ($this->report_type == "graph") {
-    $template = "headergraph";
-} else {
-    $template = "header";
-}
-print $this->loadTemplate($template);
+print $this->loadTemplate("header");
 
 
 $this->k = 0;
 foreach ($this->report as $this->userid => $this->catArray) {
-    if ($this->report_type == "graph") {
-        $template = "rowgraph";
-    } else {
-        $template = "row";
-    }
-    print $this->loadTemplate($template);
+    print $this->loadTemplate("row");
 
 }
-if ($this->report_type == "graph") {
-    $template = "totalgraph";
-} else {
-    $template = "total";
-}
-print $this->loadTemplate($template);
+print $this->loadTemplate("total");
 
 ?>
         <?php else : ?>
