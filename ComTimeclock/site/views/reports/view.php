@@ -449,6 +449,14 @@ class TimeclockViewReportsBase extends JView
         $this->filter();
         $this->where();
 
+        $report_type = JRequest::getVar(
+            'report_type',
+            $this->_params->get("report_type"),
+            '',
+            'word'
+        );
+        $this->assignRef("report_type", $report_type);
+
         $this->_lists["search_options"] = array(
             JHTML::_('select.option', 't.notes', 'Notes'),
             JHTML::_('select.option', 't.worked', 'Date Worked'),
@@ -679,6 +687,11 @@ class TimeclockViewReportsBase extends JView
             JHTML::_('select.option', 'category', 'Category'),
             JHTML::_('select.option', 'customer', 'Customer'),
             JHTML::_('select.option', 'project', 'Project'),
+        );
+
+        $controls["report_type"] = array(
+            JHTML::_('select.option', 'table', 'Table'),
+            JHTML::_('select.option', 'graph', 'Graph'),
         );
 
         $this->assignRef("controls", $controls);

@@ -46,6 +46,12 @@
         <filename>views/reports/tmpl/hours_export.php</filename>
         <filename>views/reports/tmpl/hours_nextprev.php</filename>
         <filename>views/reports/tmpl/hours_header.php</filename>
+        <filename>views/reports/tmpl/hours_headergraph.php</filename>
+        <filename>views/reports/tmpl/hours_row.php</filename>
+        <filename>views/reports/tmpl/hours_rowgraph.php</filename>
+        <filename>views/reports/tmpl/hours_total.php</filename>
+        <filename>views/reports/tmpl/hours_totalgraph.php</filename>
+        <filename>views/reports/tmpl/hoursgraph.php</filename>
         <filename>views/reports/tmpl/hours.xml</filename>
         <filename>views/reports/tmpl/payroll.php</filename>
         <filename>views/reports/tmpl/payroll_export.php</filename>

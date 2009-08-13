@@ -78,46 +78,34 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
            </td>
         </tr>
         <?php if (count($this->report) > 0) : ?>
-        <?php print $this->loadTemplate("header"); ?>
 
 <?php
-$k = 0;
-foreach ($this->report as $user => $catArray) {
-    $name =  empty($this->users[$user]) ? $user : $this->users[$user];
-    ?>
-    <tr>
-        <td class="sectiontableheader" align="right" style="<?php print $this->cellStyle; ?>"><?php print $name; ?></td>
-    <?php
-    $total = $this->totals["user"][$user];
-    foreach (array_keys($this->totals["cat"]) as $cat) {
-        $hours = empty($catArray[$cat]) ? $this->cell_fill : $catArray[$cat];
-        $perc = ($hours == 0) || ($total == 0) ? $this->cell_fill : round(($hours/$total)*100);
-        if (!empty($perc)) $perc .= "%";
-        ?>
-        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
-        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $perc; ?></td>
-        <?php
+if ($this->report_type == "graph") {
+    $template = "headergraph";
+} else {
+    $template = "header";
+}
+print $this->loadTemplate($template);
+
+
+$this->k = 0;
+foreach ($this->report as $this->userid => $this->catArray) {
+    if ($this->report_type == "graph") {
+        $template = "rowgraph";
+    } else {
+        $template = "row";
     }
-    ?>
-        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $total; ?></td>
-        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>">100%</td>
-    </tr>
-    <?php
-    $k = 1-$k;
+    print $this->loadTemplate($template);
 
 }
+if ($this->report_type == "graph") {
+    $template = "totalgraph";
+} else {
+    $template = "total";
+}
+print $this->loadTemplate($template);
+
 ?>
-        <tr>
-            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
-            <?php foreach ($this->totals["cat"] as $cat => $hours) : ?>
-            <?php $hours = empty($hours) ? $this->cell_fill : $hours; ?>
-            <?php $perc = round(($hours/$this->total)*100); ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $perc; ?>%</td>
-            <?php endforeach; ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>">100%</td>
-        </tr>
         <?php else : ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_("No data found"); ?></td>

@@ -80,6 +80,10 @@ JHTML::_('behavior.formvalidation');
         <strong><?php print JText::_("Group By"); ?>:</strong>
         <?php print JHTML::_("select.genericList", $this->controls["cat_by"], "cat_by", "", 'value', 'text', $this->cat_by); ?>
     </div>
+    <div>
+        <strong><?php print JText::_("Report Type"); ?>:</strong>
+        <?php print JHTML::_("select.genericList", $this->controls["report_type"], "report_type", "", 'value', 'text', $this->report_type); ?>
+    </div>
     <div style="white-space: nowrap;">
         <button type="submit" class="button validate"><?php print JText::_("Apply"); ?></button>
     </div>
