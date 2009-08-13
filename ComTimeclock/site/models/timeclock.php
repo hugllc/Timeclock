@@ -39,7 +39,6 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /** Include the project stuff */
-
 $base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
 $adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
 

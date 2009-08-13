@@ -38,43 +38,49 @@ defined('_JEXEC') or die('Restricted access');
 
 TimeclockAdminController::title(JText::_('Check Database'));
 
+$style = "width: 10em; font-weight: bold; text-align: center;";
+
 $baseUrl = "index.php?option=com_timeclock&controller=tools";
 ?>
 <div style="width: 500px;">
 <h2><?php print JText::_("Checking your Database"); ?>...</h2>
-<h3><?php print JText::_("Preferences"); ?></h3>
-<?php if ($this->results["prefs"] === true): ?>
-    <div class="success"><?php print JText::_("No Errors"); ?></div>
-<?php else: ?>
+<?php foreach ($this->results as $test): ?>
+    <div style="margin: 3px; border: 1px solid grey; padding: 3px;">
+        <div>
+            <?php print $test["name"]; ?>
+            <?php if ($test["result"] === true) : ?>
+                <span style="float: right; <?php print $style;?> background: green; color: white; ">PASS</span>
+            <?php elseif (is_null($test["result"])) : ?>
+                <span style="float: right; <?php print $style;?> background: yellow; color: black; ">WARNING</span>
+            <?php elseif ($test["result"] === false) : ?>
+                <span style="float: right; <?php print $style;?> background: red; color: white; ">FAIL</span>
+            <?php else: ?>
+                <span style="float: right; <?php print $style;?>">No Result</span>
+            <?php endif; ?>
+        </div>
+        <p>
+            <?php print $test["description"]; ?>
+        </p>
+        <p style="padding-left: 2em;">
+            <?php print nl2br($test["log"]); ?>
+        </p>
+    </div>
+<?php endforeach; ?>
+<h2>Key</h2>
+<div>
+    <span style="float: left; margin-right: 1em; <?php print $style;?> background: green; color: white; ">PASS</span>
+    Everything looks good!
+</div>
+<div>
+    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: yellow; color: black; ">WARNING</span>
+    Means that it is a problem, but not fatal
+</div>
+<div>
+    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: red; color: white; ">FAIL</span>
+    This will cause major problems in the timeclock, and should be fixed immediately
+</div>
 
-<?php endif; ?>
-<h3><?php print JText::_("Customers"); ?></h3>
-<?php if ($this->results["customers"] === true): ?>
-    <div class="success"><?php print JText::_("No Errors"); ?></div>
-<?php else: ?>
 
-<?php endif; ?>
-<h3><?php print JText::_("Projects"); ?></h3>
-<?php if ($this->results["projects"] === true): ?>
-    <div class="success"><?php print JText::_("No Errors"); ?></div>
-<?php else: ?>
-
-<?php endif; ?>
-<h3><?php print JText::_("Holidays"); ?></h3>
-<?php if ($this->results["holidays"] === true): ?>
-    <div class="success"><?php print JText::_("No Errors"); ?></div>
-<?php else: ?>
-
-<?php endif; ?>
-<h3><?php print JText::_("Users"); ?></h3>
-<?php if ($this->results["users"] === true): ?>
-    <div class="success"><?php print JText::_("No Errors"); ?></div>
-<?php else: ?>
-
-<?php endif; ?>
-
-<h3><?php print JText::_("Debug"); ?></h3>
-<pre>
 <?php var_dump($this->results); ?>
 </pre>
 </div>
