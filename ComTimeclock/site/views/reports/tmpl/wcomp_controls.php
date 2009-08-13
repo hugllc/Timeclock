@@ -76,10 +76,6 @@ JHTML::_('behavior.formvalidation');
     <div>
         <strong>User Manager: </strong> <?php print JHTML::_("select.genericList", $this->controls["userManager"], "userManager", "", 'value', 'text', $this->userManager); ?>
     </div>
-    <div>
-        <strong><?php print JText::_("Group By"); ?>:</strong>
-        <?php print JHTML::_("select.genericList", $this->controls["cat_by"], "cat_by", "", 'value', 'text', $this->cat_by); ?>
-    </div>
     <div style="white-space: nowrap;">
         <button type="submit" class="button validate"><?php print JText::_("Apply"); ?></button>
     </div>
