@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,11 +30,11 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
@@ -64,7 +64,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
                     <?php print $this->loadTemplate("controls"); ?>
                 <?php else : ?>
                     <?php print $this->loadTemplate("nextprev"); ?>
-                <?php endif; ?>                
+                <?php endif; ?>
 
                 <?php print $this->loadTemplate("export"); ?>
 
@@ -75,7 +75,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
                        <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
                    </strong>
                </div>
-           </td>        
+           </td>
         </tr>
         <?php if (count($this->report) > 0) : ?>
         <?php print $this->loadTemplate("header"); ?>
@@ -85,11 +85,13 @@ $k = 0;
 $totals = array();
 foreach ($this->report as $cat => $projArray) {
     if (!empty($cat)) {
+        if ($this->cat_by != "project") {
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_($cat); ?></td>
         </tr>
         <?php
+        }
     }
     $k = 0;
     foreach ($projArray as $proj => $userArray) {
@@ -101,7 +103,7 @@ foreach ($this->report as $cat => $projArray) {
             $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
             ?>
             <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
-            <?php           
+            <?php
         }
         ?>
             <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->totals["proj"][$proj]; ?></td>
@@ -116,7 +118,7 @@ foreach ($this->report as $cat => $projArray) {
             <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
             <?php foreach ($this->totals["user"] as $user => $hours) : ?>
             <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
-            <?php endforeach; ?>            
+            <?php endforeach; ?>
             <td class="sectiontableheader" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
         </tr>
         <?php else : ?>

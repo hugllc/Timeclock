@@ -131,10 +131,13 @@ class TimeclockViewReportsBase extends JView
         );
         $catBy = trim(strtolower($catBy));
         $this->assignRef("cat_by", $catBy);
-        if ($catBy == "category") {
+        if ($catBy == "project") {
+            return "project_name";
+        } else if ($catBy == "customer") {
+            return "company_name";
+        } else {
             return "category_name";
         }
-        return "company_name";
     }
 
     /**
@@ -640,9 +643,10 @@ class TimeclockViewReportsBase extends JView
      */
     function _reportControls()
     {
-        $userModel    =& JModel::getInstance("Users", "TimeclockAdminModel");
-        $projectModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $userModel     =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $projectModel  =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $layout        = $this->getLayout();
 
         $controls["category"] = $projectModel->getParentOptions(
             0,
@@ -674,6 +678,7 @@ class TimeclockViewReportsBase extends JView
         $controls["cat_by"]   = array(
             JHTML::_('select.option', 'category', 'Category'),
             JHTML::_('select.option', 'customer', 'Customer'),
+            JHTML::_('select.option', 'project', 'Project'),
         );
 
         $this->assignRef("controls", $controls);
