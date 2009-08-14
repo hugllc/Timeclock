@@ -165,7 +165,8 @@ class TimeclockAdminModelTools extends JModel
     {
         static $data;
         if (!is_array($data)) {
-            $sql = "select u.*, p.*, u.id as proj_id, ju.name as user_name from #__timeclock_users as u
+            $sql = "select u.*, p.*, u.id as proj_id, ju.name as user_name
+                    from #__timeclock_users as u
                     LEFT JOIN #__timeclock_projects as p
                     ON u.id = p.id
                     LEFT JOIN #__users as ju
@@ -192,7 +193,8 @@ class TimeclockAdminModelTools extends JModel
         foreach ($ret as $row) {
             if ($row["type"] == "CATEGORY") {
                 $test["result"] = false;
-                $test["log"]   .= "User ".$row["user_name"]." found in ".$row["name"]."\n";
+                $test["log"]   .= "User ".$row["user_name"]
+                    ." found in ".$row["name"]."\n";
             }
         }
         return $test;
@@ -207,8 +209,8 @@ class TimeclockAdminModelTools extends JModel
         $test = array(
             "name" => "Checking that all users attached to projects exist",
             "result" => true,
-            "description" => "If this fails data is lost.  The database entries for this"
-                            ." should be removed with your favorite database tool.",
+            "description" => "If this fails data is lost.  The database entries for "
+                ." this should be removed with your favorite database tool.",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ($ret as $row) {
@@ -229,8 +231,8 @@ class TimeclockAdminModelTools extends JModel
         $test = array(
             "name" => "Checking that all projects with users attached exist",
             "result" => true,
-            "description" => "If this fails data is lost.  The database entries for this"
-                            ." should be removed with your favorite database tool.",
+            "description" => "If this fails data is lost.  The database entries for "
+                ." this should be removed with your favorite database tool.",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ($ret as $row) {

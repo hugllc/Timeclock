@@ -46,14 +46,24 @@ $path = JPATH_ROOT.DS."components".DS."com_timeclock";
 
 require_once $path.DS."models".DS."timeclock.php";
 
-
-
+/**
+* @category   UI
+* @package    ComHUGnet
+* @subpackage Com_HUGnet
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2008-2009 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
+*/
 class modTimeclockInfoHelper
 {
     /**
     *  Sets the stuff to display for this module
     *
     * @param object $params The module parameters
+    *
+    * @return array A list to display
     */
     public function getDisplay($params)
     {
@@ -82,7 +92,10 @@ class modTimeclockInfoHelper
             $nextHoliday = "None";
         }
         if ($params->get("showNextHoliday") == 1) {
-            $list["Next Holiday"] = JHTML::_('date', $nextHoliday, JText::_('DATE_FORMAT_LC'));
+            $list["Next Holiday"] = JHTML::_(
+                'date', $nextHoliday,
+                JText::_('DATE_FORMAT_LC')
+            );
         }
 
         $ptoWhere = " `p`.`type` = 'PTO'";

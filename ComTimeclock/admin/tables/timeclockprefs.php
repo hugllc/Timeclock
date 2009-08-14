@@ -207,7 +207,8 @@ class TableTimeclockPrefs extends JTable
         }
         $query = 'SELECT *'
                 .' FROM '.$this->_tbl
-                .' WHERE '.$this->_db->NameQuote($this->_tbl_key).' = '.$this->_db->Quote($oid);
+                .' WHERE '.$this->_db->NameQuote($this->_tbl_key)
+                    .' = '.$this->_db->Quote($oid);
         $this->_db->setQuery($query);
 
         if ($this->_db->loadAssocList()) {
@@ -427,7 +428,7 @@ class TableTimeclockPrefs extends JTable
                 $keys = explode(":", $line);
             } else {
                 $line = explode(":", $line);
-                foreach($keys as $k => $name) {
+                foreach ($keys as $k => $name) {
                     $ret[$name][$line[0]] = $line[$k+1];
                 }
             }

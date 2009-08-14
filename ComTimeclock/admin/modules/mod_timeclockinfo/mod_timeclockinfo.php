@@ -35,7 +35,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
- * @copyright  Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
+ * @copyright  2005-2008 Open Source Matters. All rights reserved.
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
@@ -45,7 +45,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Include the helper function
-require_once (dirname(__FILE__).DS.'helper.php');
+require_once dirname(__FILE__).DS.'helper.php';
 
 $params->def('showYTDHours', 1);
 $params->def('showHoursPerWeek', 1);
@@ -54,6 +54,6 @@ $params->def('showNextHoliday', 1);
 
 $stuff = modTimeclockInfoHelper::getDisplay($params);
 
-require(JModuleHelper::getLayoutPath('mod_timeclockinfo'));
+require JModuleHelper::getLayoutPath('mod_timeclockinfo');
 
 ?>

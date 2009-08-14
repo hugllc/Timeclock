@@ -686,8 +686,8 @@ class TimeclockModelTimeclock extends JModel
         $key = urlencode($id.$where);
         if (!isset($this->_totals[$key])) {
             $query = "SELECT
-                    SUM(t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
-                    as hours
+                    SUM(t.hours1 + t.hours2 + t.hours3 + t.hours4
+                        + t.hours5 + t.hours6) as hours
                     FROM #__timeclock_timesheet as t
                     LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
                     WHERE t.created_by = ".$this->_db->Quote($id);
@@ -706,6 +706,8 @@ class TimeclockModelTimeclock extends JModel
 
     /**
      * Method to display the view
+     *
+     * @param string $where The extra where clause
      *
      * @return string
      */
@@ -728,11 +730,13 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Method to display the view
      *
+     * @param int $id The id of the user to use
+     *
      * @return string
      */
     function daysSinceStart($id=null)
     {
-        if  (empty($id)) {
+        if (empty($id)) {
             $id = $this->_id;
         }
         $start = TableTimeclockPrefs::getPref("startDate", "user", $id);

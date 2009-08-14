@@ -438,7 +438,7 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Gets select options for parent projects
      *
-     * @param int $oid The user to get the PTO for.
+     * @param int    $oid  The user to get the PTO for.
      * @param string $date The date to check
      *
      * @return array
@@ -473,8 +473,8 @@ class TimeclockAdminModelUsers extends JModel
     /**
     * Gets select options for parent projects
     *
-    * @param int $oid The user to get the PTO for.
-     * @param string $date The date to check
+    * @param int    $oid  The user to get the PTO for.
+    * @param string $date The date to check
     *
     * @return array
     */
@@ -494,8 +494,8 @@ class TimeclockAdminModelUsers extends JModel
     /**
     * Gets select options for parent projects
     *
-    * @param int $oid The user to get the PTO for.
-     * @param string $date The date to check
+    * @param int    $oid  The user to get the PTO for.
+    * @param string $date The date to check
     *
     * @return array
     */
@@ -516,8 +516,8 @@ class TimeclockAdminModelUsers extends JModel
     /**
     * Gets select options for parent projects
     *
-    * @param int $oid The user to get the PTO for.
-     * @param string $date The date to check
+    * @param int    $oid  The user to get the PTO for.
+    * @param string $date The date to check
     *
     * @return array
     */
@@ -549,7 +549,7 @@ class TimeclockAdminModelUsers extends JModel
         if (!is_array($rates[$status])) {
             return 0;
         }
-        foreach($rates[$status] as $s => $r) {
+        foreach ($rates[$status] as $s => $r) {
             if ($service < $s) {
                 return $r;
             }
@@ -594,7 +594,8 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Gets select options for parent projects
      *
-     * @param int $oid The user to get the PTO for.
+     * @param int    $oid  The user to get the PTO for.
+     * @param string $date The date to check
      *
      * @return array
      */
