@@ -127,6 +127,12 @@ class TimeclockControllerTimeclock extends TimeclockController
         parent::display();
     }
 
+    /**
+    * Method to save hours
+    *
+    * @access public
+    * @return null
+    */
     function savehours()
     {
         if (!JRequest::checkToken()) {

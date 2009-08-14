@@ -115,7 +115,8 @@ class ComTimeclockSiteControllerPreferencesTest extends JControllerTest
                 "save",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=preferences",
+                    "link" => "index.php?option=com_timeclock"
+                             ."&controller=preferences",
                     "msg" => "Preferences Saved!"
                 ),
                 true
@@ -124,7 +125,8 @@ class ComTimeclockSiteControllerPreferencesTest extends JControllerTest
                 "save",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=preferences",
+                    "link" => "index.php?option=com_timeclock"
+                             ."&controller=preferences",
                     "msg" => "Error Saving Preferences"
                 ),
                 true
