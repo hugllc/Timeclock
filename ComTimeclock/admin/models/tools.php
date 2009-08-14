@@ -88,12 +88,13 @@ class TimeclockAdminModelTools extends JModel
     */
     function dbCheck()
     {
-        $ret = array();
-        $ret = array_merge($ret, $this->_dbCheckPrefs());
-        $ret = array_merge($ret, $this->_dbCheckCustomers());
-        $ret = array_merge($ret, $this->_dbCheckProjects());
-        $ret = array_merge($ret, $this->_dbCheckTimesheets());
-        $ret = array_merge($ret, $this->_dbCheckUsers());
+        $ret = array(
+            "Preferences" => $this->_dbCheckPrefs(),
+            "Customers" => $this->_dbCheckCustomers(),
+            "Projects" => $this->_dbCheckProjects(),
+            "Timesheets" => $this->_dbCheckTimesheets(),
+            "Users" => $this->_dbCheckUsers(),
+        );
         return $ret;
     }
 
@@ -128,7 +129,81 @@ class TimeclockAdminModelTools extends JModel
     private function _dbCheckProjects()
     {
         $ret = array();
+        $ret[] = $this->_dbCheckProjectsBadType();
+        $ret[] = $this->_dbCheckProjectsBadManager();
         return $ret;
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckProjectsBadType()
+    {
+        $test = array(
+            "name" => "Checking for Invalid Parent Types",
+            "result" => true,
+            "description" => "Fix: Please go into the project editor and select a "
+                            ." valid parent project.",
+        );
+        $ret = $this->_dbCheckProjectsGetProjects();
+        $valid_array = array("CATEGORY");
+        foreach ($ret as $row) {
+            if (is_null($row["parent_type"])) {
+                continue;
+            }
+            if (array_search($row["parent_type"], $valid_array) === false) {
+                $test["result"] = false;
+                $test["log"] .= "Project ".$row["name"]." has invalid parent "
+                                .$row["parent_name"]."\n";
+            }
+        }
+        return $test;
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckProjectsBadManager()
+    {
+        $test = array(
+            "name" => "Checking for Missing Managers",
+            "result" => true,
+            "description" => "Fix: Please go into the project editor and select a "
+                            ." valid project manager.",
+        );
+        $ret = $this->_dbCheckProjectsGetProjects();
+
+        foreach ($ret as $row) {
+            if (($row["manager"] != 0) && is_null($row["manager_name"])) {
+                $test["result"] = false;
+                $test["log"] .= "Project ".$row["name"]." has invalid parent "
+                                .$row["parent_name"]."\n";
+            }
+        }
+        return $test;
+    }
+    /**
+    * This checks for users in categories.
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckProjectsGetProjects()
+    {
+        static $data;
+        if (!is_array($data)) {
+            $sql = "SELECT p.*, u.name as manager_name, pp.type as parent_type,
+                    pp.name as parent_name
+                    FROM #__timeclock_projects as p
+                    LEFT JOIN #__users as u
+                    ON p.manager = u.id
+                    LEFT JOIN #__timeclock_projects as pp
+                    ON p.parent_id = pp.id";
+            $this->_db->setQuery($sql);
+            $data = $this->_db->loadAssocList();
+        }
+        return $data;
     }
 
     /**
@@ -139,7 +214,110 @@ class TimeclockAdminModelTools extends JModel
     private function _dbCheckTimesheets()
     {
         $ret = array();
+        $ret[] = $this->_dbCheckTimesheetsNoDate();
+        $ret[] = $this->_dbCheckTimesheetsBadProject();
+        $ret[] = $this->_dbCheckTimesheetsBadUser();
         return $ret;
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckTimesheetsBadProject()
+    {
+        $test = array(
+            "name" => "Checking for Timesheets attached to non-existant project",
+            "result" => true,
+            "description" => "These should be fixed in the timesheet entry in the "
+                ." administrator panel.  These will show up on reports and no where "
+                ." else.",
+        );
+        $ret = $this->_dbCheckTimesheetsGetTimesheet(
+            " p.name IS NULL "
+        );
+        foreach ($ret as $row) {
+            $test["result"] = false;
+            $test["log"] .= "Record #".$row["id"];
+            $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
+            $test["log"] .= " has no attached project\n";
+        }
+        return $test;
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckTimesheetsBadUser()
+    {
+        $test = array(
+            "name" => "Checking for Timesheets attached to non-existant user",
+            "result" => true,
+            "description" => "These should be fixed in the timesheet entry in the "
+                ." administrator panel.  These will show up on reports and no where "
+                ." else.",
+        );
+        $ret = $this->_dbCheckTimesheetsGetTimesheet(
+            " u.name IS NULL "
+        );
+        foreach ($ret as $row) {
+            $test["result"] = false;
+            $test["log"] .= "Record #".$row["id"];
+            $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
+            $test["log"] .= " has no attached user\n";
+        }
+        return $test;
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckTimesheetsNoDate()
+    {
+        $test = array(
+            "name" => "Checking for Timesheets with no date",
+            "result" => true,
+            "description" => "These should be fixed in the timesheet entry in the "
+                ." administrator panel.  These will show up on reports and no where "
+                ." else.",
+        );
+        $ret = $this->_dbCheckTimesheetsGetTimesheet(
+            " worked = '0000-00-00' "
+        );
+        foreach ($ret as $row) {
+            $test["result"] = false;
+            $test["log"] .= "Record #".$row["id"];
+            $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
+            $test["log"] .= " has no date\n";
+        }
+        return $test;
+    }
+    /**
+    * This checks for users in categories.
+    *
+    * @param string $where The where clause to use
+    *
+    * @return array The problem array
+    */
+    private function _dbCheckTimesheetsGetTimesheet($where=null)
+    {
+        static $data;
+        if (!is_array($data[$where])) {
+            $sql = "select t.*, u.name as user_name, p.name as project_name
+                    from #__timeclock_timesheet as t
+                    LEFT JOIN #__timeclock_projects as p
+                    ON t.project_id = p.id
+                    LEFT JOIN #__users as u
+                    ON u.id = t.created_by ";
+            if (!empty($where)) {
+                $sql .= " WHERE ".$where;
+            }
+            $this->_db->setQuery($sql);
+            $data[$where] = $this->_db->loadAssocList();
+        }
+        return $data[$where];
     }
 
     /**

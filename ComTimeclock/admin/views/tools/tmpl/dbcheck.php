@@ -44,27 +44,33 @@ $baseUrl = "index.php?option=com_timeclock&controller=tools";
 ?>
 <div style="width: 500px;">
 <h2><?php print JText::_("Checking your Database"); ?>...</h2>
-<?php foreach ($this->results as $test): ?>
-    <div style="margin: 3px; border: 1px solid grey; padding: 3px;">
-        <div>
-            <?php print $test["name"]; ?>
-            <?php if ($test["result"] === true) : ?>
-                <span style="float: right; <?php print $style;?> background: green; color: white; ">PASS</span>
-            <?php elseif (is_null($test["result"])) : ?>
-                <span style="float: right; <?php print $style;?> background: yellow; color: black; ">WARNING</span>
-            <?php elseif ($test["result"] === false) : ?>
-                <span style="float: right; <?php print $style;?> background: red; color: white; ">FAIL</span>
-            <?php else: ?>
-                <span style="float: right; <?php print $style;?>">No Result</span>
-            <?php endif; ?>
+<?php foreach ($this->results as $cat => $results): ?>
+    <h3><?php print JText::_($cat); ?>...</h3>
+    <?php if (empty($results)): ?>
+    <p><?php print JText::_("No Tests"); ?></p>
+    <?php endif; ?>
+    <?php foreach ($results as $test): ?>
+        <div style="margin: 3px; border: 1px solid grey; padding: 3px;">
+            <div>
+                <?php print $test["name"]; ?>
+                <?php if ($test["result"] === true) : ?>
+                    <span style="float: right; <?php print $style;?> background: green; color: white; ">PASS</span>
+                <?php elseif (is_null($test["result"])) : ?>
+                    <span style="float: right; <?php print $style;?> background: yellow; color: black; ">WARNING</span>
+                <?php elseif ($test["result"] === false) : ?>
+                    <span style="float: right; <?php print $style;?> background: red; color: white; ">FAIL</span>
+                <?php else: ?>
+                    <span style="float: right; <?php print $style;?>">No Result</span>
+                <?php endif; ?>
+            </div>
+            <p>
+                <?php print $test["description"]; ?>
+            </p>
+            <p style="padding-left: 2em;">
+                <?php print nl2br($test["log"]); ?>
+            </p>
         </div>
-        <p>
-            <?php print $test["description"]; ?>
-        </p>
-        <p style="padding-left: 2em;">
-            <?php print nl2br($test["log"]); ?>
-        </p>
-    </div>
+    <?php endforeach; ?>
 <?php endforeach; ?>
 <h2>Key</h2>
 <div>
