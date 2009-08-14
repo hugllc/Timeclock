@@ -47,6 +47,8 @@ $path = JPATH_ROOT.DS."components".DS."com_timeclock";
 require_once $path.DS."models".DS."timeclock.php";
 
 /**
+* This class is the 'model' for the module.
+*
 * @category   UI
 * @package    ComHUGnet
 * @subpackage Com_HUGnet
@@ -56,7 +58,7 @@ require_once $path.DS."models".DS."timeclock.php";
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
 */
-class modTimeclockInfoHelper
+class ModTimeclockInfoHelper
 {
     /**
     *  Sets the stuff to display for this module

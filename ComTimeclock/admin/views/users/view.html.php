@@ -150,7 +150,10 @@ class TimeclockAdminViewUsers extends JView
         $total = $model->countUsers($where);
 
         foreach ($rows as $k => $row) {
-            $rows[$k]->pto = round($timeclockModel->getTotal(" `p`.`type` = 'PTO'", $row->id), $decimalPlaces);
+            $rows[$k]->pto = round(
+                $timeclockModel->getTotal(" `p`.`type` = 'PTO'", $row->id),
+                $decimalPlaces
+            );
             $rows[$k]->ptoYTD = round($model->getPTO($row->id), $decimalPlaces);
         }
 
