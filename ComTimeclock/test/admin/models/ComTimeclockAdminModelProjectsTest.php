@@ -284,6 +284,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     {
         $this->_db->joomlaMockPreloadXML($preload);
         $ret = $this->o->getUserProjects($oid, $limitstart, $limit);
+        //print joomlaMockOutputXML($ret);
         $this->assertEquals($expect, $ret);
     }
 

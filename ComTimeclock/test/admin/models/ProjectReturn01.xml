@@ -1,579 +1,750 @@
-<array name="" type="array">
-    <object class="stdClass" name="-2" type="object">
-        <value name="id" type="string">
+<array name="" type="array" >
+    <object name="-2" type="object"  class="stdClass" >
+        <value name="id" type="string" >
             -2
         </value>
-        <value name="name" type="string">
+        <value name="name" type="string" >
             Special
         </value>
-        <value name="description" type="string">
+        <value name="description" type="string" >
             This category is for PTO and Holiday time.
         </value>
-        <value name="type" type="string">
-            CATEGORY
-        </value>
-        <value name="parent_id" type="string">
-            0
-        </value>
-        <value name="published" type="string">
-            0
-        </value>
-        <value name="customer" type="string">
-            0
-        </value>
-        <array name="subprojects" type="array">
-            <object class="stdClass" name="3" type="object">
-                <value name="id" type="string">
-                    3
-                </value>
-                <value name="name" type="string">
-                    Test Holiday
-                </value>
-                <value name="description" type="string">
-                    This is a sample test holiday
-                </value>
-                <value name="created_by" type="string">
-                    1
-                </value>
-                <value name="created" type="string">
-                    2009-04-12 12:32:12
-                </value>
-                <value name="manager" type="string">
-                    2
-                </value>
-                <value name="research" type="string">
-                    0
-                </value>
-                <value name="type" type="string">
-                    HOLIDAY
-                </value>
-                <value name="parent_id" type="string">
-                    0
-                </value>
-                <value name="wcCode1" type="string">
-                    12
-                </value>
-                <value name="wcCode2" type="string">
-                    0
-                </value>
-                <value name="wcCode3" type="string">
-                    0
-                </value>
-                <value name="wcCode4" type="string">
-                    0
-                </value>
-                <value name="wcCode5" type="string">
-                    0
-                </value>
-                <value name="wcCode6" type="string">
-                    0
-                </value>
-                <value name="customer" type="string">
-                    0
-                </value>
-                <value name="checked_out" type="string">
-                    0
-                </value>
-                <value name="checked_out_time" type="string">
-                    0000-00-00 00:00:00
-                </value>
-                <value name="published" type="string">
-                    1
-                </value>
-                <value name="parentname" type="NULL">
+        <value name="created_by" type="NULL" >
 
-                </value>
-                <value name="created_by_name" type="NULL">
-
-                </value>
-                <value name="manager_name" type="NULL">
-
-                </value>
-                <value name="parent_checked_out" type="NULL">
-
-                </value>
-                <value name="customer_name" type="NULL">
-
-                </value>
-                <value name="customer_contact" type="NULL">
-
-                </value>
-                <value name="customer_checked_out" type="NULL">
-
-                </value>
-                <value name="mine" type="boolean">
-                    0
-                </value>
-                <value name="noHours" type="boolean">
-                    1
-                </value>
-            </object>
-            <object class="stdClass" name="5" type="object">
-                <value name="id" type="string">
-                    5
-                </value>
-                <value name="name" type="string">
-                    Test PTO
-                </value>
-                <value name="description" type="string">
-                    This is a sample test pto
-                </value>
-                <value name="created_by" type="string">
-                    1
-                </value>
-                <value name="created" type="string">
-                    2009-04-12 12:32:12
-                </value>
-                <value name="manager" type="string">
-                    2
-                </value>
-                <value name="research" type="string">
-                    0
-                </value>
-                <value name="type" type="string">
-                    PTO
-                </value>
-                <value name="parent_id" type="string">
-                    0
-                </value>
-                <value name="wcCode1" type="string">
-                    12
-                </value>
-                <value name="wcCode2" type="string">
-                    0
-                </value>
-                <value name="wcCode3" type="string">
-                    0
-                </value>
-                <value name="wcCode4" type="string">
-                    0
-                </value>
-                <value name="wcCode5" type="string">
-                    0
-                </value>
-                <value name="wcCode6" type="string">
-                    0
-                </value>
-                <value name="customer" type="string">
-                    0
-                </value>
-                <value name="checked_out" type="string">
-                    0
-                </value>
-                <value name="checked_out_time" type="string">
-                    0000-00-00 00:00:00
-                </value>
-                <value name="published" type="string">
-                    1
-                </value>
-                <value name="parentname" type="NULL">
-
-                </value>
-                <value name="created_by_name" type="NULL">
-
-                </value>
-                <value name="manager_name" type="NULL">
-
-                </value>
-                <value name="parent_checked_out" type="NULL">
-
-                </value>
-                <value name="customer_name" type="NULL">
-
-                </value>
-                <value name="customer_contact" type="NULL">
-
-                </value>
-                <value name="customer_checked_out" type="NULL">
-
-                </value>
-                <value name="mine" type="boolean">
-                    0
-                </value>
-            </object>
-        </array>
-    </object>
-    <object class="stdClass" name="-1" type="object">
-        <value name="id" type="string">
-            -1
         </value>
-        <value name="name" type="string">
-            General
-        </value>
-        <value name="description" type="string">
-            This is uncategorized projects.  Everything without a category goes here.
-        </value>
-        <value name="type" type="string">
-            CATEGORY
-        </value>
-        <value name="parent_id" type="string">
-            0
-        </value>
-        <value name="published" type="string">
-            0
-        </value>
-        <value name="customer" type="string">
-            0
-        </value>
-        <array name="subprojects" type="array">
-            <object class="stdClass" name="6" type="object">
-                <value name="id" type="string">
-                    6
-                </value>
-                <value name="name" type="string">
-                    Test Project 2
-                </value>
-                <value name="description" type="string">
-                    This is a sample second test project
-                </value>
-                <value name="created_by" type="string">
-                    1
-                </value>
-                <value name="created" type="string">
-                    2009-04-12 12:34:12
-                </value>
-                <value name="manager" type="string">
-                    2
-                </value>
-                <value name="research" type="string">
-                    1
-                </value>
-                <value name="type" type="string">
-                    PROJECT
-                </value>
-                <value name="parent_id" type="string">
-                    0
-                </value>
-                <value name="wcCode1" type="string">
-                    1234
-                </value>
-                <value name="wcCode2" type="string">
-                    4321
-                </value>
-                <value name="wcCode3" type="string">
-                    12
-                </value>
-                <value name="wcCode4" type="string">
-                    45
-                </value>
-                <value name="wcCode5" type="string">
-                    16
-                </value>
-                <value name="wcCode6" type="string">
-                    0
-                </value>
-                <value name="customer" type="string">
-                    0
-                </value>
-                <value name="checked_out" type="string">
-                    0
-                </value>
-                <value name="checked_out_time" type="string">
-                    0000-00-00 00:00:00
-                </value>
-                <value name="published" type="string">
-                    1
-                </value>
-                <value name="parentname" type="NULL">
-
-                </value>
-                <value name="created_by_name" type="NULL">
-
-                </value>
-                <value name="manager_name" type="NULL">
-
-                </value>
-                <value name="parent_checked_out" type="NULL">
-
-                </value>
-                <value name="customer_name" type="NULL">
-
-                </value>
-                <value name="customer_contact" type="NULL">
-
-                </value>
-                <value name="customer_checked_out" type="NULL">
-
-                </value>
-                <value name="mine" type="boolean">
-                    0
-                </value>
-            </object>
-        </array>
-    </object>
-    <object class="stdClass" name="-3" type="object">
-        <value name="id" type="string">
-            -3
-        </value>
-        <value name="name" type="string">
-            Unpaid Time
-        </value>
-        <value name="description" type="string">
-            This time is not used for billing customers or for payroll reports.
-        </value>
-        <value name="type" type="string">
-            CATEGORY
-        </value>
-        <value name="parent_id" type="string">
-            0
-        </value>
-        <value name="published" type="string">
-            0
-        </value>
-        <value name="customer" type="string">
-            0
-        </value>
-        <array name="subprojects" type="array">
-            <object class="stdClass" name="4" type="object">
-                <value name="id" type="string">
-                    4
-                </value>
-                <value name="name" type="string">
-                    Test Unpaid
-                </value>
-                <value name="description" type="string">
-                    This is a sample test unpaid
-                </value>
-                <value name="created_by" type="string">
-                    1
-                </value>
-                <value name="created" type="string">
-                    2009-04-12 12:32:12
-                </value>
-                <value name="manager" type="string">
-                    2
-                </value>
-                <value name="research" type="string">
-                    0
-                </value>
-                <value name="type" type="string">
-                    UNPAID
-                </value>
-                <value name="parent_id" type="string">
-                    0
-                </value>
-                <value name="wcCode1" type="string">
-                    12
-                </value>
-                <value name="wcCode2" type="string">
-                    0
-                </value>
-                <value name="wcCode3" type="string">
-                    0
-                </value>
-                <value name="wcCode4" type="string">
-                    0
-                </value>
-                <value name="wcCode5" type="string">
-                    0
-                </value>
-                <value name="wcCode6" type="string">
-                    0
-                </value>
-                <value name="customer" type="string">
-                    0
-                </value>
-                <value name="checked_out" type="string">
-                    0
-                </value>
-                <value name="checked_out_time" type="string">
-                    0000-00-00 00:00:00
-                </value>
-                <value name="published" type="string">
-                    1
-                </value>
-                <value name="parentname" type="NULL">
-
-                </value>
-                <value name="created_by_name" type="NULL">
-
-                </value>
-                <value name="manager_name" type="NULL">
-
-                </value>
-                <value name="parent_checked_out" type="NULL">
-
-                </value>
-                <value name="customer_name" type="NULL">
-
-                </value>
-                <value name="customer_contact" type="NULL">
-
-                </value>
-                <value name="customer_checked_out" type="NULL">
-
-                </value>
-                <value name="mine" type="boolean">
-                    0
-                </value>
-            </object>
-        </array>
-    </object>
-    <object class="stdClass" name="2" type="object">
-        <value name="id" type="string">
-            2
-        </value>
-        <value name="name" type="string">
-            Test Category 1
-        </value>
-        <value name="description" type="string">
-            This is a sample test category
-        </value>
-        <value name="created_by" type="string">
-            1
-        </value>
-        <value name="created" type="string">
-            2009-04-12 12:32:12
-        </value>
-        <value name="manager" type="string">
-            2
-        </value>
-        <value name="research" type="string">
-            0
-        </value>
-        <value name="type" type="string">
-            CATEGORY
-        </value>
-        <value name="parent_id" type="string">
-            0
-        </value>
-        <value name="wcCode1" type="string">
-            0
-        </value>
-        <value name="wcCode2" type="string">
-            0
-        </value>
-        <value name="wcCode3" type="string">
-            0
-        </value>
-        <value name="wcCode4" type="string">
-            0
-        </value>
-        <value name="wcCode5" type="string">
-            0
-        </value>
-        <value name="wcCode6" type="string">
-            0
-        </value>
-        <value name="customer" type="string">
-            0
-        </value>
-        <value name="checked_out" type="string">
-            0
-        </value>
-        <value name="checked_out_time" type="string">
+        <value name="created" type="string" >
             0000-00-00 00:00:00
         </value>
-        <value name="published" type="string">
-            1
+        <value name="manager" type="string" >
+            0
         </value>
-        <value name="parentname" type="NULL">
+        <value name="research" type="string" >
+            0
+        </value>
+        <value name="type" type="string" >
+            CATEGORY
+        </value>
+        <value name="parent_id" type="string" >
+            0
+        </value>
+        <value name="wcCode1" type="string" >
+            0
+        </value>
+        <value name="wcCode2" type="string" >
+            0
+        </value>
+        <value name="wcCode3" type="string" >
+            0
+        </value>
+        <value name="wcCode4" type="string" >
+            0
+        </value>
+        <value name="wcCode5" type="string" >
+            0
+        </value>
+        <value name="wcCode6" type="string" >
+            0
+        </value>
+        <value name="customer" type="string" >
+            0
+        </value>
+        <value name="checked_out" type="string" >
+            0
+        </value>
+        <value name="checked_out_time" type="string" >
+            0000-00-00 00:00:00
+        </value>
+        <value name="published" type="integer" >
+            0
+        </value>
+        <value name="parentname" type="NULL" >
 
         </value>
-        <value name="created_by_name" type="NULL">
+        <value name="created_by_name" type="NULL" >
 
         </value>
-        <value name="manager_name" type="NULL">
+        <value name="manager_name" type="NULL" >
 
         </value>
-        <value name="parent_checked_out" type="NULL">
+        <value name="parent_checked_out" type="NULL" >
 
         </value>
-        <value name="customer_name" type="NULL">
+        <value name="customer_name" type="NULL" >
 
         </value>
-        <value name="customer_contact" type="NULL">
+        <value name="customer_contact" type="NULL" >
 
         </value>
-        <value name="customer_checked_out" type="NULL">
+        <value name="customer_checked_out" type="NULL" >
 
         </value>
-        <array name="subprojects" type="array">
-            <object class="stdClass" name="1" type="object">
-                <value name="id" type="string">
+        <array name="subprojects" type="array" >
+            <object name="3" type="object"  class="stdClass" >
+                <value name="id" type="string" >
+                    3
+                </value>
+                <value name="name" type="string" >
+                    Test Holiday
+                </value>
+                <value name="description" type="string" >
+                    This is a sample test holiday
+                </value>
+                <value name="created_by" type="string" >
                     1
                 </value>
-                <value name="name" type="string">
-                    Test Project 1
+                <value name="created" type="string" >
+                    2009-04-12 12:32:12
                 </value>
-                <value name="description" type="string">
-                    This is a sample test project
-                </value>
-                <value name="created_by" type="string">
-                    1
-                </value>
-                <value name="created" type="string">
-                    2009-04-12 12:34:12
-                </value>
-                <value name="manager" type="string">
+                <value name="manager" type="string" >
                     2
                 </value>
-                <value name="research" type="string">
-                    1
+                <value name="research" type="string" >
+                    0
                 </value>
-                <value name="type" type="string">
-                    PROJECT
+                <value name="type" type="string" >
+                    HOLIDAY
                 </value>
-                <value name="parent_id" type="string">
-                    2
+                <value name="parent_id" type="string" >
+                    0
                 </value>
-                <value name="wcCode1" type="string">
-                    1234
-                </value>
-                <value name="wcCode2" type="string">
-                    4321
-                </value>
-                <value name="wcCode3" type="string">
+                <value name="wcCode1" type="string" >
                     12
                 </value>
-                <value name="wcCode4" type="string">
-                    45
-                </value>
-                <value name="wcCode5" type="string">
-                    16
-                </value>
-                <value name="wcCode6" type="string">
+                <value name="wcCode2" type="string" >
                     0
                 </value>
-                <value name="customer" type="string">
+                <value name="wcCode3" type="string" >
                     0
                 </value>
-                <value name="checked_out" type="string">
+                <value name="wcCode4" type="string" >
                     0
                 </value>
-                <value name="checked_out_time" type="string">
+                <value name="wcCode5" type="string" >
+                    0
+                </value>
+                <value name="wcCode6" type="string" >
+                    0
+                </value>
+                <value name="customer" type="string" >
+                    0
+                </value>
+                <value name="checked_out" type="string" >
+                    0
+                </value>
+                <value name="checked_out_time" type="string" >
                     0000-00-00 00:00:00
                 </value>
-                <value name="published" type="string">
+                <value name="published" type="string" >
                     1
                 </value>
-                <value name="parentname" type="string">
-                    Test Category 1
-                </value>
-                <value name="created_by_name" type="NULL">
+                <value name="parentname" type="NULL" >
 
                 </value>
-                <value name="manager_name" type="NULL">
+                <value name="created_by_name" type="NULL" >
 
                 </value>
-                <value name="parent_checked_out" type="string">
+                <value name="manager_name" type="NULL" >
+
+                </value>
+                <value name="parent_checked_out" type="NULL" >
+
+                </value>
+                <value name="customer_name" type="NULL" >
+
+                </value>
+                <value name="customer_contact" type="NULL" >
+
+                </value>
+                <value name="customer_checked_out" type="NULL" >
+
+                </value>
+                <value name="mine" type="boolean" >
                     0
                 </value>
-                <value name="customer_name" type="NULL">
+                <value name="noHours" type="boolean" >
+                    1
+                </value>
+            </object>
+            <object name="5" type="object"  class="stdClass" >
+                <value name="id" type="string" >
+                    5
+                </value>
+                <value name="name" type="string" >
+                    Test PTO
+                </value>
+                <value name="description" type="string" >
+                    This is a sample test pto
+                </value>
+                <value name="created_by" type="string" >
+                    1
+                </value>
+                <value name="created" type="string" >
+                    2009-04-12 12:32:12
+                </value>
+                <value name="manager" type="string" >
+                    2
+                </value>
+                <value name="research" type="string" >
+                    0
+                </value>
+                <value name="type" type="string" >
+                    PTO
+                </value>
+                <value name="parent_id" type="string" >
+                    0
+                </value>
+                <value name="wcCode1" type="string" >
+                    12
+                </value>
+                <value name="wcCode2" type="string" >
+                    0
+                </value>
+                <value name="wcCode3" type="string" >
+                    0
+                </value>
+                <value name="wcCode4" type="string" >
+                    0
+                </value>
+                <value name="wcCode5" type="string" >
+                    0
+                </value>
+                <value name="wcCode6" type="string" >
+                    0
+                </value>
+                <value name="customer" type="string" >
+                    0
+                </value>
+                <value name="checked_out" type="string" >
+                    0
+                </value>
+                <value name="checked_out_time" type="string" >
+                    0000-00-00 00:00:00
+                </value>
+                <value name="published" type="string" >
+                    1
+                </value>
+                <value name="parentname" type="NULL" >
 
                 </value>
-                <value name="customer_contact" type="NULL">
+                <value name="created_by_name" type="NULL" >
 
                 </value>
-                <value name="customer_checked_out" type="NULL">
+                <value name="manager_name" type="NULL" >
 
                 </value>
-                <value name="mine" type="boolean">
+                <value name="parent_checked_out" type="NULL" >
+
+                </value>
+                <value name="customer_name" type="NULL" >
+
+                </value>
+                <value name="customer_contact" type="NULL" >
+
+                </value>
+                <value name="customer_checked_out" type="NULL" >
+
+                </value>
+                <value name="mine" type="boolean" >
+                    0
+                </value>
+            </object>
+        </array>
+    </object>
+    <object name="-1" type="object"  class="stdClass" >
+        <value name="id" type="string" >
+            -1
+        </value>
+        <value name="name" type="string" >
+            General
+        </value>
+        <value name="description" type="string" >
+            This is uncategorized projects.  Everything without a category goes here.
+        </value>
+        <value name="created_by" type="NULL" >
+
+        </value>
+        <value name="created" type="string" >
+            0000-00-00 00:00:00
+        </value>
+        <value name="manager" type="string" >
+            0
+        </value>
+        <value name="research" type="string" >
+            0
+        </value>
+        <value name="type" type="string" >
+            CATEGORY
+        </value>
+        <value name="parent_id" type="string" >
+            0
+        </value>
+        <value name="wcCode1" type="string" >
+            0
+        </value>
+        <value name="wcCode2" type="string" >
+            0
+        </value>
+        <value name="wcCode3" type="string" >
+            0
+        </value>
+        <value name="wcCode4" type="string" >
+            0
+        </value>
+        <value name="wcCode5" type="string" >
+            0
+        </value>
+        <value name="wcCode6" type="string" >
+            0
+        </value>
+        <value name="customer" type="string" >
+            0
+        </value>
+        <value name="checked_out" type="string" >
+            0
+        </value>
+        <value name="checked_out_time" type="string" >
+            0000-00-00 00:00:00
+        </value>
+        <value name="published" type="integer" >
+            0
+        </value>
+        <value name="parentname" type="NULL" >
+
+        </value>
+        <value name="created_by_name" type="NULL" >
+
+        </value>
+        <value name="manager_name" type="NULL" >
+
+        </value>
+        <value name="parent_checked_out" type="NULL" >
+
+        </value>
+        <value name="customer_name" type="NULL" >
+
+        </value>
+        <value name="customer_contact" type="NULL" >
+
+        </value>
+        <value name="customer_checked_out" type="NULL" >
+
+        </value>
+        <array name="subprojects" type="array" >
+            <object name="6" type="object"  class="stdClass" >
+                <value name="id" type="string" >
+                    6
+                </value>
+                <value name="name" type="string" >
+                    Test Project 2
+                </value>
+                <value name="description" type="string" >
+                    This is a sample second test project
+                </value>
+                <value name="created_by" type="string" >
+                    1
+                </value>
+                <value name="created" type="string" >
+                    2009-04-12 12:34:12
+                </value>
+                <value name="manager" type="string" >
+                    2
+                </value>
+                <value name="research" type="string" >
+                    1
+                </value>
+                <value name="type" type="string" >
+                    PROJECT
+                </value>
+                <value name="parent_id" type="string" >
+                    0
+                </value>
+                <value name="wcCode1" type="string" >
+                    1234
+                </value>
+                <value name="wcCode2" type="string" >
+                    4321
+                </value>
+                <value name="wcCode3" type="string" >
+                    12
+                </value>
+                <value name="wcCode4" type="string" >
+                    45
+                </value>
+                <value name="wcCode5" type="string" >
+                    16
+                </value>
+                <value name="wcCode6" type="string" >
+                    0
+                </value>
+                <value name="customer" type="string" >
+                    0
+                </value>
+                <value name="checked_out" type="string" >
+                    0
+                </value>
+                <value name="checked_out_time" type="string" >
+                    0000-00-00 00:00:00
+                </value>
+                <value name="published" type="string" >
+                    1
+                </value>
+                <value name="parentname" type="NULL" >
+
+                </value>
+                <value name="created_by_name" type="NULL" >
+
+                </value>
+                <value name="manager_name" type="NULL" >
+
+                </value>
+                <value name="parent_checked_out" type="NULL" >
+
+                </value>
+                <value name="customer_name" type="NULL" >
+
+                </value>
+                <value name="customer_contact" type="NULL" >
+
+                </value>
+                <value name="customer_checked_out" type="NULL" >
+
+                </value>
+                <value name="mine" type="boolean" >
+                    0
+                </value>
+            </object>
+        </array>
+    </object>
+    <object name="-3" type="object"  class="stdClass" >
+        <value name="id" type="string" >
+            -3
+        </value>
+        <value name="name" type="string" >
+            Unpaid
+        </value>
+        <value name="description" type="string" >
+            This time is not used for billing customers or for payroll reports
+        </value>
+        <value name="created_by" type="NULL" >
+
+        </value>
+        <value name="created" type="string" >
+            0000-00-00 00:00:00
+        </value>
+        <value name="manager" type="string" >
+            0
+        </value>
+        <value name="research" type="string" >
+            0
+        </value>
+        <value name="type" type="string" >
+            CATEGORY
+        </value>
+        <value name="parent_id" type="string" >
+            0
+        </value>
+        <value name="wcCode1" type="string" >
+            0
+        </value>
+        <value name="wcCode2" type="string" >
+            0
+        </value>
+        <value name="wcCode3" type="string" >
+            0
+        </value>
+        <value name="wcCode4" type="string" >
+            0
+        </value>
+        <value name="wcCode5" type="string" >
+            0
+        </value>
+        <value name="wcCode6" type="string" >
+            0
+        </value>
+        <value name="customer" type="string" >
+            0
+        </value>
+        <value name="checked_out" type="string" >
+            0
+        </value>
+        <value name="checked_out_time" type="string" >
+            0000-00-00 00:00:00
+        </value>
+        <value name="published" type="integer" >
+            0
+        </value>
+        <value name="parentname" type="NULL" >
+
+        </value>
+        <value name="created_by_name" type="NULL" >
+
+        </value>
+        <value name="manager_name" type="NULL" >
+
+        </value>
+        <value name="parent_checked_out" type="NULL" >
+
+        </value>
+        <value name="customer_name" type="NULL" >
+
+        </value>
+        <value name="customer_contact" type="NULL" >
+
+        </value>
+        <value name="customer_checked_out" type="NULL" >
+
+        </value>
+        <array name="subprojects" type="array" >
+            <object name="4" type="object"  class="stdClass" >
+                <value name="id" type="string" >
+                    4
+                </value>
+                <value name="name" type="string" >
+                    Test Unpaid
+                </value>
+                <value name="description" type="string" >
+                    This is a sample test unpaid
+                </value>
+                <value name="created_by" type="string" >
+                    1
+                </value>
+                <value name="created" type="string" >
+                    2009-04-12 12:32:12
+                </value>
+                <value name="manager" type="string" >
+                    2
+                </value>
+                <value name="research" type="string" >
+                    0
+                </value>
+                <value name="type" type="string" >
+                    UNPAID
+                </value>
+                <value name="parent_id" type="string" >
+                    0
+                </value>
+                <value name="wcCode1" type="string" >
+                    12
+                </value>
+                <value name="wcCode2" type="string" >
+                    0
+                </value>
+                <value name="wcCode3" type="string" >
+                    0
+                </value>
+                <value name="wcCode4" type="string" >
+                    0
+                </value>
+                <value name="wcCode5" type="string" >
+                    0
+                </value>
+                <value name="wcCode6" type="string" >
+                    0
+                </value>
+                <value name="customer" type="string" >
+                    0
+                </value>
+                <value name="checked_out" type="string" >
+                    0
+                </value>
+                <value name="checked_out_time" type="string" >
+                    0000-00-00 00:00:00
+                </value>
+                <value name="published" type="string" >
+                    1
+                </value>
+                <value name="parentname" type="NULL" >
+
+                </value>
+                <value name="created_by_name" type="NULL" >
+
+                </value>
+                <value name="manager_name" type="NULL" >
+
+                </value>
+                <value name="parent_checked_out" type="NULL" >
+
+                </value>
+                <value name="customer_name" type="NULL" >
+
+                </value>
+                <value name="customer_contact" type="NULL" >
+
+                </value>
+                <value name="customer_checked_out" type="NULL" >
+
+                </value>
+                <value name="mine" type="boolean" >
+                    0
+                </value>
+            </object>
+        </array>
+    </object>
+    <object name="2" type="object"  class="stdClass" >
+        <value name="id" type="string" >
+            2
+        </value>
+        <value name="name" type="string" >
+            Test Category 1
+        </value>
+        <value name="description" type="string" >
+            This is a sample test category
+        </value>
+        <value name="created_by" type="string" >
+            1
+        </value>
+        <value name="created" type="string" >
+            2009-04-12 12:32:12
+        </value>
+        <value name="manager" type="string" >
+            2
+        </value>
+        <value name="research" type="string" >
+            0
+        </value>
+        <value name="type" type="string" >
+            CATEGORY
+        </value>
+        <value name="parent_id" type="string" >
+            0
+        </value>
+        <value name="wcCode1" type="string" >
+            0
+        </value>
+        <value name="wcCode2" type="string" >
+            0
+        </value>
+        <value name="wcCode3" type="string" >
+            0
+        </value>
+        <value name="wcCode4" type="string" >
+            0
+        </value>
+        <value name="wcCode5" type="string" >
+            0
+        </value>
+        <value name="wcCode6" type="string" >
+            0
+        </value>
+        <value name="customer" type="string" >
+            0
+        </value>
+        <value name="checked_out" type="string" >
+            0
+        </value>
+        <value name="checked_out_time" type="string" >
+            0000-00-00 00:00:00
+        </value>
+        <value name="published" type="integer" >
+            1
+        </value>
+        <value name="parentname" type="NULL" >
+
+        </value>
+        <value name="created_by_name" type="NULL" >
+
+        </value>
+        <value name="manager_name" type="NULL" >
+
+        </value>
+        <value name="parent_checked_out" type="NULL" >
+
+        </value>
+        <value name="customer_name" type="NULL" >
+
+        </value>
+        <value name="customer_contact" type="NULL" >
+
+        </value>
+        <value name="customer_checked_out" type="NULL" >
+
+        </value>
+        <array name="subprojects" type="array" >
+            <object name="1" type="object"  class="stdClass" >
+                <value name="id" type="string" >
+                    1
+                </value>
+                <value name="name" type="string" >
+                    Test Project 1
+                </value>
+                <value name="description" type="string" >
+                    This is a sample test project
+                </value>
+                <value name="created_by" type="string" >
+                    1
+                </value>
+                <value name="created" type="string" >
+                    2009-04-12 12:34:12
+                </value>
+                <value name="manager" type="string" >
+                    2
+                </value>
+                <value name="research" type="string" >
+                    1
+                </value>
+                <value name="type" type="string" >
+                    PROJECT
+                </value>
+                <value name="parent_id" type="string" >
+                    2
+                </value>
+                <value name="wcCode1" type="string" >
+                    1234
+                </value>
+                <value name="wcCode2" type="string" >
+                    4321
+                </value>
+                <value name="wcCode3" type="string" >
+                    12
+                </value>
+                <value name="wcCode4" type="string" >
+                    45
+                </value>
+                <value name="wcCode5" type="string" >
+                    16
+                </value>
+                <value name="wcCode6" type="string" >
+                    0
+                </value>
+                <value name="customer" type="string" >
+                    0
+                </value>
+                <value name="checked_out" type="string" >
+                    0
+                </value>
+                <value name="checked_out_time" type="string" >
+                    0000-00-00 00:00:00
+                </value>
+                <value name="published" type="string" >
+                    1
+                </value>
+                <value name="parentname" type="string" >
+                    Test Category 1
+                </value>
+                <value name="created_by_name" type="NULL" >
+
+                </value>
+                <value name="manager_name" type="NULL" >
+
+                </value>
+                <value name="parent_checked_out" type="string" >
+                    0
+                </value>
+                <value name="customer_name" type="NULL" >
+
+                </value>
+                <value name="customer_contact" type="NULL" >
+
+                </value>
+                <value name="customer_checked_out" type="NULL" >
+
+                </value>
+                <value name="mine" type="boolean" >
                     1
                 </value>
             </object>
         </array>
-        <value name="mine" type="boolean">
+        <value name="mine" type="boolean" >
             1
         </value>
     </object>
