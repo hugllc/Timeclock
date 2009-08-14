@@ -67,7 +67,7 @@ class TimeclockViewTimeclock extends JView
 
         $layout          = JRequest::getVar('layout');
         $model           =& $this->getModel();
-        $user            = JFactory::getUser();
+        $user            =& JFactory::getUser();
         $user_id         = $user->get("id");
         $employmentDates = $model->getEmploymentDatesUnix();
         $date            = $model->get("date");

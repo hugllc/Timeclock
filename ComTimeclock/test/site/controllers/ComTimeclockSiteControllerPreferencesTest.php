@@ -34,10 +34,10 @@
  */
 
 /** Require the JoomlaMock stuff */
-require_once dirname(__FILE__).'/../JoomlaMock/joomla.php';
-require_once dirname(__FILE__).'/../JoomlaMock/testCases/JControllerTest.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
 /** Require the module under test */
-require_once dirname(__FILE__).'/../../site/controller.php';
+require_once dirname(__FILE__).'/../../../site/controllers/preferences.php';
 
 /**
  * Test class for driver.
@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../site/controller.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockSiteControllerTest extends JControllerTest
+class ComTimeclockSiteControllerPreferencesTest extends JControllerTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -63,7 +63,7 @@ class ComTimeclockSiteControllerTest extends JControllerTest
      */
     protected function setUp()
     {
-        $this->o = new TimeclockController();
+        $this->o = new TimeclockControllerPreferences();
         parent::setUp();
     }
 
@@ -102,94 +102,64 @@ class ComTimeclockSiteControllerTest extends JControllerTest
         );
     }
 
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataDateUnix()
-    {
-        return array(
-            array("12", "12", "2005", 1134388800),
-            array("12", "80", "2005", 1140264000),
-            array("12", "25", "2036", 2113819200),
-        );
-    }
-
-    /**
-     * Tests get and set date
-     *
-     * @param int    $m      The Month
-     * @param int    $d      The day
-     * @param int    $y      The Year
-     * @param string $expect The date we expect returned
-     *
-     * @dataProvider dataDateUnix()
-     * @return null
-     */
-    function testDateUnix($m, $d, $y, $expect)
-    {
-        $date = TimeclockController::dateUnix($m, $d, $y);
-        $this->assertSame($expect, $date);
-    }
-    /**
-     * Data provider
-     *
-     * @return array
-     */
-    public static function dataDateUnixSql()
-    {
-        return array(
-            array("2005-12-12", 1134388800),
-            array("2000-12-25", 977745600),
-            array("2036-12-25", 2113819200),
-        );
-    }
-
-    /**
-     * Tests get and set date
-     *
-     * @param int    $sqlDate The date in sql format ("Y-m-d")
-     * @param string $expect  The date we expect returned
-     *
-     * @dataProvider dataDateUnixSql()
-     * @return null
-     */
-    function testDateUnixSql($sqlDate, $expect)
-    {
-        $date = TimeclockController::dateUnixSql($sqlDate);
-        $this->assertSame($expect, $date);
-    }
 
     /**
      * Data provider
      *
      * @return array
      */
-    public static function dataFormatProjId()
+    public static function dataStoreTasks()
     {
         return array(
-            array(1, "0001"),
-            array(12345, "12345"),
-            array(-2, "-002"),
+            array(
+                "save",
+                true,
+                array(
+                    "link" => "index.php?option=com_timeclock&controller=preferences",
+                    "msg" => "Preferences Saved!"
+                ),
+                true
+            ),
+            array(
+                "save",
+                false,
+                array(
+                    "link" => "index.php?option=com_timeclock&controller=preferences",
+                    "msg" => "Error Saving Preferences"
+                ),
+                true
+            ),
+            array(
+                "save",
+                false,
+                array(
+                    "link" => "index.php",
+                    "msg" => "Bad form token.  Please try again."
+                ),
+                false
+            ),
         );
     }
 
+
     /**
-     * Tests get and set date
+     * Tests to make sure the store tasks are redirecting properly
      *
-     * @param int    $id     Id to print out
-     * @param string $expect The date we expect returned
+     * @param string $task       the method name to call
+     * @param bool   $storeRet   The return that "store" should give
+     * @param array  $expect     The expected return from setRedirect
+     * @param bool   $checkToken The return from JRequest::checkToken()
      *
-     * @dataProvider dataFormatProjId()
+     * @dataProvider dataStoreTasks()
      * @return null
      */
-    function testFormatProjId($id, $expect)
+    public function testStoreTasks($task, $storeRet, $expect, $checkToken=true)
     {
-        $ret = TimeclockController::formatProjId($id);
-        $this->assertSame($expect, $ret);
+        $GLOBALS["JModel"]["actionReturn"] = $storeRet;
+        $GLOBALS["JRequest"]["checkToken"] = $checkToken;
+        $this->o->$task();
+        $this->assertSame($expect, $GLOBALS["JController"]["setRedirect"]);
     }
-
 
 }
 

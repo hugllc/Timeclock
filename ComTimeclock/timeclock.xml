@@ -16,7 +16,15 @@
         <filename>index.html</filename>
         <filename>timeclock.php</filename>
         <filename>controller.php</filename>
+        <filename>controllers/preferences.php</filename>
+        <filename>controllers/timeclock.php</filename>
+        <filename>controllers/index.html</filename>
         <filename>views/index.html</filename>
+        <filename>views/preferences/index.html</filename>
+        <filename>views/preferences/tmpl/index.html</filename>
+        <filename>views/preferences/tmpl/default.php</filename>
+        <filename>views/preferences/tmpl/default.xml</filename>
+        <filename>views/preferences/view.html.php</filename>
         <filename>views/timeclock/index.html</filename>
         <filename>views/timeclock/metadata.xml</filename>
         <filename>views/timeclock/view.html.php</filename>
@@ -67,6 +75,7 @@
         <filename>models/timeclock.php</filename>
         <filename>models/reports.php</filename>
         <filename>models/index.html</filename>
+        <filename>models/preferences.php</filename>
         <filename>images/index.html</filename>
         <filename>images/clock.png</filename>
         <filename>images/1leftarrow.png</filename>

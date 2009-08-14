@@ -52,18 +52,6 @@ jimport('joomla.application.component.controller');
 class TimeclockController extends JController
 {
     /**
-     * Custom Constructor
-     *
-     * @param array $default The configuration array.
-     */
-    function __construct($default = array())
-    {
-        parent::__construct($default);
-
-        $this->registerTask('applyhours', 'savehours');
-
-    }
-    /**
      * Method to display the view
      *
      * @access public
@@ -72,96 +60,17 @@ class TimeclockController extends JController
     function display()
     {
         if (TableTimeclockPrefs::getPref("timeclockDisable", "system")) {
-            print "<div><strong>";
+            print '<div class="componentheading">';
+            print JText::_("Timeclock Disabled")."</div>\n";
+            print "<p><strong>";
             print JText::_(
                 TableTimeclockPrefs::getPref("timeclockDisableMessage", "system")
             );
-            print "</strong></div>";
+            print "</strong></p>";
             return;
         }
-        $view = JRequest::getVar('view', "timesheet", '', 'word');
-
-        if ($this->reports($view)) {
-            return;
-        }
-        $this->timesheet();
-    }
-    /**
-     * Method to display the view
-     *
-     * @access public
-     * @return true
-     */
-    function timesheet()
-    {
-        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $user    = JFactory::getUser();
-        $user_id = $user->get("id");
-
-        if ($projModel->getUserProjectsCount($user_id) == 0) {
-            $this->setRedirect(
-                "index.php",
-                JText::_("No projects for you to put time into."),
-                "error"
-            );
-            return;
-        }
-
-        JRequest::setVar('view', 'timeclock');
-        parent::display();
-        return true;
-    }
-    /**
-     * Method to display the view
-     *
-     * @param string $view The view we are looking for
-     *
-     * @access public
-     * @return bool
-     */
-    function reports($view)
-    {
-        if ($view != "reports") {
-            return false;
-        }
-        JRequest::setVar('view', 'reports');
-        parent::display();
-        return true;
-    }
-
-    /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function addhours()
-    {
-        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
-        $projid   = JRequest::getVar('projid', null, '', 'string');
-        if (!empty($projid)) {
-            $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-            $user      = JFactory::getUser();
-            $user_id   = $user->get("id");
-            if ($projModel->userInProject($user_id, $projid) == false) {
-                $this->setRedirect(
-                    JRoute::_("index.php?option=com_timeclock&view=timeclock"),
-                    JText::_("You are not authorized to put time in that project."),
-                    "error"
-                );
-                return;
-            }
-        }
-        $date = JRequest::getVar('date', null, '', 'string');
-        if (!$this->checkDates($date)) {
-            return;
-        }
-        JRequest::setVar('layout', 'addhours');
-        JRequest::setVar('hidemainmenu', 1);
         parent::display();
     }
-
 
     /**
      * Method to display the view
@@ -199,50 +108,6 @@ class TimeclockController extends JController
         return true;
     }
 
-    /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function savehours()
-    {
-        if (!JRequest::checkToken()) {
-            $this->setRedirect(
-                JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
-                "error"
-            );
-            return;
-        }
-
-        $date = JRequest::getVar('date', null, '', 'string');
-        if (!$this->checkDates($date)) {
-            return;
-        }
-        $model = $this->getModel("Timeclock");
-
-        if ($model->store()) {
-            $msg = JText::_('Hours Saved!');
-        } else {
-            $msg = JText::_('Error Saving Hours');
-        }
-
-        $referer = JRequest::getVar(
-            'referer',
-            $_SERVER["HTTP_REFERER"],
-            '',
-            'string'
-        );
-
-        $task = JRequest::getVar('task', '', '', 'word');
-        if ($task == 'applyhours') {
-            $url = $_SERVER["HTTP_REFERER"]."&referer=".urlencode($referer);
-        } else {
-            $url = $referer;
-        }
-        $this->setRedirect($url, $msg);
-    }
 
     /**
      * Format the project id

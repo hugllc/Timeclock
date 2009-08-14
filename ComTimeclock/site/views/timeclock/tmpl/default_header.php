@@ -50,7 +50,7 @@ foreach ($this->period["dates"] as $key => $uDate) :
         $style = "";
     }
     if ($this->checkDate($uDate)) {
-        $url = JRoute::_('index.php?&option=com_timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$this->user->get("id"));
+        $url = JRoute::_('index.php?&option=com_timeclock&controller=timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$this->user->get("id"));
         $tipTitle = "Add Hours";
         $tip = "on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1"));
     } else {

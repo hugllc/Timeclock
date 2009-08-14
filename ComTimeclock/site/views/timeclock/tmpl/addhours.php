@@ -244,6 +244,7 @@ foreach ($this->projects as $cat) {
 
 ?>
     </table>
+    <input type="hidden" name="controller" value="timeclock" />
     <input type="hidden" name="referer" value="<?php print $this->referer; ?>" />
     <input type="hidden" name="option" value="com_timeclock" />
 <!--    <input type="hidden" name="task" value="savehours" />-->
