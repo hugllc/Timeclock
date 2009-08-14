@@ -499,6 +499,12 @@ class TimeclockViewReportsBase extends JView
             'word'
         );
         $this->assignRef("report_type", $report_type);
+        $jpgraph_path = TableTimeclockPrefs::getPref("JPGraphPath", "system");
+        $this->assignRef("jpgraph_path", $jpgraph_path);
+        $width  = (int)JRequest::getInt('graphwidth', 0);
+        $height = (int)JRequest::getInt('graphheight', 0);
+        $this->assignRef("graphwidth", $width);
+        $this->assignRef("graphheight", $height);
 
         $this->_lists["search_options"] = array(
             JHTML::_('select.option', 't.notes', 'Notes'),
@@ -509,24 +515,6 @@ class TimeclockViewReportsBase extends JView
             JHTML::_('select.option', 'c.company', "Company Name"),
             JHTML::_('select.option', 'c.name', "Company Contact"),
         );
-
-        $jpgraph_path = TableTimeclockPrefs::getPref("JPGraphPath", "system");
-        $this->assignRef("jpgraph_path", $jpgraph_path);
-        $width  = (int)JRequest::getInt('graphwidth', 0);
-        $height = (int)JRequest::getInt('graphheight', 0);
-        $this->assignRef("graphwidth", $width);
-        $this->assignRef("graphheight", $height);
-        $doLegend = (bool) JRequest::getInt('dolegend', 1);
-        $this->assignRef("doLegend", $doLegend);
-        $margintop = JRequest::getInt('margintop', 0);
-        $this->assignref("margintop", $margintop);
-        $marginbottom = JRequest::getInt('marginbottom', 0);
-        $this->assignref("marginbottom", $marginbottom);
-        $marginleft = JRequest::getInt('marginleft', 0);
-        $this->assignref("marginleft", $marginleft);
-        $marginright = JRequest::getInt('marginright', 0);
-        $this->assignref("marginright", $marginright);
-
 
         $this->_hoursgraphGetData();
 

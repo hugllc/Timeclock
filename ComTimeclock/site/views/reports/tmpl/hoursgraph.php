@@ -45,17 +45,9 @@ require $this->jpgraph_path.DS."jpgraph.php";
 require $this->jpgraph_path.DS."jpgraph_pie.php";
 require $this->jpgraph_path.DS."jpgraph_pie3d.php";
 
-$margin = array(
-    "top"    => empty($this->margintop)    ? 20  : $this->margintop,
-    "bottom" => empty($this->marginbottom) ? 30 : $this->marginbottom,
-    "left"   => empty($this->marginleft)   ? 30  : $this->marginleft,
-    "right"  => empty($this->marginright)  ? 30  : $this->marginright,
-);
 if (empty($this->graphwidth)) $this->graphwidth = 400;
 if (empty($this->graphheight)) $this->graphheight = ($this->graphwidth*3)/4;
 if ($margin["bottom"] > ($this->graphheight / 2)) $margin["bottom"] = $this->graphheight / 2;
-if (is_numeric($this->doLegend)) $this->doLegend = (bool) $this->doLegend;
-if (!is_bool($this->doLegend)) $this->doLegend = true;
 
 
 // Create the graph
