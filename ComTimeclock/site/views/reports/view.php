@@ -72,6 +72,9 @@ class TimeclockViewReportsBase extends JView
         $this->_where = array();
         $this->cellFill();
 
+        $sqlDateFormat = "%Y-%m-%d %H:%M:%S";
+        $this->assignRef("sqlDateFormat", $sqlDateFormat);
+
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
         } else {
