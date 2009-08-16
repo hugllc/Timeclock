@@ -538,7 +538,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return int
      */
-    function getPTOAccrualRate($id, $date)
+    function getPTOAccrualRate($oid, $date)
     {
         static $rate;
         $key = $oid.$date;
