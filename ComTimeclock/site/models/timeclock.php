@@ -720,7 +720,7 @@ class TimeclockModelTimeclock extends JModel
             if (!is_array($ret)) {
                 $this->_holidays[$key] = false;
             } else {
-                $this->_holidays[$key] = $ret[0]->worked;
+                $this->_holidays[$key] = $ret[0]->worked." 06:00:00";
             }
         }
         return $this->_holidays[$key];

@@ -89,7 +89,9 @@ class ModTimeclockInfoHelper
         if ($params->get("showHoursPerWeek") == 1) {
             $list["Hours/Week"] = round($ytdhours / $week, $decimalPlaces);
         }
-        $nextHoliday = $timeclockModel->getNextHoliday();
+        $nextHoliday = $timeclockModel->getNextHoliday(
+            "t.worked > '".date("Y-m-d")."'"
+        );
         if ($nextHoliday == false) {
             $nextHoliday = "None";
         }
