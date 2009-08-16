@@ -487,7 +487,7 @@ class TimeclockAdminModelUsers extends JModel
         $hours = 0;
         for ($i = 0; $i < $weeks; $i++) {
             $time = mktime(6, 0, 0, 1, 1+($i * 7), date("Y", $date));
-            $hours += self::getPTOAccrualRate($id, $time) / 52;
+            $hours += self::getPTOAccrualRate($oid, $time) / 52;
         }
         return $hours;
     }
@@ -508,7 +508,7 @@ class TimeclockAdminModelUsers extends JModel
         $hours = 0;
         for ($i = 1; $i <= $months; $i++) {
             $time = mktime(6, 0, 0, $i, 1, date("Y", $date));
-            $hours += self::getPTOAccrualRate($id, $time) / 12;
+            $hours += self::getPTOAccrualRate($oid, $time) / 12;
         }
         return $hours;
     }
@@ -525,7 +525,7 @@ class TimeclockAdminModelUsers extends JModel
     {
         $date = strtotime($date);
         $time = mktime(6, 0, 0, 1, 1, date("Y", $date));
-        $hours += self::getPTOAccrualRate($id, $time);
+        $hours += self::getPTOAccrualRate($oid, $time);
 
         return $hours;
     }
@@ -533,7 +533,7 @@ class TimeclockAdminModelUsers extends JModel
     /**
      * Gets the perc of holiday pay this user should get
      *
-     * @param int    $id   The user id to check
+     * @param int    $oid  The user id to check
      * @param string $date The date to check
      *
      * @return int
@@ -541,11 +541,14 @@ class TimeclockAdminModelUsers extends JModel
     function getPTOAccrualRate($id, $date)
     {
         static $rate;
-        $key = $id.$date;
+        $key = $oid.$date;
         $rates = TableTimeclockPrefs::getPref("ptoAccrualRates", "system");
         $service = self::getServiceLength($oid, $date);
-        $status = self::getStatus($id, $date);
+        $status = self::getStatus($oid, $date);
 
+        if ($service == 0) {
+            return 0;
+        }
         if (!is_array($rates[$status])) {
             return 0;
         }
@@ -574,7 +577,7 @@ class TimeclockAdminModelUsers extends JModel
             if (is_array($hist["admin_status"])) {
                 ksort($hist["admin_status"]);
                 foreach ($hist["admin_status"] as $d => $r) {
-                    if (TimeclockController::compareDates($date, $d) < 0) {
+                    if (TimeclockController::compareDates(date("Y-m-d", $date), $d) < 0) {
                         $status[$key] = $r;
                         break;
                     }

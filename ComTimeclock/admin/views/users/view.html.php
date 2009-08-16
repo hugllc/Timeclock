@@ -151,7 +151,10 @@ class TimeclockAdminViewUsers extends JView
 
         foreach ($rows as $k => $row) {
             $rows[$k]->pto = round(
-                $timeclockModel->getTotal(" `p`.`type` = 'PTO'", $row->id),
+                $timeclockModel->getTotal(
+                    " `p`.`type` = 'PTO' AND `t`.`worked` >= '".date("Y-01-01")."'",
+                    $row->id
+                ),
                 $decimalPlaces
             );
             $rows[$k]->ptoYTD = round($model->getPTO($row->id), $decimalPlaces);

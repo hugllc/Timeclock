@@ -102,7 +102,7 @@ class ModTimeclockInfoHelper
             );
         }
 
-        $ptoWhere = " `p`.`type` = 'PTO'";
+        $ptoWhere = " `p`.`type` = 'PTO' AND `t`.`worked` >= '".date("Y-01-01")."'";
         $pto = round($timeclockModel->getTotal($ptoWhere), $decimalPlaces);
         $ptoYTD = round($userModel->getPTO($user->get("id")), $decimalPlaces);
         if ($params->get("showPTO") == 1) {
