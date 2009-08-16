@@ -241,7 +241,7 @@ class TimeclockAdminViewUsers extends JView
             $uProj[] = $p->id;
         }
         $lists["projects"] = $projectModel->getOptions(
-            "WHERE published=1 AND Type <> 'CATEGORY'",
+            "WHERE p.published=1 AND p.type <> 'CATEGORY'",
             "Add Project",
             $uProj
         );
