@@ -246,7 +246,12 @@ class TimeclockAdminViewUsers extends JView
             $uProj
         );
         $lists["users"] = $userModel->getOptions(
-            $userWhere,
+            "",
+            "Select User",
+            $cid
+        );
+        $lists["manager"] = $userModel->getOptions(
+            "WHERE p.published = 1",
             "Select User",
             $cid
         );
