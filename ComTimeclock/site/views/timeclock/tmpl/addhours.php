@@ -166,7 +166,7 @@ foreach ($this->projects as $cat) {
                 </label>
             </th>
             <td>
-                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="<?php print $hoursId; ?>" onBlur="calculateHourTotal();" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
+                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="<?php print $hoursId; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
                 <span><?php print $wcNote; ?></span>
             </td>
             <td>
@@ -197,6 +197,8 @@ foreach ($this->projects as $cat) {
                                 if (hours.value > max) {
                                     hours.value = max;
                                 }
+                                /* This recalculates the total hours */
+                                calculateHourTotal();
                                 return true;
                             }
                         );
@@ -257,13 +259,11 @@ foreach ($this->projects as $cat) {
 <script type="text/javascript">
     function calculateHourTotal() {
         var total = 0;
-        <?php
-            foreach ($hoursSum as $hours) {
-                print "        value = parseInt(document.getElementById('".$hours."').value, 10);\n";
-                print "        if (isNaN(value)) value = 0;\n";
-                print "        total = total + value;\n";
-            }
-        ?>
+        <?php foreach ($hoursSum as $hours): ?>
+            value = parseFloat(document.getElementById('<?php print $hours; ?>').value);
+            if (isNaN(value)) value = 0.0;
+            total = total + value;
+        <?php endforeach; ?>
         document.getElementById('hoursTotal').innerHTML = total;
     }
 </script>
