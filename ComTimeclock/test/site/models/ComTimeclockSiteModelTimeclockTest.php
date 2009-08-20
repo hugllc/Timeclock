@@ -461,6 +461,93 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
         $ret = $this->o->getHolidayPerc($id, $date);
         $this->assertSame($expect, $ret);
     }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataDateUnix()
+    {
+        return array(
+            array("12", "12", "2005", 1134388800),
+            array("12", "80", "2005", 1140264000),
+            array("12", "25", "2036", 2113819200),
+        );
+    }
+
+    /**
+     * Tests get and set date
+     *
+     * @param int    $m      The Month
+     * @param int    $d      The day
+     * @param int    $y      The Year
+     * @param string $expect The date we expect returned
+     *
+     * @dataProvider dataDateUnix()
+     * @return null
+     */
+    function testDateUnix($m, $d, $y, $expect)
+    {
+        $date = TimeclockModelTimeclock::dateUnix($m, $d, $y);
+        $this->assertSame($expect, $date);
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataDateUnixSql()
+    {
+        return array(
+            array("2005-12-12", 1134388800),
+            array("2000-12-25", 977745600),
+            array("2036-12-25", 2113819200),
+        );
+    }
+
+    /**
+     * Tests get and set date
+     *
+     * @param int    $sqlDate The date in sql format ("Y-m-d")
+     * @param string $expect  The date we expect returned
+     *
+     * @dataProvider dataDateUnixSql()
+     * @return null
+     */
+    function testDateUnixSql($sqlDate, $expect)
+    {
+        $date = TimeclockModelTimeclock::dateUnixSql($sqlDate);
+        $this->assertSame($expect, $date);
+    }
+
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    public static function dataFormatProjId()
+    {
+        return array(
+            array(1, "0001"),
+            array(12345, "12345"),
+            array(-2, "-002"),
+        );
+    }
+
+    /**
+     * Tests get and set date
+     *
+     * @param int    $id     Id to print out
+     * @param string $expect The date we expect returned
+     *
+     * @dataProvider dataFormatProjId()
+     * @return null
+     */
+    function testFormatProjId($id, $expect)
+    {
+        $ret = TimeclockModelTimeclock::formatProjId($id);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 

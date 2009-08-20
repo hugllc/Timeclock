@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 $base = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
 
-require_once $base.DS.'controller.php';
+require_once $base.DS.'models'.DS.'timeclock.php';
 
 /**
  * ComTimeclock World Component Controller
@@ -119,7 +119,7 @@ class TimeclockControllerTimeclock extends TimeclockController
             }
         }
         $date = JRequest::getVar('date', null, '', 'string');
-        if (!$this->checkDates($date)) {
+        if (!TimeclockModelTimeclock::checkDates($date)) {
             return;
         }
         JRequest::setVar('layout', 'addhours');
@@ -145,7 +145,7 @@ class TimeclockControllerTimeclock extends TimeclockController
         }
 
         $date = JRequest::getVar('date', null, '', 'string');
-        if (!$this->checkDates($date)) {
+        if (!TimeclockModelTimeclock::checkDates($date)) {
             return;
         }
         $model = $this->getModel("Timeclock");

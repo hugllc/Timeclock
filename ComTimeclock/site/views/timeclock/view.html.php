@@ -164,7 +164,7 @@ class TimeclockViewTimeclock extends JView
      */
     function checkDate($date)
     {
-        return TimeclockController::checkEmploymentDates(
+        return TimeclockModelTimeclock::checkEmploymentDates(
             $this->employmentDates["start"],
             $this->employmentDates["end"],
             $date

@@ -577,7 +577,7 @@ class TimeclockAdminModelUsers extends JModel
             if (is_array($hist["admin_status"])) {
                 ksort($hist["admin_status"]);
                 foreach ($hist["admin_status"] as $d => $r) {
-                    if (TimeclockController::compareDates(date("Y-m-d", $date), $d) < 0) {
+                    if (TimeclockModelTimeclock::compareDates(date("Y-m-d", $date), $d) < 0) {
                         $status[$key] = $r;
                         break;
                     }

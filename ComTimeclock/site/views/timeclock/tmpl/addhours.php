@@ -125,7 +125,7 @@ foreach ($this->projects as $cat) {
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
-                <?php print JText::_("Project").": ".TimeclockController::formatProjId($proj->id)." ".JText::_($proj->name); ?>
+                <?php print JText::_("Project").": ".TimeclockModelTimeclock::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>
         </tr>
         <?php
