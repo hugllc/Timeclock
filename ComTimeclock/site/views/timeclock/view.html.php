@@ -140,12 +140,14 @@ class TimeclockViewTimeclock extends JView
 
         $maxHours = TableTimeclockPrefs::getPref("maxDailyHours", "system");
         $decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+        $minNoteChars = TableTimeclockPrefs::getPref("minNoteChars", "system");
 
         $this->assignRef("projid", $projid);
         $this->assignRef("referer", $referer);
         $this->assignRef("data", $data);
         $this->assignRef("maxHours", $maxHours);
         $this->assignRef("decimalPlaces", $decimalPlaces);
+        $this->assignRef("minNoteChars", $minNoteChars);
 
         JHTML::_('behavior.tooltip');
         JHTML::_('behavior.formvalidation');

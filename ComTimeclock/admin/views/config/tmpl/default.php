@@ -75,6 +75,19 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
             </td>
         </tr>
         <tr>
+            <td width="100" align="right" class="key">
+                <label for="decimalPlaces">
+                    <?php echo JText::_('Minimum Note'); ?>:
+                </label>
+            </td>
+            <td>
+                <input class="text_area" type="text" size="10" maxlength="50" name="prefs[minNoteChars]" id="prefs_minNoteChars" value="<?php echo $this->prefs["minNoteChars"];?>" /> Characters
+            </td>
+            <td>
+                The minimum number of characters to accept as a note.  Set to 0 to disable.
+            </td>
+        </tr>
+        <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="userTypes">
                     <?php echo JText::_('User Types'); ?>:
