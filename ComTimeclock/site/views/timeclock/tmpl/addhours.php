@@ -175,9 +175,13 @@ foreach ($this->projects as $cat) {
                     Window.onDomReady(function(){
                         document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
                             function (value) {
-                                if (document.getElementById('<?php print $hoursId; ?>').value > 0) {
-                                    return (value.length > 10);
+                                var errordisp = document.getElementById('noteerror<?php print $proj->id;?>');
+                                if ((document.getElementById('<?php print $hoursId; ?>').value > 0)
+                                    && (value.length <= 10)) {
+                                    errordisp.style.display = '';
+                                    return false;
                                 } else {
+                                    errordisp.style.display = 'none';
                                     return true;
                                 }
                             }
@@ -219,9 +223,11 @@ foreach ($this->projects as $cat) {
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
+                <div id="noteerror<?php print $proj->id;?>" style="display:none; background: red; color: white; padding: 3px;"><strong><?php print JText::_("Minimum 10 characters."); ?></strong></div>
             </td>
             <td>
-                <?php print JText::_("This should be a description of what was done in the hours posted.  Minimum 10 characters."); ?>
+                <?php print JText::_("This should be a description of what was done in the hours posted."); ?>
+                <strong><?php print JText::_("Minimum 10 characters."); ?></strong>
             </td>
         </tr>
         <tr>
