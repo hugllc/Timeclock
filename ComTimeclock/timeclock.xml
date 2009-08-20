@@ -93,6 +93,7 @@
             <menu controller="projects">Projects</menu>
             <menu controller="holidays">Holidays</menu>
             <menu controller="timesheets">Timesheets</menu>
+            <menu controller="tools">Misc Tools</menu>
             <menu task="about">About</menu>
         </submenu>
 
