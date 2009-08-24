@@ -240,14 +240,14 @@ class TimeclockAdminViewUsers extends JView
 
         $co = array();
         $coe = array();
-        for ($year = date("Y"); $year >= $startYear; $year--) {
+        for ($year = (date("Y") + 1); $year > $startYear; $year--) {
             if (!isset($ptoCarryOver[$year])) {
                 $co[$year] = 0;
             } else {
                 $co[$year] = $ptoCarryOver[$year];
             }
             if (!isset($ptoCarryOverExpire[$year])) {
-                $coe[$year] = ($year+1)."-".$ptoCarryOverDefExpire;
+                $coe[$year] = $year."-".$ptoCarryOverDefExpire;
             } else {
                 $coe[$year] = $ptoCarryOverExpire[$year];
             }

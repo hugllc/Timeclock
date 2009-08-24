@@ -445,6 +445,18 @@ class TimeclockAdminModelUsers extends JModel
      */
     function getPTO($oid, $date=null)
     {
+        return $this->_getPTO($oid, $date) + $this->_getPTOCarryOver($oid, $date);
+    }
+    /**
+     * Gets select options for parent projects
+     *
+     * @param int    $oid  The user to get the PTO for.
+     * @param string $date The date to check
+     *
+     * @return array
+     */
+    function _getPTO($oid, $date=null)
+    {
         if (empty($date)) {
             $date = date("Y-m-d");
         }
@@ -467,8 +479,44 @@ class TimeclockAdminModelUsers extends JModel
             $ret = self::_getPTOYear($oid, $date);
             break;
         }
+        var_dump($ret * $dailyHours);
         return $ret * $dailyHours;
     }
+
+    /**
+     * Gets select options for parent projects
+     *
+     * @param int    $oid  The user to get the PTO for.
+     * @param string $date The date to check
+     *
+     * @return array
+     */
+    function _getPTOCarryOver($oid, $date=null)
+    {
+        if (empty($date)) {
+            $date = date("Y-m-d");
+        }
+        $co = TableTimeclockPrefs::getPref("admin_ptoCarryOver", "user", $oid);
+        $coe = TableTimeclockPrefs::getPref("admin_ptoCarryOverExpire", "user", $oid);
+        $year = date("Y", strtotime($date." 06:00:00"));
+        if (!isset($co[$year])) {
+            return 0;
+        }
+        if (TimeclockModelTimeclock::compareDates($coe[$year], $date) > 0) {
+            return (int) $co[$year];
+        }
+        $pto = (int)TimeclockModelTimeclock::getTotal(
+            " `p`.`type` = 'PTO' AND `t`.`worked` >= '".date("Y-01-01")."'
+            AND `t`.`worked` <= '".$coe[$year]."'",
+            $oid
+        );
+        if (($pto - $co[$year]) < 0) {
+            return $pto;
+        } else {
+            return $co[$year];
+        }
+    }
+
 
     /**
     * Gets select options for parent projects

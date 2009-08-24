@@ -179,7 +179,7 @@ echo $pane->endPane();
             <td>
                 <table>
                     <tr>
-                        <th><?php print JText::_("From"); ?></th>
+                        <th><?php print JText::_("To"); ?></th>
                         <th><?php print JText::_("Hours"); ?></th>
                         <th><?php print JText::_("Expires"); ?></th>
                     </tr>
@@ -194,7 +194,7 @@ echo $pane->endPane();
             </td>
             <td>
                 The amount of carryover and the date it expires.  The year listed is the year PTO
-                is being carried over FROM.
+                is being carried into.
             </td>
         </tr>
 <?php
