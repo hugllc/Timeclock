@@ -129,6 +129,12 @@ class TimeclockAdminViewUsers extends JView
             'int'
         );
 
+        if (trim(strtolower($filter_order_Dir)) == "asc") {
+            $filter_order_Dir = "ASC";
+        } else {
+            $filter_order_Dir = "DESC";
+        }
+
         $where = array();
 
         if ($filter_state) {
@@ -139,12 +145,13 @@ class TimeclockAdminViewUsers extends JView
             }
         }
         if ($search) {
-            $where[] = 'LOWER('.$search_filter.') LIKE '
-                      .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            $where[] = 'LOWER('.TimeclockAdminSql::dotNameQuote($search_filter).')
+                    LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+        $orderby = ' ORDER BY '.TimeclockAdminSql::dotNameQuote($filter_order).' '
+                    .$filter_order_Dir;
 
         $rows = $model->getUsers($where, $limitstart, $limit, $orderby);
         $total = $model->countUsers($where);

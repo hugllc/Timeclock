@@ -229,21 +229,32 @@ class TimeclockViewReportsBase extends JView
             'string'
         );
 
+        $filter_order_dir =
+            (trim(strtolower($filter_order_Dir)) == "asc") ? "ASC" : "DESC";
+        $filter_order_dir2 =
+            (trim(strtolower($filter_order_Dir2)) == "asc") ? "ASC" : "DESC";
+        $filter_order_dir3 =
+            (trim(strtolower($filter_order_Dir3)) == "asc") ? "ASC" : "DESC";
+
         if (!empty($filter_order)) {
-            $this->_orderby = ' ORDER BY '.$filter_order
-                             .' '.$filter_order_Dir;
+            $this->_orderby = ' ORDER BY '
+                                .TimeclockAdminSql::dotNameQuote($filter_order)
+                                .' '.$filter_order_Dir;
             if (!empty($filter2_order)) {
-                $this->_orderby .= ", ".$filter2_order
-                                  .' '.$filter2_order_Dir;
+                $this->_orderby .= ", "
+                                .TimeclockAdminSql::dotNameQuote($filter2_order)
+                                .' '.$filter2_order_Dir;
             }
             if (!empty($filter3_order)) {
-                $this->_orderby .= ", ".$filter3_order
-                                  .' '. $filter3_order_Dir;
+                $this->_orderby .= ", "
+                                .TimeclockAdminSql::dotNameQuote($filter3_order)
+                                .' '. $filter3_order_Dir;
             }
         }
 
         if ($search) {
-            $this->_where[] = 'LOWER('.$db->NameQuote($search_filter).') LIKE '
+            $this->_where[] = 'LOWER('
+                        .TimeclockAdminSql::dotNameQuote($search_filter).') LIKE '
                         .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 

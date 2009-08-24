@@ -112,6 +112,8 @@
             <filename>elements/category.php</filename>
             <filename>images/index.html</filename>
             <filename>images/clock-48.png</filename>
+            <filename>lib/index.html</filename>
+            <filename>lib/sql.inc.php</filename>
             <filename>install/timeclock_customers.sql</filename>
             <filename>install/timeclock_prefs.sql</filename>
             <filename>install/timeclock_projects.sql</filename>

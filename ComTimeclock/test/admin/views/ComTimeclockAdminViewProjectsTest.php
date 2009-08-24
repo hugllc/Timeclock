@@ -110,7 +110,7 @@ class ComTimeclockAdminViewProjectsTest extends JViewTest
                 "lists",
                 array(
                     "state" => "grid.state",
-                    "order_Dir" => "",
+                    "order_Dir" => "DESC",
                     "order" => "t.id",
                     "search" => "hello",
                     "search_filter" => "p.name",
@@ -138,7 +138,7 @@ class ComTimeclockAdminViewProjectsTest extends JViewTest
                 "lists",
                 array(
                     "state" => "grid.state",
-                    "order_Dir" => "",
+                    "order_Dir" => "DESC",
                     "order" => "t.id",
                     "search" => "none",
                     "search_filter" => "m.name",

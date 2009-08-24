@@ -49,6 +49,7 @@ $_SESSION["JoomlaMockBaseDir"] = $dir;
 /** Test suites */
 require_once dirname(__FILE__)."/site/ComTimeclockSiteTests.php";
 require_once dirname(__FILE__)."/admin/ComTimeclockAdminTests.php";
+require_once dirname(__FILE__)."/../admin/lib/sql.inc.php";
 
 /**
  *  This class runs all of the tests.  This must be done with no errors

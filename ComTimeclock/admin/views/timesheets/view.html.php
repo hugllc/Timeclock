@@ -127,23 +127,23 @@ class TimeclockAdminViewTimesheets extends JView
             'int'
         );
 
-        $where = array();
-        /*
-        if ($filter_state) {
-            if ($filter_state == 'P') {
-                $where[] = 't.published = 1';
-            } else if ($filter_state == 'U') {
-                $where[] = 't.published = 0';
-            }
+        if (trim(strtolower($filter_order_Dir)) == "asc") {
+            $filter_order_Dir = "ASC";
+        } else {
+            $filter_order_Dir = "DESC";
         }
-        */
+
+        $where = array();
+
         if ($search) {
-            $where[] = 'LOWER('.$search_filter.') LIKE '
-                       .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            $where[] = 'LOWER('.TimeclockAdminSql::dotNameQuote($search_filter).')
+                        LIKE '
+                        .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+        $orderby = ' ORDER BY '. TimeclockAdminSql::dotNameQuote($filter_order)
+                .' '. $filter_order_Dir;
 
         $rows  = $model->getTimesheets($where, $limitstart, $limit, $orderby);
         $total = $model->countTimesheets($where);

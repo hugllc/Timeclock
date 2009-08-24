@@ -127,6 +127,11 @@ class TimeclockAdminViewCustomers extends JView
             0,
             'int'
         );
+        if (trim(strtolower($filter_order_Dir)) == "asc") {
+            $filter_order_Dir = "ASC";
+        } else {
+            $filter_order_Dir = "DESC";
+        }
 
         $where = array();
 
@@ -138,12 +143,13 @@ class TimeclockAdminViewCustomers extends JView
             }
         }
         if ($search) {
-            $where[] = 'LOWER('.$search_filter.') LIKE '
-                       .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+            $where[] = 'LOWER('.TimeclockAdminSql::dotNameQuote($search_filter).')
+                    LIKE '.$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $orderby = ' ORDER BY '. $filter_order.' '.$filter_order_Dir;
+        $orderby = ' ORDER BY '. TimeclockAdminSql::dotNameQuote($filter_order)
+                .' '.$filter_order_Dir;
 
         $rows = $model->getCustomers($where, $limitstart, $limit, $orderby);
         $total = $model->countCustomers($where);

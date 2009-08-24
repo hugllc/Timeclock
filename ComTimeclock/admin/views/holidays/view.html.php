@@ -127,6 +127,12 @@ class TimeclockAdminViewHolidays extends JView
             'int'
         );
 
+        if (trim(strtolower($filter_order_Dir)) == "asc") {
+            $filter_order_Dir = "ASC";
+        } else {
+            $filter_order_Dir = "DESC";
+        }
+
         $where = array();
 
         if ($filter_state) {
@@ -137,12 +143,12 @@ class TimeclockAdminViewHolidays extends JView
             }
         }
         if ($search) {
-            $where[] = 'LOWER('.$search_filter.') LIKE '
+            $where[] = 'LOWER('.TimeclockAdminSql::dotNameQuote($search_filter).') LIKE '
                        .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
 
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $orderby = ' ORDER BY '. $filter_order
+        $orderby = ' ORDER BY '. TimeclockAdminSql::dotNameQuote($filter_order)
                   .' '.$filter_order_Dir;
 
         $rows  = $model->getHolidays($where, $limitstart, $limit, $orderby);
