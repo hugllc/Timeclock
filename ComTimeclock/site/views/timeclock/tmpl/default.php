@@ -54,8 +54,9 @@ $document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('da
 $pane = JPane::getInstance("sliders");
 $initPanes = array();
 JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
-
+JHTML::_('behavior.mootools');
 ?>
+
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="componentheading"><?php print JText::_("Timesheet for ").$this->user->get("name");?></div>
     <?php print $this->loadTemplate("nextprev"); ?>
@@ -66,6 +67,7 @@ JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timecl
             <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
         </strong>
     </div>
+
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
     <?php print $this->loadTemplate("header"); ?>
 <?php
@@ -106,11 +108,19 @@ foreach ($this->projects as $cat) {
     }
     ?>
     </tbody>
-    <script type="text/javascript"><?php print $initFunction; ?></script>
     <?php
+    $initPanes[] = $initFunction;
 }
+
+$document =& JFactory::getDocument();
+$js = 'window.addEvent(\'domready\', function() {'.implode(" ", $initPanes).'});';
+$document->addScriptDeclaration($js);
+
+
 print $this->loadTemplate("header");
+
 ?>
+
         <tr class="sectiontableentry<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
                 Subtotals
@@ -136,6 +146,7 @@ $k = 1-$k;
                 &nbsp;
             </td>
         </tr>
+
         <tr class="sectiontableentry<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
                 Periodic Subtotals
@@ -166,8 +177,11 @@ $k = 1-$k;
                 <?php print $this->totals["total"]; ?>
             </td>
         </tr>
+
     </table>
+
     <?php print $this->loadTemplate("nextprev"); ?>
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="view" value="timeclock" />
+
 </form>
