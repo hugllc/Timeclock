@@ -159,6 +159,8 @@ class TimeclockAdminViewTimesheets extends JView
             "Inactive"
         );
 
+        $lists['search_filter'] = $search_filter;
+
         // table ordering
         $lists['order_Dir']      = $filter_order_Dir;
         $lists['order']          = $filter_order;
