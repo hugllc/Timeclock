@@ -66,13 +66,13 @@ JToolBarHelper::editListX();
     <thead>
         <tr>
             <th width="5">
-                <?php echo JHTML::_('grid.sort', 'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php echo JHTML::_('grid.sort', 'Id', 'u.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
             </th>
             <th width="20">
                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
             </th>
             <th  class="title">
-                <?php echo JHTML::_('grid.sort', 'Name', 't.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php echo JHTML::_('grid.sort', 'Name', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
             </th>
             <th width="1%" align="center">
                 <?php echo JText::_('Active'); ?>
