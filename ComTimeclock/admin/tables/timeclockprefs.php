@@ -115,6 +115,7 @@ class TableTimeclockPrefs extends JTable
             "ptoAccrualTime" => "end",
             "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:10:5\n6:15:7.5\n21:20:10\n99:25:12.5",
             "minNoteChars" => 10,
+            "ptoCarryOverDefExpire" => "3-31",
         ),
         "user" => array(
             "admin_holidayperc" => 100,

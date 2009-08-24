@@ -217,8 +217,6 @@ class TimeclockAdminViewUsers extends JView
         $this->setModel($model, true);
         $row = $this->get("Data");
 
-        $user =& JFactory::getUser();
-
         $cid = JRequest::getVar('cid', 0, '', 'array');
         if ($cid[0] < 1) {
             $this->setRedirect(
@@ -234,6 +232,28 @@ class TimeclockAdminViewUsers extends JView
                 $lists["status"][] = JHTML::_("select.option", $key, $value);
             }
         }
+
+        $ptoCarryOver = TableTimeclockPrefs::getPref("admin_ptoCarryOver", "user", $user->get("id"));
+        $ptoCarryOverExpire = TableTimeclockPrefs::getPref("admin_ptoCarryOverExpire", "user", $user->get("id"));
+        $ptoCarryOverDefExpire = TableTimeclockPrefs::getPref("ptoCarryOverDefExpire", "system");
+        $startYear = date("Y", strtotime($row->startDate." 06:00:00"));
+
+        $co = array();
+        $coe = array();
+        for ($year = date("Y"); $year >= $startYear; $year--) {
+            if (!isset($ptoCarryOver[$year])) {
+                $co[$year] = 0;
+            } else {
+                $co[$year] = $ptoCarryOver[$year];
+            }
+            if (!isset($ptoCarryOverExpire[$year])) {
+                $coe[$year] = ($year+1)."-".$ptoCarryOverDefExpire;
+            } else {
+                $coe[$year] = $ptoCarryOverExpire[$year];
+            }
+        }
+        $this->assignRef("ptoCarryOver", $co);
+        $this->assignRef("ptoCarryOverExpire", $coe);
         /*
         $lists["status"] = array(
             JHTML::_("select.option", "FULLTIME", "Full Time"),

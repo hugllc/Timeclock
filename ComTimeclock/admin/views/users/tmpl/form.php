@@ -160,7 +160,7 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="type">
-                    <?php echo JText::_('User Type'); ?>:
+                    <?php echo JText::_('User Status'); ?>:
                 </label>
             </td>
             <td>
@@ -168,6 +168,33 @@ echo $pane->endPane();
             </td>
             <td>
                 The status of the user
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="type">
+                    <?php echo JText::_('PTO Carryover'); ?>:
+                </label>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <th><?php print JText::_("From"); ?></th>
+                        <th><?php print JText::_("Hours"); ?></th>
+                        <th><?php print JText::_("Expires"); ?></th>
+                    </tr>
+                    <?php foreach ($this->ptoCarryOver as $year => $value): ?>
+                    <tr>
+                        <th><?php print $year; ?></th>
+                        <td><input type="text" name="admin_ptoCarryOver[<?php print $year; ?>]" size="7" maxlength="5" value="<?php print $value; ?>" /></td>
+                        <td style="whitespace: nowrap;" nowrap="nowrap"><?php print JHTML::_("calendar", $this->ptoCarryOverExpire[$year], "admin_ptoCarryOverExpire[$year]", "admin_ptoCarryOverExpire[$year]", "%Y-%m-%d", "");?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
+            </td>
+            <td>
+                The amount of carryover and the date it expires.  The year listed is the year PTO
+                is being carried over FROM.
             </td>
         </tr>
 <?php
