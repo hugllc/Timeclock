@@ -37,10 +37,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 $url  = "index.php?option=com_timeclock&view=reports&layout=hoursgraph";
-$url .= "&startDate=".JHTML::_("date", $this->period["start"], $this->sqlDateFormat);
-$url .= "&endDate=".JHTML::_("date", $this->period["end"], $this->sqlDateFormat);
+$url .= "&startDate=".JHTML::_("date", $this->period["unix"]["start"], "%Y-%m-%d");
+$url .= "&endDate=".JHTML::_("date", $this->period["unit"]["end"], "%Y-%m-%d");
 $url .= "&cat_by=".urlencode($this->cat_by);
 $styles = array(
                 "userid",
