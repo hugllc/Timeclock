@@ -61,7 +61,7 @@ class TimeclockAdminModelTimesheets extends JModel
     var $_allQuery = "SELECT t.*, u.name as created_by_name,
                       (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5
                       + t.hours6) as hours,
-                      p.name as project_name
+                      p.name as project_name, u.name as created_by_name
                       FROM #__timeclock_timesheet AS t
                       LEFT JOIN #__timeclock_projects as p
                         ON (t.project_id = p.id OR p.id = 0)
@@ -78,6 +78,7 @@ class TimeclockAdminModelTimesheets extends JModel
 
         $array = JRequest::getVar('cid', 0, '', 'array');
         $this->setId($array);
+        $this->_created_by = JRequest::getVar('created_by', 0, '', 'int');
     }
     /**
      * Method to set the id
@@ -101,6 +102,9 @@ class TimeclockAdminModelTimesheets extends JModel
         $row = $this->getTable("TimeclockTimesheet");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
         $row->load($id);
+        if (empty($row->id)) {
+            $row->created_by = $this->_created_by;
+        }
         return $row;
     }
 

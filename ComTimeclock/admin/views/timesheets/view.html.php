@@ -217,6 +217,10 @@ class TimeclockAdminViewTimesheets extends JView
             $row->worked = date("Y-m-d");
         }
 
+        $user =& JFactory::getUser($row->created_by);
+        $author = $user->get("name");
+        $this->assignRef("author", $author);
+
         $projWhere  = " WHERE ";
         if (!empty($row->created_by)) {
             $projWhere .= " u.user_id = ".(int)$row->created_by." AND ";

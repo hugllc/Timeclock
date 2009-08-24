@@ -50,16 +50,33 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 <div>
     <table class="admintable">
         <tr>
+            <?php if (empty($this->row->created_by)): ?>
             <td width="100" align="right" class="key">
                 <label for="Published">
                     <?php echo JText::_('User'); ?>:
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.genericList", $this->lists["users"], "created_by", 'onChange="document.getElementById(\'task\').value=\'apply\';this.form.submit();"', 'value', 'text', $this->row->created_by); ?>
+                    <?php print JHTML::_("select.genericList", $this->lists["users"], "created_by", 'onChange="document.getElementById(\'task\').value=\'edit\';this.form.submit();"', 'value', 'text', $this->row->created_by); ?>
+                    <input type="hidden" name="authOnly" value="1" />
             </td>
             <td>
-                The user.  <strong>Select the user before the project or check the project after selecting the user</strong>
+                <?php print JText::_("Please select the user"); ?>
+            </td>
+        </tr>
+        <?php else: ?>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="Published">
+                    <?php echo JText::_('User'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print $this->author; ?>
+                <input type="hidden" name="created_by" value="<?php print $this->row->created_by; ?>" />
+            </td>
+            <td>
+                <?php print JText::_("The user.  Once selected this can not be changed for this record."); ?>
             </td>
         </tr>
         <tr>
@@ -123,6 +140,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                 A description of the hours
             </td>
         </tr>
+        <?php endif; ?>
     </table>
 </div>
 
