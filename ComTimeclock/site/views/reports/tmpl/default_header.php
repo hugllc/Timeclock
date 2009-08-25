@@ -39,7 +39,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
             <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Project"); ?>
+                <?php print JHTML::_('grid.sort', 'Project', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php //print JText::_("Project"); ?>
             </td>
             <?php foreach ($this->users as $user) : ?>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">

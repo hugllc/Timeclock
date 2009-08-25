@@ -38,7 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
             <td rowspan="2" class="sectiontableheader" width="20%" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("User"); ?>
+                <?php print JHTML::_('grid.sort', 'User', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php //print JText::_("User"); ?>
             </td>
             <?php foreach (array_keys($this->totals["cat"]) as $cat) : ?>
             <td colspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">

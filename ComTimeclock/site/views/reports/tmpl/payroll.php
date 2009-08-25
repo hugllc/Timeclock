@@ -50,7 +50,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 
 ?>
 
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
+<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="adminForm" autocomplete="off">
     <?php if ($this->params->get('show_page_title')) : ?>
     <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
             <?php echo $this->escape($this->params->get('page_title')); ?>
@@ -73,7 +73,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
            </td>
         </tr>
         <tr>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', 'Employee', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
@@ -81,7 +81,7 @@ for ($w = 0; $w < $this->weeks; $w++) {
     <?php
 }
 ?>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Employee"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', 'Employee', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
             <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?></td>
         </tr>
         <tr>
@@ -146,6 +146,8 @@ $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
             <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     </table>
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 </form>
 <h3>Notes</h3>
 <dl>

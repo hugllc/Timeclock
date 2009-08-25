@@ -317,6 +317,8 @@ class TimeclockViewReportsBase extends JView
 
         $model =& $this->getModel();
 
+        $this->filter();
+
         $this->_where[] = $model->periodWhere("t.worked");
 
         $where = (count($this->_where) ? implode(' AND ', $this->_where) : '');
