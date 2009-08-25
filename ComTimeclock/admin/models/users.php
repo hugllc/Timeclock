@@ -479,7 +479,6 @@ class TimeclockAdminModelUsers extends JModel
             $ret = self::_getPTOYear($oid, $date);
             break;
         }
-        var_dump($ret * $dailyHours);
         return $ret * $dailyHours;
     }
 
