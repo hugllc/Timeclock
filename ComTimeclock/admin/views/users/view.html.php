@@ -62,6 +62,9 @@ class TimeclockAdminViewUsers extends JView
      */
     function display($tpl = null)
     {
+        $this->decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+        $this->assignRef("decimalPlaces", $this->decimalPlaces);
+
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
@@ -162,9 +165,9 @@ class TimeclockAdminViewUsers extends JView
                     " `p`.`type` = 'PTO' AND `t`.`worked` >= '".date("Y-01-01")."'",
                     $row->id
                 ),
-                $decimalPlaces
+                $this->decimalPlaces
             );
-            $rows[$k]->ptoYTD = round($model->getPTO($row->id), $decimalPlaces);
+            $rows[$k]->ptoYTD = round($model->getPTO($row->id), $this->decimalPlaces);
         }
 
         jimport('joomla.html.pagination');
