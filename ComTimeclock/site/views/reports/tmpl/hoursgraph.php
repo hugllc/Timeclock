@@ -45,8 +45,8 @@ require $this->jpgraph_path.DS."jpgraph.php";
 require $this->jpgraph_path.DS."jpgraph_pie.php";
 require $this->jpgraph_path.DS."jpgraph_pie3d.php";
 
-if (empty($this->graphwidth)) $this->graphwidth = 400;
-if (empty($this->graphheight)) $this->graphheight = ($this->graphwidth*3)/4;
+if (empty($this->graphwidth)) $this->graphwidth = 500;
+if (empty($this->graphheight)) $this->graphheight = ($this->graphwidth*3)/5;
 if ($margin["bottom"] > ($this->graphheight / 2)) $margin["bottom"] = $this->graphheight / 2;
 
 

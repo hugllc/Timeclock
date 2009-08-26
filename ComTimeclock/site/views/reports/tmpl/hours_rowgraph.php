@@ -62,7 +62,7 @@ foreach ($styles as $key) {
 }
 ?>
     <tr>
-        <td align="center" colspan="<?php print $this->graphColSpan; ?>">
+        <td align="left" colspan="<?php print $this->graphColSpan; ?>">
             <img src="<?php print JRoute::_($url); ?>" alt="Data Graph Failed." align="center"/>
         </td>
     </tr>

@@ -50,7 +50,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 
 $this->graphColSpan = 2 + (count($this->totals["cat"])*2);
 ?>
-
+<div style="overflow:auto; width: 100%; background: inherit;">
 <form action="<?php JROUTE::_("index.php?option=com_timeclock&view=reports&layout=hours"); ?>" method="post" name="adminForm" autocomplete="off">
     <?php if ($this->params->get('show_page_title')) : ?>
     <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
@@ -100,3 +100,4 @@ print $this->loadTemplate("total");
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 </form>
+</div>
