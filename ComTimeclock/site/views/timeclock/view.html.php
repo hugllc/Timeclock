@@ -73,6 +73,9 @@ class TimeclockViewTimeclock extends JView
         $date            = $model->get("date");
         $this->_params   =& $mainframe->getParams('com_timeclock');
         $this->_getProjects($user_id);
+        $decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+
+        $this->assignRef("decimalPlaces", $decimalPlaces);
         $this->assignRef("employmentDates", $employmentDates);
         $this->assignRef("user", $user);
         $this->assignRef("date", $date);
@@ -139,14 +142,12 @@ class TimeclockViewTimeclock extends JView
         $projid   = JRequest::getVar('projid', null, '', 'string');
 
         $maxHours = TableTimeclockPrefs::getPref("maxDailyHours", "system");
-        $decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
         $minNoteChars = TableTimeclockPrefs::getPref("minNoteChars", "system");
 
         $this->assignRef("projid", $projid);
         $this->assignRef("referer", $referer);
         $this->assignRef("data", $data);
         $this->assignRef("maxHours", $maxHours);
-        $this->assignRef("decimalPlaces", $decimalPlaces);
         $this->assignRef("minNoteChars", $minNoteChars);
 
         JHTML::_('behavior.tooltip');

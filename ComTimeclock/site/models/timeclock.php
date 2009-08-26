@@ -310,6 +310,8 @@ class TimeclockModelTimeclock extends JModel
     function getTimesheetData()
     {
         if (empty($this->data)) {
+            $db = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+
             $where = array(
                 "t.created_by = ".$this->_db->Quote($this->_id),
                 $this->employmentDateWhere("t.worked"),
@@ -328,11 +330,11 @@ class TimeclockModelTimeclock extends JModel
                 return array();
             }
             foreach ($this->data as $k => $d) {
-                if ($d->type != "HOLIDAY") {
-                    continue;
+                if ($d->type == "HOLIDAY") {
+                    $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
+                    $this->data[$k]->hours =  $d->hours * $hperc;
                 }
-                $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
-                $this->data[$k]->hours =  $d->hours * $hperc;
+                $this->data[$k]->hours = round($this->data[$k]->hours, $db);
             }
         }
         return $this->data;
