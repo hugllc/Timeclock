@@ -236,6 +236,21 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 When during the period is the time accrued
             </td>
         </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="ptoCarryOverDefExpire">
+                    <?php echo JText::_('Default PTO Carryover Expiration'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("calendar", $this->prefs["ptoCarryOverDefExpire"], "prefs[ptoCarryOverDefExpire]", "ptoCarryOverDefExpire", "%m-%d", "");?>
+            </td>
+            <td>
+                The default time that PTO carry over expires.  This is in the form Month-Day.  The
+                year will be automatically added on for each year PTO carry over happens.
+            </td>
+        </tr>
+
     </table>
 <?php
     echo $pane->endPanel();
