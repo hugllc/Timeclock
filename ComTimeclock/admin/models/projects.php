@@ -354,7 +354,6 @@ class TimeclockAdminModelProjects extends JModel
             $ret = array();
         }
         $query = "SELECT p.id as id, p.name as name FROM #__timeclock_projects as p "
-                ."LEFT JOIN #__timeclock_users AS u ON p.id = u.id "
                  .$where." ORDER BY id asc";
         $list = self::_getList($query);
         if (!is_array($list)) {

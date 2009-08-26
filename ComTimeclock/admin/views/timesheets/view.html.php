@@ -223,7 +223,8 @@ class TimeclockAdminViewTimesheets extends JView
         $author = $user->get("name");
         $this->assignRef("author", $author);
 
-        $projWhere  = " WHERE ";
+        $projWhere  = "LEFT JOIN #__timeclock_users AS u ON p.id = u.id ";
+        $projWhere .= " WHERE ";
         if (!empty($row->created_by)) {
             $projWhere .= " u.user_id = ".(int)$row->created_by." AND ";
         }
