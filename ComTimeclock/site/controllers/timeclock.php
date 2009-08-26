@@ -74,8 +74,6 @@ class TimeclockControllerTimeclock extends TimeclockController
      */
     function display()
     {
-        parent::display();
-
         include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $user    = JFactory::getUser();
@@ -135,6 +133,7 @@ class TimeclockControllerTimeclock extends TimeclockController
     */
     function savehours()
     {
+
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
@@ -164,6 +163,7 @@ class TimeclockControllerTimeclock extends TimeclockController
         );
 
         $task = JRequest::getVar('task', '', '', 'word');
+
         if ($task == 'applyhours') {
             $url = $_SERVER["HTTP_REFERER"]."&referer=".urlencode($referer);
         } else {

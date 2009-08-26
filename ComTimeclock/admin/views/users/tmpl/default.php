@@ -54,7 +54,7 @@ JToolBarHelper::editListX();
             <?php echo JText::_('by'); ?>:
             <?php echo JHTML::_('select.genericlist', $this->lists['search_options'], 'search_filter', '', 'value', 'text', $this->lists['search_filter'], 'search_filter'); ?>
             <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-            <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+            <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
         </td>
         <td nowrap="nowrap">
             <?php echo $this->lists['state']; ?>

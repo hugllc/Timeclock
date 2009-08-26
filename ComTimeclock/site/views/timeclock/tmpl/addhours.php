@@ -51,6 +51,7 @@ $wCompEnabled = TableTimeclockPrefs::getPref("wCompEnable", "system");
 JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
 
 $hoursSum = array();
+$initPanes = array();
 
 ?>
 <script type="text/javascript">
@@ -67,7 +68,7 @@ $hoursSum = array();
 <div style="position: fixed; left: 0px; top: 0px; background: white; border: 3px solid black; padding: .5em;">
     <?php print JText::_("Total Hours"); ?>: <span id="hoursTotal"> - </span>
 </div>
-<form action="<?php JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
+<form action="<?php print JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
     <div class="componentheading"><?php print JText::_("Add Hours"); ?></div>
     <table cellpadding="5" cellspacing="0" border="0" width="100%">
         <tr>
@@ -88,17 +89,17 @@ foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) continue;
     if (!is_null($this->projid) && !array_key_exists($this->projid, $cat->subprojects)) continue;
     $safeName = "Category".$cat->id;
-    if (empty($this->projid)) {
+    if (!empty($this->projid)) {
         // Do nothing here.
     } else if ($cat->show === true) {
         // We are told to show this
-        $initFunction = "timeclockCatShow('".$safeName."');";
+        $initPanes[] = "timeclockCatShow('".$safeName."');";
     } else if ($cat->show === false) {
         // We are told to hide this
-        $initFunction = "timeclockCatHide('".$safeName."');";
+        $initPanes[] = "timeclockCatHide('".$safeName."');";
     } else {
         // If $cat->show doesn't exist, go with the cookie
-        $initFunction = "timeclockCatShowHide('".$safeName."', true);";
+        $initPanes[] = "timeclockCatShowHide('".$safeName."', true);";
     }
     ?>
         <tr>
@@ -178,10 +179,12 @@ foreach ($this->projects as $cat) {
                                 var errordisp = document.getElementById('noteerror<?php print $proj->id;?>');
                                 if ((document.getElementById('<?php print $hoursId; ?>').value > 0)
                                     && (value.length < <?php print $this->minNoteChars; ?>)) {
-                                    errordisp.style.display = '';
+                                    errordisp.style.background = 'red';
+                                    errordisp.style.color = 'white';
                                     return false;
                                 } else {
-                                    errordisp.style.display = 'none';
+                                    errordisp.style.background = '';
+                                    errordisp.style.color = '';
                                     return true;
                                 }
                             }
@@ -223,17 +226,14 @@ foreach ($this->projects as $cat) {
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
-                <div id="noteerror<?php print $proj->id;?>" style="display:none; background: red; color: white; padding: 3px;">
+            </td>
+            <td>
+                <?php print JText::_("This should be a description of what was done in the hours posted."); ?>
+                <div id="noteerror<?php print $proj->id;?>" style="padding: 3px;">
                 <?php if ($this->minNoteChars > 0): ?>
                     <strong><?php print JText::_("Minimum")." ".$this->minNoteChars." ".JText::_("characters."); ?></strong>
                 <?php endif; ?>
                 </div>
-            </td>
-            <td>
-                <?php print JText::_("This should be a description of what was done in the hours posted."); ?>
-                <?php if ($this->minNoteChars > 0): ?>
-                    <strong><?php print JText::_("Minimum")." ".$this->minNoteChars." ".JText::_("characters."); ?></strong>
-                <?php endif; ?>
             </td>
         </tr>
         <tr>
@@ -241,8 +241,8 @@ foreach ($this->projects as $cat) {
                  &nbsp;
             </th>
             <td>
-                <button type="submit" name="task" value="applyhours" class="button validate"><?php print JText::_("Apply"); ?></button>
-                <button type="submit" name="task" value="savehours" class="button validate"><?php print JText::_("Save"); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='applyhours';" class="button validate"><?php print JText::_("Apply"); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='savehours';" class="button validate"><?php print JText::_("Save"); ?></button>
             </td>
         </tr>
 
@@ -250,18 +250,17 @@ foreach ($this->projects as $cat) {
     }
     ?>
     </tbody>
-    <script type="text/javascript"><?php print $initFunction; ?></script>
     <?php
 }
-
-
-
+$document =& JFactory::getDocument();
+$js = 'window.addEvent(\'domready\', function() {'.implode(" ", $initPanes).'});';
+$document->addScriptDeclaration($js);
 ?>
     </table>
     <input type="hidden" name="controller" value="timeclock" />
     <input type="hidden" name="referer" value="<?php print $this->referer; ?>" />
     <input type="hidden" name="option" value="com_timeclock" />
-<!--    <input type="hidden" name="task" value="savehours" />-->
+    <input type="hidden" name="task" id="theTask" value="" />
     <?php print JHTML::_("form.token"); ?>
 </form>
 <div>

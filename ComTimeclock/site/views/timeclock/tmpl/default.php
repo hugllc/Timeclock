@@ -81,11 +81,11 @@ foreach ($this->projects as $cat) {
     $this->cat  =& $cat;
     $safeName = "Category".$cat->id;
     if ($cat->show === true) {
-        $initFunction = "timeclockCatShow('".$safeName."');";
+        $initPanes[] = "timeclockCatShow('".$safeName."');";
     } else if ($cat->show === false) {
-        $initFunction = "timeclockCatHide('".$safeName."');";
+        $initPanes[] = "timeclockCatHide('".$safeName."');";
     } else {
-        $initFunction = "timeclockCatShowHide('".$safeName."', true);";
+        $initPanes[] = "timeclockCatShowHide('".$safeName."', true);";
     }
     ?>
         <tr>
@@ -109,7 +109,6 @@ foreach ($this->projects as $cat) {
     ?>
     </tbody>
     <?php
-    $initPanes[] = $initFunction;
 }
 
 $document =& JFactory::getDocument();

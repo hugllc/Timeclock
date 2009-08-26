@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,14 +30,14 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-JHTML::_('behavior.tooltip'); 
+JHTML::_('behavior.tooltip');
 
 TimeclockAdminController::title(JText::_('Timeclock Customers'));
 JToolBarHelper::publishList("publish", "Activate");
@@ -53,7 +53,7 @@ JToolBarHelper::addNewX();
             <?php echo JText::_('Filter'); ?>:
             <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
             <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-            <button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+            <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
         </td>
         <td nowrap="nowrap">
             <?php echo $this->lists['state']; ?>

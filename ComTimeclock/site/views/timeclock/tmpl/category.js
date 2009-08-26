@@ -54,8 +54,10 @@ function timeclockCatHide(cat) {
 function timeclockCatShow(cat) {
     var tbody = document.getElementById(cat+'_cat')
     var span = document.getElementById(cat+'_cat_span')
-    tbody.style.display = '';
-    span.innerHTML = '-';
+    if (span && tbody) {
+        tbody.style.display = '';
+        span.innerHTML = '-';
+    }
     var oldCookie = Cookie.remove('Timeclock_'+cat);
 }
 
