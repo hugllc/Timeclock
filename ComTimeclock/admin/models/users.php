@@ -616,8 +616,12 @@ class TimeclockAdminModelUsers extends JModel
         $rates = TableTimeclockPrefs::getPref("ptoAccrualRates", "system");
         $service = self::getServiceLength($oid, $date);
         $status = self::getStatus($oid, $date);
-
+        $end = TableTimeclockPrefs::getPref("endDate", "user", $oid);
+        $end = strtotime($end);
         if ($service == 0) {
+            return 0;
+        }
+        if ($end < $date) {
             return 0;
         }
         if (!is_array($rates[$status])) {
