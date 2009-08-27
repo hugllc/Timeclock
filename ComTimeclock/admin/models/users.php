@@ -288,6 +288,7 @@ class TimeclockAdminModelUsers extends JModel
         );
         $this->_fixPrefs($prefs, $data);
         $this->_loadData($prefs, $data);
+        $this->_checkHistory($prefs, $data);
 
         // Bind the form fields to the hello table
         if (!$row->bind($prefs)) {
@@ -307,6 +308,52 @@ class TimeclockAdminModelUsers extends JModel
         }
 
         return true;
+    }
+    /**
+     * Fixes any inconsistancies in the prefs
+     *
+     * @param array &$prefs The prefs to check/fix
+     * @param array &$data  The new data
+     *
+     * @return null
+     */
+    private function _checkHistory(&$prefs, &$data)
+    {
+        $user =& JFactory::getUser();
+        $id = $user->get("name");
+        if (!is_array($data["effectiveDateSet"])) {
+            return;
+        }
+        foreach ($data["effectiveDateSet"] as $date => $set) {
+            if (!$set) {
+                continue;
+            }
+            $newDate = $data["effectiveDate"][$date];
+            if (empty($newDate)) {
+                foreach ($prefs["history"] as $key => $value) {
+                    if (!array_key_exists($date, $value)) continue;
+                    unset($prefs["history"][$key][$date]);
+                }
+
+            } else {
+                $prefs["history"]["timestamps"][$newDate] = $prefs["history"]["timestamps"][$date];
+                unset($prefs["history"]["timestamps"][$date]);
+                foreach ($prefs["history"] as $key => $value) {
+                    if (!array_key_exists($date, $value)) continue;
+                    if ($key == "timestamps") continue;
+                    unset($prefs["history"][$key][$date]);
+                    $prefs["history"][$key][$newDate] = $value[$date];
+                }
+                $prefs["history"]["effectiveDateChange"][$newDate] = $date;
+            }
+            if (empty($newDate)) {
+                $newDate = "Deleted";
+            }
+            $now = date("Y-m-d H:i:s");
+            $prefs["history"]["timestamps"][$now] = $id;
+            $prefs["history"]["effectiveDateChange"][$now] = $date." => ".$newDate;
+
+        }
     }
     /**
      * Fixes any inconsistancies in the prefs
@@ -616,12 +663,13 @@ class TimeclockAdminModelUsers extends JModel
         $rates = TableTimeclockPrefs::getPref("ptoAccrualRates", "system");
         $service = self::getServiceLength($oid, $date);
         $status = self::getStatus($oid, $date);
-        $end = TableTimeclockPrefs::getPref("endDate", "user", $oid);
-        $end = strtotime($end);
+        $end    = strtotime(TableTimeclockPrefs::getPref("endDate", "user", $oid));
+        $start  = strtotime(TableTimeclockPrefs::getPref("startDate", "user", $oid));
         if ($service == 0) {
             return 0;
         }
-        if ($end < $date) {
+        $unixDate = strtotime($date);
+        if (TimeclockModelTimeclock::checkEmploymentDates($start, $end, $unixDate)) {
             return 0;
         }
         if (!is_array($rates[$status])) {

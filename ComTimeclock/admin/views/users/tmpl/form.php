@@ -177,20 +177,18 @@ echo $pane->endPane();
                 </label>
             </td>
             <td>
-                <table>
-                    <tr>
-                        <th><?php print JText::_("To"); ?></th>
-                        <th><?php print JText::_("Hours"); ?></th>
-                        <th><?php print JText::_("Expires"); ?></th>
-                    </tr>
-                    <?php foreach ($this->ptoCarryOver as $year => $value): ?>
-                    <tr>
-                        <th><?php print $year; ?></th>
-                        <td><input type="text" name="admin_ptoCarryOver[<?php print $year; ?>]" size="7" maxlength="5" value="<?php print $value; ?>" /></td>
-                        <td style="whitespace: nowrap;" nowrap="nowrap"><?php print JHTML::_("calendar", $this->ptoCarryOverExpire[$year], "admin_ptoCarryOverExpire[$year]", "admin_ptoCarryOverExpire[$year]", "%Y-%m-%d", "");?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </table>
+                <?php foreach ($this->ptoCarryOver as $year => $value): ?>
+                <div style="border: thin solid grey;">
+                    <input type="text" name="admin_ptoCarryOver[<?php print $year; ?>]" size="7" maxlength="5" value="<?php print $value; ?>" />
+                    <?php print JText::_("hours"); ?>
+                    <?php print JText::_("carried over to"); ?>
+                    <strong><?php print $year; ?></strong>
+                    <div style="white-space: nowrap; margin-top: 0px;">
+                        <?php print JText::_("Expires"); ?>
+                        <?php print JHTML::_("calendar", $this->ptoCarryOverExpire[$year], "admin_ptoCarryOverExpire[$year]", "admin_ptoCarryOverExpire[$year]", "%Y-%m-%d", "");?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
             </td>
             <td>
                 The amount of carryover and the date it expires.  The year listed is the year PTO
@@ -244,12 +242,27 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
 if (!is_array($this->row->history["timestamps"])) $this->row->history["timestamps"] = array();
 krsort($this->row->history["timestamps"]);
 foreach ($this->row->history["timestamps"] as $date => $user) { ?>
-                <p ><div><strong><?php print $user." <br /> ".$date; ?>:</strong></div>
+    <?php $index++; ?>
+    <p >
+        <div>
+            <strong><?php print $user." <br /> ".$date; ?>:</strong>
+            <a href="#" onClick="document.getElementById('effectiveDate<?php print $index; ?>').style.display='';document.getElementById('effectiveDate<?php print $index; ?>Set').value='1';">
+                [<?php print JText::_("Edit"); ?>]
+            </a>
+        </div>
+        <div id="effectiveDate<?php print $index; ?>" style="display: none;">
+            <?php print JHTML::_("calendar", $date, "effectiveDate[$date]", "effectiveDate[$date]", "%Y-%m-%d %H:%M:%S", "");?>
+            <input type="hidden" name="effectiveDateSet[<?php print $date; ?>]" id="effectiveDate<?php print $index; ?>Set" value="0" />
+        </div>
     <?php
     foreach ($this->row->history as $key => $value) {
         if (!array_key_exists($date, $value)) continue;
         if ($key == "timestamps") continue;
-        print $key." = ".$value[$date]."<br />";
+        $p = $value[$date];
+        if (is_array($p)) {
+            $p = print_r($p, true);
+        }
+        print $key." = ".$p."<br />";
     }
     ?>
     </p>
