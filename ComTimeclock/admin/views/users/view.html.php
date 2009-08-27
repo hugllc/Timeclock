@@ -181,6 +181,10 @@ class TimeclockAdminViewUsers extends JView
             "Inactive"
         );
 
+        $ptoNegative = TableTimeclockPrefs::getPref("ptoNegative", "system");
+        $this->assignRef("ptoNegative", $ptoNegative);
+
+
         // table ordering
         $lists['order_Dir']      = $filter_order_Dir;
         $lists['order']          = $filter_order;
@@ -257,6 +261,8 @@ class TimeclockAdminViewUsers extends JView
         }
         $this->assignRef("ptoCarryOver", $co);
         $this->assignRef("ptoCarryOverExpire", $coe);
+
+
         /*
         $lists["status"] = array(
             JHTML::_("select.option", "FULLTIME", "Full Time"),

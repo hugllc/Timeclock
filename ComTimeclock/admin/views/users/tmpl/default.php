@@ -116,7 +116,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
     $published      = JHTML::_('grid.published', $row, $i);
 
     if ($row->pto > $row->ptoYTD) {
-        $ptoStyle = "background: #FF0000; color: black;";
+        if (abs($row->pto - $row->ptoYTD) <= $this->ptoNegative) {
+            $ptoStyle = "background: #FFFF00; color: black;";
+        } else {
+            $ptoStyle = "background: #FF0000; color: black;";
+        }
     } else {
         $ptoStyle = "";
     }

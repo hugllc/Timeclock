@@ -250,6 +250,19 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 year will be automatically added on for each year PTO carry over happens.
             </td>
         </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="ptoNegative">
+                    <?php echo JText::_('Acceptable Negative PTO'); ?>:
+                </label>
+            </td>
+            <td>
+                <input class="text_area" type="text" size="10" maxlength="100" name="prefs[ptoNegative]" id="prefs_ptoNegative" value="<?php echo $this->prefs["ptoNegative"];?>" />
+            </td>
+            <td>
+                This is the amount a user can go negative and still be within acceptable limits
+            </td>
+        </tr>
 
     </table>
 <?php

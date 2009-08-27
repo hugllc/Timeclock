@@ -445,7 +445,10 @@ class TimeclockAdminModelUsers extends JModel
      */
     function getPTO($oid, $date=null)
     {
-        return $this->_getPTO($oid, $date) + $this->_getPTOCarryOver($oid, $date);
+        $pto  = $this->_getPTO($oid, $date);
+        $pto .= $this->_getPTOCarryOver($oid, $date);
+        $pto .= $this->_getPTODonation($oid, $date);
+        return $pto;
     }
     /**
      * Gets select options for parent projects
@@ -514,6 +517,22 @@ class TimeclockAdminModelUsers extends JModel
         } else {
             return $co[$year];
         }
+    }
+
+    /**
+     * Gets select options for parent projects
+     *
+     * @param int    $oid  The user to get the PTO for.
+     * @param string $date The date to check
+     *
+     * @return array
+     */
+    function _getPTODonation($oid, $date=null)
+    {
+        if (empty($date)) {
+            $date = date("Y-m-d");
+        }
+        return 0;
     }
 
 
