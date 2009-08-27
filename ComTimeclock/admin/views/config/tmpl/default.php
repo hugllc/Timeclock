@@ -181,7 +181,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 <pre>
 [years of service]:[accrual rate for 1st type]:[accrual rate for 2nd type]...
                 </pre>
-                The service is in years.  The accrual rates are in days per year.
+                <strong>The service is in years.  The accrual rates are in days per year.</strong>
             </td>
         </tr>
         <tr>
