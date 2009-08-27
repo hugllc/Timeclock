@@ -446,8 +446,8 @@ class TimeclockAdminModelUsers extends JModel
     function getPTO($oid, $date=null)
     {
         $pto  = $this->_getPTO($oid, $date);
-        $pto .= $this->_getPTOCarryOver($oid, $date);
-        $pto .= $this->_getPTODonation($oid, $date);
+        $pto += $this->_getPTOCarryOver($oid, $date);
+        $pto += $this->_getPTODonation($oid, $date);
         return $pto;
     }
     /**
@@ -504,7 +504,12 @@ class TimeclockAdminModelUsers extends JModel
         if (!isset($co[$year])) {
             return 0;
         }
+        // If we haven't reached the expire date return all of the pto.
         if (TimeclockModelTimeclock::compareDates($coe[$year], $date) > 0) {
+            return (int) $co[$year];
+        }
+        // If carryover is negative we can't subtract hours from it.  Return now.
+        if ($co[$year] < 0) {
             return (int) $co[$year];
         }
         $pto = (int)TimeclockModelTimeclock::getTotal(
