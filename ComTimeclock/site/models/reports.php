@@ -86,6 +86,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      */
     function getTimesheetData($where, $limitstart=null, $limit=null, $orderby="")
     {
+        $db = TableTimeclockPrefs::getPref("decimalPlaces", "system");
         if (empty($where)) {
             $where = " 1 ";
         }
@@ -99,11 +100,11 @@ class TimeclockModelReports extends TimeclockModelTimeclock
                 return array();
             }
             foreach ($this->data[$key] as $k => $d) {
-                if ($d->type != "HOLIDAY") {
-                    continue;
+                if ($d->type == "HOLIDAY") {
+                    $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
+                    $this->data[$key][$k]->hours = $d->hours * $hperc;
                 }
-                $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
-                $this->data[$key][$k]->hours = $d->hours * $hperc;
+                $this->data[$key][$k]->hours = round($this->data[$key][$k]->hours, $db);
 
             }
 
