@@ -80,7 +80,7 @@ class TimeclockControllerPreferences extends TimeclockController
             );
             return;
         }
-        $model = $this->getModel("Config");
+        $model = $this->getModel("Preferences");
 
         if ($model->store()) {
             $msg = JText::_('Preferences Saved!');

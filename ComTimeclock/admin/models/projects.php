@@ -420,9 +420,12 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getUserProjects($oid, $limitstart = null, $limit = null)
+    function getUserProjects($oid, $limitstart = null, $limit = null, $order_by=null)
     {
         $projects = array();
+        if (empty($order_by)) {
+            $order_by = "ORDER BY t.name ASC";
+        }
         $query = "select * from #__timeclock_users as u
                   WHERE u.user_id = ".(int)$oid."";
         $ret = $this->_getList($query, $limitstart, $limit);
@@ -438,11 +441,12 @@ class TimeclockAdminModelProjects extends JModel
             self::_getSpecialCategory("general"),
             self::_getSpecialCategory("unpaid"),
         );
-        $proj = $this->getProjects("", null, null, "ORDER BY p.id asc");
+        $proj = $this->getProjects("", null, null, $order_by);
         if (!is_array($proj)) {
             return $sProj;
         }
         $proj = array_merge($sProj, $proj);
+
         foreach ($proj as $p) {
             if ($p->type == "CATEGORY") {
                 $p->subprojects = array();

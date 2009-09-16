@@ -63,17 +63,22 @@ class TimeclockViewPreferences extends JView
     {
         global $mainframe;
 
-        $model = $this->getModel();
-        $data = $model->getData();
+        $row = $this->get("Data");
 
         $user          =& JFactory::getUser();
         $this->_params =& $mainframe->getParams('com_timeclock');
         $this->assignRef("user", $user);
 
-        $payPeriodTypeOptions = array(
-            JHTML::_("select.option", "FIXED", "Fixed"),
+        $timesheetSortOptions = array(
+            JHTML::_("select.option", "t.name", "Project Name"),
+            JHTML::_("select.option", "t.id", "Project Number"),
         );
-        $this->assignRef("payPeriodTypeOptions", $payPeriodTypeOptions);
+        $this->assignRef("timesheetSortOptions", $timesheetSortOptions);
+        $timesheetSortOptionsDir = array(
+            JHTML::_("select.option", "asc", "Ascending"),
+            JHTML::_("select.option", "desc", "Decending"),
+        );
+        $this->assignRef("timesheetSortOptionsDir", $timesheetSortOptionsDir);
 
         $ptoAccrualTime = array(
             JHTML::_("select.option", "end", "End of the Period"),

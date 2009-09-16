@@ -65,6 +65,7 @@ class TimeclockViewTimeclock extends JView
 
         $this->_getCookies();
 
+        $this->filter();
         $layout          = JRequest::getVar('layout');
         $model           =& $this->getModel();
         $user            =& JFactory::getUser();
@@ -72,13 +73,14 @@ class TimeclockViewTimeclock extends JView
         $employmentDates = $model->getEmploymentDatesUnix();
         $date            = $model->get("date");
         $this->_params   =& $mainframe->getParams('com_timeclock');
-        $this->_getProjects($user_id);
+        $this->_getProjects($user_id, null, null, $this->_orderby);
         $decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
 
         $this->assignRef("decimalPlaces", $decimalPlaces);
         $this->assignRef("employmentDates", $employmentDates);
         $this->assignRef("user", $user);
         $this->assignRef("date", $date);
+
 
         if (method_exists($this, $layout)) {
             $this->$layout($tpl);
@@ -182,7 +184,7 @@ class TimeclockViewTimeclock extends JView
     private function _getProjects($user_id)
     {
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $projects  = $projModel->getUserProjects($user_id);
+        $projects  = $projModel->getUserProjects($user_id, null, null, $this->_orderby);
         $cats      = TableTimeclockPrefs::getPref("Timeclock_Category");
         foreach ($projects as $k => $p) {
             if (isset($cats[$p->id])) {
@@ -236,6 +238,79 @@ class TimeclockViewTimeclock extends JView
         $this->assignRef("hours", $hours);
         $this->assignRef("totals", $totals);
     }
+    /**
+     * filter, search and pagination
+     *
+     * @return null
+     */
+    function filter()
+    {
+        global $mainframe, $option;
+        $layout = $this->getLayout();
+        $db     =& JFactory::getDBO();
+
+        if (!is_object($this->_params)) {
+            $this->_params =& $mainframe->getParams('com_timeclock');
+        }
+        $filter_order = $mainframe->getUserStateFromRequest(
+            "$option.reports.$layout.filter_order",
+            'filter_order',
+            $this->_params->get("filter_order"),
+            'cmd'
+        );
+        $filter_order_Dir = $mainframe->getUserStateFromRequest(
+            "$option.reports.$layout.filter_order_Dir",
+            'filter_order_Dir',
+            $this->_params->get("filter_order_dir"),
+            'word'
+        );
+        $filter2_order = $mainframe->getUserStateFromRequest(
+            "$option.reports.$layout.filter2_order",
+            'filter2_order',
+            $this->_params->get("filter2_order"),
+            'cmd'
+        );
+        $filter2_order_Dir = $mainframe->getUserStateFromRequest(
+            "$option.reports.$layout.filter2_order_Dir",
+            'filter2_order_Dir',
+            $this->_params->get("filter2_order_dir"),
+            'word'
+        );
+
+        $filter_order_dir =
+            (trim(strtolower($filter_order_Dir)) == "asc") ? "ASC" : "DESC";
+        $filter_order_dir2 =
+            (trim(strtolower($filter_order_Dir2)) == "asc") ? "ASC" : "DESC";
+
+        if (empty($filter_order)) {
+            $filter_order = TableTimeclockPrefs::getPref("user_timesheetSort");
+            $filter_order_Dir = TableTimeclockPrefs::getPref("user_timesheetSortDir");
+        }
+        if (!empty($filter_order)) {
+            $this->_orderby = ' ORDER BY '
+                                .TimeclockAdminSql::dotNameQuote($filter_order)
+                                .' '.$filter_order_Dir;
+            if (!empty($filter2_order)) {
+                $this->_orderby .= ", "
+                                .TimeclockAdminSql::dotNameQuote($filter2_order)
+                                .' '.$filter2_order_Dir;
+            }
+        }
+        // table ordering
+        $this->_lists['order_Dir']     = $filter_order_Dir;
+        $this->_lists['order']         = $filter_order;
+        $this->_lists['order_Dir2']     = $filter2_order_Dir;
+        $this->_lists['order2']         = $filter2_order;
+
+        // search filter
+        $this->_lists['search']        = $search;
+        $this->_lists['search_filter'] = $search_filter;
+
+        $this->assignRef("lists", $this->_lists);
+
+    }
+
+
 }
 
 ?>

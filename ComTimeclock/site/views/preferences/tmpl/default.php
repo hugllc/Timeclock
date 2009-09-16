@@ -36,35 +36,36 @@
 
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
-
 ?>
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="componentheading"><?php print JText::_("Timeclock Preferences for ").$this->user->get("name");?></div>
-<div>
     <table class="usertable">
         <tr>
             <td width="100" align="right" class="key">
-                <label for="maxDailyHours">
-                    <?php echo JText::_('Nothing Here Yet.'); ?>:
+                <label for="timesheetSort">
+                    <?php echo JText::_('Timesheet Sort'); ?>:
                 </label>
             </td>
             <td>
+                <?php print JHTML::_("select.genericList", $this->timesheetSortOptions, "prefs[user_timesheetSort]", "", 'value', 'text', $this->prefs["user_timesheetSort"]); ?>
+                <?php print JHTML::_("select.genericList", $this->timesheetSortOptionsDir, "prefs[user_timesheetSortDir]", "", 'value', 'text', $this->prefs["user_timesheetSortDir"]); ?>
             </td>
             <td>
+                <?php print JText::_("This is the order that the projects will appear in in the timesheet."); ?>
             </td>
         </tr>
         <tr>
             <td colspan="3">
-                <button type="submit" name="task" value="save" class="button validate">Save</button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='save';" class="button validate"><?php print JText::_("Save"); ?></button>
             </td>
         </tr>
     </table>
-</div>
 
-<div class="clr"></div>
+    <div class="clr"></div>
 
-<input type="hidden" name="option" value="com_timeclock" />
-<input type="hidden" name="id" value="-1" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="preferences" />
+    <input type="hidden" name="option" value="com_timeclock" />
+    <input type="hidden" name="id" value="-1" />
+    <input type="hidden" name="task" id="theTask" value="" />
+    <input type="hidden" name="controller" value="preferences" />
+    <?php print JHTML::_("form.token"); ?>
 </form>

@@ -100,28 +100,20 @@ class TimeclockModelPreferences extends JModel
         }
         // This cleans all the admin stuff off.  It shouldn't be set here.
         foreach ($prefs as $k => $v) {
-            if (substr(trim(strtolower($k)), 0, 5) == "admin") {
-                unset($prefs[$k]);
+            if (substr(trim(strtolower($k)), 0, 5) == "user_") {
+                $uprefs[$k] = $v;
             }
         }
-
         $clean = array(
-            "userTypes",
-            "wCompCodes",
         );
         foreach ($clean as $c) {
-            $prefs[$c] = strip_tags(trim($prefs[$c]));
+            $uprefs[$c] = strip_tags(trim($uprefs[$c]));
         }
 
         // Merge in prefs that are hidden
         $row->load($id);
-        $data = array_merge($this->prefs, $prefs);
+        $row->prefs = array_merge($row->prefs, $uprefs);
 
-        // Bind the form fields to the hello table
-        if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
         // Make sure the hello record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
