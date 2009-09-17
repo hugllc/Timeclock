@@ -343,6 +343,32 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 This is the message that timeclock users will receive if the timeclock is down for maintenance.
             </td>
         </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="TimesheetViewStyle">
+                    <?php echo JText::_('Timesheet View Style'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->timesheetViewOptions, "prefs[timesheetView]", "", 'value', 'text', $this->prefs["timesheetView"]); ?>
+            </td>
+            <td>
+                How the user views their timesheet
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="firstWeekDay">
+                    <?php echo JText::_('First Day of the Week'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->firstWeekDayOptions, "prefs[firstWeekDay]", "", 'value', 'text', $this->prefs["firstWeekDay"]); ?>
+            </td>
+            <td>
+                How the user views their timesheet
+            </td>
+        </tr>
     </table>
 
 

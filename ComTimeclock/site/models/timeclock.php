@@ -88,8 +88,11 @@ class TimeclockModelTimeclock extends JModel
     );
     /** @var string The start date in MySQL format */
     protected $period = array(
-        "type" => "payperiod",
+        "type" => null,
     );
+    /** @var string The start date in MySQL format */
+    protected $weekStart = 0;
+
     /** @var int The project we are dealing with */
     private $_project = 0;
 
@@ -101,6 +104,19 @@ class TimeclockModelTimeclock extends JModel
     function __construct()
     {
         parent::__construct();
+
+        $type = $this->get("type");
+        if (empty($type)) {
+            $type = TableTimeclockPrefs::getPref("timesheetView", "system");
+            if (empty($type)) {
+                $type = "payperiod";
+            }
+            $this->set($type, "type");
+        }
+        $firstWeekDay = TableTimeclockPrefs::getPref("firstWeekDay", "system");
+        if (!empty($firstWeekDay)) {
+            $this->weekStart = $firstWeekDay;
+        }
 
         $others = TableTimeclockPrefs::getPref("admin_otherTimesheets");
         if ($others) {
@@ -118,8 +134,6 @@ class TimeclockModelTimeclock extends JModel
         $this->setPeriodDate($startDate, "start");
         $endDate = JRequest::getString('endDate');
         $this->setPeriodDate($endDate, "end");
-
-
 
         $project = JRequest::getVar('projid', 0, '', 'string');
         $this->setProject($project);
@@ -530,6 +544,40 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
+     *
+     * @return array
+     */
+    function get1WeekStart($date)
+    {
+        $d = $this->explodeDate($date);
+        $weekDay = date("w", $this->dateUnixSql($date));
+        $day = $d["d"] + $this->weekStart - $weekDay;
+        $unix = $this->dateUnix($d["m"], $day, $d["y"]);
+        return date("Y-m-d", $unix);
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
+     *
+     * @return array
+     */
+    function get1WeekEnd($date)
+    {
+        $d = $this->explodeDate($date);
+        $weekDay = date("w", $this->dateUnixSql($date));
+        $day = $d["d"] + $this->weekStart - $weekDay + 6;
+        $unix = $this->dateUnix($d["m"], $day, $d["y"]);
+        return date("Y-m-d", $unix);
+    }
+
+
+    /**
+     * Where statement for the reporting period dates
+     *
      * @param int $date The date in Mysql ("Y-m-d") format.
      *
      * @return array
@@ -595,6 +643,7 @@ class TimeclockModelTimeclock extends JModel
                 $this->dateUnix($e["m"], $e["d"]+$length, $e["y"]),
                 "nextend"
             );
+
             $this->set(self::_date($this->getUnix('prev')), "prev");
             $this->set(self::_date($this->getUnix('prevend')), "prevend");
             $this->set(self::_date($this->getUnix('next')), "next");

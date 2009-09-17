@@ -72,6 +72,22 @@ class TimeclockAdminViewConfig extends JView
             JHTML::_("select.option", "FIXED", "Fixed"),
         );
         $this->assignRef("payPeriodTypeOptions", $payPeriodTypeOptions);
+        $timesheetViewOptions = array(
+            JHTML::_("select.option", "payperiod", "Pay Period"),
+            JHTML::_("select.option", "1week", "1 Week"),
+        );
+        $this->assignRef("timesheetViewOptions", $timesheetViewOptions);
+
+        $firstWeekDayOptions = array(
+            JHTML::_("select.option", "0", "Sunday"),
+            JHTML::_("select.option", "1", "Monday"),
+            JHTML::_("select.option", "2", "Tuesday"),
+            JHTML::_("select.option", "3", "Wednesday"),
+            JHTML::_("select.option", "4", "Thursday"),
+            JHTML::_("select.option", "5", "Friday"),
+            JHTML::_("select.option", "6", "Satday"),
+        );
+        $this->assignRef("firstWeekDayOptions", $firstWeekDayOptions);
 
         $ptoAccrualTime = array(
             JHTML::_("select.option", "end", "End of the Period"),
