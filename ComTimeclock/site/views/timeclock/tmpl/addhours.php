@@ -176,8 +176,8 @@ foreach ($this->projects as $cat) {
                     Window.onDomReady(function(){
                         document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
                             function (value) {
-                                var errordisp = document.getElementById('noteerror<?php print $proj->id;?>');
-                                if ((document.getElementById('<?php print $hoursId; ?>').value > 0)
+                                var errordisp = $('noteerror<?php print $proj->id;?>');
+                                if (($('<?php print $hoursId; ?>').value > 0)
                                     && (value.length < <?php print $this->minNoteChars; ?>)) {
                                     errordisp.style.background = 'red';
                                     errordisp.style.color = 'white';
@@ -193,8 +193,9 @@ foreach ($this->projects as $cat) {
                     Window.onDomReady(function(){
                         document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>',
                             function (value) {
-                                hours = document.getElementById('<?php print $hoursId; ?>');
-                                regex=/[0-9]{0,2}([.][0-9]{0,<?php print $this->decimalPlaces;?>}){0,1}/;
+                                var hours = $('<?php print $hoursId; ?>');
+                                var notes = $('timesheet_<?php print $proj->id;?>_notes');
+                                var regex=/[0-9]{0,2}([.][0-9]{0,<?php print $this->decimalPlaces;?>}){0,1}/;
                                 var v = regex.exec(value);
                                 if (v[0] != value) {
                                     hours.value = v[0];
@@ -222,7 +223,7 @@ foreach ($this->projects as $cat) {
                 </label>
             </th>
             <td>
-                <textarea class="inputbox validate-noteverify<?php print $proj->id;?>"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5"> <?php echo $this->data[$proj->id]->notes;?> </textarea>
+                <textarea class="inputbox validate-noteverify<?php print $proj->id;?>"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5" onFocus="this.value=(this.value).trim();" onBlur="if ((this.value = this.value.trim()).length == 0) this.value+='  ';"> <?php echo $this->data[$proj->id]->notes;?> </textarea>
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
