@@ -549,13 +549,12 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function get1WeekStart($date)
+    function getFixedStart($date)
     {
-        $d = $this->explodeDate($date);
-        $weekDay = date("w", $this->dateUnixSql($date));
-        $day = $d["d"] + $this->weekStart - $weekDay;
-        $unix = $this->dateUnix($d["m"], $day, $d["y"]);
-        return date("Y-m-d", $unix);
+        // Get the pay period start
+        $startTime = TableTimeclockPrefs::getPref("firstViewPeriodStart", "system");
+        $len = TableTimeclockPrefs::getPref("viewPeriodLengthFixed", "system");
+        return self::getOffsetFromDate($date, $startTime, $len);
     }
     /**
      * Where statement for the reporting period dates
@@ -565,13 +564,38 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function get1WeekEnd($date)
+    function getFixedEnd($date)
     {
+        $len = TableTimeclockPrefs::getPref("viewPeriodLengthFixed", "system");
+        $s = self::getFixedStart($date);
+        $s = $this->explodeDate($s);
+        $this->set($len, "length");
+        $end = self::_date($s["m"], $s["d"]+$len-1, $s["y"]);
+        return $end;
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param int    $date      The date in Mysql ("Y-m-d") format.
+     * @param string $startTime The start date in MySQL format (YYYY-MM-DD)
+     * @param int    $len       The length of the period
+     *
+     * @return array
+     */
+    function getOffsetFromDate($date, $startTime, $len)
+    {
+        // Get this date
+        $uDate = $this->dateUnixSql($date);
         $d = $this->explodeDate($date);
-        $weekDay = date("w", $this->dateUnixSql($date));
-        $day = $d["d"] + $this->weekStart - $weekDay + 6;
-        $unix = $this->dateUnix($d["m"], $day, $d["y"]);
-        return date("Y-m-d", $unix);
+
+        $start = $this->dateUnixSql($startTime);
+
+        // Get the time difference in days
+        $timeDiff = round(($uDate - $start) / 86400);
+        $days = $timeDiff % $len;
+
+        return self::_date($d["m"], ($d["d"] - $days), $d["y"]);
+
     }
 
 
@@ -661,22 +685,12 @@ class TimeclockModelTimeclock extends JModel
      */
     private function _getPayPeriodFixedStart($date)
     {
-        // Get this date
-        $uDate = $this->dateUnixSql($date);
-        $d = $this->explodeDate($date);
-
         // Get the pay period start
         $startTime = TableTimeclockPrefs::getPref("firstPayPeriodStart", "system");
-        $start = $this->dateUnixSql($startTime);
 
         // Get the length in days
         $len = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
-
-        // Get the time difference in days
-        $timeDiff = round(($uDate - $start) / 86400);
-        $days = $timeDiff % $len;
-
-        return self::_date($d["m"], ($d["d"] - $days), $d["y"]);
+        return self::getOffsetFromDate($date, $startTime, $len);
     }
 
     /**

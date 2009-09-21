@@ -105,7 +105,12 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
     </table>
 <?php
     echo $pane->endPanel();
-    echo $pane->startPanel(JText::_("Pay Period"), "payperiod-pane");
+    echo $pane->startPanel(JText::_("Timesheet"), "payperiod-pane");
+
+    $firstViewPeriodStart = $this->prefs["firstViewPeriodStart"];
+    if (empty($firstViewPeriodStart)) {
+        $firstViewPeriodStart = $this->prefs["firstPayPeriodStart"];
+    }
 ?>
     <table class="admintable">
         <tr>
@@ -145,6 +150,46 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
             </td>
             <td>
                 The length of the pay period in days for a fixed length pay period
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="TimesheetViewStyle">
+                    <?php echo JText::_('Timesheet View Period'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->timesheetViewOptions, "prefs[timesheetView]", "", 'value', 'text', $this->prefs["timesheetView"]); ?>
+            </td>
+            <td>
+                How the user views their timesheet.  "payperiod" sets this to the same as the payperiods.
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="viewPeriodLength">
+                    <?php echo JText::_('View Period Length'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.integerList", 1, 31, 1, "prefs[viewPeriodLengthFixed]", "", $this->prefs["viewPeriodLengthFixed"]); ?>
+            </td>
+            <td>
+                The length of the view period in days for a fixed length view period
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="firstViewPeriodStart">
+                    <?php echo JText::_('First View Period Start'); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("calendar", $firstViewPeriodStart, "prefs[firstViewPeriodStart]", "prefsfirstViewPeriodStart", "%Y-%m-%d", "");?>
+            </td>
+            <td>
+                This is for calculating 1-Week and 2-Week views.  The day this starts on will be shown as the first day of the week.
+                This is ignored for 'payperiod' view.
             </td>
         </tr>
     </table>
@@ -341,32 +386,6 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
             </td>
             <td>
                 This is the message that timeclock users will receive if the timeclock is down for maintenance.
-            </td>
-        </tr>
-        <tr>
-            <td width="100" align="right" class="key">
-                <label for="TimesheetViewStyle">
-                    <?php echo JText::_('Timesheet View Style'); ?>:
-                </label>
-            </td>
-            <td>
-                <?php print JHTML::_("select.genericList", $this->timesheetViewOptions, "prefs[timesheetView]", "", 'value', 'text', $this->prefs["timesheetView"]); ?>
-            </td>
-            <td>
-                How the user views their timesheet
-            </td>
-        </tr>
-        <tr>
-            <td width="100" align="right" class="key">
-                <label for="firstWeekDay">
-                    <?php echo JText::_('First Day of the Week'); ?>:
-                </label>
-            </td>
-            <td>
-                <?php print JHTML::_("select.genericList", $this->firstWeekDayOptions, "prefs[firstWeekDay]", "", 'value', 'text', $this->prefs["firstWeekDay"]); ?>
-            </td>
-            <td>
-                How the user views their timesheet
             </td>
         </tr>
     </table>

@@ -117,6 +117,8 @@ class TableTimeclockPrefs extends JTable
             "minNoteChars" => 10,
             "ptoCarryOverDefExpire" => "03-31",
             "ptoNegative" => 0,
+            "timesheetView" => "payperiod",
+            "viewPeriodLengthFixed" => 14,
         ),
         "user" => array(
             "admin_holidayperc" => 100,
