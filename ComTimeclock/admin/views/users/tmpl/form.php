@@ -285,4 +285,5 @@ foreach ($this->row->history["timestamps"] as $date => $user) { ?>
 <input type="hidden" name="id" value="<?php print $this->row->id; ?>" />
 <input type="hidden" name="task" id="task" value="" />
 <input type="hidden" name="controller" value="users" />
+<?php print JHTML::_("form.token"); ?>
 </form>

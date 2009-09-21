@@ -115,6 +115,14 @@ class TimeclockAdminControllerTimesheets extends JController
      */
     function save($apply=false)
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Timesheets");
 
         $link  = 'index.php?option=com_timeclock&controller=timesheets';

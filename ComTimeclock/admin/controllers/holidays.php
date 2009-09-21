@@ -113,6 +113,14 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function apply()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Holidays");
 
         if ($id = $model->store()) {
@@ -134,6 +142,14 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function save()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Holidays");
 
         if ($model->store()) {

@@ -269,4 +269,5 @@ foreach ($this->lists["projectUsers"] as $user) { ?>
 <input type="hidden" name="id" value="<?php print $this->row->id; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="controller" value="projects" />
+<?php print JHTML::_("form.token"); ?>
 </form>

@@ -151,4 +151,5 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 <input type="hidden" name="created" value="<?php print $this->row->created; ?>" />
 <input type="hidden" id="task" name="task" value="" />
 <input type="hidden" name="controller" value="timesheets" />
+<?php print JHTML::_("form.token"); ?>
 </form>

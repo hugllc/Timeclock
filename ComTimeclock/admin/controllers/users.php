@@ -118,6 +118,14 @@ class TimeclockAdminControllerUsers extends JController
      */
     function adduserproject()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Users");
 
         $id = JRequest::getVar('user_id', 0, 'post', 'int');
@@ -144,6 +152,14 @@ class TimeclockAdminControllerUsers extends JController
      */
     function addproject()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Users");
         $projid = JRequest::getVar('projid', array(0), 'post', 'array');
         $user_id = JRequest::getVar('id', 0, 'post', 'int');
@@ -164,6 +180,14 @@ class TimeclockAdminControllerUsers extends JController
      */
     function removeproject()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $projid = JRequest::getVar('remove_projid', array(0), '', 'array');
 
         $user_id = JRequest::getVar('id', 0, '', 'int');
@@ -188,6 +212,14 @@ class TimeclockAdminControllerUsers extends JController
      */
     function publish()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Users");
         $model->publish(1);
         $this->reset();
@@ -200,6 +232,14 @@ class TimeclockAdminControllerUsers extends JController
      */
     function unpublish()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Users");
 
         $model->publish(0);
@@ -213,6 +253,14 @@ class TimeclockAdminControllerUsers extends JController
      */
     function apply()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Users");
 
         if ($model->store()) {
@@ -234,6 +282,14 @@ class TimeclockAdminControllerUsers extends JController
      */
     function save()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Users");
 
         if ($model->store()) {

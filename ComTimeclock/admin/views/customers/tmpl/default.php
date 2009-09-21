@@ -159,4 +159,5 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 <input type="hidden" name="controller" value="customers" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+<?php print JHTML::_("form.token"); ?>
 </form>

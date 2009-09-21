@@ -99,6 +99,14 @@ class TimeclockAdminControllerProjects extends JController
      */
     function adduser()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Projects");
         $model->adduser();
         $link = TimeclockAdminController::referer();
@@ -112,6 +120,14 @@ class TimeclockAdminControllerProjects extends JController
      */
     function removeuser()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Projects");
         $model->removeuser();
         $link = TimeclockAdminController::referer();
@@ -139,6 +155,14 @@ class TimeclockAdminControllerProjects extends JController
      */
     function publish()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Projects");
         $user  = JFactory::getUser();
 
@@ -153,6 +177,14 @@ class TimeclockAdminControllerProjects extends JController
      */
     function unpublish()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Projects");
         $user  = JFactory::getUser();
 
@@ -167,6 +199,14 @@ class TimeclockAdminControllerProjects extends JController
      */
     function apply()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Projects");
 
         if ($id = $model->store()) {
@@ -188,6 +228,14 @@ class TimeclockAdminControllerProjects extends JController
      */
     function save()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Projects");
 
         if ($model->store()) {

@@ -113,6 +113,15 @@ class TimeclockAdminControllerCustomers extends JController
      */
     function apply()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
+
         $model = $this->getModel("Customers");
 
         if ($id = $model->store()) {
@@ -134,6 +143,14 @@ class TimeclockAdminControllerCustomers extends JController
      */
     function save()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Customers");
 
         if ($model->store()) {
@@ -167,6 +184,14 @@ class TimeclockAdminControllerCustomers extends JController
      */
     function publish()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Customers");
         $user = JFactory::getUser();
 
@@ -181,6 +206,14 @@ class TimeclockAdminControllerCustomers extends JController
      */
     function unpublish()
     {
+        if (!JRequest::checkToken()) {
+            $this->setRedirect(
+                JRoute::_("index.php"),
+                JText::_("Bad form token.  Please try again."),
+                "error"
+            );
+            return;
+        }
         $model = $this->getModel("Customers");
         $user = JFactory::getUser();
 

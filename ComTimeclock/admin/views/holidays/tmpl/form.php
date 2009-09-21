@@ -119,4 +119,5 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 <input type="hidden" name="created_by" value="<?php print $this->row->created_by; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="controller" value="holidays" />
+<?php print JHTML::_("form.token"); ?>
 </form>
