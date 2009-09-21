@@ -119,6 +119,7 @@ class TableTimeclockPrefs extends JTable
             "ptoNegative" => 0,
             "timesheetView" => "payperiod",
             "viewPeriodLengthFixed" => 14,
+            "firstViewPeriodStart" => "2000-12-11",
         ),
         "user" => array(
             "admin_holidayperc" => 100,
