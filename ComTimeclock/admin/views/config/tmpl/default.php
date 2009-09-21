@@ -133,7 +133,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.genericList", $this->payPeriodTypeOptions, "prefs[payPeriodType]", "", 'value', 'text', $this->prefs["payPeriodLength"]); ?>
+                <?php print JHTML::_("select.genericList", $this->payPeriodTypeOptions, "prefs[payPeriodType]", "", 'value', 'text', $this->prefs["payPeriodType"]); ?>
             </td>
             <td>
                 The type of payperiod

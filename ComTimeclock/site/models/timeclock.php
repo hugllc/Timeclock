@@ -482,6 +482,10 @@ class TimeclockModelTimeclock extends JModel
      */
     function getPayPeriodStart($date)
     {
+        $type = TableTimeclockPrefs::getPref("payPeriodType", "system");
+        if (trim(strtolower($type)) == "month") {
+            return self::getPayPeriodMonthStart($date);
+        }
         return self::_getPayPeriodFixedStart($date);
     }
     /**
@@ -494,6 +498,10 @@ class TimeclockModelTimeclock extends JModel
      */
     function getPayPeriodEnd($date)
     {
+        $type = TableTimeclockPrefs::getPref("payPeriodType", "system");
+        if (trim(strtolower($type)) == "month") {
+            return self::getPayPeriodMonthEnd($date);
+        }
         return self::_getPayPeriodFixedEnd($date);
     }
     /**
@@ -540,6 +548,45 @@ class TimeclockModelTimeclock extends JModel
         }
         return date("Y-12-31");
     }
+
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
+     *
+     * @return array
+     */
+    function getPayPeriodMonthStart($date)
+    {
+        $first = TableTimeclockPrefs::getPref("firstPayPeriodStart", "system");
+        $first = $this->explodeDate($first);
+        $dateFormat = $this->periods["month"]["start"];
+        $unixDate = $this->dateUnixSql($date);
+        $start = date($dateFormat, $unixDate);
+        $s = $this->explodeDate($start);
+        $this->set((int) date("t", $unixDate), "length");
+        return self::_date($s["m"], $s["d"]+$first["d"]-1, $s["y"]);
+    }
+    /**
+     * Where statement for the reporting period dates
+     *
+     * @param string $date Date to use in MySQL format ("Y-m-d H:i:s").  If left
+     *                      blank the date read from the request variables is used.
+     *
+     * @return array
+     */
+    function getPayPeriodMonthEnd($date)
+    {
+        $unixDate = $this->dateUnixSql($date);
+        $s = self::getPayPeriodMonthStart($date);
+        $s = $this->explodeDate($s);
+        $len = (int) date("t", $unixDate);
+        $this->set($len, "length");
+        $end = self::_date($s["m"], $s["d"]+$len-1, $s["y"]);
+        return $end;
+    }
+
 
     /**
      * Where statement for the reporting period dates

@@ -70,6 +70,7 @@ class TimeclockAdminViewConfig extends JView
 
         $payPeriodTypeOptions = array(
             JHTML::_("select.option", "FIXED", "Fixed"),
+            JHTML::_("select.option", "MONTH", "Month"),
         );
         $this->assignRef("payPeriodTypeOptions", $payPeriodTypeOptions);
         $timesheetViewOptions = array(

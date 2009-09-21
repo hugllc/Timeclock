@@ -338,6 +338,9 @@ class TimeclockViewReportsBase extends JView
         $notes  = array();
         $totals = array();
         $weeks  = round($period["length"] / $days);
+        if (($period["length"] % $days) > 0) {
+            $weeks++;  // Get that extra bit in.
+        }
         // Make the data into something usefull for this particular report
         foreach ($data as $user_id => $projdata) {
             foreach ($projdata as $proj_id => $dates) {
