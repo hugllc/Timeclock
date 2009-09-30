@@ -14,6 +14,10 @@
             <param name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
         </url>
         <params>
+            <param name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
+                <option value="1">Show</option>
+                <option value="0">Hide</option>
+            </param>
             <param name="@spacer" type="spacer" default="" label="" description="" />
             <param name="show_entered_time" type="radio" default="0" label="Time Entered" description="Show/Hide the date and time the entry was created.">
                 <option value="0">Hide</option>

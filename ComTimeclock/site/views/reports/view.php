@@ -419,6 +419,11 @@ class TimeclockViewReportsBase extends JView
         );
         $this->assignRef("notes", $notes);
 
+        $control = $this->_params->get("show_controls");
+        if ($control) {
+            $this->_reportControls();
+        }
+
     }
     /**
      * The display function

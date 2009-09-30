@@ -65,6 +65,7 @@
         <filename>views/reports/tmpl/payroll_export.php</filename>
         <filename>views/reports/tmpl/payroll.xml</filename>
         <filename>views/reports/tmpl/notes.php</filename>
+        <filename>views/reports/tmpl/notes_controls.php</filename>
         <filename>views/reports/tmpl/notes.xml</filename>
         <filename>views/reports/tmpl/wcomp.php</filename>
         <filename>views/reports/tmpl/wcomp_controls.php</filename>

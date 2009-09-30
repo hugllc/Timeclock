@@ -7,20 +7,20 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
  * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  * </pre>
  *
@@ -30,11 +30,11 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
@@ -49,15 +49,18 @@ $document->setTitle($this->params->get('page_title'));
         <?php echo $this->escape($this->params->get('page_title')); ?>
 </div>
 <?php endif; ?>
+<?php if (is_array($this->controls)) : ?>
+    <?php print $this->loadTemplate("controls"); ?>
+<?php endif; ?>
 <form action="<?php print JROUTE::_("index.php"); ?>" method="post" name="userform">
 <div>
 <?php
 foreach ($this->notes as $key => $note) {
     $title = $note->project_name;
-    $title = (empty($note->category_name)) ? $title : $note->category_name." : ".$title; 
-    $title = (empty($note->company_name)) ? $title : $note->company_name." : ".$title; 
+    $title = (empty($note->category_name)) ? $title : $note->category_name." : ".$title;
+    $title = (empty($note->company_name)) ? $title : $note->company_name." : ".$title;
     ?>
-    <div class="contentpaneopen">        
+    <div class="contentpaneopen">
         <div>
             <div class="contentheading"><?php print $title; ?></div>
             <div class="small"> <?php print JText::_('by')." ".$note->author; ?> <span>(<?php print $note->hours." ".JText::_("hours");?>)</span></div>
