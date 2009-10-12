@@ -64,7 +64,7 @@ foreach ($this->notes as $key => $note) {
         <div>
             <div class="contentheading"><?php print $title; ?></div>
             <div class="small"> <?php print JText::_('by')." ".$note->author; ?> <span>(<?php print $note->hours." ".JText::_("hours");?>)</span></div>
-            <div class="createdate"><?php echo JText::_("Worked")." ".JHTML::_('date', $note->worked, JText::_('DATE_FORMAT_LC1')); ?></div>
+            <div class="createdate"><?php echo JText::_("Worked")." ".JHTML::_('date', $note->worked." 06:00:00", JText::_('DATE_FORMAT_LC1')); ?></div>
         </div>
         <div><?php print $note->notes; ?></div>
         <?php if ($this->params->get('show_entered_date')) : ?>
