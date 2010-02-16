@@ -322,7 +322,8 @@ class TimeclockViewReports extends TimeclockViewReportsBase
             print $this->quoteCSV($user);
             print $this->separator;
             $total = $this->totals["user"][$user];
-            foreach ($codeArray as $code => $hours) {
+            foreach ($this->codes  as $code) {
+                $hours = $codeArray[$code];
                 if (empty($hours)) {
                     $hours = $this->cell_fill;
                 }
