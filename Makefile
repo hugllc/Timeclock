@@ -16,12 +16,10 @@ test: test-php
 
 test-php:
 	mkdir -p Documentation/test
-	${PHPUNIT} --report Documentation/test/codecoverage/ \
-                --log-xml Documentation/test/log.xml \
+	${PHPUNIT} --coverage-html Documentation/test/codecoverage/ \
+                --log-junit Documentation/test/log.xml \
                 --testdox-html Documentation/test/testdox.html \
-                --log-pmd Documentation/test/pmd.xml \
-                --log-metrics Documentation/test/metrics.xml \
-                TimeclockTests |tee Documentation/test/testoutput.txt	
+                TimeclockTests |tee Documentation/test/testoutput.txt
 
 doc: doc-php
 
@@ -40,6 +38,6 @@ style-ComTimeclock:
 	${PHPCS} -n ComTimeclock
 
 update:
-	${SVN} update 
+	${SVN} update
 	${SVN} update ../JoomlaMock
-	
+
