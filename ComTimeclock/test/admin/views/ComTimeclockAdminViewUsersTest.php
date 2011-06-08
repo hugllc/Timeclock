@@ -27,13 +27,13 @@
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 /** Require the JoomlaMock stuff */
-require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
+require_once dirname(__FILE__).'/../../include.php';
 require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JViewTest.php';
 require_once dirname(__FILE__).'/../../../admin/views/users/view.html.php';
 
@@ -45,7 +45,7 @@ require_once dirname(__FILE__).'/../../../admin/views/users/view.html.php';
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
@@ -62,9 +62,12 @@ class ComTimeclockAdminViewUsersTest extends JViewTest
     protected function setUp()
     {
         $this->sqlFile = array(
-            dirname(__FILE__)."/../../../admin/install/timeclock_prefs.sql",
-            dirname(__FILE__)."/../../../admin/install/timeclock_projects.sql",
-            dirname(__FILE__)."/../../../admin/install/timeclock_users.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_projects.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_users.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_prefs.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_timesheet.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_customers.mysql.utf8.sql",
+            dirname(__FILE__)."/../../admin/models/users.sql",
         );
         $this->o = new TimeclockAdminViewUsers();
         parent::setUp();

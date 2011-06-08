@@ -19,7 +19,7 @@ test-php:
 	${PHPUNIT} --coverage-html Documentation/test/codecoverage/ \
                 --log-junit Documentation/test/log.xml \
                 --testdox-html Documentation/test/testdox.html \
-                TimeclockTests |tee Documentation/test/testoutput.txt
+                ComTimeclock/test/ |tee Documentation/test/testoutput.txt
 
 doc: doc-php
 

@@ -15,4 +15,4 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_timesheet` (
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `project_id` (`project_id`,`created_by`,`worked`)
-);
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

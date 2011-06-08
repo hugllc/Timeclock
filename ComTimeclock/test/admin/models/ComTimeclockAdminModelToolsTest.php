@@ -27,13 +27,13 @@
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 /** Require the JoomlaMock stuff */
-require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
+require_once dirname(__FILE__).'/../../include.php';
 require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelTest.php';
 require_once dirname(__FILE__).'/../../../admin/models/tools.php';
 
@@ -45,7 +45,7 @@ require_once dirname(__FILE__).'/../../../admin/models/tools.php';
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
@@ -61,6 +61,14 @@ class ComTimeclockAdminModelToolsTest extends JModelTest
      */
     protected function setUp()
     {
+        $this->sqlFile = array(
+            dirname(__FILE__)."/../../../admin/sql/timeclock_projects.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_users.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_prefs.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_timesheet.mysql.utf8.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_customers.mysql.utf8.sql",
+            dirname(__FILE__)."/../../admin/models/users.sql",
+        );
         $this->o = new TimeclockAdminModelTools();
         parent::setUp();
     }
@@ -87,6 +95,7 @@ class ComTimeclockAdminModelToolsTest extends JModelTest
     public static function dataGetDataCache()
     {
         return array(
+            array(null, null, null),
         );
     }
     /**
@@ -97,6 +106,7 @@ class ComTimeclockAdminModelToolsTest extends JModelTest
     public static function dataStore()
     {
         return array(
+            array(null, null, null),
         );
     }
     /**
@@ -107,6 +117,7 @@ class ComTimeclockAdminModelToolsTest extends JModelTest
     public static function dataStoreRet()
     {
         return array(
+            array(null, null, null),
             /*
             array(null, "store", 13, array("id" => 13)),
             array("bind", "store", false, array("id" => 13)),

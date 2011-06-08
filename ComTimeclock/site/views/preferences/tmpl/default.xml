@@ -8,7 +8,7 @@
     <state>
         <name>Preferences</name>
         <description>Allows the user to change some settings of the timeclock</description>
-        <params>
-        </params>
+        <config><fields name="params"><fieldset name="basic">
+        </fields>
     </state>
 </metadata>

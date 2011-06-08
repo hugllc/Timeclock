@@ -11,59 +11,59 @@
             This report shows how many hours employees have put into any one worker's comp code.
         </description>
         <url addpath="/administrator/components/com_timeclock/elements">
-            <param name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
-            <param name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
-            <param name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
-            <param name="period" type="list" default="month" label="Default Period" description="The default period of time to show">
+            <field name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
+            <field name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
+            <field name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
+            <field name="period" type="list" default="month" label="Default Period" description="The default period of time to show">
                 <option value="day">Day</option>
                 <option value="payperiod">Pay Period</option>
                 <option value="month">Month</option>
                 <option value="quarter">Quarter</option>
                 <option value="year">Year</option>
-            </param>
+            </field>
         </url>
-        <params addpath="/administrator/components/com_timeclock/elements">
-            <param name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
+        <fields addpath="/administrator/components/com_timeclock/elements">
+            <field name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
-            </param>
-            <param name="show_filter" type="radio" default="1" label="Filter" description="Show filter">
+            </field>
+            <field name="show_filter" type="radio" default="1" label="Filter" description="Show filter">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
-            </param>
-            <param name="show_export" type="radio" default="1" label="Export" description="Show the export line">
+            </field>
+            <field name="show_export" type="radio" default="1" label="Export" description="Show the export line">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
-            </param>
-            <param name="cat_by" type="list" default="category" label="Group Projects By" description="This shows how projects are grouped.">
+            </field>
+            <field name="cat_by" type="list" default="category" label="Group Projects By" description="This shows how projects are grouped.">
                 <option value="category">Category</option>
                 <option value="customer">Customer</option>
-            </param>
-            <param name="cell_fill" type="list" default=" " label="Cell Fill Character" description="This is what will be in the cell if there are 0 hours.">
+            </field>
+            <field name="cell_fill" type="list" default=" " label="Cell Fill Character" description="This is what will be in the cell if there are 0 hours.">
                 <option value=" ">None</option>
                 <option value="0">0</option>
-            </param>
-        </params>
+            </field>
+        </fields>
         <advanced>
-            <param name="project_filter_order" type="list" default="" label="Project Filter Order" description="The order items are presented in.">
+            <field name="project_filter_order" type="list" default="" label="Project Filter Order" description="The order items are presented in.">
                 <option value="">None</option>
                 <option value="p.id">Project ID</option>
                 <option value="p.name">Project Name</option>
                 <option value="c.company">Company Name</option>
-            </param>
-            <param name="project_filter_order_dir" type="list" default="" label="Project Filter Order Direction" description="The direction of the sorting">
+            </field>
+            <field name="project_filter_order_dir" type="list" default="" label="Project Filter Order Direction" description="The direction of the sorting">
                 <option value="desc">Descending</option>
                 <option value="asc">Ascending</option>
-            </param>
-            <param name="user_filter_order" type="list" default="" label="User Filter Order" description="The order items are presented in.">
+            </field>
+            <field name="user_filter_order" type="list" default="" label="User Filter Order" description="The order items are presented in.">
                 <option value="">None</option>
                 <option value="u.id">User ID</option>
                 <option value="u.name">User Name</option>
-            </param>
-            <param name="user_filter_order_dir" type="list" default="desc" label="User Filter Order Direction" description="The direction of the sorting">
+            </field>
+            <field name="user_filter_order_dir" type="list" default="desc" label="User Filter Order Direction" description="The direction of the sorting">
                 <option value="desc">Descending</option>
                 <option value="asc">Ascending</option>
-            </param>
+            </field>
         </advanced>
     </state>
 </metadata>

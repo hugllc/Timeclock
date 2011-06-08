@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_projects` (
   `published` tinyint(4) NOT NULL default '1',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ProjectName` (`name`,`parent_id`)
-);
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
 REPLACE INTO `jos_timeclock_projects` (`id`, `name`, `description`, `created_by`, `created`, `manager`, `research`, `type`, `parent_id`, `wcCode1`, `wcCode2`, `wcCode3`, `wcCode4`, `wcCode5`, `wcCode6`, `customer`, `checked_out`, `checked_out_time`, `published`) VALUES(-3, 'Unpaid', 'This time is not used for billing customers or for payroll reports', NULL, '0000-00-00 00:00:00', 0, 0, 'CATEGORY', 0, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 1);
 REPLACE INTO `jos_timeclock_projects` (`id`, `name`, `description`, `created_by`, `created`, `manager`, `research`, `type`, `parent_id`, `wcCode1`, `wcCode2`, `wcCode3`, `wcCode4`, `wcCode5`, `wcCode6`, `customer`, `checked_out`, `checked_out_time`, `published`) VALUES(-2, 'Special', 'This category is for PTO and Holiday time.', NULL, '0000-00-00 00:00:00', 0, 0, 'CATEGORY', 0, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 1);

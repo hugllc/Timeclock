@@ -9,50 +9,50 @@
         <name>Project Notes</name>
         <description>This is a blog-like report of the notes attached to hours</description>
         <url addpath="/administrator/components/com_timeclock/elements">
-            <param name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
-            <param name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
-            <param name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
+            <field name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
+            <field name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
+            <field name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
         </url>
-        <params>
-            <param name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
+        <fields>
+            <field name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
-            </param>
-            <param name="@spacer" type="spacer" default="" label="" description="" />
-            <param name="show_entered_time" type="radio" default="0" label="Time Entered" description="Show/Hide the date and time the entry was created.">
+            </field>
+            <field name="@spacer" type="spacer" default="" label="" description="" />
+            <field name="show_entered_time" type="radio" default="0" label="Time Entered" description="Show/Hide the date and time the entry was created.">
                 <option value="0">Hide</option>
                 <option value="1">Show</option>
-            </param>
+            </field>
 
             <!--
-            <param name="num_leading_articles" type="text" size="3" default="1" label="Num Leading" description="PARAMLEADING" />
-            <param name="num_intro_articles" type="text" size="3" default="4" label="Num Intro" description="PARAMINTRO" />
-            <param name="num_columns" type="text" size="3" default="2" label="Columns" description="PARAMCOLUMNS" />
-            <param name="num_links" type="text" size="3" default="4" label="Num Links" description="Number of Items to display as Links." />
+            <field name="num_leading_articles" type="text" size="3" default="1" label="Num Leading" description="PARAMLEADING" />
+            <field name="num_intro_articles" type="text" size="3" default="4" label="Num Intro" description="PARAMINTRO" />
+            <field name="num_columns" type="text" size="3" default="2" label="Columns" description="PARAMCOLUMNS" />
+            <field name="num_links" type="text" size="3" default="4" label="Num Links" description="Number of Items to display as Links." />
             -->
-        </params>
+        </fields>
         <advanced>
-            <param name="filter_order" type="list" default="" label="Filter Order" description="The order items are presented in.">
+            <field name="filter_order" type="list" default="" label="Filter Order" description="The order items are presented in.">
                 <option value="t.worked">Date Worked</option>
                 <option value="p.name">Project Name</option>
                 <option value="u.name">User Name</option>
                 <option value="c.company">Company Name</option>
-            </param>
-            <param name="filter_order_dir" type="list" default="" label="Filter Order Direction" description="The direction of the sorting">
+            </field>
+            <field name="filter_order_dir" type="list" default="" label="Filter Order Direction" description="The direction of the sorting">
                 <option value="desc">Descending</option>
                 <option value="asc">Ascending</option>
-            </param>
+            </field>
 
-            <param name="@spacer" type="spacer" default="" label="" description="" />
-            <param name="show_pagination" type="list" default="2" label="Pagination" description="Show/Hide Pagination support">
+            <field name="@spacer" type="spacer" default="" label="" description="" />
+            <field name="show_pagination" type="list" default="2" label="Pagination" description="Show/Hide Pagination support">
                 <option value="0">Hide</option>
                 <option value="1">Show</option>
                 <option value="2">Auto</option>
-            </param>
-            <param name="show_filter" type="radio" default="1" label="Filter" description="Show filter">
+            </field>
+            <field name="show_filter" type="radio" default="1" label="Filter" description="Show filter">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
-            </param>
+            </field>
         </advanced>
     </state>
 </metadata>

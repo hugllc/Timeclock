@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
- * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -51,7 +51,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 
 ?>
 
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="adminForm" autocomplete="off">
+<form action="<?php JROUTE::_("index.php"); ?>" method="post" id="adminForm" autocomplete="off">
     <?php if ($this->params->get('show_page_title')) : ?>
     <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
             <?php echo $this->escape($this->params->get('page_title')); ?>

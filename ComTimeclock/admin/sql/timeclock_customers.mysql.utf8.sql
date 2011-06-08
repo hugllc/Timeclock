@@ -16,4 +16,4 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_customers` (
   `created` datetime NOT NULL,
   `bill_pto` tinyint(4) NOT NULL,
   PRIMARY KEY  (`id`)
-);
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

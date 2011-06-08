@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="module" version="1.5.0">
+<extension type="module" version="1.6.0" client="site" method="upgrade">
 	<name>Timeclock Info</name>
 	<author>Scott Price</author>
 	<creationDate>08 11 2009</creationDate>
@@ -15,26 +15,26 @@
 	<files>
 		<filename module="mod_timeclockinfo">mod_timeclockinfo.php</filename>
 	</files>
-	<params>
-		<param name="showYTDHours" type="radio" default="1" label="Year-To-Date Hours" description="Show the year to date hours">
+	<fields>
+		<field name="showYTDHours" type="radio" default="1" label="Year-To-Date Hours" description="Show the year to date hours">
             <option value="1">Show</option>
 			<option value="0">Hide</option>
-		</param>
-        <param name="showHoursPerWeek" type="radio" default="1" label="Hours/Week" description="Show the average hours per week.">
+		</field>
+        <field name="showHoursPerWeek" type="radio" default="1" label="Hours/Week" description="Show the average hours per week.">
             <option value="1">Show</option>
             <option value="0">Hide</option>
-        </param>
-        <param name="showNextHoliday" type="radio" default="1" label="Next Holiday" description="Show the date of the next holiday">
+        </field>
+        <field name="showNextHoliday" type="radio" default="1" label="Next Holiday" description="Show the date of the next holiday">
             <option value="1">Show</option>
             <option value="0">Hide</option>
-        </param>
-        <param name="showPTO" type="radio" default="1" label="Show PTO Status" description="Show the user their current PTO status.">
+        </field>
+        <field name="showPTO" type="radio" default="1" label="Show PTO Status" description="Show the user their current PTO status.">
             <option value="1">Show</option>
             <option value="0">Hide</option>
-        </param>
-	</params>
-	<params group="advanced">
-	</params>
-	<params group="other">
-	</params>
-</install>
+        </field>
+	</fields>
+	<fields group="advanced">
+	</fields>
+	<fields group="other">
+	</fields>
+</extension>

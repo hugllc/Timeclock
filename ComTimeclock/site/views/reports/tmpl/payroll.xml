@@ -9,30 +9,30 @@
         <name>Reports</name>
         <description>This is the payroll report.</description>
         <url addpath="/administrator/components/com_timeclock/elements">
-            <param name="period" type="list" default="payperiod" label="Default Period" description="The default period of time to show">
+            <field name="period" type="list" default="payperiod" label="Default Period" description="The default period of time to show">
                 <option value="day">Day</option>
                 <option value="payperiod">Pay Period</option>
                 <option value="month">Month</option>
                 <option value="quarter">Quarter</option>
                 <option value="year">Year</option>
-            </param>
+            </field>
         </url>
-        <params addpath="/administrator/components/com_timeclock/elements">
-            <param name="cell_fill" type="list" default=" " label="Cell Fill Character" description="This is what will be in the cell if there are 0 hours.">
+        <fields addpath="/administrator/components/com_timeclock/elements">
+            <field name="cell_fill" type="list" default=" " label="Cell Fill Character" description="This is what will be in the cell if there are 0 hours.">
                 <option value=" ">None</option>
                 <option value="0">0</option>
-            </param>
-            <param name="filter_order" type="list" default="u.name" label="Sort Field" description="The field to sort by">
+            </field>
+            <field name="filter_order" type="list" default="u.name" label="Sort Field" description="The field to sort by">
                 <option value="u.name">User's Name</option>
-            </param>
-            <param name="filter_order_Dir" type="list" default="ASC" label="Sort Direction" description="The whether to sort ascending or descending">
+            </field>
+            <field name="filter_order_Dir" type="list" default="ASC" label="Sort Direction" description="The whether to sort ascending or descending">
                 <option value="ASC">asc</option>
                 <option value="DESC">desc</option>
-            </param>
-            <param name="show_export" type="radio" default="1" label="Export" description="Show the export line">
+            </field>
+            <field name="show_export" type="radio" default="1" label="Export" description="Show the export line">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
-            </param>
-        </params>
+            </field>
+        </fields>
     </state>
 </metadata>

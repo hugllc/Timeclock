@@ -27,13 +27,13 @@
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 /** Require the JoomlaMock stuff */
-require_once dirname(__FILE__).'/../../JoomlaMock/joomla.php';
+require_once dirname(__FILE__).'/../../include.php';
 require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JTableTest.php';
 require_once dirname(__FILE__).'/../../../admin/tables/timeclockprojects.php';
 
@@ -45,7 +45,7 @@ require_once dirname(__FILE__).'/../../../admin/tables/timeclockprojects.php';
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
@@ -67,7 +67,7 @@ class ComTimeclockAdminTablesProjectsTest extends JTableTest
     protected function setUp()
     {
         $this->sqlFile = array(
-            dirname(__FILE__)."/../../../admin/install/timeclock_projects.sql",
+            dirname(__FILE__)."/../../../admin/sql/timeclock_projects.mysql.utf8.sql",
         );
         parent::setUp();
         $this->_db->setQuery("DELETE FROM #__timeclock_projects");
@@ -108,6 +108,7 @@ class ComTimeclockAdminTablesProjectsTest extends JTableTest
     public static function dataStore()
     {
         return array(
+            array(null, null, null),
         );
     }
 
@@ -119,6 +120,7 @@ class ComTimeclockAdminTablesProjectsTest extends JTableTest
     public static function dataLoad()
     {
         return array(
+            array(null, null, null),
         );
     }
 

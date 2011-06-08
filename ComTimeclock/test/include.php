@@ -5,8 +5,8 @@
  * PHP Version 5
  *
  * <pre>
- * com_timeclock is a Joomla! 1.5 component
- * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
+ * com_HUGnet is a Joomla! 1.5 component
+ * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  * Copyright 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -25,37 +25,30 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    ComHUGnet
+ * @category   Test
+ * @package    ComTimeclock
  * @subpackage Com_HUGnet
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
  */
 
-/**
- * This installs everthing
- *
- * @return null
- */
-function Com_uninstall()
-{
-    $database =& JFactory::getDBO();
-    $adminDir = dirname(__FILE__);
+$_SESSION["JoomlaMockBaseDir"] = realpath(dirname(__FILE__)."/..");
 
-    // Move the modules back to the component so they get deleted with everything
-    foreach (array("mod_timeclockinfo") as $file) {
-        $to   = $adminDir.DS."modules".DS.$file;
-        $from = JPATH_ROOT.DS."modules".DS.$file;
-        rename($from, $to);
-        $database->setQuery(
-            "DELETE FROM `#__modules` WHERE `module`='".$file."';"
-        );
-        $database->query();
-    }
+require_once(dirname(__FILE__)."/JoomlaMock/joomla.php");
+require_once(dirname(__FILE__)."/JoomlaMock/mocks/JTable.php");
 
+
+if (!defined('JPATH_COMPONENT_SITE')) {
+    define('JPATH_COMPONENT_SITE', realpath(dirname(__FILE__)."/../site"));
+}
+if (!defined('JPATH_COMPONENT')) {
+    define('JPATH_COMPONENT', realpath(dirname(__FILE__)."/../site"));
+}
+if (!defined('JPATH_COMPONENT_ADMINISTRATOR')) {
+    define('JPATH_COMPONENT_ADMINISTRATOR', realpath(dirname(__FILE__)."/../admin"));
 }
 ?>

@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
- * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -54,7 +54,7 @@ require_once $base.DS.'tables'.DS.'timeclocktimesheet.php';
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -148,7 +148,7 @@ class TimeclockAdminModelTools extends JModel
         );
         $ret = $this->_dbCheckProjectsGetProjects();
         $valid_array = array("CATEGORY");
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             if (is_null($row["parent_type"])) {
                 continue;
             }
@@ -175,7 +175,7 @@ class TimeclockAdminModelTools extends JModel
         );
         $ret = $this->_dbCheckProjectsGetProjects();
 
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             if (($row["manager"] != 0) && is_null($row["manager_name"])) {
                 $test["result"] = false;
                 $test["log"] .= "Project ".$row["name"]." has invalid parent "
@@ -236,7 +236,7 @@ class TimeclockAdminModelTools extends JModel
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " p.name IS NULL "
         );
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             $test["result"] = false;
             $test["log"] .= "Record #".$row["id"];
             $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
@@ -261,7 +261,7 @@ class TimeclockAdminModelTools extends JModel
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " u.name IS NULL "
         );
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             $test["result"] = false;
             $test["log"] .= "Record #".$row["id"];
             $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
@@ -286,7 +286,7 @@ class TimeclockAdminModelTools extends JModel
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " worked = '0000-00-00' "
         );
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             $test["result"] = false;
             $test["log"] .= "Record #".$row["id"];
             $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
@@ -368,7 +368,7 @@ class TimeclockAdminModelTools extends JModel
                 ." remove them from the offending projects.",
         );
         $ret = $this->_dbCheckUsersGetUsers();
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             if ($row["type"] == "CATEGORY") {
                 $test["result"] = false;
                 $test["log"]   .= "User ".$row["user_name"]
@@ -391,7 +391,7 @@ class TimeclockAdminModelTools extends JModel
                 ." this should be removed with your favorite database tool.",
         );
         $ret = $this->_dbCheckUsersGetUsers();
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             if (is_null($row["user_name"])) {
                 $test["result"] = false;
                 $test["log"]   .= "User #".$row["user_id"]." does not exist.\n";
@@ -413,7 +413,7 @@ class TimeclockAdminModelTools extends JModel
                 ." this should be removed with your favorite database tool.",
         );
         $ret = $this->_dbCheckUsersGetUsers();
-        foreach ($ret as $row) {
+        foreach ((array)$ret as $row) {
             if (is_null($row["id"])) {
                 $test["result"] = false;
                 $test["log"]   .= "Project #".$row["proj_id"]." does not exist.\n";

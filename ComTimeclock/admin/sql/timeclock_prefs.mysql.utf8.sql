@@ -4,9 +4,7 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_prefs` (
   `published` smallint(6) NOT NULL default '0',
   `startDate` date NOT NULL default '0000-00-00',
   `endDate` date NOT NULL default '0000-00-00',
+  `manager` INT NOT NULL DEFAULT '0',
   `history` longtext,
   PRIMARY KEY  (`id`)
-);
-
-
-ALTER TABLE `jos_timeclock_prefs` ADD `manager` INT NOT NULL DEFAULT '0' AFTER `endDate`;
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

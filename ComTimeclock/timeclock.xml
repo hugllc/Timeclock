@@ -1,88 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
-<install type="component" version="1.5.0">
+<extension type="component" version="1.6.0" client="site" method="upgrade">
     <name>Timeclock</name>
     <creationDate>2009 10 09</creationDate>
     <author>Scott Price</author>
     <authorEmail>prices@hugllc.com</authorEmail>
     <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
-    <copyright>2008-2009 Hunt Utilities Group, LLC</copyright>
+    <copyright>2008-2009, 2011 Hunt Utilities Group, LLC</copyright>
     <license>GNU Public License V3</license>
-    <version>0.7.6</version>
+    <version>0.7.6a</version>
     <description>This component implements a timeclock for employees to track time.</description>
-    <installfile>install.timeclock.php</installfile>
-    <uninstallfile>uninstall.timeclock.php</uninstallfile>
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/timeclock_customers.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/timeclock_prefs.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/timeclock_projects.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/timeclock_timesheet.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/timeclock_users.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+    </uninstall>
     <files folder="site">
         <filename>index.html</filename>
         <filename>timeclock.php</filename>
         <filename>controller.php</filename>
-        <filename>controllers/preferences.php</filename>
-        <filename>controllers/timeclock.php</filename>
-        <filename>controllers/index.html</filename>
-        <filename>views/index.html</filename>
-        <filename>views/preferences/index.html</filename>
-        <filename>views/preferences/tmpl/index.html</filename>
-        <filename>views/preferences/tmpl/default.php</filename>
-        <filename>views/preferences/tmpl/default.xml</filename>
-        <filename>views/preferences/view.html.php</filename>
-        <filename>views/timeclock/index.html</filename>
-        <filename>views/timeclock/metadata.xml</filename>
-        <filename>views/timeclock/view.html.php</filename>
-        <filename>views/timeclock/tmpl/index.html</filename>
-        <filename>views/timeclock/tmpl/default.php</filename>
-        <filename>views/timeclock/tmpl/default_header.php</filename>
-        <filename>views/timeclock/tmpl/default_row.php</filename>
-        <filename>views/timeclock/tmpl/default_nextprev.php</filename>
-        <filename>views/timeclock/tmpl/category.js</filename>
-        <filename>views/timeclock/tmpl/addhours.php</filename>
-        <filename>views/timeclock/tmpl/default.xml</filename>
-        <filename>views/timeclock/tmpl/addhours.xml</filename>
-        <filename>views/reports/index.html</filename>
-        <filename>views/reports/metadata.xml</filename>
-        <filename>views/reports/view.html.php</filename>
-        <filename>views/reports/view.csv.php</filename>
-        <filename>views/reports/view.php</filename>
-        <filename>views/reports/tmpl/index.html</filename>
-        <filename>views/reports/tmpl/default.php</filename>
-        <filename>views/reports/tmpl/default_controls.php</filename>
-        <filename>views/reports/tmpl/default_export.php</filename>
-        <filename>views/reports/tmpl/default_nextprev.php</filename>
-        <filename>views/reports/tmpl/default_header.php</filename>
-        <filename>views/reports/tmpl/default.xml</filename>
-        <filename>views/reports/tmpl/hours.php</filename>
-        <filename>views/reports/tmpl/hours_controls.php</filename>
-        <filename>views/reports/tmpl/hours_export.php</filename>
-        <filename>views/reports/tmpl/hours_nextprev.php</filename>
-        <filename>views/reports/tmpl/hours_header.php</filename>
-        <filename>views/reports/tmpl/hours_headergraph.php</filename>
-        <filename>views/reports/tmpl/hours_row.php</filename>
-        <filename>views/reports/tmpl/hours_rowgraph.php</filename>
-        <filename>views/reports/tmpl/hours_total.php</filename>
-        <filename>views/reports/tmpl/hours_totalgraph.php</filename>
-        <filename>views/reports/tmpl/hoursgraph.php</filename>
-        <filename>views/reports/tmpl/hours.xml</filename>
-        <filename>views/reports/tmpl/payroll.php</filename>
-        <filename>views/reports/tmpl/payroll_export.php</filename>
-        <filename>views/reports/tmpl/payroll.xml</filename>
-        <filename>views/reports/tmpl/notes.php</filename>
-        <filename>views/reports/tmpl/notes_controls.php</filename>
-        <filename>views/reports/tmpl/notes.xml</filename>
-        <filename>views/reports/tmpl/wcomp.php</filename>
-        <filename>views/reports/tmpl/wcomp_controls.php</filename>
-        <filename>views/reports/tmpl/wcomp_export.php</filename>
-        <filename>views/reports/tmpl/wcomp_nextprev.php</filename>
-        <filename>views/reports/tmpl/wcomp_header.php</filename>
-        <filename>views/reports/tmpl/wcomp.xml</filename>
-        <filename>models/timeclock.php</filename>
-        <filename>models/reports.php</filename>
-        <filename>models/index.html</filename>
-        <filename>models/preferences.php</filename>
-        <filename>images/index.html</filename>
-        <filename>images/clock.png</filename>
-        <filename>images/1leftarrow.png</filename>
-        <filename>images/1rightarrow.png</filename>
-        <filename>tables/timeclocktimesheet.php</filename>
-        <filename>tables/index.html</filename>
+        <folder>controllers</folder>
+        <folder>views</folder>
+        <folder>models</folder>
+        <folder>images</folder>
+        <folder>tables</folder>
         <filename>LICENSE.TXT</filename>
     </files>
     <administration>
@@ -102,87 +49,15 @@
             <filename>index.html</filename>
             <filename>admin.timeclock.php</filename>
             <filename>controller.php</filename>
-            <filename>tables/index.html</filename>
-            <filename>tables/timeclockprefs.php</filename>
-            <filename>tables/timeclockcustomers.php</filename>
-            <filename>tables/timeclockprojects.php</filename>
-            <filename>tables/timeclockusers.php</filename>
-            <filename>elements/index.html</filename>
-            <filename>elements/project.php</filename>
-            <filename>elements/customer.php</filename>
-            <filename>elements/category.php</filename>
-            <filename>images/index.html</filename>
-            <filename>images/clock-48.png</filename>
-            <filename>lib/index.html</filename>
-            <filename>lib/sql.inc.php</filename>
-            <filename>install/timeclock_customers.sql</filename>
-            <filename>install/timeclock_prefs.sql</filename>
-            <filename>install/timeclock_projects.sql</filename>
-            <filename>install/timeclock_timesheet.sql</filename>
-            <filename>install/timeclock_users.sql</filename>
-            <filename>install/index.html</filename>
-            <filename>controllers/index.html</filename>
-            <filename>controllers/customers.php</filename>
-            <filename>controllers/config.php</filename>
-            <filename>controllers/projects.php</filename>
-            <filename>controllers/holidays.php</filename>
-            <filename>controllers/timesheets.php</filename>
-            <filename>controllers/tools.php</filename>
-            <filename>controllers/users.php</filename>
-            <filename>models/index.html</filename>
-            <filename>models/customers.php</filename>
-            <filename>models/config.php</filename>
-            <filename>models/projects.php</filename>
-            <filename>models/holidays.php</filename>
-            <filename>models/timesheets.php</filename>
-            <filename>models/tools.php</filename>
-            <filename>models/users.php</filename>
-            <filename>views/index.html</filename>
-            <filename>views/config/index.html</filename>
-            <filename>views/config/tmpl/index.html</filename>
-            <filename>views/config/tmpl/default.php</filename>
-            <filename>views/config/view.html.php</filename>
-            <filename>views/about/index.html</filename>
-            <filename>views/about/tmpl/index.html</filename>
-            <filename>views/about/tmpl/default.php</filename>
-            <filename>views/about/view.html.php</filename>
-            <filename>views/tools/index.html</filename>
-            <filename>views/tools/tmpl/index.html</filename>
-            <filename>views/tools/tmpl/default.php</filename>
-            <filename>views/tools/tmpl/dbcheck.php</filename>
-            <filename>views/tools/view.html.php</filename>
-            <filename>views/projects/tmpl/form.php</filename>
-            <filename>views/projects/index.html</filename>
-            <filename>views/projects/tmpl/index.html</filename>
-            <filename>views/projects/tmpl/default.php</filename>
-            <filename>views/projects/view.html.php</filename>
-            <filename>views/holidays/tmpl/form.php</filename>
-            <filename>views/holidays/index.html</filename>
-            <filename>views/holidays/tmpl/index.html</filename>
-            <filename>views/holidays/tmpl/default.php</filename>
-            <filename>views/holidays/view.html.php</filename>
-            <filename>views/timesheets/tmpl/form.php</filename>
-            <filename>views/timesheets/index.html</filename>
-            <filename>views/timesheets/tmpl/index.html</filename>
-            <filename>views/timesheets/tmpl/default.php</filename>
-            <filename>views/timesheets/view.html.php</filename>
-            <filename>views/customers/tmpl/form.php</filename>
-            <filename>views/customers/index.html</filename>
-            <filename>views/customers/tmpl/index.html</filename>
-            <filename>views/customers/tmpl/default.php</filename>
-            <filename>views/customers/view.html.php</filename>
-            <filename>views/users/index.html</filename>
-            <filename>views/users/tmpl/index.html</filename>
-            <filename>views/users/tmpl/default.php</filename>
-            <filename>views/users/tmpl/form.php</filename>
-            <filename>views/users/view.html.php</filename>
-            <filename>modules/index.html</filename>
-            <filename>modules/mod_timeclockinfo/mod_timeclockinfo.xml</filename>
-            <filename>modules/mod_timeclockinfo/mod_timeclockinfo.php</filename>
-            <filename>modules/mod_timeclockinfo/index.html</filename>
-            <filename>modules/mod_timeclockinfo/helper.php</filename>
-            <filename>modules/mod_timeclockinfo/tmpl/default.php</filename>
-            <filename>modules/mod_timeclockinfo/tmpl/index.html</filename>
+            <folder>tables</folder>
+            <folder>elements</folder>
+            <folder>images</folder>
+            <folder>lib</folder>
+            <folder>sql</folder>
+            <folder>controllers</folder>
+            <folder>models</folder>
+            <folder>views</folder>
+            <folder>modules</folder>
         </files>
     </administration>
-</install>
+</extension>

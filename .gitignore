@@ -4,3 +4,4 @@ rel/
 ComTimeclock/test/JoomlaMock
 Documentation/
 *.zip
+build/

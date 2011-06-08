@@ -9,74 +9,17 @@
         <value name="description" type="string" >
             This category is for PTO and Holiday time.
         </value>
-        <value name="created_by" type="NULL" >
-
-        </value>
-        <value name="created" type="string" >
-            0000-00-00 00:00:00
-        </value>
-        <value name="manager" type="string" >
-            0
-        </value>
-        <value name="research" type="string" >
-            0
-        </value>
         <value name="type" type="string" >
             CATEGORY
         </value>
         <value name="parent_id" type="string" >
             0
         </value>
-        <value name="wcCode1" type="string" >
-            0
-        </value>
-        <value name="wcCode2" type="string" >
-            0
-        </value>
-        <value name="wcCode3" type="string" >
-            0
-        </value>
-        <value name="wcCode4" type="string" >
-            0
-        </value>
-        <value name="wcCode5" type="string" >
-            0
-        </value>
-        <value name="wcCode6" type="string" >
+        <value name="published" type="integer" >
             0
         </value>
         <value name="customer" type="string" >
             0
-        </value>
-        <value name="checked_out" type="string" >
-            0
-        </value>
-        <value name="checked_out_time" type="string" >
-            0000-00-00 00:00:00
-        </value>
-        <value name="published" type="integer" >
-            0
-        </value>
-        <value name="parentname" type="NULL" >
-
-        </value>
-        <value name="created_by_name" type="NULL" >
-
-        </value>
-        <value name="manager_name" type="NULL" >
-
-        </value>
-        <value name="parent_checked_out" type="NULL" >
-
-        </value>
-        <value name="customer_name" type="NULL" >
-
-        </value>
-        <value name="customer_contact" type="NULL" >
-
-        </value>
-        <value name="customer_checked_out" type="NULL" >
-
         </value>
         <array name="subprojects" type="array" >
         </array>
@@ -91,74 +34,17 @@
         <value name="description" type="string" >
             This is uncategorized projects.  Everything without a category goes here.
         </value>
-        <value name="created_by" type="NULL" >
-
-        </value>
-        <value name="created" type="string" >
-            0000-00-00 00:00:00
-        </value>
-        <value name="manager" type="string" >
-            0
-        </value>
-        <value name="research" type="string" >
-            0
-        </value>
         <value name="type" type="string" >
             CATEGORY
         </value>
         <value name="parent_id" type="string" >
             0
         </value>
-        <value name="wcCode1" type="string" >
-            0
-        </value>
-        <value name="wcCode2" type="string" >
-            0
-        </value>
-        <value name="wcCode3" type="string" >
-            0
-        </value>
-        <value name="wcCode4" type="string" >
-            0
-        </value>
-        <value name="wcCode5" type="string" >
-            0
-        </value>
-        <value name="wcCode6" type="string" >
+        <value name="published" type="integer" >
             0
         </value>
         <value name="customer" type="string" >
             0
-        </value>
-        <value name="checked_out" type="string" >
-            0
-        </value>
-        <value name="checked_out_time" type="string" >
-            0000-00-00 00:00:00
-        </value>
-        <value name="published" type="integer" >
-            0
-        </value>
-        <value name="parentname" type="NULL" >
-
-        </value>
-        <value name="created_by_name" type="NULL" >
-
-        </value>
-        <value name="manager_name" type="NULL" >
-
-        </value>
-        <value name="parent_checked_out" type="NULL" >
-
-        </value>
-        <value name="customer_name" type="NULL" >
-
-        </value>
-        <value name="customer_contact" type="NULL" >
-
-        </value>
-        <value name="customer_checked_out" type="NULL" >
-
         </value>
         <array name="subprojects" type="array" >
         </array>
@@ -168,22 +54,10 @@
             -3
         </value>
         <value name="name" type="string" >
-            Unpaid
+            Unpaid Time
         </value>
         <value name="description" type="string" >
-            This time is not used for billing customers or for payroll reports
-        </value>
-        <value name="created_by" type="NULL" >
-
-        </value>
-        <value name="created" type="string" >
-            0000-00-00 00:00:00
-        </value>
-        <value name="manager" type="string" >
-            0
-        </value>
-        <value name="research" type="string" >
-            0
+            This time is not used for billing customers or for payroll reports.
         </value>
         <value name="type" type="string" >
             CATEGORY
@@ -191,56 +65,11 @@
         <value name="parent_id" type="string" >
             0
         </value>
-        <value name="wcCode1" type="string" >
-            0
-        </value>
-        <value name="wcCode2" type="string" >
-            0
-        </value>
-        <value name="wcCode3" type="string" >
-            0
-        </value>
-        <value name="wcCode4" type="string" >
-            0
-        </value>
-        <value name="wcCode5" type="string" >
-            0
-        </value>
-        <value name="wcCode6" type="string" >
+        <value name="published" type="integer" >
             0
         </value>
         <value name="customer" type="string" >
             0
-        </value>
-        <value name="checked_out" type="string" >
-            0
-        </value>
-        <value name="checked_out_time" type="string" >
-            0000-00-00 00:00:00
-        </value>
-        <value name="published" type="integer" >
-            0
-        </value>
-        <value name="parentname" type="NULL" >
-
-        </value>
-        <value name="created_by_name" type="NULL" >
-
-        </value>
-        <value name="manager_name" type="NULL" >
-
-        </value>
-        <value name="parent_checked_out" type="NULL" >
-
-        </value>
-        <value name="customer_name" type="NULL" >
-
-        </value>
-        <value name="customer_contact" type="NULL" >
-
-        </value>
-        <value name="customer_checked_out" type="NULL" >
-
         </value>
         <array name="subprojects" type="array" >
         </array>

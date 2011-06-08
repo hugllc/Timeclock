@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.5 component
- * Copyright (C) 2008-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,13 +28,15 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
+
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."lib".DS."sql.inc.php");
 
 /** Import the views */
 jimport('joomla.application.component.view');
@@ -46,7 +48,7 @@ jimport('joomla.application.component.view');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009 Hunt Utilities Group, LLC
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -79,7 +81,8 @@ class TimeclockAdminViewProjects extends JView
      */
     function showList($tpl = null)
     {
-        global $mainframe, $option;
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $model = $this->getModel("Projects");
 
         $db =& JFactory::getDBO();
