@@ -38,18 +38,18 @@ defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
             <td rowspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("User"); ?>
+                <?php print JText::_(COM_TIMECLOCK_USER); ?>
             </td>
             <td rowspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Graph"); ?>
+                <?php print JText::_(COM_TIMECLOCK_GRAPH); ?>
             </td>
             <td colspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Total"); ?>
+                <?php print JText::_(COM_TIMECLOCK_TOTAL); ?>
             </td>
         </tr>
         <tr>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Hours"); ?>
+                <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
             </td>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_("%"); ?>

@@ -37,7 +37,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
-            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
+            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
             <?php foreach ($this->totals["cat"] as $cat => $hours) : ?>
             <?php $hours = empty($hours) ? $this->cell_fill : $hours; ?>
             <?php $perc = round(($hours/$this->total)*100, 1); ?>

@@ -48,6 +48,6 @@ defined('_JEXEC') or die('Restricted access');
             </td>
             <?php endforeach; ?>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print JText::_("Total"); ?></div>
+                <div style="<?php print $style; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></div>
             </td>
         </tr>

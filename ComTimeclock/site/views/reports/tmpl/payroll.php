@@ -46,7 +46,7 @@ $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 //$document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
-$document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_("to")." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
+$document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_(COM_TIMECLOCK_TO)." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
 
 ?>
 
@@ -65,33 +65,35 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 
                 <div id="dateheader" style="clear:both;">
                    <strong>
-                       <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
-                       <?php print JText::_("to"); ?>
-                       <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
+                        <?php print JText::sprintf(
+                            COM_TIMECLOCK_DATE_TO_DATE,
+                            JHTML::_('date', $this->period['unix']["start"], $dateFormat),
+                            JHTML::_('date', $this->period['unix']["end"], $dateFormat)
+                        ); ?>
                    </strong>
                </div>
            </td>
         </tr>
         <tr>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', 'Employee', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader" colspan="4" align="center" style="<?php print $cellStyle; ?>"><?php print JText::_("Week")." ".($w+1); ?> </td>
+            <td class="sectiontableheader" colspan="4" align="center" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_WEEK)." ".($w+1); ?> </td>
     <?php
 }
 ?>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', 'Employee', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
+            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
         </tr>
         <tr>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Worked"); ?> </td>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("PTO"); ?> </td>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Holiday"); ?> </td>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_("Total"); ?> </td>
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_WORKED); ?> </td>
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_PTO); ?> </td>
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_HOLIDAY); ?> </td>
+            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?> </td>
     <?php
 }
 ?>
@@ -126,7 +128,7 @@ foreach ($this->report as $id => $time) {
 }
 ?>
         <tr>
-            <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
+            <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
     <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
@@ -142,7 +144,7 @@ for ($w = 0; $w < $this->weeks; $w++) {
 }
 $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
 ?>
-            <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
+            <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
             <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     </table>
@@ -150,7 +152,7 @@ $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 <?php print JHTML::_("form.token"); ?>
 </form>
-<h3>Notes</h3>
+<h3><?php print JText::_(COM_TIMECLOCK_NOTES); ?></h3>
 <dl>
 <?php
 foreach ($this->notes as $user => $projects) {
@@ -196,21 +198,19 @@ foreach ($this->notes as $user => $projects) {
  */
 function nextprev(&$obj)
 {
-    $tip = "Go to the next pay period";
     $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
     $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
     $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["next"]);
     $nextImg = '<a href="'.$url.'">'.$text.'</a>';
-    $next = '<a href="'.$url.'">'.JText::_("Next").'</a>';
+    $next = '<a href="'.$url.'">'.JText::_(JNEXT).'</a>';
 
-    $tip = "Go to the previous pay period";
     $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
     $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
     $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["prev"]);
     $prevImg = '<a href="'.$url.'">'.$text.'</a>';
-    $prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
+    $prev = '<a href="'.$url.'">'.JText::_(JPREVIOUS).'</a>';
 
-    $text = JText::_('Today');
+    $text = JText::_(COM_TIMECLOCK_TODAY);
     $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll");
     $today = '<a href="'.$url.'">'.$text.'</a>';
 

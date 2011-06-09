@@ -63,12 +63,12 @@ foreach ($this->notes as $key => $note) {
     <div class="contentpaneopen">
         <div>
             <div class="contentheading"><?php print $title; ?></div>
-            <div class="small"> <?php print JText::_('by')." ".$note->author; ?> <span>(<?php print $note->hours." ".JText::_("hours");?>)</span></div>
-            <div class="createdate"><?php echo JText::_("Worked")." ".JHTML::_('date', $note->worked." 06:00:00", JText::_('DATE_FORMAT_LC1')); ?></div>
+            <div class="small"> <?php print JText::_(COM_TIMECLOCK_BY)." ".$note->author; ?> <span>(<?php print $note->hours." ".JText::_(COM_TIMECLOCK_HOURS);?>)</span></div>
+            <div class="createdate"><?php echo JText::_(COM_TIMECLOCK_WORKED)." ".JHTML::_('date', $note->worked." 06:00:00", JText::_('DATE_FORMAT_LC1')); ?></div>
         </div>
         <div><?php print $note->notes; ?></div>
         <?php if ($this->params->get('show_entered_date')) : ?>
-        <div class="modifydate"><?php echo JText::_("Entered")." ".JHTML::_('date', $note->created, JText::_('DATE_FORMAT_LC2')); ?></div>
+        <div class="modifydate"><?php echo JText::_(COM_TIMECLOCK_ENTERED)." ".JHTML::_('date', $note->created, JText::_('DATE_FORMAT_LC2')); ?></div>
         <?php endif; ?>
     </div>
     <span class="article_separator">&nbsp;</span>
@@ -83,12 +83,12 @@ if (count($this->notes) == 0) print "No notes found";
             <input class="inputbox" type="text" id="report_search" name="report_search" size="30" maxlength="255" value="<?php echo $this->lists["search"];?>" />
             <?php echo JText::_('in'); ?>:
             <?php echo JHTML::_('select.genericlist', $this->lists['search_options'], 'report_search_filter', '', 'value', 'text', $this->lists['search_filter'], 'search_filter'); ?>
-            <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
+            <button onclick="this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_GO); ?></button>
             <button onclick="document.getElementById('report_search').value='';document.getElementById('report_search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
         </div>
         <?php endif; ?>
         <?php if ($this->params->get('show_pagination')) : ?>
-        <div style="text-align: center;"><?php echo JText::_("Display Num").": ".$this->pagination->getLimitBox(); ?></div>
+        <div style="text-align: center;"><?php echo JText::_(COM_TIMECLOCK_DISPLAY_NUM).": ".$this->pagination->getLimitBox(); ?></div>
         <div style="text-align: center;"><?php echo $this->pagination->getPagesLinks(); ?></div>
         <div style="text-align: center;"><?php echo $this->pagination->getPagesCounter(); ?></div>
         <?php endif; ?>

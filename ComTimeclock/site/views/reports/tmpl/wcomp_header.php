@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
             <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("User"); ?>
+                <?php print JText::_(COM_TIMECLOCK_USER); ?>
             </td>
             <?php foreach ($this->codes as $code) : ?>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
@@ -47,6 +47,6 @@ defined('_JEXEC') or die('Restricted access');
             </td>
             <?php endforeach; ?>
             <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print JText::_("Total"); ?></div>
+                <div style="<?php print $style; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></div>
             </td>
         </tr>

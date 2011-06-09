@@ -37,8 +37,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
-            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
-            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>"><?php print JText::_("Graph"); ?></td>
+            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
+            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_GRAPH); ?></td>
             <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
             <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>">100%</td>
         </tr>

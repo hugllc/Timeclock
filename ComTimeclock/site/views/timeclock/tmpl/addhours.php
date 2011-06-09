@@ -44,7 +44,13 @@ if (empty($this->days)) $this->days = 7;
 
 $headerColSpan    = 3;
 $document        =& JFactory::getDocument();
-$document->setTitle("Add Hours for ".$this->user->get("name")." on ".JHTML::_('date', $this->date." 06:00:00", $shortDateFormat));
+$document->setTitle(
+    JText::sprintf(
+        COM_TIMECLOCK_ADD_HOURS_TITLE,
+        $this->user->get("name"),
+        JHTML::_('date', $this->date." 06:00:00", $shortDateFormat)
+    )
+);
 $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 $wCompEnabled = TableTimeclockPrefs::getPref("wCompEnable", "system");
 
@@ -66,7 +72,7 @@ $initPanes = array();
         });
 </script>
 <div style="position: fixed; left: 0px; top: 0px; background: white; border: 3px solid black; padding: .5em;">
-    <?php print JText::_("Total Hours"); ?>: <span id="hoursTotal"> - </span>
+    <?php print JText::_(COM_TIMECLOCK_TOTAL_HOURS); ?>: <span id="hoursTotal"> - </span>
 </div>
 <form action="<?php print JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
     <div class="componentheading"><?php print JText::_("Add Hours"); ?></div>
@@ -74,21 +80,21 @@ $initPanes = array();
         <tr>
             <th align="right">
                 <label id="date_label" for="date">
-                    *<?php print JText::_("Date"); ?>:
+                    *<?php print JText::_(JDATE); ?>:
                 </label>
             </th>
             <td>
                 <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"');?>
             </td>
             <td>
-                <?php print JText::_("Required.  The date worked.  Should be of the form yyyy-mm-dd"); ?>
+                <?php print JText::_(COM_TIMECLOCK_DATE_WORKED_HELP); ?>
             </td>
         </tr>
 <?php
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) continue;
     if (!is_null($this->projid) && !array_key_exists($this->projid, $cat->subprojects)) continue;
-    $safeName = "Category".$cat->id;
+    $safeName = JText::_(JCATEGORY).$cat->id;
     if (!empty($this->projid)) {
         // Do nothing here.
     } else if ($cat->show === true) {
@@ -109,7 +115,7 @@ foreach ($this->projects as $cat) {
                     <a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
                         <span id="<?php print $safeName; ?>_cat_span"> - </span>
                     <?php endif; ?>
-                        <?php print JText::_("Category").": ".JText::_($cat->name); ?>
+                        <?php print JText::_(JCATEGORY).": ".JText::_($cat->name); ?>
                     <?php if (empty($this->projid)): ?>
                     </a>
                     <?php endif; ?>
@@ -126,7 +132,7 @@ foreach ($this->projects as $cat) {
         ?>
         <tr>
             <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
-                <?php print JText::_("Project").": ".TimeclockModelTimeclock::formatProjId($proj->id)." ".JText::_($proj->name); ?>
+                <?php print JText::_(COM_TIMECLOCK_PROJECT).": ".TimeclockModelTimeclock::formatProjId($proj->id)." ".JText::_($proj->name); ?>
             </td>
         </tr>
         <?php
@@ -154,7 +160,7 @@ foreach ($this->projects as $cat) {
             } else {
                 if ($i > 1) break;
                 $var = "hours1";
-                $wcName = "Hours";
+                $wcName = JText::_(COM_TIMECLOCK_HOURS);
                 $hours = ($this->data[$proj->id]->hours) ? $this->data[$proj->id]->hours : 0;
             }
             $hoursId = "timesheet_".$proj->id."_hours_".$i;
@@ -171,7 +177,7 @@ foreach ($this->projects as $cat) {
                 <span><?php print $wcNote; ?></span>
             </td>
             <td>
-                <?php print JText::_("Hours worked."); ?>
+                <?php print JText::_(COM_TIMECLOCK_HOURS_WORKED_HELP); ?>
                 <script>
                     Window.onDomReady(function(){
                         document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
@@ -219,7 +225,7 @@ foreach ($this->projects as $cat) {
         <tr>
             <th style="vertical-align: top;"  align="right" id="notes_<?php print $proj->id;?>_label">
                 <label id="notes_<?php print $proj->id;?>_label" for="timesheet_<?php print $proj->id;?>_notes">
-                    <?php echo JText::_('Notes'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_NOTES); ?>:
                 </label>
             </th>
             <td>
@@ -229,10 +235,10 @@ foreach ($this->projects as $cat) {
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
             </td>
             <td>
-                <?php print JText::_("This should be a description of what was done in the hours posted."); ?>
+                <?php print JText::_(COM_TIMECLOCK_WORK_NOTES_HELP); ?>
                 <div id="noteerror<?php print $proj->id;?>" style="padding: 3px;">
                 <?php if ($this->minNoteChars > 0): ?>
-                    <strong><?php print JText::_("Minimum")." ".$this->minNoteChars." ".JText::_("characters."); ?></strong>
+                    <strong><?php print JText::sprintf(COM_TIMECLOCK_WORK_NOTES_MIN_CHARS, $this->minNoteChars); ?></strong>
                 <?php endif; ?>
                 </div>
             </td>
@@ -266,7 +272,7 @@ $document->addScriptDeclaration($js);
 </form>
 <div>
     <a name="required_field" />
-* <?php print JText::_("Required field"); ?>
+* <?php print JText::_(COM_TIMECLOCK_REQUIRED_FIELD); ?>
 </div>
 <script type="text/javascript">
     function calculateHourTotal() {

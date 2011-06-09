@@ -56,16 +56,16 @@ foreach ($this->period["dates"] as $key => $uDate) {
     }
     if ($this->proj->noHours || !$this->proj->published || !$this->proj->mine || !$this->cat->published) {
         $tip                = $this->hours[$this->proj->id][$key]['notes'];
-        $link = ($hours == 0) ? $hours : JHTML::_('tooltip', $tip, "Notes", '', " $hours ", $url);
+        $link = ($hours == 0) ? $hours : JHTML::_('tooltip', $tip, JText::_(COM_TIMECLOCK_NOTES), '', " $hours ", $url);
     } else {
         if ($this->checkDate($uDate)) {
-            $tipTitle           = ($hours == 0) ? "Add Hours" : "Notes";
+            $tipTitle           = ($hours == 0) ? JText::_(COM_TIMECLOCK_ADD_HOURS) : JText::_(COM_TIMECLOCK_NOTES);
             $tip                = ($hours == 0) ? "for ".$this->proj->name." on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1")) : $this->hours[$this->proj->id][$key]['notes'];
             $url                = 'index.php?&option=com_timeclock&controller=timeclock&task=addhours&date='.urlencode($key).'&projid='.(int)$this->proj->id.'&id='.(int)$this->user->get("id");
         } else {
             $url = $hours;
-            $tipTitle = "No Hours";
-            $tip = "Hours can not be entered before your employment start date or after your end date";
+            $tipTitle = JText::_(COM_TIMECLOCK_NO_HOURS);
+            $tip = JText::_(COM_TIMECLOCK_NO_HOURS_BEFORE_START);
         };
         $link = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
     }

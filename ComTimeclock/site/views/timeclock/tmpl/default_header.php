@@ -51,12 +51,12 @@ foreach ($this->period["dates"] as $key => $uDate) :
     }
     if ($this->checkDate($uDate)) {
         $url = JRoute::_('index.php?&option=com_timeclock&controller=timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$this->user->get("id"));
-        $tipTitle = "Add Hours";
+        $tipTitle = JText::_(COM_TIMECLOCK_ADD_HOURS);
         $tip = "on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1"));
     } else {
         $url = "";
-        $tipTitle = "No Hours";
-        $tip = "Hours can not be entered before your employment start date or after your end date";
+        $tipTitle = JText::_(COM_TIMECLOCK_NO_HOURS);
+        $tip = JText::_(COM_TIMECLOCK_NO_HOURS_BEFORE_START);
     };
     ?>
         <td class="sectiontableheader" style="<?php print $this->cellStyle.$style; ?>">
@@ -64,11 +64,11 @@ foreach ($this->period["dates"] as $key => $uDate) :
         </td>
     <?php if ((++$d % $this->days) == 0) : ?>
         <td class="sectiontableheader">
-            Wk<?php print (int) ($d / $this->days); ?>
+            <?php print JText::_(COM_TIMECLOCK_WEEK_ABBREV).(int) ($d / $this->days); ?>
         </td>
         <?php $dtotal = 0; ?>
 
     <?php endif; ?>
 <?php endforeach; ?>
-        <td class="sectiontableheader"><?php print JText::_("Total"); ?></td>
+        <td class="sectiontableheader"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
     </tr>

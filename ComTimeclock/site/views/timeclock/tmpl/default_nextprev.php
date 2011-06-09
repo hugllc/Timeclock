@@ -36,21 +36,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$tip = "Go to the next pay period";
+$tip = JText::_(COM_TIMECLOCK_GO_TO_NEXT_PAYPERIOD);
 $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
 $url = JROUTE::_("index.php?option=com_timeclock&controller=timeclock&view=timeclock&date=".$this->period["next"]);
 $nextImg = '<a href="'.$url.'">'.$text.'</a>';
-$next = '<a href="'.$url.'">'.JText::_("Next").'</a>';
+$next = '<a href="'.$url.'">'.JText::_(JNEXT).'</a>';
 
-$tip = "Go to the previous pay period";
+$tip = JText::_(COM_TIMECLOCK_GO_TO_PREV_PAYPERIOD);
 $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
 $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
 $url = JROUTE::_("index.php?option=com_timeclock&controller=timeclock&view=timeclock&date=".$this->period["prev"]);
 $prevImg = '<a href="'.$url.'">'.$text.'</a>';
-$prev = '<a href="'.$url.'">'.JText::_("Previous").'</a>';
+$prev = '<a href="'.$url.'">'.JText::_(JPREVIOUS).'</a>';
 
-$text = JText::_('Today');
+$text = JText::_(COM_TIMECLOCK_TODAY);
 $url = JROUTE::_("index.php?option=com_timeclock&view=timeclock");
 $today = '<a href="'.$url.'">'.$text.'</a>';
 

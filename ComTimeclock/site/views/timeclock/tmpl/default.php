@@ -49,7 +49,14 @@ $this->catStyle   = "font-weight: bold; padding: 1px;";
 $document         =& JFactory::getDocument();
 $dateFormat       = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat  = JText::_("DATE_FORMAT_LC3");
-$document->setTitle("Timesheet for ".$this->user->get("name")." - ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));
+$document->setTitle(
+    JText::sprintf(
+        COM_TIMECLOCK_TIMESHEET_TITLE,
+        $this->user->get("name"),
+        JHTML::_('date', $this->period['unix']["start"], $shortDateFormat),
+        JHTML::_('date', $this->period['unix']["end"], $shortDateFormat)
+    )
+);
 
 $pane = JPane::getInstance("sliders");
 $initPanes = array();
@@ -58,13 +65,15 @@ JHTML::_('behavior.mootools');
 ?>
 
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
-    <div class="componentheading"><?php print JText::_("Timesheet for ").$this->user->get("name");?></div>
+    <div class="componentheading"><?php print JText::sprintf(COM_TIMECLOCK_TIMESHEET_FOR, $this->user->get("name"));?></div>
     <?php print $this->loadTemplate("nextprev"); ?>
     <div id="dateheader" style="clear:both;">
         <strong>
-            <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
-            <?php print JText::_("to"); ?>
-            <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
+            <?php print JText::sprintf(
+                COM_TIMECLOCK_DATE_TO_DATE,
+                JHTML::_('date', $this->period['unix']["start"], $dateFormat),
+                JHTML::_('date', $this->period['unix']["end"], $dateFormat)
+                ); ?>
         </strong>
     </div>
 
@@ -79,7 +88,7 @@ foreach ($this->projects as $cat) {
         if (empty($array)) continue;
     }
     $this->cat  =& $cat;
-    $safeName = "Category".$cat->id;
+    $safeName = JText::_(JCATEGORY).$cat->id;
     if ($cat->show === true) {
         $initPanes[] = "timeclockCatShow('".$safeName."');";
     } else if ($cat->show === false) {
@@ -92,7 +101,7 @@ foreach ($this->projects as $cat) {
             <td class="sectiontableheader" style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
                 <a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
                     <span id="<?php print $safeName; ?>_cat_span"> - </span>
-                    <?php print JHTML::_('tooltip', $cat->description, 'Category', '', $cat->name); ?>
+                    <?php print JHTML::_('tooltip', JText::_($cat->description), JText::_(JCATEGORY), '', JText::_($cat->name)); ?>
                 </a>
             </td>
         </tr>
@@ -122,14 +131,13 @@ print $this->loadTemplate("header");
 
         <tr class="sectiontableentry<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
-                Subtotals
+                <?php print JText::_(COM_TIMECLOCK_SUBTOTALS); ?>
             </td>
 <?php
 $d = 0;
 foreach ($this->period["dates"] as $key => $uDate) {
-    $hours = ($this->totals["worked"][$key]) ? $this->totals["worked"][$key] : 0;
     print '            <td style="'.$this->totalStyle.'">';
-    print '                '.$hours."\n";
+    print '                '.(int)$this->totals["worked"][$key]."\n";
     print "            </td>\n";
     if ((++$d % $this->days) == 0) {
         print '            <td class="sectiontableheader">';
@@ -148,7 +156,7 @@ $k = 1-$k;
 
         <tr class="sectiontableentry<?php echo $k?>">
             <td class="sectiontableheader" style="text-align:right; padding: 1px;">
-                Periodic Subtotals
+                <?php print JText::_(COM_TIMECLOCK_PERIODIC_SUBTOTALS); ?>
             </td>
 <?php
 for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
@@ -157,7 +165,7 @@ for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
                 &nbsp
             </td>
             <td style="<?php print $this->totalStyle; ?>">
-                <?php print $this->totals[$i]; ?>
+                <?php print (int)$this->totals[$i]; ?>
             </td>
     <?php
 }
@@ -170,10 +178,10 @@ $k = 1-$k;
         </tr>
         <tr>
             <td class="sectiontableheader" style="text-align:right; padding: 1px;" colspan="<?php echo $headerColSpan-1; ?>">
-                <?php print JText::_("Total"); ?>
+                <?php print JText::_(COM_TIMECLOCK_TOTAL); ?>
             </td>
             <td style="<?php print $this->totalStyle; ?>">
-                <?php print $this->totals["total"]; ?>
+                <?php print (int)$this->totals["total"]; ?>
             </td>
         </tr>
 

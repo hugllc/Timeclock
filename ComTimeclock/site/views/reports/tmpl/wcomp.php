@@ -46,7 +46,7 @@ $totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
-$document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_("to")." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
+$document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_(COM_TIMECLOCK_TO)." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
 
 if (!TableTimeclockPrefs::getPref("wCompEnable", "system")) {
     print '<div class="error"><strong>'.JText::_("This report is not enabled.  Please enable Worker's Compensation.").'</strong></div>';

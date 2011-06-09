@@ -288,7 +288,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("calendar", $this->prefs["ptoCarryOverDefExpire"], "prefs[ptoCarryOverDefExpire]", "ptoCarryOverDefExpire", "%m-%d", "");?>
+                <input class="text_area" type="text" size="20" maxlength="20" name="prefs[ptoCarryOverDefExpire]" id="ptoCarryOverDefExpire" value="<?php echo $this->prefs["ptoCarryOverDefExpire"];?>" />
             </td>
             <td>
                 The default time that PTO carry over expires.  This is in the form Month-Day.  The

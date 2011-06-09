@@ -70,9 +70,11 @@ $this->graphColSpan = 2 + (count($this->totals["cat"])*2);
 
                 <div id="dateheader" style="clear:both; white-space: nowrap;">
                    <strong>
-                       <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
-                       <?php print JText::_("to"); ?>
-                       <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
+                        <?php print JText::sprintf(
+                            COM_TIMECLOCK_DATE_TO_DATE,
+                            JHTML::_('date', $this->period['unix']["start"], $dateFormat),
+                            JHTML::_('date', $this->period['unix']["end"], $dateFormat)
+                        ); ?>
                    </strong>
                </div>
            </td>
@@ -93,7 +95,7 @@ print $this->loadTemplate("total");
 ?>
         <?php else : ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_("No data found"); ?></td>
+            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_NO_DATA_FOUND); ?></td>
         </tr>
         <?php endif; ?>
     </table>

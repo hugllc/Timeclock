@@ -43,24 +43,24 @@ defined('_JEXEC') or die('Restricted access');
             </td>
             <?php foreach (array_keys($this->totals["cat"]) as $cat) : ?>
             <td colspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print $cat; ?>
+                <?php print JText::_($cat); ?>
             </td>
             <?php endforeach; ?>
             <td colspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Total"); ?>
+                <?php print JText::_(COM_TIMECLOCK_TOTAL); ?>
             </td>
         </tr>
         <tr>
             <?php foreach (array_keys($this->totals["cat"]) as $cat) : ?>
             <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Hours"); ?>
+                <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
             </td>
             <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_("%"); ?>
             </td>
             <?php endforeach; ?>
             <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("Hours"); ?>
+                <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
             </td>
             <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_("%"); ?>

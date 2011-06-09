@@ -36,8 +36,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
-
 /**
  * ComTimeclock World Component Controller
  *
@@ -49,27 +47,59 @@ jimport('joomla.application.component.controller');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminController extends JController
+class TimeclockHelper
 {
     /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function display()
+    * Configure the links below the header
+    *
+    * @param string $vName The name of the active view.
+    * @param string $cName The name of the active controller.
+    *
+    * @return null
+    */
+    public static function addSubmenu($vName, $cName)
     {
-        require_once JPATH_COMPONENT.'/helpers/timeclock.php';
-        // Load the submenu.
-        TimeclockHelper::addSubmenu(
-            JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
+        JSubMenuHelper::addEntry(
+            JText::_('Config'),
+            'index.php?option=com_timeclock&controller=config',
+            $cName == 'config'
         );
-
-        JRequest::setVar('view', 'about');
-        parent::display();
+        JSubMenuHelper::addEntry(
+            JText::_('User Configurations'),
+            'index.php?option=com_timeclock&controller=users',
+            $cName == 'users'
+        );
+        JSubMenuHelper::addEntry(
+            JText::_('Customers'),
+            'index.php?option=com_timeclock&controller=customers',
+            $cName == 'customers'
+        );
+        JSubMenuHelper::addEntry(
+            JText::_('Projects'),
+            'index.php?option=com_timeclock&controller=projects',
+            $cName == 'projects'
+        );
+        JSubMenuHelper::addEntry(
+            JText::_('Holidays'),
+            'index.php?option=com_timeclock&controller=holidays',
+            $cName == 'holidays'
+        );
+        JSubMenuHelper::addEntry(
+            JText::_('Timesheets'),
+            'index.php?option=com_timeclock&controller=timesheets',
+            $cName == 'timesheets'
+        );
+        JSubMenuHelper::addEntry(
+            JText::_('Misc Tools'),
+            'index.php?option=com_timeclock&controller=tools',
+            $cName == 'tools'
+        );
+        JSubMenuHelper::addEntry(
+            JText::_('About'),
+            'index.php?option=com_timeclock&view=about',
+            $vName == 'about'
+        );
     }
-
     /**
     * Title cell
     * For the title and toolbar to be rendered correctly,
@@ -93,26 +123,6 @@ class TimeclockAdminController extends JController
 
         $mainframe->set('JComponentTitle', $html);
     }
-
-    /**
-     * Get Referrer
-     *
-     * @return string
-     */
-    function referer()
-    {
-        $referer = JRequest::getString('referer', "", 'post');
-        if (!empty($referer)) {
-            return $referer;
-        }
-        $referer = $_SERVER["HTTP_REFERER"];
-        if (!empty($referer)) {
-            return $referer;
-        }
-        return "index.php";
-
-    }
-
 
 }
 ?>
