@@ -35,12 +35,18 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.html.html');
+
 /** Get the component stuff */
 require_once JPATH_COMPONENT.DS.'controller.php';
 
 // This loads the prefs table file.
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'timeclockprefs.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'sql.inc.php';
+
+JHTML::stylesheet(
+    "components".DS."com_timeclock".DS."css".DS."timeclock.css"
+);
 
 if ($controller = JRequest::getWord('controller')) {
     $path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';

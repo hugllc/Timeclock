@@ -56,44 +56,42 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
             <?php echo $this->escape($this->params->get('page_title')); ?>
     </div>
     <?php endif; ?>
-    <table style="padding-bottom: 3em;" class="contentpaneopen<?php echo $this->params->get('pageclass_sfx');?>">
-        <tr>
-            <td colspan="<?php print $headerColSpan; ?>">
-                <?php nextPrev($this); ?>
+    <div>
+        <?php nextPrev($this); ?>
 
-                <?php print $this->loadTemplate("export"); ?>
+        <?php print $this->loadTemplate("export"); ?>
 
-                <div id="dateheader" style="clear:both;">
-                   <strong>
-                        <?php print JText::sprintf(
-                            COM_TIMECLOCK_DATE_TO_DATE,
-                            JHTML::_('date', $this->period['unix']["start"], $dateFormat),
-                            JHTML::_('date', $this->period['unix']["end"], $dateFormat)
-                        ); ?>
-                   </strong>
-               </div>
-           </td>
-        </tr>
+        <div id="dateheader" style="clear:both;">
+            <strong>
+                <?php print JText::sprintf(
+                    COM_TIMECLOCK_DATE_TO_DATE,
+                    JHTML::_('date', $this->period['unix']["start"], $dateFormat),
+                    JHTML::_('date', $this->period['unix']["end"], $dateFormat)
+                ); ?>
+            </strong>
+        </div>
+    </div>
+    <table id="timeclock" style="padding-bottom: 3em;">
         <tr>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
+            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader" colspan="4" align="center" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_WEEK)." ".($w+1); ?> </td>
+            <th colspan="4" align="center" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_WEEK)." ".($w+1); ?> </td>
     <?php
 }
 ?>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
-            <td class="sectiontableheader" rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
+            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
+            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
         </tr>
         <tr>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_WORKED); ?> </td>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_PTO); ?> </td>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_HOLIDAY); ?> </td>
-            <td class="sectiontableheader" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?> </td>
+            <th style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_WORKED); ?> </td>
+            <th style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_PTO); ?> </td>
+            <th style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_HOLIDAY); ?> </td>
+            <th style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?> </td>
     <?php
 }
 ?>
@@ -103,49 +101,49 @@ $k = 0;
 $totals = array();
 foreach ($this->report as $id => $time) {
     ?>
-        <tr>
-            <td class="sectiontableentry<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
+        <tr class="row<?php print $k;?>">
+            <td align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
     <?php
     for ($w = 0; $w < $this->weeks; $w++) {
         foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
             $hours = (empty($time[$w][$type]["hours"])) ? $this->cell_fill : $time[$w][$type]["hours"];
             ?>
-                <td class="sectiontableentry<?php print $k;?>" align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
+                <td align="center" style="<?php print $cellStyle; ?>"><?php print $hours; ?></td>
             <?php
         }
         $hours = (empty($time[$w]["TOTAL"]["hours"])) ? $this->cell_fill : $time[$w]["TOTAL"]["hours"];
         ?>
-                <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+                <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     $hours = (empty($this->totals["user"][$id])) ? 0 : $this->totals["user"][$id];
     ?>
-            <td class="sectiontableentry<?php print $k;?>" align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
-            <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td align="right" style="<?php print $cellStyle; ?>"><?php print $time["name"]; ?></td>
+            <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     <?php
     $k = 1 - $k;
 }
 ?>
-        <tr>
-            <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
+        <tr class="row<?php print $k;?>">
+            <th align="right" style="<?php print $totalStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
     <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
         $hours = (empty($this->totals["type"][$w][$type])) ? 0 : $this->totals["type"][$w][$type];
         ?>
-            <td class="sectiontableentry<?php print $k;?>" align="center" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td align="center" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     $hours = (empty($this->totals["type"][$w]["TOTAL"])) ? 0 : $this->totals["type"][$w]["TOTAL"];
     ?>
-            <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
     <?php
 }
 $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
 ?>
-            <td class="sectiontableheader" align="right" style="<?php print $totalStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
-            <td class="sectiontableentry<?php print $k;?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <th align="right" style="<?php print $totalStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
+            <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
         </tr>
     </table>
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
@@ -153,10 +151,11 @@ $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
 <?php print JHTML::_("form.token"); ?>
 </form>
 <h3><?php print JText::_(COM_TIMECLOCK_NOTES); ?></h3>
-<dl>
 <?php
 foreach ($this->notes as $user => $projects) {
-    ?>
+?>
+
+<dl>
     <dt><h4><?php print $user; ?></h4></dt>
     <dd>
         <dl>
@@ -182,11 +181,10 @@ foreach ($this->notes as $user => $projects) {
     ?>
         </dl>
     </dd>
-    </dl>
+</dl>
     <?php
 }
 ?>
-</dl>
 <?php
 
 /**

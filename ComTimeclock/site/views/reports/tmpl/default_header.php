@@ -38,16 +38,16 @@ defined('_JEXEC') or die('Restricted access');
 //$style = "writing-mode: tb-rl; filter: flipv() fliph(); white-space: nowrap; vertical-align: center; height: 1.1em; ";
 ?>
         <tr>
-            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+            <th style="<?php print $this->cellStyle; ?>">
                 <?php print JHTML::_('grid.sort', 'Project', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
                 <?php //print JText::_("Project"); ?>
-            </td>
+            </th>
             <?php foreach ($this->users as $user) : ?>
-            <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
+            <th width="1.1em" style="<?php print $this->cellStyle; ?>">
                 <div style="<?php print $style; ?>"><?php print $user; ?></div>
-            </td>
+            </th>
             <?php endforeach; ?>
-            <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
+            <th width="1.1em" style="<?php print $this->cellStyle; ?>">
                 <div style="<?php print $style; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></div>
-            </td>
+            </th>
         </tr>

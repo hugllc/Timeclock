@@ -45,7 +45,7 @@ $headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->d
 
 $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
-$this->catStyle   = "font-weight: bold; padding: 1px;";
+$this->catStyle   = "font-weight: bold; padding: 1px; text-align: left;";
 $document         =& JFactory::getDocument();
 $dateFormat       = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat  = JText::_("DATE_FORMAT_LC3");
@@ -77,7 +77,7 @@ JHTML::_('behavior.mootools');
         </strong>
     </div>
 
-    <table cellpadding="5" cellspacing="0" border="0" width="100%">
+    <table cellpadding="5" cellspacing="0" id="timeclock">
     <?php print $this->loadTemplate("header"); ?>
 <?php
 $rows = 0;
@@ -98,12 +98,12 @@ foreach ($this->projects as $cat) {
     }
     ?>
         <tr>
-            <td class="sectiontableheader" style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
+            <th style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
                 <a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
                     <span id="<?php print $safeName; ?>_cat_span"> - </span>
                     <?php print JHTML::_('tooltip', JText::_($cat->description), JText::_(JCATEGORY), '', JText::_($cat->name)); ?>
                 </a>
-            </td>
+            </th>
         </tr>
         <tbody id="<?php print $safeName; ?>_cat" class="pane">
     <?php
@@ -129,10 +129,10 @@ print $this->loadTemplate("header");
 
 ?>
 
-        <tr class="sectiontableentry<?php echo $k?>">
-            <td class="sectiontableheader" style="text-align:right; padding: 1px;">
-                <?php print JText::_(COM_TIMECLOCK_SUBTOTALS); ?>
-            </td>
+        <tr class="row<?php echo (int)$k?>">
+            <th style="text-align:right; padding: 1px;">
+                <span><?php print JText::_(COM_TIMECLOCK_SUBTOTALS); ?></span>
+            </th>
 <?php
 $d = 0;
 foreach ($this->period["dates"] as $key => $uDate) {
@@ -140,30 +140,30 @@ foreach ($this->period["dates"] as $key => $uDate) {
     print '                '.(int)$this->totals["worked"][$key]."\n";
     print "            </td>\n";
     if ((++$d % $this->days) == 0) {
-        print '            <td class="sectiontableheader">';
+        print '            <th>';
         print '                &nbsp;'."\n";
-        print "            </td>\n";
+        print "            </th>\n";
         $dtotal = 0;
     }
 }
 
 $k = 1-$k;
 ?>
-            <td class="sectiontableheader">
+            <th>
                 &nbsp;
-            </td>
+            </th>
         </tr>
 
-        <tr class="sectiontableentry<?php echo $k?>">
-            <td class="sectiontableheader" style="text-align:right; padding: 1px;">
-                <?php print JText::_(COM_TIMECLOCK_PERIODIC_SUBTOTALS); ?>
-            </td>
+        <tr class="row<?php echo $k?>">
+            <th style="text-align:right; padding: 1px;">
+                <span><?php print JText::_(COM_TIMECLOCK_PERIODIC_SUBTOTALS); ?></span>
+            </th>
 <?php
 for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
     ?>
-            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>" colspan="<?php print $this->days; ?>">
+            <th style="<?php print $this->cellStyle; ?>" colspan="<?php print $this->days; ?>">
                 &nbsp
-            </td>
+            </th>
             <td style="<?php print $this->totalStyle; ?>">
                 <?php print (int)$this->totals[$i]; ?>
             </td>
@@ -172,14 +172,14 @@ for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
 $k = 1-$k;
 
 ?>
-            <td class="sectiontableheader">
+            <th>
                 &nbsp;
-            </td>
+            </th>
         </tr>
-        <tr>
-            <td class="sectiontableheader" style="text-align:right; padding: 1px;" colspan="<?php echo $headerColSpan-1; ?>">
+        <tr class="row<?php echo $k?>">
+            <th style="text-align:right; padding: 1px;" colspan="<?php echo $headerColSpan-1; ?>">
                 <?php print JText::_(COM_TIMECLOCK_TOTAL); ?>
-            </td>
+            </th>
             <td style="<?php print $this->totalStyle; ?>">
                 <?php print (int)$this->totals["total"]; ?>
             </td>

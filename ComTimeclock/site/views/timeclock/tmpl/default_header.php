@@ -39,15 +39,15 @@ defined('_JEXEC') or die('Restricted access');
 $headerDateFormat = 'D <b\r/>M<b\r>d';
 ?>
     <tr>
-        <td class="sectiontableheader">Project</td>
+        <th>Project</th>
 <?php
 $today = date("Y-m-d");
 $d = 0;
 foreach ($this->period["dates"] as $key => $uDate) :
     if ($key == $today) {
-        $style = "background: ".$this->today_background."; color: ".$this->today_color.";";
+        $class = " today";
     } else {
-        $style = "";
+        $class = "";
     }
     if ($this->checkDate($uDate)) {
         $url = JRoute::_('index.php?&option=com_timeclock&controller=timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$this->user->get("id"));
@@ -59,16 +59,16 @@ foreach ($this->period["dates"] as $key => $uDate) :
         $tip = JText::_(COM_TIMECLOCK_NO_HOURS_BEFORE_START);
     };
     ?>
-        <td class="sectiontableheader" style="<?php print $this->cellStyle.$style; ?>">
+        <th class="<?php print $class; ?>" style="<?php print $this->cellStyle; ?>">
             <?php print JHTML::_('tooltip', $tip, $tipTitle, '', date($headerDateFormat, $uDate), $url); ?>
-        </td>
+        </th>
     <?php if ((++$d % $this->days) == 0) : ?>
-        <td class="sectiontableheader">
-            <?php print JText::_(COM_TIMECLOCK_WEEK_ABBREV).(int) ($d / $this->days); ?>
-        </td>
+        <th>
+            <span><?php print JText::_(COM_TIMECLOCK_WEEK_ABBREV).(int) ($d / $this->days); ?></span>
+        </th>
         <?php $dtotal = 0; ?>
 
     <?php endif; ?>
 <?php endforeach; ?>
-        <td class="sectiontableheader"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
+        <th><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></th>
     </tr>

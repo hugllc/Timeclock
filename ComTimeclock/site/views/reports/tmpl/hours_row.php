@@ -42,7 +42,7 @@ if ($this->report_type == "graph") {
 }
 
 ?>
-    <tr>
+    <tr class="row<?php print $this->k; ?>">
         <td rowspan="<?php print $nameRowspan; ?>" class="sectiontableheader" align="right" style="<?php print $this->cellStyle; ?>">
             <?php print $name; ?>
         </td>
@@ -53,11 +53,11 @@ if ($this->report_type == "graph") {
         $perc = ($hours == 0) || ($total == 0) ? $this->cell_fill : round(($hours/$total)*100, 1);
         if (!empty($perc)) $perc .= "%";
         ?>
-        <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
-        <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $perc; ?></td>
+        <td style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
+        <td style="<?php print $this->cellStyle; ?>"><?php print $perc; ?></td>
     <?php endforeach; ?>
-        <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>"><?php print $total; ?></td>
-        <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>">100%</td>
+        <td style="<?php print $totalStyle; ?>"><?php print $total; ?></td>
+        <td style="<?php print $totalStyle; ?>">100%</td>
     </tr>
     <?php if ($this->report_type == "graph"): ?>
         <?php print $this->loadTemplate("rowgraph"); ?>

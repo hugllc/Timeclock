@@ -61,13 +61,6 @@ class TimeclockAdminControllerProjects extends JController
      */
     function __construct($default = array())
     {
-        require_once JPATH_COMPONENT.'/helpers/timeclock.php';
-        // Load the submenu.
-        TimeclockHelper::addSubmenu(
-            JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
-        );
-
         parent::__construct($default);
 
         $this->registerTask('add', 'edit');
@@ -82,6 +75,13 @@ class TimeclockAdminControllerProjects extends JController
      */
     function display()
     {
+        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
+        // Load the submenu.
+        TimeclockHelper::addSubmenu(
+            JRequest::getCmd('view', 'timeclock'),
+            JRequest::getCmd('controller', 'timeclock')
+        );
+
         JRequest::setVar('view', 'projects');
         parent::display();
     }

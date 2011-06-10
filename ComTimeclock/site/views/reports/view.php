@@ -318,6 +318,7 @@ class TimeclockViewReportsBase extends JView
     {
 
         $model =& $this->getModel();
+        $model->setPeriodType("payperiod");
 
         $this->filter();
 

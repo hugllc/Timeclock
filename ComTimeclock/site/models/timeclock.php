@@ -106,13 +106,8 @@ class TimeclockModelTimeclock extends JModel
         parent::__construct();
 
         $type = $this->get("type");
-        if (empty($type)) {
-            $type = TableTimeclockPrefs::getPref("timesheetView", "system");
-            if (empty($type)) {
-                $type = "payperiod";
-            }
-            $this->set($type, "type");
-        }
+        $this->setPeriodType($type);
+
         $firstWeekDay = TableTimeclockPrefs::getPref("firstWeekDay", "system");
         if (!empty($firstWeekDay)) {
             $this->weekStart = $firstWeekDay;
@@ -127,6 +122,23 @@ class TimeclockModelTimeclock extends JModel
             $cid = $u->get("id");
         }
         $this->setId($cid);
+    }
+    /**
+     * Method to set the id
+     *
+     * @param int $id The ID of the Project to get
+     *
+     * @return    void
+     */
+    public function setPeriodType($type)
+    {
+        if (empty($type)) {
+            $type = TableTimeclockPrefs::getPref("timesheetView", "system");
+            if (empty($type)) {
+                $type = "payperiod";
+            }
+        }
+        $this->set($type, "type");
 
         $date = JRequest::getString('date', date("Y-m-d"));
         $this->setDate($this->fixDate($date), "date", true);

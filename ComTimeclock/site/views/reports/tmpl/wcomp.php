@@ -61,26 +61,23 @@ if (!TableTimeclockPrefs::getPref("wCompEnable", "system")) {
             <?php echo $this->escape($this->params->get('page_title')); ?>
     </div>
     <?php endif; ?>
-    <table style="padding-bottom: 3em;" class="contentpaneopen<?php echo $this->params->get('pageclass_sfx');?>">
-        <tr>
-            <td colspan="<?php print $headerColSpan; ?>">
-                <?php if (is_array($this->controls)) : ?>
-                    <?php print $this->loadTemplate("controls"); ?>
-                <?php else : ?>
-                    <?php print $this->loadTemplate("nextprev"); ?>
-                <?php endif; ?>
 
-                <?php print $this->loadTemplate("export"); ?>
+        <?php if (is_array($this->controls)) : ?>
+            <?php print $this->loadTemplate("controls"); ?>
+        <?php else : ?>
+            <?php print $this->loadTemplate("nextprev"); ?>
+        <?php endif; ?>
 
-                <div id="dateheader" style="clear:both; white-space: nowrap;">
-                   <strong>
-                       <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
-                       <?php print JText::_("to"); ?>
-                       <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
-                   </strong>
-               </div>
-           </td>
-        </tr>
+        <?php print $this->loadTemplate("export"); ?>
+
+        <div id="dateheader" style="clear:both; white-space: nowrap;">
+            <strong>
+                <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
+                <?php print JText::_("to"); ?>
+                <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
+            </strong>
+        </div>
+    <table id="timeclock">
         <?php if (count($this->report) > 0) : ?>
         <?php print $this->loadTemplate("header"); ?>
 
@@ -89,33 +86,33 @@ $k = 0;
 $totals = array();
 foreach ($this->report as $user => $codeArray) {
     ?>
-    <tr>
-        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $projStyle; ?>"><?php print $user; ?></td>
+    <tr class="row<?php print $k; ?>">
+        <td style="<?php print $projStyle; ?>"><?php print $user; ?></td>
     <?php
     foreach ($this->codes as $code) {
         $hours = empty($codeArray[$code]) ? $this->cell_fill : $codeArray[$code];
         ?>
-        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
+        <td style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
         <?php
     }
     ?>
-        <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->totals["user"][$user]; ?></td>
+        <td style="<?php print $totalStyle; ?>"><?php print $this->totals["user"][$user]; ?></td>
     </tr>
     <?php
     $k = 1-$k;
 
 }
 ?>
-        <tr>
-            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
+        <tr class="row<?php print $k; ?>">
+            <th align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
             <?php foreach ($this->totals["code"] as $code => $hours) : ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
             <?php endforeach; ?>
-            <td class="sectiontableheader" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
+            <th style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
         </tr>
         <?php else : ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_("No data found"); ?></td>
+            <th colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_("No data found"); ?></th>
         </tr>
         <?php endif; ?>
     </table>

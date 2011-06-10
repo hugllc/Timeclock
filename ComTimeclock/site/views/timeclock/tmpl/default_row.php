@@ -35,9 +35,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-if (empty($this->rowk)) $rowk = 0;
 ?>
-    <tr class="sectiontableentry<?php print $this->rowk; ?>">
+    <tr class="row<?php print (int)$this->rowk; ?>">
         <td>
             <?php print JHTML::_('tooltip', $this->proj->description, 'Project', '', $this->proj->name); ?>
         </td>
@@ -50,9 +49,9 @@ foreach ($this->period["dates"] as $key => $uDate) {
     $rowtotal           += $hours;
     $dtotal             += $hours;
     if (($this->proj->type == "HOLIDAY") && ($hours > 0)) {
-        $holidayStyle = "background: ".$this->holiday_background."; color: ".$this->holiday_color.";";
+        $class = "holiday";
     } else {
-        $holidayStyle = "";
+        $class = "";
     }
     if ($this->proj->noHours || !$this->proj->published || !$this->proj->mine || !$this->cat->published) {
         $tip                = $this->hours[$this->proj->id][$key]['notes'];
@@ -70,7 +69,7 @@ foreach ($this->period["dates"] as $key => $uDate) {
         $link = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
     }
     ?>
-        <td style="<?php print $this->cellStyle." ".$holidayStyle;?>">
+        <td class="<?php print $class; ?>" style="<?php print $this->cellStyle;?>">
             <?php print $link; ?>
         </td>
     <?php

@@ -48,10 +48,10 @@ defined('_JEXEC') or die('Restricted access');
             </td>
         </tr>
         <tr>
-            <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
+            <th width="1.1em" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
             </td>
-            <td class="sectiontableheader" width="1.1em" style="<?php print $this->cellStyle; ?>">
+            <th width="1.1em" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_("%"); ?>
             </td>
         </tr>

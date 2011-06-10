@@ -57,28 +57,24 @@ $this->graphColSpan = 2 + (count($this->totals["cat"])*2);
             <?php echo $this->escape($this->params->get('page_title')); ?>
     </div>
     <?php endif; ?>
-    <table style="padding-bottom: 3em;" class="contentpaneopen<?php echo $this->params->get('pageclass_sfx');?>">
-        <tr>
-            <td colspan="<?php print $headerColSpan; ?>">
-                <?php if (is_array($this->controls)) : ?>
-                    <?php print $this->loadTemplate("controls"); ?>
-                <?php else : ?>
-                    <?php print $this->loadTemplate("nextprev"); ?>
-                <?php endif; ?>
+        <?php if (is_array($this->controls)) : ?>
+            <?php print $this->loadTemplate("controls"); ?>
+        <?php else : ?>
+            <?php print $this->loadTemplate("nextprev"); ?>
+        <?php endif; ?>
 
-               <?php print $this->loadTemplate("export"); ?>
+        <?php print $this->loadTemplate("export"); ?>
 
-                <div id="dateheader" style="clear:both; white-space: nowrap;">
-                   <strong>
-                        <?php print JText::sprintf(
-                            COM_TIMECLOCK_DATE_TO_DATE,
-                            JHTML::_('date', $this->period['unix']["start"], $dateFormat),
-                            JHTML::_('date', $this->period['unix']["end"], $dateFormat)
-                        ); ?>
-                   </strong>
-               </div>
-           </td>
-        </tr>
+        <div id="dateheader" style="clear:both; white-space: nowrap;">
+            <strong>
+                <?php print JText::sprintf(
+                    COM_TIMECLOCK_DATE_TO_DATE,
+                    JHTML::_('date', $this->period['unix']["start"], $dateFormat),
+                    JHTML::_('date', $this->period['unix']["end"], $dateFormat)
+                ); ?>
+            </strong>
+        </div>
+    <table id="timeclock">
         <?php if (count($this->report) > 0) : ?>
 
 <?php
@@ -95,7 +91,7 @@ print $this->loadTemplate("total");
 ?>
         <?php else : ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_NO_DATA_FOUND); ?></td>
+            <th colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_NO_DATA_FOUND); ?></th>
         </tr>
         <?php endif; ?>
     </table>

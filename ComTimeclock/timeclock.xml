@@ -62,6 +62,7 @@
             <folder>views</folder>
             <folder>modules</folder>
             <folder>language</folder>
+            <folder>helpers</folder>
         </files>
         <languages folder="admin">
             <language tag="en-GB">language/en-GB/en-GB.com_timeclock.ini</language>

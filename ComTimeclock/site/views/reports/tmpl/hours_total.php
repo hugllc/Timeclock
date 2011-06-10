@@ -36,14 +36,14 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-        <tr>
-            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
+        <tr class="row<?php print $this->k; ?>">
+            <th align="right style="<?php print $totalStyle; ?>""><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></th>
             <?php foreach ($this->totals["cat"] as $cat => $hours) : ?>
             <?php $hours = empty($hours) ? $this->cell_fill : $hours; ?>
             <?php $perc = round(($hours/$this->total)*100, 1); ?>
-            <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
-            <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $perc; ?>%</td>
+            <td style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
+            <td style="<?php print $this->cellStyle; ?>"><?php print $perc; ?>%</td>
             <?php endforeach; ?>
-            <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
-            <td class="sectiontableentry<?php print $this->k; ?>" style="<?php print $totalStyle; ?>">100%</td>
+            <td style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
+            <td style="<?php print $totalStyle; ?>">100%</td>
         </tr>

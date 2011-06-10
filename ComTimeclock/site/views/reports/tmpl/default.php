@@ -57,31 +57,26 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
             <?php echo $this->escape($this->params->get('page_title')); ?>
     </div>
     <?php endif; ?>
-    <table style="padding-bottom: 3em;" class="contentpaneopen<?php echo $this->params->get('pageclass_sfx');?>">
-        <tr>
-            <td colspan="<?php print $headerColSpan; ?>">
-                <?php if (is_array($this->controls)) : ?>
-                    <?php print $this->loadTemplate("controls"); ?>
-                <?php else : ?>
-                    <?php print $this->loadTemplate("nextprev"); ?>
-                <?php endif; ?>
+    <?php if (is_array($this->controls)) : ?>
+        <?php print $this->loadTemplate("controls"); ?>
+    <?php else : ?>
+        <?php print $this->loadTemplate("nextprev"); ?>
+    <?php endif; ?>
 
-                <?php print $this->loadTemplate("export"); ?>
+    <?php print $this->loadTemplate("export"); ?>
 
-                <div id="dateheader" style="clear:both; white-space: nowrap;">
-                    <strong>
-                        <?php print JText::sprintf(
-                            COM_TIMECLOCK_DATE_TO_DATE,
-                            JHTML::_('date', $this->period['unix']["start"], $dateFormat),
-                            JHTML::_('date', $this->period['unix']["end"], $dateFormat)
-                        ); ?>
-                    </strong>
-                </div>
-            </td>
-        </tr>
+    <div id="dateheader" style="clear:both; white-space: nowrap;">
+        <strong>
+            <?php print JText::sprintf(
+                COM_TIMECLOCK_DATE_TO_DATE,
+                JHTML::_('date', $this->period['unix']["start"], $dateFormat),
+                JHTML::_('date', $this->period['unix']["end"], $dateFormat)
+            ); ?>
+        </strong>
+    </div>
+    <table id="timeclock">
         <?php if (count($this->report) > 0) : ?>
         <?php print $this->loadTemplate("header"); ?>
-
 <?php
 $k = 0;
 $totals = array();
@@ -90,7 +85,7 @@ foreach ($this->report as $cat => $projArray) {
         if ($this->cat_by != "project") {
         ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_($cat); ?></td>
+            <th colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_($cat); ?></th>
         </tr>
         <?php
         }
@@ -98,17 +93,17 @@ foreach ($this->report as $cat => $projArray) {
     $k = 0;
     foreach ($projArray as $proj => $userArray) {
         ?>
-        <tr>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $projStyle; ?>"><?php print JText::_($proj); ?></td>
+        <tr class="row<?php print $k; ?>">
+            <td style="<?php print $projStyle; ?>"><?php print JText::_($proj); ?></td>
         <?php
         foreach (array_keys($this->totals["user"]) as $user) {
             $hours = empty($userArray[$user]) ? $this->cell_fill : $userArray[$user];
             ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
+            <td style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
             <?php
         }
         ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $this->totals["proj"][$proj]; ?></td>
+            <td style="<?php print $totalStyle; ?>"><?php print $this->totals["proj"][$proj]; ?></td>
         </tr>
         <?php
         $k = 1-$k;
@@ -116,16 +111,16 @@ foreach ($this->report as $cat => $projArray) {
 
 }
 ?>
-        <tr>
-            <td class="sectiontableheader" align="right style="<?php print $totalStyle; ?>""><?php print JText::_("Total"); ?></td>
+        <tr class="row<?php print $k; ?>">
+            <th align="right style="<?php print $totalStyle; ?>""><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
             <?php foreach ($this->totals["user"] as $user => $hours) : ?>
-            <td class="sectiontableentry<?php print $k; ?>" style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
+            <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
             <?php endforeach; ?>
-            <td class="sectiontableheader" style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
+            <th style="<?php print $totalStyle; ?>"><?php print $this->total; ?></th>
         </tr>
         <?php else : ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_NO_DATA_FOUND); ?></td>
+            <th colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_NO_DATA_FOUND); ?></th>
         </tr>
         <?php endif; ?>
     </table>

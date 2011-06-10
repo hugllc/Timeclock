@@ -37,32 +37,31 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
-            <td rowspan="2" class="sectiontableheader" width="20%" style="<?php print $this->cellStyle; ?>">
+            <th rowspan="2" width="20%" style="<?php print $this->cellStyle; ?>">
                 <?php print JHTML::_('grid.sort', 'User', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
-                <?php //print JText::_("User"); ?>
-            </td>
+            </th>
             <?php foreach (array_keys($this->totals["cat"]) as $cat) : ?>
-            <td colspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+            <th colspan="2" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_($cat); ?>
-            </td>
+            </th>
             <?php endforeach; ?>
-            <td colspan="2" class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+            <th colspan="2" style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_(COM_TIMECLOCK_TOTAL); ?>
-            </td>
+            </th>
         </tr>
         <tr>
             <?php foreach (array_keys($this->totals["cat"]) as $cat) : ?>
-            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+            <th style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
-            </td>
-            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+            </th>
+            <th style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_("%"); ?>
-            </td>
+            </th>
             <?php endforeach; ?>
-            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+            <th style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
-            </td>
-            <td class="sectiontableheader" style="<?php print $this->cellStyle; ?>">
+            </th>
+            <th style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_("%"); ?>
-            </td>
+            </th>
         </tr>

@@ -61,7 +61,7 @@ foreach ($styles as $key) {
     }
 }
 ?>
-    <tr>
+    <tr class="row<?php print $this->k; ?>">
         <td align="left" colspan="<?php print $this->graphColSpan; ?>">
             <img src="<?php print JRoute::_($url); ?>" alt="Data Graph Failed." align="center"/>
         </td>

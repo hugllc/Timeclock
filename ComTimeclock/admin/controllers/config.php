@@ -59,7 +59,7 @@ class TimeclockAdminControllerConfig extends JController
      */
     function display()
     {
-        require_once JPATH_COMPONENT.'/helpers/timeclock.php';
+        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.
         TimeclockHelper::addSubmenu(
             JRequest::getCmd('view', 'timeclock'),

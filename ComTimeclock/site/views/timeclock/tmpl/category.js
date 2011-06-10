@@ -35,9 +35,9 @@
 
 
 function timeclockCatShowHide(cat,init) {
-    var pane = Cookie.get('Timeclock_'+cat);
+    var pane = Cookie.read('Timeclock_'+cat);
     var show = (init) ? pane == 'closed' : pane != 'closed';
-    var myCookie  = Cookie.set('Timeclock_Set', 'save', {duration: 1});
+    var myCookie  = Cookie.write('Timeclock_Set', 'save', {duration: 1});
     if ( show ) {
         timeclockCatHide(cat);
     } else {
@@ -49,7 +49,7 @@ function timeclockCatHide(cat) {
     var span = document.getElementById(cat+'_cat_span')
     tbody.style.display = 'none';
     span.innerHTML = '+';
-    var myCookie  = Cookie.set('Timeclock_'+cat, 'closed', {duration: 1});
+    var myCookie  = Cookie.write('Timeclock_'+cat, 'closed', {duration: 1});
 }
 function timeclockCatShow(cat) {
     var tbody = document.getElementById(cat+'_cat')
@@ -58,6 +58,6 @@ function timeclockCatShow(cat) {
         tbody.style.display = '';
         span.innerHTML = '-';
     }
-    var oldCookie = Cookie.remove('Timeclock_'+cat);
+    var oldCookie = Cookie.dispose('Timeclock_'+cat);
 }
 
