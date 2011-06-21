@@ -78,7 +78,7 @@ class TimeclockAdminControllerHolidays extends JController
         // Load the submenu.
         TimeclockHelper::addSubmenu(
             JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
+            "holidays"
         );
 
         JRequest::setVar('view', 'holidays');
@@ -108,7 +108,7 @@ class TimeclockAdminControllerHolidays extends JController
      */
     function reset($msg=null)
     {
-        $link = 'index.php?option=com_timeclock&controller=holidays';
+        $link = 'index.php?option=com_timeclock&task=holidays.display';
         $this->setRedirect($link, $msg);
 
     }
@@ -123,7 +123,7 @@ class TimeclockAdminControllerHolidays extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -131,11 +131,11 @@ class TimeclockAdminControllerHolidays extends JController
         $model = $this->getModel("Holidays");
 
         if ($id = $model->store()) {
-            $msg   = JText::_('Holiday Saved!');
-            $link  = 'index.php?option=com_timeclock&controller=holidays&task=edit';
+            $msg   = JText::_(COM_TIMECLOCK_HOLIDAY_SAVED);
+            $link  = 'index.php?option=com_timeclock&task=holidays.edit';
             $link .= '&cid[]='.$id;
         } else {
-            $msg  = JText::_('Error Saving Holiday');
+            $msg  = JText::_(COM_TIMECLOCK_HOLIDAY_FAILED);
             $link = $_SERVER["HTTP_REFERER"];
         }
         $this->setRedirect($link, $msg);
@@ -152,7 +152,7 @@ class TimeclockAdminControllerHolidays extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -160,10 +160,10 @@ class TimeclockAdminControllerHolidays extends JController
         $model = $this->getModel("Holidays");
 
         if ($model->store()) {
-            $msg = JText::_('Holiday Saved!');
+            $msg = JText::_(COM_TIMECLOCK_HOLIDAY_SAVED);
             $model->checkin($id);
         } else {
-            $msg = JText::_('Error Saving Holiday');
+            $msg = JText::_(COM_TIMECLOCK_HOLIDAY_FAILED);
         }
         $this->reset($msg);
 

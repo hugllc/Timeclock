@@ -63,7 +63,7 @@ $initPanes = array();
 JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
 JHTML::_('behavior.mootools');
 ?>
-
+<div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="componentheading"><?php print JText::sprintf(COM_TIMECLOCK_TIMESHEET_FOR, $this->user->get("name"));?></div>
     <?php print $this->loadTemplate("nextprev"); ?>
@@ -77,7 +77,7 @@ JHTML::_('behavior.mootools');
         </strong>
     </div>
 
-    <table cellpadding="5" cellspacing="0" id="timeclock">
+    <table id="timeclockTable">
     <?php print $this->loadTemplate("header"); ?>
 <?php
 $rows = 0;
@@ -192,3 +192,4 @@ $k = 1-$k;
 <input type="hidden" name="view" value="timeclock" />
 <?php print JHTML::_("form.token"); ?>
 </form>
+</div>

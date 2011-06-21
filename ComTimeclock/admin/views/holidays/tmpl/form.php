@@ -39,20 +39,20 @@ jimport("joomla.html.pane");
 
 $title = ($this->add) ? "Add" : "Edit";
 
-TimeclockAdminController::title(JText::_("Timeclock Holidays: <small><small>[ ".$title." ]</small></small>"));
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+TimeclockHelper::title(JText::_("Timeclock Holidays: <small><small>[ ".$title." ]</small></small>"));
+JToolBarHelper::apply("holidays.apply");
+JToolBarHelper::save("holidays.save");
+JToolBarHelper::cancel("holidays.cancel");
 
 $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 ?>
-<form action="index.php" method="post" id="adminForm" id="adminForm">
+<form action="index.php" method="post" id="adminForm" name="adminForm">
 <div>
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('Project'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_PROJECT); ?>:
                 </label>
             </td>
             <td>
@@ -65,7 +65,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
         <tr>
             <td width="100" align="right" class="key">
                 <label for="payPeriodLength">
-                    <?php echo JText::_('Work Date'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_WORK_DATE); ?>:
                 </label>
             </td>
             <td>
@@ -98,7 +98,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="notes">
-                    <?php echo JText::_('Notes'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_NOTES); ?>:
                 </label>
             </td>
             <td>

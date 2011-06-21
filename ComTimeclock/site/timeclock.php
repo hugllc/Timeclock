@@ -35,6 +35,12 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+// Access check.
+if (!JFactory::getUser()->authorise('timeclock.timesheets', 'com_timeclock'))
+{
+    return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+}
+
 jimport('joomla.html.html');
 
 /** Get the component stuff */
@@ -70,7 +76,7 @@ $controller->redirect();
 ?>
 <p class="copyright">
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
-Copyright &copy; 2008-2009
+Copyright &copy; 2008-2009, 2011
     <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
 <br /><?php print JText::_("Found a bug in ComTimeclock?"); ?>
 <a href="https://dev.hugllc.com/bugs"><?php print JText::_("Report it here"); ?></a>

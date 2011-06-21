@@ -198,7 +198,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 true,
                 array(
                     "link" => "index.php",
-                    "msg" => "Project add failed."
+                    "msg" => "Error Adding Project"
                 )
             ),
             array(
@@ -206,7 +206,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 false,
                 array(
                     "link" => "index.php",
-                    "msg" => "Project add failed."
+                    "msg" => "Error Adding Project"
                 )
             ),
             array(
@@ -214,7 +214,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 true,
                 array(
                     "link" => "index.php",
-                    "msg" => "Project remove failed."
+                    "msg" => "Error Removing Project"
                 )
             ),
             array(
@@ -222,7 +222,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 false,
                 array(
                     "link" => "index.php",
-                    "msg" => "Project remove failed."
+                    "msg" => "Error Removing Project"
                 )
             ),
             array(
@@ -230,7 +230,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 true,
                 array(
                     "link" => "index.php",
-                    "msg" => "No projects to add."
+                    "msg" => "No projects to add"
                 )
             ),
             array(
@@ -238,7 +238,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 false,
                 array(
                     "link" => "index.php",
-                    "msg" => "No projects to add."
+                    "msg" => "No projects to add"
                 )
             ),
         );

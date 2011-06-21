@@ -49,7 +49,7 @@ $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_(COM_TIMECLOCK_TO)." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
 
 ?>
-
+<div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" id="adminForm" autocomplete="off">
     <?php if ($this->params->get('show_page_title')) : ?>
     <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
@@ -71,7 +71,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
             </strong>
         </div>
     </div>
-    <table id="timeclock" style="padding-bottom: 3em;">
+    <table id="timeclockTable" style="padding-bottom: 3em;">
         <tr>
             <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
 <?php
@@ -185,6 +185,7 @@ foreach ($this->notes as $user => $projects) {
     <?php
 }
 ?>
+</div>
 <?php
 
 /**

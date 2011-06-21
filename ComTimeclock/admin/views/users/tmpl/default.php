@@ -39,22 +39,22 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip');
 
-TimeclockAdminController::title(JText::_('Timeclock User Configuration'));
-JToolBarHelper::publishList("publish", "Activate");
-JToolBarHelper::unpublishList("unpublish", "Deactivate");
-JToolBarHelper::editListX();
+TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_USER_CONFIG));
+JToolBarHelper::publishList("users.publish", "Activate");
+JToolBarHelper::unpublishList("users.unpublish", "Deactivate");
+JToolBarHelper::editListX("users.edit");
 
 ?>
-<form action="index.php?option=com_timeclock&controller=users" method="post" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 <table>
     <tr>
         <td align="left" width="100%">
-            <?php echo JText::_('Filter'); ?>:
+            <?php echo JText::_(COM_TIMECLOCK_FILTER); ?>:
             <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-            <?php echo JText::_('by'); ?>:
+            <?php echo JText::_(COM_TIMECLOCK_BY); ?>:
             <?php echo JHTML::_('select.genericlist', $this->lists['search_options'], 'search_filter', '', 'value', 'text', $this->lists['search_filter'], 'search_filter'); ?>
-            <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-            <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+            <button onclick="this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_GO); ?></button>
+            <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='<?php print $this->lists['search_options_default'];?>';this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_RESET); ?></button>
         </td>
         <td nowrap="nowrap">
             <?php echo $this->lists['state']; ?>
@@ -66,34 +66,34 @@ JToolBarHelper::editListX();
     <thead>
         <tr>
             <th width="5">
-                <?php echo JHTML::_('grid.sort', 'Id', 'u.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php echo JHTML::_('grid.sort', 'Id', 'u.id', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
             </th>
             <th width="20">
                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
             </th>
             <th  class="title">
-                <?php echo JHTML::_('grid.sort', 'Name', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php echo JHTML::_('grid.sort', 'Name', 'u.name', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
             </th>
             <th width="1%" align="center">
-                <?php echo JText::_('Active'); ?>
+                <?php echo JText::_(COM_TIMECLOCK_ACTIVE); ?>
             </th>
             <th width="1%" align="center">
-                <?php echo JText::_('Reports'); ?>
+                <?php echo JText::_(COM_TIMECLOCK_REPORTS); ?>
             </th>
             <th width="10%" align="center">
-                <?php echo JHTML::_('grid.sort', 'Last Visit', 'u.lastvisitDate', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php echo JHTML::_('grid.sort', 'Last Visit', 'u.lastvisitDate', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
             </th>
             <th width="10%" align="center">
-                <?php echo JText::_('Start Date'); ?>
+                <?php echo JText::_(COM_TIMECLOCK_START_DATE); ?>
             </th>
             <th width="10%" align="center">
-                <?php echo JText::_('End Date'); ?>
+                <?php echo JText::_(COM_TIMECLOCK_END_DATE); ?>
             </th>
             <th width="5%" align="center">
-                <?php echo JText::_('Status'); ?>
+                <?php echo JText::_(COM_TIMECLOCK_STATUS); ?>
             </th>
             <th width="5%" align="center">
-                <?php echo JText::_('PTO'); ?>
+                <?php echo JText::_(COM_TIMECLOCK_PTO); ?>
             </th>
         </tr>
     </thead>
@@ -110,10 +110,10 @@ $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++) {
     $row = &$this->rows[$i];
 
-    $link           = JRoute::_('index.php?option=com_timeclock&controller=users&task=edit&cid[]='. $row->id);
+    $link           = JRoute::_('index.php?option=com_timeclock&task=users.edit&cid[]='. $row->id);
 
     $checked        = JHTML::_('grid.checkedout', $row, $i);
-    $published      = JHTML::_('grid.published', $row, $i);
+    $published      = JHTML::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', "users.");
 
     if ($row->pto > $row->ptoYTD) {
         if (abs($row->pto - $row->ptoYTD) <= $this->ptoNegative) {
@@ -135,7 +135,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 <?php echo $checked; ?>
             </td>
             <td>
-                <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $row->name; ?>">
+                <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_PROJECT);?>::<?php echo $row->name; ?>">
                 <a href="<?php echo $link  ?>">
                 <?php echo $row->name; ?></a></span>
             </td>
@@ -175,8 +175,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="id" value="-1" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="task" id="task" value="" />
-<input type="hidden" name="controller" value="users" />
+<input type="hidden" name="task" id="task" value="users.display" />
+<input type="hidden" name="controller" id="controller" value="users" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 <?php echo JHTML::_('form.token'); ?>

@@ -37,21 +37,21 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-TimeclockAdminController::title(JText::_('Timeclock Preferences'));
+TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
 
 ?>
-<form action="index.php" method="post" id="adminForm" id="adminForm">
+<form action="index.php" method="post" id="adminForm" name="adminForm">
 <div>
 <?php
     $pane = JPane::getInstance("tabs");
     echo $pane->startPane("config-pane");
-    echo $pane->startPanel(JText::_("User Settings"), "user-page");
+    echo $pane->startPanel(JText::_(COM_TIMECLOCK_USER_SETTINGS), "user-page");
 ?>
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="maxDailyHours">
-                    <?php echo JText::_('Max Daily Hours'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_MAX_DAILY_HOURS); ?>:
                 </label>
             </td>
             <td>
@@ -64,7 +64,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="decimalPlaces">
-                    <?php echo JText::_('Decimal Places'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_DECIMAL_PLACES); ?>:
                 </label>
             </td>
             <td>
@@ -77,7 +77,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="decimalPlaces">
-                    <?php echo JText::_('Minimum Note'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_MINIMUM_NOTE); ?>:
                 </label>
             </td>
             <td>
@@ -90,7 +90,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="userTypes">
-                    <?php echo JText::_('User Types'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_USER_TYPES); ?>:
                 </label>
             </td>
             <td>
@@ -105,7 +105,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
     </table>
 <?php
     echo $pane->endPanel();
-    echo $pane->startPanel(JText::_("Timesheet"), "payperiod-pane");
+    echo $pane->startPanel(JText::_(COM_TIMECLOCK_TIMESHEET), "payperiod-pane");
 
     $firstViewPeriodStart = $this->prefs["firstViewPeriodStart"];
     if (empty($firstViewPeriodStart)) {
@@ -116,7 +116,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="firstPayPeriodStart">
-                    <?php echo JText::_('First Pay Period Start'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_FIRST_PAY_PERIOD_START); ?>:
                 </label>
             </td>
             <td>
@@ -129,7 +129,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="payPeriodType">
-                    <?php echo JText::_('Pay Period Type'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_PAY_PERIOD_TYPE); ?>:
                 </label>
             </td>
             <td>
@@ -142,7 +142,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="payPeriodLength">
-                    <?php echo JText::_('Pay Period Length'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_PAY_PERIOD_LENGTH); ?>:
                 </label>
             </td>
             <td>
@@ -155,7 +155,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="TimesheetViewStyle">
-                    <?php echo JText::_('Timesheet View Period'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_TIMESHEET_VIEW_PERIOD); ?>:
                 </label>
             </td>
             <td>
@@ -168,7 +168,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="viewPeriodLength">
-                    <?php echo JText::_('View Period Length'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_VIEW_PERIOD_LENGTH); ?>:
                 </label>
             </td>
             <td>
@@ -181,7 +181,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="firstViewPeriodStart">
-                    <?php echo JText::_('First View Period Start'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_FIRST_VIEW_PERIOD_START); ?>:
                 </label>
             </td>
             <td>
@@ -195,13 +195,13 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
     </table>
 <?php
     echo $pane->endPanel();
-    echo $pane->startPanel(JText::_("Paid Time Off"), "pto-pane");
+    echo $pane->startPanel(JText::_(COM_TIMECLOCK_PAID_TIME_OFF), "pto-pane");
 ?>
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="firstPayPeriodStart">
-                    <?php echo JText::_('Accrue PTO'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACCRUE_PTO); ?>:
                 </label>
             </td>
             <td>
@@ -214,7 +214,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="userTypes">
-                    <?php echo JText::_('Accrual Rates'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACCRUAL_RATES); ?>:
                 </label>
             </td>
             <td>
@@ -232,7 +232,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="ptoAccrualWait">
-                    <?php echo JText::_('Days Before Accrual Begins'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_DAYS_BEFORE_ACCRUAL_BEGINS); ?>:
                 </label>
             </td>
             <td>
@@ -245,7 +245,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="ptoHoursPerDay">
-                    <?php echo JText::_('PTO Hours / Day'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_PTO_HOURS_PER_DAY); ?>:
                 </label>
             </td>
             <td>
@@ -258,7 +258,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="ptoAccrualPeriod">
-                    <?php echo JText::_('Accrual Period'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACCRUAL_PERIOD); ?>:
                 </label>
             </td>
             <td>
@@ -271,7 +271,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="ptoAccrualTime">
-                    <?php echo JText::_('Accrual Time'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACCRUAL_TIME); ?>:
                 </label>
             </td>
             <td>
@@ -284,7 +284,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="ptoCarryOverDefExpire">
-                    <?php echo JText::_('Default PTO Carryover Expiration'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_DEFAULT_PTO_CARRYOVER_EXPIRATION); ?>:
                 </label>
             </td>
             <td>
@@ -298,7 +298,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="ptoNegative">
-                    <?php echo JText::_('Acceptable Negative PTO'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACCEPTABLE_NEGATIVE_PTO); ?>:
                 </label>
             </td>
             <td>
@@ -312,13 +312,13 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
     </table>
 <?php
     echo $pane->endPanel();
-    echo $pane->startPanel(JText::_("Worker's Compensation"), "wcomp-pane");
+    echo $pane->startPanel(JText::_(COM_TIMECLOCK_WORKERS_COMP), "wcomp-pane");
 ?>
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="wCompEnable">
-                    <?php echo JText::_('Enable'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ENABLE); ?>:
                 </label>
             </td>
             <td>
@@ -331,7 +331,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="wCompCodes">
-                    <?php echo JText::_('Codes'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_CODES); ?>:
                 </label>
             </td>
             <td>
@@ -345,13 +345,13 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
     </table>
 <?php
     echo $pane->endPanel();
-    echo $pane->startPanel(JText::_("Extras"), "extras-pane");
+    echo $pane->startPanel(JText::_(COM_TIMECLOCK_EXTRAS), "extras-pane");
 ?>
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="wCompEnable">
-                    <?php echo JText::_('JPGraph Path'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_JPGRAPH_PATH); ?>:
                 </label>
             </td>
             <td>
@@ -364,7 +364,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key">
                 <label for="timeclockDisable">
-                    <?php echo JText::_('Disable Timeclock'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_DISABLE_TIMECLOCK); ?>:
                 </label>
             </td>
             <td>
@@ -378,7 +378,7 @@ TimeclockAdminController::title(JText::_('Timeclock Preferences'));
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="prefs_timeclockDisableMessage">
-                    <?php echo JText::_('Disable Message'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_DISABLE_MESSAGE); ?>:
                 </label>
             </td>
             <td>

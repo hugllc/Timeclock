@@ -40,7 +40,7 @@ JHTML::_('behavior.tooltip');
 
 $headerColSpan    = 2 + count($this->totals["user"]);
 
-$this->cellStyle  = "text-align:center; padding: 1px; vertical-align: center;";
+$this->cellStyle  = "text-align:center; padding: 1px; vertical-align: middle;";
 $projStyle  = "text-align:right; padding: 1px;";
 $totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
@@ -50,7 +50,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 
 
 ?>
-
+<div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" id="adminForm" autocomplete="off">
     <?php if ($this->params->get('show_page_title')) : ?>
     <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
@@ -74,7 +74,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
             ); ?>
         </strong>
     </div>
-    <table id="timeclock">
+    <table id="timeclockTable">
         <?php if (count($this->report) > 0) : ?>
         <?php print $this->loadTemplate("header"); ?>
 <?php
@@ -128,3 +128,4 @@ foreach ($this->report as $cat => $projArray) {
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 <?php print JHTML::_("form.token"); ?>
 </form>
+</div>

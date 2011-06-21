@@ -74,11 +74,11 @@ class TimeclockAdminControllerTimesheets extends JController
      */
     function display()
     {
-        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
+        //require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.
         TimeclockHelper::addSubmenu(
             JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
+            "timesheets"
         );
 
         JRequest::setVar('view', 'timesheets');
@@ -108,7 +108,7 @@ class TimeclockAdminControllerTimesheets extends JController
      */
     function reset($msg=null)
     {
-        $link = 'index.php?option=com_timeclock&controller=timesheets';
+        $link = 'index.php?option=com_timeclock&task=timesheets.display';
         $this->setRedirect($link, $msg);
 
     }
@@ -125,32 +125,32 @@ class TimeclockAdminControllerTimesheets extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
         }
         $model = $this->getModel("Timesheets");
 
-        $link  = 'index.php?option=com_timeclock&controller=timesheets';
+        $link  = 'index.php?option=com_timeclock';
         if ($id = $model->store()) {
-            $msg   = JText::_('Timesheet Saved!');
-            $link .= '&task=edit&cid[]='.(int)$id;
+            $msg   = JText::_(COM_TIMECLOCK_TIMESHEET_SAVED);
+            $link .= '&task=timesheets.edit&cid[]='.(int)$id;
             $type = "message";
             if (!$apply) {
                 $this->reset($msg);
                 return;
             }
         } else {
-            $msg  = JText::_('Error Saving Timesheet');
+            $msg  = JText::_(COM_TIMECLOCK_TIMESHEET_FAILED);
             if (is_string($model->lastError)) {
                 $msg .= " (".JText::_($model->lastError).")";
             }
             $type = "error";
             if (empty($model->lastStoreId)) {
-                $link .= "&task=add";
+                $link .= "&task=timesheets.add";
             } else {
-                $link .= "&task=edit&cid[]=".(int)$model->lastStoreId;
+                $link .= "&task=timesheets.edit&cid[]=".(int)$model->lastStoreId;
             }
         }
         $this->setRedirect($link, $msg, $type);

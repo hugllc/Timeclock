@@ -39,13 +39,13 @@ jimport("joomla.html.pane");
 
 $title = ($this->add) ? "Add" : "Edit";
 
-TimeclockAdminController::title(JText::_("Project: <small><small>[ ".$title." ]</small></small>"));
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+TimeclockHelper::title(JText::_("Project: <small><small>[ ".$title." ]</small></small>"));
+JToolBarHelper::apply("projects.apply");
+JToolBarHelper::save("projects.save");
+JToolBarHelper::cancel("projects.cancel");
 
 ?>
-<form action="index.php" method="post" id="adminForm" id="adminForm">
+<form action="index.php" method="post" id="adminForm" name="adminForm">
 <?php
 if (!$this->add && ($this->row->type !== "CATEGORY")) {
     ?>
@@ -53,18 +53,18 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
     <?php
     $pane = JPane::getInstance("sliders");
     echo $pane->startPane("user-pane");
-    echo $pane->startPanel(JText::_("Add Users"), "adduser-page");
+    echo $pane->startPanel(JText::_(COM_TIMECLOCK_ADD_USERS), "adduser-page");
     ?>
     <div style="padding: 5px;">
     <?php
         array_shift($this->lists["users"]);
         print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
-        <button onClick="this.form.task.value='adduser';this.form.submit();">Add Users</button>
+        <button onClick="this.form.task.value='projects.adduser';this.form.submit();">Add Users</button>
     </div>
     <?php
     echo $pane->endPanel();
-    echo $pane->startPanel(JText::_("Remove Users"), "removeuser-page");
+    echo $pane->startPanel(JText::_(COM_TIMECLOCK_REMOVE_USERS), "removeuser-page");
     ?>
     <div style="padding: 5px;">
     <?php
@@ -74,13 +74,13 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
     }
     print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple"', 'value', 'text', 0);
         ?><br />
-            <button onClick="this.form.task.value='removeuser';this.form.submit();">Remove Users</button>
+            <button onClick="this.form.task.value='projects.removeuser';this.form.submit();">Remove Users</button>
     </div>
     <?php
 
     /*
     foreach ($this->lists["projectUsers"] as $user) { ?>
-                    <button onClick="this.form.task.value='removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
+                    <button onClick="this.form.task.value='projects.removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
                     <?php print empty($user->name) ? $user->id : $user->name; ?><br />
         <?php
     }
@@ -100,7 +100,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="name">
-                    <?php echo JText::_('Name'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_NAME); ?>:
                 </label>
             </td>
             <td>
@@ -113,7 +113,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="description">
-                    <?php echo JText::_('Description'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_DESCRIPTION); ?>:
                 </label>
             </td>
             <td>
@@ -126,7 +126,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Research">
-                    <?php echo JText::_('Manager'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_MANAGER); ?>:
                 </label>
             </td>
             <td>
@@ -139,7 +139,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Research">
-                    <?php echo JText::_('Research'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_RESEARCH); ?>:
                 </label>
             </td>
             <td>
@@ -152,7 +152,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="published">
-                    <?php echo JText::_('Active'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACTIVE); ?>:
                 </label>
             </td>
             <td>
@@ -165,7 +165,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="type">
-                    <?php echo JText::_('Type'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_TYPE); ?>:
                 </label>
             </td>
             <td>
@@ -178,7 +178,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="category">
-                    <?php echo JText::_('Category'); ?>:
+                    <?php echo JText::_(JCATEGORY); ?>:
                 </label>
             </td>
             <td>
@@ -200,7 +200,7 @@ if ($this->lists["wCompEnable"] != 0) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="parent_id">
-                    <?php echo JText::_('Workers Comp Codes'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_WORKERS_COMP_CODES); ?>:
                 </label>
             </td>
             <td>
@@ -227,7 +227,7 @@ if ($this->lists["wCompEnable"] != 0) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="customer">
-                    <?php echo JText::_('Customer'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_CUSTOMER); ?>:
                 </label>
             </td>
             <td>
@@ -240,7 +240,7 @@ if ($this->lists["wCompEnable"] != 0) {
         <tr>
             <td width="100" align="right" class="key" style="vertical-align:top;">
                 <label for="users">
-                    <?php echo JText::_('Users'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_USERS); ?>:
                 </label>
             </td>
             <td style="white-space: nowrap;">

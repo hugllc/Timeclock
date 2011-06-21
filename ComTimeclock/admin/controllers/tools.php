@@ -69,11 +69,10 @@ class TimeclockAdminControllerTools extends JController
      */
     function display()
     {
-        require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.
         TimeclockHelper::addSubmenu(
             JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
+            'tools'
         );
 
         JRequest::setVar('view', 'tools');
@@ -104,7 +103,7 @@ class TimeclockAdminControllerTools extends JController
         JRequest::setVar('model', 'tools');
         JRequest::setVar('view', 'tools');
         JRequest::setVar('layout', 'dbcheck');
-        parent::display();
+        self::display();
     }
 
     /**
@@ -116,7 +115,7 @@ class TimeclockAdminControllerTools extends JController
      */
     function reset($msg=null)
     {
-        $link = 'index.php?option=com_timeclock&controller=tools';
+        $link = 'index.php?option=com_timeclock&task=tools.display';
         $this->setRedirect($link, $msg);
 
     }

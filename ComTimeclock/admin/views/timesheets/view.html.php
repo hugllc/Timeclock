@@ -203,11 +203,11 @@ class TimeclockAdminViewTimesheets extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_('The timesheet'),
+                    JText::_(COM_TIMECLOCK_THE_TIMESHEET),
                     ''
                 );
                 $this->setRedirect(
-                    'index.php?option=com_timeclock&controller=timesheets',
+                    'index.php?option=com_timeclock&task=timesheets.display',
                     $msg
                 );
         }

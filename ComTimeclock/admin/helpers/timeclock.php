@@ -60,42 +60,42 @@ class TimeclockHelper
     public static function addSubmenu($vName, $cName)
     {
         JSubMenuHelper::addEntry(
-            JText::_('Config'),
-            'index.php?option=com_timeclock&controller=config',
+            JText::_(COM_TIMECLOCK_CONFIG),
+            'index.php?option=com_timeclock&task=config.display',
             $cName == 'config'
         );
         JSubMenuHelper::addEntry(
-            JText::_('User Configurations'),
-            'index.php?option=com_timeclock&controller=users',
+            JText::_(COM_TIMECLOCK_USER_CONFIGS),
+            'index.php?option=com_timeclock&task=users.display',
             $cName == 'users'
         );
         JSubMenuHelper::addEntry(
-            JText::_('Customers'),
-            'index.php?option=com_timeclock&controller=customers',
+            JText::_(COM_TIMECLOCK_CUSTOMERS),
+            'index.php?option=com_timeclock&task=customers.display',
             $cName == 'customers'
         );
         JSubMenuHelper::addEntry(
-            JText::_('Projects'),
-            'index.php?option=com_timeclock&controller=projects',
+            JText::_(COM_TIMECLOCK_PROJECTS),
+            'index.php?option=com_timeclock&task=projects.display',
             $cName == 'projects'
         );
         JSubMenuHelper::addEntry(
-            JText::_('Holidays'),
-            'index.php?option=com_timeclock&controller=holidays',
+            JText::_(COM_TIMECLOCK_HOLIDAYS),
+            'index.php?option=com_timeclock&task=holidays.display',
             $cName == 'holidays'
         );
         JSubMenuHelper::addEntry(
-            JText::_('Timesheets'),
-            'index.php?option=com_timeclock&controller=timesheets',
+            JText::_(COM_TIMECLOCK_TIMESHEETS),
+            'index.php?option=com_timeclock&task=timesheets.display',
             $cName == 'timesheets'
         );
         JSubMenuHelper::addEntry(
-            JText::_('Misc Tools'),
-            'index.php?option=com_timeclock&controller=tools',
+            JText::_(COM_TIMECLOCK_MISC_TOOLS),
+            'index.php?option=com_timeclock&task=tools.display',
             $cName == 'tools'
         );
         JSubMenuHelper::addEntry(
-            JText::_('About'),
+            JText::_(COM_TIMECLOCK_ABOUT),
             'index.php?option=com_timeclock&view=about',
             $vName == 'about'
         );
@@ -122,6 +122,49 @@ class TimeclockHelper
         $html .= "</div>\n";
 
         $mainframe->set('JComponentTitle', $html);
+    }
+    /**
+     * Get the actions
+     */
+    public static function getActions($messageId = 0)
+    {
+        $user   = JFactory::getUser();
+        $result = new JObject;
+
+        if (empty($messageId)) {
+            $assetName = 'com_timeclock';
+        }
+        else {
+            $assetName = 'com_timeclock.message.'.(int) $messageId;
+        }
+
+        $actions = array(
+            'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.delete'
+        );
+
+        foreach ($actions as $action) {
+            $result->set($action,   $user->authorise($action, $assetName));
+        }
+
+        return $result;
+    }
+    /**
+     * Get Referrer
+     *
+     * @return string
+     */
+    function referer()
+    {
+        $referer = JRequest::getString('referer', "", 'post');
+        if (!empty($referer)) {
+            return $referer;
+        }
+        $referer = $_SERVER["HTTP_REFERER"];
+        if (!empty($referer)) {
+            return $referer;
+        }
+        return "index.php";
+
     }
 
 }

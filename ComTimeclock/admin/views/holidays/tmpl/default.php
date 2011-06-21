@@ -39,19 +39,19 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip');
 
-TimeclockAdminController::title(JText::_('Timeclock Holidays'));
-JToolBarHelper::editListX();
-JToolBarHelper::addNewX();
+TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_HOLIDAYS));
+JToolBarHelper::editListX("holidays.edit");
+JToolBarHelper::addNewX("holidays.add");
 
 ?>
-<form action="index.php?option=com_timeclock&controller=holidays" method="post" id="adminForm">
+<form action="index.php" method="post" id="adminForm" name="adminForm">
 <table>
         <tr>
                 <td align="left" width="100%">
-                        <?php echo JText::_('Filter'); ?>:
+                        <?php echo JText::_(COM_TIMECLOCK_FILTER); ?>:
                         <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-                        <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-                        <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+                        <button onclick="this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_GO); ?></button>
+                        <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_RESET); ?></button>
                 </td>
                 <td nowrap="nowrap">
                         <?php echo $this->lists['state']; ?>
@@ -64,28 +64,28 @@ JToolBarHelper::addNewX();
         <thead>
                 <tr>
                         <th width="5">
-                            <?php echo JHTML::_('grid.sort', 'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order'], "holidays.display"); ?>
                         </th>
                         <th width="20">
                                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
                         </th>
                         <th  class="title">
-                            <?php echo JHTML::_('grid.sort', 'Notes', 't.notes', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Notes', 't.notes', @$this->lists['order_Dir'], @$this->lists['order'], "holidays.display"); ?>
                         </th>
                         <th width="10%">
-                            <?php echo JHTML::_('grid.sort', 'Project', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Project', 'p.name', @$this->lists['order_Dir'], @$this->lists['order'], "holidays.display"); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort', 'Worked', 't.worked', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Worked', 't.worked', @$this->lists['order_Dir'], @$this->lists['order'], "holidays.display"); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort', 'Created', 't.created', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Created', 't.created', @$this->lists['order_Dir'], @$this->lists['order'], "holidays.display"); ?>
                         </th>
                         <th width="1%" align="center">
-                            <?php echo JHTML::_('grid.sort', 'Hours', 't.hours', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Hours', 't.hours', @$this->lists['order_Dir'], @$this->lists['order'], "holidays.display"); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort', 'Created By', 't.created_by', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                            <?php echo JHTML::_('grid.sort', 'Created By', 't.created_by', @$this->lists['order_Dir'], @$this->lists['order'], "holidays.display"); ?>
                         </th>
                 </tr>
         </thead>
@@ -102,10 +102,10 @@ $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++) {
     $row = &$this->rows[$i];
 
-    $link           = JRoute::_('index.php?option=com_timeclock&controller=holidays&task=edit&cid[]='. $row->id);
+    $link           = JRoute::_('index.php?option=com_timeclock&task=holidays.edit&cid[]='. $row->id);
 
     $checked        = JHTML::_('grid.checkedout', $row, $i);
-    $published      = JHTML::_('grid.published', $row, $i);
+    $published      = JHTML::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', "holidays.");
     $name           = substr($row->notes, 0, 60);
     $author         = empty($row->created_by_name) ? $row->created_by : $row->created_by_name;
     ?>
@@ -122,7 +122,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
         echo $name;
     } else {
         ?>
-        <span class="editlinktip hasTip" title="<?php echo JText::_('Edit Project');?>::<?php echo $name; ?>">
+        <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_PROJECT);?>::<?php echo $name; ?>">
         <a href="<?php echo $link  ?>">
                 <?php echo $name; ?></a></span>
         <?php

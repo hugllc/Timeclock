@@ -37,10 +37,10 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-TimeclockAdminController::title(JText::_("User Configuration: <small><small>[ ".$this->user->name." ]</small></small>"));
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+TimeclockHelper::title(JText::_("User Configuration: <small><small>[ ".$this->user->name." ]</small></small>"));
+JToolBarHelper::apply("users.apply");
+JToolBarHelper::save("users.save");
+JToolBarHelper::cancel("users.cancel");
 
 ?>
 <form action="index.php" method="post" id="adminForm" id="adminForm">
@@ -48,7 +48,7 @@ JToolBarHelper::cancel();
 <?php
 $pane = JPane::getInstance("sliders");
 echo $pane->startPane("project-pane");
-echo $pane->startPanel(JText::_("Add Projects"), "addproject-page");
+echo $pane->startPanel(JText::_(COM_TIMECLOCK_ADD_PROJECTS), "addproject-page");
 ?>
 <div style="padding: 5px;">
 <?php
@@ -56,23 +56,23 @@ array_shift($this->lists["projects"]);
 if (count($this->lists["projects"])) {
     print JHTML::_("select.genericList", $this->lists["projects"], "projid[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
-        <button onClick="this.form.task.value='addproject';this.form.submit();">Add Projects</button>
+        <button onClick="this.form.task.value='users.addproject';this.form.submit();">Add Projects</button>
     <?php
 } else {
-    print JText::_("No Projects to add");
+    print JText::_(COM_TIMECLOCK_NO_PROJECTS);
 }
 ?>
 </div>
 <?php
 echo $pane->endPanel();
-echo $pane->startPanel(JText::_("Add Projects from User"), "adduserproject-page");
+echo $pane->startPanel(JText::_(COM_TIMECLOCK_ADD_PROJECTS_FROM_USER), "adduserproject-page");
 ?>
 <div style="padding: 5px;">
-    <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'adduserproject\';this.form.submit();"', 'value', 'text', 0); ?>
+    <?php print JHTML::_("select.genericList", $this->lists["users"], "user_id", 'onChange="this.form.task.value=\'users.adduserproject\';this.form.submit();"', 'value', 'text', 0); ?>
 </div>
 <?php
 echo $pane->endPanel();
-echo $pane->startPanel(JText::_("Remove Projects"), "project-page");
+echo $pane->startPanel(JText::_(COM_TIMECLOCK_REMOVE_PROJECTS), "project-page");
 ?>
 <div style="padding: 5px;">
 <?php
@@ -82,7 +82,7 @@ foreach ($this->lists["userProjects"] as $proj) {
 }
 print JHTML::_("select.genericList", $options, "remove_projid[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
-        <button onClick="this.form.task.value='removeproject';this.form.submit();">Remove Projects</button>
+        <button onClick="this.form.task.value='users.removeproject';this.form.submit();">Remove Projects</button>
 </div>
 <?php
 echo $pane->endPanel();
@@ -94,7 +94,7 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="startDate">
-                    <?php echo JText::_('Start Date'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_START_DATE); ?>:
                 </label>
             </td>
             <td style="white-space:nowrap;">
@@ -107,7 +107,7 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="endDate">
-                    <?php echo JText::_('End Date'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_END_DATE); ?>:
                 </label>
             </td>
             <td style="white-space:nowrap;">
@@ -120,7 +120,7 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="active">
-                    <?php echo JText::_('Active'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACTIVE); ?>:
                 </label>
             </td>
             <td>
@@ -134,7 +134,7 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="reports">
-                    <?php echo JText::_('Reports'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_REPORTS); ?>:
                 </label>
             </td>
             <td>
@@ -147,7 +147,7 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="manager">
-                    <?php echo JText::_('Manager'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_MANAGER); ?>:
                 </label>
             </td>
             <td>
@@ -160,7 +160,7 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="type">
-                    <?php echo JText::_('User Status'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_USER_STATUS); ?>:
                 </label>
             </td>
             <td>
@@ -173,18 +173,18 @@ echo $pane->endPane();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="type">
-                    <?php echo JText::_('PTO Carryover'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_PTO_CARRYOVER); ?>:
                 </label>
             </td>
             <td>
                 <?php foreach ($this->ptoCarryOver as $year => $value): ?>
                 <div style="border: thin solid grey;">
                     <input type="text" name="admin_ptoCarryOver[<?php print $year; ?>]" size="7" maxlength="5" value="<?php print $value; ?>" />
-                    <?php print JText::_("hours"); ?>
-                    <?php print JText::_("carried over to"); ?>
+                    <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
+                    <?php print JText::_(COM_TIMECLOCK_CARRIED_OVER_TO); ?>
                     <strong><?php print $year; ?></strong>
                     <div style="white-space: nowrap; margin-top: 0px;">
-                        <?php print JText::_("Expires"); ?>
+                        <?php print JText::_(COM_TIMECLOCK_EXPIRES); ?>
                         <?php print JHTML::_("calendar", $this->ptoCarryOverExpire[$year], "admin_ptoCarryOverExpire[$year]", "admin_ptoCarryOverExpire[$year]", "%Y-%m-%d", "");?>
                     </div>
                 </div>
@@ -201,7 +201,7 @@ if ($this->row->prefs["admin_status"] == "PARTTIME") {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="holidayperc">
-                    <?php echo JText::_('Holiday Pay'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_HOLIDAY_PAY); ?>:
                 </label>
             </td>
             <td>
@@ -217,7 +217,7 @@ if ($this->row->prefs["admin_status"] == "PARTTIME") {
         <tr>
             <td width="100" align="right" class="key" style="vertical-align:top;">
                 <label for="projects">
-                    <?php echo JText::_('Projects'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_PROJECTS); ?>:
                 </label>
             </td>
             <td style="white-space: nowrap;">
@@ -234,8 +234,8 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
         </tr>
         <tr>
             <td class="key" style="vertical-align:top;">
-                <?php print JText::_("Change History"); ?>:<br />
-                (<?php print JText::_("Old Values"); ?>)
+                <?php print JText::_(COM_TIMECLOCK_CHANGE_HISTORY); ?>:<br />
+                (<?php print JText::_(COM_TIMECLOCK_OLD_VALUES); ?>)
             </td>
             <td colspan="2">
 <?php
@@ -247,7 +247,7 @@ foreach ($this->row->history["timestamps"] as $date => $user) { ?>
         <div>
             <strong><?php print $user." <br /> ".$date; ?>:</strong>
             <a href="#" onClick="document.getElementById('effectiveDate<?php print $index; ?>').style.display='';document.getElementById('effectiveDate<?php print $index; ?>Set').value='1';">
-                [<?php print JText::_("Edit"); ?>]
+                [<?php print JText::_(COM_TIMECLOCK_EDIT); ?>]
             </a>
         </div>
         <div id="effectiveDate<?php print $index; ?>" style="display: none;">

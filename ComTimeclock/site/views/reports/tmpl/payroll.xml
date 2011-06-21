@@ -8,7 +8,9 @@
     <state>
         <name>Reports</name>
         <description>This is the payroll report.</description>
-        <url addpath="/administrator/components/com_timeclock/elements">
+    </state>
+    <fields name="request" addfieldpath="/administrator/components/com_timeclock/elements">
+        <fieldset name="request">
             <field name="period" type="list" default="payperiod" label="Default Period" description="The default period of time to show">
                 <option value="day">Day</option>
                 <option value="payperiod">Pay Period</option>
@@ -16,8 +18,10 @@
                 <option value="quarter">Quarter</option>
                 <option value="year">Year</option>
             </field>
-        </url>
-        <fields addpath="/administrator/components/com_timeclock/elements">
+        </fieldset>
+    </fields>
+    <fields name="params" addfieldpath="/administrator/components/com_timeclock/elements">
+        <fieldset name="basic">
             <field name="cell_fill" type="list" default=" " label="Cell Fill Character" description="This is what will be in the cell if there are 0 hours.">
                 <option value=" ">None</option>
                 <option value="0">0</option>
@@ -33,6 +37,6 @@
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
             </field>
-        </fields>
-    </state>
+        </fieldset>
+    </fields>
 </metadata>

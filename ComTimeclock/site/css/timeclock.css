@@ -20,48 +20,61 @@
  * MA  02110-1301, USA.
  */
 #timeclock {
+    padding: 0.5em;
+    background-color: transparent;
+}
+#timeclock #addHoursTotal {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background: white;
+    color: black;
+    border: 3px solid black;
+    padding: .5em;
+}
+#timeclockTable {
     background-color: transparent;
     color: #000;
     margin: 5px;
     width: 95%;
 }
 
-#timeclock th {
+#timeclockTable th {
     background-color: #CCC;
     height: 25px;
 
 }
-#timeclock a,  #timeclock tr.row0 a, #timeclock tr.row1 a {
+#timeclockTable a,  #timeclockTable tr.row0 a, #timeclockTable tr.row1 a {
     background-color: transparent;
     font-weight: bold;
     color: #000;
 }
-#timeclock th span, #timeclock tr.row0 th span, #timeclock tr.row1 th span {
+#timeclockTable th span, #timeclockTable tr.row0 th span, #timeclockTable tr.row1 th span {
     background-color: transparent;
     font-weight: bold;
     color: #000;
 }
-#timeclock td, #timeclock tr.row0 td, #timeclock tr.row1 td {
+#timeclockTable td, #timeclockTable tr.row0 td, #timeclockTable tr.row1 td {
     background-color: transparent;
     color: #000;
 }
-#timeclock td span, #timeclock tr.row0 td span, #timeclock tr.row1 td span {
+#timeclockTable td span, #timeclockTable tr.row0 td span, #timeclockTable tr.row1 td span {
     background-color: transparent;
     color: #000;
 }
-#timeclock tr.row0 {
+#timeclockTable tr.row0 {
     text-align: left;
     background: #EFEFEF;
 }
-#timeclock tr.row1 {
+#timeclockTable tr.row1 {
     background: #FFF;
     text-align: left;
 }
 
-#timeclock .today {
+#timeclockTable .today {
     background: #00FF00;
 }
 
-#timeclock .row1 .holiday, #timeclock .row0 .holiday {
+#timeclockTable .row1 .holiday, #timeclockTable .row0 .holiday {
     background: #FF0000;
 }

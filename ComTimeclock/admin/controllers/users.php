@@ -83,7 +83,7 @@ class TimeclockAdminControllerUsers extends JController
         // Load the submenu.
         TimeclockHelper::addSubmenu(
             JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
+            'users'
         );
 
         JRequest::setVar('view', 'users');
@@ -113,7 +113,7 @@ class TimeclockAdminControllerUsers extends JController
      */
     function reset($msg=null)
     {
-        $link = 'index.php?option=com_timeclock&controller=users';
+        $link = 'index.php?option=com_timeclock&task=users.display';
         $this->setRedirect($link, $msg);
 
     }
@@ -128,7 +128,7 @@ class TimeclockAdminControllerUsers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -141,12 +141,12 @@ class TimeclockAdminControllerUsers extends JController
         $link = TimeclockAdminController::referer();
 
         if (empty($projects)) {
-            $msg = "No projects to add.";
+            $msg = JText::_(COM_TIMECLOCK_PROJECT_NO_PROJECTS);
             $type = "error";
         } else if ($model->addproject($projects, $user_id)) {
-            $msg = "Projects Added";
+            $msg = JText::_(COM_TIMECLOCK_PROJECTS_ADD_SAVED);
         } else {
-            $msg = "Project add failed.";
+            $msg = JText::_(COM_TIMECLOCK_PROJECTS_ADD_FAILED);
             $type = "error";
         }
         $this->setRedirect($link, $msg, $type);
@@ -162,7 +162,7 @@ class TimeclockAdminControllerUsers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -171,9 +171,9 @@ class TimeclockAdminControllerUsers extends JController
         $projid = JRequest::getVar('projid', array(0), 'post', 'array');
         $user_id = JRequest::getVar('id', 0, 'post', 'int');
         if ($model->addproject($projid, $user_id)) {
-            $msg = "Projects Added";
+            $msg = JText::_(COM_TIMECLOCK_PROJECT_ADD_SAVED);
         } else {
-            $msg = "Project add failed.";
+            $msg = JText::_(COM_TIMECLOCK_PROJECT_ADD_FAILED);
             $type = "error";
         }
         $link = TimeclockAdminController::referer();
@@ -190,7 +190,7 @@ class TimeclockAdminControllerUsers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -202,9 +202,9 @@ class TimeclockAdminControllerUsers extends JController
 
         $model = $this->getModel("Users");
         if ($model->removeproject($projid, $user_id)) {
-            $msg = "Project Removed";
+            $msg = JText::_(COM_TIMECLOCK_PROJECT_REMOVE_SAVED);
         } else {
-            $msg = "Project remove failed.";
+            $msg = JText::_(COM_TIMECLOCK_PROJECT_REMOVE_FAILED);
             $type = "error";
         }
         $link = TimeclockAdminController::referer();
@@ -222,7 +222,7 @@ class TimeclockAdminControllerUsers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -242,7 +242,7 @@ class TimeclockAdminControllerUsers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -263,7 +263,7 @@ class TimeclockAdminControllerUsers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -271,12 +271,12 @@ class TimeclockAdminControllerUsers extends JController
         $model = $this->getModel("Users");
 
         if ($model->store()) {
-            $msg = JText::_('User Settings Saved!');
+            $msg = JText::_(COM_TIMECLOCK_USER_SETTINGS_SAVED);
         } else {
-            $msg = JText::_('Error Saving User Settings');
+            $msg = JText::_(COM_TIMECLOCK_USER_SETTINGS_FAILED);
         }
         $id    = JRequest::getVar('id', 0, '', 'int');
-        $link  = 'index.php?option=com_timeclock&controller=users&task=edit';
+        $link  = 'index.php?option=com_timeclock&task=users.edit';
         $link .= '&cid[]='.$id;
         $this->setRedirect($link, $msg);
 
@@ -292,7 +292,7 @@ class TimeclockAdminControllerUsers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -300,9 +300,9 @@ class TimeclockAdminControllerUsers extends JController
         $model = $this->getModel("Users");
 
         if ($model->store()) {
-            $msg = JText::_('User Settings Saved!');
+            $msg = JText::_(COM_TIMECLOCK_USER_SETTINGS_SAVED);
         } else {
-            $msg = JText::_('Error Saving User Settings');
+            $msg = JText::_(COM_TIMECLOCK_USER_SETTINGS_FAILED);
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);

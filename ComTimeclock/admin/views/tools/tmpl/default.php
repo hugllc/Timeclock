@@ -36,9 +36,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockAdminController::title(JText::_('Timeclock Tools'));
+TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS));
 
-$baseUrl = "index.php?option=com_timeclock&controller=tools";
+$baseUrl = "index.php?option=com_timeclock&task=tools.display";
 ?>
 <div style="width: 500px;">
 <p>
@@ -46,7 +46,7 @@ These tools are to help keep the timeclock database healthy.
 </p>
 <ol>
     <li>
-        <a href="<?php print JRoute::_($baseUrl."&task=dbcheck"); ?>">
+        <a href="<?php print JRoute::_($baseUrl."&task=tools.dbcheck"); ?>">
             Check Database
         </a>
     </li>

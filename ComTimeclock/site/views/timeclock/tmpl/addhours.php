@@ -61,7 +61,7 @@ $initPanes = array();
 
 ?>
 <script type="text/javascript">
-        Window.onDomReady(function(){
+        window.addEvent('domready', function(){
             document.formvalidator.setHandler('dateverify',
                 function (value) {
                     regex=/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/;
@@ -71,12 +71,13 @@ $initPanes = array();
             calculateHourTotal();
         });
 </script>
-<div style="position: fixed; left: 0px; top: 0px; background: white; border: 3px solid black; padding: .5em;">
+<div id="timeclock">
+<div id="addHoursTotal">
     <?php print JText::_(COM_TIMECLOCK_TOTAL_HOURS); ?>: <span id="hoursTotal"> - </span>
 </div>
 <form action="<?php print JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
-    <div class="componentheading"><?php print JText::_("Add Hours"); ?></div>
-    <table cellpadding="5" cellspacing="0" border="0" width="100%">
+    <h1><?php print JText::_(COM_TIMECLOCK_ADD_HOURS); ?></h1>
+    <table>
         <tr>
             <th align="right">
                 <label id="date_label" for="date">
@@ -179,7 +180,7 @@ foreach ($this->projects as $cat) {
             <td>
                 <?php print JText::_(COM_TIMECLOCK_HOURS_WORKED_HELP); ?>
                 <script>
-                    Window.onDomReady(function(){
+                    window.addEvent('domready', function(){
                         document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
                             function (value) {
                                 var errordisp = $('noteerror<?php print $proj->id;?>');
@@ -196,7 +197,7 @@ foreach ($this->projects as $cat) {
                             }
                         );
                     });
-                    Window.onDomReady(function(){
+                    window.addEvent('domready', function(){
                         document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>',
                             function (value) {
                                 var hours = $('<?php print $hoursId; ?>');
@@ -273,6 +274,7 @@ $document->addScriptDeclaration($js);
 <div>
     <a name="required_field" />
 * <?php print JText::_(COM_TIMECLOCK_REQUIRED_FIELD); ?>
+</div>
 </div>
 <script type="text/javascript">
     function calculateHourTotal() {

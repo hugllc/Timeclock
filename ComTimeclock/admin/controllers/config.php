@@ -63,7 +63,7 @@ class TimeclockAdminControllerConfig extends JController
         // Load the submenu.
         TimeclockHelper::addSubmenu(
             JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
+            "config"
         );
 
         JRequest::setVar('view', 'config');
@@ -79,7 +79,7 @@ class TimeclockAdminControllerConfig extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -88,11 +88,11 @@ class TimeclockAdminControllerConfig extends JController
         $model = $this->getModel("Config");
 
         if ($model->store()) {
-            $msg = JText::_('Preferences Saved!');
+            $msg = JText::_(COM_TIMECLOCK_PREFS_SAVED);
         } else {
-            $msg = JText::_('Error Saving Preferences');
+            $msg = JText::_(COM_TIMECLOCK_PREFS_FAILED);
         }
-        $link = 'index.php?option=com_timeclock&controller=config';
+        $link = 'index.php?option=com_timeclock&task=config.display';
         $this->setRedirect($link, $msg);
 
     }

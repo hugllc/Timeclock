@@ -36,18 +36,18 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockAdminController::title(JText::_('Check Database'));
+TimeclockHelper::title(JText::_(COM_TIMECLOCK_CHECK_DATABASE));
 
 $style = "width: 10em; font-weight: bold; text-align: center;";
 
-$baseUrl = "index.php?option=com_timeclock&controller=tools";
+$baseUrl = "index.php?option=com_timeclock&task=tools.display";
 ?>
 <div style="width: 500px;">
-<h2><?php print JText::_("Checking your Database"); ?>...</h2>
+<h2><?php print JText::_(COM_TIMECLOCK_CHECKING_DATABASE); ?>...</h2>
 <?php foreach ($this->results as $cat => $results): ?>
     <h3><?php print JText::_($cat); ?>...</h3>
     <?php if (empty($results)): ?>
-    <p><?php print JText::_("No Tests"); ?></p>
+    <p><?php print JText::_(COM_TIMECLOCK_NO_TESTS); ?></p>
     <?php endif; ?>
     <?php foreach ($results as $test): ?>
         <div style="margin: 3px; border: 1px solid grey; padding: 3px;">
@@ -86,7 +86,5 @@ $baseUrl = "index.php?option=com_timeclock&controller=tools";
     This will cause major problems in the timeclock, and should be fixed immediately
 </div>
 
-
-<?php var_dump($this->results); ?>
 </pre>
 </div>

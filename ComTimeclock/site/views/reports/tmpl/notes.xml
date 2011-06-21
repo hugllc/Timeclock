@@ -8,12 +8,16 @@
     <state>
         <name>Project Notes</name>
         <description>This is a blog-like report of the notes attached to hours</description>
-        <url addpath="/administrator/components/com_timeclock/elements">
+    </state>
+    <fields name="request" addfieldpath="/administrator/components/com_timeclock/elements">
+        <fieldset name="request">
             <field name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
             <field name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
             <field name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
-        </url>
-        <fields>
+        </fieldset>
+    </fields>
+    <fields name="params" addfieldpath="/administrator/components/com_timeclock/elements">
+        <fieldset name="basic">
             <field name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
@@ -30,8 +34,8 @@
             <field name="num_columns" type="text" size="3" default="2" label="Columns" description="PARAMCOLUMNS" />
             <field name="num_links" type="text" size="3" default="4" label="Num Links" description="Number of Items to display as Links." />
             -->
-        </fields>
-        <advanced>
+        </fieldset>
+        <fieldset name="advanced">
             <field name="filter_order" type="list" default="" label="Filter Order" description="The order items are presented in.">
                 <option value="t.worked">Date Worked</option>
                 <option value="p.name">Project Name</option>
@@ -53,6 +57,6 @@
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
             </field>
-        </advanced>
-    </state>
+        </fieldset>
+    </fields>
 </metadata>

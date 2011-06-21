@@ -228,8 +228,8 @@ class TimeclockAdminViewUsers extends JView
         $cid = JRequest::getVar('cid', 0, '', 'array');
         if ($cid[0] < 1) {
             $this->setRedirect(
-                'index.php?option=com_timeclock&controller=users',
-                JText::_("No User given!")
+                'index.php?option=com_timeclock&task=users.display',
+                JText::_(COM_TIMECLOCK_NO_USER_GIVEN)
             );
         };
         $user =& JFactory::getUser($cid[0]);

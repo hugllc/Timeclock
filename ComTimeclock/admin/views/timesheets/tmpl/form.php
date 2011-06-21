@@ -39,21 +39,21 @@ jimport("joomla.html.pane");
 
 $title = ($this->add) ? "Add" : "Edit";
 
-TimeclockAdminController::title(JText::_("Timeclock Timesheets: <small><small>[ ".$title." ]</small></small>"));
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+TimeclockHelper::title(JText::_("Timeclock Timesheets: <small><small>[ ".$title." ]</small></small>"));
+JToolBarHelper::apply("timesheets.apply");
+JToolBarHelper::save("timesheets.save");
+JToolBarHelper::cancel("timesheets.cancel");
 
 $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
 ?>
-<form action="index.php" method="post" id="adminForm" id="adminForm">
+<form action="index.php" method="post" id="adminForm" name="adminForm">
 <div>
     <table class="admintable">
         <tr>
             <?php if (empty($this->row->created_by)): ?>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('User'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_USER); ?>:
                 </label>
             </td>
             <td>
@@ -61,14 +61,14 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                     <input type="hidden" name="authOnly" value="1" />
             </td>
             <td>
-                <?php print JText::_("Please select the user"); ?>
+                <?php print JText::_(COM_TIMECLOCK_SELECT_USER); ?>
             </td>
         </tr>
         <?php else: ?>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('User'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_USER); ?>:
                 </label>
             </td>
             <td>
@@ -76,13 +76,13 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                 <input type="hidden" name="created_by" value="<?php print $this->row->created_by; ?>" />
             </td>
             <td>
-                <?php print JText::_("The user.  Once selected this can not be changed for this record."); ?>
+                <?php print JText::_(COM_TIMECLOCK_USER_HELP); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('Project'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_PROJECT); ?>:
                 </label>
             </td>
             <td>
@@ -95,7 +95,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
         <tr>
             <td width="100" align="right" class="key">
                 <label for="payPeriodLength">
-                    <?php echo JText::_('Work Date'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_WORK_DATE); ?>:
                 </label>
             </td>
             <td>
@@ -109,8 +109,8 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
             <?php $var = "hours".$i; ?>
             <?php $wcVar = "wcCode".$i; ?>
             <?php if (($this->project->$wcVar == 0) && ($i > 1)) {continue;} ?>
-            <?php $wcName = empty($wCompCodes[abs($this->project->$wcVar)]) ? JText::_("Hours") : $wCompCodes[abs($this->project->$wcVar)] ; ?>
-            <?php $wcNote =($this->project->$wcVar < 0) ? JText::_("Code Currently Disabled") : "" ; ?>
+            <?php $wcName = empty($wCompCodes[abs($this->project->$wcVar)]) ? JText::_(COM_TIMECLOCK_HOURS) : $wCompCodes[abs($this->project->$wcVar)] ; ?>
+            <?php $wcNote =($this->project->$wcVar < 0) ? JText::_(COM_TIMECLOCK_CODE_DISABLED) : "" ; ?>
             <?php $hours = ($this->row->$var) ? $this->row->$var : 0; ?>
         <tr>
             <td width="100" align="right" class="key">
@@ -130,7 +130,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="notes">
-                    <?php echo JText::_('Notes'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_NOTES); ?>:
                 </label>
             </td>
             <td>

@@ -8,11 +8,5 @@
     <state>
         <name>Timesheet</name>
         <description>Allows users to view and enter time in their timeclock.</description>
-        <fields>
-            <field name="today_background" type="text" default="#00FF00" label="Today Background" description="Mark today with this color in the background" />
-            <field name="today_color" type="text" default="black" label="Today Foreground" description="Mark today with this color in the foreground" />
-            <field name="holiday_background" type="text" default="#FF0000" label="Holiday Background" description="Mark holidays with this color in the background" />
-            <field name="holiday_color" type="text" default="black" label="Today Foreground" description="Mark holidays with this color in the foreground" />
-        </fields>
     </state>
 </metadata>

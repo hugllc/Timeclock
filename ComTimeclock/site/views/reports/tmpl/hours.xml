@@ -11,7 +11,9 @@
             This is a generic timeclock report.  It shows users in columns and projects in
             rows and shows the hours for each user in each project.
         </description>
-        <url addpath="/administrator/components/com_timeclock/elements">
+    </state>
+    <fields name="request" addfieldpath="/administrator/components/com_timeclock/elements">
+        <fieldset name="request">
             <field name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
             <field name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
             <field name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
@@ -22,8 +24,10 @@
                 <option value="quarter">Quarter</option>
                 <option value="year">Year</option>
             </field>
-        </url>
-        <fields addpath="/administrator/components/com_timeclock/elements">
+        </fieldset>
+    </fields>
+    <fields name="params" addfieldpath="/administrator/components/com_timeclock/elements">
+        <fieldset name="basic">
             <field name="show_controls" type="radio" default="0" label="Controls" description="Show the controls to change the report">
                 <option value="1">Show</option>
                 <option value="0">Hide</option>
@@ -44,8 +48,8 @@
                 <option value=" ">None</option>
                 <option value="0">0</option>
             </field>
-        </fields>
-        <advanced>
+        </fieldset>
+        <fieldset name="advanced">
             <field name="project_filter_order" type="list" default="" label="Project Filter Order" description="The order items are presented in.">
                 <option value="">None</option>
                 <option value="p.id">Project ID</option>
@@ -65,6 +69,6 @@
                 <option value="desc">Descending</option>
                 <option value="asc">Ascending</option>
             </field>
-        </advanced>
-    </state>
+        </fieldset>
+    </fields>
 </metadata>

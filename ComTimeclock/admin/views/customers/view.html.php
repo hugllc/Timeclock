@@ -200,11 +200,11 @@ class TimeclockAdminViewCustomers extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_('The poll'),
+                    JText::_(COM_TIMECLOCK_THE_POLL),
                     $poll->title
                 );
                 $this->setRedirect(
-                    'index.php?option=com_timeclock&controller=customers',
+                    'index.php?option=com_timeclock&task=customers.display',
                     $msg
                 );
         }

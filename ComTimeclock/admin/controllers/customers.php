@@ -78,7 +78,7 @@ class TimeclockAdminControllerCustomers extends JController
         // Load the submenu.
         TimeclockHelper::addSubmenu(
             JRequest::getCmd('view', 'timeclock'),
-            JRequest::getCmd('controller', 'timeclock')
+            "customers"
         );
 
         JRequest::setVar('view', 'customers');
@@ -108,7 +108,7 @@ class TimeclockAdminControllerCustomers extends JController
      */
     function reset($msg=null)
     {
-        $link = 'index.php?option=com_timeclock&controller=customers';
+        $link = 'index.php?option=com_timeclock&task=customers.display';
         $this->setRedirect($link, $msg);
 
     }
@@ -123,7 +123,7 @@ class TimeclockAdminControllerCustomers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -132,11 +132,11 @@ class TimeclockAdminControllerCustomers extends JController
         $model = $this->getModel("Customers");
 
         if ($id = $model->store()) {
-            $msg   = JText::_('Customer Saved!');
-            $link  = 'index.php?option=com_timeclock&controller=customers&task=edit';
+            $msg   = JText::_(COM_TIMECLOCK_CUSTOMER_SAVED);
+            $link  = 'index.php?option=com_timeclock&task=customers.edit';
             $link .= '&cid[]='.$id;
         } else {
-            $msg  = JText::_('Error Saving Customer');
+            $msg  = JText::_(COM_TIMECLOCK_CUSTOMER_FAILED);
             $link = $_SERVER["HTTP_REFERER"];
         }
         $this->setRedirect($link, $msg);
@@ -153,7 +153,7 @@ class TimeclockAdminControllerCustomers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -161,9 +161,9 @@ class TimeclockAdminControllerCustomers extends JController
         $model = $this->getModel("Customers");
 
         if ($model->store()) {
-            $msg = JText::_('Customer Saved!');
+            $msg = JText::_(COM_TIMECLOCK_CUSTOMER_SAVED);
         } else {
-            $msg = JText::_('Error Saving Customer');
+            $msg = JText::_(COM_TIMECLOCK_CUSTOMER_FAILED);
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
@@ -194,7 +194,7 @@ class TimeclockAdminControllerCustomers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;
@@ -216,7 +216,7 @@ class TimeclockAdminControllerCustomers extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_("Bad form token.  Please try again."),
+                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
                 "error"
             );
             return;

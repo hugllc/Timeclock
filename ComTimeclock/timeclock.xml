@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.6.0" method="upgrade">
+<extension type="component" version="1.6.0" method="upgrade" client="site">
     <name>COM_TIMECLOCK</name>
     <creationDate>2011 06 09</creationDate>
     <author>Scott Price</author>
@@ -38,13 +38,13 @@
     <administration>
         <menu>COM_TIMECLOCK_MENU</menu>
         <submenu>
-            <menu controller="config">COM_TIMECLOCK_SUBMENU_PREFERENCES</menu>
-            <menu controller="users">COM_TIMECLOCK_SUBMENU_USER_CONFIG</menu>
-            <menu controller="customers">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
-            <menu controller="projects">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
-            <menu controller="holidays">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
-            <menu controller="timesheets">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
-            <menu controller="tools">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
+            <menu task="config.display">COM_TIMECLOCK_SUBMENU_PREFERENCES</menu>
+            <menu task="users.display">COM_TIMECLOCK_SUBMENU_USER_CONFIG</menu>
+            <menu task="customers.display">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
+            <menu task="projects.display">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
+            <menu task="holidays.display">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
+            <menu task="timesheets.display">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
+            <menu task="tools.display">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
             <menu task="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
         </submenu>
 

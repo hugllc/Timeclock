@@ -36,7 +36,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockAdminController::title(JText::_('About Timeclock'));
+TimeclockAdminController::title(JText::_(COM_TIMECLOCK_ABOUT_TIMECLOCK));
 
 ?>
 <div style="width: 500px;">

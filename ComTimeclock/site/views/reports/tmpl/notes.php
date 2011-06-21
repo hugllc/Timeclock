@@ -44,6 +44,7 @@ $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle($this->params->get('page_title'));
 
 ?>
+<div id="timeclock">
 <?php if ($this->params->get('show_page_title')) : ?>
 <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
         <?php echo $this->escape($this->params->get('page_title')); ?>
@@ -100,3 +101,4 @@ if (count($this->notes) == 0) print "No notes found";
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 </form>
+</div>

@@ -40,7 +40,7 @@ JHTML::_('behavior.tooltip');
 
 $headerColSpan    = 2 + count($this->totals["user"]);
 
-$this->cellStyle  = "text-align:center; padding: 1px; vertical-align: center;";
+$this->cellStyle  = "text-align:center; padding: 1px; vertical-align: middle;";
 $projStyle  = "text-align:right; padding: 1px;";
 $totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
@@ -54,7 +54,7 @@ if (!TableTimeclockPrefs::getPref("wCompEnable", "system")) {
 }
 
 ?>
-
+<div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <?php if ($this->params->get('show_page_title')) : ?>
     <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
@@ -77,7 +77,7 @@ if (!TableTimeclockPrefs::getPref("wCompEnable", "system")) {
                 <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
             </strong>
         </div>
-    <table id="timeclock">
+    <table id="timeclockTable">
         <?php if (count($this->report) > 0) : ?>
         <?php print $this->loadTemplate("header"); ?>
 
@@ -118,3 +118,4 @@ foreach ($this->report as $user => $codeArray) {
     </table>
     <?php print JHTML::_("form.token"); ?>
 </form>
+</div>

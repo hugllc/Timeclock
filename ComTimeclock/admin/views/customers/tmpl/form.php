@@ -39,19 +39,19 @@ jimport("joomla.html.pane");
 
 $title = ($this->add) ? "Add" : "Edit";
 
-TimeclockAdminController::title(JText::_("Timeclock Customer: <small><small>[ ".$title." ]</small></small>"));
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+TimeclockHelper::title(JText::_("Timeclock Customer: <small><small>[ ".$title." ]</small></small>"));
+JToolBarHelper::apply("customers.apply");
+JToolBarHelper::save("customers.save");
+JToolBarHelper::cancel("customers.cancel");
 
 ?>
-<form action="index.php" method="post" id="adminForm" id="adminForm">
+<form action="index.php" method="post" id="adminForm" name="adminForm">
 <div>
     <table class="admintable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="published">
-                    <?php echo JText::_('Active'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ACTIVE); ?>:
                 </label>
             </td>
             <td>
@@ -64,7 +64,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="bill_pto">
-                    <?php echo JText::_('Bill for Paid Time Off'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_BILL_FOR_PTO); ?>:
                 </label>
             </td>
             <td>
@@ -78,7 +78,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="name">
-                    <?php echo JText::_('Contact Name'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_CONTACT_NAME); ?>:
                 </label>
             </td>
             <td>
@@ -91,7 +91,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="company">
-                    <?php echo JText::_('Company'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_COMPANY); ?>:
                 </label>
             </td>
             <td>
@@ -104,7 +104,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="address1">
-                    <?php echo JText::_('Address1'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ADDRESS1); ?>:
                 </label>
             </td>
             <td>
@@ -117,7 +117,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('Address2'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ADDRESS2); ?>:
                 </label>
             </td>
             <td>
@@ -130,7 +130,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('City'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_CITY); ?>:
                 </label>
             </td>
             <td>
@@ -143,7 +143,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('State'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_STATE); ?>:
                 </label>
             </td>
             <td>
@@ -156,7 +156,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('Zip'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_ZIP); ?>:
                 </label>
             </td>
             <td>
@@ -169,7 +169,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_('Country'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_COUNTRY); ?>:
                 </label>
             </td>
             <td>
@@ -182,7 +182,7 @@ JToolBarHelper::cancel();
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="notes">
-                    <?php echo JText::_('Notes'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_NOTES); ?>:
                 </label>
             </td>
             <td>

@@ -35,9 +35,11 @@
  */
 
 defined('_JEXEC') or die();
-
+jimport( 'joomla.html.parameter.element' );
 /** get the model we need */
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'customers.php';
+require_once realpath(
+    dirname(__FILE__).DS."..".DS.'models'.DS.'customers.php'
+);
 
 
 /**

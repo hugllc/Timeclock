@@ -40,7 +40,7 @@ JHTML::_('behavior.tooltip');
 
 $headerColSpan    = 2 + count($this->totals["user"]);
 
-$this->cellStyle  = "text-align:center; padding: 1px; vertical-align: center;";
+$this->cellStyle  = "text-align:center; padding: 1px; vertical-align: middle;";
 $projStyle  = "text-align:right; padding: 1px;";
 $totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
@@ -50,7 +50,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
 
 $this->graphColSpan = 2 + (count($this->totals["cat"])*2);
 ?>
-<div style="overflow:auto; width: 100%; background: inherit;">
+<div id="timeclock">
 <form action="<?php JROUTE::_("index.php?option=com_timeclock&view=reports&layout=hours"); ?>" method="post" id="adminForm" autocomplete="off">
     <?php if ($this->params->get('show_page_title')) : ?>
     <div class="componentheading<?php echo $this->params->get('pageclass_sfx');?>">
@@ -74,7 +74,7 @@ $this->graphColSpan = 2 + (count($this->totals["cat"])*2);
                 ); ?>
             </strong>
         </div>
-    <table id="timeclock">
+    <table >
         <?php if (count($this->report) > 0) : ?>
 
 <?php

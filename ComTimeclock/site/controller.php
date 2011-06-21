@@ -72,26 +72,6 @@ class TimeclockController extends JController
         parent::display();
     }
 
-    /**
-     * Check to see if a user is authorized to view the timeclock
-     *
-     * @param string $task The task to authorize
-     *
-     * @return null
-     */
-    function authorize($task)
-    {
-        $user =& JFactory::getUser();
-        if ($user->get("id") < 1) {
-            return false;
-        }
-        $view = JRequest::getVar('view', "timesheet", '', 'word');
-        if (($view == "reports") && !TableTimeClockPrefs::getPref("admin_reports")) {
-            return false;
-        }
-        return TableTimeClockPrefs::getPref("published");
-    }
-
 }
 
 ?>
