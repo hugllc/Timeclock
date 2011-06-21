@@ -60,7 +60,7 @@ class TimeclockHelper
     public static function addSubmenu($vName, $cName)
     {
         JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_CONFIG),
+            JText::_(COM_TIMECLOCK_PREFERENCES),
             'index.php?option=com_timeclock&task=config.display',
             $cName == 'config'
         );

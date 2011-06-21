@@ -5,3 +5,4 @@ ComTimeclock/test/JoomlaMock
 Documentation/
 *.zip
 build/
+*.kate-swp

@@ -60,25 +60,7 @@ class com_timeclockInstallerScript
     */
     public function install($parent)
     {
-        $database =& JFactory::getDBO();
-        $adminDir = dirname(__FILE__);
-
-        foreach (array("mod_timeclockinfo") as $file) {
-            $from = $adminDir.DS."modules".DS.$file;
-            $to   = JPATH_ROOT.DS."modules".DS.$file;
-            rename($from, $to);
-        }
-        $database->setQuery(
-            "INSERT INTO `jos_modules` (`title`, `content`, `ordering`,
-            `position`, `checked_out`, `checked_out_time`, `published`, `module`,
-            `numnews`, `access`, `showtitle`, `params`,
-            `iscore`, `client_id`, `control`)
-            VALUES ('Timeclock Information', '', 101,
-            'left', 0, '0000-00-00 00:00:00', 1, 'mod_timeclockinfo',
-            0, 0, 1, '',
-            1, 0, '');"
-        );
-        $result = $database->query();
+        $this->installModule("mod_timeclockinfo");
         $parent->getParent()->setRedirectURL('index.php?option=com_timeclock&view=about');
     }
     /**
@@ -90,19 +72,7 @@ class com_timeclockInstallerScript
     */
     public function uninstall($parent)
     {
-        $database =& JFactory::getDBO();
-        $adminDir = dirname(__FILE__);
-
-        // Move the modules back to the component so they get deleted with everything
-        foreach (array("mod_timeclockinfo") as $file) {
-            $to   = $adminDir.DS."modules".DS.$file;
-            $from = JPATH_ROOT.DS."modules".DS.$file;
-            rename($from, $to);
-            $database->setQuery(
-                "DELETE FROM `#__modules` WHERE `module`='".$file."';"
-            );
-            $database->query();
-        }
+        $this->uninstallModule("mod_timeclockinfo");
     }
     /**
     * This updates everthing
@@ -134,6 +104,42 @@ class com_timeclockInstallerScript
     public function postflight($parent)
     {
     }
+
+    /**
+    * This runs after install/update/uninstall
+    *
+    * @param $name The name of the module to install
+    *
+    * @return null
+    */
+    public function installModule($name)
+    {
+        $basedir = dirname(__FILE__).DS."admin".DS."modules";
+        $inst = new JInstaller();
+        $this->uninstallModule($name);
+        return $inst->install($basedir.DS.$name);
+    }
+
+    /**
+    * This runs after install/update/uninstall
+    *
+    * @param $name The name of the module to install
+    *
+    * @return null
+    */
+    public function uninstallModule($name)
+    {
+        $db = &JFactory::getDBO ();
+
+        $db->setQuery("SELECT * FROM #__extensions WHERE element='$name'");
+        $mod = $db->loadObject();
+        if (is_object($mod)) {
+            $inst = new JInstaller();
+            return $inst->uninstall('module', $mod->extension_id);
+        }
+        return true;
+    }
+
 
 }
 

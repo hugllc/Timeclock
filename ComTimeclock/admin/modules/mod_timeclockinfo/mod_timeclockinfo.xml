@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="1.6.0" client="site" method="upgrade">
-	<name>Timeclock Info</name>
+	<name>MOD_TIMECLOCKINFO</name>
 	<author>Scott Price</author>
-	<creationDate>08 11 2009</creationDate>
+	<creationDate>2011 06 21</creationDate>
 	<copyright>
-        Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
-        Copyright (C) 2009 Hunt Utilities Group, LLC
+        Copyright (C) 2009, 2011 Hunt Utilities Group, LLC
+        portions Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
     </copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
 	<authorEmail>prices@hugllc.com</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
-	<version>-</version>
-	<description>Displays a timeclock menu.</description>
+	<authorUrl>Scott Price</authorUrl>
+	<version>0.8.0</version>
+	<description>MOD_TIMECLOCKINFO_DESC</description>
 	<files>
 		<filename module="mod_timeclockinfo">mod_timeclockinfo.php</filename>
+        <filename>helper.php</filename>
+        <filename>index.html</filename>
+        <folder>tmpl</folder>
 	</files>
-	<fields>
-		<field name="showYTDHours" type="radio" default="1" label="Year-To-Date Hours" description="Show the year to date hours">
-            <option value="1">Show</option>
-			<option value="0">Hide</option>
-		</field>
-        <field name="showHoursPerWeek" type="radio" default="1" label="Hours/Week" description="Show the average hours per week.">
-            <option value="1">Show</option>
-            <option value="0">Hide</option>
-        </field>
-        <field name="showNextHoliday" type="radio" default="1" label="Next Holiday" description="Show the date of the next holiday">
-            <option value="1">Show</option>
-            <option value="0">Hide</option>
-        </field>
-        <field name="showPTO" type="radio" default="1" label="Show PTO Status" description="Show the user their current PTO status.">
-            <option value="1">Show</option>
-            <option value="0">Hide</option>
-        </field>
-	</fields>
-	<fields group="advanced">
-	</fields>
-	<fields group="other">
-	</fields>
+    <languages>
+            <language tag="en-GB">language/en-GB/en-GB.mod_timeclockinfo.ini</language>
+            <language tag="en-GB">language/en-GB/en-GB.mod_timeclockinfo.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="showYTDHours" type="radio" default="1" label="MOD_TIMECLOCKINFO_YTD" description="MOD_TIMECLOCKINFO_YTD_DESC">
+                    <option value="1">JSHOW</option>
+                    <option value="0">JHIDE</option>
+                </field>
+                <field name="showHoursPerWeek" type="radio" default="1" label="MOD_TIMECLOCKINFO_HOURS_PER_WEEK" description="MOD_TIMECLOCKINFO_HOURS_PER_WEEK_DESC">
+                    <option value="1">JSHOW</option>
+                    <option value="0">JHIDE</option>
+                </field>
+                <field name="showNextHoliday" type="radio" default="1" label="MOD_TIMECLOCKINFO_NEXT_HOLIDAY" description="MOD_TIMECLOCKINFO_NEXT_HOLIDAY_DESC">
+                    <option value="1">JSHOW</option>
+                    <option value="0">JHIDE</option>
+                </field>
+                <field name="showPTO" type="radio" default="1" label="MOD_TIMECLOCKINFO_SHOW_PTO_STATUS" description="MOD_TIMECLOCKINFO_SHOW_PTO_STATUS_DESC">
+                    <option value="1">JSHOW</option>
+                    <option value="0">JHIDE</option>
+                </field>
+            </fieldset>
+            <fieldset name="advanced">
+            </fieldset>
+            <fieldset name="other">
+            </fieldset>
+        </fields>
+    </config>
 </extension>

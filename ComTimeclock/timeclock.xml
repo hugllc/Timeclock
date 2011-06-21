@@ -9,6 +9,7 @@
     <license>GNU Public License V3</license>
     <version>0.8.0</version>
     <description>COM_TIMECLOCK_DESCRIPTION</description>
+    <scriptfile>install.script.php</scriptfile>
     <install>
         <sql>
             <file driver="mysql" charset="utf8">sql/timeclock_customers.mysql.utf8.sql</file>
@@ -50,8 +51,10 @@
 
         <files folder="admin">
             <filename>index.html</filename>
-            <filename>admin.timeclock.php</filename>
+            <filename>timeclock.php</filename>
             <filename>controller.php</filename>
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
             <folder>tables</folder>
             <folder>elements</folder>
             <folder>images</folder>
