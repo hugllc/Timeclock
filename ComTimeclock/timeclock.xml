@@ -69,4 +69,7 @@
             <language tag="en-GB">language/en-GB/en-GB.com_timeclock.sys.ini</language>
         </languages>
     </administration>
+    <updateservers>
+        <server type="extension" priority="1" name="ComTimeclock Update Site">http://downloads.hugllc.com/Joomla/Timeclock/ComTimeclock-update.xml</server>
+    </updateservers>
 </extension>
