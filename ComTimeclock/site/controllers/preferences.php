@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -87,25 +87,9 @@ class TimeclockControllerPreferences extends TimeclockController
         } else {
             $msg = JText::_(COM_TIMECLOCK_PREFS_FAILED);
         }
-        $link = 'index.php?option=com_timeclock&controller=preferences';
+        $link = 'index.php?option=com_timeclock&task=preferences.display';
         $this->setRedirect($link, $msg);
 
-    }
-    /**
-     * Check to see if a user is authorized to view the timeclock
-     *
-     * @param string $task The task to authorize
-     *
-     * @return null
-     */
-    function authorize($task)
-    {
-        $user =& JFactory::getUser();
-        if ($user->get("id") < 1) {
-            return false;
-        }
-        $view = JRequest::getVar('view', "timesheet", '', 'word');
-        return TableTimeClockPrefs::getPref("published");
     }
 }
 

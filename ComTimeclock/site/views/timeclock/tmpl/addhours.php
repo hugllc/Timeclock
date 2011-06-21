@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -249,8 +249,8 @@ foreach ($this->projects as $cat) {
                  &nbsp;
             </th>
             <td>
-                <button type="submit" onMouseDown="document.getElementById('theTask').value='applyhours';" class="button validate"><?php print JText::_("Apply"); ?></button>
-                <button type="submit" onMouseDown="document.getElementById('theTask').value='savehours';" class="button validate"><?php print JText::_("Save"); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.applyhours';" class="button validate"><?php print JText::_("Apply"); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.savehours';" class="button validate"><?php print JText::_("Save"); ?></button>
             </td>
         </tr>
 

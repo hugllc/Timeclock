@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -159,7 +159,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 <input type="hidden" name="option" value="com_timeclock" />
 <input type="hidden" name="id" value="-1" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="task" id="task" value="" />
+<input type="hidden" name="task" id="task" value="holidays.display" />
 <input type="hidden" name="controller" value="holidays" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />

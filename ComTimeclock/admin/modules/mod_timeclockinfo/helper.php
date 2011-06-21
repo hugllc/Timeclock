@@ -30,14 +30,14 @@
  * </pre>
  *
  * @category   UI
- * @package    ComHUGnet
- * @subpackage Com_HUGnet
+ * @package    Comtimeclock
+ * @subpackage Com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
- * @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
+ * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
 
 // no direct access
@@ -50,13 +50,13 @@ require_once $path.DS."models".DS."timeclock.php";
 * This class is the 'model' for the module.
 *
 * @category   UI
-* @package    ComHUGnet
-* @subpackage Com_HUGnet
+* @package    Comtimeclock
+* @subpackage Com_timeclock
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
+* @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
 */
 class ModTimeclockInfoHelper
 {

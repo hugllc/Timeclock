@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -41,10 +41,9 @@ if (!JFactory::getUser()->authorise('timeclock.timesheets', 'com_timeclock'))
     return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
+// import joomla controller library
+jimport('joomla.application.component.controller');
 jimport('joomla.html.html');
-
-/** Get the component stuff */
-require_once JPATH_COMPONENT.DS.'controller.php';
 
 // This loads the prefs table file.
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'timeclockprefs.php';
@@ -53,19 +52,8 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'sql.inc.php';
 JHTML::stylesheet(
     "components".DS."com_timeclock".DS."css".DS."timeclock.css"
 );
+$controller = JController::getInstance('Timeclock');
 
-if ($controller = JRequest::getWord('controller')) {
-    $path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
-    if (file_exists($path)) {
-        include_once $path;
-    } else {
-        $controller = '';
-    }
-}
-
-// Create the controller
-$classname  = 'TimeclockController'.$controller;
-$controller = new $classname();
 
 // Perform the Request task
 $controller->execute(JRequest::getVar('task'));

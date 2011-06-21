@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_HUGnet is a Joomla! 1.5 component
+ * com_timeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  * Copyright 2009 Scott Price
  *
@@ -26,14 +26,14 @@
  * </pre>
  *
  * @category   UI
- * @package    ComHUGnet
- * @subpackage Com_HUGnet
+ * @package    Comtimeclock
+ * @subpackage Com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
- * @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
+ * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
 
 

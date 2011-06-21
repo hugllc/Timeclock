@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -37,13 +37,13 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 ?>
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
-    <div class="componentheading"><?php print JText::_("Timeclock Preferences for ").$this->user->get("name");?></div>
+<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userForm" id="userForm" autocomplete="off">
+    <div class="componentheading"><?php print JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS_FOR).$this->user->get("name");?></div>
     <table class="usertable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="timesheetSort">
-                    <?php echo JText::_('Timesheet Sort'); ?>:
+                    <?php echo JText::_(COM_TIMECLOCK_TIMESHEET_SORT); ?>:
                 </label>
             </td>
             <td>
@@ -51,12 +51,12 @@ jimport("joomla.html.pane");
                 <?php print JHTML::_("select.genericList", $this->timesheetSortOptionsDir, "prefs[user_timesheetSortDir]", "", 'value', 'text', $this->prefs["user_timesheetSortDir"]); ?>
             </td>
             <td>
-                <?php print JText::_("This is the order that the projects will appear in in the timesheet."); ?>
+                <?php print JText::_(COM_TIMECLOCK_TIMESHEET_SORT_HELP); ?>
             </td>
         </tr>
         <tr>
             <td colspan="3">
-                <button type="submit" onMouseDown="document.getElementById('theTask').value='save';" class="button validate"><?php print JText::_("Save"); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='preferences.save';" class="button validate"><?php print JText::_("Save"); ?></button>
             </td>
         </tr>
     </table>

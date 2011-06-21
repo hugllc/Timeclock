@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ foreach ($this->period["dates"] as $key => $uDate) :
         $class = "";
     }
     if ($this->checkDate($uDate)) {
-        $url = JRoute::_('index.php?&option=com_timeclock&controller=timeclock&task=addhours&date='.urlencode($key).'&id='.(int)$this->user->get("id"));
+        $url = JRoute::_('index.php?&option=com_timeclock&task=timeclock.addhours&date='.urlencode($key).'&id='.(int)$this->user->get("id"));
         $tipTitle = JText::_(COM_TIMECLOCK_ADD_HOURS);
         $tip = "on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1"));
     } else {

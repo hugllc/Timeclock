@@ -30,15 +30,15 @@
  * </pre>
  *
  * @category   UI
- * @package    ComHUGnet
- * @subpackage Com_HUGnet
+ * @package    Comtimeclock
+ * @subpackage Com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @copyright  2005-2008 Open Source Matters. All rights reserved.
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
- * @link       https://dev.hugllc.com/index.php/Project:ComHUGnet
+ * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
 
 // no direct access

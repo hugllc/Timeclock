@@ -5,7 +5,7 @@
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.5 component
+ * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -39,19 +39,19 @@ defined('_JEXEC') or die('Restricted access');
 $tip = JText::_(COM_TIMECLOCK_GO_TO_NEXT_PAYPERIOD);
 $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-$url = JROUTE::_("index.php?option=com_timeclock&controller=timeclock&view=timeclock&date=".$this->period["next"]);
+$url = JROUTE::_("index.php?option=com_timeclock&view=timeclock.display&date=".$this->period["next"]);
 $nextImg = '<a href="'.$url.'">'.$text.'</a>';
 $next = '<a href="'.$url.'">'.JText::_(JNEXT).'</a>';
 
 $tip = JText::_(COM_TIMECLOCK_GO_TO_PREV_PAYPERIOD);
 $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
 $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-$url = JROUTE::_("index.php?option=com_timeclock&controller=timeclock&view=timeclock&date=".$this->period["prev"]);
+$url = JROUTE::_("index.php?option=com_timeclock&view=timeclock.display&date=".$this->period["prev"]);
 $prevImg = '<a href="'.$url.'">'.$text.'</a>';
 $prev = '<a href="'.$url.'">'.JText::_(JPREVIOUS).'</a>';
 
 $text = JText::_(COM_TIMECLOCK_TODAY);
-$url = JROUTE::_("index.php?option=com_timeclock&view=timeclock");
+$url = JROUTE::_("index.php?option=com_timeclock&view=timeclock.display");
 $today = '<a href="'.$url.'">'.$text.'</a>';
 
 ?>
