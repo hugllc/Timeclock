@@ -131,7 +131,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
                 "save",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=projects",
+                    "link" => "index.php?option=com_timeclock&task=projects.display",
                     "msg" => "Project Saved!"
                 )
             ),
@@ -139,7 +139,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
                 "save",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=projects",
+                    "link" => "index.php?option=com_timeclock&task=projects.display",
                     "msg" => "Error Saving Project"
                 )
             ),
@@ -147,8 +147,8 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
                 "apply",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=projects"
-                                ."&task=edit&cid[]=1",
+                    "link" => "index.php?option=com_timeclock&task=projects.edit"
+                                ."&cid[]=1",
                     "msg" => "Project Saved!"
                 )
             ),
@@ -164,7 +164,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
                 "reset",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=projects",
+                    "link" => "index.php?option=com_timeclock&task=projects.display",
                     "msg" => null
                 )
             ),
@@ -172,7 +172,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
                 "cancel",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=projects",
+                    "link" => "index.php?option=com_timeclock&task=projects.display",
                     "msg" => null
                 )
             ),
@@ -180,7 +180,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
                 "publish",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=projects",
+                    "link" => "index.php?option=com_timeclock&task=projects.display",
                     "msg" => null
                 )
             ),
@@ -188,7 +188,7 @@ class ComTimeclockAdminControllerProjectsTest extends JControllerTest
                 "unpublish",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=projects",
+                    "link" => "index.php?option=com_timeclock&task=projects.display",
                     "msg" => null
                 )
             ),

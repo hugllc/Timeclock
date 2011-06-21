@@ -131,7 +131,7 @@ class ComTimeclockAdminControllerHolidaysTest extends JControllerTest
                 "save",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=holidays",
+                    "link" => "index.php?option=com_timeclock&task=holidays.display",
                     "msg" => "Holiday Saved!"
                 )
             ),
@@ -139,7 +139,7 @@ class ComTimeclockAdminControllerHolidaysTest extends JControllerTest
                 "save",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=holidays",
+                    "link" => "index.php?option=com_timeclock&task=holidays.display",
                     "msg" => "Error Saving Holiday"
                 )
             ),
@@ -147,8 +147,8 @@ class ComTimeclockAdminControllerHolidaysTest extends JControllerTest
                 "apply",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=holidays"
-                        ."&task=edit&cid[]=1",
+                    "link" => "index.php?option=com_timeclock&task=holidays.edit"
+                        ."&cid[]=1",
                     "msg" => "Holiday Saved!"
                 )
             ),
@@ -164,7 +164,7 @@ class ComTimeclockAdminControllerHolidaysTest extends JControllerTest
                 "reset",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=holidays",
+                    "link" => "index.php?option=com_timeclock&task=holidays.display",
                     "msg" => null
                 )
             ),
@@ -172,7 +172,7 @@ class ComTimeclockAdminControllerHolidaysTest extends JControllerTest
                 "cancel",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=holidays",
+                    "link" => "index.php?option=com_timeclock&task=holidays.display",
                     "msg" => null
                 )
             ),

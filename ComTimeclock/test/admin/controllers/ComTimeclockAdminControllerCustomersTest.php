@@ -130,7 +130,7 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
                 "save",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=customers",
+                    "link" => "index.php?option=com_timeclock&task=customers.display",
                     "msg" => "Customer Saved!"
                 )
             ),
@@ -138,7 +138,7 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
                 "save",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=customers",
+                    "link" => "index.php?option=com_timeclock&task=customers.display",
                     "msg" => "Error Saving Customer"
                 )
             ),
@@ -146,8 +146,8 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
                 "apply",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=customers".
-                        "&task=edit&cid[]=1",
+                    "link" => "index.php?option=com_timeclock&task=customers.edit".
+                        "&cid[]=1",
                     "msg" => "Customer Saved!"
                 )
             ),
@@ -163,7 +163,7 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
                 "reset",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=customers",
+                    "link" => "index.php?option=com_timeclock&task=customers.display",
                     "msg" => null
                 )
             ),
@@ -171,7 +171,7 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
                 "cancel",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=customers",
+                    "link" => "index.php?option=com_timeclock&task=customers.display",
                     "msg" => null
                 )
             ),
@@ -179,7 +179,7 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
                 "publish",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=customers",
+                    "link" => "index.php?option=com_timeclock&task=customers.display",
                     "msg" => null
                 )
             ),
@@ -187,7 +187,7 @@ class ComTimeclockAdminControllerCustomersTest extends JControllerTest
                 "unpublish",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=customers",
+                    "link" => "index.php?option=com_timeclock&task=customers.display",
                     "msg" => null
                 )
             ),

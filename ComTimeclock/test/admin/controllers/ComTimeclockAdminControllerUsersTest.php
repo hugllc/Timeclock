@@ -131,7 +131,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "save",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users",
+                    "link" => "index.php?option=com_timeclock&task=users.display",
                     "msg" => "User Settings Saved!"
                 )
             ),
@@ -139,7 +139,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "save",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users",
+                    "link" => "index.php?option=com_timeclock&task=users.display",
                     "msg" => "Error Saving User Settings"
                 )
             ),
@@ -147,8 +147,8 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "apply",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users"
-                        ."&task=edit&cid[]=0",
+                    "link" => "index.php?option=com_timeclock&task=users.edit"
+                        ."&cid[]=0",
                     "msg" => "User Settings Saved!"
                 )
             ),
@@ -156,8 +156,8 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "apply",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users"
-                        ."&task=edit&cid[]=0",
+                    "link" => "index.php?option=com_timeclock&task=users.edit"
+                        ."&cid[]=0",
                     "msg" => "Error Saving User Settings"
                 )
             ),
@@ -165,7 +165,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "reset",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users",
+                    "link" => "index.php?option=com_timeclock&task=users.display",
                     "msg" => null
                 )
             ),
@@ -173,7 +173,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "cancel",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users",
+                    "link" => "index.php?option=com_timeclock&task=users.display",
                     "msg" => null
                 )
             ),
@@ -181,7 +181,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "publish",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users",
+                    "link" => "index.php?option=com_timeclock&task=users.display",
                     "msg" => null
                 )
             ),
@@ -189,7 +189,7 @@ class ComTimeclockAdminControllerUsersTest extends JControllerTest
                 "unpublish",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=users",
+                    "link" => "index.php?option=com_timeclock&task=users.display",
                     "msg" => null
                 )
             ),

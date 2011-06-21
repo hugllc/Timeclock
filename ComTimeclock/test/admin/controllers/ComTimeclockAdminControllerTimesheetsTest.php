@@ -132,7 +132,7 @@ class ComTimeclockAdminControllerTimesheetsTest extends JControllerTest
                 "save",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=timesheets",
+                    "link" => "index.php?option=com_timeclock&task=timesheets.display",
                     "msg" => "Timesheet Saved!"
                 )
             ),
@@ -140,8 +140,7 @@ class ComTimeclockAdminControllerTimesheetsTest extends JControllerTest
                 "save",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=timesheets"
-                        ."&task=add",
+                    "link" => "index.php?option=com_timeclock&task=timesheets.add",
                     "msg" => "Error Saving Timesheet"
                 )
             ),
@@ -149,8 +148,8 @@ class ComTimeclockAdminControllerTimesheetsTest extends JControllerTest
                 "apply",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=timesheets"
-                        ."&task=edit&cid[]=1",
+                    "link" => "index.php?option=com_timeclock&task=timesheets.edit"
+                        ."&cid[]=1",
                     "msg" => "Timesheet Saved!"
                 )
             ),
@@ -158,8 +157,7 @@ class ComTimeclockAdminControllerTimesheetsTest extends JControllerTest
                 "apply",
                 false,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=timesheets"
-                        ."&task=add",
+                    "link" => "index.php?option=com_timeclock&task=timesheets.add",
                     "msg" => "Error Saving Timesheet"
                 )
             ),
@@ -167,7 +165,7 @@ class ComTimeclockAdminControllerTimesheetsTest extends JControllerTest
                 "reset",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=timesheets",
+                    "link" => "index.php?option=com_timeclock&task=timesheets.display",
                     "msg" => null
                 )
             ),
@@ -175,7 +173,7 @@ class ComTimeclockAdminControllerTimesheetsTest extends JControllerTest
                 "cancel",
                 true,
                 array(
-                    "link" => "index.php?option=com_timeclock&controller=timesheets",
+                    "link" => "index.php?option=com_timeclock&task=timesheets.display",
                     "msg" => null
                 )
             ),
