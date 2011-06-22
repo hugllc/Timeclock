@@ -79,7 +79,7 @@ class ModTimeclockInfoHelper
         $ytdWhere = " `t`.`worked` >= '".date("Y")."-1-1'";
         $ytdhours = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
         if ($params->get("showYTDHours") == 1) {
-            $list[MOD_TIMECLOCKINFO_YTD] = $ytdhours." hours";
+            $list[MOD_TIMECLOCKINFO_YTD] = $ytdhours." ".JText::_(MOD_TIMECLOCKINFO_HOURS;
         }
         $days = $timeclockModel->daysSinceStart();
         if ($days > date("z")) {

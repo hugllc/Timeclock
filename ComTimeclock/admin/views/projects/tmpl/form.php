@@ -37,9 +37,9 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-$title = ($this->add) ? "Add" : "Edit";
+$title = ($this->add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
 
-TimeclockHelper::title(JText::_("Project: <small><small>[ ".$title." ]</small></small>"));
+TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_PROJECT_EDIT_TITLE, $title));
 JToolBarHelper::apply("projects.apply");
 JToolBarHelper::save("projects.save");
 JToolBarHelper::cancel("projects.cancel");
@@ -60,7 +60,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         array_shift($this->lists["users"]);
         print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
-        <button onClick="this.form.task.value='projects.adduser';this.form.submit();">Add Users</button>
+        <button onClick="this.form.task.value='projects.adduser';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_ADD_USERS); ?></button>
     </div>
     <?php
     echo $pane->endPanel();
@@ -74,7 +74,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
     }
     print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple"', 'value', 'text', 0);
         ?><br />
-            <button onClick="this.form.task.value='projects.removeuser';this.form.submit();">Remove Users</button>
+            <button onClick="this.form.task.value='projects.removeuser';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_REMOVE_USERS); ?></button>
     </div>
     <?php
 
@@ -107,7 +107,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
                 <input class="text_area" type="text" name="name" id="name" size="32" maxlength="64" value="<?php echo $this->row->name;?>" />
             </td>
             <td>
-                The name of the project
+                <?php print JText::_(COM_TIMECLOCK_NAME_PROJECT_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -120,7 +120,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
                 <textarea class="text_area" type="text" name="description" id="description" cols="30" rows="5"><?php echo $this->row->description;?></textarea>
             </td>
             <td>
-                A description of the project
+                <?php print JText::_(COM_TIMECLOCK_DESCRIPTION_PROJECT_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -133,7 +133,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
                 <?php print JHTML::_("select.genericList", $this->lists["allUsers"], "manager", '', 'value', 'text', $this->row->manager);  ?>
             </td>
             <td>
-                Who is the project manager?
+                <?php print JText::_(COM_TIMECLOCK_MANAGER_PROJECT_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -146,7 +146,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
                 <?php print JHTML::_("select.booleanList", "research", "", $this->row->research); ?>
             </td>
             <td>
-                Is this project research?
+                <?php print JText::_(COM_TIMECLOCK_RESEARCH_PROJECT_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -159,7 +159,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
                 <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
-                Is this project active?
+                <?php print JText::_(COM_TIMECLOCK_ACTIVE_PROJECT_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -172,7 +172,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
                 <?php print JHTML::_("select.genericList", $this->typeOptions, "type", "", 'value', 'text', $this->row->type); ?>
             </td>
             <td>
-                The type of project.
+                <?php print JText::_(COM_TIMECLOCK_TYPE_PROJECT_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -191,7 +191,7 @@ if ($this->row->parent_id < -1) {
 ?>
             </td>
             <td>
-                The category the project is in.
+                <?php print JText::_(COM_TIMECLOCK_CATEGORY_PROJECT_DESC); ?>
             </td>
         </tr>
 <?php
@@ -215,10 +215,7 @@ if ($this->lists["wCompEnable"] != 0) {
                 <?php endfor; ?>
             </td>
             <td>
-                The worker's comp codes.  Each code will be listed as a separate hours entry in the timeclock.
-                <strong>Make sure you know what you are doing if you change these.  Time is stored
-                in one of six slots.  If you change the worker's comp code on that slot it will
-                change everything in the past and future that is attached to that slot.</strong>
+                <?php print JText::_(COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC); ?>
             </td>
         </tr>
     <?php
@@ -234,7 +231,7 @@ if ($this->lists["wCompEnable"] != 0) {
                 <?php print JHTML::_("select.genericList", $this->lists["customers"], "customer", "", 'value', 'text', (int)$this->row->customer); ?>
             </td>
             <td>
-                The customer this project should be billed to
+                <?php print JText::_(COM_TIMECLOCK_CUSTOMER_PROJECT_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -252,7 +249,7 @@ foreach ($this->lists["projectUsers"] as $user) { ?>
 ?>
             </td>
             <td>
-                This is the list of users that are attached to this project.
+                <?php print JText::_(COM_TIMECLOCK_USERS_PROJECT_DESC); ?>
             </td>
         </tr>
     </table>

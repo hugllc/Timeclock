@@ -37,7 +37,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-TimeclockHelper::title(JText::_("User Configuration: <small><small>[ ".$this->user->name." ]</small></small>"));
+TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_USER_EDIT_TITLE, $this->user->name));
 JToolBarHelper::apply("users.apply");
 JToolBarHelper::save("users.save");
 JToolBarHelper::cancel("users.cancel");
@@ -56,7 +56,7 @@ array_shift($this->lists["projects"]);
 if (count($this->lists["projects"])) {
     print JHTML::_("select.genericList", $this->lists["projects"], "projid[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
-        <button onClick="this.form.task.value='users.addproject';this.form.submit();">Add Projects</button>
+        <button onClick="this.form.task.value='users.addproject';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_ADD_PROJECTS); ?></button>
     <?php
 } else {
     print JText::_(COM_TIMECLOCK_NO_PROJECTS);
@@ -82,7 +82,7 @@ foreach ($this->lists["userProjects"] as $proj) {
 }
 print JHTML::_("select.genericList", $options, "remove_projid[]", 'multiple="multiple"', 'value', 'text', 0);
     ?><br />
-        <button onClick="this.form.task.value='users.removeproject';this.form.submit();">Remove Projects</button>
+        <button onClick="this.form.task.value='users.removeproject';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_REMOVE_PROJECTS); ?></button>
 </div>
 <?php
 echo $pane->endPanel();
@@ -101,7 +101,7 @@ echo $pane->endPane();
                 <?php print JHTML::_("calendar", $this->row->startDate, "startDate", "startDate", "%Y-%m-%d", "");?>
             </td>
             <td>
-                When this user starts
+                <?php echo JText::_(COM_TIMECLOCK_START_DATE_USER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -114,7 +114,7 @@ echo $pane->endPane();
                 <?php print JHTML::_("calendar", $this->row->endDate, "endDate", "endDate", "%Y-%m-%d", "");?>
             </td>
             <td>
-                When this user leaves.  Leave blank if the user is still employed.
+                <?php echo JText::_(COM_TIMECLOCK_END_DATE_USER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -127,8 +127,7 @@ echo $pane->endPane();
                 <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
-                Is this user active in the timeclock.  'No' means they will not be able to access any
-                sort of timeclock.
+                <?php echo JText::_(COM_TIMECLOCK_ACTIVE_USER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -141,7 +140,7 @@ echo $pane->endPane();
                 <?php print JHTML::_("select.booleanList", "admin_reports", "", $this->row->prefs["admin_reports"]); ?>
             </td>
             <td>
-                Can this user view reports.
+                <?php echo JText::_(COM_TIMECLOCK_REPORTS_USER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -154,7 +153,7 @@ echo $pane->endPane();
                 <?php print JHTML::_("select.genericList", $this->lists["manager"], "manager", '', 'value', 'text', $this->row->manager); ?>
             </td>
             <td>
-                This is to set the supervisor for this user.  It is used in the reports.
+                <?php echo JText::_(COM_TIMECLOCK_MANAGER_USER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -167,7 +166,7 @@ echo $pane->endPane();
                 <?php print JHTML::_("select.genericList", $this->lists["status"], "admin_status", "", 'value', 'text', $this->row->prefs["admin_status"]); ?>
             </td>
             <td>
-                The status of the user
+                <?php echo JText::_(COM_TIMECLOCK_USER_STATUS_USER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -191,8 +190,7 @@ echo $pane->endPane();
                 <?php endforeach; ?>
             </td>
             <td>
-                The amount of carryover and the date it expires.  The year listed is the year PTO
-                is being carried into.
+                <?php echo JText::_(COM_TIMECLOCK_PTO_CARRYOVER_USER_DESC); ?>
             </td>
         </tr>
 <?php
@@ -208,7 +206,7 @@ if ($this->row->prefs["admin_status"] == "PARTTIME") {
                 <?php print JHTML::_("select.integerList", 0, 100, 10, "admin_holidayperc", "", $this->row->prefs["admin_holidayperc"]); ?>%
             </td>
             <td>
-                The percentage of holiday pay this user gets
+                <?php echo JText::_(COM_TIMECLOCK_HOLIDAY_PAY_USER_DESC); ?>
             </td>
         </tr>
     <?php
@@ -229,7 +227,7 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
 ?>
             </td>
             <td>
-                This is just a list of projects.
+                <?php echo JText::_(COM_TIMECLOCK_PROJECTS_USER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -237,7 +235,7 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
                 <?php print JText::_(COM_TIMECLOCK_CHANGE_HISTORY); ?>:<br />
                 (<?php print JText::_(COM_TIMECLOCK_OLD_VALUES); ?>)
             </td>
-            <td colspan="2">
+            <td>
 <?php
 if (!is_array($this->row->history["timestamps"])) $this->row->history["timestamps"] = array();
 krsort($this->row->history["timestamps"]);
@@ -269,6 +267,9 @@ foreach ($this->row->history["timestamps"] as $date => $user) { ?>
     <?php
 }
 ?>
+            </td>
+            <td>
+                <?php echo JText::_(COM_TIMECLOCK_CHANGE_HISTORY_USER_DESC); ?>
             </td>
         </tr>
     </table>

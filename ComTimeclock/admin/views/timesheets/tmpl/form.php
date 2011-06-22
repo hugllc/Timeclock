@@ -37,9 +37,9 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-$title = ($this->add) ? "Add" : "Edit";
+$title = ($this->add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
 
-TimeclockHelper::title(JText::_("Timeclock Timesheets: <small><small>[ ".$title." ]</small></small>"));
+TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_TIMESHEET_EDIT_TITLE, $title));
 JToolBarHelper::apply("timesheets.apply");
 JToolBarHelper::save("timesheets.save");
 JToolBarHelper::cancel("timesheets.cancel");
@@ -89,7 +89,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                 <?php print JHTML::_("select.genericList", $this->lists["projects"], "project_id", "", 'value', 'text', $this->row->project_id); ?>
             </td>
             <td>
-                The project
+                <?php print JText::_(COM_TIMECLOCK_PROJECT_TIMESHEET_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -102,7 +102,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                 <?php print JHTML::_("calendar", $this->row->worked, "worked", "worked", "%Y-%m-%d", "");?>
             </td>
             <td>
-                When the first pay period starts
+                <?php print JText::_(COM_TIMECLOCK_WORK_DATE_TIMESHEET_DESC); ?>
             </td>
         </tr>
         <?php for ($i = 1; $i < 7; $i++): ?>
@@ -123,7 +123,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                 <span><?php print $wcNote; ?></span>
             </td>
             <td>
-                The number of hours
+                <?php print JText::_(COM_TIMECLOCK_HOURS_TIMESHEET_DESC); ?>
             </td>
         </tr>
         <?php endfor; ?>
@@ -137,7 +137,7 @@ $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
                 <textarea class="text_area" type="text" name="notes" id="notes" cols="30" rows="5"><?php echo $this->row->notes;?></textarea>
             </td>
             <td>
-                A description of the hours
+                <?php print JText::_(COM_TIMECLOCK_NOTES_TIMESHEET_DESC); ?>
             </td>
         </tr>
         <?php endif; ?>

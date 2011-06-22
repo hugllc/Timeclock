@@ -40,8 +40,8 @@ jimport("joomla.html.pane");
 JHTML::_('behavior.tooltip');
 
 TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PROJECTS));
-JToolBarHelper::publishList('projects.publish', 'Activate');
-JToolBarHelper::unpublishList('projects.unpublish', 'Deactivate');
+JToolBarHelper::publishList('projects.publish', COM_TIMECLOCK_ACTIVATE);
+JToolBarHelper::unpublishList('projects.unpublish', COM_TIMECLOCK_DEACTIVATE);
 JToolBarHelper::editListX('projects.edit');
 JToolBarHelper::addNewX('projects.add');
 
@@ -67,39 +67,39 @@ JToolBarHelper::addNewX('projects.add');
     <thead>
             <tr>
                     <th width="5">
-                        <?php echo JHTML::_('grid.sort', 'Id', 't.id', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ID, 't.id', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
                     <th width="20">
                             <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
                     </th>
                     <th  class="title">
-                        <?php echo JHTML::_('grid.sort', 'Name', 't.name', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_NAME, 't.name', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
                     <th align="center">
-                        <?php echo JHTML::_('grid.sort', 'Category', 'p.name', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', JCATEGORY, 'p.name', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
                     <th align="center">
-                        <?php echo JHTML::_('grid.sort', 'Customer', 'c.company', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_CUSTOMER, 'c.company', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
                     <th width="1%" align="center">
-                        <?php echo JHTML::_('grid.sort', 'Active', 't.published', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ACTIVE, 't.published', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
 <?php
 if ($this->lists["wCompEnable"] != 0) { ?>
                     <th width="5%" align="center">
-                        <?php echo JHTML::_('grid.sort', "Worker's Comp", 't.wcCode', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_WORKERS_COMP, 't.wcCode', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
     <?php
 }
 ?>
                     <th width="5%" align="center">
-                        <?php echo JHTML::_('grid.sort', 'Type', 't.Type', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_TYPE, 't.Type', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
                     <th width="1%" align="center">
-                        <?php echo JHTML::_('grid.sort', 'Research', 't.research', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_RESEARCH, 't.research', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
                     <th width="5%" nowrap="nowrap">
-                        <?php echo JHTML::_('grid.sort', 'Manager', 't.manager', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
+                        <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_MANAGER, 't.manager', @$this->lists['order_Dir'], @$this->lists['order'], 'projects.display'); ?>
                     </th>
             </tr>
     </thead>

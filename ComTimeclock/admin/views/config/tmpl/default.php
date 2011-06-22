@@ -58,7 +58,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.integerList", 1, 24, 1, "prefs[maxDailyHours]", "", $this->prefs["maxDailyHours"]); ?>
             </td>
             <td>
-                The maximum number of hours an employee is allowed to post in a day.
+                <?php print JText::_(COM_TIMECLOCK_MAX_DAILY_HOURS_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -71,7 +71,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.integerList", 0, 5, 1, "prefs[decimalPlaces]", "", $this->prefs["decimalPlaces"]); ?>
             </td>
             <td>
-                Default number of decimal places to show.
+                <?php echo JText::_(COM_TIMECLOCK_DECIMAL_PLACES_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -84,7 +84,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <input class="text_area" type="text" size="10" maxlength="50" name="prefs[minNoteChars]" id="prefs_minNoteChars" value="<?php echo $this->prefs["minNoteChars"];?>" /> Characters
             </td>
             <td>
-                The minimum number of characters to accept as a note.  Set to 0 to disable.
+                <?php echo JText::_(COM_TIMECLOCK_MINIMUM_NOTE_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -97,9 +97,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <textarea class="text_area" type="text" name="prefs[userTypes]" id="prefs_userTypes" cols="50" rows="5"><?php echo $this->prefs["userTypes"];?></textarea>
             </td>
             <td>
-                One type per line.  It can either be: shortname:longname or just
-                longname.  The order they show up here is the order they will be
-                in the pulldown dialog.
+                <?php echo JText::_(COM_TIMECLOCK_USER_TYPES_DESC); ?>
             </td>
         </tr>
     </table>
@@ -123,7 +121,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("calendar", $this->prefs["firstPayPeriodStart"], "prefs[firstPayPeriodStart]", "prefsfirstPayPeriodStart", "%Y-%m-%d", "");?>
             </td>
             <td>
-                When the first pay period starts
+                <?php echo JText::_(COM_TIMECLOCK_FIRST_PAY_PERIOD_START_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -136,7 +134,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.genericList", $this->payPeriodTypeOptions, "prefs[payPeriodType]", "", 'value', 'text', $this->prefs["payPeriodType"]); ?>
             </td>
             <td>
-                The type of payperiod
+                <?php echo JText::_(COM_TIMECLOCK_PAY_PERIOD_TYPE_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -149,7 +147,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.integerList", 1, 31, 1, "prefs[payPeriodLengthFixed]", "", $this->prefs["payPeriodLengthFixed"]); ?>
             </td>
             <td>
-                The length of the pay period in days for a fixed length pay period
+                <?php echo JText::_(COM_TIMECLOCK_PAY_PERIOD_LENGTH_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -162,7 +160,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.genericList", $this->timesheetViewOptions, "prefs[timesheetView]", "", 'value', 'text', $this->prefs["timesheetView"]); ?>
             </td>
             <td>
-                How the user views their timesheet.  "payperiod" sets this to the same as the payperiods.
+                <?php echo JText::_(COM_TIMECLOCK_TIMESHEET_VIEW_PERIOD_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -175,7 +173,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.integerList", 1, 31, 1, "prefs[viewPeriodLengthFixed]", "", $this->prefs["viewPeriodLengthFixed"]); ?>
             </td>
             <td>
-                The length of the view period in days for a fixed length view period
+                <?php echo JText::_(COM_TIMECLOCK_VIEW_PERIOD_LENGTH_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -188,8 +186,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("calendar", $firstViewPeriodStart, "prefs[firstViewPeriodStart]", "prefsfirstViewPeriodStart", "%Y-%m-%d", "");?>
             </td>
             <td>
-                This is for calculating 1-Week and 2-Week views.  The day this starts on will be shown as the first day of the week.
-                This is ignored for 'payperiod' view.
+                <?php echo JText::_(COM_TIMECLOCK_FIRST_VIEW_PERIOD_START_DESC); ?>
             </td>
         </tr>
     </table>
@@ -208,7 +205,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.booleanList", "prefs[ptoEnable]", "", $this->prefs["ptoEnable"]); ?>
             </td>
             <td>
-                Select whether timeclock should keep track of PTO accrual.
+                <?php echo JText::_(COM_TIMECLOCK_ACCRUE_PTO_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -221,12 +218,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <textarea class="text_area" type="text" name="prefs[ptoAccrualRates]" id="prefs_ptoAccrualRates" cols="50" rows="10"><?php echo $this->prefs["ptoAccrualRates"];?></textarea>
             </td>
             <td>
-                The first line is a colon separated list of user types.  Every line
-                after that each line is a colon separated list:
-                <pre>
-[years of service]:[accrual rate for 1st type]:[accrual rate for 2nd type]...
-                </pre>
-                <strong>The service is in years.  The accrual rates are in days per year.</strong>
+                <?php echo JText::_(COM_TIMECLOCK_ACCRUAL_RATES_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -239,7 +231,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <input class="text_area" type="text" size="10" maxlength="100" name="prefs[ptoAccrualWait]" id="prefs_ptoAccrualWait" value="<?php echo $this->prefs["ptoAccrualWait"];?>" />
             </td>
             <td>
-                This is the number of days an employee has to work before PTO shows up.
+                <?php echo JText::_(COM_TIMECLOCK_DAYS_BEFORE_ACCRUAL_BEGINS_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -252,7 +244,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.integerList", 1, 24, 1, "prefs[ptoHoursPerDay]", "", $this->prefs["ptoHoursPerDay"]); ?>
             </td>
             <td>
-                How many PTO hours does the user get per day listed above.
+                <?php echo JText::_(COM_TIMECLOCK_PTO_HOURS_PER_DAY_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -265,7 +257,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.genericList", $this->ptoAccrualPeriodOptions, "prefs[ptoAccrualPeriod]", "", 'value', 'text', $this->prefs["ptoAccrualPeriod"]); ?>
             </td>
             <td>
-                The user gets PTO hours periodically on this time frame
+                <?php echo JText::_(COM_TIMECLOCK_ACCRUAL_PERIOD_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -278,7 +270,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.genericList", $this->ptoAccrualTimeOptions, "prefs[ptoAccrualTime]", "", 'value', 'text', $this->prefs["ptoAccrualTime"]); ?>
             </td>
             <td>
-                When during the period is the time accrued
+                <?php echo JText::_(COM_TIMECLOCK_ACCRUAL_TIME_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -291,8 +283,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <input class="text_area" type="text" size="20" maxlength="20" name="prefs[ptoCarryOverDefExpire]" id="ptoCarryOverDefExpire" value="<?php echo $this->prefs["ptoCarryOverDefExpire"];?>" />
             </td>
             <td>
-                The default time that PTO carry over expires.  This is in the form Month-Day.  The
-                year will be automatically added on for each year PTO carry over happens.
+                <?php echo JText::_(COM_TIMECLOCK_DEFAULT_PTO_CARRYOVER_EXPIRATION_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -305,7 +296,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <input class="text_area" type="text" size="10" maxlength="100" name="prefs[ptoNegative]" id="prefs_ptoNegative" value="<?php echo $this->prefs["ptoNegative"];?>" />
             </td>
             <td>
-                This is the amount a user can go negative and still be within acceptable limits
+                <?php echo JText::_(COM_TIMECLOCK_ACCEPTABLE_NEGATIVE_PTO_DESC); ?>
             </td>
         </tr>
 
@@ -325,7 +316,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.booleanList", "prefs[wCompEnable]", "", $this->prefs["wCompEnable"]); ?>
             </td>
             <td>
-                Enable the Worker's Compensation extension
+                <?php echo JText::_(COM_TIMECLOCK_WC_ENABLE_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -338,8 +329,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <textarea class="text_area" type="text" name="prefs[wCompCodes]" id="prefs_wCompCodes" cols="50" rows="5"><?php echo $this->prefs["wCompCodes"];?></textarea>
             </td>
             <td>
-                Worker's Compensation codes.  Put one per line.  The first 4 characters of the line are the code,
-                the rest is a description of the code.
+                <?php echo JText::_(COM_TIMECLOCK_CODES_DESC); ?>
             </td>
         </tr>
     </table>
@@ -358,7 +348,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <input class="text_area" type="text" size="50" maxlength="100" name="prefs[JPGraphPath]" id="prefs_JPGraphPath" value="<?php echo $this->prefs["JPGraphPath"];?>" />
             </td>
             <td>
-                Enter the path to jpgraph.php.
+                <?php echo JText::_(COM_TIMECLOCK_JPGRAPH_PATH_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -371,8 +361,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <?php print JHTML::_("select.booleanList", "prefs[timeclockDisable]", "", $this->prefs["timeclockDisable"]); ?>
             </td>
             <td>
-                This allows the timeclock system to be taken down for maintenance without taking the rest of your
-                website down.
+                <?php echo JText::_(COM_TIMECLOCK_DISABLE_TIMECLOCK_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -385,7 +374,7 @@ TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS));
                 <textarea class="text_area" type="text" name="prefs[timeclockDisableMessage]" id="prefs_timeclockDisableMessage" cols="50" rows="5"><?php echo $this->prefs["timeclockDisableMessage"];?></textarea>
             </td>
             <td>
-                This is the message that timeclock users will receive if the timeclock is down for maintenance.
+                <?php echo JText::_(COM_TIMECLOCK_DISABLE_MESSAGE_DESC); ?>
             </td>
         </tr>
     </table>

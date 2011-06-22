@@ -40,8 +40,8 @@ jimport("joomla.html.pane");
 JHTML::_('behavior.tooltip');
 
 TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_USER_CONFIG));
-JToolBarHelper::publishList("users.publish", "Activate");
-JToolBarHelper::unpublishList("users.unpublish", "Deactivate");
+JToolBarHelper::publishList("users.publish", COM_TIMECLOCK_ACTIVATE);
+JToolBarHelper::unpublishList("users.unpublish", COM_TIMECLOCK_DEACTIVATE);
 JToolBarHelper::editListX("users.edit");
 
 ?>
@@ -66,13 +66,13 @@ JToolBarHelper::editListX("users.edit");
     <thead>
         <tr>
             <th width="5">
-                <?php echo JHTML::_('grid.sort', 'Id', 'u.id', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ID, 'u.id', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
             </th>
             <th width="20">
                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
             </th>
             <th  class="title">
-                <?php echo JHTML::_('grid.sort', 'Name', 'u.name', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_NAME, 'u.name', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
             </th>
             <th width="1%" align="center">
                 <?php echo JText::_(COM_TIMECLOCK_ACTIVE); ?>
@@ -81,7 +81,7 @@ JToolBarHelper::editListX("users.edit");
                 <?php echo JText::_(COM_TIMECLOCK_REPORTS); ?>
             </th>
             <th width="10%" align="center">
-                <?php echo JHTML::_('grid.sort', 'Last Visit', 'u.lastvisitDate', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_LAST_VISIT, 'u.lastvisitDate', @$this->lists['order_Dir'], @$this->lists['order'], "users.display"); ?>
             </th>
             <th width="10%" align="center">
                 <?php echo JText::_(COM_TIMECLOCK_START_DATE); ?>
@@ -135,7 +135,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 <?php echo $checked; ?>
             </td>
             <td>
-                <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_PROJECT);?>::<?php echo $row->name; ?>">
+                <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_USER);?>::<?php echo $row->name; ?>">
                 <a href="<?php echo $link  ?>">
                 <?php echo $row->name; ?></a></span>
             </td>

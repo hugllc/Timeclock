@@ -58,7 +58,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
-                Is this customer active?
+                <?php echo JText::_(COM_TIMECLOCK_ACTIVE_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -71,8 +71,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <?php print JHTML::_("select.booleanList", "bill_pto", "", $this->row->bill_pto); ?>
             </td>
             <td>
-                Should the billing report show a percentage of PTO based on how many hours the user worked
-                on this project?
+                <?php echo JText::_(COM_TIMECLOCK_BILL_FOR_PTO_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -85,7 +84,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="name" id="name" size="32" maxlength="64" value="<?php echo $this->row->name;?>" />
             </td>
             <td>
-                The name of the contact person
+                <?php echo JText::_(COM_TIMECLOCK_CONTACT_NAME_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -98,7 +97,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="company" id="company" size="32" maxlength="64" value="<?php echo $this->row->company;?>" />
             </td>
             <td>
-                The name of the company
+                <?php echo JText::_(COM_TIMECLOCK_COMPANY_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -111,7 +110,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="address1" id="address1" size="64" maxlength="64" value="<?php echo $this->row->address1;?>" />
             </td>
             <td>
-                The name of the address of the company
+                <?php echo JText::_(COM_TIMECLOCK_ADDRESS1_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -124,7 +123,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="address2" id="address2" size="64" maxlength="64" value="<?php echo $this->row->address2;?>" />
             </td>
             <td>
-                The name of the address of the company
+                <?php echo JText::_(COM_TIMECLOCK_ADDRESS2_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -137,7 +136,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="city" id="city" size="32" maxlength="64" value="<?php echo $this->row->city;?>" />
             </td>
             <td>
-                The name of the city of the company
+                <?php echo JText::_(COM_TIMECLOCK_CITY_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -150,7 +149,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="state" id="state" size="32" maxlength="64" value="<?php echo $this->row->state;?>" />
             </td>
             <td>
-                The name of the state of the company
+                <?php echo JText::_(COM_TIMECLOCK_STATE_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -163,7 +162,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="zip" id="zip" size="15" maxlength="10" value="<?php echo $this->row->zip;?>" />
             </td>
             <td>
-                The name of the zip code of the company
+                <?php echo JText::_(COM_TIMECLOCK_ZIP_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -176,7 +175,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <input class="text_area" type="text" name="country" id="country" size="32" maxlength="64" value="<?php echo $this->row->country;?>" />
             </td>
             <td>
-                The name of the country of the company
+                <?php echo JText::_(COM_TIMECLOCK_COUNTRY_CUSTOMER_DESC); ?>
             </td>
         </tr>
         <tr>
@@ -189,7 +188,7 @@ JToolBarHelper::cancel("customers.cancel");
                 <textarea class="text_area" type="text" name="notes" id="notes" cols="30" rows="5"><?php echo $this->row->notes;?></textarea>
             </td>
             <td>
-                Any notes on this customer
+                <?php echo JText::_(COM_TIMECLOCK_NOTES_CUSTOMER_DESC); ?>
             </td>
         </tr>
     </table>

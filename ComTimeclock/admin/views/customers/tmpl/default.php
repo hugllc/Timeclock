@@ -40,8 +40,8 @@ jimport("joomla.html.pane");
 JHTML::_('behavior.tooltip');
 
 TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_CUSTOMERS));
-JToolBarHelper::publishList("customers.publish", "Activate");
-JToolBarHelper::unpublishList("customers.unpublish", "Deactivate");
+JToolBarHelper::publishList("customers.publish", COM_TIMECLOCK_ACTIVATE);
+JToolBarHelper::unpublishList("customers.unpublish", COM_TIMECLOCK_DEACTIVATE);
 JToolBarHelper::editListX("customers.edit");
 JToolBarHelper::addNewX("customers.add");
 
@@ -66,25 +66,25 @@ JToolBarHelper::addNewX("customers.add");
     <thead>
         <tr>
             <th width="5">
-                <?php echo JHTML::_('grid.sort', 'Id', 'c.id', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ID, 'c.id', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="20">
                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
             </th>
             <th  class="title">
-                <?php echo JHTML::_('grid.sort', 'Company', 'c.company', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_COMPANY, 'c.company', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="10%" nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', 'Contact Name', 'c.name', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_CONTACT_NAME, 'c.name', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="1%" nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', 'Active', 'c.published', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ACTIVE, 'c.published', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="1%" nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', 'Bill PTO', 'c.bill_pto', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_BILL_PTO, 'c.bill_pto', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', 'Notes', 'c.notes', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_NOTES, 'c.notes', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
         </tr>
     </thead>
@@ -121,7 +121,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
         echo $row->company;
     } else {
         ?>
-                <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_PROJECT);?>::<?php echo $row->company; ?>">
+                <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_CUSTOMER);?>::<?php echo $row->company; ?>">
                 <a href="<?php echo $link  ?>">
                 <?php echo $row->company; ?></a></span>
         <?php

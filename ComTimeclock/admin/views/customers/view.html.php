@@ -162,8 +162,8 @@ class TimeclockAdminViewCustomers extends JView
         $lists['state'] = JHTML::_(
             'grid.state',
             $filter_state,
-            "Active",
-            "Inactive"
+            COM_TIMECLOCK_ACTIVE,
+            COM_TIMECLOCK_INACTIVE
         );
 
         // table ordering
