@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="timeclock">
+        <fieldset name="timeclock"
+            label="PLG_USER_TIMECLOCK_SLIDER_LABEL"
+        >
+        <field
+            name="active"
+            type="radio"
+            class="inputbox"
+            label="PLG_USER_TIMECLOCK_ACTIVE"
+            description="PLG_USER_TIMECLOCK_ACTIVE_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+        </field>
+        <field
+            name="startDate"
+            type="calendar"
+            class="inputbox"
+            label="PLG_USER_TIMECLOCK_START_DATE"
+            description="PLUG_USER_TIMECLOCK_START_DATE_DESC"
+            format="%Y-%m-%d"
+            default=""
+            required="true"
+                />
+        <field
+            name="endDate"
+            type="calendar"
+            class="inputbox"
+            label="PLG_USER_TIMECLOCK_END_DATE"
+            description="PLG_USER_TIMECLOCK_END_DATE_DESC"
+            format="%Y-%m-%d"
+            default="0000-00-00"
+            required="false"
+                />
+        <field
+            name="reports"
+            type="radio"
+            class="inputbox"
+            label="PLG_USER_TIMECLOCK_REPORTS"
+            description="PLG_USER_TIMECLOCK_REPORTS_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+        </field>
+        <field
+            name="manager"
+            type="user"
+            class="inputbox"
+            label="PLG_USER_TIMECLOCK_MANAGER"
+            description="PLG_USER_TIMECLOCK_MANAGER_DESC"
+            default="0"
+            required="true"
+                />
+        <field
+            name="holidayperc"
+            type="list"
+            class="inputbox"
+            label="PLG_USER_TIMECLOCK_HOLIDAY_PAY"
+            description="PLG_USER_TIMECLOCK_HOLIDAY_PAY_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="0">0%</option>
+                    <option value="10">10%</option>
+                    <option value="20">20%</option>
+                    <option value="30">30%</option>
+                    <option value="40">40%</option>
+                    <option value="50">50%</option>
+                    <option value="60">60%</option>
+                    <option value="70">70%</option>
+                    <option value="80">80%</option>
+                    <option value="90">90%</option>
+                    <option value="100">100%</option>
+        </field>
+
+<!--
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="type">
+                    <?php echo JText::_(COM_TIMECLOCK_USER_STATUS); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.genericList", $this->lists["status"], "admin_status", "", 'value', 'text', $this->row->prefs["admin_status"]); ?>
+            </td>
+            <td>
+                <?php echo JText::_(COM_TIMECLOCK_USER_STATUS_USER_DESC); ?>
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="type">
+                    <?php echo JText::_(COM_TIMECLOCK_PTO_CARRYOVER); ?>:
+                </label>
+            </td>
+            <td>
+                <?php foreach ($this->ptoCarryOver as $year => $value): ?>
+                <div style="border: thin solid grey;">
+                    <input type="text" name="admin_ptoCarryOver[<?php print $year; ?>]" size="7" maxlength="5" value="<?php print $value; ?>" />
+                    <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
+                    <?php print JText::_(COM_TIMECLOCK_CARRIED_OVER_TO); ?>
+                    <strong><?php print $year; ?></strong>
+                    <div style="white-space: nowrap; margin-top: 0px;">
+                        <?php print JText::_(COM_TIMECLOCK_EXPIRES); ?>
+                        <?php print JHTML::_("calendar", $this->ptoCarryOverExpire[$year], "admin_ptoCarryOverExpire[$year]", "admin_ptoCarryOverExpire[$year]", "%Y-%m-%d", "");?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </td>
+            <td>
+                <?php echo JText::_(COM_TIMECLOCK_PTO_CARRYOVER_USER_DESC); ?>
+            </td>
+        </tr>
+<?php
+if ($this->row->prefs["admin_status"] == "PARTTIME") {
+    ?>
+        <tr>
+            <td width="100" align="right" class="key">
+                <label for="holidayperc">
+                    <?php echo JText::_(COM_TIMECLOCK_HOLIDAY_PAY); ?>:
+                </label>
+            </td>
+            <td>
+                <?php print JHTML::_("select.integerList", 0, 100, 10, "admin_holidayperc", "", $this->row->prefs["admin_holidayperc"]); ?>%
+            </td>
+            <td>
+                <?php echo JText::_(COM_TIMECLOCK_HOLIDAY_PAY_USER_DESC); ?>
+            </td>
+        </tr>
+    <?php
+    <field
+                name="address1"
+                type="text"
+                id="address1"
+                description="PLG_USER_PROFILE_FIELD_ADDRESS1_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_ADDRESS1_LABEL"
+                message="PLG_USER_PROFILE_FIELD_ADDRESS1_MESSAGE"
+                size="30"
+            />
+
+            <field
+                name="address2"
+                type="text"
+                id="address2"
+                description="PLG_USER_PROFILE_FIELD_ADDRESS2_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_ADDRESS2_LABEL"
+                message="PLG_USER_PROFILE_FIELD_ADDRESS1_MESSAGE"
+                size="30"
+            />
+
+            <field
+                name="city"
+                type="text"
+                id="city"
+                description="PLG_USER_PROFILE_FIELD_CITY_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_CITY_LABEL"
+                message="PLG_USER_PROFILE_FIELD_CITY_MESSAGE"
+                size="30"
+            />
+
+            <field
+                name="region"
+                type="text"
+                id="region"
+                description="PLG_USER_PROFILE_FIELD_REGION_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_REGION_LABEL"
+                message="PLG_USER_PROFILE_FIELD_REGION_MESSAGE"
+                size="30"
+            />
+
+            <field
+                name="country"
+                type="text"
+                id="country"
+                description="PLG_USER_PROFILE_FIELD_COUNTRY_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_COUNTRY_LABEL"
+                message="PLG_USER_PROFILE_FIELD_COUNTRY_MESSAGE"
+                size="30"
+            />
+
+            <field
+                name="postal_code"
+                type="text"
+                id="postal_code"
+                description="PLG_USER_PROFILE_FIELD_POSTAL_CODE_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_POSTAL_CODE_LABEL"
+                message="PLG_USER_PROFILE_FIELD_POSTAL_CODE_MESSAGE"
+                size="30"
+            />
+
+            <field
+                name="phone"
+                type="tel"
+                id="phone"
+                description="PLG_USER_PROFILE_FIELD_PHONE_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_PHONE_LABEL"
+                message="PLG_USER_PROFILE_FIELD_PHONE_MESSAGE"
+                size="30"
+            />
+
+            <field
+                name="website"
+                type="url"
+                id="website"
+                description="PLG_USER_PROFILE_FIELD_WEB_SITE_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_WEB_SITE_LABEL"
+                message="PLG_USER_PROFILE_FIELD_WEB_SITE_MESSAGE"
+                size="30"
+            />
+            <field
+                name="favoritebook"
+                type="text"
+                description="PLG_USER_PROFILE_FIELD_FAVORITE_BOOK_DESC"
+                filter="string"
+                label="PLG_USER_PROFILE_FIELD_FAVORITE_BOOK_LABEL"
+                message="PLG_USER_PROFILE_FIELD_FAVORITE_BOOK_MESSAGE"
+                size="30"
+            />
+            <field
+                name="aboutme"
+                type="textarea"
+                description="PLG_USER_PROFILE_FIELD_ABOUT_ME_DESC"
+                label="PLG_USER_PROFILE_FIELD_ABOUT_ME_LABEL"
+                message="PLG_USER_PROFILE_FIELD_ABOUT_ME_MESSAGE"
+                cols="30"
+                rows="5"
+                filter="safehtml"
+            />
+            <field
+                    name="tos"
+                    type="radio"
+                    label="PLG_USER_PROFILE_FIELD_TOS_LABEL"
+                    description="PLG_USER_PROFILE_FIELD_TOS_DESC">
+                    <option    value="1">PLG_USER_PROFILE_OPTION_AGREE</option>
+            </field>
+            <field
+                    name="dob"
+                    type="calendar"
+                    label="PLG_USER_PROFILE_FIELD_DOB_LABEL"
+                    description="PLG_USER_PROFILE_FIELD_DOB_DESC"
+                 />
+                     -->
+        </fieldset>
+    </fields>
+</form>

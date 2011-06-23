@@ -86,7 +86,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      */
     function getTimesheetData($where, $limitstart=null, $limit=null, $orderby="")
     {
-        $db = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+        $db = TimeclockHelper::getParam("decimalPlaces");
         if (empty($where)) {
             $where = " 1 ";
         }

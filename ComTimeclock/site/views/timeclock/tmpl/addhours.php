@@ -51,8 +51,6 @@ $document->setTitle(
         JHTML::_('date', $this->date." 06:00:00", $shortDateFormat)
     )
 );
-$wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
-$wCompEnabled = TableTimeclockPrefs::getPref("wCompEnable", "system");
 
 JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
 
@@ -147,14 +145,14 @@ foreach ($this->projects as $cat) {
         // Now do something about the codes
         for ($i = 1; $i < 7; $i++):
             $wcNote = "";
-            if (($wCompEnabled) && ($code)) {
+            if (($this->wCompEnable) && ($code)) {
                 $var = "hours".$i;
                 $wcVar = "wcCode".$i;
                 $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0;
                 if (($proj->$wcVar <= 0) && ($hours == 0)) {
                     continue;
                 }
-                $wcName = empty($wCompCodes[abs($proj->$wcVar)]) ? JText::_("Unknown")."[".$i."]" : $wCompCodes[abs($proj->$wcVar)];
+                $wcName = empty($this->wCompCodes[abs($proj->$wcVar)]) ? JText::_("Unknown")."[".$i."]" : $this->wCompCodes[abs($proj->$wcVar)];
                 if ($proj->$wcVar < 0) {
                     $wcNote = JText::_('No New Hours');
                 }
@@ -249,8 +247,8 @@ foreach ($this->projects as $cat) {
                  &nbsp;
             </th>
             <td>
-                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.applyhours';" class="button validate"><?php print JText::_("Apply"); ?></button>
-                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.savehours';" class="button validate"><?php print JText::_("Save"); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.applyhours';" class="button validate"><?php print JText::_(COM_TIMECLOCK_APPLY); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.savehours';" class="button validate"><?php print JText::_(COM_TIMECLOCK_SAVE); ?></button>
             </td>
         </tr>
 

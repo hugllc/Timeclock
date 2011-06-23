@@ -39,9 +39,6 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip');
 
-TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_HOLIDAYS));
-JToolBarHelper::editListX("holidays.edit");
-JToolBarHelper::addNewX("holidays.add");
 
 ?>
 <form action="index.php" method="post" id="adminForm" name="adminForm">

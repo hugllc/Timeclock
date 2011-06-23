@@ -39,10 +39,6 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip');
 
-TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_TIMESHEETS));
-JToolBarHelper::editListX("timesheets.edit");
-JToolBarHelper::addNewX("timesheets.add");
-
 ?>
 <form action="index.php" method="post" id="adminForm" name="adminForm">
 <table>

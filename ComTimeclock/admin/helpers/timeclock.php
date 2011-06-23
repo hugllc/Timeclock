@@ -35,6 +35,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+jimport('joomla.html.parameter');
 
 /**
  * ComTimeclock World Component Controller
@@ -111,7 +112,7 @@ class TimeclockHelper
     *
     * @return none
     */
-    function title($title)
+    static public function title($title)
     {
         $mainframe = JFactory::getApplication();
 
@@ -124,8 +125,8 @@ class TimeclockHelper
         $mainframe->set('JComponentTitle', $html);
     }
     /**
-     * Get the actions
-     */
+    * Get the actions
+    */
     public static function getActions($messageId = 0)
     {
         $user   = JFactory::getUser();
@@ -143,7 +144,7 @@ class TimeclockHelper
         );
 
         foreach ($actions as $action) {
-            $result->set($action,   $user->authorise($action, $assetName));
+            $result->set($action, $user->authorise($action, $assetName));
         }
 
         return $result;
@@ -153,7 +154,7 @@ class TimeclockHelper
      *
      * @return string
      */
-    function referer()
+    static public function referer()
     {
         $referer = JRequest::getString('referer', "", 'post');
         if (!empty($referer)) {
@@ -165,6 +166,116 @@ class TimeclockHelper
         }
         return "index.php";
 
+    }
+
+
+    /**
+     * Get an array of user types
+     *
+     * @return string
+     */
+    static public function getUserTypes()
+    {
+        $v = explode("\n", self::getParam("userTypes"));
+        foreach ($v as $line) {
+            $line = strip_tags(trim($line));
+            if (empty($line)) {
+                continue;
+            }
+            $line = explode(":", $line);
+            if (count($line) > 1) {
+                $key = strtoupper(str_replace(" ", "", trim($line[0])));
+                $ret[$key] = trim($line[1]);
+            } else {
+                $line = trim($line[0]);
+                $key = strtoupper(str_replace(" ", "", substr($line, 0, 16)));
+                $ret[$key] = $line;
+            }
+        }
+        return (array)$ret;
+    }
+    /**
+     * Get an array of worker's comp codes
+     *
+     * @return array
+     */
+    static public function getWCompCodes()
+    {
+        $enabled = (bool)self::getParam("wCompEnable");
+        if (!$enabled) {
+            return array(0 => "Hours");
+        }
+        $ret = array();
+        $v = explode("\n", self::getParam("wCompCodes"));
+        foreach ($v as $line) {
+            $line = trim($line);
+            $line = explode(" ", $line);
+            $key = abs($line[0]);
+            unset($line[0]);
+            $val = implode(" ", $line);
+            $ret[(int)$key] = $val;
+        }
+        return (array)$ret;
+    }
+    /**
+     * get an array of PTO accrual rates
+     *
+     * @return array
+     */
+    static public function getPtoAccrualRates()
+    {
+        $enabled = (bool)self::getParam("ptoEnable");
+        if (!$enabled) {
+            return array();
+        }
+        $ret = array();
+
+        $rates = self::getParam("ptoAccrualRates");
+        foreach (explode("\n", $rates) as $line) {
+            $line = trim($line);
+            if (!isset($keys)) {
+                $keys = explode(":", $line);
+            } else {
+                $line = explode(":", $line);
+                foreach ($keys as $k => $name) {
+                    $ret[$name][$line[0]] = $line[$k+1];
+                }
+            }
+        }
+        return (array)$ret;
+    }
+    /**
+    * gets a component parameter
+    *
+    * @param string $param The parameter to get
+    *
+    * @return array
+    */
+    static public function getParam($param)
+    {
+        static $params;
+        if (!is_object($params)) {
+            $component = &JComponentHelper::getComponent('com_timeclock');
+            $params = new JParameter($component->params);
+        }
+        return $params->get($param);
+    }
+    /**
+    * gets a component parameter
+    *
+    * @param string $param The parameter to get
+    *
+    * @return array
+    */
+    static public function getUserParam($param)
+    {
+        static $params;
+        if (!is_object($params)) {
+            $prefs = TimeclockPrefs::getInstance();
+            $prefs->load(JFactory::getUser()->id);
+            $params = new JParameter($prefs->prefs);
+        }
+        return $params->get($param);
     }
 
 }

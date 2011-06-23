@@ -97,34 +97,8 @@ class TableTimeclockPrefs extends JTable
      * @var array The defaults for everything
      */
     private static $_defaults = array(
-        "system" => array(
-            "decimalPlaces" => 2,
-            "maxDailyHours" => 24,
-            "firstPayPeriodStart" => "2000-12-11",
-            "payPeriodType" => "FIXED",
-            "payPeriodLengthFixed" => 14,
-            "wCompEnable" => 0,
-            "wCompCodes" => '',
-            "timeclockDisable" => 0,
-            "timeclockDisableMessage" =>
-                "The timeclock system is currently down for maintenance.  Please try again later.",
-            "userTypes" => "FULLTIME:Full Time\nPARTTIME:Part Time\nCONTRACTOR:Contractor\nTEMPORARY:Temporary\nTERMINATED:Terminated\nRETIRED:Retired\nUNPAID:Unpaid Leave",
-            "ptoHoursPerDay" => 8,
-            "ptoEnable" => 0,
-            "ptoAccrualPeriod" => "week",
-            "ptoAccrualTime" => "end",
-            "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:10:5\n5:15:7.5\n20:20:10\n99:25:12.5",
-            "minNoteChars" => 10,
-            "ptoCarryOverDefExpire" => "03-31",
-            "ptoNegative" => 0,
-            "timesheetView" => "payperiod",
-            "viewPeriodLengthFixed" => 14,
-            "firstViewPeriodStart" => "2000-12-11",
-        ),
-        "user" => array(
-            "admin_holidayperc" => 100,
-            "admin_status" => "FULLTIME",
-        ),
+        "admin_holidayperc" => 100,
+        "admin_status" => "FULLTIME",
 
     );
 
@@ -137,7 +111,9 @@ class TableTimeclockPrefs extends JTable
      */
     public function encode($value)
     {
-        return base64_encode(serialize($value));
+        $params = new JParameter();
+        $params->bind($value);
+        return (string)$params;
     }
     /**
      * Encode the parameters
@@ -150,11 +126,16 @@ class TableTimeclockPrefs extends JTable
     {
         if (is_array($value)) {
             return $value;
+        } else {
+            if (is_string($value) && (substr(trim($value), -1) !== "}")) {
+                return (array) unserialize(base64_decode($value));
+            }
         }
         if (!is_string($value)) {
             return array();
         }
-        return unserialize(base64_decode($value));
+        $params = new JParameter($value);
+        return (array)$params->toArray();
     }
 
     /**
@@ -168,7 +149,7 @@ class TableTimeclockPrefs extends JTable
     {
         $ret = parent::load($oid);
         $prefs = self::decode($this->prefs);
-        $this->prefs = array_merge(self::$_defaults["user"], $prefs);
+        $this->prefs = array_merge(self::$_defaults, $prefs);
         $this->history = self::decode($this->history);
         // If we don't find it create one
         if (!$ret) {
@@ -196,17 +177,11 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function create($oid = -1)
+    function create($oid)
     {
         $this->id = (int) $oid;
-        if ($oid > 0) {
-            $pref = "user";
-        }
-        if ($oid <= 0) {
-            $pref = "system";
-        }
         $this->id = $oid;
-        $this->prefs = self::$_defaults[$pref];
+        $this->prefs = self::$_defaults;
         // Default the start date to today if it is empty.
         if (($this->startDate == "0000-00-00") || empty($this->startDate)) {
             $this->startDate = date("Y-m-d");
@@ -275,30 +250,25 @@ class TableTimeclockPrefs extends JTable
      * Gets preferences
      *
      * @param string $name   The name of the pref to get
-     * @param string $type   The type of param to get
      * @param int    $oid    Optional Id argument
      * @param bool   $reload Force the reloading of the prefs
      *
      * @return mixed The value of the parameter.
      */
-    function getPref($name, $type="user", $oid = null, $reload=false)
+    function getPref($name, $oid = null, $reload=false)
     {
         static $instance;
-        if ($type == "system") {
-            $oid = -1;
-        } else {
-            if (empty($oid)) {
-                $u =& JFactory::getUser();
-                $oid = $u->get("id");
-            }
-            // Unauthenticated user.  We don't care
-            if (empty($oid)) {
-                return null;
-            }
-            $type = "user";
+        if (empty($oid)) {
+            $u =& JFactory::getUser();
+            $oid = $u->get("id");
         }
+        // Unauthenticated user.  We don't care
+        if (empty($oid)) {
+            return null;
+        }
+        $type = "user";
 
-        $inst =& $instance[$type][$oid];
+        $inst =& $instance[$oid];
         if (empty($inst)) {
             $inst = JTable::getInstance("TimeclockPrefs", "Table");
             $reload = true;
@@ -312,11 +282,8 @@ class TableTimeclockPrefs extends JTable
         if (isset($inst->prefs[$name])) {
             return self::filterPref($name, $inst->prefs[$name]);
         }
-        if (isset(self::$_defaults[$type][$name])) {
-            return self::getDefaultPref($name, $type);
-        }
-        if ($type != "system") {
-            return self::getPref($name, "system", $oid);
+        if (isset(self::$_defaults[$name])) {
+            return self::getDefaultPref($name);
         }
         return self::filterPref($name, null);
     }
@@ -328,9 +295,9 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function getDefaultPref($name, $type="user")
+    function getDefaultPref($name)
     {
-        return self::filterPref($name, self::$_defaults[$type][$name]);
+        return self::filterPref($name, self::$_defaults[$name]);
     }
 
     /**
@@ -355,94 +322,6 @@ class TableTimeclockPrefs extends JTable
         }
         return $value;
     }
-
-    /**
-     * Filter
-     *
-     * @param string $value The string to parse
-     *
-     * @return array
-     */
-    function filterPrefWCompCodes($value)
-    {
-        $enabled = self::getPref("wCompEnable", "system");
-        if (!$enabled) {
-            return array(0 => "Hours");
-        }
-        $ret = array();
-        $v = explode("\n", $value);
-        foreach ($v as $line) {
-            $line = trim($line);
-            $line = explode(" ", $line);
-            $key = abs($line[0]);
-            unset($line[0]);
-            $val = implode(" ", $line);
-            $ret[(int)$key] = $val;
-        }
-        return $ret;
-    }
-    /**
-     * Filter
-     *
-     * @param string $value The string to parse
-     *
-     * @return array
-     */
-    function filterPrefUserTypes($value)
-    {
-        $ret = array();
-        if (empty($value)) {
-            $value = self::$_defaults["system"]["userTypes"];
-        }
-
-        $v = explode("\n", $value);
-        foreach ($v as $line) {
-            $line = strip_tags(trim($line));
-            if (empty($line)) {
-                continue;
-            }
-            $line = explode(":", $line);
-            if (count($line) > 1) {
-                $key = strtoupper(str_replace(" ", "", trim($line[0])));
-                $ret[$key] = trim($line[1]);
-            } else {
-                $line = trim($line[0]);
-                $key = strtoupper(str_replace(" ", "", substr($line, 0, 16)));
-                $ret[$key] = $line;
-            }
-        }
-        return $ret;
-    }
-    /**
-     * Filter
-     *
-     * @param string $value The string to parse
-     *
-     * @return array
-     */
-    function filterPrefPtoAccrualRates($value)
-    {
-        $enabled = self::getPref("ptoEnable", "system");
-        if (!$enabled) {
-            return array();
-        }
-        $ret = array();
-
-        foreach (explode("\n", $value) as $line) {
-            $line = trim($line);
-            if (!isset($keys)) {
-                $keys = explode(":", $line);
-            } else {
-                $line = explode(":", $line);
-                foreach ($keys as $k => $name) {
-                    $ret[$name][$line[0]] = $line[$k+1];
-                }
-            }
-        }
-        return $ret;
-    }
-
-
 
     /**
      * Sets preferences
@@ -471,7 +350,7 @@ class TableTimeclockPrefs extends JTable
         $p->prefs[$name] = $value;
         $ret = $p->store();
         if ($ret) {
-            self::getPref($name, "user", $oid, true);
+            self::getPref($name, $oid, true);
         }
         return $ret;
     }

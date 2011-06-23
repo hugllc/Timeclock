@@ -1,22 +1,349 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--  http://docs.joomla.org/Standard_form_field_types -->
 <config>
     <fieldset
-        name="greetings"
-        label="COM_TIMECLOCK_CONFIG_GREETING_SETTINGS_LABEL"
-        description="COM_TIMECLOCK_CONFIG_GREETING_SETTINGS_DESC"
-    >
-<!--
+        name="user-page"
+        label="COM_TIMECLOCK_USER_SETTINGS"
+        description="COM_TIMECLOCK_USER_SETTINGS_DESC"
+            >
         <field
-            name="show_category"
-            type="radio"
-            label="COM_TIMECLOCK_HELLOWORLD_FIELD_SHOW_CATEGORY_LABEL"
-            description="COM_TIMECLOCK_HELLOWORLD_FIELD_SHOW_CATEGORY_DESC"
-            default="0"
-        >
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
+            name="maxDailyHours"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_MAX_DAILY_HOURS"
+            description="COM_TIMECLOCK_MAX_DAILY_HOURS_DESC"
+            default="24"
+            required="true"
+                />
+        <field
+            name="decimalPlaces"
+            type="list"
+            class="inputbox"
+            label="COM_TIMECLOCK_DECIMAL_PLACES"
+            description="COM_TIMECLOCK_DECIMAL_PLACES_DESC"
+            default="2"
+            required="true"
+                >
+                    <option value="0">COM_TIMECLOCK0</option>
+                    <option value="1">J1</option>
+                    <option value="2">J2</option>
+                    <option value="3">J3</option>
+                    <option value="4">J4</option>
+                    <option value="5">J5</option>
+            </field>
+        <field
+            name="minNoteChars"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_MINIMUM_NOTE"
+            description="COM_TIMECLOCK_MINIMUM_NOTE_DESC"
+            default="10"
+            required="true"
+                />
+        <field
+            name="userTypes"
+            type="textarea"
+            class="inputbox"
+            label="COM_TIMECLOCK_USER_TYPES"
+            description="COM_TIMECLOCK_USER_TYPES_DESC"
+            cols="50"
+            rows="5"
+            default="FULLTIME:Full Time&#013;&#010;PARTTIME:Part Time&#013;&#010;CONTRACTOR:Contractor&#013;&#010;TEMPORARY:Temporary&#013;&#010;TERMINATED:Terminated&#013;&#010;RETIRED:Retired&#013;&#010;UNPAID:Unpaid Leave"
+            required="true"
+                />
+    </fieldset>
+    <fieldset
+        name="timesheet-page"
+        label="COM_TIMECLOCK_TIMESHEET_SETTINGS"
+        description="COM_TIMECLOCK_TIMESHEET_SETTINGS_DESC"
+            >
+        <field
+            name="firstPayPeriodStart"
+            type="calendar"
+            class="inputbox"
+            label="COM_TIMECLOCK_FIRST_PAY_PERIOD_START"
+            description="COM_TIMECLOCK_FIRST_PAY_PERIOD_START_DESC"
+            format="%Y-%m-%d"
+            default="2000-12-11"
+            required="true"
+                />
+        <field
+            name="payPeriodType"
+            type="list"
+            class="inputbox"
+            label="COM_TIMECLOCK_PAY_PERIOD_TYPE"
+            description="COM_TIMECLOCK_PAY_PERIOD_TYPE_DESC"
+            default="FIXED"
+            required="true"
+                >
+                    <option value="FIXED">COM_TIMECLOCK_FIXED</option>
+                    <option value="MONTH">COM_TIMECLOCK_MONTH</option>
         </field>
-        -->
+        <field
+            name="payPeriodLengthFixed"
+            type="list"
+            class="inputbox"
+            label="COM_TIMECLOCK_PAY_PERIOD_LENGTH"
+            description="COM_TIMECLOCK_PAY_PERIOD_LENGTH_DESC"
+            default="14"
+            required="true"
+                >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+        </field>
+        <field
+            name="timesheetView"
+            type="list"
+            class="inputbox"
+            label="COM_TIMECLOCK_TIMESHEET_VIEW_PERIOD"
+            description="COM_TIMECLOCK_TIMESHEET_VIEW_PERIOD_DESC"
+            default="payperiod"
+            required="true"
+                >
+                    <option value="payperiod">COM_TIMECLOCK_PAY_PERIOD</option>
+                    <option value="fixed">COM_TIMECLOCK_FIXED</option>
+                    <option value="month">COM_TIMECLOCK_MONTH</option>
+        </field>
+        <field
+            name="viewPeriodLength"
+            type="list"
+            class="inputbox"
+            label="COM_TIMECLOCK_VIEW_PERIOD_LENGTH"
+            description="COM_TIMECLOCK_VIEW_PERIOD_LENGTH_DESC"
+            default="14"
+            required="true"
+                >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+        </field>
+        <field
+            name="firstViewPeriodStart"
+            type="calendar"
+            class="inputbox"
+            label="COM_TIMECLOCK_FIRST_VIEW_PERIOD_START"
+            description="COM_TIMECLOCK_FIRST_VIEW_PERIOD_START_DESC"
+            format="%Y-%m-%d"
+            default="2000-12-11"
+            required="true"
+                />
+    </fieldset>
+    <fieldset
+        name="pto-page"
+        label="COM_TIMECLOCK_PTO_SETTINGS"
+        description="COM_TIMECLOCK_PTO_SETTINGS_DESC"
+            >
+        <field
+            name="ptoEnable"
+            type="radio"
+            class="inputbox"
+            label="COM_TIMECLOCK_ACCRUE_PTO"
+            description="COM_TIMECLOCK_ACCRUE_PTO_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+        </field>
+        <field
+            name="ptoAccrualRates"
+            type="textarea"
+            class="inputbox"
+            label="COM_TIMECLOCK_ACCRUAL_RATES"
+            description="COM_TIMECLOCK_ACCRUAL_RATES_DESC"
+            cols="50"
+            rows="5"
+            default="FULLTIME:PARTTIME&#013;&#010;1:10:5&#013;&#010;5:20:10&#013;&#010;10:30:15&#013;&#010;99:40:20"
+            required="true"
+                />
+        <field
+            name="ptoAccrualWait"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_DAYS_BEFORE_ACCRUAL_BEGINS"
+            description="COM_TIMECLOCK_DAYS_BEFORE_ACCRUAL_BEGINS_DESC"
+            default="60"
+            required="true"
+                />
+        <field
+            name="ptoHoursPerDay"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_PTO_HOURS_PER_DAY"
+            description="COM_TIMECLOCK_PTO_HOURS_PER_DAY_DESC"
+            default="8"
+            required="true"
+                />
+        <field
+            name="ptoAccrualPeriod"
+            type="list"
+            class="inputbox"
+            label="COM_TIMECLOCK_ACCRUAL_PERIOD"
+            description="COM_TIMECLOCK_ACCRUAL_PERIOD_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="week">COM_TIMECLOCK_WEEK</option>
+                    <option value="month">COM_TIMECLOCK_MONTH</option>
+                    <option value="year">COM_TIMECLOCK_YEAR</option>
+        </field>
+        <field
+            name="ptoAccrualTime"
+            type="list"
+            class="inputbox"
+            label="COM_TIMECLOCK_ACCRUAL_TIME"
+            description="COM_TIMECLOCK_ACCRUAL_TIME_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="end">COM_TIMECLOCK_END_OF_PAY_PERIOD</option>
+                    <option value="begin">COM_TIMECLOCK_BEGINNING_OF_PAY_PERIOD</option>
+        </field>
+        <field
+            name="ptoCarryOverDefExpire"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_DEFAULT_PTO_CARRYOVER_EXPIRATION"
+            description="COM_TIMECLOCK_DEFAULT_PTO_CARRYOVER_EXPIRATION_DESC"
+            format="%m-%d"
+            default="03-31"
+            required="true"
+                />
+        <field
+            name="ptoNegative"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_ACCEPTABLE_NEGATIVE_PTO"
+            description="COM_TIMECLOCK_ACCEPTABLE_NEGATIVE_PTO_DESC"
+            default="0"
+            required="true"
+                />
+    </fieldset>
+    <fieldset
+        name="wcomp-page"
+        label="COM_TIMECLOCK_WCOMP_SETTINGS"
+        description="COM_TIMECLOCK_WCOMP_SETTINGS_DESC"
+            >
+        <field
+            name="wCompEnable"
+            type="radio"
+            class="inputbox"
+            label="COM_TIMECLOCK_ENABLE"
+            description="COM_TIMECLOCK_WC_ENABLE_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+        </field>
+        <field
+            name="wCompCodes"
+            type="textarea"
+            class="inputbox"
+            label="COM_TIMECLOCK_CODES"
+            description="COM_TIMECLOCK_CODES_DESC"
+            cols="50"
+            rows="5"
+            default=""
+            required="false"
+                />
+
+    </fieldset>
+    <fieldset
+        name="extras-page"
+        label="COM_TIMECLOCK_EXTRA_SETTINGS"
+        description="COM_TIMECLOCK_EXTRA_SETTINGS_DESC"
+            >
+        <field
+            name="JPGraphPath"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_JPGRAPH_PATH"
+            description="COM_TIMECLOCK_JPGRAPH_PATH_DESC"
+            size="50"
+            default=""
+            required="false"
+                />
+        <field
+            name="timeclockDisable"
+            type="radio"
+            class="inputbox"
+            label="COM_TIMECLOCK_DISABLE_TIMECLOCK"
+            description="COM_TIMECLOCK_DISABLE_TIMECLOCK_DESC"
+            default="0"
+            required="true"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+        </field>
+        <field
+            name="timeclockDisableMessage"
+            type="textarea"
+            class="inputbox"
+            label="COM_TIMECLOCK_DISABLE_MESSAGE"
+            description="COM_TIMECLOCK_DISABLE_MESSAGE_DESC"
+            cols="50"
+            rows="5"
+            default="The timeclock system is currently down for maintenance.  Please try again later."
+            required="true"
+                />
     </fieldset>
     <fieldset
         name="permissions"
@@ -24,13 +351,13 @@
         description="JCONFIG_PERMISSIONS_DESC"
     >
         <field
-            name="rules"
+            name="component-rules"
             type="rules"
             label="JCONFIG_PERMISSIONS_LABEL"
             class="inputbox"
             validate="rules"
             filter="rules"
-            component="com_helloworld"
+            component="com_timeclock"
             section="component"
         />
     </fieldset>

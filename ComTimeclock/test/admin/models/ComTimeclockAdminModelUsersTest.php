@@ -117,8 +117,7 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
                 "post",
                 array(
                     "id" => 15,
-                    "prefs" => "YToyOntzOjE3OiJhZG1pbl9ob2xpZGF5cGVyYyI7aToxMDA7czox"
-                        ."MjoiYWRtaW5fc3RhdHVzIjtzOjg6IkZVTExUSU1FIjt9",
+                    "prefs" => 'a:2:{s:17:"admin_holidayperc";i:100;s:12:"admin_status";s:8:"FULLTIME";}',
                     "published" => 1,
                     "startDate" => "2008-04-12",
                     "endDate" => "2009-04-12",

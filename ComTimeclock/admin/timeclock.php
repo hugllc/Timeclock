@@ -45,9 +45,6 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_timeclock'))
 // import joomla controller library
 jimport('joomla.application.component.controller');
 
-/** Require the base controller */
-//require_once JPATH_COMPONENT.DS.'controller.php';
-
 // require helper file
 JLoader::register('TimeclockHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'timeclock.php');
 

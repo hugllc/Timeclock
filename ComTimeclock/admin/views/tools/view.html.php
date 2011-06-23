@@ -78,6 +78,7 @@ class TimeclockAdminViewTools extends JView
      */
     function defaultLayout($tpl = null)
     {
+        JToolBarHelper::preferences('com_timeclock');
         parent::display($tpl);
     }
 

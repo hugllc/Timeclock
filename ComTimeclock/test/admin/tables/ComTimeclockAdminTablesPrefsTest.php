@@ -167,8 +167,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 array(
                     15 => array(
                         "id" => 15,
-                        "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aT"
-                            ."o0O30=",
+                        "prefs" => "1:1,2:2,3:3,4:4",
                     ),
                 ),
                 15,
@@ -202,7 +201,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
         $this->o->load($oid);
         $ret = $this->objectToArray($this->o);
         $defaults = $this->readAttribute("TableTimeclockPrefs", "_defaults");
-        $expect["prefs"] = array_merge($defaults[$type], $expect["prefs"]);
+        $expect["prefs"] = array_merge($defaults, $expect["prefs"]);
         $this->assertSame($expect, $ret);
     }
     /**

@@ -37,14 +37,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-$title = ($this->add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
-
-TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_TIMESHEET_EDIT_TITLE, $title));
-JToolBarHelper::apply("timesheets.apply");
-JToolBarHelper::save("timesheets.save");
-JToolBarHelper::cancel("timesheets.cancel");
-
-$wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
+$wCompCodes = TimeclockHelper::getWCompCodes();
 ?>
 <form action="index.php" method="post" id="adminForm" name="adminForm">
 <div>

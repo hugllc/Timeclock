@@ -39,11 +39,6 @@ jimport("joomla.html.pane");
 
 JHTML::_('behavior.tooltip');
 
-TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_USER_CONFIG));
-JToolBarHelper::publishList("users.publish", COM_TIMECLOCK_ACTIVATE);
-JToolBarHelper::unpublishList("users.unpublish", COM_TIMECLOCK_DEACTIVATE);
-JToolBarHelper::editListX("users.edit");
-
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <table>

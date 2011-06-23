@@ -177,6 +177,12 @@ class TimeclockAdminViewHolidays extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+
+        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_HOLIDAYS));
+        JToolBarHelper::editListX("holidays.edit");
+        JToolBarHelper::addNewX("holidays.add");
+        JToolBarHelper::preferences('com_timeclock');
+
         parent::display($tpl);
     }
     /**
@@ -221,6 +227,13 @@ class TimeclockAdminViewHolidays extends JView
         $this->assignRef("lists", $lists);
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
+        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+
+        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_HOLIDAY_EDIT_TITLE, $title));
+        JToolBarHelper::apply("holidays.apply");
+        JToolBarHelper::save("holidays.save");
+        JToolBarHelper::cancel("holidays.cancel");
+
         parent::display($tpl);
     }
 }

@@ -37,11 +37,6 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_USER_EDIT_TITLE, $this->user->name));
-JToolBarHelper::apply("users.apply");
-JToolBarHelper::save("users.save");
-JToolBarHelper::cancel("users.cancel");
-
 ?>
 <form action="index.php" method="post" id="adminForm" id="adminForm">
 <div style="float: right; width: 30%;">

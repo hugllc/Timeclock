@@ -61,6 +61,7 @@ class com_timeclockInstallerScript
     public function install($parent)
     {
         $this->installModule("mod_timeclockinfo");
+        $this->installPlugin("timeclock");
         $parent->getParent()->setRedirectURL('index.php?option=com_timeclock&view=about');
     }
     /**
@@ -73,6 +74,7 @@ class com_timeclockInstallerScript
     public function uninstall($parent)
     {
         $this->uninstallModule("mod_timeclockinfo");
+        $this->uninstallPlugin("timeclock");
     }
     /**
     * This updates everthing
@@ -117,7 +119,14 @@ class com_timeclockInstallerScript
         $basedir = dirname(__FILE__).DS."admin".DS."modules";
         $inst = new JInstaller();
         $this->uninstallModule($name);
-        return $inst->install($basedir.DS.$name);
+        $ret = $inst->install($basedir.DS.$name);
+        if ($ret) {
+            $db = &JFactory::getDBO ();
+
+            $db->setQuery("UPDATE #__extensions set protected=1 WHERE element='$name' AND type='module'");
+            $ret = $db->query();
+        }
+        return $ret;
     }
 
     /**
@@ -131,11 +140,63 @@ class com_timeclockInstallerScript
     {
         $db = &JFactory::getDBO ();
 
+        $db = &JFactory::getDBO ();
+
+        $db->setQuery("UPDATE #__extensions set protected=0 WHERE element='$name' AND type='module'");
+        $ret = $db->query();
+
         $db->setQuery("SELECT * FROM #__extensions WHERE element='$name'");
         $mod = $db->loadObject();
         if (is_object($mod)) {
             $inst = new JInstaller();
             return $inst->uninstall('module', $mod->extension_id);
+        }
+        return true;
+    }
+
+    /**
+    * This runs after install/update/uninstall
+    *
+    * @param $name The name of the module to install
+    *
+    * @return null
+    */
+    public function installPlugin($name)
+    {
+        $basedir = dirname(__FILE__).DS."admin".DS."plugins";
+        $inst = new JInstaller();
+        $this->uninstallModule($name);
+        $ret = $inst->install($basedir.DS.$name);
+        if ($ret) {
+            $db = &JFactory::getDBO ();
+
+            $db->setQuery("UPDATE #__extensions set enabled=1, protected=1 WHERE element='$name' AND type='plugin'");
+            $ret = $db->query();
+        }
+        return $ret;
+    }
+
+    /**
+    * This runs after install/update/uninstall
+    *
+    * @param $name The name of the module to install
+    *
+    * @return null
+    */
+    public function uninstallPlugin($name)
+    {
+        $db = &JFactory::getDBO ();
+
+        $db = &JFactory::getDBO ();
+
+        $db->setQuery("UPDATE #__extensions set enabled=0, protected=0 WHERE element='$name' AND type='plugin'");
+        $ret = $db->query();
+
+        $db->setQuery("SELECT * FROM #__extensions WHERE element='$name' AND type='plugin'");
+        $mod = $db->loadObject();
+        if (is_object($mod)) {
+            $inst = new JInstaller();
+            return $inst->uninstall('plugin', $mod->extension_id);
         }
         return true;
     }

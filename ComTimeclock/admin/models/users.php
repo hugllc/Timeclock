@@ -510,9 +510,9 @@ class TimeclockAdminModelUsers extends JModel
         if (empty($date)) {
             $date = date("Y-m-d");
         }
-        $period = TableTimeclockPrefs::getPref("ptoAccrualPeriod", "system");
-        $wait = TableTimeclockPrefs::getPref("ptoAccrualWait", "system");
-        $dailyHours = (int)TableTimeclockPrefs::getPref("ptoHoursPerDay", "system");
+        $period = TimeclockHelper::getParam("ptoAccrualPeriod");
+        $wait = TimeclockHelper::getParam("ptoAccrualWait");
+        $dailyHours = (int)TimeclockHelper::getParam("ptoHoursPerDay");
         $ret = 0;
         $service = self::getServiceLength($oid, $date);
         if (($wait/365.25) > $service) {
@@ -598,7 +598,7 @@ class TimeclockAdminModelUsers extends JModel
     */
     function _getPTOWeek($oid, $date=null)
     {
-        $accTime = (int)TableTimeclockPrefs::getPref("ptoAccrualTime", "system");
+        $accTime = (int)TimeclockHelper::getParam("ptoAccrualTime");
         $date = strtotime($date);
         $weeks = round(date("z", $date)/7, 0);
         $weeks += $accTime;
@@ -619,7 +619,7 @@ class TimeclockAdminModelUsers extends JModel
     */
     function _getPTOMonth($oid, $date=null)
     {
-        $accTime = (int)TableTimeclockPrefs::getPref("ptoAccrualTime", "system");
+        $accTime = (int)TimeclockHelper::getParam("ptoAccrualTime");
         $date = strtotime($date);
         $months = date("m", $date);
         $months += $accTime;
@@ -660,7 +660,7 @@ class TimeclockAdminModelUsers extends JModel
     {
         static $rate;
         $key = $oid.$date;
-        $rates = TableTimeclockPrefs::getPref("ptoAccrualRates", "system");
+        $rates = TimeclockHelper::getPtoAccrualRates();
         $service = self::getServiceLength($oid, $date);
         $status = self::getStatus($oid, $date);
         $end    = strtotime(TableTimeclockPrefs::getPref("endDate", "user", $oid));

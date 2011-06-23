@@ -180,6 +180,12 @@ class TimeclockAdminViewTimesheets extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+
+        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_TIMESHEETS));
+        JToolBarHelper::editListX("timesheets.edit");
+        JToolBarHelper::addNewX("timesheets.add");
+        JToolBarHelper::preferences('com_timeclock');
+
         parent::display($tpl);
     }
     /**
@@ -241,6 +247,14 @@ class TimeclockAdminViewTimesheets extends JView
         $this->assignRef("lists", $lists);
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
+
+        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+
+        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_TIMESHEET_EDIT_TITLE, $title));
+        JToolBarHelper::apply("timesheets.apply");
+        JToolBarHelper::save("timesheets.save");
+        JToolBarHelper::cancel("timesheets.cancel");
+
         parent::display($tpl);
     }
 }

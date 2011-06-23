@@ -192,13 +192,21 @@ class TimeclockAdminViewProjects extends JView
             JHTML::_('select.option', 'p.name', "Category"),
         );
         $lists['search_options_default'] = 'name';
-        $lists["wCompCodes"] = TableTimeclockPrefs::getPref("wCompCodes");
-        $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
+        $lists["wCompCodes"] = TimeclockHelper::getWCompCodes();
+        $lists["wCompEnable"] = TimeclockHelper::getParam("wCompEnable");
 
         $this->assignRef("lists", $lists);
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+
+        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PROJECTS));
+        JToolBarHelper::publishList('projects.publish', COM_TIMECLOCK_ACTIVATE);
+        JToolBarHelper::unpublishList('projects.unpublish', COM_TIMECLOCK_DEACTIVATE);
+        JToolBarHelper::editListX('projects.edit');
+        JToolBarHelper::addNewX('projects.add');
+        JToolBarHelper::preferences('com_timeclock');
+
         parent::display($tpl);
     }
     /**
@@ -248,7 +256,7 @@ class TimeclockAdminViewProjects extends JView
         );
         $parentOptions = $model->getParentOptions($row->id, $row->parent_id);
 
-        $wCompCodes = TableTimeclockPrefs::getPref("wCompCodes");
+        $wCompCodes = TimeclockHelper::getWCompCodes();
         $wCompCodeOptions = array(JHTML::_("select.option", 0, "None"));
         foreach ($wCompCodes as $code => $desc) {
             $wCompCodeOptions[] = JHTML::_(
@@ -279,7 +287,7 @@ class TimeclockAdminViewProjects extends JView
             "None"
         );
 
-        $lists["wCompEnable"] = TableTimeclockPrefs::getPref("wCompEnable");
+        $lists["wCompEnable"] = TimeclockHelper::getParam("wCompEnable");
 
         $this->assignRef("lists", $lists);
 
@@ -290,6 +298,14 @@ class TimeclockAdminViewProjects extends JView
         $this->assignRef("add", $add);
         $this->assignRef("cat", $cat);
         $this->assignRef("row", $row);
+
+        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+
+        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_PROJECT_EDIT_TITLE, $title));
+        JToolBarHelper::apply("projects.apply");
+        JToolBarHelper::save("projects.save");
+        JToolBarHelper::cancel("projects.cancel");
+
         parent::display($tpl);
     }
 }

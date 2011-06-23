@@ -45,6 +45,9 @@ if (!JFactory::getUser()->authorise('timeclock.timesheets', 'com_timeclock'))
 jimport('joomla.application.component.controller');
 jimport('joomla.html.html');
 
+// require helper file
+JLoader::register('TimeclockHelper', JPATH_COMPONENT_ADMINISTRATOR. DS.'helpers'.DS.'timeclock.php');
+
 // This loads the prefs table file.
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'timeclockprefs.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'sql.inc.php';

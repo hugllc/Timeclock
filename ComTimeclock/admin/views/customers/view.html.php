@@ -177,6 +177,14 @@ class TimeclockAdminViewCustomers extends JView
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+
+        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_CUSTOMERS));
+        JToolBarHelper::publishList("customers.publish", COM_TIMECLOCK_ACTIVATE);
+        JToolBarHelper::unpublishList("customers.unpublish", COM_TIMECLOCK_DEACTIVATE);
+        JToolBarHelper::editListX("customers.edit");
+        JToolBarHelper::addNewX("customers.add");
+        JToolBarHelper::preferences('com_timeclock');
+
         parent::display($tpl);
     }
     /**
@@ -215,6 +223,14 @@ class TimeclockAdminViewCustomers extends JView
         $this->assignRef("lists", $lists);
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
+
+        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+
+        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_CUSTOMER_EDIT_TITLE, $title));
+        JToolBarHelper::apply("customers.apply");
+        JToolBarHelper::save("customers.save");
+        JToolBarHelper::cancel("customers.cancel");
+
         parent::display($tpl);
     }
 }

@@ -62,7 +62,7 @@ class TimeclockAdminViewUsers extends JView
      */
     function display($tpl = null)
     {
-        $this->decimalPlaces = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+        $this->decimalPlaces = TimeclockHelper::getParam("decimalPlaces");
         $this->assignRef("decimalPlaces", $this->decimalPlaces);
 
         $layout = $this->getLayout();
@@ -182,7 +182,7 @@ class TimeclockAdminViewUsers extends JView
             COM_TIMECLOCK_INACTIVE
         );
 
-        $ptoNegative = TableTimeclockPrefs::getPref("ptoNegative", "system");
+        $ptoNegative = TimeclockHelper::getParam("ptoNegative");
         $this->assignRef("ptoNegative", $ptoNegative);
 
 
@@ -199,13 +199,21 @@ class TimeclockAdminViewUsers extends JView
             JHTML::_('select.option', 'u.username', "Username"),
         );
         $lists['search_options_default'] = 'name';
-        $lists["wCompCodes"] = TableTimeclockPrefs::getPref("wCompCodes");
+        $lists["wCompCodes"] = TimeclockHelper::getParam("wCompCodes");
 
         $this->assignRef("lists", $lists);
         $this->assignRef("user", JFactory::getUser());
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
+
+        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_USER_CONFIG));
+        JToolBarHelper::publishList("users.publish", COM_TIMECLOCK_ACTIVATE);
+        JToolBarHelper::unpublishList("users.unpublish", COM_TIMECLOCK_DEACTIVATE);
+        JToolBarHelper::editListX("users.edit");
+        JToolBarHelper::preferences('com_timeclock');
+
         parent::display($tpl);
+
     }
 
         /**
@@ -234,7 +242,8 @@ class TimeclockAdminViewUsers extends JView
         };
         $user =& JFactory::getUser($cid[0]);
 
-        $status = TableTimeclockPrefs::getPref("userTypes");
+        $status = TimeclockHelper::getUserTypes();
+
         if (is_array($status)) {
             foreach ($status as $key => $value) {
                 $lists["status"][] = JHTML::_("select.option", $key, $value);
@@ -243,7 +252,7 @@ class TimeclockAdminViewUsers extends JView
 
         $ptoCarryOver = TableTimeclockPrefs::getPref("admin_ptoCarryOver", "user", $user->get("id"));
         $ptoCarryOverExpire = TableTimeclockPrefs::getPref("admin_ptoCarryOverExpire", "user", $user->get("id"));
-        $ptoCarryOverDefExpire = TableTimeclockPrefs::getPref("ptoCarryOverDefExpire", "system");
+        $ptoCarryOverDefExpire = TimeclockHelper::getParam("ptoCarryOverDefExpire");
         $startYear = date("Y", strtotime($row->startDate." 06:00:00"));
 
         $co = array();
@@ -263,18 +272,6 @@ class TimeclockAdminViewUsers extends JView
         $this->assignRef("ptoCarryOver", $co);
         $this->assignRef("ptoCarryOverExpire", $coe);
 
-
-        /*
-        $lists["status"] = array(
-            JHTML::_("select.option", "FULLTIME", "Full Time"),
-            JHTML::_("select.option", "PARTTIME", "Part Time"),
-            JHTML::_("select.option", "CONTRACTOR", "Contractor"),
-            JHTML::_("select.option", "TEMPORARY", "Temporary"),
-            JHTML::_("select.option", "TERMINATED", "Terminated"),
-            JHTML::_("select.option", "RETIRED", "Retired"),
-            JHTML::_("select.option", "UNPAID", "Unpaid Leave"),
-        );
-        */
         $lists["userProjects"] = $model->getUserProjects($cid[0]);
         $uProj = array();
         foreach ($lists["userProjects"] as $p) {
@@ -299,6 +296,12 @@ class TimeclockAdminViewUsers extends JView
         $this->assignRef("user", $user);
         $this->assignRef("lists", $lists);
         $this->assignRef("row", $row);
+
+        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_USER_EDIT_TITLE, $user->name));
+        JToolBarHelper::apply("users.apply");
+        JToolBarHelper::save("users.save");
+        JToolBarHelper::cancel("users.cancel");
+
         parent::display($tpl);
     }
 

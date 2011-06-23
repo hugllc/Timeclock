@@ -37,13 +37,6 @@
 defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 
-$title = ($this->add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
-
-TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_PROJECT_EDIT_TITLE, $title));
-JToolBarHelper::apply("projects.apply");
-JToolBarHelper::save("projects.save");
-JToolBarHelper::cancel("projects.cancel");
-
 ?>
 <form action="index.php" method="post" id="adminForm" name="adminForm">
 <?php

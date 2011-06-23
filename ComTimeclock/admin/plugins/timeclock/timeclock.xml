@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!-- $Id: profile.xml 21036 2011-03-31 09:12:46Z infograf768 $ -->
+<extension version="1.6" type="plugin" group="user" client="administrator" method="upgrade">
+	<name>plg_user_timeclock</name>
+	<author>Scott Price</author>
+	<creationDate>2011 06 23</creationDate>
+	<copyright>
+        (C) 2011 Hunt Utilities Group, LLC
+        (C) 2005 - 2011 Open Source Matters. All rights reserved.
+    </copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>prices@hugllc.com</authorEmail>
+	<authorUrl>www.hugllc.com</authorUrl>
+	<version>0.8.0</version>
+	<description>PLG_USER_TIMECLOCK_DESC</description>
+
+	<files>
+		<filename plugin="timeclock">timeclock.php</filename>
+		<filename>index.html</filename>
+		<folder>profiles</folder>
+	</files>
+	<languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_user_timeclock.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_user_timeclock.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+			</fieldset>
+
+		</fields>
+	</config>
+</extension>

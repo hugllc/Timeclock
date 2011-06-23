@@ -59,13 +59,11 @@ class TimeclockController extends JController
      */
     function display()
     {
-        if (TableTimeclockPrefs::getPref("timeclockDisable", "system")) {
+        if (TimeclockHelper::getParam("timeclockDisable")) {
             print '<div class="componentheading">';
             print JText::_("Timeclock Disabled")."</div>\n";
             print "<p><strong>";
-            print JText::_(
-                TableTimeclockPrefs::getPref("timeclockDisableMessage", "system")
-            );
+            print TimeclockHelper::getParam("timeclockDisableMessage");
             print "</strong></p>";
             return;
         }

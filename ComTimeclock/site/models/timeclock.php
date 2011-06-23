@@ -108,7 +108,7 @@ class TimeclockModelTimeclock extends JModel
         $type = $this->get("type");
         $this->setPeriodType($type);
 
-        $firstWeekDay = TableTimeclockPrefs::getPref("firstWeekDay", "system");
+        $firstWeekDay = TimeclockHelper::getParam("firstWeekDay");
         if (!empty($firstWeekDay)) {
             $this->weekStart = $firstWeekDay;
         }
@@ -133,7 +133,7 @@ class TimeclockModelTimeclock extends JModel
     public function setPeriodType($type)
     {
         if (empty($type)) {
-            $type = TableTimeclockPrefs::getPref("timesheetView", "system");
+            $type = TimeclockHelper::getParam("timesheetView");
             if (empty($type)) {
                 $type = "payperiod";
             }
@@ -336,7 +336,7 @@ class TimeclockModelTimeclock extends JModel
     function getTimesheetData()
     {
         if (empty($this->data)) {
-            $db = TableTimeclockPrefs::getPref("decimalPlaces", "system");
+            $db = TimeclockHelper::getParam("decimalPlaces");
 
             $where = array(
                 "t.created_by = ".$this->_db->Quote($this->_id),
@@ -494,7 +494,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function getPayPeriodStart($date)
     {
-        $type = TableTimeclockPrefs::getPref("payPeriodType", "system");
+        $type = TimeclockHelper::getParam("payPeriodType");
         if (trim(strtolower($type)) == "month") {
             return self::getPayPeriodMonthStart($date);
         }
@@ -510,7 +510,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function getPayPeriodEnd($date)
     {
-        $type = TableTimeclockPrefs::getPref("payPeriodType", "system");
+        $type = TimeclockHelper::getParam("payPeriodType");
         if (trim(strtolower($type)) == "month") {
             return self::getPayPeriodMonthEnd($date);
         }
@@ -571,7 +571,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function getPayPeriodMonthStart($date)
     {
-        $first = TableTimeclockPrefs::getPref("firstPayPeriodStart", "system");
+        $first = TimeclockHelper::getParam("firstPayPeriodStart");
         $first = $this->explodeDate($first);
         $dateFormat = $this->periods["month"]["start"];
         $unixDate = $this->dateUnixSql($date);
@@ -611,8 +611,8 @@ class TimeclockModelTimeclock extends JModel
     function getFixedStart($date)
     {
         // Get the pay period start
-        $startTime = TableTimeclockPrefs::getPref("firstViewPeriodStart", "system");
-        $len = TableTimeclockPrefs::getPref("viewPeriodLengthFixed", "system");
+        $startTime = TimeclockHelper::getParam("firstViewPeriodStart");
+        $len = TimeclockHelper::getParam("viewPeriodLengthFixed");
         return self::getOffsetFromDate($date, $startTime, $len);
     }
     /**
@@ -625,7 +625,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function getFixedEnd($date)
     {
-        $len = TableTimeclockPrefs::getPref("viewPeriodLengthFixed", "system");
+        $len = TimeclockHelper::getParam("viewPeriodLengthFixed");
         $s = self::getFixedStart($date);
         $s = $this->explodeDate($s);
         $this->set($len, "length");
@@ -651,8 +651,11 @@ class TimeclockModelTimeclock extends JModel
 
         // Get the time difference in days
         $timeDiff = round(($uDate - $start) / 86400);
-        $days = $timeDiff % $len;
-
+        if ($len != 0) {
+            $days = $timeDiff % $len;
+        } else {
+            $days = 0;
+        }
         return self::_date($d["m"], ($d["d"] - $days), $d["y"]);
 
     }
@@ -670,7 +673,7 @@ class TimeclockModelTimeclock extends JModel
 
         $s = self::_getPayPeriodFixedStart($date);
         $s = $this->explodeDate($s);
-        $length = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
+        $length = TimeclockHelper::getParam("payPeriodLengthFixed");
         $this->set($length, "length");
         $end = self::_date($s["m"], $s["d"]+$length-1, $s["y"]);
         return $end;
@@ -745,10 +748,10 @@ class TimeclockModelTimeclock extends JModel
     private function _getPayPeriodFixedStart($date)
     {
         // Get the pay period start
-        $startTime = TableTimeclockPrefs::getPref("firstPayPeriodStart", "system");
+        $startTime = TimeclockHelper::getParam("firstPayPeriodStart");
 
         // Get the length in days
-        $len = TableTimeclockPrefs::getPref("payPeriodLengthFixed", "system");
+        $len = TimeclockHelper::getParam("payPeriodLengthFixed");
         return self::getOffsetFromDate($date, $startTime, $len);
     }
 

@@ -39,7 +39,6 @@
     <administration>
         <menu>COM_TIMECLOCK_MENU</menu>
         <submenu>
-            <menu task="config.display">COM_TIMECLOCK_SUBMENU_PREFERENCES</menu>
             <menu task="users.display">COM_TIMECLOCK_SUBMENU_USER_CONFIG</menu>
             <menu task="customers.display">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
             <menu task="projects.display">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>

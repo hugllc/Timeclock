@@ -526,7 +526,7 @@ class TimeclockViewReportsBase extends JView
             'word'
         );
         $this->assignRef("report_type", $report_type);
-        $jpgraph_path = TableTimeclockPrefs::getPref("JPGraphPath", "system");
+        $jpgraph_path = TimeclockHelper::getParam("JPGraphPath");
         $this->assignRef("jpgraph_path", $jpgraph_path);
         $width  = (int)JRequest::getInt('graphwidth', 0);
         $height = (int)JRequest::getInt('graphheight', 0);
@@ -607,6 +607,7 @@ class TimeclockViewReportsBase extends JView
      */
     function wcomp($tpl = null)
     {
+        $this->enable = (bool)TimeclockHelper::getParam("wCompEnable");
         $model =& $this->getModel();
         $this->_reportGetPeriod();
 
