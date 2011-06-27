@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="general">
+        <field
+            name="date"
+            type="calendar"
+            class="inputbox"
+            label="COM_TIMECLOCK_DATE_WORKED"
+            description="COM_TIMECLOCK_DATE_WORKED_HELP"
+            default=""
+            required="true"
+                />
+    </fieldset>
+    <fieldset name="perproject">
+        <field
+            name="hours"
+            type="text"
+            class="inputbox"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_HELP"
+            default="0"
+            required="true"
+                />
+        <field
+            name="notes"
+            type="textarea"
+            class="inputbox"
+            label="COM_TIMECLOCK_NOTES"
+            description="COM_TIMECLOCK_NOTES_HELP"
+            default="0"
+            required="false"
+                />
+    </fieldset>
+</form>

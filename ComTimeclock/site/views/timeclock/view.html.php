@@ -132,6 +132,15 @@ class TimeclockViewTimeclock extends JView
      */
     function addhours($tpl = null)
     {
+        // get the Form
+        $this->form = $this->get('Form');
+
+        // Check for errors.
+        if (count($errors = $this->get('Errors')))
+        {
+            JError::raiseError(500, implode('<br />', $errors));
+            return false;
+        }
 
         $model    =& $this->getModel();
         $data     = $model->getData();
@@ -156,6 +165,9 @@ class TimeclockViewTimeclock extends JView
         JHTML::_('behavior.formvalidation');
         $this->wCompCodes = TimeclockHelper::getWCompCodes();
         $this->wCompEnable = TimeclockHelper::getParam("wCompEnable");
+
+        $this->form =
+
 
         parent::display($tpl);
     }
@@ -187,7 +199,7 @@ class TimeclockViewTimeclock extends JView
     {
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $projects  = $projModel->getUserProjects($user_id, null, null, $this->_orderby);
-        $cats      = TableTimeclockPrefs::getPref("Timeclock_Category");
+        $cats      = TimeclockHelper::getUserParam("Timeclock_Category");
         foreach ($projects as $k => $p) {
             if (isset($cats[$p->id])) {
                 $projects[$k]->show = false;
@@ -218,7 +230,7 @@ class TimeclockViewTimeclock extends JView
                 }
             }
         }
-        TableTimeclockPrefs::setPref("Timeclock_Category", $cookie);
+        TimeclockHelper::setUserParam("Timeclock_Category", $cookie);
     }
     /**
      * Get timesheet data
@@ -286,8 +298,8 @@ class TimeclockViewTimeclock extends JView
             (trim(strtolower($filter_order_Dir2)) == "asc") ? "ASC" : "DESC";
 
         if (empty($filter_order)) {
-            $filter_order = TableTimeclockPrefs::getPref("user_timesheetSort");
-            $filter_order_Dir = TableTimeclockPrefs::getPref("user_timesheetSortDir");
+            $filter_order = TimeclockHelper::getUserParam("user_timesheetSort");
+            $filter_order_Dir = TimeclockHelper::getUserParam("user_timesheetSortDir");
         }
         if (!empty($filter_order)) {
             $this->_orderby = ' ORDER BY '

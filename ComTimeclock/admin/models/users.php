@@ -365,9 +365,9 @@ class TimeclockAdminModelUsers extends JModel
      */
     private function _fixPrefs(&$prefs, &$data)
     {
-        if ($data["admin_status"] != "PARTTIME") {
-            $data["admin_holidayperc"] = TableTimeclockPrefs::getDefaultPref(
-                "admin_holidayperc",
+        if ($data["status"] != "PARTTIME") {
+            $data["holidayperc"] = TableTimeclockPrefs::getDefaultPref(
+                "holidayperc",
                 "user"
             );
         }
@@ -389,7 +389,7 @@ class TimeclockAdminModelUsers extends JModel
         $user =& JFactory::getUser();
         $id = $user->get("name");
         foreach ($data as $f => $v) {
-            if (substr($f, 0, 6) == "admin_") {
+            if (substr($f, 0, 6) == "") {
                 if ($v != $prefs["prefs"][$f]) {
                     $prefs["history"][$f][$timestamp] = $prefs["prefs"][$f];
                     $prefs["history"]["timestamps"][$timestamp] = $id;
@@ -545,8 +545,8 @@ class TimeclockAdminModelUsers extends JModel
         if (empty($date)) {
             $date = date("Y-m-d");
         }
-        $co = TableTimeclockPrefs::getPref("admin_ptoCarryOver", "user", $oid);
-        $coe = TableTimeclockPrefs::getPref("admin_ptoCarryOverExpire", "user", $oid);
+        $co = TableTimeclockPrefs::getPref("ptoCarryOver", "user", $oid);
+        $coe = TableTimeclockPrefs::getPref("ptoCarryOverExpire", "user", $oid);
         $year = date("Y", strtotime($date." 06:00:00"));
         if (!isset($co[$year])) {
             return 0;
@@ -697,9 +697,9 @@ class TimeclockAdminModelUsers extends JModel
         $key = $id.$date;
         if (!isset($status[$key])) {
             $hist = TableTimeclockPrefs::getPref("history", "user", $id);
-            if (is_array($hist["admin_status"])) {
-                ksort($hist["admin_status"]);
-                foreach ($hist["admin_status"] as $d => $r) {
+            if (is_array($hist["status"])) {
+                ksort($hist["status"]);
+                foreach ($hist["status"] as $d => $r) {
                     if (TimeclockModelTimeclock::compareDates(date("Y-m-d", $date), $d) < 0) {
                         $status[$key] = $r;
                         break;
@@ -708,7 +708,7 @@ class TimeclockAdminModelUsers extends JModel
             }
             if (!isset($status[$key])) {
                 $status[$key] = TableTimeclockPrefs::getPref(
-                    "admin_status",
+                    "status",
                     "user",
                     $id
                 );

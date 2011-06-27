@@ -37,6 +37,8 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.parameter');
 
+require_once JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php";
+
 /**
  * ComTimeclock World Component Controller
  *
@@ -60,16 +62,6 @@ class TimeclockHelper
     */
     public static function addSubmenu($vName, $cName)
     {
-        JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_PREFERENCES),
-            'index.php?option=com_timeclock&task=config.display',
-            $cName == 'config'
-        );
-        JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_USER_CONFIGS),
-            'index.php?option=com_timeclock&task=users.display',
-            $cName == 'users'
-        );
         JSubMenuHelper::addEntry(
             JText::_(COM_TIMECLOCK_CUSTOMERS),
             'index.php?option=com_timeclock&task=customers.display',
@@ -264,18 +256,44 @@ class TimeclockHelper
     * gets a component parameter
     *
     * @param string $param The parameter to get
+    * @param int    $id    The user id to get values about
+    * @param string $date  The date to get the param for
     *
     * @return array
     */
-    static public function getUserParam($param)
+    static public function getUserParam($param, $id=null, $date=null)
     {
-        static $params;
-        if (!is_object($params)) {
-            $prefs = TimeclockPrefs::getInstance();
-            $prefs->load(JFactory::getUser()->id);
-            $params = new JParameter($prefs->prefs);
+        return plgUserTimeclock::getParamValue($param, $id, $date);
+    }
+    /**
+    * gets a component parameter
+    *
+    * @param string $param The parameter to get
+    * @param mixed  $value The value of the parameter
+    * @param int    $id    The user id to get values about
+    *
+    * @return array
+    */
+    static public function setUserParam($param, $value, $id=null)
+    {
+        return plgUserTimeclock::setParamValue($param, $value, $id);
+    }
+    /**
+    * gets a model
+    *
+    * @param string $model The model to get
+    *
+    * @return array
+    */
+    static public function getModel($model)
+    {
+        $file = dirname(__FILE__)."/../models/$model.php";
+        if (file_exists($file)) {
+            include_once($file);
+            $class = "TimeclockAdminModel".ucfirst($model);
+            return new $class();
         }
-        return $params->get($param);
+        return false;
     }
 
 }

@@ -4,95 +4,150 @@
         <fieldset name="timeclock"
             label="PLG_USER_TIMECLOCK_SLIDER_LABEL"
         >
-        <field
-            name="active"
-            type="radio"
-            class="inputbox"
-            label="PLG_USER_TIMECLOCK_ACTIVE"
-            description="PLG_USER_TIMECLOCK_ACTIVE_DESC"
-            default="0"
-            required="true"
-                >
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
-        </field>
-        <field
-            name="startDate"
-            type="calendar"
-            class="inputbox"
-            label="PLG_USER_TIMECLOCK_START_DATE"
-            description="PLUG_USER_TIMECLOCK_START_DATE_DESC"
-            format="%Y-%m-%d"
-            default=""
-            required="true"
-                />
-        <field
-            name="endDate"
-            type="calendar"
-            class="inputbox"
-            label="PLG_USER_TIMECLOCK_END_DATE"
-            description="PLG_USER_TIMECLOCK_END_DATE_DESC"
-            format="%Y-%m-%d"
-            default="0000-00-00"
-            required="false"
-                />
-        <field
-            name="reports"
-            type="radio"
-            class="inputbox"
-            label="PLG_USER_TIMECLOCK_REPORTS"
-            description="PLG_USER_TIMECLOCK_REPORTS_DESC"
-            default="0"
-            required="true"
-                >
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
-        </field>
-        <field
-            name="manager"
-            type="user"
-            class="inputbox"
-            label="PLG_USER_TIMECLOCK_MANAGER"
-            description="PLG_USER_TIMECLOCK_MANAGER_DESC"
-            default="0"
-            required="true"
-                />
-        <field
-            name="holidayperc"
-            type="list"
-            class="inputbox"
-            label="PLG_USER_TIMECLOCK_HOLIDAY_PAY"
-            description="PLG_USER_TIMECLOCK_HOLIDAY_PAY_DESC"
-            default="0"
-            required="true"
-                >
-                    <option value="0">0%</option>
-                    <option value="10">10%</option>
-                    <option value="20">20%</option>
-                    <option value="30">30%</option>
-                    <option value="40">40%</option>
-                    <option value="50">50%</option>
-                    <option value="60">60%</option>
-                    <option value="70">70%</option>
-                    <option value="80">80%</option>
-                    <option value="90">90%</option>
-                    <option value="100">100%</option>
-        </field>
-
+            <field
+                name="active"
+                type="radio"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_ACTIVE"
+                description="PLG_USER_TIMECLOCK_ACTIVE_DESC"
+                default="0"
+                required="true"
+                    >
+                        <option value="0">JNO</option>
+                        <option value="1">JYES</option>
+            </field>
+            <field
+                name="startDate"
+                type="calendar"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_START_DATE"
+                description="PLUG_USER_TIMECLOCK_START_DATE_DESC"
+                format="%Y-%m-%d"
+                default="NOW"
+                required="true"
+                    />
+            <field
+                name="endDate"
+                type="calendar"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_END_DATE"
+                description="PLG_USER_TIMECLOCK_END_DATE_DESC"
+                format="%Y-%m-%d"
+                default=""
+                required="false"
+                    />
+            <field
+                name="reports"
+                type="radio"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_REPORTS"
+                description="PLG_USER_TIMECLOCK_REPORTS_DESC"
+                default="0"
+                required="true"
+                    >
+                        <option value="0">JNO</option>
+                        <option value="1">JYES</option>
+            </field>
+            <field
+                name="manager"
+                type="user"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_MANAGER"
+                description="PLG_USER_TIMECLOCK_MANAGER_DESC"
+                default="0"
+                required="true"
+                    />
+            <field
+                name="status"
+                type="TimeclockUserTypes"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_USER_STATUS"
+                description="PLG_USER_TIMECLOCK_USER_STATUS_DESC"
+                default=""
+                required="true"
+                    />
+            <field
+                name="holidayperc"
+                type="list"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_HOLIDAY_PAY"
+                description="PLG_USER_TIMECLOCK_HOLIDAY_PAY_DESC"
+                default="0"
+                required="true"
+                    >
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50">50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+            </field>
+            <field
+                name="addProject"
+                type="timeclockSelectProject"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_ADD_PROJECTS"
+                description="PLG_USER_TIMECLOCK_ADD_PROJECTS_DESC"
+                default=""
+                size="10"
+                multiple="true"
+                required="false"
+                    />
+            <field
+                name="addProjFromUser"
+                type="user"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_ADD_PROJECTS_FROM_USER"
+                description="PLG_USER_TIMECLOCK_ADD_PROJECTS_FROM_USER_DESC"
+                default="0"
+                required="false"
+                    />
+        </fieldset>
+        <fieldset name="timeclockPTO"
+            label="PLG_USER_TIMECLOCK_PTO_CARRYOVER_SLIDER"
+        >
+            <field
+                name="ptoCarryOver"
+                type="TimeclockPTOCarryOver"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_PTO_CARRYOVER"
+                description="PLG_USER_TIMECLOCK_PTO_CARRYOVER_DESC"
+                labelExpires="PLG_USER_TIMECLOCK_PTO_CARRYOVER_EXPIRES"
+                descriptionExpires="PLG_USER_TIMECLOCK_PTO_CARRYOVER_EXPIRES_DESC"
+                default=""
+                required="false"
+                    />
+        </fieldset>
+        <fieldset name="timeclockProjects"
+            label="PLG_USER_TIMECLOCK_REMOVE_PROJECTS_SLIDER"
+        >
+            <field
+                name="removeProject"
+                type="TimeclockProjectList"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_REMOVE_PROJECTS"
+                description="PLG_USER_TIMECLOCK_REMOVE_PROJECTS_DESC"
+                emptyMessage="PLG_USER_TIMECLOCK_PROJECT_LIST_EMPTY"
+                remove="true"
+                    />
+        </fieldset>
+        <fieldset name="timeclockHistory"
+            label="PLG_USER_TIMECLOCK_CHANGE_HISTORY_SLIDER"
+        >
+            <field
+                name="history"
+                type="TimeclockHistory"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_USER_CHANGE_HISTORY"
+                description="PLG_USER_TIMECLOCK_USER_CHANGE_HISTORY_DESC"
+                emptyMessage="PLG_USER_TIMECLOCK_USER_CHANGE_HISTORY_EMPTY"
+                    />
 <!--
-        <tr>
-            <td width="100" align="right" class="key">
-                <label for="type">
-                    <?php echo JText::_(COM_TIMECLOCK_USER_STATUS); ?>:
-                </label>
-            </td>
-            <td>
-                <?php print JHTML::_("select.genericList", $this->lists["status"], "admin_status", "", 'value', 'text', $this->row->prefs["admin_status"]); ?>
-            </td>
-            <td>
-                <?php echo JText::_(COM_TIMECLOCK_USER_STATUS_USER_DESC); ?>
-            </td>
-        </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="type">

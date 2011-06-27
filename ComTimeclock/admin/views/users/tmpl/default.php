@@ -138,7 +138,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 <?php echo $published;?>
             </td>
             <td align="center">
-                <?php echo $row->prefs["admin_reports"] ? "YES" : "NO";?>
+                <?php echo $row->prefs["reports"] ? "YES" : "NO";?>
             </td>
             <td align="center">
                 <?php echo $row->lastvisitDate; ?>
@@ -150,7 +150,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 <?php echo ($row->endDate != "0000-00-00") ? $row->endDate : "---"; ?>
             </td>
             <td align="center">
-                <?php echo $row->prefs["admin_status"]; ?>
+                <?php echo $row->prefs["status"]; ?>
             </td>
             <td align="center" style="<?php print $ptoStyle; ?>">
                 <?php echo $row->pto." / ".$row->ptoYTD; ?>

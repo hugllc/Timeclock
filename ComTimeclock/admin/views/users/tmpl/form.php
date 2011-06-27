@@ -132,7 +132,7 @@ echo $pane->endPane();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.booleanList", "admin_reports", "", $this->row->prefs["admin_reports"]); ?>
+                <?php print JHTML::_("select.booleanList", "reports", "", $this->row->prefs["reports"]); ?>
             </td>
             <td>
                 <?php echo JText::_(COM_TIMECLOCK_REPORTS_USER_DESC); ?>
@@ -158,7 +158,7 @@ echo $pane->endPane();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.genericList", $this->lists["status"], "admin_status", "", 'value', 'text', $this->row->prefs["admin_status"]); ?>
+                <?php print JHTML::_("select.genericList", $this->lists["status"], "status", "", 'value', 'text', $this->row->prefs["status"]); ?>
             </td>
             <td>
                 <?php echo JText::_(COM_TIMECLOCK_USER_STATUS_USER_DESC); ?>
@@ -173,13 +173,13 @@ echo $pane->endPane();
             <td>
                 <?php foreach ($this->ptoCarryOver as $year => $value): ?>
                 <div style="border: thin solid grey;">
-                    <input type="text" name="admin_ptoCarryOver[<?php print $year; ?>]" size="7" maxlength="5" value="<?php print $value; ?>" />
+                    <input type="text" name="ptoCarryOver[<?php print $year; ?>]" size="7" maxlength="5" value="<?php print $value; ?>" />
                     <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
                     <?php print JText::_(COM_TIMECLOCK_CARRIED_OVER_TO); ?>
                     <strong><?php print $year; ?></strong>
                     <div style="white-space: nowrap; margin-top: 0px;">
                         <?php print JText::_(COM_TIMECLOCK_EXPIRES); ?>
-                        <?php print JHTML::_("calendar", $this->ptoCarryOverExpire[$year], "admin_ptoCarryOverExpire[$year]", "admin_ptoCarryOverExpire[$year]", "%Y-%m-%d", "");?>
+                        <?php print JHTML::_("calendar", $this->ptoCarryOverExpire[$year], "ptoCarryOverExpire[$year]", "ptoCarryOverExpire[$year]", "%Y-%m-%d", "");?>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -189,7 +189,7 @@ echo $pane->endPane();
             </td>
         </tr>
 <?php
-if ($this->row->prefs["admin_status"] == "PARTTIME") {
+if ($this->row->prefs["status"] == "PARTTIME") {
     ?>
         <tr>
             <td width="100" align="right" class="key">
@@ -198,7 +198,7 @@ if ($this->row->prefs["admin_status"] == "PARTTIME") {
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("select.integerList", 0, 100, 10, "admin_holidayperc", "", $this->row->prefs["admin_holidayperc"]); ?>%
+                <?php print JHTML::_("select.integerList", 0, 100, 10, "holidayperc", "", $this->row->prefs["holidayperc"]); ?>%
             </td>
             <td>
                 <?php echo JText::_(COM_TIMECLOCK_HOLIDAY_PAY_USER_DESC); ?>
@@ -233,6 +233,9 @@ foreach ($this->lists["userProjects"] as $proj) { ?>
             <td>
 <?php
 if (!is_array($this->row->history["timestamps"])) $this->row->history["timestamps"] = array();
+print "<pre>";
+var_dump($this->row->history);
+print "</pre>";
 krsort($this->row->history["timestamps"]);
 foreach ($this->row->history["timestamps"] as $date => $user) { ?>
     <?php $index++; ?>

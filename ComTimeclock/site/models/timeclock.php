@@ -113,7 +113,7 @@ class TimeclockModelTimeclock extends JModel
             $this->weekStart = $firstWeekDay;
         }
 
-        $others = TableTimeclockPrefs::getPref("admin_otherTimesheets");
+        $others = TimeclockHelper::getUserParam("otherTimesheets");
         if ($others) {
             $cid = JRequest::getVar('cid', 0, '', 'array');
         }
@@ -379,10 +379,10 @@ class TimeclockModelTimeclock extends JModel
         static $perc;
         $key = $id.$date;
         if (!isset($perc[$key])) {
-            $hist = TableTimeclockPrefs::getPref("history", "user", $id);
-            if (is_array($hist["admin_holidayperc"])) {
-                ksort($hist["admin_holidayperc"]);
-                foreach ($hist["admin_holidayperc"] as $d => $h) {
+            $hist = TimeclockHelper::getUserParam("history", $id);
+            if (is_array($hist["holidayperc"])) {
+                ksort($hist["holidayperc"]);
+                foreach ($hist["holidayperc"] as $d => $h) {
                     if ($this->compareDates($date, $d) < 0) {
                         $perc[$key] = $h/100;
                         break;
@@ -390,9 +390,8 @@ class TimeclockModelTimeclock extends JModel
                 }
             }
             if (!isset($perc[$key])) {
-                $hperc = TableTimeclockPrefs::getPref(
-                    "admin_holidayperc",
-                    "user",
+                $hperc = TimeclockHelper::getUserParam(
+                    "holidayperc",
                     $id
                 );
                 $perc[$key] = $hperc / 100;
@@ -445,10 +444,10 @@ class TimeclockModelTimeclock extends JModel
         if (empty($eDates)) {
             $eDates = array(
                 "start" => $this->fixDate(
-                    TableTimeclockPrefs::getPref("startDate")
+                    TimeclockHelper::getUserParam("startDate")
                 ),
                 "end"   => $this->fixDate(
-                    TableTimeclockPrefs::getPref("endDate")
+                    TimeclockHelper::getUserParam("endDate")
                 ),
             );
         }
@@ -866,7 +865,7 @@ class TimeclockModelTimeclock extends JModel
         if (empty($id)) {
             $id = $this->_id;
         }
-        $start = TableTimeclockPrefs::getPref("startDate", "user", $id);
+        $start = TimeclockHelper::getUserParam("startDate", $id);
         $diff = time() - strtotime($start);
         return $diff/86400;
     }

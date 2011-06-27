@@ -37,6 +37,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
+require_once dirname(__FILE__)."/../tables/timeclockusers.php";
+require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
 
 /**
  * ComTimeclock model
@@ -144,44 +146,36 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Checks in an item
      *
+     * @param int   $id      The id of the project
+     * @param mixed $user_id The id of the user to remove
+     *
      * @return bool
      */
-    function adduser()
+    function addUser($id, $user_id)
     {
         $row = $this->getTable("TimeclockUsers");
-
-        $this->store();
-
-        $id = (int) JRequest::getVar('id', 0, '', 'int');
-        $user_id = JRequest::getVar('user_id', array(0), '', 'array');
-        if (!is_array($user_id)) {
-            $user_id = array($user_id);
-        }
         $ret = true;
-        foreach ($user_id as $u) {
-            $data = array(
-                "id" => $id,
-                "user_id" => (int)$u,
-            );
+        $data = array(
+            "id" => (int)$id,
+            "user_id" => (int)$user_id,
+        );
 
-            if (!$row->bind($data)) {
-                $this->setError($this->_db->getErrorMsg());
-                $ret = false;
-                continue;
-            }
-            // Make sure the record is valid
-            if (!$row->check()) {
-                $this->setError($this->_db->getErrorMsg());
-                $ret = false;
-                continue;
-            }
-
-            // Store the web link table to the database
-            if (!$row->store()) {
-                $this->setError($this->_db->getErrorMsg());
-                $ret = false;
-                continue;
-            }
+        if (!$row->bind($data)) {
+            $this->setError($this->_db->getErrorMsg());
+            $ret = false;
+            continue;
+        }
+        // Make sure the record is valid
+        if (!$row->check()) {
+            $this->setError($this->_db->getErrorMsg());
+            $ret = false;
+            continue;
+        }
+        // Store the web link table to the database
+        if (!$row->store()) {
+            $this->setError($this->_db->getErrorMsg());
+            $ret = false;
+            continue;
         }
         return $ret;
     }
@@ -189,35 +183,28 @@ class TimeclockAdminModelProjects extends JModel
     /**
      * Checks in an item
      *
+     * @param int   $id      The id of the project
+     * @param mixed $user_id The id of the user to remove
+     *
      * @return bool
      */
-    function removeuser()
+    function removeUser($id, $user_id)
     {
-        $this->store();
-
         $row = $this->getTable("TimeclockUsers");
-
-        $id = (int) JRequest::getVar('id', 0, '', 'int');
-        $user_id = JRequest::getVar('remove_user_id', array(0), '', 'array');
-        if (!is_array($user_id)) {
-            $user_id = array($user_id);
-        }
         $ret = true;
-        foreach ($user_id as $u) {
-            $data = array(
-                "id" => $id,
-                "user_id" => (int)$u,
-            );
-            // Bind the form fields to the hello table
-            if (!$row->bind($data)) {
-                $this->setError($this->_db->getErrorMsg());
-                $ret = false;
-            }
-            // Store the web link table to the database
-            if (!$row->delete()) {
-                $this->setError($this->_db->getErrorMsg());
-                $ret = false;
-            }
+        $data = array(
+            "id" => (int)$id,
+            "user_id" => (int)$user_id,
+        );
+        // Bind the form fields to the hello table
+        if (!$row->bind($data)) {
+            $this->setError($this->_db->getErrorMsg());
+            $ret = false;
+        }
+        // Store the web link table to the database
+        if (!$row->delete()) {
+            $this->setError($this->_db->getErrorMsg());
+            $ret = false;
         }
         return $ret;
     }
@@ -410,6 +397,31 @@ class TimeclockAdminModelProjects extends JModel
         }
         return $ret;
     }
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid        User id
+     * @param int $limitstart The record to start on
+     * @param int $limit      The max number of records to retrieve
+     *
+     * @return array
+     */
+    function getUserProjectsBare($oid, $limitstart = null, $limit = null)
+    {
+        $query = "select * from #__timeclock_users as u
+                  LEFT JOIN #__timeclock_projects as p on u.id = p.id
+                  WHERE u.user_id = ".(int)$oid."
+                     AND p.published = 1
+                     AND p.Type <> 'CATEGORY'
+                  ORDER BY p.id asc
+                  ";
+        $ret = $this->_getList($query, $limitstart, $limit);
+        if (!is_array($ret)) {
+            return array();
+        }
+        return $ret;
+    }
+
 
     /**
      * Get projects for a user
@@ -420,8 +432,31 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getUserProjects($oid, $limitstart = null, $limit = null, $order_by=null)
+    function getUserProjectIds($oid, $limitstart = null, $limit = null)
     {
+        $projects = $this->getUserProjectsBare($oid, $limitstart, $limit);
+        $proj = array();
+        foreach ($projects as $p) {
+            $proj[] = $p->id;
+        }
+        return $proj;
+    }
+
+    /**
+     * Get projects for a user
+     *
+     * @param int $oid        User id
+     * @param int $limitstart The record to start on
+     * @param int $limit      The max number of records to retrieve
+     *
+     * @return array
+     */
+    function getUserProjects(
+        $oid,
+        $limitstart = null,
+        $limit = null,
+        $order_by=null
+    ) {
         $projects = array();
         if (empty($order_by)) {
             $order_by = "ORDER BY t.name ASC";

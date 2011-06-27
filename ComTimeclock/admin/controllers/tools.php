@@ -103,6 +103,21 @@ class TimeclockAdminControllerTools extends JController
         JRequest::setVar('model', 'tools');
         JRequest::setVar('view', 'tools');
         JRequest::setVar('layout', 'dbcheck');
+        JRequest::setVar('tpl', 'check');
+        self::display();
+    }
+
+    /**
+     * Method to display the view
+     *
+     * @access public
+     * @return null
+     */
+    function convertprefs()
+    {
+        JRequest::setVar('model', 'tools');
+        JRequest::setVar('view', 'tools');
+        JRequest::setVar('layout', 'check');
         self::display();
     }
 

@@ -97,8 +97,8 @@ class TableTimeclockPrefs extends JTable
      * @var array The defaults for everything
      */
     private static $_defaults = array(
-        "admin_holidayperc" => 100,
-        "admin_status" => "FULLTIME",
+        "holidayperc" => 100,
+        "status" => "FULLTIME",
 
     );
 

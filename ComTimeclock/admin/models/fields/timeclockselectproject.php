@@ -35,26 +35,46 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+jimport('joomla.form.helper');
+JFormHelper::loadFieldClass('list');
+require_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS.'helpers'.DS.'timeclock.php';
 
-TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS));
+/**
+ * This creates a select box with the user types in it.
+ *
+ * @category   UI
+ * @package    ComTimeclock
+ * @subpackage Com_Timeclock
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
+ */
 
-$baseUrl = "index.php?option=com_timeclock&task=tools.display";
-?>
-<div style="width: 500px;">
-<p>
-<?php print JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC); ?>
-</p>
-<ol>
-    <li>
-        <a href="<?php print JRoute::_($baseUrl."&task=tools.dbcheck"); ?>">
-            <?php print JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB); ?>
-        </a>
-    </li>
-    <li>
-        <a href="<?php print JRoute::_($baseUrl."&task=tools.convertprefs"); ?>">
-            <?php print JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS_CONVERT_PREFS); ?>
-        </a>
-    </li>
-</ol>
+class JFormFieldTimeclockSelectProject extends JFormFieldList
+{
+    protected $type = 'TimeclockUserTypes';
 
-</div>
+    /**
+    * Method to get the field options.
+    *
+    * @return      array   The field option objects.
+    */
+    protected function getOptions()
+    {
+        $idName = empty($this->elements["userid"])?"id":$this->elements["userid"];
+        $id = JRequest::getInt($idName);
+        if (empty($id)) {
+            return "";
+        }
+        $model = TimeclockHelper::getModel("projects");
+        $uProj = $model->getUserProjectIds($id);
+        $options = $model->getOptions(
+            "WHERE p.published=1 AND p.type <> 'CATEGORY'",
+            null,
+            (array)$uProj
+        );
+        reset($options);
+        return $options;
+    }
+}

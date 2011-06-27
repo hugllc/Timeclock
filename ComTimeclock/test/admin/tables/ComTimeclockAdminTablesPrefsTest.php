@@ -225,7 +225,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 24,
             ),
             array(
-                "admin_holidayperc",
+                "holidayperc",
                 22,
                 null,
                 100,
@@ -265,7 +265,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 ),
             ),
             array(
-                "admin_holidayperc",
+                "holidayperc",
                 0,
                 null,
                 null,

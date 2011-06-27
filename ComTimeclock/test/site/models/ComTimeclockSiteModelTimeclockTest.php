@@ -399,7 +399,7 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
                 array(
                     "id" => 48,
                     "prefs" => array(
-                        "admin_holidayperc" => 50,
+                        "holidayperc" => 50,
                     ),
                 ),
                 48,
@@ -410,10 +410,10 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
                 array(
                     "id" => 47,
                     "prefs" => array(
-                        "admin_holidayperc" => 100,
+                        "holidayperc" => 100,
                     ),
                     "history" => array(
-                        "admin_holidayperc" => array(
+                        "holidayperc" => array(
                             "2006-04-25" => 50,
                             "2008-05-12" => 90,
                             "2009-12-05" => 30,
@@ -428,10 +428,10 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
                 array(
                     "id" => 46,
                     "prefs" => array(
-                        "admin_holidayperc" => 100,
+                        "holidayperc" => 100,
                     ),
                     "history" => array(
-                        "admin_holidayperc" => array(
+                        "holidayperc" => array(
                             "2006-04-25" => 50,
                             "2008-05-12" => 90,
                             "2009-12-05" => 30,

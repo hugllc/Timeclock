@@ -250,8 +250,8 @@ class TimeclockAdminViewUsers extends JView
             }
         }
 
-        $ptoCarryOver = TableTimeclockPrefs::getPref("admin_ptoCarryOver", "user", $user->get("id"));
-        $ptoCarryOverExpire = TableTimeclockPrefs::getPref("admin_ptoCarryOverExpire", "user", $user->get("id"));
+        $ptoCarryOver = TableTimeclockPrefs::getPref("ptoCarryOver", "user", $user->get("id"));
+        $ptoCarryOverExpire = TableTimeclockPrefs::getPref("ptoCarryOverExpire", "user", $user->get("id"));
         $ptoCarryOverDefExpire = TimeclockHelper::getParam("ptoCarryOverDefExpire");
         $startYear = date("Y", strtotime($row->startDate." 06:00:00"));
 

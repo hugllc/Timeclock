@@ -36,31 +36,30 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockHelper::title(JText::_(COM_TIMECLOCK_CHECK_DATABASE));
 
 $style = "width: 10em; font-weight: bold; text-align: center;";
 
 $baseUrl = "index.php?option=com_timeclock&task=tools.display";
 ?>
 <div style="width: 500px;">
-<h2><?php print JText::_(COM_TIMECLOCK_CHECKING_DATABASE); ?>...</h2>
-<?php foreach ($this->results as $cat => $results): ?>
+<h2><?php print $this->pageheader; ?>...</h2>
+<?php foreach ((array)$this->results as $cat => $results): ?>
     <h3><?php print JText::_($cat); ?>...</h3>
     <?php if (empty($results)): ?>
-    <p><?php print JText::_(COM_TIMECLOCK_NO_TESTS); ?></p>
+    <p><?php print $this->noResults; ?></p>
     <?php endif; ?>
-    <?php foreach ($results as $test): ?>
+    <?php foreach ((array)$results as $test): ?>
         <div style="margin: 3px; border: 1px solid grey; padding: 3px;">
             <div>
                 <?php print $test["name"]; ?>
                 <?php if ($test["result"] === true) : ?>
-                    <span style="float: right; <?php print $style;?> background: green; color: white; ">PASS</span>
+                    <span style="float: right; <?php print $style;?> background: green; color: white; "><?php print JText::_(COM_TIMECLOCK_PASS); ?></span>
                 <?php elseif (is_null($test["result"])) : ?>
-                    <span style="float: right; <?php print $style;?> background: yellow; color: black; ">WARNING</span>
+                    <span style="float: right; <?php print $style;?> background: yellow; color: black; "><?php print JText::_(COM_TIMECLOCK_WARNING); ?></span>
                 <?php elseif ($test["result"] === false) : ?>
-                    <span style="float: right; <?php print $style;?> background: red; color: white; ">FAIL</span>
+                    <span style="float: right; <?php print $style;?> background: red; color: white; "><?php print JText::_(COM_TIMECLOCK_FAIL); ?></span>
                 <?php else: ?>
-                    <span style="float: right; <?php print $style;?>">No Result</span>
+                    <span style="float: right; <?php print $style;?>"><?php print JText::_(COM_TIMECLOCK_NO_RESULT); ?></span>
                 <?php endif; ?>
             </div>
             <p>
@@ -72,18 +71,18 @@ $baseUrl = "index.php?option=com_timeclock&task=tools.display";
         </div>
     <?php endforeach; ?>
 <?php endforeach; ?>
-<h2>Key</h2>
+<h2><?php print JText::_(COM_TIMECLOCK_KEY); ?></h2>
 <div>
-    <span style="float: left; margin-right: 1em; <?php print $style;?> background: green; color: white; ">PASS</span>
-    Everything looks good!
+    <span style="float: left; margin-right: 1em; <?php print $style;?> background: green; color: white; "><?php print JText::_(COM_TIMECLOCK_PASS); ?></span>
+    <?php print JText::_(COM_TIMECLOCK_PASS_MSG); ?>
 </div>
 <div>
-    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: yellow; color: black; ">WARNING</span>
-    Means that it is a problem, but not fatal
+    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: yellow; color: black; "><?php print JText::_(COM_TIMECLOCK_WARNING); ?></span>
+    <?php print JText::_(COM_TIMECLOCK_WARNING_MSG); ?>
 </div>
 <div>
-    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: red; color: white; ">FAIL</span>
-    This will cause major problems in the timeclock, and should be fixed immediately
+    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: red; color: white; "><?php print JText::_(COM_TIMECLOCK_FAIL); ?></span>
+    <?php print JText::_(COM_TIMECLOCK_FAIL_MSG); ?>
 </div>
 
 </pre>
