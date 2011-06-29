@@ -73,7 +73,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
     </div>
     <table id="timeclockTable" style="padding-bottom: 3em;">
         <tr>
-            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
+            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', COM_TIMECLOCK_EMPLOYEE, 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
 <?php
 for ($w = 0; $w < $this->weeks; $w++) {
     ?>
@@ -81,7 +81,7 @@ for ($w = 0; $w < $this->weeks; $w++) {
     <?php
 }
 ?>
-            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', JText::_(COM_TIMECLOCK_EMPLOYEE), 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
+            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', COM_TIMECLOCK_EMPLOYEE, 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
             <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></td>
         </tr>
         <tr>
@@ -199,18 +199,18 @@ function nextprev(&$obj)
 {
     $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
     $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["next"]);
+    $url = JRoute::_("&option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["next"]);
     $nextImg = '<a href="'.$url.'">'.$text.'</a>';
     $next = '<a href="'.$url.'">'.JText::_(JNEXT).'</a>';
 
     $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
     $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["prev"]);
+    $url = JRoute::_("&option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["prev"]);
     $prevImg = '<a href="'.$url.'">'.$text.'</a>';
     $prev = '<a href="'.$url.'">'.JText::_(JPREVIOUS).'</a>';
 
     $text = JText::_(COM_TIMECLOCK_TODAY);
-    $url = JROUTE::_("index.php?option=com_timeclock&view=reports&layout=payroll");
+    $url = JRoute::_("&option=com_timeclock&view=reports&layout=payroll&date=now");
     $today = '<a href="'.$url.'">'.$text.'</a>';
 
     ?>
