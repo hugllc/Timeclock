@@ -109,9 +109,6 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
     {
         return array(
             array(array("Hello", "there")),
-            array(new stdClass()),
-            array("Hello"),
-            array(1),
         );
     }
     /**
@@ -143,13 +140,12 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 ),
                 array(
                     "id" => 12,
-                    "prefs" => "YTo0OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo"
-                        ."0O30=",
+                    "prefs" => 'a:4:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;}',
                     "published" => 0,
                     "startDate" => null,
                     "endDate" => null,
                     "manager" => 0,
-                    "history" => "YTowOnt9",
+                    "history" => "a:0:{}",
                 ),
             ),
         );
@@ -167,7 +163,7 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 array(
                     15 => array(
                         "id" => 15,
-                        "prefs" => "1:1,2:2,3:3,4:4",
+                        "prefs" => "a:4:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;}",
                     ),
                 ),
                 15,
@@ -219,12 +215,6 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 "here",
             ),
             array(
-                "maxDailyHours",
-                15,
-                null,
-                24,
-            ),
-            array(
                 "holidayperc",
                 22,
                 null,
@@ -235,34 +225,6 @@ class ComTimeclockAdminTablesPrefsTest extends JTableTest
                 0,
                 "here",
                 null,
-            ),
-            array(
-                "maxDailyHours",
-                0,
-                null,
-                24,
-            ),
-            array(
-                "userTypes",
-                0,
-                null,
-                array(
-                    "FULLTIME"   => "Full Time",
-                    "PARTTIME"   => "Part Time",
-                    "CONTRACTOR" => "Contractor",
-                    "TEMPORARY"  => "Temporary",
-                    "TERMINATED" => "Terminated",
-                    "RETIRED"    => "Retired",
-                    "UNPAID"     => "Unpaid Leave",
-                ),
-            ),
-            array(
-                "wCompCodes",
-                0,
-                "1234 code 1\n2458 code 2\n 5345 code 3",
-                array(
-                    0 => "Hours",
-                ),
             ),
             array(
                 "holidayperc",

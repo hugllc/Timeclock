@@ -51,4 +51,7 @@ if (!defined('JPATH_COMPONENT')) {
 if (!defined('JPATH_COMPONENT_ADMINISTRATOR')) {
     define('JPATH_COMPONENT_ADMINISTRATOR', realpath(dirname(__FILE__)."/../admin"));
 }
+if (!defined('JPATH_ROOT')) {
+    define('JPATH_ROOT', JPATH_COMPONENT_ADMINISTRATOR);
+}
 ?>

@@ -51,7 +51,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
     <div style="padding: 5px;">
     <?php
         array_shift($this->lists["users"]);
-        print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple"', 'value', 'text', 0);
+        print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
     ?><br />
         <button onClick="this.form.task.value='projects.adduser';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_ADD_USERS); ?></button>
     </div>
@@ -65,19 +65,12 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
     foreach ($this->lists["projectUsers"] as $user) {
          $options[] = JHTML::_("select.option", $user->id, $user->name);
     }
-    print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple"', 'value', 'text', 0);
+    print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
         ?><br />
             <button onClick="this.form.task.value='projects.removeuser';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_REMOVE_USERS); ?></button>
     </div>
     <?php
 
-    /*
-    foreach ($this->lists["projectUsers"] as $user) { ?>
-                    <button onClick="this.form.task.value='projects.removeuser';this.form.user_id.value='<?php print $user->id;?>';this.form.submit();">Remove</button>
-                    <?php print empty($user->name) ? $user->id : $user->name; ?><br />
-        <?php
-    }
-    */
     ?>
     </div>
     <?php

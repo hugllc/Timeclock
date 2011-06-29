@@ -35,18 +35,20 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+// require helper file
+JLoader::register('TimeclockHelper', JPATH_COMPONENT_ADMINISTRATOR. DS.'helpers'.DS.'timeclock.php');
+
 // Access check.
-if (!JFactory::getUser()->authorise('timeclock.timesheets', 'com_timeclock'))
-{
+if ((!JFactory::getUser()->authorise('core.login.site', 'com_timeclock'))
+    || (!TimeclockHelper::getUserParam('active')
+    && !TimeclockHelper::getUserParam('reports'))
+){
     return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // import joomla controller library
 jimport('joomla.application.component.controller');
 jimport('joomla.html.html');
-
-// require helper file
-JLoader::register('TimeclockHelper', JPATH_COMPONENT_ADMINISTRATOR. DS.'helpers'.DS.'timeclock.php');
 
 // This loads the prefs table file.
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'timeclockprefs.php';

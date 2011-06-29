@@ -19,5 +19,5 @@ mv ${BASEDIR}/modules/mod_timeclockinfo ${BASEDIR}/modules/mod_timeclockinfo.old
 ln -s ${PWD}/ComTimeclock/admin/modules/mod_timeclockinfo ${BASEDIR}/modules/mod_timeclockinfo
 
 mv ${BASEDIR}/plugins/user/timeclock ${BASEDIR}/plugins/user/timeclock.old
-ln -s ${PWD}/ComTimeclock/admin/plugins/timeclock ${BASEDIR}/plugins/user/timeclock
+ln -s ${PWD}/ComTimeclock/admin/plugins/plg_user_timeclock ${BASEDIR}/plugins/user/timeclock
 

@@ -376,28 +376,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function getHolidayPerc($id, $date)
     {
-        static $perc;
-        $key = $id.$date;
-        if (!isset($perc[$key])) {
-            $hist = TimeclockHelper::getUserParam("history", $id);
-            if (is_array($hist["holidayperc"])) {
-                ksort($hist["holidayperc"]);
-                foreach ($hist["holidayperc"] as $d => $h) {
-                    if ($this->compareDates($date, $d) < 0) {
-                        $perc[$key] = $h/100;
-                        break;
-                    }
-                }
-            }
-            if (!isset($perc[$key])) {
-                $hperc = TimeclockHelper::getUserParam(
-                    "holidayperc",
-                    $id
-                );
-                $perc[$key] = $hperc / 100;
-            }
-        }
-        return $perc[$key];
+        return TimeclockHelper::getUserParam("holidayperc", $id, $date) / 100;
     }
 
     /**

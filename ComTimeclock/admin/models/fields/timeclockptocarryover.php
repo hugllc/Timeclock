@@ -92,7 +92,7 @@ class JFormFieldTimeclockPTOCarryOver extends JFormField
             $ret[] = '<fieldset style="border: thin solid grey; margin: 0px; padding: 3px;">';
             $ret[] = '<label class="'.$labelclass.'" title="'.$labeltitle.'" for="'.$id.'_amount">'.$labeltext.'<span class="star">&#160;*</span></label>';
             $ret[] = '<input type="text" class="'.$this->element["class"].'" name="';
-            $ret[] = $name.'[amount]" size="7" maxlength="5" value="'.(int)$value["amount"].'" id="'.$id.'_amount" />';
+            $ret[] = $name.'[amount]" size="7" maxlength="5" value="'.(float)$value["amount"].'" id="'.$id.'_amount" />';
 
             $labeltext = JText::sprintf($this->element['labelExpires'], $year);
             $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($this->element['descriptionExpires']), ENT_COMPAT, 'UTF-8');

@@ -117,7 +117,7 @@ class TimeclockAdminControllerTools extends JController
     {
         JRequest::setVar('model', 'tools');
         JRequest::setVar('view', 'tools');
-        JRequest::setVar('layout', 'check');
+        JRequest::setVar('layout', 'convertprefs');
         self::display();
     }
 

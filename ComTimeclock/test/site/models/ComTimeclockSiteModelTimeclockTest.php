@@ -393,6 +393,13 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
                 array(),
                 49,
                 '2007-12-21',
+                0,
+            ),
+            /*
+            array(
+                array(),
+                49,
+                '2007-12-21',
                 1,
             ),
             array(
@@ -442,7 +449,7 @@ class ComTimeclockSiteModelTimeclockTest extends JModelTest
                 '2008-05-12',
                 0.3,
             ),
-
+*/
 
         );
     }

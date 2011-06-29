@@ -67,6 +67,10 @@ class TimeclockController extends JController
             print "</strong></p>";
             return;
         }
+        $view = JRequest::getVar('view', "timesheet", '', 'word');
+        if (($view == "reports") && !TimeclockHelper::getUserParam("reports")) {
+            return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+        }
         parent::display();
     }
 

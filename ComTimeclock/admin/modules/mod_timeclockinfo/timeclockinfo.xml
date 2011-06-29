@@ -13,7 +13,7 @@
 	<version>0.8.0</version>
 	<description>MOD_TIMECLOCKINFO_DESC</description>
 	<files>
-		<filename module="mod_timeclockinfo">mod_timeclockinfo.php</filename>
+		<filename module="mod_timeclockinfo">timeclockinfo.php</filename>
         <filename>helper.php</filename>
         <filename>index.html</filename>
         <folder>tmpl</folder>

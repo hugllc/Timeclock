@@ -36,6 +36,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
 
+jimport('joomla.plugin.helper');
+jimport('joomla.application.module.helper');
 
 /**
  * ComTimeclock World Component Controller
@@ -54,63 +56,101 @@ class com_timeclockInstallerScript
     /**
     * This installs everthing
     *
-    * @param $parent This is the parent class
+    * @param object $parent This is the parent class
     *
     * @return null
     */
     public function install($parent)
     {
         $this->installModule("mod_timeclockinfo");
-        $this->installPlugin("timeclock");
+        $this->installPlugin("user", "plg_user_timeclock");
         $parent->getParent()->setRedirectURL('index.php?option=com_timeclock&view=about');
     }
     /**
     * This removes everthing
     *
-    * @param $parent This is the parent class
+    * @param object $parent This is the parent class
     *
     * @return null
     */
     public function uninstall($parent)
     {
         $this->uninstallModule("mod_timeclockinfo");
-        $this->uninstallPlugin("timeclock");
+        $this->uninstallPlugin("user", "plg_user_timeclock");
     }
     /**
     * This updates everthing
     *
-    * @param $parent This is the parent class
+    * @param object $parent This is the parent class
     *
     * @return null
     */
     public function update($parent)
     {
+        $this->installModule("mod_timeclockinfo");
+        $this->installPlugin("user", "plg_user_timeclock");
     }
     /**
     * This runs before install/update/uninstall
     *
-    * @param $parent This is the parent class
+    * @param string $type   The type of change (install, update, discover_install)
+    * @param object $parent This is the parent class
     *
     * @return null
     */
-    public function preflight($parent)
+    public function preflight($type, $parent)
     {
     }
     /**
     * This runs after install/update/uninstall
     *
-    * @param $parent This is the parent class
+    * @param string $type   The type of change (install, update, discover_install)
+    * @param object $parent This is the parent class
     *
     * @return null
     */
-    public function postflight($parent)
+    public function postflight($type, $parent)
     {
+        //if ($type === "install") {
+            $this->saveDefConfig();
+        //}
+    }
+
+    /**
+    * This saves the default config
+    *
+    * @return null
+    */
+    public function saveDefConfig()
+    {
+        $component = &JComponentHelper::getComponent('com_timeclock');
+        $xml = simplexml_load_file(dirname(__FILE__).'/admin/config.xml');
+        $defaults = array();
+        foreach($xml as $element) {
+            foreach ($element->field as $field) {
+                $att = $field->attributes();
+                $name = trim((string)$att['name']);
+                $value = trim((string)$att['default']);
+                if ((strlen($name) > 0)) {
+                    $defaults[$name] = $value;
+                }
+            }
+        }
+        $row = JTable::getInstance('extension');
+        if ($row->load($component->id)) {
+            $params = $row->get("params");
+            if (empty($params) || (trim($params) === "{}")) {
+                $row->set('params', json_encode($defaults));
+                $row->store();
+            }
+        }
+
     }
 
     /**
     * This runs after install/update/uninstall
     *
-    * @param $name The name of the module to install
+    * @param string $name The name of the module to install
     *
     * @return null
     */
@@ -121,10 +161,8 @@ class com_timeclockInstallerScript
         $this->uninstallModule($name);
         $ret = $inst->install($basedir.DS.$name);
         if ($ret) {
-            $db = &JFactory::getDBO ();
-
-            $db->setQuery("UPDATE #__extensions set protected=1 WHERE element='$name' AND type='module'");
-            $ret = $db->query();
+            $mod = $this->getExtensionId($name, "module");
+            $ret = $this->protectExtension($mod, 1);
         }
         return $ret;
     }
@@ -132,75 +170,99 @@ class com_timeclockInstallerScript
     /**
     * This runs after install/update/uninstall
     *
-    * @param $name The name of the module to install
+    * @param string $name The name of the module to install
     *
     * @return null
     */
     public function uninstallModule($name)
     {
-        $db = &JFactory::getDBO ();
-
-        $db = &JFactory::getDBO ();
-
-        $db->setQuery("UPDATE #__extensions set protected=0 WHERE element='$name' AND type='module'");
-        $ret = $db->query();
-
-        $db->setQuery("SELECT * FROM #__extensions WHERE element='$name'");
-        $mod = $db->loadObject();
-        if (is_object($mod)) {
+        $mod = $this->getExtensionId($name, "module");
+        if ($this->protectExtension($mod, 0)) {
             $inst = new JInstaller();
-            return $inst->uninstall('module', $mod->extension_id);
+            return $inst->uninstall('module', $mod);
         }
-        return true;
+        return false;
+
     }
 
     /**
     * This runs after install/update/uninstall
     *
-    * @param $name The name of the module to install
+    * @param string $type The type of plugin to use
+    * @param string $name The name of the module to install
     *
     * @return null
     */
-    public function installPlugin($name)
+    public function installPlugin($type, $name)
     {
         $basedir = dirname(__FILE__).DS."admin".DS."plugins";
+        $this->uninstallPlugin($name, $type);
         $inst = new JInstaller();
-        $this->uninstallModule($name);
         $ret = $inst->install($basedir.DS.$name);
         if ($ret) {
-            $db = &JFactory::getDBO ();
-
-            $db->setQuery("UPDATE #__extensions set enabled=1, protected=1 WHERE element='$name' AND type='plugin'");
-            $ret = $db->query();
+            $plug = $this->getExtensionId($name, "plugin", $type);
+            $ret = $this->protectExtension($plug, 1);
         }
         return $ret;
     }
-
     /**
     * This runs after install/update/uninstall
     *
-    * @param $name The name of the module to install
+    * @param string $type The type of plugin to use
+    * @param string $name The name of the module to install
     *
     * @return null
     */
-    public function uninstallPlugin($name)
+    public function uninstallPlugin($type, $name)
     {
-        $db = &JFactory::getDBO ();
-
-        $db = &JFactory::getDBO ();
-
-        $db->setQuery("UPDATE #__extensions set enabled=0, protected=0 WHERE element='$name' AND type='plugin'");
-        $ret = $db->query();
-
-        $db->setQuery("SELECT * FROM #__extensions WHERE element='$name' AND type='plugin'");
-        $mod = $db->loadObject();
-        if (is_object($mod)) {
+        $plug = $this->getExtensionId($name, "plugin", $type);
+        if ($this->protectExtension($plug, 0)) {
             $inst = new JInstaller();
-            return $inst->uninstall('plugin', $mod->extension_id);
+            return $inst->uninstall('plugin', $plug);
         }
         return true;
     }
 
+    /**
+    * This runs after install/update/uninstall
+    *
+    * @param string $name   The name of the module to install
+    * @param string $type   The type of plugin to use
+    * @param string $folder The folder to find the extension in
+    *
+    * @return null
+    */
+    public function getExtensionId($name, $type = null, $folder=null)
+    {
+        $db = &JFactory::getDBO ();
+        $query = "SELECT extension_id FROM #__extensions WHERE name='$name' AND type='$type'";
+        if (!is_null($folder)) {
+            $query .= " AND folder='$folder'";
+        }
+        $db->setQuery($query);
+        $plug = $db->loadObject();
+        return $plug->extension_id;
+
+    }
+    /**
+    * This runs after install/update/uninstall
+    *
+    * @param int $id The extension_id to protect
+    *
+    * @return null
+    */
+    public function protectExtension($id, $value=1)
+    {
+        $row = JTable::getInstance('extension');
+        if ($ret = $row->load($id)) {
+            if (!empty($row->extension_id)) {
+                $row->enabled = (int)$value;
+                $row->protected = (int)$value;
+                return $row->store();
+            }
+        }
+        return false;
+    }
 
 }
 

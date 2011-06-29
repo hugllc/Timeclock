@@ -119,10 +119,10 @@ class TimeclockAdminModelUsers extends JModel
         $ret = $this->_getList($query, $limitstart, $limit);
         if (!is_array($ret)) {
             return $ret;
-        }
+        }/*
         foreach ($ret as $key => $val) {
             $ret[$key]->prefs = TableTimeclockPrefs::decode($val->prefs);
-        }
+        }*/
         return $ret;
     }
 
@@ -364,13 +364,13 @@ class TimeclockAdminModelUsers extends JModel
      * @return null
      */
     private function _fixPrefs(&$prefs, &$data)
-    {
+    {/*
         if ($data["status"] != "PARTTIME") {
             $data["holidayperc"] = TableTimeclockPrefs::getDefaultPref(
                 "holidayperc",
                 "user"
             );
-        }
+        }*/
     }
 
 
@@ -545,29 +545,29 @@ class TimeclockAdminModelUsers extends JModel
         if (empty($date)) {
             $date = date("Y-m-d");
         }
-        $co = TableTimeclockPrefs::getPref("ptoCarryOver", "user", $oid);
-        $coe = TableTimeclockPrefs::getPref("ptoCarryOverExpire", "user", $oid);
-        $year = date("Y", strtotime($date." 06:00:00"));
-        if (!isset($co[$year])) {
+        $co = TimeclockHelper::getUserParam("ptoCarryOver", $oid);
+        $jdate = new JDate($date);
+        if (!isset($co[$jdate->year])) {
             return 0;
         }
+        $pto = &$co[$jdate->year];
         // If we haven't reached the expire date return all of the pto.
-        if (TimeclockModelTimeclock::compareDates($coe[$year], $date) > 0) {
-            return (int) $co[$year];
+        if (TimeclockModelTimeclock::compareDates($pto["expires"], $date) > 0) {
+            return (int) $pto["amount"];
         }
         // If carryover is negative we can't subtract hours from it.  Return now.
         if ($co[$year] < 0) {
-            return (int) $co[$year];
+            return (int) $pto["amount"];
         }
         $pto = (int)TimeclockModelTimeclock::getTotal(
             " `p`.`type` = 'PTO' AND `t`.`worked` >= '".date("Y-01-01")."'
-            AND `t`.`worked` <= '".$coe[$year]."'",
+            AND `t`.`worked` <= '".$pto["expires"]."'",
             $oid
         );
-        if (($pto - $co[$year]) < 0) {
+        if (($pto - $pto["amount"]) < 0) {
             return $pto;
         } else {
-            return $co[$year];
+            return $pto["amount"];
         }
     }
 
@@ -662,9 +662,9 @@ class TimeclockAdminModelUsers extends JModel
         $key = $oid.$date;
         $rates = TimeclockHelper::getPtoAccrualRates();
         $service = self::getServiceLength($oid, $date);
-        $status = self::getStatus($oid, $date);
-        $end    = strtotime(TableTimeclockPrefs::getPref("endDate", "user", $oid));
-        $start  = strtotime(TableTimeclockPrefs::getPref("startDate", "user", $oid));
+        $status = TimeclockHelper::getUserParam('status', $oid, $date);
+        $end    = strtotime(TimeclockHelper::getUserParam("endDate", $oid));
+        $start  = strtotime(TimeclockHelper::getUserParam("startDate", $oid));
         if ($service == 0) {
             return 0;
         }
@@ -684,40 +684,6 @@ class TimeclockAdminModelUsers extends JModel
     }
 
     /**
-     * Gets the perc of holiday pay this user should get
-     *
-     * @param int    $id   The user id to check
-     * @param string $date The date to check
-     *
-     * @return int
-     */
-    function getStatus($id, $date)
-    {
-        static $status;
-        $key = $id.$date;
-        if (!isset($status[$key])) {
-            $hist = TableTimeclockPrefs::getPref("history", "user", $id);
-            if (is_array($hist["status"])) {
-                ksort($hist["status"]);
-                foreach ($hist["status"] as $d => $r) {
-                    if (TimeclockModelTimeclock::compareDates(date("Y-m-d", $date), $d) < 0) {
-                        $status[$key] = $r;
-                        break;
-                    }
-                }
-            }
-            if (!isset($status[$key])) {
-                $status[$key] = TableTimeclockPrefs::getPref(
-                    "status",
-                    "user",
-                    $id
-                );
-            }
-        }
-        return $status[$key];
-    }
-
-    /**
      * Gets select options for parent projects
      *
      * @param int    $oid  The user to get the PTO for.
@@ -732,7 +698,7 @@ class TimeclockAdminModelUsers extends JModel
         } else if (!is_numeric($date)) {
             $date = strtotime($date);
         }
-        $start = TableTimeclockPrefs::getPref("startDate", "user", $oid);
+        $start = TimeclockHelper::getUserParam("startDate", $oid);
         $start = strtotime($start);
         if ($date < $start) {
             return 0;

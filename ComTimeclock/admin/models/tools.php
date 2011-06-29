@@ -86,6 +86,173 @@ class TimeclockAdminModelTools extends JModel
     *
     * @return array The problem array
     */
+    function convertPrefs()
+    {
+        $ret = array(
+            "System Preferences" => $this->_convertSysPrefs(),
+            "User Preferences" => $this->_convertUserPrefs(),
+        );
+        return $ret;
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _convertSysPrefs()
+    {
+        $test = array(
+            "name" => "Converting System Prefs",
+            "result" => true,
+            "description" => "This converts the system preferences",
+        );
+        $component = JComponentHelper::getComponent("com_timeclock");
+        $row = JTable::getInstance('extension');
+        if ($row->load($component->id)) {
+            $table = $this->getTable("TimeclockPrefs");
+            $table->load(-1);
+            $row->set('params', json_encode($table->prefs));
+            $row->store();
+        } else {
+            $test["result"] = false;
+        }
+
+        return array($test);
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @return array The problem array
+    */
+    private function _convertUserPrefs()
+    {
+        $ret = $this->_convertPrefsGetUsers();
+        foreach ((array)$ret as $row) {
+            $test[] = $this->_convertUserPref($row);
+        }
+        return $test;
+    }
+    /**
+    * This function goes through and checks the prefs
+    *
+    * @param array $user The user to convert
+    *
+    * @return array The problem array
+    */
+    private function _convertUserPref($user)
+    {
+        $test = array(
+            "name" => $user["name"],
+            "result" => true,
+            "description" => "",
+        );
+        $table = $this->getTable("TimeclockPrefs");
+        $table->load($user["id"]);
+        foreach((array)$table->prefs as $okey => $value) {
+            if (strpos($okey, "admin_") === 0) {
+                $key = str_replace("admin_", "", $okey);
+                $prefix = "admin.";
+            } else if (strpos($okey, "admin_") === 0) {
+                $key = str_replace("user_", "", $okey);
+                $prefix = "user.";
+            } else {
+                continue;
+            }
+            if ($key === "ptoCarryOver") {
+                foreach ((array)$value as $year => $amount) {
+                    plgUserTimeclock::setParamValue(
+                        $key."_".$year."_amount", $amount, $user["id"], $prefix
+                    );
+                }
+                plgUserTimeclock::setParamValue(
+                    $key, "array()", $user["id"], "admin."
+                );
+
+            } else if ($key === "ptoCarryOverExpire") {
+                foreach ((array)$value as $year => $expire) {
+                    plgUserTimeclock::setParamValue(
+                        "ptoCarryOver_".$year."_expires", $expire, $user["id"], $prefix
+                    );
+                }
+            } else {
+                plgUserTimeclock::setParamValue(
+                    $key, (string)$value, $user["id"], $prefix
+                );
+            }
+            $test["description"] .= "$okey -> $key<br />";
+        }
+        $vals = array(
+            "manager" => "manager", "startDate" => "startDate",
+            "endDate" => "endDate", "published" => "active",
+        );
+        foreach ($vals as $old => $new) {
+            $value = (string)$table->$old;
+            if ($value == "0000-00-00") {
+                $value = "";
+            }
+            plgUserTimeclock::setParamValue(
+                $new, $value, $user["id"], "admin."
+            );
+            $test["description"] .= "$old -> $new<br />";
+        }
+
+        foreach((array)$table->history as $okey => $dates) {
+            foreach((array)$dates as $date => $value) {
+                $key = str_replace("admin_", "", $okey);
+                $prefix = "history_";
+                if ($key === "ptoCarryOver") {
+                    foreach ((array)$value as $year => $amount) {
+                        plgUserTimeclock::setParamValue(
+                            $prefix.$key."*".$year."*amount_".$date, $amount, $user["id"], "admin."
+                        );
+                    }
+                } else if ($key === "ptoCarryOverExpire") {
+                    foreach ((array)$value as $year => $expire) {
+                        plgUserTimeclock::setParamValue(
+                            $prefix."ptoCarryOver*".$year."*expires_".$date, $expire, $user["id"], "admin."
+                        );
+                    }
+                } else {
+                    plgUserTimeclock::setParamValue(
+                        $prefix.$key."_".$date, (string)$value, $user["id"], "admin."
+                    );
+                }
+                plgUserTimeclock::setParamValue(
+                    "history", "array()", $user["id"], "admin."
+                );
+                $test["description"] .= "$okey -> $prefix$key<br />";
+            }
+        }
+        /*
+            if (array_search($row["parent_type"], $valid_array) === false) {
+                $test["result"] = false;
+                $test["log"] .= "Project ".$row["name"]." has invalid parent "
+                                .$row["parent_name"]."\n";
+            }
+        */
+        return $test;
+    }
+    /**
+    * This checks for users in categories.
+    *
+    * @return array The problem array
+    */
+    private function _convertPrefsGetUsers()
+    {
+        static $data;
+        if (!is_array($data)) {
+            $data = array();
+            $sql = "SELECT id, name FROM #__users";
+            $this->_db->setQuery($sql);
+            $data = $this->_db->loadAssocList();
+        }
+        return $data;
+    }
+    /**
+    * This function goes through and checks all of the databases
+    *
+    * @return array The problem array
+    */
     function dbCheck()
     {
         $ret = array(
@@ -97,6 +264,7 @@ class TimeclockAdminModelTools extends JModel
         );
         return $ret;
     }
+
 
 
     /**

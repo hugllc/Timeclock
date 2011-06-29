@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<access component="com_helloworld">
+<access component="com_timeclock">
     <section name="component">
         <action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
         <action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
         <action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
         <action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
         <action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
-    </section>
-    <section name="timeclock">
+        <action name="core.login.site" title="JACTION_LOGIN_SITE" description="JACTION_LOGIN_SITE_COMPONENT_DESC" />
+        <!--
         <action name="timeclock.timesheet" title="COM_TIMECLOCK_ACTION_TIMESHEET" description="COM_TIMECLOCK_ACCESS_TIMESHEET_DESC" />
         <action name="timeclock.reports" title="COM_TIMECLOCK_ACTION_REPORTS" description="COM_TIMECLOCK_ACCESS_REPORTS_DESC" />
+        -->
     </section>
 </access>

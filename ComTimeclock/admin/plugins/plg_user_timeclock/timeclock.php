@@ -43,13 +43,13 @@
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  *
  */
-
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die('Restricted access');
 jimport('joomla.utilities.date');
 jimport('joomla.form.form');
 JForm::addFieldPath(JPATH_COMPONENT.DS.'..'.DS.'com_timeclock'.DS.'models'.DS.'fields');
-require_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS.'helpers'.DS.'timeclock.php';
-
+if (!class_exists("TimeclockHelper")) {
+    include_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS.'helpers'.DS.'timeclock.php';
+}
 /**
 * This is a plugin to display timeclock user information in the user screen
 *
@@ -84,16 +84,6 @@ class plgUserTimeclock extends JPlugin
             $userId = isset($data->id) ? $data->id : 0;
 
             $results = $this->getAllParams($userId, "admin");
-            /*
-            // Load the timeclock data from the database.
-            $db = JFactory::getDbo();
-            $db->setQuery(
-                'SELECT profile_key, profile_value FROM #__user_profiles' .
-                ' WHERE user_id = '.(int) $userId." AND profile_key LIKE 'timeclock.admin.%'" .
-                ' ORDER BY ordering'
-            );
-            $results = $db->loadRowList();
-            */
             if ($results === false) {
                 return false;
             }
@@ -133,7 +123,7 @@ class plgUserTimeclock extends JPlugin
             ' ORDER BY ordering'
         );
         $results = $db->loadRowList();
-        // Check for a database error.
+       // Check for a database error.
         if ($db->getErrorNum())
         {
             $this->_subject->setError($db->getErrorMsg());
@@ -169,10 +159,15 @@ class plgUserTimeclock extends JPlugin
     static protected function stripKeys($data, $strip = 'timeclock.admin.')
     {
         $ret = array();
-        foreach ($data as $v)
+        foreach ($data as $key => $v)
         {
-            $k = str_replace($strip, '', $v[0]);
-            $ret[$k] = $v[1];
+            if (is_array($v)) {
+                $k = str_replace($strip, '', $v[0]);
+                $ret[$k] = $v[1];
+            } else {
+                $k = str_replace($strip, '', $key);
+                $ret[$k] = $v;
+            }
         }
         return $ret;
     }
@@ -237,7 +232,7 @@ class plgUserTimeclock extends JPlugin
     {
         $model = TimeclockHelper::getModel('projects');
         foreach ((array)$data['removeProject'] as $proj) {
-            $model->removeuser((int)$proj, (int)$id);
+            $model->removeOneUser((int)$proj, (int)$id);
         }
         unset($data['removeProject']);
     }
@@ -253,7 +248,7 @@ class plgUserTimeclock extends JPlugin
     {
         $model = TimeclockHelper::getModel('projects');
         foreach ((array)$data['addProject'] as $proj) {
-            $model->adduser((int)$proj, (int)$id);
+            $model->addOneUser((int)$proj, (int)$id);
         }
         unset($data['addProject']);
     }
@@ -271,7 +266,7 @@ class plgUserTimeclock extends JPlugin
             $model = TimeclockHelper::getModel('projects');
             $projects = $model->getUserProjectIds($data['addProjFromUser']);
             foreach ((array)$projects as $proj) {
-                $model->adduser((int)$proj, (int)$id);
+                $model->addOneUser((int)$proj, (int)$id);
             }
 
         }
@@ -355,7 +350,7 @@ class plgUserTimeclock extends JPlugin
         // Load the timeclock data from the database.
         $db = JFactory::getDbo();
         $db->setQuery(
-            'SELECT profile_value FROM #__user_profiles' .
+            'SELECT profile_value, profile_key FROM #__user_profiles' .
             ' WHERE user_id = '.(int) $userId." AND (".
             "profile_key = 'timeclock.admin.$param'".
             "OR profile_key = 'timeclock.user.$param'".
@@ -363,7 +358,14 @@ class plgUserTimeclock extends JPlugin
         );
         $results = $db->loadRowList();
         $res = $results[0][0];
-        if (is_null($date)) {
+        if (substr($res, 0, 6) === "array(") {
+            $key = str_replace("timeclock.", "", $results[0][1]);
+            $value = self::stripKeys(self::getAllParams($userId, $key));
+            self::decodeArrays($value);
+            $res = $value;
+
+        }
+        if (is_null($date) || is_array($res)) {
             return $res;
         }
         $history = self::stripKeys(self::getAllParams($userId, "admin.history"));
@@ -386,11 +388,13 @@ class plgUserTimeclock extends JPlugin
     * @param string $param  The profile parameter to get
     * @param mixed  $value  The value to set the param to
     * @param int    $userId The userId to use.  Current user if left null
+    * @param string $prefix The prefix to use.  "set." is the default
     *
     * @return boolean
     */
-    static public function setParamValue($param, $value, $userId=null)
-    {
+    static public function setParamValue(
+        $param, $value, $userId=null, $prefix="set."
+    ) {
         if (empty($userId)) {
             $userId = JFactory::getUser()->id;
         }
@@ -401,7 +405,7 @@ class plgUserTimeclock extends JPlugin
             $db = JFactory::getDbo();
             $db->setQuery(
                 'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
-                " AND profile_key = 'timeclock.set.$param'"
+                " AND profile_key = 'timeclock.$prefix$param'"
             );
 
             if (!$db->query()) {
@@ -410,7 +414,7 @@ class plgUserTimeclock extends JPlugin
 
             $db->setQuery(
                 'INSERT INTO #__user_profiles VALUES '.
-                '('.(int)$userId.', '.$db->quote('timeclock.set.'.$param).', '.$db->quote($value).', -1)'
+                '('.(int)$userId.', '.$db->quote('timeclock.'.$prefix.$param).', '.$db->quote($value).', -1)'
             );
 
             if (!$db->query()) {

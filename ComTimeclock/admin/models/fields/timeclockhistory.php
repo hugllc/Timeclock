@@ -65,7 +65,9 @@ class JFormFieldTimeclockHistory extends JFormField
     public function getInput()
     {
         $ret[] = "<div>";
-        foreach ((array)$this->value["timestamps"] as $date => $user) {
+        $this->value["timestamps"] = (array)$this->value["timestamps"];
+        krsort($this->value["timestamps"]);
+        foreach ($this->value["timestamps"] as $date => $user) {
             if (empty($date)) {
                 continue;
             }
@@ -92,30 +94,6 @@ class JFormFieldTimeclockHistory extends JFormField
             }
             $ret[] = '</div>';
         }
-/*
-        $lang = JFactory::getLanguage();
-        $lang->load("com_timeclock");
-        $idName = empty($this->elements["userid"])?"id":$this->elements["userid"];
-        $id = JRequest::getInt($idName);
-        if (empty($id)) {
-            return "";
-        }
-        $ret = array('<div class="'.$this->class.'" style="clear:both;">');
-        $model = TimeclockHelper::getModel("projects");
-        $projects = $model->getUserProjectsBare($id, null, null);
-        foreach ((array)$projects as $proj) {
-            if (($proj->id > 0)) {
-                $id = $this->id.'_'.$proj->id;
-                $name = $this->name.'['.$proj->id.']';
-                $labeltext = sprintf("%04d", $proj->id).": ".JText::_($proj->name);
-                $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($proj->description), ENT_COMPAT, 'UTF-8');
-                $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">'.$labeltext.'</label>';
-                if ($this->element["remove"] == 'true') {
-                    $ret[] = '<input type="checkbox" name="'.$name.'" id="'.$id.'" value="'.(int)$proj->id.'" />';
-                }
-            }
-        }
-        */
         if (count($ret) === 1) {
             // No projects assigned to this user
             $ret[] = JText::_($this->element['emptyMessage']);

@@ -62,6 +62,8 @@ class JFormFieldTimeclockUserTypes extends JFormFieldList
     */
     protected function getOptions()
     {
+        $lang = JFactory::getLanguage();
+        $lang->load("com_timeclock");
         $options = array();
         $status = TimeclockHelper::getUserTypes();
         foreach ((array)$status as $value => $name) {

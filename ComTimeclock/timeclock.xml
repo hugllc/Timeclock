@@ -39,7 +39,6 @@
     <administration>
         <menu>COM_TIMECLOCK_MENU</menu>
         <submenu>
-            <menu task="users.display">COM_TIMECLOCK_SUBMENU_USER_CONFIG</menu>
             <menu task="customers.display">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
             <menu task="projects.display">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
             <menu task="holidays.display">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
@@ -63,6 +62,7 @@
             <folder>models</folder>
             <folder>views</folder>
             <folder>modules</folder>
+            <folder>plugins</folder>
             <folder>language</folder>
             <folder>helpers</folder>
         </files>

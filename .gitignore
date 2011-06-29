@@ -6,3 +6,5 @@ Documentation/
 *.zip
 build/
 *.kate-swp
+*.old
+tests/

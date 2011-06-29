@@ -151,10 +151,31 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function addUser($id, $user_id)
+    function addUser()
+    {
+        $this->store();
+        $id = (int) JRequest::getVar('id', 0, '', 'int');
+        $user_id = JRequest::getVar('user_id', array(0), '', 'array');
+        if (!is_array($user_id)) {
+            $user_id = array($user_id);
+        }
+        $ret = true;
+        foreach ($user_id as $u) {
+            $ret = $this->addOneUser($id, $u);
+        }
+        return $ret;
+    }
+    /**
+     * Checks in an item
+     *
+     * @param int   $id      The id of the project
+     * @param mixed $user_id The id of the user to remove
+     *
+     * @return bool
+     */
+    function addOneUser($id, $user_id)
     {
         $row = $this->getTable("TimeclockUsers");
-        $ret = true;
         $data = array(
             "id" => (int)$id,
             "user_id" => (int)$user_id,
@@ -162,20 +183,39 @@ class TimeclockAdminModelProjects extends JModel
 
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
-            $ret = false;
-            continue;
+            return false;
         }
         // Make sure the record is valid
         if (!$row->check()) {
             $this->setError($this->_db->getErrorMsg());
-            $ret = false;
-            continue;
+            return false;
         }
         // Store the web link table to the database
         if (!$row->store()) {
             $this->setError($this->_db->getErrorMsg());
-            $ret = false;
-            continue;
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Checks in an item
+     *
+     * @param int   $id      The id of the project
+     * @param mixed $user_id The id of the user to remove
+     *
+     * @return bool
+     */
+    function removeUser()
+    {
+        $this->store();
+        $id = (int) JRequest::getVar('id', 0, '', 'int');
+        $user_id = JRequest::getVar('user_id', array(0), '', 'array');
+        if (!is_array($user_id)) {
+            $user_id = array($user_id);
+        }
+        $ret = true;
+        foreach ($user_id as $u) {
+            $ret = $this->removeOneUser($id, $u);
         }
         return $ret;
     }
@@ -188,10 +228,9 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function removeUser($id, $user_id)
+    function removeOneUser($id, $user_id)
     {
         $row = $this->getTable("TimeclockUsers");
-        $ret = true;
         $data = array(
             "id" => (int)$id,
             "user_id" => (int)$user_id,
@@ -199,14 +238,14 @@ class TimeclockAdminModelProjects extends JModel
         // Bind the form fields to the hello table
         if (!$row->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
-            $ret = false;
+            return false;
         }
         // Store the web link table to the database
         if (!$row->delete()) {
             $this->setError($this->_db->getErrorMsg());
-            $ret = false;
+            return false;
         }
-        return $ret;
+        return true;
     }
 
     /**

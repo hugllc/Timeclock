@@ -37,8 +37,12 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.parameter');
 
-require_once JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php";
-
+if (file_exists(JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php")) {
+    include_once JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php";
+} else {
+    // This is purely for test purposes
+    include_once dirname(__FILE__)."/../plugins/plg_user_timeclock/timeclock.php";
+}
 /**
  * ComTimeclock World Component Controller
  *
@@ -245,12 +249,12 @@ class TimeclockHelper
     */
     static public function getParam($param)
     {
-        static $params;
-        if (!is_object($params)) {
+        static $component;
+        if (!is_object($component)) {
             $component = &JComponentHelper::getComponent('com_timeclock');
-            $params = new JParameter($component->params);
         }
-        return $params->get($param);
+        $ret = $component->params->get($param);
+        return $ret;
     }
     /**
     * gets a component parameter

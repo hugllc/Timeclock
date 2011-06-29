@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="Preferences">
-        <message>
-            Allows the user to change some settings of the timeclock
-        </message>
-    </layout>
-    <state>
-        <name>Preferences</name>
-        <description>Allows the user to change some settings of the timeclock</description>
-    </state>
+        <layout hidden="true" />
 </metadata>
