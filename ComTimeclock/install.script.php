@@ -111,9 +111,9 @@ class com_timeclockInstallerScript
     */
     public function postflight($type, $parent)
     {
-        //if ($type === "install") {
+        if ($type === "install") {
             $this->saveDefConfig();
-        //}
+        }
     }
 
     /**
