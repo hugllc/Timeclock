@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
             <th rowspan="2" width="20%" style="<?php print $this->cellStyle; ?>">
-                <?php print JHTML::_('grid.sort', 'User', 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                <?php print JHTML::_('grid.sort', COM_TIMECLOCK_USER, 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
             </th>
             <?php foreach (array_keys($this->totals["cat"]) as $cat) : ?>
             <th colspan="2" style="<?php print $this->cellStyle; ?>">
@@ -55,13 +55,13 @@ defined('_JEXEC') or die('Restricted access');
                 <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
             </th>
             <th style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("%"); ?>
+                %
             </th>
             <?php endforeach; ?>
             <th style="<?php print $this->cellStyle; ?>">
                 <?php print JText::_(COM_TIMECLOCK_HOURS); ?>
             </th>
             <th style="<?php print $this->cellStyle; ?>">
-                <?php print JText::_("%"); ?>
+                %
             </th>
         </tr>

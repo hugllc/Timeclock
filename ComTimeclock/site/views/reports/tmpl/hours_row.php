@@ -50,8 +50,8 @@ if ($this->report_type == "graph") {
     $total = $this->totals["user"][$this->userid];
     foreach (array_keys($this->totals["cat"]) as $cat):
         $hours = empty($this->catArray[$cat]) ? $this->cell_fill : $this->catArray[$cat];
-        $perc = ($hours == 0) || ($total == 0) ? $this->cell_fill : round(($hours/$total)*100, 1);
-        if (!empty($perc)) $perc .= "%";
+        $perc = ($hours == 0) || ($total == 0) ? trim($this->cell_fill) : round(($hours/$total)*100, 1);
+        if (!empty($perc) && ($perc !== "&nbsp;")) $perc .= "%";
         ?>
         <td style="<?php print $this->cellStyle; ?>"><?php print $hours; ?></td>
         <td style="<?php print $this->cellStyle; ?>"><?php print $perc; ?></td>

@@ -74,7 +74,7 @@ $this->graphColSpan = 2 + (count($this->totals["cat"])*2);
                 ); ?>
             </strong>
         </div>
-    <table >
+    <table id="timeclockTable">
         <?php if (count($this->report) > 0) : ?>
 
 <?php
