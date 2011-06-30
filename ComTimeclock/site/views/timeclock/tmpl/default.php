@@ -137,7 +137,7 @@ print $this->loadTemplate("header");
 $d = 0;
 foreach ($this->period["dates"] as $key => $uDate) {
     print '            <td style="'.$this->totalStyle.'">';
-    print '                '.(int)$this->totals["worked"][$key]."\n";
+    print '                '.(float)$this->totals["worked"][$key]."\n";
     print "            </td>\n";
     if ((++$d % $this->days) == 0) {
         print '            <th>';
@@ -165,7 +165,7 @@ for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
                 &nbsp
             </th>
             <td style="<?php print $this->totalStyle; ?>">
-                <?php print (int)$this->totals[$i]; ?>
+                <?php print (float)$this->totals[$i]; ?>
             </td>
     <?php
 }
@@ -181,7 +181,7 @@ $k = 1-$k;
                 <?php print JText::_(COM_TIMECLOCK_TOTAL); ?>
             </th>
             <td style="<?php print $this->totalStyle; ?>">
-                <?php print (int)$this->totals["total"]; ?>
+                <?php print (float)$this->totals["total"]; ?>
             </td>
         </tr>
 
