@@ -71,7 +71,7 @@ $initPanes = array();
 </script>
 <div id="timeclock">
 <div id="addHoursTotal">
-    <?php print JText::_(COM_TIMECLOCK_TOTAL_HOURS); ?>: <span id="hoursTotal"> - </span>
+    <?php print JText::_(COM_TIMECLOCK_TOTAL_HOURS); ?>: <span id="hoursTotal"> - </span><span id="hoursTotalError" class="error"></span>
 </div>
 <form action="<?php print JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
     <h1><?php print JText::_(COM_TIMECLOCK_ADD_HOURS); ?></h1>
@@ -143,6 +143,7 @@ foreach ($this->projects as $cat) {
             $code |= (($proj->$var > 0) || ($proj->$wcVar > 0));
         }
         // Now do something about the codes
+        $jsHoursTotal = array();
         for ($i = 1; $i < 7; $i++):
             $wcNote = "";
             if (($this->wCompEnable) && ($code)) {
@@ -164,6 +165,7 @@ foreach ($this->projects as $cat) {
             }
             $hoursId = "timesheet_".$proj->id."_hours_".$i;
             $hoursSum[] = $hoursId;
+            $jsHoursTotal[] = "$('$hoursId').value";
             ?>
         <tr>
             <th style="white-space:nowrap;" align="right">
@@ -172,46 +174,49 @@ foreach ($this->projects as $cat) {
                 </label>
             </th>
             <td>
-                <input class="inputbox validate-hoursverify<?php print $proj->id;?>" type="text" id="<?php print $hoursId; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
+                <input class="inputbox validate-hoursverify<?php print $hoursId;?>" type="text" id="<?php print $hoursId; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
                 <span><?php print $wcNote; ?></span>
+                <span id="<?php print $hoursId; ?>_old" style="display: none;"><?php print $hours; ?></span>
             </td>
             <td>
                 <?php print JText::_(COM_TIMECLOCK_HOURS_WORKED_HELP); ?>
-                <script>
+                <script lang="javascript">
                     window.addEvent('domready', function(){
-                        document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
+                        document.formvalidator.setHandler('hoursverify<?php print $hoursId;?>',
                             function (value) {
-                                var errordisp = $('noteerror<?php print $proj->id;?>');
-                                if (($('<?php print $hoursId; ?>').value > 0)
-                                    && (value.length < <?php print $this->minNoteChars; ?>)) {
-                                    errordisp.style.background = 'red';
-                                    errordisp.style.color = 'white';
-                                    return false;
-                                } else {
-                                    errordisp.style.background = '';
-                                    errordisp.style.color = '';
-                                    return true;
-                                }
-                            }
-                        );
-                    });
-                    window.addEvent('domready', function(){
-                        document.formvalidator.setHandler('hoursverify<?php print $proj->id;?>',
-                            function (value) {
+                                // clear any error
+                                document.getElementById('hoursTotalError').innerHTML = '&nbsp;';
+
+                                // get our objects
                                 var hours = $('<?php print $hoursId; ?>');
+                                var old = $('<?php print $hoursId; ?>_old');
                                 var notes = $('timesheet_<?php print $proj->id;?>_notes');
-                                var regex=/[0-9]{0,2}([.][0-9]{0,<?php print $this->decimalPlaces;?>}){0,1}/;
-                                var v = regex.exec(value);
-                                if (v[0] != value) {
-                                    hours.value = v[0];
+
+                                // Calculate the max hours available
+                                var total = parseFloat(document.getElementById('hoursTotal').innerHTML);
+                                var oldHours = parseFloat(old.innerHTML);
+                                var max = <?php print $this->maxHours; ?> - total + oldHours;
+                                if (max < 0) {
+                                    max = 0;
                                 }
-                                if (!hours.value) return false;
-                                var max = <?php print $this->maxHours; ?>;
+
+                                // Round the hours
+                                var mod = Math.pow(10, <?php print $this->decimalPlaces; ?>);
+                                hours.value = Math.round(hours.value * mod) / mod;
+
+                                // Check the max
                                 if (hours.value > max) {
                                     hours.value = max;
+                                    document.getElementById('hoursTotalError').innerHTML = 'Only <?php print $this->maxHours; ?> are allowed';
                                 }
-                                /* This recalculates the total hours */
+
+                                // Set the old value
+                                old.innerHTML = hours.value;
+
+                                // calculate the total
                                 calculateHourTotal();
+
+                                // Return
                                 return true;
                             }
                         );
@@ -228,6 +233,26 @@ foreach ($this->projects as $cat) {
                 </label>
             </th>
             <td>
+                <script lang="javascript">
+                    window.addEvent('domready', function(){
+                        document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
+                            function (value) {
+                                var errordisp = $('noteerror<?php print $proj->id;?>');
+                                var hours = <?php print implode(" + ", (array)$jsHoursTotal); ?>;
+                                if ((hours > 0)
+                                    && (value.length < <?php print $this->minNoteChars; ?>)) {
+                                    errordisp.style.background = 'red';
+                                    errordisp.style.color = 'white';
+                                    return false;
+                                } else {
+                                    errordisp.style.background = '';
+                                    errordisp.style.color = '';
+                                    return true;
+                                }
+                            }
+                        );
+                    });
+                </script>
                 <textarea class="inputbox validate-noteverify<?php print $proj->id;?>"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5" onFocus="this.value=(this.value).trim();" onBlur="if ((this.value = this.value.trim()).length == 0) this.value+='  ';"> <?php echo $this->data[$proj->id]->notes;?> </textarea>
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
@@ -282,6 +307,8 @@ $document->addScriptDeclaration($js);
             if (isNaN(value)) value = 0.0;
             total = total + value;
         <?php endforeach; ?>
+        var mod = Math.pow(10, <?php print $this->decimalPlaces; ?>);
+        total = Math.round(total * mod) / mod;
         document.getElementById('hoursTotal').innerHTML = total;
     }
 </script>

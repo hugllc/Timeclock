@@ -32,6 +32,14 @@
     border: 3px solid black;
     padding: .5em;
 }
+#timeclock #addHoursTotal .error {
+    background: white;
+    color: red;
+    font-weight: bold;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
 #timeclockTable {
     background-color: transparent;
     color: #000;
