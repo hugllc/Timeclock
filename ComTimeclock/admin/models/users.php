@@ -61,7 +61,7 @@ class TimeclockAdminModelUsers extends JModel
     /** Query to get all records */
     private $_allQuery = "SELECT p.*, u.*
                       FROM #__users AS u
-                      LEFT JOIN #__timeclock_prefs as p ON u.id = p.id ";
+                      ";
 
     /**
      * Constructor that retrieves the ID from the request
@@ -270,6 +270,7 @@ class TimeclockAdminModelUsers extends JModel
      */
     function store()
     {
+        /*
         $row =& $this->getTable("TimeclockPrefs");
         $data = JRequest::get('post');
         if (empty($data["id"])) {
@@ -306,7 +307,7 @@ class TimeclockAdminModelUsers extends JModel
             $this->setError($this->_db->getErrorMsg());
             return false;
         }
-
+        */
         return true;
     }
     /**
@@ -466,8 +467,7 @@ class TimeclockAdminModelUsers extends JModel
         } else {
             $ret = array();
         }
-        $query = "SELECT u.id, u.name FROM #__users AS u
-                  LEFT JOIN #__timeclock_prefs AS p ON u.id = p.id "
+        $query = "SELECT u.id, u.name FROM #__users AS u "
                   .$where." ORDER BY u.id asc";
         $list = self::_getList($query);
         if (!is_array($list)) {

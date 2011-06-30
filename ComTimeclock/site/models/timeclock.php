@@ -43,7 +43,6 @@ $base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
 $adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
 
 require_once $adminbase.DS.'models'.DS.'users.php';
-require_once $adminbase.DS.'tables'.DS.'timeclockprefs.php';
 require_once $adminbase.DS.'models'.DS.'projects.php';
 require_once $adminbase.DS.'models'.DS.'customers.php';
 require_once $base.DS.'tables'.DS.'timeclocktimesheet.php';
@@ -308,7 +307,6 @@ class TimeclockModelTimeclock extends JModel
             LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
             LEFT JOIN #__timeclock_users as j on (j.id = p.id OR p.type != 'HOLIDAY')
             LEFT JOIN #__users as u on j.user_id = u.id
-            LEFT JOIN #__timeclock_prefs as tp on tp.id = u.id
             LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
             LEFT JOIN #__timeclock_customers as c on p.customer = c.id
             WHERE
@@ -319,10 +317,6 @@ class TimeclockModelTimeclock extends JModel
             OR
             (
                 ".$where2." AND p.type = 'HOLIDAY'
-                AND (
-                    (t.worked >= tp.startDate)
-                    AND ((t.worked <= tp.endDate) OR (tp.endDate = '0000-00-00'))
-                )
             )
             ";
     }

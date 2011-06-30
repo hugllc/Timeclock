@@ -240,7 +240,7 @@ class TimeclockAdminViewTimesheets extends JView
             $projWhere,
             null
         );
-        $userWhere = "WHERE p.published=1";
+        //$userWhere = "WHERE p.published=1";
         $lists["users"]    = $userModel->getOptions($userWhere, "Select User");
 
         $this->assignRef("project", $project);

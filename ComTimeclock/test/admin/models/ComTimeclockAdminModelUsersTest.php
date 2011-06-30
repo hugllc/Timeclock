@@ -115,14 +115,7 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
                     "endDate" => "2009-04-12",
                 ),
                 "post",
-                array(
-                    "id" => 15,
-                    "prefs" => 'a:2:{s:11:"holidayperc";i:100;s:6:"status";s:8:"FULLTIME";}',
-                    "published" => 1,
-                    "startDate" => "2008-04-12",
-                    "endDate" => "2009-04-12",
-                    "manager" => null,
-                ),
+                null,
                 "store",
             ),
         );
@@ -155,9 +148,9 @@ class ComTimeclockAdminModelUsersTest extends JModelTest
     {
         return array(
             array(null, "store", true, array("id" => 13)),
-            array("bind", "store", false, array("id" => 13)),
-            array("check", "store", false, array("id" => 13)),
-            array("store", "store", false, array("id" => 13)),
+            array("bind", "store", true, array("id" => 13)),
+            array("check", "store", true, array("id" => 13)),
+            array("store", "store", true, array("id" => 13)),
 
         );
     }

@@ -277,8 +277,8 @@ class TimeclockAdminViewProjects extends JView
             $uUser[] = $u->id;
         }
 
-        $userWhere = "WHERE p.published=1
-              AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
+        //$userWhere = "WHERE p.published=1
+        //      AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
         $lists["allUsers"] = $userModel->getOptions($userWhere, "None");
         $lists["users"]    = $userModel->getOptions($userWhere, "Add User", $uUser);
 

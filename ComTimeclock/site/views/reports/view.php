@@ -792,12 +792,12 @@ class TimeclockViewReportsBase extends JView
             0
         );
         $controls["projManager"]  = $userModel->getOptions(
-            "WHERE p.published = 1",
+            "WHERE u.block = 0",
             "Select Project Manager",
             array()
         );
         $controls["userManager"]  = $userModel->getOptions(
-            "WHERE p.published = 1",
+            "WHERE u.block = 0",
             "Select User Manager",
             array()
         );
