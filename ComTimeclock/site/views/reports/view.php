@@ -549,6 +549,8 @@ class TimeclockViewReportsBase extends JView
         if ($control) {
             $this->_reportControls();
         }
+        $document = &JFactory::getDocument();
+        $document->setMimeEncoding("image/png");
     }
     /**
      * The display function
@@ -565,7 +567,6 @@ class TimeclockViewReportsBase extends JView
         }
 
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
-
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
         $cat_name = $this->catBy();
@@ -591,7 +592,6 @@ class TimeclockViewReportsBase extends JView
         foreach ($cats as $key => $cat) {
             $cats[$key] = "%.1f%% ".$cat;
         }
-
         $this->assignRef("data", $data);
         $this->assignRef("cats", $cats);
         $this->assignRef("user", $user);

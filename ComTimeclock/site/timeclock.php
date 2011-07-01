@@ -66,6 +66,8 @@ $controller->execute(JRequest::getVar('task'));
 // Redirect if set by the controller
 $controller->redirect();
 
+$document = JFactory::getDocument();
+if (trim(strtolower($document->getType()) == "html")) {
 ?>
 <p class="copyright">
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
@@ -74,3 +76,6 @@ Copyright &copy; 2008-2009, 2011
 <br /><?php print JText::_("Found a bug in ComTimeclock?"); ?>
 <a href="https://dev.hugllc.com/bugs"><?php print JText::_("Report it here"); ?></a>
 </p>
+<?php
+}
+?>

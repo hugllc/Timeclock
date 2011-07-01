@@ -7,7 +7,6 @@
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
  * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
- * Copyright 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,45 +25,45 @@
  * </pre>
  *
  * @category   UI
- * @package    Comtimeclock
- * @subpackage Com_timeclock
+ * @package    ComTimeclock
+ * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 defined('_JEXEC') or die('Restricted access');
-$url  = "&option=com_timeclock&view=reports&layout=hoursgraph";
-$url .= "&startDate=".JHTML::_("date", $this->period["unix"]["start"], "Y-m-d");
-$url .= "&endDate=".JHTML::_("date", $this->period["unit"]["end"], "Y-m-d");
-$url .= "&cat_by=".urlencode($this->cat_by);
-$url .= "&format=raw";
-$styles = array(
-                "userid",
-                "proj_id",
-                "cat_id",
-                "cust_id",
-                "projManager",
-                "userManager",
-                "graphwidth",
-                "graphheight",
-                "margintop",
-                "marginbottom",
-                "marginleft",
-                "marginright"
-               );
-foreach ($styles as $key) {
-    if (!empty($this->$key)) {
-        $url .= "&$key=".(int)$this->$key;
+
+require_once "view.php";
+
+/**
+ * HTML View class for the ComTimeclockWorld Component
+ *
+ * @category   UI
+ * @package    ComTimeclock
+ * @subpackage Com_Timeclock
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
+ */
+
+class TimeclockViewReports extends TimeclockViewReportsBase
+{
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return null
+     */
+    function display($tpl = null)
+    {
+        parent::pdisplay($tpl);
+        parent::display($tpl);
     }
 }
+
 ?>
-    <tr class="row<?php print $this->k; ?>">
-        <td align="left" colspan="<?php print $this->graphColSpan; ?>">
-            <img src="<?php print JRoute::_($url); ?>" alt="Data Graph Failed." align="center"/>
-        </td>
-    </tr>
-    <?php  $this->k = 1-$this->k; ?>
