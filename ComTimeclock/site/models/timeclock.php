@@ -316,7 +316,7 @@ class TimeclockModelTimeclock extends JModel
             )
             OR
             (
-                ".$where2." AND p.type = 'HOLIDAY'
+                ".$where2." AND p.type = 'HOLIDAY' AND u.block = 0
             )
             ";
     }
