@@ -44,10 +44,10 @@ JHTML::_('behavior.tooltip');
 <table>
     <tr>
         <td align="left" width="100%">
-            <?php echo JText::_(COM_TIMECLOCK_FILTER); ?>:
+            <?php echo JText::_("COM_TIMECLOCK_FILTER"); ?>:
             <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-            <button onclick="this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_GO); ?></button>
-            <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_RESET); ?></button>
+            <button onclick="this.form.submit();"><?php echo JText::_("COM_TIMECLOCK_GO"); ?></button>
+            <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_("COM_TIMECLOCK_RESET"); ?></button>
         </td>
         <td nowrap="nowrap">
             <?php echo $this->lists['state']; ?>
@@ -60,25 +60,25 @@ JHTML::_('behavior.tooltip');
     <thead>
         <tr>
             <th width="5">
-                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ID, 'c.id', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_ID", 'c.id', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="20">
                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
             </th>
             <th  class="title">
-                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_COMPANY, 'c.company', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_COMPANY", 'c.company', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="10%" nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_CONTACT_NAME, 'c.name', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_CONTACT_NAME", 'c.name', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="1%" nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ACTIVE, 'c.published', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_ACTIVE", 'c.published', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th width="1%" nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_BILL_PTO, 'c.bill_pto', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_BILL_PTO", 'c.bill_pto', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
             <th nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_NOTES, 'c.notes', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
+                <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_NOTES", 'c.notes', @$this->lists['order_Dir'], @$this->lists['order'], "customers.display"); ?>
             </th>
         </tr>
     </thead>
@@ -99,7 +99,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
 
     $checked        = JHTML::_('grid.checkedout', $row, $i);
     $published      = JHTML::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', "customers.");
-    $bill_pto       = ($row->bill_pto == 0) ? "NO" : "YES";
+    $bill_pto       = ($row->bill_pto == 0) ? JText::_("JNO") : JText::_("JYES");
     $notes          = substr($row->notes, 0, 60);
     ?>
         <tr class="<?php echo "row$k"; ?>">
@@ -115,7 +115,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
         echo $row->company;
     } else {
         ?>
-                <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_CUSTOMER);?>::<?php echo $row->company; ?>">
+                <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_CUSTOMER");?>::<?php echo $row->company; ?>">
                 <a href="<?php echo $link  ?>">
                 <?php echo $row->company; ?></a></span>
         <?php

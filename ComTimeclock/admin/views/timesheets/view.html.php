@@ -156,8 +156,8 @@ class TimeclockAdminViewTimesheets extends JView
         $lists['state'] = JHTML::_(
             'grid.state',
             $filter_state,
-            COM_TIMECLOCK_ACTIVE,
-            COM_TIMECLOCK_INACTIVE
+            "COM_TIMECLOCK_ACTIVE",
+            "COM_TIMECLOCK_INACTIVE"
         );
 
         $lists['search_filter'] = $search_filter;
@@ -181,7 +181,7 @@ class TimeclockAdminViewTimesheets extends JView
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
-        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_TIMESHEETS));
+        TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_TIMESHEETS"));
         JToolBarHelper::editListX("timesheets.edit");
         JToolBarHelper::addNewX("timesheets.add");
         JToolBarHelper::preferences('com_timeclock');
@@ -209,7 +209,7 @@ class TimeclockAdminViewTimesheets extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_(COM_TIMECLOCK_THE_TIMESHEET),
+                    JText::_("COM_TIMECLOCK_THE_TIMESHEET"),
                     ''
                 );
                 $this->setRedirect(
@@ -248,9 +248,9 @@ class TimeclockAdminViewTimesheets extends JView
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
 
-        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+        $title = ($add) ? JText::_("COM_TIMECLOCK_ADD") : JText::_("COM_TIMECLOCK_EDIT");
 
-        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_TIMESHEET_EDIT_TITLE, $title));
+        TimeclockHelper::title(JText::sprintf("COM_TIMECLOCK_TIMESHEET_EDIT_TITLE", $title));
         JToolBarHelper::apply("timesheets.apply");
         JToolBarHelper::save("timesheets.save");
         JToolBarHelper::cancel("timesheets.cancel");

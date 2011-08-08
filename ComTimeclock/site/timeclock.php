@@ -43,7 +43,7 @@ if ((!JFactory::getUser()->authorise('core.login.site', 'com_timeclock'))
     || (!TimeclockHelper::getUserParam('active')
     && !TimeclockHelper::getUserParam('reports'))
 ){
-    return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+    return JError::raiseWarning(404, JText::_("JERROR_ALERTNOAUTHOR"));
 }
 
 // import joomla controller library
@@ -73,8 +73,8 @@ if (trim(strtolower($document->getType()) == "html")) {
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
 Copyright &copy; 2008-2009, 2011
     <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
-<br /><?php print JText::_("Found a bug in ComTimeclock?"); ?>
-<a href="https://dev.hugllc.com/bugs"><?php print JText::_("Report it here"); ?></a>
+<br /><?php print JText::_("COM_TIMECLOCK_FOUND_A_BUG"); ?>
+<a href="https://dev.hugllc.com/bugs"><?php print JText::_("COM_TIMECLOCK_REPORT_IT_HERE"); ?></a>
 </p>
 <?php
 }

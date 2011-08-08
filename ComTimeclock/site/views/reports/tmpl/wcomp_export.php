@@ -48,6 +48,6 @@ if (!empty($this->proj_id)) $baseurl .= "&proj_id=".$this->proj_id;
 if (!empty($this->cust_id)) $baseurl .= "&cust_id=".$this->cust_id;
 ?>
 <div>
-    <strong><?php print JText::_(COM_TIMECLOCK_EXPORT_TO); ?>:</strong>
+    <strong><?php print JText::_("COM_TIMECLOCK_EXPORT_TO"); ?>:</strong>
     <a href="<?php print JROUTE::_($baseurl."&format=csv"); ?>">CSV</a>
 </div>

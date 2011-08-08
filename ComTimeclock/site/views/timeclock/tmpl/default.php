@@ -51,7 +51,7 @@ $dateFormat       = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat  = JText::_("DATE_FORMAT_LC3");
 $document->setTitle(
     JText::sprintf(
-        COM_TIMECLOCK_TIMESHEET_TITLE,
+        "COM_TIMECLOCK_TIMESHEET_TITLE",
         $this->user->get("name"),
         JHTML::_('date', $this->period['unix']["start"], $shortDateFormat),
         JHTML::_('date', $this->period['unix']["end"], $shortDateFormat)
@@ -65,12 +65,12 @@ JHTML::_('behavior.mootools');
 ?>
 <div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
-    <div class="componentheading"><?php print JText::sprintf(COM_TIMECLOCK_TIMESHEET_FOR, $this->user->get("name"));?></div>
+    <div class="componentheading"><?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->get("name"));?></div>
     <?php print $this->loadTemplate("nextprev"); ?>
     <div id="dateheader" style="clear:both;">
         <strong>
             <?php print JText::sprintf(
-                COM_TIMECLOCK_DATE_TO_DATE,
+                "COM_TIMECLOCK_DATE_TO_DATE",
                 JHTML::_('date', $this->period['unix']["start"], $dateFormat),
                 JHTML::_('date', $this->period['unix']["end"], $dateFormat)
                 ); ?>
@@ -88,7 +88,7 @@ foreach ($this->projects as $cat) {
         if (empty($array)) continue;
     }
     $this->cat  =& $cat;
-    $safeName = JText::_(JCATEGORY).$cat->id;
+    $safeName = JText::_("JCATEGORY").$cat->id;
     if ($cat->show === true) {
         $initPanes[] = "timeclockCatShow('".$safeName."');";
     } else if ($cat->show === false) {
@@ -101,7 +101,7 @@ foreach ($this->projects as $cat) {
             <th style="<?php print $this->catStyle; ?>" colspan="<?php print $headerColSpan; ?>">
                 <a href="JavaScript: timeclockCatShowHide('<?php print $safeName; ?>');">
                     <span id="<?php print $safeName; ?>_cat_span"> - </span>
-                    <?php print JHTML::_('tooltip', JText::_($cat->description), JText::_(JCATEGORY), '', JText::_($cat->name)); ?>
+                    <?php print JHTML::_('tooltip', JText::_($cat->description), JText::_("JCATEGORY"), '', JText::_($cat->name)); ?>
                 </a>
             </th>
         </tr>
@@ -131,7 +131,7 @@ print $this->loadTemplate("header");
 
         <tr class="row<?php echo (int)$k?>">
             <th style="text-align:right; padding: 1px;">
-                <span><?php print JText::_(COM_TIMECLOCK_SUBTOTALS); ?></span>
+                <span><?php print JText::_("COM_TIMECLOCK_SUBTOTALS"); ?></span>
             </th>
 <?php
 $d = 0;
@@ -156,7 +156,7 @@ $k = 1-$k;
 
         <tr class="row<?php echo $k?>">
             <th style="text-align:right; padding: 1px;">
-                <span><?php print JText::_(COM_TIMECLOCK_PERIODIC_SUBTOTALS); ?></span>
+                <span><?php print JText::_("COM_TIMECLOCK_PERIODIC_SUBTOTALS"); ?></span>
             </th>
 <?php
 for ($i = $this->days; $i <= $headerColSpan; $i+=$this->days) {
@@ -178,7 +178,7 @@ $k = 1-$k;
         </tr>
         <tr class="row<?php echo $k?>">
             <th style="text-align:right; padding: 1px;" colspan="<?php echo $headerColSpan-1; ?>">
-                <?php print JText::_(COM_TIMECLOCK_TOTAL); ?>
+                <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
             </th>
             <td style="<?php print $this->totalStyle; ?>">
                 <?php print (float)$this->totals["total"]; ?>

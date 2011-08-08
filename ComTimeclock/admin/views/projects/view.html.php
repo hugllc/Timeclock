@@ -173,8 +173,8 @@ class TimeclockAdminViewProjects extends JView
         $lists['state'] = JHTML::_(
             'grid.state',
             $filter_state,
-            COM_TIMECLOCK_ACTIVE,
-            COM_TIMECLOCK_INACTIVE
+            "COM_TIMECLOCK_ACTIVE",
+            "COM_TIMECLOCK_INACTIVE"
         );
 
         // table ordering
@@ -200,9 +200,9 @@ class TimeclockAdminViewProjects extends JView
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
-        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_PROJECTS));
-        JToolBarHelper::publishList('projects.publish', COM_TIMECLOCK_ACTIVATE);
-        JToolBarHelper::unpublishList('projects.unpublish', COM_TIMECLOCK_DEACTIVATE);
+        TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_PROJECTS"));
+        JToolBarHelper::publishList('projects.publish', "COM_TIMECLOCK_ACTIVATE");
+        JToolBarHelper::unpublishList('projects.unpublish', "COM_TIMECLOCK_DEACTIVATE");
         JToolBarHelper::editListX('projects.edit');
         JToolBarHelper::addNewX('projects.add');
         JToolBarHelper::preferences('com_timeclock');
@@ -235,7 +235,7 @@ class TimeclockAdminViewProjects extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_(COM_TIMECLOCK_THE_PROJECT),
+                    JText::_("COM_TIMECLOCK_THE_PROJECT"),
                     $row->names
                 );
                 $this->setRedirect(
@@ -299,9 +299,9 @@ class TimeclockAdminViewProjects extends JView
         $this->assignRef("cat", $cat);
         $this->assignRef("row", $row);
 
-        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+        $title = ($add) ? JText::_("COM_TIMECLOCK_ADD") : JText::_("COM_TIMECLOCK_EDIT");
 
-        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_PROJECT_EDIT_TITLE, $title));
+        TimeclockHelper::title(JText::sprintf("COM_TIMECLOCK_PROJECT_EDIT_TITLE", $title));
         JToolBarHelper::apply("projects.apply");
         JToolBarHelper::save("projects.save");
         JToolBarHelper::cancel("projects.cancel");

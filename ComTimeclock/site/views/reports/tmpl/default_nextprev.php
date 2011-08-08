@@ -43,15 +43,15 @@ $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
 $url = JROUTE::_($baseurl."&date=".$this->period["next"]);
 $nextImg = '<a href="'.$url.'">'.$text.'</a>';
-$next = '<a href="'.$url.'">'.JText::_(JNEXT).'</a>';
+$next = '<a href="'.$url.'">'.JText::_("JNEXT").'</a>';
 
 $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
 $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
 $url = JROUTE::_($baseurl."&date=".$this->period["prevend"]);
 $prevImg = '<a href="'.$url.'">'.$text.'</a>';
-$prev = '<a href="'.$url.'">'.JText::_(JPREVIOUS).'</a>';
+$prev = '<a href="'.$url.'">'.JText::_("JPREVIOUS").'</a>';
 
-$text = JText::_(COM_TIMECLOCK_TODAY);
+$text = JText::_("COM_TIMECLOCK_TODAY");
 $url = JROUTE::_($baseurl);
 $today = '<a href="'.$url.'">'.$text.'</a>';
 

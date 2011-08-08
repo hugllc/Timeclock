@@ -44,144 +44,144 @@ jimport("joomla.html.pane");
         <tr>
             <td width="100" align="right" class="key">
                 <label for="published">
-                    <?php echo JText::_(COM_TIMECLOCK_ACTIVE); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_ACTIVE"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_ACTIVE_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_ACTIVE_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="bill_pto">
-                    <?php echo JText::_(COM_TIMECLOCK_BILL_FOR_PTO); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_BILL_FOR_PTO"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.booleanList", "bill_pto", "", $this->row->bill_pto); ?>
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_BILL_FOR_PTO_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_BILL_FOR_PTO_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="name">
-                    <?php echo JText::_(COM_TIMECLOCK_CONTACT_NAME); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_CONTACT_NAME"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="name" id="name" size="32" maxlength="64" value="<?php echo $this->row->name;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_CONTACT_NAME_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_CONTACT_NAME_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="company">
-                    <?php echo JText::_(COM_TIMECLOCK_COMPANY); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_COMPANY"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="company" id="company" size="32" maxlength="64" value="<?php echo $this->row->company;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_COMPANY_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_COMPANY_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="address1">
-                    <?php echo JText::_(COM_TIMECLOCK_ADDRESS1); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_ADDRESS1"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="address1" id="address1" size="64" maxlength="64" value="<?php echo $this->row->address1;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_ADDRESS1_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_ADDRESS1_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_ADDRESS2); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_ADDRESS2"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="address2" id="address2" size="64" maxlength="64" value="<?php echo $this->row->address2;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_ADDRESS2_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_ADDRESS2_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_CITY); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_CITY"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="city" id="city" size="32" maxlength="64" value="<?php echo $this->row->city;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_CITY_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_CITY_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_STATE); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_STATE"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="state" id="state" size="32" maxlength="64" value="<?php echo $this->row->state;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_STATE_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_STATE_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_ZIP); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_ZIP"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="zip" id="zip" size="15" maxlength="10" value="<?php echo $this->row->zip;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_ZIP_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_ZIP_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_COUNTRY); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_COUNTRY"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="country" id="country" size="32" maxlength="64" value="<?php echo $this->row->country;?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_COUNTRY_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_COUNTRY_CUSTOMER_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="notes">
-                    <?php echo JText::_(COM_TIMECLOCK_NOTES); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_NOTES"); ?>:
                 </label>
             </td>
             <td>
                 <textarea class="text_area" type="text" name="notes" id="notes" cols="30" rows="5"><?php echo $this->row->notes;?></textarea>
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_NOTES_CUSTOMER_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_NOTES_CUSTOMER_DESC"); ?>
             </td>
         </tr>
     </table>

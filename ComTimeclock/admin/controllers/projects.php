@@ -109,7 +109,7 @@ class TimeclockAdminControllerProjects extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -130,7 +130,7 @@ class TimeclockAdminControllerProjects extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -165,7 +165,7 @@ class TimeclockAdminControllerProjects extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -187,7 +187,7 @@ class TimeclockAdminControllerProjects extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -209,7 +209,7 @@ class TimeclockAdminControllerProjects extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -217,11 +217,11 @@ class TimeclockAdminControllerProjects extends JController
         $model = $this->getModel("Projects");
 
         if ($id = $model->store()) {
-            $msg   = JText::_(COM_TIMECLOCK_PROJECT_SAVED);
+            $msg   = JText::_("COM_TIMECLOCK_PROJECT_SAVED");
             $link  = 'index.php?option=com_timeclock&task=projects.edit';
             $link .= '&cid[]='.$id;
         } else {
-            $msg = JText::_(COM_TIMECLOCK_PROJECT_FAILED);
+            $msg = JText::_("COM_TIMECLOCK_PROJECT_FAILED");
             $link = $_SERVER["HTTP_REFERER"];
         }
         $this->setRedirect($link, $msg);
@@ -238,7 +238,7 @@ class TimeclockAdminControllerProjects extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -246,9 +246,9 @@ class TimeclockAdminControllerProjects extends JController
         $model = $this->getModel("Projects");
 
         if ($model->store()) {
-            $msg = JText::_(COM_TIMECLOCK_PROJECT_SAVED);
+            $msg = JText::_("COM_TIMECLOCK_PROJECT_SAVED");
         } else {
-            $msg = JText::_(COM_TIMECLOCK_PROJECT_FAILED);
+            $msg = JText::_("COM_TIMECLOCK_PROJECT_FAILED");
         }
         $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);

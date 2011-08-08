@@ -39,8 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
         <tr>
             <th style="<?php print $this->cellStyle; ?>">
-                <?php print JHTML::_('grid.sort', 'Project', 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
-                <?php //print JText::_("Project"); ?>
+                <?php print JHTML::_('grid.sort', JText::_("COM_TIMECLOCK_PROJECT"), 'p.name', @$this->lists['order_Dir'], @$this->lists['order']); ?>
             </th>
             <?php foreach ($this->users as $user) : ?>
             <th width="1.1em" style="<?php print $this->cellStyle; ?>">
@@ -48,6 +47,6 @@ defined('_JEXEC') or die('Restricted access');
             </th>
             <?php endforeach; ?>
             <th width="1.1em" style="<?php print $this->cellStyle; ?>">
-                <div style="<?php print $style; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></div>
+                <div style="<?php print $style; ?>"><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></div>
             </th>
         </tr>

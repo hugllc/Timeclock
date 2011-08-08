@@ -36,23 +36,23 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS));
+TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS"));
 
 $baseUrl = "index.php?option=com_timeclock&task=tools.display";
 ?>
 <div style="width: 500px;">
 <p>
-<?php print JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC); ?>
+<?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC"); ?>
 </p>
 <ol>
     <li>
         <a href="<?php print JRoute::_($baseUrl."&task=tools.dbcheck"); ?>">
-            <?php print JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB); ?>
+            <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"); ?>
         </a>
     </li>
     <li>
         <a href="<?php print JRoute::_($baseUrl."&task=tools.convertprefs"); ?>">
-            <?php print JText::_(COM_TIMECLOCK_TIMECLOCK_TOOLS_CONVERT_PREFS); ?>
+            <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CONVERT_PREFS"); ?>
         </a>
     </li>
 </ol>

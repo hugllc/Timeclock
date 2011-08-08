@@ -37,8 +37,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
         <tr class="row<?php print $this->k; ?>">
-            <th align="right" style="<?php print $totalStyle; ?>"><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></th>
-            <th style="<?php print $this->cellStyle; ?>"><?php print JText::_(COM_TIMECLOCK_GRAPH); ?></td>
+            <th align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></th>
+            <th style="<?php print $this->cellStyle; ?>"><?php print JText::_("COM_TIMECLOCK_GRAPH"); ?></td>
             <td style="<?php print $totalStyle; ?>"><?php print $this->total; ?></td>
             <td style="<?php print $totalStyle; ?>">100%</td>
         </tr>

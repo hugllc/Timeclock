@@ -75,7 +75,7 @@ class TimeclockControllerPreferences extends TimeclockController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -83,9 +83,9 @@ class TimeclockControllerPreferences extends TimeclockController
         $model = $this->getModel("Preferences");
 
         if ($model->store()) {
-            $msg = JText::_(COM_TIMECLOCK_PREFS_SAVED);
+            $msg = JText::_("COM_TIMECLOCK_PREFS_SAVED");
         } else {
-            $msg = JText::_(COM_TIMECLOCK_PREFS_FAILED);
+            $msg = JText::_("COM_TIMECLOCK_PREFS_FAILED");
         }
         $link = 'index.php?option=com_timeclock&task=preferences.display';
         $this->setRedirect($link, $msg);

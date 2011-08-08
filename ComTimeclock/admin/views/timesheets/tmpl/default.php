@@ -44,11 +44,11 @@ JHTML::_('behavior.tooltip');
 <table>
         <tr>
                 <td align="left" width="100%">
-                        <?php echo JText::_(COM_TIMECLOCK_FILTER); ?>:
+                        <?php echo JText::_("COM_TIMECLOCK_FILTER"); ?>:
                         <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
                         <?php echo JHTML::_('select.genericlist', $this->lists['search_options'], 'search_filter', '', 'value', 'text', $this->lists['search_filter'], 'search_filter'); ?>
-                        <button onclick="this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_GO); ?></button>
-                        <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='';this.form.submit();"><?php echo JText::_(COM_TIMECLOCK_RESET); ?></button>
+                        <button onclick="this.form.submit();"><?php echo JText::_("COM_TIMECLOCK_GO"); ?></button>
+                        <button onclick="document.getElementById('search').value='';document.getElementById('search_filter').value='';this.form.submit();"><?php echo JText::_("COM_TIMECLOCK_RESET"); ?></button>
                 </td>
                 <td nowrap="nowrap">
                         <?php //echo $this->lists['state']; ?>
@@ -61,28 +61,28 @@ JHTML::_('behavior.tooltip');
         <thead>
                 <tr>
                         <th width="5">
-                            <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_ID, 't.id', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
+                            <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_ID", 't.id', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
                         </th>
                         <th width="20">
                                 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_USER, 't.created_by', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
+                            <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_USER", 't.created_by', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
                         </th>
                         <th width="10%">
-                            <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_PROJECT, 'p.name', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
+                            <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_PROJECT", 'p.name', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_WORK_DATE, 't.worked', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
+                            <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_WORK_DATE", 't.worked', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
                         </th>
                         <th width="5%" nowrap="nowrap">
-                            <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_CREATED, 't.created', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
+                            <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_CREATED", 't.created', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
                         </th>
                         <th width="1%" align="center">
-                            <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_HOURS, 'hours', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
+                            <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_HOURS", 'hours', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
                         </th>
                         <th  class="title">
-                            <?php echo JHTML::_('grid.sort', COM_TIMECLOCK_NOTES, 't.notes', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
+                            <?php echo JHTML::_('grid.sort', "COM_TIMECLOCK_NOTES", 't.notes', @$this->lists['order_Dir'], @$this->lists['order'], "timesheets.display"); ?>
                         </th>
                 </tr>
         </thead>
@@ -119,7 +119,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
         echo $author;
     } else {
         ?>
-        <span class="editlinktip hasTip" title="<?php echo JText::_(COM_TIMECLOCK_EDIT_TIMESHEET);?>::<?php echo $name; ?>">
+        <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_TIMESHEET");?>::<?php echo $name; ?>">
         <a href="<?php echo $link  ?>">
                 <?php echo $author; ?></a></span>
         <?php

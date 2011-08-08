@@ -295,44 +295,6 @@ class plgUserTimeclock extends JPlugin
         }
     }
 
-/*
-    public static function url($value)
-    {
-        if (empty($value))
-        {
-            return JHtml::_('users.value', $value);
-        }
-        else
-        {
-            $value = htmlspecialchars($value);
-            if(substr ($value, 0, 4) == "http") {
-                return '<a href="'.$value.'">'.$value.'</a>';
-            }
-            else {
-                return '<a href="http://'.$value.'">'.$value.'</a>';
-            }
-        }
-    }
-
-    public static function calendar($value)
-    {
-        if (empty($value)) {
-            return JHtml::_('users.value', $value);
-        } else {
-            return JHtml::_('date', $value);
-        }
-    }
-
-    public static function tos($value)
-    {
-        if ($value) {
-            return JText::_('JYES');
-        }
-        else {
-            return JText::_('JNO');
-        }
-    }
-*/
     /**
     * This prepares the form
     *

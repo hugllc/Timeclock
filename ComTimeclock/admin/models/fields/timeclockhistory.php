@@ -76,7 +76,7 @@ class JFormFieldTimeclockHistory extends JFormField
             $labeltext = $user;
             $labeltitle = htmlspecialchars(trim($user, ":"), ENT_COMPAT, 'UTF-8');
             $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">'.$labeltext.'</label>'.$date;
-            $ret[] = '<a href="#" onClick="document.getElementById(\''.$id.'\').style.display=\'\';document.getElementById(\'effectiveDate'.$index.'Set\').value=\'1\';">['.JText::_(COM_TIMECLOCK_EDIT).']</a>';
+            $ret[] = '<a href="#" onClick="document.getElementById(\''.$id.'\').style.display=\'\';document.getElementById(\'effectiveDate'.$index.'Set\').value=\'1\';">['.JText::_("COM_TIMECLOCK_EDIT").']</a>';
             $ret[] = '<div id="'.$id.'" style="display: none;">';
             $ret[] = JHTML::_("calendar", $date, $this->name."[effectiveDate][$date]", $id, "%Y-%m-%d %H:%M:%S", "");
             $ret[] = '<input type="hidden" name="'.$this->name.'[effectiveDateSet]['.$date.']" id="effectiveDate'.$index.'Set" value="0" />';

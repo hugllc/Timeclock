@@ -57,26 +57,26 @@ JHTML::_('behavior.formvalidation');
     <input type="hidden" name="option" value="com_timeclock" />
     <input type="hidden" name="view" value="reports" />
     <div style="white-space: nowrap;">
-        <strong><?php echo JText::_(COM_TIMECLOCK_FROM); ?></strong>
+        <strong><?php echo JText::_("COM_TIMECLOCK_FROM"); ?></strong>
         <?php print JHTML::_("calendar", $this->period["start"], "startDate", "startDate", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"');?>
-        <strong><?php echo JText::_(COM_TIMECLOCK_TO); ?></strong>
+        <strong><?php echo JText::_("COM_TIMECLOCK_TO"); ?></strong>
         <?php print JHTML::_("calendar", $this->period["end"], "endDate", "endDate", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"'); ?>
     </div>
     <div>
         <?php print JHTML::_("select.genericList", $this->controls["category"], "cat_id", "", 'value', 'text', $this->cat_id); ?>
-        <strong><?php echo JText::_(COM_TIMECLOCK_OR); ?></strong>
+        <strong><?php echo JText::_("COM_TIMECLOCK_OR"); ?></strong>
         <?php print JHTML::_("select.genericList", $this->controls["project"], "proj_id", "", 'value', 'text', $this->proj_id); ?>
     </div>
     <div>
-        <strong><?php print JText::_(COM_TIMECLOCK_CUSTOMER); ?>: </strong> <?php print JHTML::_("select.genericList", $this->controls["customer"], "cust_id", "", 'value', 'text', $this->cust_id); ?>
+        <strong><?php print JText::_("COM_TIMECLOCK_CUSTOMER"); ?>: </strong> <?php print JHTML::_("select.genericList", $this->controls["customer"], "cust_id", "", 'value', 'text', $this->cust_id); ?>
     </div>
     <div>
-        <strong><?php print JText::_(COM_TIMECLOCK_PROJECT_MANAGER); ?>: </strong> <?php print JHTML::_("select.genericList", $this->controls["projManager"], "projManager", "", 'value', 'text', $this->projManager); ?>
+        <strong><?php print JText::_("COM_TIMECLOCK_PROJECT_MANAGER"); ?>: </strong> <?php print JHTML::_("select.genericList", $this->controls["projManager"], "projManager", "", 'value', 'text', $this->projManager); ?>
     </div>
     <div>
-        <strong><?php print JText::_(COM_TIMECLOCK_USER_MANAGER); ?>: </strong> <?php print JHTML::_("select.genericList", $this->controls["userManager"], "userManager", "", 'value', 'text', $this->userManager); ?>
+        <strong><?php print JText::_("COM_TIMECLOCK_USER_MANAGER"); ?>: </strong> <?php print JHTML::_("select.genericList", $this->controls["userManager"], "userManager", "", 'value', 'text', $this->userManager); ?>
     </div>
     <div style="white-space: nowrap;">
-        <button type="submit" class="button validate"><?php print JText::_(COM_TIMECLOCK_APPLY); ?></button>
+        <button type="submit" class="button validate"><?php print JText::_("COM_TIMECLOCK_APPLY"); ?></button>
     </div>
 </form>

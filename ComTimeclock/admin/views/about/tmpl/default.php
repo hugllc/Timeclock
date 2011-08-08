@@ -36,7 +36,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockHelper::title(JText::_(COM_TIMECLOCK_ABOUT_TIMECLOCK));
+TimeclockHelper::title(JText::_("COM_TIMECLOCK_ABOUT_TIMECLOCK"));
 
 ?>
 <div style="width: 500px;">

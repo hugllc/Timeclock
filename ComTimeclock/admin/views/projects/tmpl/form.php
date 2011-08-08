@@ -46,18 +46,18 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
     <?php
     $pane = JPane::getInstance("sliders");
     echo $pane->startPane("user-pane");
-    echo $pane->startPanel(JText::_(COM_TIMECLOCK_ADD_USERS), "adduser-page");
+    echo $pane->startPanel(JText::_("COM_TIMECLOCK_ADD_USERS"), "adduser-page");
     ?>
     <div style="padding: 5px;">
     <?php
         array_shift($this->lists["users"]);
         print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
     ?><br />
-        <button onClick="this.form.task.value='projects.adduser';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_ADD_USERS); ?></button>
+        <button onClick="this.form.task.value='projects.adduser';this.form.submit();"><?php print JText::_("COM_TIMECLOCK_ADD_USERS"); ?></button>
     </div>
     <?php
     echo $pane->endPanel();
-    echo $pane->startPanel(JText::_(COM_TIMECLOCK_REMOVE_USERS), "removeuser-page");
+    echo $pane->startPanel(JText::_("COM_TIMECLOCK_REMOVE_USERS"), "removeuser-page");
     ?>
     <div style="padding: 5px;">
     <?php
@@ -67,7 +67,7 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
     }
     print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
         ?><br />
-            <button onClick="this.form.task.value='projects.removeuser';this.form.submit();"><?php print JText::_(COM_TIMECLOCK_REMOVE_USERS); ?></button>
+            <button onClick="this.form.task.value='projects.removeuser';this.form.submit();"><?php print JText::_("COM_TIMECLOCK_REMOVE_USERS"); ?></button>
     </div>
     <?php
 
@@ -86,85 +86,85 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="name">
-                    <?php echo JText::_(COM_TIMECLOCK_NAME); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_NAME"); ?>:
                 </label>
             </td>
             <td>
                 <input class="text_area" type="text" name="name" id="name" size="32" maxlength="64" value="<?php echo $this->row->name;?>" />
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_NAME_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_NAME_PROJECT_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="description">
-                    <?php echo JText::_(COM_TIMECLOCK_DESCRIPTION); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_DESCRIPTION"); ?>:
                 </label>
             </td>
             <td>
                 <textarea class="text_area" type="text" name="description" id="description" cols="30" rows="5"><?php echo $this->row->description;?></textarea>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_DESCRIPTION_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_DESCRIPTION_PROJECT_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Research">
-                    <?php echo JText::_(COM_TIMECLOCK_MANAGER); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_MANAGER"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.genericList", $this->lists["allUsers"], "manager", '', 'value', 'text', $this->row->manager);  ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_MANAGER_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_MANAGER_PROJECT_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Research">
-                    <?php echo JText::_(COM_TIMECLOCK_RESEARCH); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_RESEARCH"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.booleanList", "research", "", $this->row->research); ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_RESEARCH_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_RESEARCH_PROJECT_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="published">
-                    <?php echo JText::_(COM_TIMECLOCK_ACTIVE); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_ACTIVE"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_ACTIVE_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_ACTIVE_PROJECT_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="type">
-                    <?php echo JText::_(COM_TIMECLOCK_TYPE); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_TYPE"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.genericList", $this->typeOptions, "type", "", 'value', 'text', $this->row->type); ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_TYPE_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_TYPE_PROJECT_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="category">
-                    <?php echo JText::_(JCATEGORY); ?>:
+                    <?php echo JText::_("JCATEGORY"); ?>:
                 </label>
             </td>
             <td>
@@ -177,7 +177,7 @@ if ($this->row->parent_id < -1) {
 ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_CATEGORY_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_CATEGORY_PROJECT_DESC"); ?>
             </td>
         </tr>
 <?php
@@ -186,7 +186,7 @@ if ($this->lists["wCompEnable"] != 0) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="parent_id">
-                    <?php echo JText::_(COM_TIMECLOCK_WORKERS_COMP_CODES); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_WORKERS_COMP_CODES"); ?>:
                 </label>
             </td>
             <td>
@@ -201,7 +201,7 @@ if ($this->lists["wCompEnable"] != 0) {
                 <?php endfor; ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"); ?>
             </td>
         </tr>
     <?php
@@ -210,20 +210,20 @@ if ($this->lists["wCompEnable"] != 0) {
         <tr>
             <td width="100" align="right" class="key">
                 <label for="customer">
-                    <?php echo JText::_(COM_TIMECLOCK_CUSTOMER); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_CUSTOMER"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.genericList", $this->lists["customers"], "customer", "", 'value', 'text', (int)$this->row->customer); ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_CUSTOMER_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_CUSTOMER_PROJECT_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key" style="vertical-align:top;">
                 <label for="users">
-                    <?php echo JText::_(COM_TIMECLOCK_USERS); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_USERS"); ?>:
                 </label>
             </td>
             <td style="white-space: nowrap;">
@@ -235,7 +235,7 @@ foreach ($this->lists["projectUsers"] as $user) { ?>
 ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_USERS_PROJECT_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_USERS_PROJECT_DESC"); ?>
             </td>
         </tr>
     </table>

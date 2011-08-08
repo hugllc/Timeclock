@@ -125,7 +125,7 @@ class TimeclockAdminControllerTimesheets extends JController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -134,7 +134,7 @@ class TimeclockAdminControllerTimesheets extends JController
 
         $link  = 'index.php?option=com_timeclock';
         if ($id = $model->store()) {
-            $msg   = JText::_(COM_TIMECLOCK_TIMESHEET_SAVED);
+            $msg   = JText::_("COM_TIMECLOCK_TIMESHEET_SAVED");
             $link .= '&task=timesheets.edit&cid[]='.(int)$id;
             $type = "message";
             if (!$apply) {
@@ -142,7 +142,7 @@ class TimeclockAdminControllerTimesheets extends JController
                 return;
             }
         } else {
-            $msg  = JText::_(COM_TIMECLOCK_TIMESHEET_FAILED);
+            $msg  = JText::_("COM_TIMECLOCK_TIMESHEET_FAILED");
             if (is_string($model->lastError)) {
                 $msg .= " (".JText::_($model->lastError).")";
             }

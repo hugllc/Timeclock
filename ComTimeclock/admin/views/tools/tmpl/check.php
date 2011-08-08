@@ -53,13 +53,13 @@ $baseUrl = "index.php?option=com_timeclock&task=tools.display";
             <div>
                 <?php print $test["name"]; ?>
                 <?php if ($test["result"] === true) : ?>
-                    <span style="float: right; <?php print $style;?> background: green; color: white; "><?php print JText::_(COM_TIMECLOCK_PASS); ?></span>
+                    <span style="float: right; <?php print $style;?> background: green; color: white; "><?php print JText::_("COM_TIMECLOCK_PASS"); ?></span>
                 <?php elseif (is_null($test["result"])) : ?>
-                    <span style="float: right; <?php print $style;?> background: yellow; color: black; "><?php print JText::_(COM_TIMECLOCK_WARNING); ?></span>
+                    <span style="float: right; <?php print $style;?> background: yellow; color: black; "><?php print JText::_("COM_TIMECLOCK_WARNING"); ?></span>
                 <?php elseif ($test["result"] === false) : ?>
-                    <span style="float: right; <?php print $style;?> background: red; color: white; "><?php print JText::_(COM_TIMECLOCK_FAIL); ?></span>
+                    <span style="float: right; <?php print $style;?> background: red; color: white; "><?php print JText::_("COM_TIMECLOCK_FAIL"); ?></span>
                 <?php else: ?>
-                    <span style="float: right; <?php print $style;?>"><?php print JText::_(COM_TIMECLOCK_NO_RESULT); ?></span>
+                    <span style="float: right; <?php print $style;?>"><?php print JText::_("COM_TIMECLOCK_NO_RESULT"); ?></span>
                 <?php endif; ?>
             </div>
             <p>
@@ -71,18 +71,18 @@ $baseUrl = "index.php?option=com_timeclock&task=tools.display";
         </div>
     <?php endforeach; ?>
 <?php endforeach; ?>
-<h2><?php print JText::_(COM_TIMECLOCK_KEY); ?></h2>
+<h2><?php print JText::_("COM_TIMECLOCK_KEY"); ?></h2>
 <div>
-    <span style="float: left; margin-right: 1em; <?php print $style;?> background: green; color: white; "><?php print JText::_(COM_TIMECLOCK_PASS); ?></span>
-    <?php print JText::_(COM_TIMECLOCK_PASS_MSG); ?>
+    <span style="float: left; margin-right: 1em; <?php print $style;?> background: green; color: white; "><?php print JText::_("COM_TIMECLOCK_PASS"); ?></span>
+    <?php print JText::_("COM_TIMECLOCK_PASS_MSG"); ?>
 </div>
 <div>
-    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: yellow; color: black; "><?php print JText::_(COM_TIMECLOCK_WARNING); ?></span>
-    <?php print JText::_(COM_TIMECLOCK_WARNING_MSG); ?>
+    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: yellow; color: black; "><?php print JText::_("COM_TIMECLOCK_WARNING"); ?></span>
+    <?php print JText::_("COM_TIMECLOCK_WARNING_MSG"); ?>
 </div>
 <div>
-    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: red; color: white; "><?php print JText::_(COM_TIMECLOCK_FAIL); ?></span>
-    <?php print JText::_(COM_TIMECLOCK_FAIL_MSG); ?>
+    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: red; color: white; "><?php print JText::_("COM_TIMECLOCK_FAIL"); ?></span>
+    <?php print JText::_("COM_TIMECLOCK_FAIL_MSG"); ?>
 </div>
 
 </pre>

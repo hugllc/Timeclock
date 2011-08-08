@@ -46,27 +46,27 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_PROJECT); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_PROJECT"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.genericList", $this->lists["projects"], "project_id", "", 'value', 'text', $this->row->project_id); ?>
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_PROJECT_HOLIDAY_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_PROJECT_HOLIDAY_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="payPeriodLength">
-                    <?php echo JText::_(COM_TIMECLOCK_WORK_DATE); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_WORK_DATE"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("calendar", $this->row->worked, "worked", "worked", "%Y-%m-%d", "");?>
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_WORK_DATE_HOLIDAY_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_WORK_DATE_HOLIDAY_DESC"); ?>
             </td>
         </tr>
         <?php for ($i = 1; $i < 7; $i++): ?>
@@ -85,21 +85,21 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
                 <input class="text_area" type="text" name="<?php print $var; ?>" id="<?php print $var; ?>" size="10" maxlength="10" value="<?php print $hours; ?>" />
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_HOURS_HOLIDAY_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_HOURS_HOLIDAY_DESC"); ?>
             </td>
         </tr>
         <?php endfor; ?>
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="notes">
-                    <?php echo JText::_(COM_TIMECLOCK_NOTES); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_NOTES"); ?>:
                 </label>
             </td>
             <td>
                 <textarea class="text_area" type="text" name="notes" id="notes" cols="30" rows="5"><?php echo $this->row->notes;?></textarea>
             </td>
             <td>
-                <?php echo JText::_(COM_TIMECLOCK_NOTES_HOLIDAY_DESC); ?>
+                <?php echo JText::_("COM_TIMECLOCK_NOTES_HOLIDAY_DESC"); ?>
             </td>
         </tr>
     </table>

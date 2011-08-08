@@ -67,32 +67,32 @@ class TimeclockHelper
     public static function addSubmenu($vName, $cName)
     {
         JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_CUSTOMERS),
+            JText::_("COM_TIMECLOCK_CUSTOMERS"),
             'index.php?option=com_timeclock&task=customers.display',
             $cName == 'customers'
         );
         JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_PROJECTS),
+            JText::_("COM_TIMECLOCK_PROJECTS"),
             'index.php?option=com_timeclock&task=projects.display',
             $cName == 'projects'
         );
         JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_HOLIDAYS),
+            JText::_("COM_TIMECLOCK_HOLIDAYS"),
             'index.php?option=com_timeclock&task=holidays.display',
             $cName == 'holidays'
         );
         JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_TIMESHEETS),
+            JText::_("COM_TIMECLOCK_TIMESHEETS"),
             'index.php?option=com_timeclock&task=timesheets.display',
             $cName == 'timesheets'
         );
         JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_MISC_TOOLS),
+            JText::_("COM_TIMECLOCK_MISC_TOOLS"),
             'index.php?option=com_timeclock&task=tools.display',
             $cName == 'tools'
         );
         JSubMenuHelper::addEntry(
-            JText::_(COM_TIMECLOCK_ABOUT),
+            JText::_("COM_TIMECLOCK_ABOUT"),
             'index.php?option=com_timeclock&view=about',
             $vName == 'about'
         );

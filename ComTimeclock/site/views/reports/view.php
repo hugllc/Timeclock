@@ -578,7 +578,7 @@ class TimeclockViewReportsBase extends JView
                 continue;
             }
             $hours = $d->hours;
-            $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+            $cat   = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
             if (!isset($cats[$cat])) {
                 $cats[$cat] = $index++;
             }
@@ -662,7 +662,7 @@ class TimeclockViewReportsBase extends JView
                 if (empty($code)) {
                     continue;
                 }
-                $cat = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+                $cat = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
                 if (empty($codes[$code])) {
                     $codes[$code] = $code;
                 }
@@ -701,7 +701,7 @@ class TimeclockViewReportsBase extends JView
             }
             $hours = $d->hours;
             $user  = $d->created_by;
-            $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+            $cat   = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
             if (empty($users[$user])) {
                 $users[$user] = $d->author;
             }
@@ -735,7 +735,7 @@ class TimeclockViewReportsBase extends JView
             $hours = $d->hours;
             $user  = $d->author;
             $proj  = $d->project_name;
-            $cat   = (empty($d->$cat_name)) ? JText::_("General") : $d->$cat_name;
+            $cat   = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
 
             $report[$cat][$proj][$user] += $hours;
             $totals["proj"][$proj]      += $hours;

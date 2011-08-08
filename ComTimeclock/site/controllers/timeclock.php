@@ -82,7 +82,7 @@ class TimeclockControllerTimeclock extends TimeclockController
         if ($projModel->getUserProjectsCount($user_id) == 0) {
             $this->setRedirect(
                 "index.php",
-                JText::_(COM_TIMECLOCK_NO_PROJECTS),
+                JText::_("COM_TIMECLOCK_NO_PROJECTS"),
                 "error"
             );
             return;
@@ -110,7 +110,7 @@ class TimeclockControllerTimeclock extends TimeclockController
             if ($projModel->userInProject($user_id, $projid) == false) {
                 $this->setRedirect(
                     JRoute::_("index.php?option=com_timeclock&view=timeclock"),
-                    JText::_(COM_TIMECLOCK_PROJECT_NO_AUTH),
+                    JText::_("COM_TIMECLOCK_PROJECT_NO_AUTH"),
                     "error"
                 );
                 return;
@@ -137,7 +137,7 @@ class TimeclockControllerTimeclock extends TimeclockController
         if (!JRequest::checkToken()) {
             $this->setRedirect(
                 JRoute::_("index.php"),
-                JText::_(COM_TIMECLOCK_BAD_FORM_TOKEN),
+                JText::_("COM_TIMECLOCK_BAD_FORM_TOKEN"),
                 "error"
             );
             return;
@@ -150,9 +150,9 @@ class TimeclockControllerTimeclock extends TimeclockController
         $model = $this->getModel("Timeclock");
 
         if ($model->store()) {
-            $msg = JText::_(COM_TIMECLOCK_HOURS_SAVED);
+            $msg = JText::_("COM_TIMECLOCK_HOURS_SAVED");
         } else {
-            $msg = JText::_(COM_TIMECLOCK_HOURS_FAILED);
+            $msg = JText::_("COM_TIMECLOCK_HOURS_FAILED");
         }
 
         $referer = JRequest::getVar(

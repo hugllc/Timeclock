@@ -51,12 +51,12 @@ foreach ($this->period["dates"] as $key => $uDate) :
     }
     if ($this->checkDate($uDate)) {
         $url = JRoute::_('index.php?&option=com_timeclock&task=timeclock.addhours&date='.urlencode($key).'&id='.(int)$this->user->get("id"));
-        $tipTitle = JText::_(COM_TIMECLOCK_ADD_HOURS);
+        $tipTitle = JText::_("COM_TIMECLOCK_ADD_HOURS");
         $tip = "on ".JHTML::_('date', $uDate, JText::_("DATE_FORMAT_LC1"));
     } else {
         $url = "";
-        $tipTitle = JText::_(COM_TIMECLOCK_NO_HOURS);
-        $tip = JText::_(COM_TIMECLOCK_NO_HOURS_BEFORE_START);
+        $tipTitle = JText::_("COM_TIMECLOCK_NO_HOURS");
+        $tip = JText::_("COM_TIMECLOCK_NO_HOURS_BEFORE_START");
     };
     ?>
         <th class="<?php print $class; ?>" style="<?php print $this->cellStyle; ?>">
@@ -64,11 +64,11 @@ foreach ($this->period["dates"] as $key => $uDate) :
         </th>
     <?php if ((++$d % $this->days) == 0) : ?>
         <th>
-            <span><?php print JText::_(COM_TIMECLOCK_WEEK_ABBREV).(int) ($d / $this->days); ?></span>
+            <span><?php print JText::_("COM_TIMECLOCK_WEEK_ABBREV").(int) ($d / $this->days); ?></span>
         </th>
         <?php $dtotal = 0; ?>
 
     <?php endif; ?>
 <?php endforeach; ?>
-        <th><?php print JText::_(COM_TIMECLOCK_TOTAL); ?></th>
+        <th><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></th>
     </tr>

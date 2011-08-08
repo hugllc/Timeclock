@@ -46,10 +46,10 @@ $totalStyle = $this->cellStyle." font-weight: bold;";
 $document        =& JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
-$document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_(COM_TIMECLOCK_TO)." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
+$document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_("COM_TIMECLOCK_TO")." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");
 
 if (!$this->enable) {
-    return JError::raiseWarning(null, JText::_(COM_TIMECLOCK_WCOMP_NOT_ENABLED_MSG));
+    return JError::raiseWarning(null, JText::_("COM_TIMECLOCK_WCOMP_NOT_ENABLED_MSG"));
 }
 
 ?>
@@ -72,7 +72,7 @@ if (!$this->enable) {
         <div id="dateheader" style="clear:both; white-space: nowrap;">
             <strong>
                 <?php print JHTML::_('date', $this->period['unix']["start"], $dateFormat); ?>
-                <?php print JText::_("to"); ?>
+                <?php print JText::_("COM_TIMECLOCK_TO"); ?>
                 <?php print JHTML::_('date', $this->period['unix']["end"], $dateFormat); ?>
             </strong>
         </div>
@@ -103,7 +103,7 @@ foreach ($this->report as $user => $codeArray) {
 }
 ?>
         <tr class="row<?php print $k; ?>">
-            <th align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("Total"); ?></td>
+            <th align="right" style="<?php print $totalStyle; ?>"><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></td>
             <?php foreach ($this->totals["code"] as $code => $hours) : ?>
             <td style="<?php print $totalStyle; ?>"><?php print $hours; ?></td>
             <?php endforeach; ?>
@@ -111,7 +111,7 @@ foreach ($this->report as $user => $codeArray) {
         </tr>
         <?php else : ?>
         <tr>
-            <th colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_("No data found"); ?></th>
+            <th colspan="<?php print $headerColSpan; ?>" align="right" style="<?php print $this->cellStyle; ?>"><?php print JText::_("COM_TIMECLOCK_NO_DATA_FOUND"); ?></th>
         </tr>
         <?php endif; ?>
     </table>

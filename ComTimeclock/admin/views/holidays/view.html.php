@@ -162,8 +162,8 @@ class TimeclockAdminViewHolidays extends JView
         $lists['state'] = JHTML::_(
             'grid.state',
             $filter_state,
-            COM_TIMECLOCK_ACTIVE,
-            COM_TIMECLOCK_INACTIVE
+            "COM_TIMECLOCK_ACTIVE",
+            "COM_TIMECLOCK_INACTIVE"
         );
 
         // table ordering
@@ -178,7 +178,7 @@ class TimeclockAdminViewHolidays extends JView
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
-        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_HOLIDAYS));
+        TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_HOLIDAYS"));
         JToolBarHelper::editListX("holidays.edit");
         JToolBarHelper::addNewX("holidays.add");
         JToolBarHelper::preferences('com_timeclock');
@@ -207,7 +207,7 @@ class TimeclockAdminViewHolidays extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_(COM_TIMECLOCK_THE_POLL),
+                    JText::_("COM_TIMECLOCK_THE_POLL"),
                     $poll->title
                 );
                 $this->setRedirect(
@@ -227,9 +227,9 @@ class TimeclockAdminViewHolidays extends JView
         $this->assignRef("lists", $lists);
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
-        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+        $title = ($add) ? JText::_("COM_TIMECLOCK_ADD") : JText::_("COM_TIMECLOCK_EDIT");
 
-        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_HOLIDAY_EDIT_TITLE, $title));
+        TimeclockHelper::title(JText::sprintf("COM_TIMECLOCK_HOLIDAY_EDIT_TITLE", $title));
         JToolBarHelper::apply("holidays.apply");
         JToolBarHelper::save("holidays.save");
         JToolBarHelper::cancel("holidays.cancel");

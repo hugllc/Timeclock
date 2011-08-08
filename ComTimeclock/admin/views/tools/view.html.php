@@ -91,9 +91,9 @@ class TimeclockAdminViewTools extends JView
      */
     function dbcheck($tpl = null)
     {
-        TimeclockHelper::title(JText::_(COM_TIMECLOCK_CHECK_DATABASE));
-        $this->noResults = JText::_(COM_TIMECLOCK_NO_TESTS);
-        $this->pageheader = JText::_(COM_TIMECLOCK_CHECKING_DATABASE);
+        TimeclockHelper::title(JText::_("COM_TIMECLOCK_CHECK_DATABASE"));
+        $this->noResults = JText::_("COM_TIMECLOCK_NO_TESTS");
+        $this->pageheader = JText::_("COM_TIMECLOCK_CHECKING_DATABASE");
         $model = $this->getModel();
         $this->results = $model->dbCheck();
         $this->setLayout("check");

@@ -38,12 +38,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport("joomla.html.pane");
 ?>
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userForm" id="userForm" autocomplete="off">
-    <div class="componentheading"><?php print JText::_(COM_TIMECLOCK_TIMECLOCK_PREFS_FOR).$this->user->get("name");?></div>
+    <div class="componentheading"><?php print JText::_("COM_TIMECLOCK_TIMECLOCK_PREFS_FOR").$this->user->get("name");?></div>
     <table class="usertable">
         <tr>
             <td width="100" align="right" class="key">
                 <label for="timesheetSort">
-                    <?php echo JText::_(COM_TIMECLOCK_TIMESHEET_SORT); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_TIMESHEET_SORT"); ?>:
                 </label>
             </td>
             <td>
@@ -51,12 +51,12 @@ jimport("joomla.html.pane");
                 <?php print JHTML::_("select.genericList", $this->timesheetSortOptionsDir, "prefs[user_timesheetSortDir]", "", 'value', 'text', $this->prefs["user_timesheetSortDir"]); ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_TIMESHEET_SORT_HELP); ?>
+                <?php print JText::_("COM_TIMECLOCK_TIMESHEET_SORT_HELP"); ?>
             </td>
         </tr>
         <tr>
             <td colspan="3">
-                <button type="submit" onMouseDown="document.getElementById('theTask').value='preferences.save';" class="button validate"><?php print JText::_("Save"); ?></button>
+                <button type="submit" onMouseDown="document.getElementById('theTask').value='preferences.save';" class="button validate"><?php print JText::_("COM_TIMECLOCK_SAVE"); ?></button>
             </td>
         </tr>
     </table>

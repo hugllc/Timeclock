@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_timeclock'))
 {
-    return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+    return JError::raiseWarning(404, JText::_("JERROR_ALERTNOAUTHOR"));
 }
 
 // import joomla controller library
@@ -78,7 +78,7 @@ $controller->redirect();
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
 Copyright &copy; 2008-2009, 2011
     <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
-<br /><?php print JText::_(COM_TIMECLOCK_FOUND_A_BUG); ?>
+<br /><?php print JText::_("COM_TIMECLOCK_FOUND_A_BUG"); ?>
 <a href="https://dev.hugllc.com/bugs/project_page.php?project_id=7">
-<?php print JText::_(COM_TIMECLOCK_REPORT_IT_HERE); ?></a>
+<?php print JText::_("COM_TIMECLOCK_REPORT_IT_HERE"); ?></a>
 </p>

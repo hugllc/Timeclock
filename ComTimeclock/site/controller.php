@@ -61,7 +61,7 @@ class TimeclockController extends JController
     {
         if (TimeclockHelper::getParam("timeclockDisable")) {
             print '<div class="componentheading">';
-            print JText::_("Timeclock Disabled")."</div>\n";
+            print JText::_("COM_TIMECLOCK_TIMECLOCK_DISABLED")."</div>\n";
             print "<p><strong>";
             print TimeclockHelper::getParam("timeclockDisableMessage");
             print "</strong></p>";
@@ -69,7 +69,7 @@ class TimeclockController extends JController
         }
         $view = JRequest::getVar('view', "timesheet", '', 'word');
         if (($view == "reports") && !TimeclockHelper::getUserParam("reports")) {
-            return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+            return JError::raiseWarning(404, JText::_("JERROR_ALERTNOAUTHOR"));
         }
         parent::display();
     }

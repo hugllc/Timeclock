@@ -162,8 +162,8 @@ class TimeclockAdminViewCustomers extends JView
         $lists['state'] = JHTML::_(
             'grid.state',
             $filter_state,
-            COM_TIMECLOCK_ACTIVE,
-            COM_TIMECLOCK_INACTIVE
+            "COM_TIMECLOCK_ACTIVE",
+            "COM_TIMECLOCK_INACTIVE"
         );
 
         // table ordering
@@ -178,9 +178,9 @@ class TimeclockAdminViewCustomers extends JView
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
-        TimeclockHelper::title(JText::_(COM_TIMECLOCK_TIMECLOCK_CUSTOMERS));
-        JToolBarHelper::publishList("customers.publish", COM_TIMECLOCK_ACTIVATE);
-        JToolBarHelper::unpublishList("customers.unpublish", COM_TIMECLOCK_DEACTIVATE);
+        TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_CUSTOMERS"));
+        JToolBarHelper::publishList("customers.publish", "COM_TIMECLOCK_ACTIVATE");
+        JToolBarHelper::unpublishList("customers.unpublish", "COM_TIMECLOCK_DEACTIVATE");
         JToolBarHelper::editListX("customers.edit");
         JToolBarHelper::addNewX("customers.add");
         JToolBarHelper::preferences('com_timeclock');
@@ -208,7 +208,7 @@ class TimeclockAdminViewCustomers extends JView
         if ($row->isCheckedOut($user->get('id'))) {
                 $msg = JText::sprintf(
                     'DESCBEINGEDITTED',
-                    JText::_(COM_TIMECLOCK_THE_POLL),
+                    JText::_("COM_TIMECLOCK_THE_POLL"),
                     $poll->title
                 );
                 $this->setRedirect(
@@ -224,9 +224,9 @@ class TimeclockAdminViewCustomers extends JView
         $this->assignRef("add", $add);
         $this->assignRef("row", $row);
 
-        $title = ($add) ? JText::_(COM_TIMECLOCK_ADD) : JText::_(COM_TIMECLOCK_EDIT);
+        $title = ($add) ? JText::_("COM_TIMECLOCK_ADD") : JText::_("COM_TIMECLOCK_EDIT");
 
-        TimeclockHelper::title(JText::sprintf(COM_TIMECLOCK_CUSTOMER_EDIT_TITLE, $title));
+        TimeclockHelper::title(JText::sprintf("COM_TIMECLOCK_CUSTOMER_EDIT_TITLE", $title));
         JToolBarHelper::apply("customers.apply");
         JToolBarHelper::save("customers.save");
         JToolBarHelper::cancel("customers.cancel");

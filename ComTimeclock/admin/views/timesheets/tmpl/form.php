@@ -46,7 +46,7 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
             <?php if (empty($this->row->created_by)): ?>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_USER); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_USER"); ?>:
                 </label>
             </td>
             <td>
@@ -54,14 +54,14 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
                     <input type="hidden" name="authOnly" value="1" />
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_SELECT_USER); ?>
+                <?php print JText::_("COM_TIMECLOCK_SELECT_USER"); ?>
             </td>
         </tr>
         <?php else: ?>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_USER); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_USER"); ?>:
                 </label>
             </td>
             <td>
@@ -69,41 +69,41 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
                 <input type="hidden" name="created_by" value="<?php print $this->row->created_by; ?>" />
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_USER_HELP); ?>
+                <?php print JText::_("COM_TIMECLOCK_USER_HELP"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="Published">
-                    <?php echo JText::_(COM_TIMECLOCK_PROJECT); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_PROJECT"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("select.genericList", $this->lists["projects"], "project_id", "", 'value', 'text', $this->row->project_id); ?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_PROJECT_TIMESHEET_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_PROJECT_TIMESHEET_DESC"); ?>
             </td>
         </tr>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="payPeriodLength">
-                    <?php echo JText::_(COM_TIMECLOCK_WORK_DATE); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_WORK_DATE"); ?>:
                 </label>
             </td>
             <td>
                 <?php print JHTML::_("calendar", $this->row->worked, "worked", "worked", "%Y-%m-%d", "");?>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_WORK_DATE_TIMESHEET_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_WORK_DATE_TIMESHEET_DESC"); ?>
             </td>
         </tr>
         <?php for ($i = 1; $i < 7; $i++): ?>
             <?php $var = "hours".$i; ?>
             <?php $wcVar = "wcCode".$i; ?>
             <?php if (($this->project->$wcVar == 0) && ($i > 1)) {continue;} ?>
-            <?php $wcName = empty($wCompCodes[abs($this->project->$wcVar)]) ? JText::_(COM_TIMECLOCK_HOURS) : $wCompCodes[abs($this->project->$wcVar)] ; ?>
-            <?php $wcNote =($this->project->$wcVar < 0) ? JText::_(COM_TIMECLOCK_CODE_DISABLED) : "" ; ?>
+            <?php $wcName = empty($wCompCodes[abs($this->project->$wcVar)]) ? JText::_("COM_TIMECLOCK_HOURS") : $wCompCodes[abs($this->project->$wcVar)] ; ?>
+            <?php $wcNote =($this->project->$wcVar < 0) ? JText::_("COM_TIMECLOCK_CODE_DISABLED") : "" ; ?>
             <?php $hours = ($this->row->$var) ? $this->row->$var : 0; ?>
         <tr>
             <td width="100" align="right" class="key">
@@ -116,21 +116,21 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
                 <span><?php print $wcNote; ?></span>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_HOURS_TIMESHEET_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_HOURS_TIMESHEET_DESC"); ?>
             </td>
         </tr>
         <?php endfor; ?>
         <tr>
             <td width="100" align="right" class="key" style="vertical-align: top;">
                 <label for="notes">
-                    <?php echo JText::_(COM_TIMECLOCK_NOTES); ?>:
+                    <?php echo JText::_("COM_TIMECLOCK_NOTES"); ?>:
                 </label>
             </td>
             <td>
                 <textarea class="text_area" type="text" name="notes" id="notes" cols="30" rows="5"><?php echo $this->row->notes;?></textarea>
             </td>
             <td>
-                <?php print JText::_(COM_TIMECLOCK_NOTES_TIMESHEET_DESC); ?>
+                <?php print JText::_("COM_TIMECLOCK_NOTES_TIMESHEET_DESC"); ?>
             </td>
         </tr>
         <?php endif; ?>
