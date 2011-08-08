@@ -527,6 +527,7 @@ class TimeclockAdminModelProjects extends JModel
                 $p->published = 0;
                 $projects[$p->id] = $p;
             }
+            $p->mine = false;
         }
         foreach ($proj as $p) {
             if ($p->type != "CATEGORY") {
@@ -542,6 +543,8 @@ class TimeclockAdminModelProjects extends JModel
                 }
                 if ($p->type == 'HOLIDAY') {
                     $p->noHours = true;
+                } else {
+                    $p->noHours = false;
                 }
                 $projects[$cat]->subprojects[$p->id] = $p;
             }
@@ -568,7 +571,7 @@ class TimeclockAdminModelProjects extends JModel
         if ($proj->type == "PTO") {
             return self::$cat["special"];
         }
-        if (is_object($cats[$proj->parent_id])) {
+        if (isset($cats[$proj->parent_id]) && is_object($cats[$proj->parent_id])) {
             return $proj->parent_id;
         }
         return self::$cat["general"];

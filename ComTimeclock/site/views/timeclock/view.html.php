@@ -52,6 +52,10 @@ jimport('joomla.application.component.view');
 
 class TimeclockViewTimeclock extends JView
 {
+    /** @var This is where our parameters are stored */
+    private $_params;
+    /** @var This is the order we sort the database records into */
+    private $_orderby;
     /**
      * The display function
      *
@@ -297,7 +301,7 @@ class TimeclockViewTimeclock extends JView
         $filter_order_dir =
             (trim(strtolower($filter_order_Dir)) == "asc") ? "ASC" : "DESC";
         $filter_order_dir2 =
-            (trim(strtolower($filter_order_Dir2)) == "asc") ? "ASC" : "DESC";
+            (trim(strtolower($filter2_order_Dir)) == "asc") ? "ASC" : "DESC";
 
         if (empty($filter_order)) {
             $filter_order = TimeclockHelper::getUserParam("user_timesheetSort");
@@ -318,10 +322,6 @@ class TimeclockViewTimeclock extends JView
         $this->_lists['order']         = $filter_order;
         $this->_lists['order_Dir2']     = $filter2_order_Dir;
         $this->_lists['order2']         = $filter2_order;
-
-        // search filter
-        $this->_lists['search']        = $search;
-        $this->_lists['search_filter'] = $search_filter;
 
         $this->assignRef("lists", $this->_lists);
 

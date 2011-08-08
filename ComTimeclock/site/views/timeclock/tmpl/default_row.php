@@ -45,7 +45,7 @@ $rowtotal = 0;
 $dtotal = 0;
 $d = 0;
 foreach ($this->period["dates"] as $key => $uDate) {
-    $hours               = ($this->hours[$this->proj->id][$key]) ? $this->hours[$this->proj->id][$key]['hours'] : 0;
+    $hours               = isset($this->hours[$this->proj->id][$key]) ? $this->hours[$this->proj->id][$key]['hours'] : 0;
     $rowtotal           += $hours;
     $dtotal             += $hours;
     if (($this->proj->type == "HOLIDAY") && ($hours > 0)) {
@@ -54,7 +54,7 @@ foreach ($this->period["dates"] as $key => $uDate) {
         $class = "";
     }
     if ($this->proj->noHours || !$this->proj->published || !$this->proj->mine || !$this->cat->published) {
-        $tip                = $this->hours[$this->proj->id][$key]['notes'];
+        $tip  = isset($this->hours[$this->proj->id][$key]['notes']) ? $this->hours[$this->proj->id][$key]['notes'] : "";
         $link = ($hours == 0) ? $hours : JHTML::_('tooltip', $tip, JText::_("COM_TIMECLOCK_NOTES"), '', " $hours ", $url);
     } else {
         if ($this->checkDate($uDate)) {
@@ -79,6 +79,9 @@ foreach ($this->period["dates"] as $key => $uDate) {
             <?php print $dtotal; ?>
         </td>
         <?php
+        if (empty($this->totals[$d])) {
+            $this->totals[$d] = 0;
+        }
         $this->totals[$d] += $dtotal;
         $dtotal = 0;
 

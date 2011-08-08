@@ -46,6 +46,7 @@ $headerColSpan    = ($this->period["length"]+2+($this->period["length"]/$this->d
 $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
 $this->catStyle   = "font-weight: bold; padding: 1px; text-align: left;";
+$this->rowk       = 0;
 $document         =& JFactory::getDocument();
 $dateFormat       = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat  = JText::_("DATE_FORMAT_LC3");
@@ -129,15 +130,16 @@ print $this->loadTemplate("header");
 
 ?>
 
-        <tr class="row<?php echo (int)$k?>">
+        <tr class="row<?php print (int)$this->rowk; ?>">
             <th style="text-align:right; padding: 1px;">
                 <span><?php print JText::_("COM_TIMECLOCK_SUBTOTALS"); ?></span>
             </th>
 <?php
 $d = 0;
+$k = 0;
 foreach ($this->period["dates"] as $key => $uDate) {
     print '            <td style="'.$this->totalStyle.'">';
-    print '                '.(float)$this->totals["worked"][$key]."\n";
+    print '                '.(isset($this->totals["worked"][$key]) ? $this->totals["worked"][$key] : 0)."\n";
     print "            </td>\n";
     if ((++$d % $this->days) == 0) {
         print '            <th>';
@@ -181,7 +183,7 @@ $k = 1-$k;
                 <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
             </th>
             <td style="<?php print $this->totalStyle; ?>">
-                <?php print (float)$this->totals["total"]; ?>
+                <?php print isset($this->totals["total"]) ? $this->totals["total"] : 0; ?>
             </td>
         </tr>
 

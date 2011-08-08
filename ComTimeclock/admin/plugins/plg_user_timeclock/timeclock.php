@@ -319,7 +319,7 @@ class plgUserTimeclock extends JPlugin
             "OR profile_key = 'timeclock.set.$param')"
         );
         $results = $db->loadRowList();
-        $res = $results[0][0];
+        $res = isset($results[0][0]) ? $results[0][0] : null;
         if (substr($res, 0, 6) === "array(") {
             $key = str_replace("timeclock.", "", $results[0][1]);
             $value = self::stripKeys(self::getAllParams($userId, $key));

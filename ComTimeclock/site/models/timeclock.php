@@ -198,7 +198,7 @@ class TimeclockModelTimeclock extends JModel
      */
     function get($field)
     {
-        return $this->period[$field];
+        return isset($this->period[$field]) ? $this->period[$field] : null;
     }
     /**
      * Where statement for the reporting period dates
@@ -970,7 +970,11 @@ class TimeclockModelTimeclock extends JModel
                 $date,
                 $ret
             );
-            $fixDate[$date] = $ret[0];
+            if (isset($ret[0])) {
+                $fixDate[$date] = $ret[0];
+            } else {
+                $fixDate[$date] = null;
+            }
         }
         return $fixDate[$date];
     }
@@ -1038,9 +1042,9 @@ class TimeclockModelTimeclock extends JModel
         $date = explode("-", $date);
 
         return array(
-            "y" => $date[0],
-            "m" => $date[1],
-            "d" => $date[2],
+            "y" => isset($date[0]) ? $date[0] : null,
+            "m" => isset($date[1]) ? $date[1] : null,
+            "d" => isset($date[2]) ? $date[2] : null,
         );
     }
 

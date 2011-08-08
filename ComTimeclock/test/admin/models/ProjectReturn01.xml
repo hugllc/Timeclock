@@ -190,8 +190,14 @@
                 <value name="mine" type="boolean" >
                     0
                 </value>
+                <value name="noHours" type="boolean" >
+                    0
+                </value>
             </object>
         </array>
+        <value name="mine" type="boolean" >
+            0
+        </value>
     </object>
     <object name="-1" type="object"  class="stdClass" >
         <value name="id" type="string" >
@@ -298,8 +304,14 @@
                 <value name="mine" type="boolean" >
                     0
                 </value>
+                <value name="noHours" type="boolean" >
+                    0
+                </value>
             </object>
         </array>
+        <value name="mine" type="boolean" >
+            0
+        </value>
     </object>
     <object name="-3" type="object"  class="stdClass" >
         <value name="id" type="string" >
@@ -406,8 +418,14 @@
                 <value name="mine" type="boolean" >
                     0
                 </value>
+                <value name="noHours" type="boolean" >
+                    0
+                </value>
             </object>
         </array>
+        <value name="mine" type="boolean" >
+            0
+        </value>
     </object>
     <object name="2" type="object"  class="stdClass" >
         <value name="id" type="string" >
@@ -570,6 +588,9 @@
                 </value>
                 <value name="mine" type="boolean" >
                     1
+                </value>
+                <value name="noHours" type="boolean" >
+                    0
                 </value>
             </object>
         </array>

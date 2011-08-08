@@ -167,7 +167,6 @@ class TableTimeclockProjects extends JTable
      */
     public $published = 1;
 
-
     /**
      * Constructor
      *
