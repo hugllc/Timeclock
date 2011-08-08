@@ -58,9 +58,10 @@ foreach ($this->period["dates"] as $key => $uDate) :
         $tipTitle = JText::_("COM_TIMECLOCK_NO_HOURS");
         $tip = JText::_("COM_TIMECLOCK_NO_HOURS_BEFORE_START");
     };
+    $date = JFactory::getDate($uDate);
     ?>
         <th class="<?php print $class; ?>" style="<?php print $this->cellStyle; ?>">
-            <?php print JHTML::_('tooltip', $tip, $tipTitle, '', date($headerDateFormat, $uDate), $url); ?>
+            <?php print JHTML::_('tooltip', $tip, $tipTitle, '', $date->format($headerDateFormat), $url); ?>
         </th>
     <?php if ((++$d % $this->days) == 0) : ?>
         <th>
