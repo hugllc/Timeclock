@@ -100,11 +100,18 @@ class TimeclockModelReports extends TimeclockModelTimeclock
                 return array();
             }
             foreach ($this->data[$key] as $k => $d) {
-                if ($d->type == "HOLIDAY") {
-                    $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
-                    $this->data[$key][$k]->hours = $d->hours * $hperc;
+                $endDate = TimeclockHelper::getUserParam("endDate", $d->user_id);
+                if (empty($endDate)
+                    || ($this->compareDates($endDate, $d->worked) > 0)
+                ) {
+                    if ($d->type == "HOLIDAY") {
+                        $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
+                        $this->data[$key][$k]->hours = $d->hours * $hperc;
+                    }
+                    $this->data[$key][$k]->hours = round($this->data[$key][$k]->hours, $db);
+                } else {
+                    unset($this->data[$key][$k]);
                 }
-                $this->data[$key][$k]->hours = round($this->data[$key][$k]->hours, $db);
 
             }
 
