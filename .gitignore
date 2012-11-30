@@ -8,3 +8,5 @@ build/
 *.kate-swp
 *.old
 tests/
+*.kdev4
+
