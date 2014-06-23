@@ -50,7 +50,7 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
                 </label>
             </td>
             <td>
-                    <?php print JHTML::_("select.genericList", $this->lists["users"], "created_by", 'onChange="document.getElementById(\'task\').value=\'edit\';this.form.submit();"', 'value', 'text', $this->row->created_by); ?>
+                    <?php print JHTML::_("select.genericList", $this->lists["users"], "created_by", 'onChange="document.getElementById(\'task\').value=\'timesheets.edit\';this.form.submit();"', 'value', 'text', $this->row->created_by); ?>
                     <input type="hidden" name="authOnly" value="1" />
             </td>
             <td>
