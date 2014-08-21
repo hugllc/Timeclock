@@ -251,7 +251,7 @@ class TimeclockHelper
     {
         static $component;
         if (!is_object($component)) {
-            $component = &JComponentHelper::getComponent('com_timeclock');
+            $component = JComponentHelper::getComponent('com_timeclock');
         }
         $ret = $component->params->get($param);
         return $ret;

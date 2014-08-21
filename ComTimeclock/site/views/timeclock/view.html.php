@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class TimeclockViewTimeclock extends JView
+class TimeclockViewTimeclock extends JViewLegacy
 {
     /** @var This is where our parameters are stored */
     private $_params;
@@ -71,12 +71,12 @@ class TimeclockViewTimeclock extends JView
 
         $this->filter();
         $layout          = JRequest::getVar('layout');
-        $model           =& $this->getModel();
-        $user            =& JFactory::getUser();
+        $model           = $this->getModel();
+        $user            = JFactory::getUser();
         $user_id         = $user->get("id");
         $employmentDates = $model->getEmploymentDatesUnix();
         $date            = $model->get("date");
-        $this->_params   =& $mainframe->getParams('com_timeclock');
+        $this->_params   = $mainframe->getParams('com_timeclock');
         $this->_getProjects($user_id, null, null, $this->_orderby);
         $decimalPlaces = TimeclockHelper::getParam("decimalPlaces");
 
@@ -106,12 +106,12 @@ class TimeclockViewTimeclock extends JView
     {
         $mainframe = JFactory::getApplication();
 
-        $model   =& $this->getModel();
+        $model   = $this->getModel();
         $period  = $model->getPeriodDates();
         $this->_timesheetData();
 
         if (!is_object($this->_params)) {
-            $this->_params =& $mainframe->getParams('com_timeclock');
+            $this->_params = $mainframe->getParams('com_timeclock');
         }
         $today_color      = $this->_params->get("today_color");
         $today_background = $this->_params->get("today_background");
@@ -148,7 +148,7 @@ class TimeclockViewTimeclock extends JView
             return false;
         }
 
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
         $data     = $model->getData();
         $referer  = JRequest::getVar(
             'referer',
@@ -203,7 +203,7 @@ class TimeclockViewTimeclock extends JView
      */
     private function _getProjects($user_id)
     {
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $projects  = $projModel->getUserProjects($user_id, null, null, $this->_orderby);
         $cats      = TimeclockHelper::getUserParam("Timeclock_Category");
         foreach ($projects as $k => $p) {
@@ -245,7 +245,7 @@ class TimeclockViewTimeclock extends JView
      */
     private function _timesheetData()
     {
-        $model =& $this->getModel();
+        $model = $this->getModel();
         $data  = $model->getTimesheetData();
         $hours = array();
         foreach ($data as $k => $d) {
@@ -268,10 +268,10 @@ class TimeclockViewTimeclock extends JView
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $layout = $this->getLayout();
-        $db     =& JFactory::getDBO();
+        $db     = JFactory::getDBO();
 
         if (!is_object($this->_params)) {
-            $this->_params =& $mainframe->getParams('com_timeclock');
+            $this->_params = $mainframe->getParams('com_timeclock');
         }
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.reports.$layout.filter_order",
@@ -318,10 +318,10 @@ class TimeclockViewTimeclock extends JView
             }
         }
         // table ordering
-        $this->_lists['order_Dir']     = $filter_order_Dir;
-        $this->_lists['order']         = $filter_order;
-        $this->_lists['order_Dir2']     = $filter2_order_Dir;
-        $this->_lists['order2']         = $filter2_order;
+        $this->_lists['order_Dir']  = $filter_order_Dir;
+        $this->_lists['order']      = $filter_order;
+        $this->_lists['order_Dir2'] = $filter2_order_Dir;
+        $this->_lists['order2']     = $filter2_order;
 
         $this->assignRef("lists", $this->_lists);
 

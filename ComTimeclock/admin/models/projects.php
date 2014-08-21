@@ -51,7 +51,7 @@ require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelProjects extends JModel
+class TimeclockAdminModelProjects extends JModelLegacy
 {
     /** The fixed categories and their IDs */
     static $cat = array(

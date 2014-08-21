@@ -38,8 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 /** Include the project stuff */
-$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
-$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
+$adminbase = JPATH_ADMINISTRATOR."/components/com_timeclock";
 
 require_once $adminbase.'/tables/timeclockcustomers.php';
 require_once $adminbase.'/tables/timeclockprefs.php';
@@ -58,7 +58,7 @@ require_once $base.'/tables/timeclocktimesheet.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelTools extends JModel
+class TimeclockAdminModelTools extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
@@ -72,12 +72,12 @@ class TimeclockAdminModelTools extends JModel
     function __construct()
     {
         parent::__construct();
-        $this->_customers =& JTable::getInstance("TimeclockCustomers", "Table");
-        $this->_prefs =& JTable::getInstance("TimeclockPrefs", "Table");
-        $this->_projects =& JTable::getInstance("TimeclockProjects", "Table");
-        $this->_users =& JTable::getInstance("TimeclockUsers", "Table");
-        $this->_timesheet =& JTable::getInstance("TimeclockTimesheet", "Table");
-        $this->_db =& JFactory::getDBO();
+        $this->_customers = JTable::getInstance("TimeclockCustomers", "Table");
+        $this->_prefs = JTable::getInstance("TimeclockPrefs", "Table");
+        $this->_projects = JTable::getInstance("TimeclockProjects", "Table");
+        $this->_users = JTable::getInstance("TimeclockUsers", "Table");
+        $this->_timesheet = JTable::getInstance("TimeclockTimesheet", "Table");
+        $this->_db = JFactory::getDBO();
 
     }
 

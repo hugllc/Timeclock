@@ -65,7 +65,7 @@ if ($controller = JRequest::getCmd('controller')) {
 // Create the controller
 //$classname    = 'TimeclockAdminController'.ucfirst($controller);
 //$controller   = new $classname();
-$controller = JController::getInstance('TimeclockAdmin');
+$controller = JControllerLegacy::getInstance('TimeclockAdmin');
 
 // Perform the Request task
 $controller->execute(JRequest::getCmd('task'));

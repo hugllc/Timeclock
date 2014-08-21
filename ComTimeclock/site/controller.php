@@ -49,15 +49,18 @@ jimport('joomla.application.component.controller');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockController extends JController
+class TimeclockController extends JControllerLegacy
 {
     /**
      * Method to display the view
      *
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
      * @access public
      * @return null
      */
-    function display()
+    function display($cachable = false, $urlparams = array())
     {
         if (TimeclockHelper::getParam("timeclockDisable")) {
             print '<div class="componentheading">';

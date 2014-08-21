@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class TimeclockViewReportsBase extends JView
+class TimeclockViewReportsBase extends JViewLegacy
 {
     /**
      * The display function
@@ -64,8 +64,8 @@ class TimeclockViewReportsBase extends JView
         $mainframe = JFactory::getApplication();
 
         $layout        = $this->getLayout();
-        $model         =& $this->getModel();
-        $this->_params =& $mainframe->getParams('com_timeclock');
+        $model         = $this->getModel();
+        $this->_params = $mainframe->getParams('com_timeclock');
 
         $this->assignRef("params", $this->_params);
 
@@ -124,7 +124,7 @@ class TimeclockViewReportsBase extends JView
     function catBy()
     {
         if (!is_object($this->_params)) {
-            $this->_params =& $mainframe->getParams('com_timeclock');
+            $this->_params = $mainframe->getParams('com_timeclock');
         }
         $catBy = JRequest::getVar(
             'cat_by',
@@ -169,10 +169,10 @@ class TimeclockViewReportsBase extends JView
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $layout = $this->getLayout();
-        $db     =& JFactory::getDBO();
+        $db     = JFactory::getDBO();
 
         if (!is_object($this->_params)) {
-            $this->_params =& $mainframe->getParams('com_timeclock');
+            $this->_params = $mainframe->getParams('com_timeclock');
         }
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.reports.$layout.filter_order",
@@ -317,7 +317,7 @@ class TimeclockViewReportsBase extends JView
     function payroll($tpl = null)
     {
 
-        $model =& $this->getModel();
+        $model = $this->getModel();
         $model->setPeriodType("payperiod");
 
         $this->filter();
@@ -395,7 +395,7 @@ class TimeclockViewReportsBase extends JView
      */
     function notes($tpl = null)
     {
-        $model =& $this->getModel();
+        $model = $this->getModel();
         $this->filter();
         $this->where();
 
@@ -437,7 +437,7 @@ class TimeclockViewReportsBase extends JView
      */
     function report($tpl = null)
     {
-        $model   =& $this->getModel();
+        $model   = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -470,7 +470,7 @@ class TimeclockViewReportsBase extends JView
 
     function hours($tpl = null)
     {
-        $model   =& $this->getModel();
+        $model   = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -513,7 +513,7 @@ class TimeclockViewReportsBase extends JView
     function hoursgraph($tpl = null)
     {
 
-        $model   =& $this->getModel();
+        $model   = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -559,7 +559,7 @@ class TimeclockViewReportsBase extends JView
      */
     function _hoursgraphGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
         $this->assignRef("cat_id", $cat_id);
         $user_id = JRequest::getVar('userid', "0", '', 'int');
         if (!empty($user_id)) {
@@ -608,7 +608,7 @@ class TimeclockViewReportsBase extends JView
     function wcomp($tpl = null)
     {
         $this->enable = (bool)TimeclockHelper::getParam("wCompEnable");
-        $model =& $this->getModel();
+        $model = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -639,7 +639,7 @@ class TimeclockViewReportsBase extends JView
      */
     function _wcompGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
 
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 
@@ -686,7 +686,7 @@ class TimeclockViewReportsBase extends JView
      */
     function _hoursGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
 
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 
@@ -725,7 +725,7 @@ class TimeclockViewReportsBase extends JView
      */
     function _reportGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
@@ -756,7 +756,7 @@ class TimeclockViewReportsBase extends JView
      */
     function _reportGetPeriod()
     {
-        $model          =& $this->getModel();
+        $model          = $this->getModel();
         $period         = $model->getPeriodDates();
         $periodType     = $model->get("type");
         $this->_where[] = $model->dateWhere(
@@ -775,9 +775,9 @@ class TimeclockViewReportsBase extends JView
      */
     function _reportControls()
     {
-        $userModel     =& JModel::getInstance("Users", "TimeclockAdminModel");
-        $projectModel  =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $userModel     = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
+        $projectModel  = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $customerModel = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         $layout        = $this->getLayout();
 
         $controls["category"] = $projectModel->getParentOptions(

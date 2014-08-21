@@ -47,7 +47,7 @@ $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
 $this->catStyle   = "font-weight: bold; padding: 1px; text-align: left;";
 $this->rowk       = 0;
-$document         =& JFactory::getDocument();
+$document         = JFactory::getDocument();
 $dateFormat       = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat  = JText::_("DATE_FORMAT_LC3");
 $document->setTitle(
@@ -59,10 +59,10 @@ $document->setTitle(
     )
 );
 
-$pane = JPane::getInstance("sliders");
+JHTML::_('tabs.start', "sliders");
 $initPanes = array();
 JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
-JHTML::_('behavior.mootools');
+//JHTML::_('behavior.mootools');
 ?>
 <div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
@@ -121,7 +121,7 @@ foreach ($this->projects as $cat) {
     <?php
 }
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $js = 'window.addEvent(\'domready\', function() {'.implode(" ", $initPanes).'});';
 $document->addScriptDeclaration($js);
 

@@ -35,7 +35,7 @@
 
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../include.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerLegacyTest.php';
 /** Require the module under test */
 require_once dirname(__FILE__).'/../../../admin/controllers/timesheets.php';
 
@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../admin/controllers/timesheets.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminControllerTimesheetsTest extends JControllerTest
+class ComTimeclockAdminControllerTimesheetsTest extends JControllerLegacyTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.

@@ -34,7 +34,7 @@
  */
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../include.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelTest.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelLegacyTest.php';
 require_once dirname(__FILE__).'/../../../admin/models/projects.php';
 
 /**
@@ -49,7 +49,7 @@ require_once dirname(__FILE__).'/../../../admin/models/projects.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminModelProjectsTest extends JModelTest
+class ComTimeclockAdminModelProjectsTest extends JModelLegacyTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.

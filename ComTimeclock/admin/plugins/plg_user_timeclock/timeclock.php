@@ -43,7 +43,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  *
  */
-defined('_JEXEC') or die('Restricted access');
+
+ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.utilities.date');
 jimport('joomla.form.form');
 JForm::addFieldPath(JPATH_COMPONENT.'/../com_timeclock/models/fields');
@@ -532,7 +533,7 @@ class plgUserTimeclock extends JPlugin
                 foreach (array("startDate", "endDate") as $date) {
                     if (!empty($data['timeclock'][$date])) {
                         $jdate = new JDate($data['timeclock'][$date]);
-                        $data['timeclock'][$date] = $jdate->toFormat('%Y-%m-%d');
+                        $data['timeclock'][$date] = $jdate->format('%Y-%m-%d');
                     }
                 }
                 // Do the stuff not related to this table
@@ -642,8 +643,8 @@ class plgUserTimeclock extends JPlugin
         foreach((array)$history['effectiveDateSet'] as $d => $v) {
             if ((bool)$v && !empty($history['effectiveDate'][$d])) {
                 $changeDates[$d] = $history['effectiveDate'][$d];
-                $data["history_effectiveDateChange_".$date->toMySql()] = $d;
-                $data["history_timestamps_".$date->toMySql()] = $id;
+                $data["history_effectiveDateChange_".$date->toSql()] = $d;
+                $data["history_timestamps_".$date->toSql()] = $id;
             }
         }
         foreach ($old as $row) {
@@ -663,8 +664,8 @@ class plgUserTimeclock extends JPlugin
                 $pkey = $key;
             }
             if (($data[$key] != $row[1]) && (substr($data[$key], 0, 5) !== "array")) {
-                $data["history_".$pkey."_".$date->toMySql()] = $row[1];
-                $data["history_timestamps_".$date->toMySql()] = $id;
+                $data["history_".$pkey."_".$date->toSql()] = $row[1];
+                $data["history_timestamps_".$date->toSql()] = $id;
                 $data["history"] = "array()";
             }
         }

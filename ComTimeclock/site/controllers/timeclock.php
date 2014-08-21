@@ -37,7 +37,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
-$base = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
 
 require_once $base.'/models/timeclock.php';
 
@@ -55,11 +55,15 @@ require_once $base.'/models/timeclock.php';
 class TimeclockControllerTimeclock extends TimeclockController
 {
     /**
-     * Custom Constructor
+     * Method to display the view
      *
-     * @param array $default The configuration array.
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
+     * @access public
+     * @return null
      */
-    function __construct($default = array())
+    function display($cachable = false, $urlparams = array())
     {
         parent::__construct($default);
 
@@ -75,7 +79,7 @@ class TimeclockControllerTimeclock extends TimeclockController
     function display()
     {
         include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $user    = JFactory::getUser();
         $user_id = $user->get("id");
 
@@ -104,7 +108,7 @@ class TimeclockControllerTimeclock extends TimeclockController
         include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
         $projid   = JRequest::getVar('projid', null, '', 'string');
         if (!empty($projid)) {
-            $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+            $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
             $user      = JFactory::getUser();
             $user_id   = $user->get("id");
             if ($projModel->userInProject($user_id, $projid) == false) {

@@ -49,15 +49,18 @@ jimport('joomla.application.component.controller');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminController extends JController
+class TimeclockAdminController extends JControllerLegacy
 {
     /**
      * Method to display the view
      *
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
      * @access public
      * @return null
      */
-    function display()
+    function display($cachable = false, $urlparams = array())
     {
         require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.

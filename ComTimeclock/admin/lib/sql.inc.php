@@ -56,14 +56,15 @@ class TimeclockAdminSql
     *
     * @return string The quoted name
     */
-    function dotNameQuote($name)
+    static public function dotNameQuote($name)
     {
         $list = explode(".", $name);
         $ret = "";
         $div = "";
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
+        return $db->quote($item);
         foreach ($list as $item) {
-            $ret .= $div.$db->NameQuote($item);
+            $ret .= $div.$db->quote($item);
             $div = ".";
         }
         return $ret;

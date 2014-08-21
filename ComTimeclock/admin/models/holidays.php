@@ -52,7 +52,7 @@ require_once JPATH_COMPONENT_SITE.'/tables/timeclocktimesheet.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelHolidays extends JModel
+class TimeclockAdminModelHolidays extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;

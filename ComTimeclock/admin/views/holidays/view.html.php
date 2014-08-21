@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewHolidays extends JView
+class TimeclockAdminViewHolidays extends JViewLegacy
 {
     /**
      * The display function
@@ -82,7 +82,7 @@ class TimeclockAdminViewHolidays extends JView
         $option = JRequest::getCmd('option');
         $model = $this->getModel("Holidays");
 
-        $db           =& JFactory::getDBO();
+        $db           = JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.holidays.filter_order",
             'filter_order',
@@ -173,14 +173,15 @@ class TimeclockAdminViewHolidays extends JView
         // search filter
         $lists['search']         = $search;
 
+        $user = JFactory::getUser();
         $this->assignRef("lists", $lists);
-        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("user", $user);
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_HOLIDAYS"));
-        JToolBarHelper::editListX("holidays.edit");
-        JToolBarHelper::addNewX("holidays.add");
+        JToolBarHelper::editList("holidays.edit");
+        JToolBarHelper::addNew("holidays.add");
         JToolBarHelper::preferences('com_timeclock');
 
         parent::display($tpl);
@@ -194,13 +195,13 @@ class TimeclockAdminViewHolidays extends JView
      */
     function form($tpl = null)
     {
-        $model =& JModel::getInstance("Holidays", "TimeclockAdminModel");
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $model = JModelLegacy::getInstance("Holidays", "TimeclockAdminModel");
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");
 
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'

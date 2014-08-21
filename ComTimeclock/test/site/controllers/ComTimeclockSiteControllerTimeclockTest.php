@@ -35,7 +35,7 @@
 
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../include.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerLegacyTest.php';
 /** Require the module under test */
 require_once dirname(__FILE__).'/../../../site/controllers/timeclock.php';
 
@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../site/controllers/timeclock.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockSiteControllerTimeclockTest extends JControllerTest
+class ComTimeclockSiteControllerTimeclockTest extends JControllerLegacyTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -165,10 +165,10 @@ class ComTimeclockSiteControllerTimeclockTest extends JControllerTest
      */
     public function testStoreTasks($task, $storeRet, $expect, $checkToken=true)
     {
-        $GLOBALS["JModel"]["actionReturn"] = $storeRet;
+        $GLOBALS["JModelLegacy"]["actionReturn"] = $storeRet;
         $GLOBALS["JRequest"]["checkToken"] = $checkToken;
         $this->o->$task();
-        $this->assertSame($expect, $GLOBALS["JController"]["setRedirect"]);
+        $this->assertSame($expect, $GLOBALS["JControllerLegacy"]["setRedirect"]);
     }
 
 }

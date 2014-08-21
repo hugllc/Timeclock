@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewCustomers extends JView
+class TimeclockAdminViewCustomers extends JViewLegacy
 {
     /**
     * The display function
@@ -83,7 +83,7 @@ class TimeclockAdminViewCustomers extends JView
         $option = JRequest::getCmd('option');
         $model = $this->getModel("Customers");
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.customers.filter_order",
             'filter_order',
@@ -173,16 +173,17 @@ class TimeclockAdminViewCustomers extends JView
         // search filter
         $lists['search']         = $search;
 
+        $user = JFactory::getUser();
         $this->assignRef("lists", $lists);
-        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("user", $user);
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_CUSTOMERS"));
         JToolBarHelper::publishList("customers.publish", "COM_TIMECLOCK_ACTIVATE");
         JToolBarHelper::unpublishList("customers.unpublish", "COM_TIMECLOCK_DEACTIVATE");
-        JToolBarHelper::editListX("customers.edit");
-        JToolBarHelper::addNewX("customers.add");
+        JToolBarHelper::editList("customers.edit");
+        JToolBarHelper::addNew("customers.add");
         JToolBarHelper::preferences('com_timeclock');
 
         parent::display($tpl);
@@ -196,7 +197,7 @@ class TimeclockAdminViewCustomers extends JView
      */
     function form($tpl = null)
     {
-        $model =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $model =& JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");

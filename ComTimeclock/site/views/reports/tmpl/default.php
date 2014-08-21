@@ -43,7 +43,7 @@ $headerColSpan    = 2 + count($this->totals["user"]);
 $this->cellStyle  = "text-align:center; padding: 1px; vertical-align: middle;";
 $projStyle  = "text-align:right; padding: 1px;";
 $totalStyle = $this->cellStyle." font-weight: bold;";
-$document        =& JFactory::getDocument();
+$document        = JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." ".JText::_("COM_TIMECLOCK_TO")." ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat).")");

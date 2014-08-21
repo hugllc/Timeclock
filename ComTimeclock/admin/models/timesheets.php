@@ -54,7 +54,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelTimesheets extends JModel
+class TimeclockAdminModelTimesheets extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
@@ -185,7 +185,7 @@ class TimeclockAdminModelTimesheets extends JModel
     function store()
     {
         $row =& $this->getTable("TimeclockTimesheet");
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $data = JRequest::get('post');
         $this->lastError = null;
         $this->lastStoreId = $data['id'];

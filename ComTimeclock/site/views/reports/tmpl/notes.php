@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$document        =& JFactory::getDocument();
+$document        = JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle($this->params->get('page_title'));

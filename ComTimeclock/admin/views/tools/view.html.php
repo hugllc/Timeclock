@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewTools extends JView
+class TimeclockAdminViewTools extends JViewLegacy
 {
     /**
      * The display function

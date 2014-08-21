@@ -73,11 +73,13 @@ class TableTimeclockUsers extends JTable
     }
 
     /**
-     * Stores data
+     * Save a row that is bound to this object
      *
-     * @return bool
+     * @param bool $updateNulls Update the nulls
+     *
+     * @return true
      */
-    function store()
+    function store($updateNulls = false)
     {
         $this->delete($this->id, $this->user_id);
         return $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
@@ -86,9 +88,11 @@ class TableTimeclockUsers extends JTable
     /**
      * Deletes data
      *
+     * @param mixed $pk The PK to use
+     *
      * @return bool
      */
-    function delete()
+    function delete($pk = NULL)
     {
         $query = "DELETE FROM ".$this->_db->NameQuote($this->_tbl)
                 ." WHERE id=".$this->_db->Quote($this->id)

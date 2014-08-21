@@ -52,7 +52,7 @@ require_once "timeclock.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelPreferences extends JModel
+class TimeclockModelPreferences extends JModelLegacy
 {
     /** @var string The start date in MySQL format */
     protected $period = array(

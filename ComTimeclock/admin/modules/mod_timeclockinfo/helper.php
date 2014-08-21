@@ -76,8 +76,8 @@ class ModTimeclockInfoHelper
         $decimalPlaces = TimeclockHelper::getParam("decimalPlaces");
 
         $user =& JFactory::getUser();
-        $timeclockModel =& JModel::getInstance("Timeclock", "TimeclockModel");
-        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $timeclockModel =& JModelLegacy::getInstance("Timeclock", "TimeclockModel");
+        $userModel =& JModelLegacy::getInstance("Users", "TimeclockAdminModel");
         $ytdWhere = " `t`.`worked` >= '".date("Y")."-1-1'";
         $ytdhours = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
         if ($params->get("showYTDHours") == 1) {

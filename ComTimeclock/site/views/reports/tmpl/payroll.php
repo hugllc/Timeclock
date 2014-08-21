@@ -42,7 +42,7 @@ $headerColSpan    = ($this->weeks * 4) + 3;
 
 $cellStyle  = "text-align:center; padding: 1px;";
 $totalStyle = $cellStyle." font-weight: bold;";
-$document        =& JFactory::getDocument();
+$document        = JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 //$document->setTitle("Payroll Summary for ".JHTML::_('date', $this->period['unix']["start"], $shortDateFormat)." to ".JHTML::_('date', $this->period['unix']["end"], $shortDateFormat));

@@ -141,11 +141,12 @@ class TableTimeclockPrefs extends JTable
     /**
      * Load a row and bind it to the object
      *
-     * @param int $oid Optional Id argument
+     * @param int  $oid   Optional Id argument
+     * @param bool $reset The reset
      *
      * @return true
      */
-    function load($oid = -1)
+    function load($oid = -1, $reset = true)
     {
         $ret = parent::load($oid);
         $prefs = self::decode($this->prefs);
@@ -203,26 +204,28 @@ class TableTimeclockPrefs extends JTable
     /**
      * Load a row and bind it to the object
      *
-     * @param int $cid     The id of the user to activate
-     * @param int $publish 0 = deactivate, 1 = activate
-     * @param int $user_id The id of the user making the change
+     * @param int $pks    The id of the user to activate
+     * @param int $state  0 = deactivate, 1 = activate
+     * @param int $userId The id of the user making the change
      *
      * @return true
      */
-    function publish($cid, $publish, $user_id)
+    function publish($pks = NULL, $state = 1, $userId = 0)
     {
-        foreach ($cid as $oid) {
+        foreach ($pks as $oid) {
             self::load($oid);
         }
-        return parent::publish($cid, $publish, $user_id);
+        return parent::publish($pks, $state, $userId);
     }
 
     /**
      * Save a row that is bound to this object
      *
+     * @param bool $updateNulls Update the nulls
+     *
      * @return true
      */
-    function store()
+    function store($updateNulls = false)
     {
         $this->_prefs = $this->prefs;
         $this->prefs = self::encode($this->prefs);

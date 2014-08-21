@@ -37,7 +37,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
-$base = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
 
 require_once $base.'/controller.php';
 
@@ -57,10 +57,13 @@ class TimeclockControllerPreferences extends TimeclockController
     /**
      * Method to display the view
      *
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
      * @access public
      * @return null
      */
-    function display()
+    function display($cachable = false, $urlparams = array())
     {
         JRequest::setVar('view', 'preferences');
         parent::display();

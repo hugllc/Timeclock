@@ -52,7 +52,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewProjects extends JView
+class TimeclockAdminViewProjects extends JViewLegacy
 {
     /**
      * The display function
@@ -85,7 +85,7 @@ class TimeclockAdminViewProjects extends JView
         $option = JRequest::getCmd('option');
         $model = $this->getModel("Projects");
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.projects.filter_order",
             'filter_order',
@@ -195,16 +195,17 @@ class TimeclockAdminViewProjects extends JView
         $lists["wCompCodes"] = TimeclockHelper::getWCompCodes();
         $lists["wCompEnable"] = TimeclockHelper::getParam("wCompEnable");
 
+        $user = JFactory::getUser();
         $this->assignRef("lists", $lists);
-        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("user", $user);
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_PROJECTS"));
         JToolBarHelper::publishList('projects.publish', "COM_TIMECLOCK_ACTIVATE");
         JToolBarHelper::unpublishList('projects.unpublish', "COM_TIMECLOCK_DEACTIVATE");
-        JToolBarHelper::editListX('projects.edit');
-        JToolBarHelper::addNewX('projects.add');
+        JToolBarHelper::editList('projects.edit');
+        JToolBarHelper::addNew('projects.add');
         JToolBarHelper::preferences('com_timeclock');
 
         parent::display($tpl);
@@ -218,9 +219,9 @@ class TimeclockAdminViewProjects extends JView
      */
     function form($tpl = null)
     {
-        $model =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
-        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $model =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $userModel =& JModelLegacy::getInstance("Users", "TimeclockAdminModel");
+        $customerModel =& JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
 
         // Set this as the default model
         $this->setModel($model, true);

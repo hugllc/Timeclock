@@ -75,7 +75,7 @@ class JElementCustomer extends JElement
 
     function fetchElement($name, $value, &$node, $control_name)
     {
-        $model =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $model =& JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         $options = $model->getOptions("", "All");
         return JHTML::_(
             "select.genericList",

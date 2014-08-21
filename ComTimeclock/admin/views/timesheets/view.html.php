@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewTimesheets extends JView
+class TimeclockAdminViewTimesheets extends JViewLegacy
 {
     /**
      * The display function
@@ -82,7 +82,7 @@ class TimeclockAdminViewTimesheets extends JView
         $option = JRequest::getCmd('option');
         $model = $this->getModel();
 
-        $db           =& JFactory::getDBO();
+        $db           = JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.timesheets.filter_order",
             'filter_order',
@@ -141,11 +141,9 @@ class TimeclockAdminViewTimesheets extends JView
                         LIKE '
                         .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
-
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
         $orderby = ' ORDER BY '. TimeclockAdminSql::dotNameQuote($filter_order)
                 .' '. $filter_order_Dir;
-
         $rows  = $model->getTimesheets($where, $limitstart, $limit, $orderby);
         $total = $model->countTimesheets($where);
 
@@ -176,14 +174,15 @@ class TimeclockAdminViewTimesheets extends JView
             JHTML::_('select.option', 't.created', "Date Created"),
         );
 
+        $user = JFactory::getUser();
         $this->assignRef("lists", $lists);
-        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("user", $user);
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_TIMESHEETS"));
-        JToolBarHelper::editListX("timesheets.edit");
-        JToolBarHelper::addNewX("timesheets.add");
+        JToolBarHelper::editList("timesheets.edit");
+        JToolBarHelper::addNew("timesheets.add");
         JToolBarHelper::preferences('com_timeclock');
 
         parent::display($tpl);
@@ -198,8 +197,8 @@ class TimeclockAdminViewTimesheets extends JView
     function form($tpl = null)
     {
         $model = $this->getModel();
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $userModel =& JModelLegacy::getInstance("Users", "TimeclockAdminModel");
         $row = $this->get("Data");
 
         $user =& JFactory::getUser();

@@ -57,7 +57,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/sql.inc.php';
 JHTML::stylesheet(
     "components/com_timeclock/css/timeclock.css"
 );
-$controller = JController::getInstance('Timeclock');
+$controller = JControllerLegacy::getInstance('Timeclock');
 
 
 // Perform the Request task

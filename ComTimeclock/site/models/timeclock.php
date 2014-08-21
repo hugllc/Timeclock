@@ -39,8 +39,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /** Include the project stuff */
-$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
-$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
+$adminbase = JPATH_ADMINISTRATOR."/components/com_timeclock";
 
 require_once $adminbase.'/models/users.php';
 require_once $adminbase.'/models/projects.php';
@@ -63,7 +63,7 @@ require_once $base.'/controller.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelTimeclock extends JModel
+class TimeclockModelTimeclock extends JModelLegacy
 {
 
     /** @var string The type of period */
@@ -117,7 +117,7 @@ class TimeclockModelTimeclock extends JModel
             $cid = JRequest::getVar('cid', 0, '', 'array');
         }
         if (empty($cid)) {
-            $u =& JFactory::getUser();
+            $u = JFactory::getUser();
             $cid = $u->get("id");
         }
         $this->setId($cid);
@@ -173,7 +173,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function set($data, $field)
+    function set($data, $field = NULL)
     {
         return $this->period[$field] = $data;
     }
@@ -192,11 +192,12 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $field The field to set
+     * @param string $field   The field to set
+     * @param mixed  $default The default to use
      *
      * @return array
      */
-    function get($field)
+    function get($field, $default = NULL)
     {
         return isset($this->period[$field]) ? $this->period[$field] : null;
     }
@@ -325,9 +326,14 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Method to display the view
      *
+     * @param string $where      The where clause to add. Must NOT include "WHERE"
+     * @param int    $limitstart The record to start on
+     * @param int    $limit      The max number of records to retrieve
+     * @param string $orderby    The orderby clause.  Must include "ORDER BY"
+     *
      * @return string
      */
-    function getTimesheetData()
+    function getTimesheetData($where, $limitstart=null, $limit=null, $orderby="")
     {
         if (empty($this->data)) {
             $db = TimeclockHelper::getParam("decimalPlaces");
@@ -672,8 +678,8 @@ class TimeclockModelTimeclock extends JModel
     function getPeriodDates()
     {
         if (!$this->get("_done")) {
-            $startDate =& $this->get("start");
-            $endDate =& $this->get("end");
+            $startDate = $this->get("start");
+            $endDate   = $this->get("end");
             $s = $this->explodeDate($startDate);
             $e = $this->explodeDate($endDate);
 
@@ -855,7 +861,7 @@ class TimeclockModelTimeclock extends JModel
         $row = $this->getTable("TimeclockTimesheet");
         $timesheet = JRequest::getVar('timesheet', array(), '', 'array');
         $date = JRequest::getVar('date', '', '', 'string');
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         if (empty($date)) {
             return false;
         }
@@ -930,7 +936,7 @@ class TimeclockModelTimeclock extends JModel
      * @access public
      * @return null
      */
-    function checkEmploymentDates($start, $end, $date)
+    static public function checkEmploymentDates($start, $end, $date)
     {
         if ($date < $start) {
             return false;

@@ -38,8 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
-$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
+$adminbase = JPATH_ADMINISTRATOR."/components/com_timeclock";
 
 require_once $base.'/models/timeclock.php';
 
@@ -54,7 +54,7 @@ require_once $base.'/models/timeclock.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelUsers extends JModel
+class TimeclockAdminModelUsers extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
