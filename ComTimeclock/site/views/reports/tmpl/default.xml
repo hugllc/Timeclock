@@ -15,9 +15,9 @@
     </state>
     <fields name="request" addfieldpath="/administrator/components/com_timeclock/elements">
         <fieldset name="request">
-            <field name="cat_id" type="category" default="0" label="Select Category" description="A Project Category" />
-            <field name="proj_id" type="project" default="0" label="Select Project" description="A Project" />
-            <field name="cust_id" type="customer" default="0" label="Select Customer" description="A Customer" />
+            <field name="cat_id" type="text" default="0" label="Select Category" description="A Project Category" />
+            <field name="proj_id" type="text" default="0" label="Select Project" description="A Project" />
+            <field name="cust_id" type="text" default="0" label="Select Customer" description="A Customer" />
             <field name="period" type="list" default="month" label="Default Period" description="The default period of time to show">
                 <option value="day">Day</option>
                 <option value="payperiod">Pay Period</option>
