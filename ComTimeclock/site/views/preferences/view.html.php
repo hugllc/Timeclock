@@ -65,8 +65,8 @@ class TimeclockViewPreferences extends JViewLegacy
 
         $row = $this->get("Data");
 
-        $user          =& JFactory::getUser();
-        $this->_params =& $mainframe->getParams('com_timeclock');
+        $user          = JFactory::getUser();
+        $this->_params = $mainframe->getParams('com_timeclock');
         $this->assignRef("user", $user);
 
         $timesheetSortOptions = array(

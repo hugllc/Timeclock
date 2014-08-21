@@ -140,7 +140,7 @@ class TimeclockModelTimeclock extends JModelLegacy
         $this->set($type, "type");
 
         $date = JRequest::getString('date', date("Y-m-d"));
-        $this->setDate($this->fixDate($date), "date", true);
+        $this->setDate(self::fixDate($date), "date", true);
         $startDate = JRequest::getString('startDate');
         $this->setPeriodDate($startDate, "start");
         $endDate = JRequest::getString('endDate');
@@ -223,11 +223,11 @@ class TimeclockModelTimeclock extends JModelLegacy
      */
     function setDate($date, $field, $force=false)
     {
-        $date = $this->fixDate($date);
+        $date = self::fixDate($date);
         if (empty($date) && $force) {
             $date = date("Y-m-d");
         }
-        $this->setUnix($this->dateUnixSql($date), $field);
+        $this->setUnix(self::dateUnixSql($date), $field);
         return $this->set($date, $field);
     }
 
@@ -241,7 +241,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      */
     function setPeriodDate($date, $field)
     {
-        $date = $this->fixDate($date);
+        $date = self::fixDate($date);
         $this->setDate($date, $field);
         if ($this->get($field)) {
             return;
@@ -249,7 +249,7 @@ class TimeclockModelTimeclock extends JModelLegacy
         $date = $this->get("date");
         $type = $this->get("type");
         $method = "get".$type.$field;
-        $unixDate = $this->dateUnixSql($date);
+        $unixDate = self::dateUnixSql($date);
         if (method_exists($this, $method)) {
             $dateFormat = $this->$method($date);
         } else {
@@ -423,10 +423,10 @@ class TimeclockModelTimeclock extends JModelLegacy
         static $eDates;
         if (empty($eDates)) {
             $eDates = array(
-                "start" => $this->fixDate(
+                "start" => self::fixDate(
                     TimeclockHelper::getUserParam("startDate")
                 ),
-                "end"   => $this->fixDate(
+                "end"   => self::fixDate(
                     TimeclockHelper::getUserParam("endDate")
                 ),
             );
@@ -445,7 +445,7 @@ class TimeclockModelTimeclock extends JModelLegacy
         if (empty($eDatesUnix)) {
             $eDatesUnix = self::getEmploymentDates();
             foreach ($eDatesUnix as $key => $val) {
-                $eDatesUnix[$key] = $this->dateUnixSql($val);
+                $eDatesUnix[$key] = self::dateUnixSql($val);
             }
         }
         return $eDatesUnix;
@@ -505,7 +505,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      */
     function getQuarterStart($date)
     {
-        $date = $this->explodeDate($date);
+        $date = self::explodeDate($date);
         if ($date["m"] < 4) {
             return date("Y-01-01");
         }
@@ -527,7 +527,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      */
     function getQuarterEnd($date)
     {
-        $date = $this->explodeDate($date);
+        $date = self::explodeDate($date);
         if ($date["m"] < 4) {
             return date("Y-03-31");
         }
@@ -551,11 +551,11 @@ class TimeclockModelTimeclock extends JModelLegacy
     function getPayPeriodMonthStart($date)
     {
         $first = TimeclockHelper::getParam("firstPayPeriodStart");
-        $first = $this->explodeDate($first);
+        $first = self::explodeDate($first);
         $dateFormat = $this->periods["month"]["start"];
-        $unixDate = $this->dateUnixSql($date);
+        $unixDate = self::dateUnixSql($date);
         $start = date($dateFormat, $unixDate);
-        $s = $this->explodeDate($start);
+        $s = self::explodeDate($start);
         $this->set((int) date("t", $unixDate), "length");
         return self::_date($s["m"], $s["d"]+$first["d"]-1, $s["y"]);
     }
@@ -569,9 +569,9 @@ class TimeclockModelTimeclock extends JModelLegacy
      */
     function getPayPeriodMonthEnd($date)
     {
-        $unixDate = $this->dateUnixSql($date);
+        $unixDate = self::dateUnixSql($date);
         $s = self::getPayPeriodMonthStart($date);
-        $s = $this->explodeDate($s);
+        $s = self::explodeDate($s);
         $len = (int) date("t", $unixDate);
         $this->set($len, "length");
         $end = self::_date($s["m"], $s["d"]+$len-1, $s["y"]);
@@ -606,7 +606,7 @@ class TimeclockModelTimeclock extends JModelLegacy
     {
         $len = TimeclockHelper::getParam("viewPeriodLengthFixed");
         $s = self::getFixedStart($date);
-        $s = $this->explodeDate($s);
+        $s = self::explodeDate($s);
         $this->set($len, "length");
         $end = self::_date($s["m"], $s["d"]+$len-1, $s["y"]);
         return $end;
@@ -623,10 +623,10 @@ class TimeclockModelTimeclock extends JModelLegacy
     function getOffsetFromDate($date, $startTime, $len)
     {
         // Get this date
-        $uDate = $this->dateUnixSql($date);
-        $d = $this->explodeDate($date);
+        $uDate = self::dateUnixSql($date);
+        $d = self::explodeDate($date);
 
-        $start = $this->dateUnixSql($startTime);
+        $start = self::dateUnixSql($startTime);
 
         // Get the time difference in days
         $timeDiff = round(($uDate - $start) / 86400);
@@ -651,7 +651,7 @@ class TimeclockModelTimeclock extends JModelLegacy
     {
 
         $s = self::_getPayPeriodFixedStart($date);
-        $s = $this->explodeDate($s);
+        $s = self::explodeDate($s);
         $length = TimeclockHelper::getParam("payPeriodLengthFixed");
         $this->set($length, "length");
         $end = self::_date($s["m"], $s["d"]+$length-1, $s["y"]);
@@ -665,8 +665,8 @@ class TimeclockModelTimeclock extends JModelLegacy
      */
     function getLength()
     {
-        $startUnix = $this->dateUnixSql($this->get("start"));
-        $endUnix = $this->dateUnixSql($this->get("end"));
+        $startUnix = self::dateUnixSql($this->get("start"));
+        $endUnix = self::dateUnixSql($this->get("end"));
         $length = (int)round(($endUnix - $startUnix) / 86400) + 1;
         return $this->set($length, "length");
     }
@@ -681,31 +681,31 @@ class TimeclockModelTimeclock extends JModelLegacy
         if (!$this->get("_done")) {
             $startDate = $this->get("start");
             $endDate   = $this->get("end");
-            $s = $this->explodeDate($startDate);
-            $e = $this->explodeDate($endDate);
+            $s = self::explodeDate($startDate);
+            $e = self::explodeDate($endDate);
 
             $length = $this->getLength();
             // These are all of the dates in the pay period
             for ($i = 0; $i < $length; $i++) {
                 $this->period['dates'][self::_date($s["m"], $s["d"]+$i, $s["y"])]
-                    = $this->dateUnix($s["m"], $s["d"]+$i, $s["y"]);
+                    = self::dateUnix($s["m"], $s["d"]+$i, $s["y"]);
             }
 
             // Get the start and end
             $this->setUnix(
-                $this->dateUnix($s["m"], $s["d"]-$length, $s["y"]),
+                self::dateUnix($s["m"], $s["d"]-$length, $s["y"]),
                 "prev"
             );
             $this->setUnix(
-                $this->dateUnix($s["m"], $s["d"]-1, $s["y"]),
+                self::dateUnix($s["m"], $s["d"]-1, $s["y"]),
                 "prevend"
             );
             $this->setUnix(
-                $this->dateUnix($e["m"], $e["d"]+1, $e["y"]),
+                self::dateUnix($e["m"], $e["d"]+1, $e["y"]),
                 "next"
             );
             $this->setUnix(
-                $this->dateUnix($e["m"], $e["d"]+$length, $e["y"]),
+                self::dateUnix($e["m"], $e["d"]+$length, $e["y"]),
                 "nextend"
             );
 
@@ -746,7 +746,7 @@ class TimeclockModelTimeclock extends JModelLegacy
     private function _date($m, $d=null, $y=null)
     {
         if (!(is_null($d) && is_null($y))) {
-            $m = $this->dateUnix($m, $d, $y);
+            $m = self::dateUnix($m, $d, $y);
         }
         return date("Y-m-d", $m);
     }
@@ -873,7 +873,11 @@ class TimeclockModelTimeclock extends JModelLegacy
         foreach ($timesheet as $data) {
             $htotal = 0;
             for ($i = 1; $i < 7; $i++) {
-                $data["hours".$i] = (float) $data["hours".$i];
+                if (!isset($data["hours".$i])) {
+                    $data["hours".$i] = 0.0;
+                } else {
+                    $data["hours".$i] = (float) $data["hours".$i];
+                }
                 $htotal += $data["hours".$i];
             }
             // If there are no hours don't create a record.
@@ -920,7 +924,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      * @access public
      * @return null
      */
-    function checkDates($date)
+    public function checkDates($date)
     {
         $model = $this->getModel("Timeclock");
         $date = self::dateUnixSql($date);
@@ -956,7 +960,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function formatProjId($id)
+    static public function formatProjId($id)
     {
         return sprintf("%04d", (int)$id);
     }
@@ -968,7 +972,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function fixDate($date)
+    static public function fixDate($date)
     {
         static $fixDate;
         if (empty($fixDate[$date])) {
@@ -994,7 +998,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    public function dateUnix($m, $d, $y)
+    static public function dateUnix($m, $d, $y)
     {
         return mktime(6, 0, 0, (int)$m, (int)$d, (int)$y);
     }
@@ -1007,7 +1011,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    public function compareDates($date1, $date2)
+    static public function compareDates($date1, $date2)
     {
         $date1 = self::dateUnixSql($date1);
         $date2 = self::dateUnixSql($date2);
@@ -1027,7 +1031,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    public function dateUnixSql($sqlDate)
+    static public function dateUnixSql($sqlDate)
     {
         $date = self::explodeDate($sqlDate);
         if (empty($date["y"])) {
@@ -1042,7 +1046,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    public function explodeDate($date)
+    static public function explodeDate($date)
     {
 
         $date = self::fixDate($date);

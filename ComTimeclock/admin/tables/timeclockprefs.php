@@ -262,7 +262,7 @@ class TableTimeclockPrefs extends JTable
     {
         static $instance;
         if (empty($oid)) {
-            $u =& JFactory::getUser();
+            $u = JFactory::getUser();
             $oid = $u->get("id");
         }
         // Unauthenticated user.  We don't care
@@ -271,7 +271,7 @@ class TableTimeclockPrefs extends JTable
         }
         $type = "user";
 
-        $inst =& $instance[$oid];
+        $inst = $instance[$oid];
         if (empty($inst)) {
             $inst = JTable::getInstance("TimeclockPrefs", "Table");
             $reload = true;
@@ -342,7 +342,7 @@ class TableTimeclockPrefs extends JTable
     function setPref($name, $value, $oid=null)
     {
         if (empty($oid)) {
-            $u =& JFactory::getUser();
+            $u = JFactory::getUser();
             $oid = $u->id;
         }
         if (empty($oid)) {

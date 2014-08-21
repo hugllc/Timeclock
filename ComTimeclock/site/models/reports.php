@@ -103,7 +103,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
             foreach ($this->data[$key] as $k => $d) {
                 $endDate = TimeclockHelper::getUserParam("endDate", $d->user_id);
                 if (empty($endDate)
-                    || ($this->compareDates($endDate, $d->worked) > 0)
+                    || (self::compareDates($endDate, $d->worked) > 0)
                 ) {
                     if ($d->type == "HOLIDAY") {
                         $hperc = $this->getHolidayPerc($d->user_id, $d->worked);

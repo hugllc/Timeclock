@@ -119,6 +119,7 @@ class TimeclockControllerTimeclock extends TimeclockController
                 return;
             }
         }
+
         $date = JRequest::getVar('date', null, '', 'string');
         if (!TimeclockModelTimeclock::checkDates($date)) {
             return;

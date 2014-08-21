@@ -75,7 +75,7 @@ class JElementCategory extends JElement
      */
     function fetchElement($name, $value, &$node, $control_name)
     {
-        $model =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $model = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $options = $model->getParentOptions(0, $value, "All");
         return JHTML::_(
             "select.genericList",

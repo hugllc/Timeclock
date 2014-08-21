@@ -76,7 +76,7 @@ class JElementProject extends JElement
 
     function fetchElement($name, $value, &$node, $control_name)
     {
-        $model =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $model = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $options = $model->getOptions("WHERE type <> 'CATEGORY'", "All", array(), 0);
         return JHTML::_(
             "select.genericList",

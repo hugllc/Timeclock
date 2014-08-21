@@ -148,7 +148,7 @@ class TimeclockAdminModelUsers extends JModelLegacy
      */
     function publish($publish)
     {
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $user_id = $user->get("id");
         $table = $this->getTable("TimeclockPrefs");
         $id = is_array($this->_id) ? $this->_id : array($this->_id);
@@ -271,7 +271,7 @@ class TimeclockAdminModelUsers extends JModelLegacy
     function store()
     {
         /*
-        $row =& $this->getTable("TimeclockPrefs");
+        $row = $this->getTable("TimeclockPrefs");
         $data = JRequest::get('post');
         if (empty($data["id"])) {
             return false;
@@ -320,7 +320,7 @@ class TimeclockAdminModelUsers extends JModelLegacy
      */
     private function _checkHistory(&$prefs, &$data)
     {
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $id = $user->get("name");
         if (!is_array($data["effectiveDateSet"])) {
             return;
@@ -387,7 +387,7 @@ class TimeclockAdminModelUsers extends JModelLegacy
     {
         // Load the new data
         $timestamp = date("Y-m-d H:i:s");
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $id = $user->get("name");
         foreach ($data as $f => $v) {
             if (substr($f, 0, 6) == "") {

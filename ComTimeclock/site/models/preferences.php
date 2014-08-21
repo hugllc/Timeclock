@@ -66,7 +66,7 @@ class TimeclockModelPreferences extends JModelLegacy
      */
     function __construct()
     {
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $this->_id = $user->get("id");
         parent::__construct();
     }
@@ -91,8 +91,8 @@ class TimeclockModelPreferences extends JModelLegacy
      */
     function store()
     {
-        $row =& $this->getTable("TimeclockPrefs");
-        $user =& JFactory::getUser();
+        $row = $this->getTable("TimeclockPrefs");
+        $user = JFactory::getUser();
         $id = $user->get("id");
         $prefs = JRequest::getVar('prefs', array(), "post", "array");
         if (!is_array($prefs) || empty($id)) {

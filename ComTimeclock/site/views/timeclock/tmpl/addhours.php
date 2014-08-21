@@ -43,7 +43,8 @@ $this->totals     = array();
 if (empty($this->days)) $this->days = 7;
 
 $headerColSpan    = 3;
-$document        =& JFactory::getDocument();
+$shortDateFormat  = JText::_("DATE_FORMAT_LC3");
+$document         = JFactory::getDocument();
 $document->setTitle(
     JText::sprintf(
         "COM_TIMECLOCK_ADD_HOURS_TITLE",
@@ -83,7 +84,7 @@ $initPanes = array();
                 </label>
             </th>
             <td>
-                <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", 'class="inputbox validate-dateverify required date_label"');?>
+                <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", array('class' => "inputbox validate-dateverify required date_label"));?>
             </td>
             <td>
                 <?php print JText::_("COM_TIMECLOCK_DATE_WORKED_HELP"); ?>
@@ -140,7 +141,12 @@ foreach ($this->projects as $cat) {
         for ($i = 1; $i < 7; $i++) {
             $var = "hours".$i;
             $wcVar = "wcCode".$i;
-            $code |= (($proj->$var > 0) || ($proj->$wcVar > 0));
+            if (isset($proj->$var)) {
+                $code |= ($proj->$var > 0);
+            }
+            if (isset($proj->$wcVar)) {
+                $code |= ($proj->$wcVar > 0);
+            }
         }
         // Now do something about the codes
         $jsHoursTotal = array();
@@ -149,7 +155,7 @@ foreach ($this->projects as $cat) {
             if (($this->wCompEnable) && ($code)) {
                 $var = "hours".$i;
                 $wcVar = "wcCode".$i;
-                $hours = ($this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0;
+                $hours = (isset($this->data[$proj->id]) && $this->data[$proj->id]->$var) ? $this->data[$proj->id]->$var : 0;
                 if (($proj->$wcVar <= 0) && ($hours == 0)) {
                     continue;
                 }
@@ -253,10 +259,12 @@ foreach ($this->projects as $cat) {
                         );
                     });
                 </script>
-                <textarea class="inputbox validate-noteverify<?php print $proj->id;?>"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5" onFocus="this.value=(this.value).trim();" onBlur="if ((this.value = this.value.trim()).length == 0) this.value+='  ';"> <?php echo $this->data[$proj->id]->notes;?> </textarea>
+                <textarea class="inputbox validate-noteverify<?php print $proj->id;?>"  id="timesheet_<?php print $proj->id;?>_notes" name="timesheet[<?php print $proj->id;?>][notes]" cols="50" rows="5" onFocus="this.value=(this.value).trim();" onBlur="if ((this.value = this.value.trim()).length == 0) this.value+='  ';"> <?php echo (isset($this->data[$proj->id])) ? $this->data[$proj->id]->notes : "";?> </textarea>
+                <?php if (isset($this->data[$proj->id])) { ?>
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_id" name="timesheet[<?php print $proj->id;?>][id]" value="<?php echo $this->data[$proj->id]->id;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_created" name="timesheet[<?php print $proj->id;?>][created]" value="<?php echo $this->data[$proj->id]->created;?>" />
                 <input type="hidden" id="timesheet_<?php print $proj->id;?>_project_id" name="timesheet[<?php print $proj->id;?>][project_id]" value="<?php echo $proj->id;?>" />
+                <?php } ?>
             </td>
             <td>
                 <?php print JText::_("COM_TIMECLOCK_WORK_NOTES_HELP"); ?>
@@ -283,7 +291,7 @@ foreach ($this->projects as $cat) {
     </tbody>
     <?php
 }
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $js = 'window.addEvent(\'domready\', function() {'.implode(" ", $initPanes).'});';
 $document->addScriptDeclaration($js);
 ?>
