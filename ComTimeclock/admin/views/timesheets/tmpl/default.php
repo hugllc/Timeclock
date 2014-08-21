@@ -114,17 +114,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                 <?php echo $checked; ?>
         </td>
         <td>
-    <?php
-    if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
-        echo $author;
-    } else {
-        ?>
-        <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_TIMESHEET");?>::<?php echo $name; ?>">
-        <a href="<?php echo $link  ?>">
+            <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_TIMESHEET");?>::<?php echo $name; ?>">
+            <a href="<?php echo $link  ?>">
                 <?php echo $author; ?></a></span>
-        <?php
-    }
-            ?>
             </td>
             <td align="center">
                     <?php echo $row->project_name; ?>

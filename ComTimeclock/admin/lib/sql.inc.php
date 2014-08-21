@@ -62,7 +62,7 @@ class TimeclockAdminSql
         $ret = "";
         $div = "";
         $db = JFactory::getDBO();
-        return $db->quote($item);
+        return $db->quote($name);
         foreach ($list as $item) {
             $ret .= $div.$db->quote($item);
             $div = ".";

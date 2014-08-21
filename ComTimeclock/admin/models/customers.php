@@ -181,12 +181,12 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      */
     function store()
     {
-        $row =& $this->getTable("TimeclockCustomers");
+        $row  = $this->getTable("TimeclockCustomers");
         $data = JRequest::get('post');
 
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
+            $user = JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
 

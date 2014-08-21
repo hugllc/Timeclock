@@ -197,12 +197,12 @@ class TimeclockAdminViewCustomers extends JViewLegacy
      */
     function form($tpl = null)
     {
-        $model =& JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
+        $model = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");
 
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'
