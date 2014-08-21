@@ -313,6 +313,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "result" => true,
             "description" => "Fix: Please go into the project editor and select a "
                             ." valid parent project.",
+            "log" => "",
         );
         $ret = $this->_dbCheckProjectsGetProjects();
         $valid_array = array("CATEGORY");
@@ -340,6 +341,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "result" => true,
             "description" => "Fix: Please go into the project editor and select a "
                             ." valid project manager.",
+            "log" => "",
         );
         $ret = $this->_dbCheckProjectsGetProjects();
 
@@ -400,6 +402,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "description" => "These should be fixed in the timesheet entry in the "
                 ." administrator panel.  These will show up on reports and no where "
                 ." else.",
+            "log" => "",
         );
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " p.name IS NULL "
@@ -425,6 +428,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "description" => "These should be fixed in the timesheet entry in the "
                 ." administrator panel.  These will show up on reports and no where "
                 ." else.",
+            "log" => "",
         );
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " u.name IS NULL "
@@ -450,6 +454,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "description" => "These should be fixed in the timesheet entry in the "
                 ." administrator panel.  These will show up on reports and no where "
                 ." else.",
+            "log" => "",
         );
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " worked = '0000-00-00' "
@@ -472,7 +477,7 @@ class TimeclockAdminModelTools extends JModelLegacy
     private function _dbCheckTimesheetsGetTimesheet($where=null)
     {
         static $data;
-        if (!is_array($data[$where])) {
+        if (!isset($data[$where]) || !is_array($data[$where])) {
             $sql = "select t.*, u.name as user_name, p.name as project_name
                     from #__timeclock_timesheet as t
                     LEFT JOIN #__timeclock_projects as p
@@ -534,6 +539,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "result" => true,
             "description" => "If you edit the user in 'User Configurations' you can"
                 ." remove them from the offending projects.",
+            "log" => "",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ((array)$ret as $row) {
@@ -557,6 +563,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "result" => true,
             "description" => "If this fails data is lost.  The database entries for "
                 ." this should be removed with your favorite database tool.",
+            "log" => "",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ((array)$ret as $row) {
@@ -579,6 +586,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             "result" => true,
             "description" => "If this fails data is lost.  The database entries for "
                 ." this should be removed with your favorite database tool.",
+            "log" => "",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ((array)$ret as $row) {

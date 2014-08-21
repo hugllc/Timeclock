@@ -66,7 +66,7 @@ $baseUrl = "index.php?option=com_timeclock&task=tools.display";
                 <?php print $test["description"]; ?>
             </p>
             <p style="padding-left: 2em;">
-                <?php print nl2br($test["log"]); ?>
+                <?php print (isset($test["log"])) ? nl2br($test["log"]) : "None"; ?>
             </p>
         </div>
     <?php endforeach; ?>
