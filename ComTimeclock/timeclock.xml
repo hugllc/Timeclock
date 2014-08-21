@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="1.6.0" method="upgrade" client="site">
     <name>COM_TIMECLOCK</name>
-    <creationDate>2011 08 08</creationDate>
+    <creationDate>2014 08 21</creationDate>
     <author>Scott Price</author>
     <authorEmail>prices@hugllc.com</authorEmail>
     <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
-    <copyright>2008-2009, 2011 Hunt Utilities Group, LLC</copyright>
+    <copyright>2014 Hunt Utilities Group, LLC</copyright>
     <license>GNU Public License V3</license>
-    <version>0.8.2</version>
+    <version>0.9.0</version>
     <description>COM_TIMECLOCK_DESCRIPTION</description>
     <scriptfile>install.script.php</scriptfile>
     <install>
