@@ -35,60 +35,18 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport("joomla.html.pane");
+jimport("joomla.html.html.sliders");
 
 ?>
 <form action="index.php" method="post" id="adminForm" name="adminForm">
-<?php
-if (!$this->add && ($this->row->type !== "CATEGORY")) {
-    ?>
-    <div style="float: right; width: 30%;">
-    <?php
-    $pane = JPane::getInstance("sliders");
-    echo $pane->startPane("user-pane");
-    echo $pane->startPanel(JText::_("COM_TIMECLOCK_ADD_USERS"), "adduser-page");
-    ?>
-    <div style="padding: 5px;">
-    <?php
-        array_shift($this->lists["users"]);
-        print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
-    ?><br />
-        <button onClick="this.form.task.value='projects.adduser';this.form.submit();"><?php print JText::_("COM_TIMECLOCK_ADD_USERS"); ?></button>
-    </div>
-    <?php
-    echo $pane->endPanel();
-    echo $pane->startPanel(JText::_("COM_TIMECLOCK_REMOVE_USERS"), "removeuser-page");
-    ?>
-    <div style="padding: 5px;">
-    <?php
-    $options = array();
-    foreach ($this->lists["projectUsers"] as $user) {
-         $options[] = JHTML::_("select.option", $user->id, $user->name);
-    }
-    print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
-        ?><br />
-            <button onClick="this.form.task.value='projects.removeuser';this.form.submit();"><?php print JText::_("COM_TIMECLOCK_REMOVE_USERS"); ?></button>
-    </div>
-    <?php
-
-    ?>
-    </div>
-    <?php
-    echo $pane->endPanel();
-    echo $pane->endPane();
-    ?>
-    </div>
-    <?php
-}
-?>
 <div>
     <table class="admintable">
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="name">
                     <?php echo JText::_("COM_TIMECLOCK_NAME"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <input class="text_area" type="text" name="name" id="name" size="32" maxlength="64" value="<?php echo $this->row->name;?>" />
             </td>
@@ -97,11 +55,11 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
             </td>
         </tr>
         <tr>
-            <td width="100" align="right" class="key" style="vertical-align: top;">
+            <th style="vertical-align: top;">
                 <label for="description">
                     <?php echo JText::_("COM_TIMECLOCK_DESCRIPTION"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <textarea class="text_area" type="text" name="description" id="description" cols="30" rows="5"><?php echo $this->row->description;?></textarea>
             </td>
@@ -110,11 +68,11 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
             </td>
         </tr>
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="Research">
                     <?php echo JText::_("COM_TIMECLOCK_MANAGER"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <?php print JHTML::_("select.genericList", $this->lists["allUsers"], "manager", '', 'value', 'text', $this->row->manager);  ?>
             </td>
@@ -123,11 +81,11 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
             </td>
         </tr>
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="Research">
                     <?php echo JText::_("COM_TIMECLOCK_RESEARCH"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <?php print JHTML::_("select.booleanList", "research", "", $this->row->research); ?>
             </td>
@@ -136,11 +94,11 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
             </td>
         </tr>
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="published">
                     <?php echo JText::_("COM_TIMECLOCK_ACTIVE"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <?php print JHTML::_("select.booleanList", "published", "", $this->row->published); ?>
             </td>
@@ -149,11 +107,11 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
             </td>
         </tr>
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="type">
                     <?php echo JText::_("COM_TIMECLOCK_TYPE"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <?php print JHTML::_("select.genericList", $this->typeOptions, "type", "", 'value', 'text', $this->row->type); ?>
             </td>
@@ -162,11 +120,11 @@ if (!$this->add && ($this->row->type !== "CATEGORY")) {
             </td>
         </tr>
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="category">
                     <?php echo JText::_("JCATEGORY"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
 <?php
 if ($this->row->parent_id < -1) {
@@ -184,16 +142,16 @@ if ($this->row->parent_id < -1) {
 if ($this->lists["wCompEnable"] != 0) {
     ?>
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="parent_id">
                     <?php echo JText::_("COM_TIMECLOCK_WORKERS_COMP_CODES"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <?php for ($i = 1; $i < 7; $i++): ?>
                 <?php $var = "wcCode".$i; ?>
                 <?php $enable = (int)($this->row->$var >= 0); ?>
-                <div>
+                <div style="white-space: nowrap;">
                     <strong><?php print $i; ?>:</strong>
                     <?php print JHTML::_("select.genericList", $this->wCompCodeOptions, $var, "", 'value', 'text', (int)abs($this->row->$var)); ?>
                     <?php print JHTML::_("select.genericList", $this->wCompCodeEnOptions, $var."En", "", 'value', 'text', $enable); ?>
@@ -208,11 +166,11 @@ if ($this->lists["wCompEnable"] != 0) {
 }
 ?>
         <tr>
-            <td width="100" align="right" class="key">
+            <th>
                 <label for="customer">
                     <?php echo JText::_("COM_TIMECLOCK_CUSTOMER"); ?>:
                 </label>
-            </td>
+            </th>
             <td>
                 <?php print JHTML::_("select.genericList", $this->lists["customers"], "customer", "", 'value', 'text', (int)$this->row->customer); ?>
             </td>
@@ -221,16 +179,17 @@ if ($this->lists["wCompEnable"] != 0) {
             </td>
         </tr>
         <tr>
-            <td width="100" align="right" class="key" style="vertical-align:top;">
+            <th style="vertical-align:top;">
                 <label for="users">
                     <?php echo JText::_("COM_TIMECLOCK_USERS"); ?>:
                 </label>
-            </td>
-            <td style="white-space: nowrap;">
+            </th>
+            <td>
 <?php
-foreach ($this->lists["projectUsers"] as $user) { ?>
-                    <?php print $user->name; ?><br />
-    <?php
+$sep = "";
+foreach ($this->lists["projectUsers"] as $user) {
+    print empty($user->name) ? $sep.$user->id : $sep.$user->name;
+    $sep = ", ";
 }
 ?>
             </td>
@@ -238,6 +197,39 @@ foreach ($this->lists["projectUsers"] as $user) { ?>
                 <?php print JText::_("COM_TIMECLOCK_USERS_PROJECT_DESC"); ?>
             </td>
         </tr>
+<?php
+if (!$this->add && ($this->row->type !== "CATEGORY")) {
+    ?>
+        <tr>
+            <th>
+                <?php echo JText::_("COM_TIMECLOCK_ADD_USERS"); ?>
+                <button onClick="this.form.task.value='projects.adduser';this.form.submit();"><?php print JText::_("COM_TIMECLOCK_ADD_USERS"); ?></button>
+            </th>
+            <td style="padding: 5px;">
+                <?php
+                    array_shift($this->lists["users"]);
+                    print JHTML::_("select.genericList", $this->lists["users"], "user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
+                ?>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <?php echo JText::_("COM_TIMECLOCK_REMOVE_USERS"); ?>
+                <button onClick="this.form.task.value='projects.removeuser';this.form.submit();"><?php print JText::_("COM_TIMECLOCK_REMOVE_USERS"); ?></button>
+            </th>
+            <td style="padding: 5px;">
+                <?php
+                $options = array();
+                foreach ($this->lists["projectUsers"] as $user) {
+                    $options[] = JHTML::_("select.option", $user->id, $user->name);
+                }
+                print JHTML::_("select.genericList", $options, "remove_user_id[]", 'multiple="multiple" size="10"', 'value', 'text', 0);
+                ?>
+            </td>
+        </tr>
+    <?php
+}
+?>
     </table>
 </div>
 

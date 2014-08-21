@@ -219,9 +219,9 @@ class TimeclockAdminViewProjects extends JViewLegacy
      */
     function form($tpl = null)
     {
-        $model =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
-        $userModel =& JModelLegacy::getInstance("Users", "TimeclockAdminModel");
-        $customerModel =& JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
+        $model         = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $userModel     = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
+        $customerModel = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
 
         // Set this as the default model
         $this->setModel($model, true);
@@ -229,7 +229,7 @@ class TimeclockAdminViewProjects extends JViewLegacy
         if (!empty($row->parent_id)) {
             $cat = $model->getData($row->parent_id);
         }
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'
@@ -278,6 +278,7 @@ class TimeclockAdminViewProjects extends JViewLegacy
             $uUser[] = $u->id;
         }
 
+        $userWhere = "";
         //$userWhere = "WHERE p.published=1
         //      AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
         $lists["allUsers"] = $userModel->getOptions($userWhere, "None");

@@ -142,15 +142,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
             <td>
             <?php
     if ($row->parent_id > 0) {
-        if (JTable::isCheckedOut($this->user->get('id'), $row->parent_checked_out)) {
-                echo $row->parentname;
-        } else {
             ?>
             <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_PROJECT");?>::<?php echo $row->parentname; ?>">
             <a href="<?php echo $parentlink  ?>">
             <?php echo $row->parentname; ?></a></span>
             <?php
-        }
     } else {
         echo JText::_("COM_TIMECLOCK_NONE");
     }
@@ -159,15 +155,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
             <td>
             <?php
     if ($row->customer > 0) {
-        if (JTable::isCheckedOut($this->user->get('id'), $row->customer_checked_out)) {
-                echo $row->customer_name;
-        } else {
             ?>
             <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_CUSTOMER");?>::<?php echo $row->customer_name; ?>">
             <a href="<?php echo $customerlink  ?>">
             <?php echo $row->customer_name; ?></a></span>
             <?php
-        }
     } else {
         echo JText::_("COM_TIMECLOCK_NONE");
     }

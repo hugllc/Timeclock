@@ -162,7 +162,7 @@ class TimeclockAdminControllerHolidays extends JControllerLegacy
         }
         $model = $this->getModel("Holidays");
 
-        if ($model->store()) {
+        if ($id = $model->store()) {
             $msg = JText::_("COM_TIMECLOCK_HOLIDAY_SAVED");
             $model->checkin($id);
         } else {

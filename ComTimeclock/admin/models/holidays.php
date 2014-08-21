@@ -56,9 +56,9 @@ class TimeclockAdminModelHolidays extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, u.name as created_by_name, p.name as project_name,
+    private $_allQuery = "SELECT t.*, u.name as created_by_name, p.name as project_name,
                       (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5
-                      + t.hours6) as hours
+                      + t.hours6) as hours, 1 as published
                       FROM #__timeclock_timesheet AS t
                       LEFT JOIN #__timeclock_projects as p ON t.project_id = p.id
                       LEFT JOIN #__users as u ON t.created_by = u.id ";
@@ -177,7 +177,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
     {
         $ret = array();
         $query = "SELECT id, name FROM #__timeclock_projects where Type='HOLIDAY'";
-        $proj = $this->_getList($query, $limitstart, $limit);
+        $proj = $this->_getList($query, 0, 0);
         if (!is_array($proj)) {
             return $ret;
         }
@@ -195,12 +195,12 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      */
     function store()
     {
-        $row =& $this->getTable("TimeclockTimesheet");
+        $row  = $this->getTable("TimeclockTimesheet");
         $data = JRequest::get('post');
 
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
+            $user = JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
 

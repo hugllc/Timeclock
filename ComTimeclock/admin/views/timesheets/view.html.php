@@ -197,11 +197,11 @@ class TimeclockAdminViewTimesheets extends JViewLegacy
     function form($tpl = null)
     {
         $model = $this->getModel();
-        $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
-        $userModel =& JModelLegacy::getInstance("Users", "TimeclockAdminModel");
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $userModel = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
         $row = $this->get("Data");
 
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'
@@ -225,7 +225,7 @@ class TimeclockAdminViewTimesheets extends JViewLegacy
             $row->worked = date("Y-m-d");
         }
 
-        $user =& JFactory::getUser($row->created_by);
+        $user = JFactory::getUser($row->created_by);
         $author = $user->get("name");
         $this->assignRef("author", $author);
 

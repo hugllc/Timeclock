@@ -299,7 +299,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      */
     function store()
     {
-        $row =& $this->getTable("TimeclockProjects");
+        $row  = $this->getTable("TimeclockProjects");
         $data = JRequest::get('post');
 
         for ($i = 1; $i < 7; $i++) {
@@ -310,7 +310,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
 
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
+            $user = JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
 

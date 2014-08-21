@@ -163,6 +163,8 @@ class TimeclockAdminModelCustomers extends JModelLegacy
         $ret = array(JHTML::_("select.option", 0, $name));
         $query = " SELECT id, name, company, published "
                 ." FROM #__timeclock_customers ".$where;
+        $limitstart = 0;
+        $limit = 0;
         $proj = $this->_getList($query, $limitstart, $limit);
         if (!is_array($proj)) {
             return $ret;

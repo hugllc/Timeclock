@@ -58,10 +58,11 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, u.name as created_by_name,
+    private $_allQuery = "SELECT t.*, u.name as created_by_name,
                       (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5
                       + t.hours6) as hours,
-                      p.name as project_name, u.name as created_by_name
+                      p.name as project_name, u.name as created_by_name,
+                      1 as published
                       FROM #__timeclock_timesheet AS t
                       LEFT JOIN #__timeclock_projects as p
                         ON (t.project_id = p.id OR p.id = 0)
@@ -184,8 +185,8 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      */
     function store()
     {
-        $row =& $this->getTable("TimeclockTimesheet");
-        $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $row       = $this->getTable("TimeclockTimesheet");
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $data = JRequest::get('post');
         $this->lastError = null;
         $this->lastStoreId = $data['id'];
@@ -203,7 +204,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
             if (empty($data["created_by"])) {
-                $user =& JFactory::getUser();
+                $user = JFactory::getUser();
                 $data["created_by"] = $user->get("id");
             }
         }

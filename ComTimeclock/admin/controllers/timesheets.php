@@ -178,8 +178,8 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
     function cancel()
     {
         $model = $this->getModel("Timesheets");
-        $cid = JRequest::getVar('cid', 0, '', 'array');
-        $model->checkin($cid[0]);
+        $id = JRequest::getVar('id', 0, '', 'int');
+        $model->checkin($id);
         $this->reset();
 
     }
