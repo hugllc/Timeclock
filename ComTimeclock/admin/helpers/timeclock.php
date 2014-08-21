@@ -37,8 +37,8 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.parameter');
 
-if (file_exists(JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php")) {
-    include_once JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php";
+if (file_exists(JPATH_ROOT."/plugins/user/timeclock/timeclock.php")) {
+    include_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 } else {
     // This is purely for test purposes
     include_once dirname(__FILE__)."/../plugins/plg_user_timeclock/timeclock.php";
@@ -113,7 +113,7 @@ class TimeclockHelper
         $mainframe = JFactory::getApplication();
 
         $html  = "<div class=\"pagetitle\" style=\"background-image: url("
-                ."components".DS."com_timeclock".DS."images".DS
+                ."components/com_timeclock/images/"
                 ."clock-48.png); background-repeat: no-repeat;\">\n";
         $html .= "<h2>$title</h2>";
         $html .= "</div>\n";

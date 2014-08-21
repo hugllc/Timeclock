@@ -40,14 +40,14 @@ $baseurl = "index.php?option=com_timeclock&view=reports&layout=hours&period=".$t
 if (!empty($this->cat_by)) $baseurl .= "&cat_by=".$this->cat_by;
 
 $tip = "Go to the next pay period";
-$img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
+$img = "components/com_timeclock/images/1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
 $url = JROUTE::_($baseurl."&date=".$this->period["next"]);
 $nextImg = '<a href="'.$url.'">'.$text.'</a>';
 $next = '<a href="'.$url.'">'.JText::_("JNEXT").'</a>';
 
 $tip = "Go to the previous pay period";
-$img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
+$img = "components/com_timeclock/images/1leftarrow.png";
 $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
 $url = JROUTE::_($baseurl."&date=".$this->period["prevend"]);
 $prevImg = '<a href="'.$url.'">'.$text.'</a>';

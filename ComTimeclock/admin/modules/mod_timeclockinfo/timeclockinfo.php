@@ -45,7 +45,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Include the helper function
-require_once dirname(__FILE__).DS.'helper.php';
+require_once dirname(__FILE__).'/helper.php';
 
 $params->def('showYTDHours', 1);
 $params->def('showHoursPerWeek', 1);

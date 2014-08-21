@@ -36,7 +36,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.form.field');
-require_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS.'helpers'.DS.'timeclock.php';
+require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 
 /**
  * This creates a select box with the user types in it.

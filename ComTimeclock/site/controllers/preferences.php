@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 $base = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
 
-require_once $base.DS.'controller.php';
+require_once $base.'/controller.php';
 
 /**
  * ComTimeclock World Component Controller

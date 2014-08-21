@@ -42,11 +42,11 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$path = JPATH_ROOT.DS."components".DS."com_timeclock";
-$adminPath = JPATH_ROOT.DS."administrator".DS."components".DS."com_timeclock";
+$path = JPATH_ROOT."/components/com_timeclock";
+$adminPath = JPATH_ROOT."/administrator/components/com_timeclock";
 
-require_once $adminPath.DS."helpers".DS."timeclock.php";
-require_once $path.DS."models".DS."timeclock.php";
+require_once $adminPath."/helpers/timeclock.php";
+require_once $path."/models/timeclock.php";
 
 /**
 * This class is the 'model' for the module.

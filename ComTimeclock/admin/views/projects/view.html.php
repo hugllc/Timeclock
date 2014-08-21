@@ -36,7 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."lib".DS."sql.inc.php");
+require_once(JPATH_COMPONENT_ADMINISTRATOR."/lib/sql.inc.php");
 
 /** Import the views */
 jimport('joomla.application.component.view');

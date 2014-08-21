@@ -41,11 +41,11 @@ jimport('joomla.application.component.model');
 $base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
 $adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
 
-require_once $adminbase.DS.'tables'.DS.'timeclockcustomers.php';
-require_once $adminbase.DS.'tables'.DS.'timeclockprefs.php';
-require_once $adminbase.DS.'tables'.DS.'timeclockprojects.php';
-require_once $adminbase.DS.'tables'.DS.'timeclockusers.php';
-require_once $base.DS.'tables'.DS.'timeclocktimesheet.php';
+require_once $adminbase.'/tables/timeclockcustomers.php';
+require_once $adminbase.'/tables/timeclockprefs.php';
+require_once $adminbase.'/tables/timeclockprojects.php';
+require_once $adminbase.'/tables/timeclockusers.php';
+require_once $base.'/tables/timeclocktimesheet.php';
 
 /**
  * ComTimeclock model

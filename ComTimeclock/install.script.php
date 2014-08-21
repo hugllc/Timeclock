@@ -156,10 +156,10 @@ class com_timeclockInstallerScript
     */
     public function installModule($name)
     {
-        $basedir = dirname(__FILE__).DS."admin".DS."modules";
+        $basedir = dirname(__FILE__)."/admin/modules";
         $inst = new JInstaller();
         $this->uninstallModule($name);
-        $ret = $inst->install($basedir.DS.$name);
+        $ret = $inst->install($basedir."/".$name);
         if ($ret) {
             $mod = $this->getExtensionId($name, "module");
             $ret = $this->protectExtension($mod, 1);
@@ -195,10 +195,10 @@ class com_timeclockInstallerScript
     */
     public function installPlugin($type, $name)
     {
-        $basedir = dirname(__FILE__).DS."admin".DS."plugins";
+        $basedir = dirname(__FILE__)."/admin/plugins";
         $this->uninstallPlugin($name, $type);
         $inst = new JInstaller();
-        $ret = $inst->install($basedir.DS.$name);
+        $ret = $inst->install($basedir."/".$name);
         if ($ret) {
             $plug = $this->getExtensionId($name, "plugin", $type);
             $ret = $this->protectExtension($plug, 1);

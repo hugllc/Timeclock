@@ -41,7 +41,7 @@ jimport('joomla.application.component.model');
 $base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
 $adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
 
-require_once $base.DS.'models'.DS.'timeclock.php';
+require_once $base.'/models/timeclock.php';
 
 /**
  * ComTimeclock model

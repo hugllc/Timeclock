@@ -46,15 +46,15 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_timeclock'))
 jimport('joomla.application.component.controller');
 
 // require helper file
-JLoader::register('TimeclockHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'timeclock.php');
+JLoader::register('TimeclockHelper', dirname(__FILE__).'/helpers/timeclock.php');
 
 // This loads the prefs table file.
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'timeclockprefs.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'sql.inc.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/timeclockprefs.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/sql.inc.php';
 /*
 // Require specific controller if requested
 if ($controller = JRequest::getCmd('controller')) {
-    $path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
+    $path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
     if (file_exists($path)) {
         include_once $path;
     } else {

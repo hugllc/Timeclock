@@ -36,7 +36,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // require helper file
-JLoader::register('TimeclockHelper', JPATH_COMPONENT_ADMINISTRATOR. DS.'helpers'.DS.'timeclock.php');
+JLoader::register('TimeclockHelper', JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php');
 
 // Access check.
 if ((!JFactory::getUser()->authorise('core.login.site', 'com_timeclock'))
@@ -51,11 +51,11 @@ jimport('joomla.application.component.controller');
 jimport('joomla.html.html');
 
 // This loads the prefs table file.
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'timeclockprefs.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'sql.inc.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/timeclockprefs.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/sql.inc.php';
 
 JHTML::stylesheet(
-    "components".DS."com_timeclock".DS."css".DS."timeclock.css"
+    "components/com_timeclock/css/timeclock.css"
 );
 $controller = JController::getInstance('Timeclock');
 

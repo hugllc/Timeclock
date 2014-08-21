@@ -86,7 +86,7 @@ class TimeclockAdminController extends JController
         $mainframe = JFactory::getApplication();
 
         $html  = "<div class=\"pagetitle\" style=\"background-image: url("
-                ."components".DS."com_timeclock".DS."images".DS
+                ."components/com_timeclock/images/"
                 ."clock-48.png); background-repeat: no-repeat;\">\n";
         $html .= "<h2>$title</h2>";
         $html .= "</div>\n";

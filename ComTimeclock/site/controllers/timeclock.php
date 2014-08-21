@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 $base = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
 
-require_once $base.DS.'models'.DS.'timeclock.php';
+require_once $base.'/models/timeclock.php';
 
 /**
  * ComTimeclock World Component Controller
@@ -74,7 +74,7 @@ class TimeclockControllerTimeclock extends TimeclockController
      */
     function display()
     {
-        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+        include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
         $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
         $user    = JFactory::getUser();
         $user_id = $user->get("id");
@@ -101,7 +101,7 @@ class TimeclockControllerTimeclock extends TimeclockController
     */
     function addhours()
     {
-        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+        include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
         $projid   = JRequest::getVar('projid', null, '', 'string');
         if (!empty($projid)) {
             $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");

@@ -248,19 +248,19 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     static public function dataGetUserProjects()
     {
         $data1 = new SimpleXMLElement(
-            dirname(__FILE__).DS."ProjectReturn01.xml",
+            dirname(__FILE__)."/ProjectReturn01.xml",
             null,
             true
         );
         $data2 = new SimpleXMLElement(
-            dirname(__FILE__).DS."ProjectReturn02.xml",
+            dirname(__FILE__)."/ProjectReturn02.xml",
             null,
             true
         );
 
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 5,
                 null,
                 null,
@@ -324,7 +324,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
         );
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 null,
                 null,
@@ -363,12 +363,12 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     {
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 2,
                 1,
             ),
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 0,
             ),
@@ -402,12 +402,12 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     {
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 5,
                 1,
             ),
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 0,
             ),
@@ -442,13 +442,13 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     {
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 5,
                 1,
                 1,
             ),
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 1,
                 0,

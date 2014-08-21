@@ -46,9 +46,9 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.utilities.date');
 jimport('joomla.form.form');
-JForm::addFieldPath(JPATH_COMPONENT.DS.'..'.DS.'com_timeclock'.DS.'models'.DS.'fields');
+JForm::addFieldPath(JPATH_COMPONENT.'/../com_timeclock/models/fields');
 if (!class_exists("TimeclockHelper")) {
-    include_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS.'helpers'.DS.'timeclock.php';
+    include_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 }
 /**
 * This is a plugin to display timeclock user information in the user screen

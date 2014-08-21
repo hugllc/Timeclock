@@ -197,13 +197,13 @@ foreach ($this->notes as $user => $projects) {
  */
 function nextprev(&$obj)
 {
-    $img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
+    $img = "components/com_timeclock/images/1rightarrow.png";
     $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
     $url = JRoute::_("&option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["next"]);
     $nextImg = '<a href="'.$url.'">'.$text.'</a>';
     $next = '<a href="'.$url.'">'.JText::_("JNEXT").'</a>';
 
-    $img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
+    $img = "components/com_timeclock/images/1leftarrow.png";
     $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
     $url = JRoute::_("&option=com_timeclock&view=reports&layout=payroll&date=".$obj->period["prev"]);
     $prevImg = '<a href="'.$url.'">'.$text.'</a>';

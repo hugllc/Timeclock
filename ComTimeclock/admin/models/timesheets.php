@@ -39,9 +39,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /** Get the timesheet table */
-require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
+require_once JPATH_COMPONENT_SITE.'/tables/timeclocktimesheet.php';
 /** Get the projects model */
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
 
 /**
  * ComTimeclock model

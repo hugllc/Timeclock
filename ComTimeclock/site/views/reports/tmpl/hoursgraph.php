@@ -41,9 +41,9 @@ defined('_JEXEC') or die('Restricted access');
 if (empty($this->jpgraph_path)) {
     return;
 }
-require $this->jpgraph_path.DS."jpgraph.php";
-require $this->jpgraph_path.DS."jpgraph_pie.php";
-require $this->jpgraph_path.DS."jpgraph_pie3d.php";
+require $this->jpgraph_path."/jpgraph.php";
+require $this->jpgraph_path."/jpgraph_pie.php";
+require $this->jpgraph_path."/jpgraph_pie3d.php";
 
 if (empty($this->graphwidth)) $this->graphwidth = 500;
 if (empty($this->graphheight)) $this->graphheight = ($this->graphwidth*3)/5;
