@@ -333,8 +333,9 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function getTimesheetData($where, $limitstart=null, $limit=null, $orderby="")
-    {
+    function getTimesheetData(
+        $where = "1", $limitstart=null, $limit=null, $orderby=""
+    ) {
         if (empty($this->data)) {
             $db = TimeclockHelper::getParam("decimalPlaces");
 

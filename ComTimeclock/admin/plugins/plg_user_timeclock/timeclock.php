@@ -533,7 +533,7 @@ class plgUserTimeclock extends JPlugin
                 foreach (array("startDate", "endDate") as $date) {
                     if (!empty($data['timeclock'][$date])) {
                         $jdate = new JDate($data['timeclock'][$date]);
-                        $data['timeclock'][$date] = $jdate->format('%Y-%m-%d');
+                        $data['timeclock'][$date] = $jdate->format('Y-m-d');
                     }
                 }
                 // Do the stuff not related to this table

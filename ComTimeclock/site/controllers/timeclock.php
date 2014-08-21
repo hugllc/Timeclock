@@ -55,6 +55,18 @@ require_once $base.'/models/timeclock.php';
 class TimeclockControllerTimeclock extends TimeclockController
 {
     /**
+     * Custom Constructor
+     *
+     * @param array $default The configuration array.
+     */
+    function __construct($default = array())
+    {
+        parent::__construct($default);
+
+        $this->registerTask('applyhours', 'savehours');
+
+    }
+    /**
      * Method to display the view
      *
      * @param bool  $cachable Whether to cache or not
@@ -65,21 +77,8 @@ class TimeclockControllerTimeclock extends TimeclockController
      */
     function display($cachable = false, $urlparams = array())
     {
-        parent::__construct($default);
-
-        $this->registerTask('applyhours', 'savehours');
-
-    }
-    /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function display()
-    {
         include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
-        $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $user    = JFactory::getUser();
         $user_id = $user->get("id");
 
@@ -108,7 +107,7 @@ class TimeclockControllerTimeclock extends TimeclockController
         include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
         $projid   = JRequest::getVar('projid', null, '', 'string');
         if (!empty($projid)) {
-            $projModel =& JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+            $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
             $user      = JFactory::getUser();
             $user_id   = $user->get("id");
             if ($projModel->userInProject($user_id, $projid) == false) {
