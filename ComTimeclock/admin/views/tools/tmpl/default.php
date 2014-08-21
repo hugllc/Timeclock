@@ -50,11 +50,6 @@ $baseUrl = "index.php?option=com_timeclock&task=tools.display";
             <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"); ?>
         </a>
     </li>
-    <li>
-        <a href="<?php print JRoute::_($baseUrl."&task=tools.convertprefs"); ?>">
-            <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CONVERT_PREFS"); ?>
-        </a>
-    </li>
 </ol>
 
 </div>

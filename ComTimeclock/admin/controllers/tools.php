@@ -111,20 +111,6 @@ class TimeclockAdminControllerTools extends JControllerLegacy
     }
 
     /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function convertprefs()
-    {
-        JRequest::setVar('model', 'tools');
-        JRequest::setVar('view', 'tools');
-        JRequest::setVar('layout', 'convertprefs');
-        self::display();
-    }
-
-    /**
      * redirects to a default url
      *
      * @param string $msg The message to have when redirected
