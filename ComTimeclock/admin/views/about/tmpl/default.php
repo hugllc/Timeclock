@@ -64,7 +64,7 @@ modified to fit my needs.  Most notably com_content and com_poll.  This code is 
 </ul>
 </p>
 <h2 style="clear:both;">License</h2>
-<a href="<?php echo COM_TIMECLOCK_FRONT."/LICENSE.TXT";?>">License File</a>
+<a href="../components/com_timeclock/LICENSE.TXT">License File</a>
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a> is a Joomla! 1.6 component<br />
 Copyright &copy; 2014 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a><br />
 Portions &copy; Open Source Matters
