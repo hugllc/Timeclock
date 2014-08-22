@@ -100,7 +100,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -156,7 +156,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         if (is_array($id)) {
             $this->_id = (int)$id[0];
@@ -173,7 +173,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function set($data, $field = NULL)
+    public function set($data, $field = NULL)
     {
         return $this->period[$field] = $data;
     }
@@ -185,7 +185,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function setUnix($data, $field)
+    public function setUnix($data, $field)
     {
         return $this->period["unix"][$field] = $data;
     }
@@ -197,7 +197,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function get($field, $default = NULL)
+    public function get($field, $default = NULL)
     {
         return isset($this->period[$field]) ? $this->period[$field] : null;
     }
@@ -208,7 +208,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getUnix($field)
+    public function getUnix($field)
     {
         return $this->period["unix"][$field];
     }
@@ -221,7 +221,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return null
      */
-    function setDate($date, $field, $force=false)
+    public function setDate($date, $field, $force=false)
     {
         $date = self::fixDate($date);
         if (empty($date) && $force) {
@@ -239,7 +239,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return null
      */
-    function setPeriodDate($date, $field)
+    public function setPeriodDate($date, $field)
     {
         $date = self::fixDate($date);
         $this->setDate($date, $field);
@@ -270,7 +270,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return    void
      */
-    function setProject($project)
+    public function setProject($project)
     {
         $project = (int) $project;
         if (empty($project)) {
@@ -331,7 +331,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function getTimesheetData(
+    public function getTimesheetData(
         $where = "1", $limitstart=null, $limit=null, $orderby=""
     ) {
         if (empty($this->data)) {
@@ -373,7 +373,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return int
      */
-    function getHolidayPerc($id, $date)
+    public function getHolidayPerc($id, $date)
     {
         return TimeclockHelper::getUserParam("holidayperc", $id, $date) / 100;
     }
@@ -385,7 +385,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function employmentDateWhere($field)
+    public function employmentDateWhere($field)
     {
         $dates = self::getEmploymentDates();
         return self::dateWhere($field, $dates["start"], $dates["end"]);
@@ -400,7 +400,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function dateWhere($field, $start, $end="")
+    public function dateWhere($field, $start, $end="")
     {
         $ret = "($field >= ".$this->_db->Quote($start)."";
 
@@ -456,7 +456,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function periodWhere($field)
+    public function periodWhere($field)
     {
         $period = $this->getPeriodDates();
         return self::dateWhere($field, $period["start"], $period["end"]);
@@ -469,7 +469,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getPayPeriodStart($date)
+    public function getPayPeriodStart($date)
     {
         $type = TimeclockHelper::getParam("payPeriodType");
         if (trim(strtolower($type)) == "month") {
@@ -485,7 +485,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getPayPeriodEnd($date)
+    public function getPayPeriodEnd($date)
     {
         $type = TimeclockHelper::getParam("payPeriodType");
         if (trim(strtolower($type)) == "month") {
@@ -501,7 +501,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getQuarterStart($date)
+    public function getQuarterStart($date)
     {
         $date = self::explodeDate($date);
         if ($date["m"] < 4) {
@@ -523,7 +523,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getQuarterEnd($date)
+    public function getQuarterEnd($date)
     {
         $date = self::explodeDate($date);
         if ($date["m"] < 4) {
@@ -546,7 +546,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getPayPeriodMonthStart($date)
+    public function getPayPeriodMonthStart($date)
     {
         $first = TimeclockHelper::getParam("firstPayPeriodStart");
         $first = self::explodeDate($first);
@@ -565,7 +565,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getPayPeriodMonthEnd($date)
+    public function getPayPeriodMonthEnd($date)
     {
         $unixDate = self::dateUnixSql($date);
         $s = self::getPayPeriodMonthStart($date);
@@ -585,7 +585,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getFixedStart($date)
+    public function getFixedStart($date)
     {
         // Get the pay period start
         $startTime = TimeclockHelper::getParam("firstViewPeriodStart");
@@ -600,7 +600,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getFixedEnd($date)
+    public function getFixedEnd($date)
     {
         $len = TimeclockHelper::getParam("viewPeriodLengthFixed");
         $s = self::getFixedStart($date);
@@ -618,7 +618,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getOffsetFromDate($date, $startTime, $len)
+    public function getOffsetFromDate($date, $startTime, $len)
     {
         // Get this date
         $uDate = self::dateUnixSql($date);
@@ -661,7 +661,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getLength()
+    public function getLength()
     {
         $startUnix = self::dateUnixSql($this->get("start"));
         $endUnix = self::dateUnixSql($this->get("end"));
@@ -674,7 +674,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return array
      */
-    function getPeriodDates()
+    public function getPeriodDates()
     {
         if (!$this->get("_done")) {
             $startDate = $this->get("start");
@@ -755,7 +755,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function getData()
+    public function getData()
     {
         $query = "SELECT t.*,
                   (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
@@ -782,7 +782,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function getTotal($where, $id=null)
+    public function getTotal($where, $id=null)
     {
         if (empty($id)) {
             $id = $this->_id;
@@ -815,7 +815,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function getNextHoliday($where=1)
+    public function getNextHoliday($where=1)
     {
         $key = urlencode(date("Ymd").$where);
         if (!isset($this->_holidays[$key])) {
@@ -838,7 +838,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    function daysSinceStart($id=null)
+    public function daysSinceStart($id=null)
     {
         if (empty($id)) {
             $id = $this->_id;
@@ -855,7 +855,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return bool
      */
-    function store()
+    public function store()
     {
         $row = $this->getTable("TimeclockTimesheet");
         $timesheet = JRequest::getVar('timesheet', array(), '', 'array');

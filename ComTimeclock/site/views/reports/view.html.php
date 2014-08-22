@@ -59,7 +59,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         parent::pdisplay($tpl);
         parent::display($tpl);

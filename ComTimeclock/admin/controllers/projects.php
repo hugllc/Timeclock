@@ -59,7 +59,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -76,7 +76,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      * @access public
      * @return null
      */
-    function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array())
     {
         require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.
@@ -94,7 +94,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      * @access public
      * @return null
      */
-    function edit()
+    public function edit()
     {
         JRequest::setVar('model', 'projects');
         JRequest::setVar('view', 'projects');
@@ -107,7 +107,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function adduser()
+    public function adduser()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -128,7 +128,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function removeuser()
+    public function removeuser()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -151,7 +151,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function reset($msg=null)
+    public function reset($msg=null)
     {
         $link = 'index.php?option=com_timeclock&task=projects.display';
         $this->setRedirect($link, $msg);
@@ -163,7 +163,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function publish()
+    public function publish()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -185,7 +185,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function unpublish()
+    public function unpublish()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -207,7 +207,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function apply()
+    public function apply()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -236,7 +236,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function save()
+    public function save()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -264,7 +264,7 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
      *
      * @return void
      */
-    function cancel()
+    public function cancel()
     {
         $model = $this->getModel("Projects");
         $cid = JRequest::getVar('cid', 0, '', 'array');

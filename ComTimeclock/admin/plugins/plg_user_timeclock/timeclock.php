@@ -73,7 +73,7 @@ class plgUserTimeclock extends JPlugin
     *
     * @return boolean
     */
-    function onContentPrepareData($context, $data)
+    public function onContentPrepareData($context, $data)
     {
         // Check we are manipulating a valid form.
         if (!in_array($context, array('com_users.timeclock','com_users.user', 'com_users.registration', 'com_admin.timeclock'))) {
@@ -404,7 +404,7 @@ class plgUserTimeclock extends JPlugin
     *
     * @return boolean
     */
-    function onContentPrepareForm($form, $data)
+    public function onContentPrepareForm($form, $data)
     {
         // Load user_timeclock plugin language
         $lang = JFactory::getLanguage();
@@ -524,7 +524,7 @@ class plgUserTimeclock extends JPlugin
         return true;
     }
 
-    function onUserAfterSave($data, $isNew, $result, $error)
+    public function onUserAfterSave($data, $isNew, $result, $error)
     {
         $userId    = JArrayHelper::getValue($data, 'id', 0, 'int');
 
@@ -601,7 +601,7 @@ class plgUserTimeclock extends JPlugin
      * @param    boolean        $success    True if user was succesfully stored in the database
      * @param    string        $msg        Message
      */
-    function onUserAfterDelete($user, $success, $msg)
+    public function onUserAfterDelete($user, $success, $msg)
     {
         if (!$success) {
             return false;
@@ -648,6 +648,9 @@ class plgUserTimeclock extends JPlugin
         $date = new JDate();
         $old = $this->getAllParams($userId, "admin");
         $changeDates = array();
+        if (!isset($history['effectiveDateSet'])) {
+            $history['effectiveDateSet'] = array();
+        }
         foreach((array)$history['effectiveDateSet'] as $d => $v) {
             if ((bool)$v && !empty($history['effectiveDate'][$d])) {
                 $changeDates[$d] = $history['effectiveDate'][$d];

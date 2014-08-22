@@ -73,7 +73,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -88,7 +88,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id      = $id;
     }
@@ -98,7 +98,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      *
      * @return string
      */
-    function &getData()
+    public function &getData()
     {
         $row = $this->getTable("TimeclockTimesheet");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
@@ -119,7 +119,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      *
      * @return string
      */
-    function getTimesheets($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getTimesheets($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         if (empty($where)) {
             $where = " WHERE p.Type<>'HOLIDAY'";
@@ -139,7 +139,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      *
      * @return string
      */
-    function countTimesheets($where="")
+    public function countTimesheets($where="")
     {
         if (empty($where)) {
             $where = " WHERE Type<>'HOLIDAY' ";
@@ -157,7 +157,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkin($oid);
@@ -171,7 +171,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkout($who, $oid);
@@ -183,7 +183,7 @@ class TimeclockAdminModelTimesheets extends JModelLegacy
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
         $row       = $this->getTable("TimeclockTimesheet");
         $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");

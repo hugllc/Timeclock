@@ -67,7 +67,7 @@ class TableTimeclockUsers extends JTable
      *
      * @param object &$db Database connector object
      */
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct('#__timeclock_users', "id", $db);
     }
@@ -79,7 +79,7 @@ class TableTimeclockUsers extends JTable
      *
      * @return true
      */
-    function store($updateNulls = false)
+    public function store($updateNulls = false)
     {
         $this->delete($this->id, $this->user_id);
         return $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
@@ -92,7 +92,7 @@ class TableTimeclockUsers extends JTable
      *
      * @return bool
      */
-    function delete($pk = NULL)
+    public function delete($pk = NULL)
     {
         $query = "DELETE FROM `#__timeclock_users`"
                 ." WHERE id=".$this->_db->Quote($this->id)

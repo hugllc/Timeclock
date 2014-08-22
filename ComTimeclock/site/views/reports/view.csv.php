@@ -64,7 +64,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         parent::pdisplay($tpl);
         $layout        = $this->getLayout();
@@ -89,7 +89,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function reportCSV()
+    public function reportCSV()
     {
         $this->dateCSV();
         $this->reportCSVHeader();
@@ -129,7 +129,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function payrollCSV()
+    public function payrollCSV()
     {
         $this->dateCSV();
         $this->payrollCSVHeader();
@@ -194,7 +194,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function payrollCSVHeader()
+    public function payrollCSVHeader()
     {
         print $this->quoteCSV("Project");
         print $this->separator;
@@ -217,7 +217,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function hoursCSV()
+    public function hoursCSV()
     {
         $this->dateCSV();
         $this->hoursCSVHeader();
@@ -261,7 +261,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function hoursCSVHeader()
+    public function hoursCSVHeader()
     {
         print $this->quoteCSV("User");
         print $this->separator;
@@ -282,7 +282,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function dateCSV()
+    public function dateCSV()
     {
         print $this->quoteCSV($this->period["start"]);
         print $this->separator;
@@ -297,7 +297,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function reportCSVHeader()
+    public function reportCSVHeader()
     {
         print $this->quoteCSV("Project");
         print $this->separator;
@@ -314,7 +314,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function wcompCSV()
+    public function wcompCSV()
     {
         $this->dateCSV();
         $this->wcompCSVHeader();
@@ -351,7 +351,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function wcompCSVHeader()
+    public function wcompCSVHeader()
     {
         print $this->quoteCSV("User");
         print $this->separator;
@@ -370,7 +370,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return string
      */
-    function quoteCSV($str)
+    public function quoteCSV($str)
     {
         if (is_string($str)) {
             //$str = str_replace(" ", "", $str);

@@ -59,7 +59,7 @@ class TimeclockAdminViewTools extends JViewLegacy
      *
      * @return none
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         JToolBarHelper::preferences('com_timeclock');
         $layout = $this->getLayout();
@@ -77,7 +77,7 @@ class TimeclockAdminViewTools extends JViewLegacy
      *
      * @return none
      */
-    function defaultLayout($tpl = null)
+    public function defaultLayout($tpl = null)
     {
         parent::display($tpl);
     }
@@ -89,7 +89,7 @@ class TimeclockAdminViewTools extends JViewLegacy
      *
      * @return none
      */
-    function dbcheck($tpl = null)
+    public function dbcheck($tpl = null)
     {
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_CHECK_DATABASE"));
         $this->noResults = JText::_("COM_TIMECLOCK_NO_TESTS");
@@ -106,7 +106,7 @@ class TimeclockAdminViewTools extends JViewLegacy
      *
      * @return none
      */
-    function convertprefs($tpl = null)
+    public function convertprefs($tpl = null)
     {
         $model = $this->getModel();
         $this->results = $model->convertPrefs();

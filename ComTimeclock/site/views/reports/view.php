@@ -59,7 +59,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function pdisplay($tpl = null)
+    public function pdisplay($tpl = null)
     {
         $mainframe = JFactory::getApplication();
 
@@ -87,7 +87,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function where()
+    public function where()
     {
         $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
         if (!empty($cat_id)) {
@@ -121,7 +121,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function catBy()
+    public function catBy()
     {
         if (!is_object($this->_params)) {
             $this->_params = $mainframe->getParams('com_timeclock');
@@ -148,7 +148,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function cellFill()
+    public function cellFill()
     {
         $cell_fill = " ";
         if (is_object($this->_params)) {
@@ -164,7 +164,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function filter()
+    public function filter()
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -291,7 +291,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function pagination($total)
+    public function pagination($total)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -320,7 +320,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function payroll($tpl = null)
+    public function payroll($tpl = null)
     {
 
         $model = $this->getModel();
@@ -459,7 +459,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function notes($tpl = null)
+    public function notes($tpl = null)
     {
         $model = $this->getModel();
         $this->_reportGetPeriod();
@@ -504,7 +504,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function report($tpl = null)
+    public function report($tpl = null)
     {
         $model   = $this->getModel();
         $this->_reportGetPeriod();
@@ -537,7 +537,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      * @return null
      */
 
-    function hours($tpl = null)
+    public function hours($tpl = null)
     {
         $model   = $this->getModel();
         $this->_reportGetPeriod();
@@ -579,7 +579,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      * @return null
      */
 
-    function hoursgraph($tpl = null)
+    public function hoursgraph($tpl = null)
     {
 
         $model   = $this->getModel();
@@ -626,7 +626,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function _hoursgraphGetData()
+    private function _hoursgraphGetData()
     {
         $model    = $this->getModel();
         $this->assignRef("cat_id", $cat_id);
@@ -674,7 +674,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function wcomp($tpl = null)
+    public function wcomp($tpl = null)
     {
         $this->enable = (bool)TimeclockHelper::getParam("wCompEnable");
         $model = $this->getModel();
@@ -706,7 +706,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function _wcompGetData()
+    private function _wcompGetData()
     {
         $model    = $this->getModel();
 
@@ -753,7 +753,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function _hoursGetData()
+    private function _hoursGetData()
     {
         $model    = $this->getModel();
 
@@ -805,7 +805,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function _reportGetData()
+    private function _reportGetData()
     {
         $model    = $this->getModel();
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
@@ -851,7 +851,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function _reportGetPeriod()
+    private function _reportGetPeriod()
     {
         $model          = $this->getModel();
         $period         = $model->getPeriodDates();
@@ -870,7 +870,7 @@ class TimeclockViewReportsBase extends JViewLegacy
      *
      * @return null
      */
-    function _reportControls()
+    private function _reportControls()
     {
         $userModel     = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
         $projectModel  = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");

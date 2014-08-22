@@ -60,7 +60,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -74,7 +74,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id      = $id;
     }
@@ -84,7 +84,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return string
      */
-    function &getData()
+    public function &getData()
     {
         $row = $this->getTable("TimeclockCustomers");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
@@ -102,7 +102,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return string
      */
-    function getCustomers($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getCustomers($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         $query = $this->_allQuery." "
                 .$where." "
@@ -117,7 +117,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return string
      */
-    function countCustomers($where="")
+    public function countCustomers($where="")
     {
         $query = $this->_allQuery." ".$where;
         return $this->_getListCount($query);
@@ -130,7 +130,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockCustomers");
         return $table->checkin($oid);
@@ -144,7 +144,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockCustomers");
         return $table->checkout($who, $oid);
@@ -158,7 +158,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return array
      */
-    function getOptions($where = "", $name = "None")
+    public function getOptions($where = "", $name = "None")
     {
         $ret = array(JHTML::_("select.option", 0, $name));
         $query = " SELECT id, name, company, published "
@@ -181,7 +181,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
         $row  = $this->getTable("TimeclockCustomers");
         $data = JRequest::get('post');
@@ -219,7 +219,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
      *
      * @return bool
      */
-    function publish($publish, $user_id)
+    public function publish($publish, $user_id)
     {
         $table = $this->getTable("TimeclockCustomers");
         $id = is_array($this->_id) ? $this->_id : array($this->_id);

@@ -63,7 +63,7 @@ class TimeclockViewTimeclock extends JViewLegacy
      *
      * @return null
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
 
@@ -102,7 +102,7 @@ class TimeclockViewTimeclock extends JViewLegacy
      *
      * @return null
      */
-    function timesheet($tpl = null)
+    public function timesheet($tpl = null)
     {
         $mainframe = JFactory::getApplication();
 
@@ -136,7 +136,7 @@ class TimeclockViewTimeclock extends JViewLegacy
      *
      * @return null
      */
-    function addhours($tpl = null)
+    public function addhours($tpl = null)
     {
         // get the Form
         $this->form = $this->get('Form');
@@ -185,7 +185,7 @@ class TimeclockViewTimeclock extends JViewLegacy
      *
      * @return bool
      */
-    function checkDate($date)
+    public function checkDate($date)
     {
         return TimeclockModelTimeclock::checkEmploymentDates(
             $this->employmentDates["start"],
@@ -221,7 +221,7 @@ class TimeclockViewTimeclock extends JViewLegacy
      *
      * @return null
      */
-    function _getCookies()
+    private function _getCookies()
     {
         $set = JRequest::getVar('Timeclock_Set', null, '', 'string', "COOKIE");
         if (!is_array($_COOKIE) || is_null($set)) {
@@ -277,7 +277,7 @@ class TimeclockViewTimeclock extends JViewLegacy
      *
      * @return null
      */
-    function filter()
+    public function filter()
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');

@@ -172,7 +172,7 @@ class TableTimeclockProjects extends JTable
      *
      * @param object &$db Database connector object
      */
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct('#__timeclock_projects', "id", $db);
     }
@@ -181,7 +181,7 @@ class TableTimeclockProjects extends JTable
      *
      * @return array
      */
-    function check()
+    public function check()
     {
 
         if ($this->type == "CATEGORY") {

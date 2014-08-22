@@ -59,7 +59,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -75,7 +75,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      * @access public
      * @return null
      */
-    function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array())
     {
         require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.
@@ -93,7 +93,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      * @access public
      * @return null
      */
-    function edit()
+    public function edit()
     {
         JRequest::setVar('model', 'customers');
         JRequest::setVar('view', 'customers');
@@ -109,7 +109,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      *
      * @return void
      */
-    function reset($msg=null)
+    public function reset($msg=null)
     {
         $link = 'index.php?option=com_timeclock&task=customers.display';
         $this->setRedirect($link, $msg);
@@ -121,7 +121,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      *
      * @return void
      */
-    function apply()
+    public function apply()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -151,7 +151,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      *
      * @return void
      */
-    function save()
+    public function save()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -179,7 +179,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      *
      * @return void
      */
-    function cancel()
+    public function cancel()
     {
         $model = $this->getModel("Customers");
         $cid = JRequest::getVar('cid', 0, '', 'array');
@@ -192,7 +192,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      *
      * @return void
      */
-    function publish()
+    public function publish()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -214,7 +214,7 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
      *
      * @return void
      */
-    function unpublish()
+    public function unpublish()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(

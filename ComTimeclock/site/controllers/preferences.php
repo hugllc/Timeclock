@@ -63,7 +63,7 @@ class TimeclockControllerPreferences extends TimeclockController
      * @access public
      * @return null
      */
-    function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array())
     {
         JRequest::setVar('view', 'preferences');
         parent::display();
@@ -73,7 +73,7 @@ class TimeclockControllerPreferences extends TimeclockController
      *
      * @return void
      */
-    function save()
+    public function save()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(

@@ -59,7 +59,7 @@ class TimeclockAdminViewAbout extends JViewLegacy
      *
      * @return none
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         JToolBarHelper::preferences('com_timeclock');
         parent::display($tpl);

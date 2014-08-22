@@ -59,7 +59,7 @@ class TimeclockAdminViewCustomers extends JViewLegacy
     *
     * @return none
     */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
@@ -77,7 +77,7 @@ class TimeclockAdminViewCustomers extends JViewLegacy
     *
     * @return none
     */
-    function showList($tpl = null)
+    public function showList($tpl = null)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -195,7 +195,7 @@ class TimeclockAdminViewCustomers extends JViewLegacy
      *
      * @return none
      */
-    function form($tpl = null)
+    public function form($tpl = null)
     {
         $model = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         // Set this as the default model

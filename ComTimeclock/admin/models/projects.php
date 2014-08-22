@@ -77,7 +77,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $array = JRequest::getVar('cid', 0, '', 'array');
@@ -90,7 +90,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id = $id;
     }
@@ -102,7 +102,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return string
      */
-    function &getData($id = null)
+    public function &getData($id = null)
     {
         $row = $this->getTable("TimeclockProjects");
         if (is_null($id)) {
@@ -122,7 +122,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return string
      */
-    function getProjects($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getProjects($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         $key = (string)$limitstart.$limit;
         $query = $this->_allQuery." "
@@ -138,7 +138,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return string
      */
-    function countProjects($where="")
+    public function countProjects($where="")
     {
         $query = $this->_allQuery." ".$where;
         return $this->_getListCount($query);
@@ -151,7 +151,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return bool
      */
-    function addUser()
+    public function addUser()
     {
         $this->store();
         $id = (int) JRequest::getVar('id', 0, '', 'int');
@@ -173,7 +173,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return bool
      */
-    function addOneUser($id, $user_id)
+    public function addOneUser($id, $user_id)
     {
         $row = $this->getTable("TimeclockUsers");
         $data = array(
@@ -205,7 +205,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return bool
      */
-    function removeUser()
+    public function removeUser()
     {
         $this->store();
         $id = (int) JRequest::getVar('id', 0, '', 'int');
@@ -228,7 +228,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return bool
      */
-    function removeOneUser($id, $user_id)
+    public function removeOneUser($id, $user_id)
     {
         $row = $this->getTable("TimeclockUsers");
         $data = array(
@@ -256,7 +256,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return bool
      */
-    function publish($publish, $user_id)
+    public function publish($publish, $user_id)
     {
         $table = $this->getTable("TimeclockProjects");
         $id = is_array($this->_id) ? $this->_id : array($this->_id);
@@ -270,7 +270,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkin($oid);
@@ -284,7 +284,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkout($who, $oid);
@@ -297,7 +297,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
         $row  = $this->getTable("TimeclockProjects");
         $data = JRequest::get('post');
@@ -343,7 +343,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function getParentOptions($id=0, $selected=0, $text = "None")
+    public function getParentOptions($id=0, $selected=0, $text = "None")
     {
         $parents = array(JHTML::_("select.option", 0, $text));
         $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0
@@ -372,7 +372,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function getOptions($where, $text = "None", $exclude=array(), $textValue = -1)
+    public function getOptions($where, $text = "None", $exclude=array(), $textValue = -1)
     {
         if (!is_null($text)) {
             $ret = array(JHTML::_("select.option", $textValue, $text));
@@ -405,7 +405,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return string
      */
-    function countParents($id)
+    public function countParents($id)
     {
         if (empty($this->_parentCount[$id])) {
             $query = "select * from #__timeclock_projects where parent_id=".(int)$id;
@@ -422,7 +422,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function getProjectUsers($oid, $limitstart = null, $limit = null)
+    public function getProjectUsers($oid, $limitstart = null, $limit = null)
     {
         $query = "select u.id as proj_id, p.*,
                   u.user_id as id from #__timeclock_users as u
@@ -445,7 +445,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function getUserProjectsBare($oid, $limitstart = null, $limit = null)
+    public function getUserProjectsBare($oid, $limitstart = null, $limit = null)
     {
         $query = "select * from #__timeclock_users as u
                   LEFT JOIN #__timeclock_projects as p on u.id = p.id
@@ -471,7 +471,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function getUserProjectIds($oid, $limitstart = null, $limit = null)
+    public function getUserProjectIds($oid, $limitstart = null, $limit = null)
     {
         $projects = $this->getUserProjectsBare($oid, $limitstart, $limit);
         $proj = array();
@@ -490,7 +490,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function getUserProjects(
+    public function getUserProjects(
         $oid,
         $limitstart = null,
         $limit = null,
@@ -658,7 +658,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function getUserProjectsCount($oid)
+    public function getUserProjectsCount($oid)
     {
         $query = "select * from #__timeclock_users as u
                   WHERE u.user_id = ".(int)$oid."";
@@ -673,7 +673,7 @@ class TimeclockAdminModelProjects extends JModelLegacy
      *
      * @return array
      */
-    function userInProject($oid, $projid)
+    public function userInProject($oid, $projid)
     {
         $query = "select * from #__timeclock_users as u
                   WHERE u.user_id = ".(int)$oid."

@@ -73,7 +73,7 @@ class JElementCustomer extends JElement
      * @return string
      */
 
-    function fetchElement($name, $value, &$node, $control_name)
+    public function fetchElement($name, $value, &$node, $control_name)
     {
         $model = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         $options = $model->getOptions("", "All");

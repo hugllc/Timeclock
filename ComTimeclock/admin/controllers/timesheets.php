@@ -59,7 +59,7 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -75,7 +75,7 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
      * @access public
      * @return null
      */
-    function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array())
     {
         //require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.
@@ -93,7 +93,7 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
      * @access public
      * @return null
      */
-    function edit()
+    public function edit()
     {
         JRequest::setVar('model', 'timesheets');
         JRequest::setVar('view', 'timesheets');
@@ -109,7 +109,7 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
      *
      * @return void
      */
-    function reset($msg=null)
+    public function reset($msg=null)
     {
         $link = 'index.php?option=com_timeclock&task=timesheets.display';
         $this->setRedirect($link, $msg);
@@ -123,7 +123,7 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
      *
      * @return void
      */
-    function save($apply=false)
+    public function save($apply=false)
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -165,7 +165,7 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
      *
      * @return void
      */
-    function apply()
+    public function apply()
     {
         $this->save(true);
     }
@@ -175,7 +175,7 @@ class TimeclockAdminControllerTimesheets extends JControllerLegacy
      *
      * @return void
      */
-    function cancel()
+    public function cancel()
     {
         $model = $this->getModel("Timesheets");
         $id = JRequest::getVar('id', 0, '', 'int');

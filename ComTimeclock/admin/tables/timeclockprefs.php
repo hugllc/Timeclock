@@ -146,7 +146,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function load($oid = -1, $reset = true)
+    public function load($oid = -1, $reset = true)
     {
         $ret = parent::load($oid);
         $prefs = self::decode($this->prefs);
@@ -166,7 +166,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function getDefaults($pref)
+    public function getDefaults($pref)
     {
         return self::$_defaults[$pref];
     }
@@ -178,7 +178,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function create($oid)
+    public function create($oid)
     {
         $this->id = (int) $oid;
         $this->id = $oid;
@@ -210,7 +210,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function publish($pks = NULL, $state = 1, $userId = 0)
+    public function publish($pks = NULL, $state = 1, $userId = 0)
     {
         foreach ($pks as $oid) {
             self::load($oid);
@@ -225,7 +225,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function store($updateNulls = false)
+    public function store($updateNulls = false)
     {
         $this->_prefs = $this->prefs;
         $this->prefs = self::encode($this->prefs);
@@ -244,7 +244,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @param object &$db Database connector object
      */
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct('#__timeclock_prefs', "id", $db);
     }
@@ -258,7 +258,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function getPref($name, $oid = null, $reload=false)
+    public function getPref($name, $oid = null, $reload=false)
     {
         static $instance;
         if (empty($oid)) {
@@ -298,7 +298,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function getDefaultPref($name)
+    public function getDefaultPref($name)
     {
         return self::filterPref($name, self::$_defaults[$name]);
     }
@@ -311,7 +311,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed Filtered value
      */
-    function filterPref($name, $value)
+    public function filterPref($name, $value)
     {
         // Protect it from calling itself.
         if (empty($name)) {
@@ -339,7 +339,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function setPref($name, $value, $oid=null)
+    public function setPref($name, $value, $oid=null)
     {
         if (empty($oid)) {
             $u = JFactory::getUser();

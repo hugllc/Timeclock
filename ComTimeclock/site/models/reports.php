@@ -64,7 +64,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         $this->set(
             JRequest::getVar('period', $this->get("type"), '', 'word'),
@@ -84,7 +84,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      *
      * @return string
      */
-    function getTimesheetData(
+    public function getTimesheetData(
         $where = "1", $limitstart=null, $limit=null, $orderby=""
     ) {
         $db = TimeclockHelper::getParam("decimalPlaces");
@@ -126,7 +126,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      *
      * @return string
      */
-    function getTimesheetDataCount($where)
+    public function getTimesheetDataCount($where)
     {
         if (empty($where)) {
             $where = " 1 ";

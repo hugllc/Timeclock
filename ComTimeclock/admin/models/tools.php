@@ -69,7 +69,7 @@ class TimeclockAdminModelTools extends JModelLegacy
     *
     * @return    void
     */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->_customers = JTable::getInstance("TimeclockCustomers", "Table");
@@ -86,7 +86,7 @@ class TimeclockAdminModelTools extends JModelLegacy
     *
     * @return array The problem array
     */
-    function convertPrefs()
+    public function convertPrefs()
     {
         $ret = array(
             "System Preferences" => $this->_convertSysPrefs(),
@@ -253,7 +253,7 @@ class TimeclockAdminModelTools extends JModelLegacy
     *
     * @return array The problem array
     */
-    function dbCheck()
+    public function dbCheck()
     {
         $ret = array(
             "Preferences" => $this->_dbCheckPrefs(),

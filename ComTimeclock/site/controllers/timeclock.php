@@ -59,7 +59,7 @@ class TimeclockControllerTimeclock extends TimeclockController
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -75,7 +75,7 @@ class TimeclockControllerTimeclock extends TimeclockController
      * @access public
      * @return null
      */
-    function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array())
     {
         include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
         $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
@@ -102,7 +102,7 @@ class TimeclockControllerTimeclock extends TimeclockController
     * @access public
     * @return null
     */
-    function addhours()
+    public function addhours()
     {
         include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
         $projid   = JRequest::getVar('projid', null, '', 'string');
@@ -135,7 +135,7 @@ class TimeclockControllerTimeclock extends TimeclockController
     * @access public
     * @return null
     */
-    function savehours()
+    public function savehours()
     {
 
         if (!JRequest::checkToken()) {

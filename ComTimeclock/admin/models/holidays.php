@@ -68,7 +68,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -82,7 +82,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id      = $id;
     }
@@ -92,7 +92,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return string
      */
-    function &getData()
+    public function &getData()
     {
         $row = $this->getTable("TimeclockTimesheet");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
@@ -110,7 +110,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return string
      */
-    function getHolidays($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getHolidays($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         if (empty($where)) {
             $where = " WHERE p.Type='HOLIDAY' ";
@@ -130,7 +130,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return string
      */
-    function countHolidays($where="")
+    public function countHolidays($where="")
     {
         if (empty($where)) {
             $where = " WHERE Type='HOLIDAY' ";
@@ -148,7 +148,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkin($oid);
@@ -162,7 +162,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkout($who, $oid);
@@ -173,7 +173,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      *
      * @return array
      */
-    function projectOptions()
+    public function projectOptions()
     {
         $ret = array();
         $query = "SELECT id, name FROM #__timeclock_projects where Type='HOLIDAY'";
@@ -193,7 +193,7 @@ class TimeclockAdminModelHolidays extends JModelLegacy
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
         $row  = $this->getTable("TimeclockTimesheet");
         $data = JRequest::get('post');

@@ -56,7 +56,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -70,7 +70,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      * @access public
      * @return null
      */
-    function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array())
     {
         // Load the submenu.
         TimeclockHelper::addSubmenu(
@@ -87,7 +87,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      * @access public
      * @return null
      */
-    function edit()
+    public function edit()
     {
         JRequest::setVar('model', 'tools');
         JRequest::setVar('view', 'tools');
@@ -101,7 +101,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      * @access public
      * @return null
      */
-    function dbcheck()
+    public function dbcheck()
     {
         JRequest::setVar('model', 'tools');
         JRequest::setVar('view', 'tools');
@@ -117,7 +117,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      *
      * @return void
      */
-    function reset($msg=null)
+    public function reset($msg=null)
     {
         $link = 'index.php?option=com_timeclock&task=tools.display';
         $this->setRedirect($link, $msg);
@@ -129,7 +129,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      *
      * @return void
      */
-    function apply()
+    public function apply()
     {
 
     }
@@ -139,7 +139,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      *
      * @return void
      */
-    function save()
+    public function save()
     {
 
     }
@@ -149,7 +149,7 @@ class TimeclockAdminControllerTools extends JControllerLegacy
      *
      * @return void
      */
-    function cancel()
+    public function cancel()
     {
 
     }

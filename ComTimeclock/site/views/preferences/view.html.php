@@ -59,7 +59,7 @@ class TimeclockViewPreferences extends JViewLegacy
      *
      * @return none
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         $mainframe = JFactory::getApplication();
 
