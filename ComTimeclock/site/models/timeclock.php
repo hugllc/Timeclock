@@ -306,14 +306,12 @@ class TimeclockModelTimeclock extends JModelLegacy
             t.created_by as user_id, p.parent_id as category_id
             FROM      #__timeclock_timesheet as t
             LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-            LEFT JOIN #__timeclock_users as j on (j.id = p.id OR p.type != 'HOLIDAY')
-            LEFT JOIN #__users as u on j.user_id = u.id
+            LEFT JOIN #__users as u on t.created_by = u.id
             LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
             LEFT JOIN #__timeclock_customers as c on p.customer = c.id
             WHERE
             (
                 ".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO')
-                AND (j.user_id = t.created_by OR j.user_id IS NULL)
             )
             OR
             (
@@ -345,7 +343,7 @@ class TimeclockModelTimeclock extends JModelLegacy
                 $this->periodWhere("t.worked"),
             );
             $holidaywhere = array(
-                "j.user_id = ".$this->_db->Quote($this->_id),
+                "t.created_by = ".$this->_db->Quote($this->_id),
                 $this->employmentDateWhere("t.worked"),
                 $this->periodWhere("t.worked"),
             );
@@ -887,7 +885,7 @@ class TimeclockModelTimeclock extends JModelLegacy
             }
             // Remove white space from the notes
             $data["notes"] = trim($data["notes"]);
-            $data["id"] = (int) $data["id"];
+            $data["id"] = isset($data["id"]) ? (int)$data["id"] : null;
             $data["created_by"] = $user->get("id");
             $data["worked"] = $date;
             if (empty($data["created"])) {
