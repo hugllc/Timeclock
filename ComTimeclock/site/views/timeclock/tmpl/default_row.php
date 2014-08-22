@@ -67,7 +67,10 @@ foreach ($this->period["dates"] as $key => $uDate) {
             $tipTitle = JText::_("COM_TIMECLOCK_NO_HOURS");
             $tip = JText::_("COM_TIMECLOCK_NO_HOURS_BEFORE_START");
         };
-        $link = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
+        $link  = '<span class="hasTooltip" title="';
+        $link .= '<strong>'.$tipTitle.'</strong><br />'.$tip.'">';
+        $link .= '<a href="'.$url.'&tmpl=component" class="modal"> '.$hours.' </a></span>';
+        //$link = JHTML::_('tooltip', $tip, $tipTitle, '', " $hours ", $url);
     }
     ?>
         <td class="<?php print $class; ?>" style="<?php print $this->cellStyle;?>">

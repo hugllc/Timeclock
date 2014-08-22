@@ -206,6 +206,7 @@ class TimeclockViewTimeclock extends JViewLegacy
         $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $projects  = $projModel->getUserProjects($user_id, null, null, $this->_orderby);
         $cats      = TimeclockHelper::getUserParam("Timeclock_Category");
+        /*
         foreach ($projects as $k => $p) {
             if (isset($cats[$p->id])) {
                 $projects[$k]->show = false;
@@ -213,7 +214,7 @@ class TimeclockViewTimeclock extends JViewLegacy
                 $projects[$k]->show = true;
             }
         }
-
+        */
         $this->assignRef("projects", $projects);
     }
     /**

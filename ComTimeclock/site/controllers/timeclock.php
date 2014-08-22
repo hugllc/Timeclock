@@ -169,7 +169,13 @@ class TimeclockControllerTimeclock extends TimeclockController
         $task = JRequest::getVar('task', '', '', 'word');
 
         if ($task == 'applyhours') {
-            $url = $_SERVER["HTTP_REFERER"]."&referer=".urlencode($referer);
+            $url = $_SERVER["HTTP_REFERER"];
+            if (strpos("?", $url) === false) {
+                $url .= "?";
+            } else {
+                $url .= "&";
+            }
+            $url .= "referer=".urlencode($referer);
         } else {
             $url = $referer;
         }

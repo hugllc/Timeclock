@@ -37,8 +37,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
+JHTML::_('bootstrap.framework');
+JHTML::_('jquery.framework');
+JHTML::_('behavior.formvalidation');
 
-$headerColSpan = 3;
 $this->totals     = array();
 if (empty($this->days)) $this->days = 7;
 
@@ -53,7 +55,7 @@ $document->setTitle(
     )
 );
 
-JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
+JHTML::script(Juri::base()."components/com_timeclock/views/timeclock/tmpl/category.js");
 
 $hoursSum = array();
 $initPanes = array();
@@ -61,6 +63,7 @@ $initPanes = array();
 ?>
 <script type="text/javascript">
         window.addEvent('domready', function(){
+        console.log(document);
             document.formvalidator.setHandler('dateverify',
                 function (value) {
                     regex=/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/;
@@ -70,24 +73,21 @@ $initPanes = array();
             calculateHourTotal();
         });
 </script>
-<div id="timeclock">
+<div id="timeclock" style="padding-top: 1.5em;">
 <div id="addHoursTotal">
     <?php print JText::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal"> - </span><span id="hoursTotalError" class="error"></span>
 </div>
 <form action="<?php print JRoute::_("index.php"); ?>" method="post" name="userform" autocomplete="off" class="form-validate">
     <h1><?php print JText::_("COM_TIMECLOCK_ADD_HOURS"); ?></h1>
-    <table>
+    <table id="timeclockTable">
         <tr>
-            <th align="right">
-                <label id="date_label" for="date">
-                    *<?php print JText::_("JDATE"); ?>:
+            <th align="right" style="width: 30%;">
+                <label id="date_label" for="date" class="required">
+                    <?php print JText::_("JDATE"); ?><span class="star"> *</span>
                 </label>
             </th>
-            <td>
+            <td style="width: 40%;">
                 <?php print JHTML::_("calendar", $this->date, "date", "date", "%Y-%m-%d", array('class' => "inputbox validate-dateverify required date_label"));?>
-            </td>
-            <td>
-                <?php print JText::_("COM_TIMECLOCK_DATE_WORKED_HELP"); ?>
             </td>
         </tr>
 <?php
@@ -131,9 +131,9 @@ foreach ($this->projects as $cat) {
         if (!is_null($this->projid) && !($this->projid == $proj->id)) continue;
         ?>
         <tr>
-            <td class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
-                <?php print JText::_("COM_TIMECLOCK_PROJECT").": ".TimeclockModelTimeclock::formatProjId($proj->id)." ".JText::_($proj->name); ?>
-            </td>
+            <th class="sectiontableheader" colspan="<?php print $headerColSpan; ?>">
+                <h3><?php print JText::_("COM_TIMECLOCK_PROJECT").": ".TimeclockModelTimeclock::formatProjId($proj->id)." ".JText::_($proj->name); ?></h3>
+            </th>
         </tr>
         <?php
         // Check for any codes
@@ -174,13 +174,15 @@ foreach ($this->projects as $cat) {
             $jsHoursTotal[] = "$('$hoursId').value";
             ?>
         <tr>
-            <th style="white-space:nowrap;" align="right">
+            <th align="right">
+                <div class="control-label">
                 <label id="hours_<?php print $i; ?>_<?php print $proj->id;?>_label" for="<?php print $hoursId; ?>">
-                    <?php print JText::_($wcName);?>:
+                    <?php print JText::_($wcName);?>
                 </label>
+                </div>
             </th>
             <td>
-                <input class="inputbox validate-hoursverify<?php print $hoursId;?>" type="text" id="<?php print $hoursId; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
+                <input class="inputbox required validate-hoursverify<?php print $hoursId;?>" type="text" id="<?php print $hoursId; ?>" name="timesheet[<?php print $proj->id;?>][<?php print $var; ?>]" size="10" maxlength="10" value="<?php echo $hours;?>" />
                 <span><?php print $wcNote; ?></span>
                 <span id="<?php print $hoursId; ?>_old" style="display: none;"><?php print $hours; ?></span>
             </td>
@@ -192,11 +194,10 @@ foreach ($this->projects as $cat) {
                             function (value) {
                                 // clear any error
                                 document.getElementById('hoursTotalError').innerHTML = '&nbsp;';
-
                                 // get our objects
-                                var hours = $('<?php print $hoursId; ?>');
-                                var old = $('<?php print $hoursId; ?>_old');
-                                var notes = $('timesheet_<?php print $proj->id;?>_notes');
+                                var hours = jQuery('<?php print $hoursId; ?>');
+                                var old = jQuery('<?php print $hoursId; ?>_old');
+                                var notes = jQuery('timesheet_<?php print $proj->id;?>_notes');
 
                                 // Calculate the max hours available
                                 var total = parseFloat(document.getElementById('hoursTotal').innerHTML);
@@ -243,7 +244,7 @@ foreach ($this->projects as $cat) {
                     window.addEvent('domready', function(){
                         document.formvalidator.setHandler('noteverify<?php print $proj->id;?>',
                             function (value) {
-                                var errordisp = $('noteerror<?php print $proj->id;?>');
+                            var errordisp = $('noteerror<?php print $proj->id;?>');
                                 var hours = <?php print implode(" + ", (array)$jsHoursTotal); ?>;
                                 if ((hours > 0)
                                     && (value.length < <?php print $this->minNoteChars; ?>)) {
@@ -280,7 +281,7 @@ foreach ($this->projects as $cat) {
                  &nbsp;
             </th>
             <td>
-                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.applyhours';" class="button validate"><?php print JText::_("COM_TIMECLOCK_APPLY"); ?></button>
+<!--                <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.applyhours';" class="button validate"><?php print JText::_("COM_TIMECLOCK_APPLY"); ?></button>-->
                 <button type="submit" onMouseDown="document.getElementById('theTask').value='timeclock.savehours';" class="button validate"><?php print JText::_("COM_TIMECLOCK_SAVE"); ?></button>
             </td>
         </tr>

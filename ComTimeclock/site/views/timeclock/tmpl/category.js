@@ -45,19 +45,13 @@ function timeclockCatShowHide(cat,init) {
     }
 }
 function timeclockCatHide(cat) {
-    var tbody = document.getElementById(cat+'_cat')
-    var span = document.getElementById(cat+'_cat_span')
-    tbody.style.display = 'none';
-    span.innerHTML = '+';
+    jQuery('#'+cat+'_cat').hide();
+    jQuery('#'+cat+'_cat_span').html('+');
     var myCookie  = Cookie.write('Timeclock_'+cat, 'closed', {duration: 1});
 }
 function timeclockCatShow(cat) {
-    var tbody = document.getElementById(cat+'_cat')
-    var span = document.getElementById(cat+'_cat_span')
-    if (span && tbody) {
-        tbody.style.display = '';
-        span.innerHTML = '-';
-    }
+    jQuery('#'+cat+'_cat').show();
+    jQuery('#'+cat+'_cat_span').html('-');
     var oldCookie = Cookie.dispose('Timeclock_'+cat);
 }
 

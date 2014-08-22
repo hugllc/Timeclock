@@ -61,7 +61,15 @@ foreach ($this->period["dates"] as $key => $uDate) :
     $date = JFactory::getDate($uDate);
     ?>
         <th class="<?php print $class; ?>" style="<?php print $this->cellStyle; ?>">
-            <?php print JHTML::_('tooltip', $tip, $tipTitle, '', $date->format($headerDateFormat), $url); ?>
+            <?php 
+                print '<span class="hasTooltip" title="';
+                print '<strong>'.$tipTitle.'</strong><br />'.$tip.'">';
+                if ($url != "") {
+                    print '<a href="'.$url.'&tmpl=component" class="modal"> '.$date->format($headerDateFormat).' </a>';
+                }
+                print '</span>';
+                //print JHTML::_('tooltip', $tip, $tipTitle, '', $date->format($headerDateFormat), $url); 
+            ?>
         </th>
     <?php if ((++$d % $this->days) == 0) : ?>
         <th>

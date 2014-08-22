@@ -37,6 +37,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
+JHTML::_('behavior.modal');
+JHTML::_('bootstrap.framework');
+JHTML::_('jquery.framework');
+JHTML::_('behavior.formvalidation');
 jimport("joomla.html.pane");
 
 if (empty($this->days)) $this->days = 7;

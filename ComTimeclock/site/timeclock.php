@@ -67,9 +67,11 @@ $controller->execute(JRequest::getVar('task'));
 $controller->redirect();
 
 $document = JFactory::getDocument();
-if (trim(strtolower($document->getType()) == "html")) {
+$tmpl     = trim(strtolower(JRequest::getVar('tmpl', '', '', 'word')));
+$type     = trim(strtolower($document->getType()));
+if (($type == "html") && ($tmpl != "component") && ($tmpl != "raw")) {
 ?>
-<p class="copyright">
+<p class="copyright" style="font-size: 80%;">
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
 Copyright &copy; 2014 
     <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
