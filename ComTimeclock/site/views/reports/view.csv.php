@@ -142,7 +142,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
                     if (empty($time[$w][$type]["hours"])) {
                         $hours = $this->cell_fill;
                     } else {
-                        $hours = $time[$w][$type]["hours"];
+                        $hours = (float)$time[$w][$type]["hours"];
                     }
                     print $this->quoteCSV($hours);
                     print $this->separator;
@@ -158,7 +158,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
             if (empty($this->totals["user"][$id])) {
                 $hours = 0;
             } else {
-                $hours = $this->totals["user"][$id];
+                $hours = (float)$this->totals["user"][$id];
             }
             print $this->quoteCSV($hours);
             print $this->lineSep;
@@ -168,9 +168,9 @@ class TimeclockViewReports extends TimeclockViewReportsBase
         for ($w = 0; $w < $this->weeks; $w++) {
             foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
                 if (empty($this->totals["type"][$w][$type])) {
-                    $hours = 0;
+                    $hours = 0.0;
                 } else {
-                    $hours = $this->totals["type"][$w][$type];
+                    $hours = (float)$this->totals["type"][$w][$type];
                 }
                 print $this->quoteCSV($hours);
                 print $this->separator;
@@ -183,7 +183,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
             print $this->quoteCSV($hours);
             print $this->separator;
         }
-        $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
+        $hours = (empty($this->totals["total"])) ? 0.0 : $this->totals["total"];
         print $this->quoteCSV($hours);
         print $this->lineSep;
 
@@ -373,9 +373,13 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     function quoteCSV($str)
     {
         if (is_string($str)) {
-            $str = str_replace(" ", "", $str);
+            //$str = str_replace(" ", "", $str);
+            $str = trim($str);
             $str = htmlspecialchars_decode($str);
-            return '"'.JText::_($str).'"';
+            $str = str_replace("&nbsp;", "", $str);
+            if ($str !== "") {
+                return '"'.JText::_($str).'"';
+            }
         }
         return $str;
     }
