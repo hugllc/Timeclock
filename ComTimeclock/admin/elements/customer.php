@@ -60,7 +60,7 @@ class JElementCustomer extends JElement
      *
      * @var string
      */
-    var    $_name = 'Customer';
+    public $_name = 'Customer';
 
     /**
      * get the element

@@ -61,7 +61,7 @@ class JElementProject extends JElement
      *
      * @var string
      */
-    var    $_name = 'Project';
+    public $_name = 'Project';
 
     /**
      * Get the element

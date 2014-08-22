@@ -61,7 +61,7 @@ class JElementCategory extends JElement
      *
      * @var string
      */
-    var    $_name = 'Category';
+    public $_name = 'Category';
 
     /**
      * Get the element
