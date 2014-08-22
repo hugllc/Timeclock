@@ -50,7 +50,7 @@ $document->setTitle($this->params->get('page_title'));
         <?php echo $this->escape($this->params->get('page_title')); ?>
 </div>
 <?php endif; ?>
-<?php if (is_array($this->controls)) : ?>
+<?php if (isset($this->controls) && is_array($this->controls)) : ?>
     <?php print $this->loadTemplate("controls"); ?>
 <?php endif; ?>
 <form action="<?php print JROUTE::_("index.php"); ?>" method="post" name="userform">
@@ -64,7 +64,7 @@ foreach ($this->notes as $key => $note) {
     <div class="contentpaneopen">
         <div>
             <div class="contentheading"><?php print $title; ?></div>
-            <div class="small"> <?php print JText::_("COM_TIMECLOCK_BY")." ".$note->author; ?> <span>(<?php print $note->hours." ".JText::_("COM_TIMECLOCK_HOURS");?>)</span></div>
+            <div class="small"> <?php print JText::_("COM_TIMECLOCK_BY")." ".(!empty($note->author)  ? $note->author : $note->user_id); ?> <span>(<?php print $note->hours." ".JText::_("COM_TIMECLOCK_HOURS");?>)</span></div>
             <div class="createdate"><?php echo JText::_("COM_TIMECLOCK_WORKED")." ".JHTML::_('date', $note->worked." 06:00:00", JText::_('DATE_FORMAT_LC1')); ?></div>
         </div>
         <div><?php print $note->notes; ?></div>

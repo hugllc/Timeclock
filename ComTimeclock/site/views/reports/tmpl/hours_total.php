@@ -35,6 +35,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+$totalStyle = (isset($totalStyle)) ? $totalStyle : "";
 ?>
         <tr class="row<?php print $this->k; ?>">
             <th align="right style="<?php print $totalStyle; ?>""><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></th>

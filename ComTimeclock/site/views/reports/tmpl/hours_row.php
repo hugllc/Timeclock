@@ -40,6 +40,7 @@ if ($this->report_type == "graph") {
 } else {
     $nameRowspan = 1;
 }
+$totalStyle = (isset($totalStyle)) ? $totalStyle : "";
 
 ?>
     <tr class="row<?php print $this->k; ?>">

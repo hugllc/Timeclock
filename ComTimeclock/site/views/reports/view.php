@@ -230,13 +230,17 @@ class TimeclockViewReportsBase extends JViewLegacy
             'string'
         );
 
-        $filter_order_dir =
-            (trim(strtolower($filter_order_Dir)) == "asc") ? "ASC" : "DESC";
-        $filter_order_dir2 =
-            (trim(strtolower($filter_order_Dir2)) == "asc") ? "ASC" : "DESC";
-        $filter_order_dir3 =
-            (trim(strtolower($filter_order_Dir3)) == "asc") ? "ASC" : "DESC";
-
+        $filters = array(
+            "filter_order_Dir", "filter2_order_Dir", "filter3_order_Dir"
+        );
+        foreach ($filters as $filter) {
+            if (!isset($$filter) || trim(strtolower($$filter)) == "asc")
+            {
+                $$filter = "ASC";
+            } else {
+                $$filter = "DESC";
+            }
+        }
         if (!empty($filter_order)) {
             $this->_orderby = ' ORDER BY '
                                 .TimeclockAdminSql::dotNameQuote($filter_order)
@@ -329,17 +333,33 @@ class TimeclockViewReportsBase extends JViewLegacy
         $data  = array();
 
         foreach ($ret as $d) {
+            if (!isset($data[$d->user_id])) {
+                $data[$d->user_id] = array();
+            }
+            if (!isset($data[$d->user_id][$d->project_id])) {
+                $data[$d->user_id][$d->project_id] = array();
+            }
+            if (!isset($data[$d->user_id][$d->project_id][$d->worked])) {
+                $data[$d->user_id][$d->project_id][$d->worked] = array(
+                    "hours" => 0.0,
+                    "notes" => "",
+                );
+            }
             $data[$d->user_id][$d->project_id][$d->worked]['hours'] += $d->hours;
             $data[$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
             $data[$d->user_id][$d->project_id][$d->worked]['rec']    = $d;
         }
 
         $period = $model->getPeriodDates();
+        $periodType     = $model->get("type");
+        $this->assignRef("period", $period);
+        $this->assignRef("periodType", $periodType);
+
         $days   = 7;
 
         $report = array();
         $notes  = array();
-        $totals = array();
+        $totals = array("type" => array(), "user" => array(), "total" => 0.0);
         $weeks  = round($period["length"] / $days);
         if (($period["length"] % $days) > 0) {
             $weeks++;  // Get that extra bit in.
@@ -356,19 +376,63 @@ class TimeclockViewReportsBase extends JViewLegacy
                     $hours = $dates[$key]["hours"];
                     $type  = $dates[$key]["rec"]->type;
 
+                    if (!isset($report[$user_id])) {
+                        $report[$user_id] = array();
+                    }
+                    if (!isset($report[$user_id][$week])) {
+                        $report[$user_id][$week] = array();
+                    }
+                    if (!isset($report[$user_id][$week][$type])) {
+                        $report[$user_id][$week][$type] = array("hours" => 0.0);
+                    }
+                    if (!isset($report[$user_id][$week]["TOTAL"])) {
+                        $report[$user_id][$week]["TOTAL"] = array("hours" => 0.0);
+                    }
+
+
                     $report[$user_id][$week][$type]["hours"]   += $hours;
                     $report[$user_id][$week]["TOTAL"]["hours"] += $hours;
-                    if (empty($report[$user_id]["name"])) {
-                        $report[$user_id]["name"] = $dates[$key]["rec"]->author;
+                    $username = $dates[$key]["rec"]->author;
+                    if (empty($username)) {
+                        $username = $user_id;
                     }
                     $projname = $dates[$key]["rec"]->project_name;
-                    $username = $dates[$key]["rec"]->author;
+                    if (empty($projname)) {
+                        $projname = $proj_id;
+                    }
+                    if (empty($report[$user_id]["name"])) {
+                        $report[$user_id]["name"] = $username;
+                    }
 
+                    if (!isset($notes[$username])) {
+                        $notes[$username] = array();
+                    }
+                    if (!isset($notes[$username][$projname])) {
+                        $notes[$username][$projname] = array();
+                    }
+                    if (!isset($notes[$username][$projname][$key])) {
+                        $notes[$username][$projname][$key] = array(
+                            "notes" => "",
+                            "hours" => 0.0,
+                        );
+                    }
                     $notes[$username][$projname][$key]["hours"]
                         += $dates[$key]["hours"];
                     $notes[$username][$projname][$key]["notes"]
                         .= $dates[$key]["notes"];
 
+                    if (!isset($totals["type"][$week])) {
+                        $totals["type"][$week] = array();
+                    }
+                    if (!isset($totals["type"][$week][$type])) {
+                        $totals["type"][$week][$type] = 0.0;
+                    }
+                    if (!isset($totals["type"][$week]["TOTAL"])) {
+                        $totals["type"][$week]["TOTAL"] = 0.0;
+                    }
+                    if (!isset($totals["user"][$user_id])) {
+                        $totals["user"][$user_id] = 0.0;
+                    }
                     $totals["type"][$week][$type]   += $hours;
                     $totals["type"][$week]["TOTAL"] += $hours;
                     $totals["user"][$user_id]       += $hours;
@@ -396,6 +460,7 @@ class TimeclockViewReportsBase extends JViewLegacy
     function notes($tpl = null)
     {
         $model = $this->getModel();
+        $this->_reportGetPeriod();
         $this->filter();
         $this->where();
 
@@ -412,6 +477,7 @@ class TimeclockViewReportsBase extends JViewLegacy
             JHTML::_('select.option', 'c.company', "Company Name"),
             JHTML::_('select.option', 'c.name', "Company Contact"),
         );
+        $this->_lists["search_options_default"] = "";
         $total = $model->getTimesheetDataCount($where);
         $this->pagination($total);
         $notes = $model->getTimesheetData(

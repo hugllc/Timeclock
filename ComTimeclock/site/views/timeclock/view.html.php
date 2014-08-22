@@ -248,7 +248,21 @@ class TimeclockViewTimeclock extends JViewLegacy
         $model = $this->getModel();
         $data  = $model->getTimesheetData();
         $hours = array();
+        $totals = array("proj" => array(), "worked" => array(), "total" => 0.0);
         foreach ($data as $k => $d) {
+            if (!isset($hours[$d->project_id])) {
+                $hours[$d->project_id] = array();
+                $totals["proj"][$d->project_id] = 0.0;
+            }
+            if (!isset($hours[$d->project_id][$d->worked])) {
+                $hours[$d->project_id][$d->worked] = array(
+                    'hours' => 0, 
+                    'notes' => ''
+                );
+            }
+            if (!isset($totals["worked"][$d->worked])) {
+                $totals["worked"][$d->worked] = 0.0;
+            }
             $hours[$d->project_id][$d->worked]['hours'] += $d->hours;
             $hours[$d->project_id][$d->worked]['notes'] .= $d->notes;
             $totals["proj"][$d->project_id]             += $d->hours;
