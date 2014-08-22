@@ -182,8 +182,8 @@ class TimeclockAdminControllerCustomers extends JControllerLegacy
     public function cancel()
     {
         $model = $this->getModel("Customers");
-        $cid = JRequest::getVar('cid', 0, '', 'array');
-        $model->checkin($cid[0]);
+        $id = JRequest::getVar('id', 0, '', "int");
+        $model->checkin($id);
         $this->reset();
 
     }
