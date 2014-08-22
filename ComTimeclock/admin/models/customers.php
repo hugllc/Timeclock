@@ -53,7 +53,7 @@ class TimeclockAdminModelCustomers extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT c.*
+    private $_allQuery = "SELECT c.*
                       FROM #__timeclock_customers AS c ";
     /**
      * Constructor that retrieves the ID from the request

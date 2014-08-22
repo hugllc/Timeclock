@@ -54,14 +54,14 @@ require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
 class TimeclockAdminModelProjects extends JModelLegacy
 {
     /** The fixed categories and their IDs */
-    static $cat = array(
+    static public $cat = array(
         "general" => -1,
         "special" => -2,
         "unpaid" =>  -3,
     );
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name,
+    private $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name,
                       m.name as manager_name,
                       p.checked_out as parent_checked_out,
                       c.company as customer_name, c.name as customer_contact,
