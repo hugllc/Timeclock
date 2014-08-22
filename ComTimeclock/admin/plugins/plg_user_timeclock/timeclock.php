@@ -545,8 +545,12 @@ class plgUserTimeclock extends JPlugin
                 $this->addUserProjects($userId, $data['timeclock']);
                 $this->removeProjects($userId, $data['timeclock']);
                 // get the history before it is encoded
-                $history = $data['timeclock']['history'];
-                unset($data['timeclock']['history']);
+                if (isset($data['timeclock']['history'])) {
+                    $history = $data['timeclock']['history'];
+                    unset($data['timeclock']['history']);
+                } else {
+                    $history = array();
+                }
                 // Encode the arrays
                 $this->encodeArrays($data['timeclock']);
                 // Now change the history
