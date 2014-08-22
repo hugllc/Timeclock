@@ -61,8 +61,7 @@ $document->setTitle(
 
 JHTML::_('tabs.start', "sliders");
 $initPanes = array();
-JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
-//JHTML::_('behavior.mootools');
+JHTML::script(Juri::base()."components/com_timeclock/views/timeclock/tmpl/category.js");
 ?>
 <div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
@@ -82,7 +81,6 @@ JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timecl
     <?php print $this->loadTemplate("header"); ?>
 <?php
 $rows = 0;
-//var_dump($this->projects);
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) {
         $array = array_intersect_key($cat->subprojects, $this->hours);
