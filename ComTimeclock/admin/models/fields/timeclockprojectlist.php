@@ -71,19 +71,25 @@ class JFormFieldTimeclockProjectList extends JFormField
         if (empty($id)) {
             return "";
         }
-        $ret = array('<div class="'.$this->class.'" style="clear:both;">');
+        $ret = array(
+            '<h2>Check box to remove the project</h2>',
+            '<div class="'.$this->class.'" style="clear:both;">'
+        );
         $model = TimeclockHelper::getModel("projects");
         $projects = $model->getUserProjectsBare($id, null, null);
         foreach ((array)$projects as $proj) {
             if (($proj->id > 0)) {
+                $ret[] = '<div style="white-space: nowrap;">';
                 $id = $this->id.'_'.$proj->id;
                 $name = $this->name.'['.$proj->id.']';
                 $labeltext = sprintf("%04d", $proj->id).": ".JText::_($proj->name);
                 $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($proj->description), ENT_COMPAT, 'UTF-8');
-                $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">'.$labeltext.'</label>';
+                $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">';
                 if ($this->element["remove"] == 'true') {
                     $ret[] = '<input type="checkbox" name="'.$name.'" id="'.$id.'" value="'.(int)$proj->id.'" />';
                 }
+                $ret[] = $labeltext."</label>";
+                $ret[] = "</div>";
             }
         }
         if (count($ret) === 1) {

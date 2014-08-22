@@ -94,7 +94,7 @@ class TableTimeclockUsers extends JTable
      */
     function delete($pk = NULL)
     {
-        $query = "DELETE FROM ".$this->_db->NameQuote($this->_tbl)
+        $query = "DELETE FROM `#__timeclock_users`"
                 ." WHERE id=".$this->_db->Quote($this->id)
                 ." AND user_id=".$this->_db->Quote($this->user_id);
         $this->_db->setQuery($query);
