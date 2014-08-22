@@ -58,9 +58,9 @@ JHTML::_('behavior.formvalidation');
     <input type="hidden" name="view" value="reports" />
     <div style="white-space: nowrap;">
         <strong><?php echo ucfirst(JText::_("COM_TIMECLOCK_FROM")); ?></strong>
-        <?php print JHTML::_("calendar", $this->period["start"], "startDate", "startDate", "%Y-%m-%d", 'class="inputbox validate-dateverify date_label"');?>
+        <?php print JHTML::_("calendar", $this->period["start"], "startDate", "startDate", "%Y-%m-%d", array('class' => "inputbox validate-dateverify date_label"));?>
         <strong><?php echo JText::_("COM_TIMECLOCK_TO"); ?></strong>
-        <?php print JHTML::_("calendar", $this->period["end"], "endDate", "endDate", "%Y-%m-%d", 'class="inputbox validate-dateverify date_label"'); ?>
+        <?php print JHTML::_("calendar", $this->period["end"], "endDate", "endDate", "%Y-%m-%d", array('class' => "inputbox validate-dateverify date_label")); ?>
     </div>
     <div>
         <?php print JHTML::_("select.genericList", $this->controls["category"], "cat_id", "", 'value', 'text', $this->cat_id); ?>

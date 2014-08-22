@@ -35,6 +35,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+$style = (isset($style)) ? $style : "";
 //$style = "writing-mode: tb-rl; filter: flipv() fliph(); white-space: nowrap; vertical-align: center; height: 1.1em; ";
 ?>
         <tr>

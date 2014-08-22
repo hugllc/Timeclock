@@ -57,7 +57,7 @@ $document->setTitle($this->params->get('page_title')." (".JHTML::_('date', $this
             <?php echo $this->escape($this->params->get('page_title')); ?>
     </div>
     <?php endif; ?>
-    <?php if (is_array($this->controls)) : ?>
+    <?php if (isset($this->controls) && is_array($this->controls)) : ?>
         <?php print $this->loadTemplate("controls"); ?>
     <?php else : ?>
         <?php print $this->loadTemplate("nextprev"); ?>

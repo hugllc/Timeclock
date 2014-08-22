@@ -255,6 +255,8 @@ class TimeclockViewReportsBase extends JViewLegacy
                                 .TimeclockAdminSql::dotNameQuote($filter3_order)
                                 .' '. $filter3_order_Dir;
             }
+        } else {
+            $this->_orderby = "";
         }
 
         if ($search) {
@@ -491,6 +493,7 @@ class TimeclockViewReportsBase extends JViewLegacy
         $control = $this->_params->get("show_controls");
         if ($control) {
             $this->_reportControls();
+            $cat_name = $this->catBy();
         }
 
     }
@@ -758,23 +761,36 @@ class TimeclockViewReportsBase extends JViewLegacy
 
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
-        $totals   = array("user" => array(), "proj" => array());
+        $totals   = array("user" => array(), "cat" => array());
         $cat_name = $this->catBy();
-        $users = array();
+        $total    = 0.0;
+        $users    = array();
         foreach ($ret as $d) {
             if ($d->category_id < -1) {
                 continue;
             }
-            $hours = $d->hours;
+            $hours = (float)$d->hours;
             $user  = $d->created_by;
             $cat   = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
             if (empty($users[$user])) {
-                $users[$user] = $d->author;
+                $users[$user] = !empty($d->author) ? $d->author : $d->user_id;
             }
-            $report[$user][$cat] += $hours;
-            $totals["user"][$user]      += $hours;
-            $totals["cat"][$cat]        += $hours;
-            $total                      += $hours;
+            if (!isset($report[$user])) {
+                $report[$user] = array();
+            }
+            if (!isset($report[$user][$cat])) {
+                $report[$user][$cat] = 0.0;
+            }
+            if (!isset($totals["user"][$user])) {
+                $totals["user"][$user] = 0.0;
+            }
+            if (!isset($totals["cat"][$cat])) {
+                $totals["cat"][$cat] = 0.0;
+            }
+            $report[$user][$cat]   += $hours;
+            $totals["user"][$user] += $hours;
+            $totals["cat"][$cat]   += $hours;
+            $total                 += $hours;
         }
         $this->assignRef("report", $report);
         $this->assignRef("totals", $totals);
@@ -797,12 +813,27 @@ class TimeclockViewReportsBase extends JViewLegacy
         $report   = array();
         $totals   = array("user" => array(), "proj" => array());
         $cat_name = $this->catBy();
+        $total    = 0.0;
         foreach ($ret as $d) {
-            $hours = $d->hours;
-            $user  = $d->author;
-            $proj  = $d->project_name;
+            $hours = (float)$d->hours;
+            $user  = !empty($d->author) ? $d->author : $d->user_id;
+            $proj  = !empty($d->project_name) ? $d->project_name : $d->proj_id;
             $cat   = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
-
+            if (!isset($report[$cat])) {
+                $report[$cat] = array();
+            }
+            if (!isset($report[$cat][$proj])) {
+                $report[$cat][$proj] = array();
+            }
+            if (!isset($report[$cat][$proj][$user])) {
+                $report[$cat][$proj][$user] = 0.0;
+            }
+            if (!isset($totals["proj"][$proj])) {
+                $totals["proj"][$proj] = 0.0;
+            }
+            if (!isset($totals["user"][$user])) {
+                $totals["user"][$user] = 0.0;
+            }
             $report[$cat][$proj][$user] += $hours;
             $totals["proj"][$proj]      += $hours;
             $totals["user"][$user]      += $hours;
@@ -848,7 +879,7 @@ class TimeclockViewReportsBase extends JViewLegacy
 
         $controls["category"] = $projectModel->getParentOptions(
             0,
-            $value,
+            array(),
             "Select Category"
         );
         $controls["project"]  = $projectModel->getOptions(

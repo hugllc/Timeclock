@@ -92,7 +92,7 @@ $wCompCodes = TimeclockHelper::getWCompCodes();
                 </label>
             </td>
             <td>
-                <?php print JHTML::_("calendar", $this->row->worked, "worked", "worked", "%Y-%m-%d", "");?>
+                <?php print JHTML::_("calendar", $this->row->worked, "worked", "worked", "%Y-%m-%d", array());?>
             </td>
             <td>
                 <?php print JText::_("COM_TIMECLOCK_WORK_DATE_TIMESHEET_DESC"); ?>
