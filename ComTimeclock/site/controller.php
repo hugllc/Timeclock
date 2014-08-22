@@ -60,7 +60,7 @@ class TimeclockController extends JControllerLegacy
      * @access public
      * @return null
      */
-    function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = array())
     {
         if (TimeclockHelper::getParam("timeclockDisable")) {
             print '<div class="componentheading">';
