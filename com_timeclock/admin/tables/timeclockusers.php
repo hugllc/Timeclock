@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_Preferences is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package    ComTimeclock
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
@@ -67,17 +67,19 @@ class TableTimeclockUsers extends JTable
      *
      * @param object &$db Database connector object
      */
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct('#__timeclock_users', "id", $db);
     }
 
     /**
-     * Stores data
+     * Save a row that is bound to this object
      *
-     * @return bool
+     * @param bool $updateNulls Update the nulls
+     *
+     * @return true
      */
-    function store()
+    public function store($updateNulls = false)
     {
         $this->delete($this->id, $this->user_id);
         return $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
@@ -86,11 +88,13 @@ class TableTimeclockUsers extends JTable
     /**
      * Deletes data
      *
+     * @param mixed $pk The PK to use
+     *
      * @return bool
      */
-    function delete()
+    public function delete($pk = NULL)
     {
-        $query = "DELETE FROM ".$this->_db->NameQuote($this->_tbl)
+        $query = "DELETE FROM `#__timeclock_users`"
                 ." WHERE id=".$this->_db->Quote($this->id)
                 ." AND user_id=".$this->_db->Quote($this->user_id);
         $this->_db->setQuery($query);

@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -38,14 +38,14 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 /** Include the project stuff */
-$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
-$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
+$adminbase = JPATH_ADMINISTRATOR."/components/com_timeclock";
 
-require_once $adminbase.DS.'tables'.DS.'timeclockcustomers.php';
-require_once $adminbase.DS.'tables'.DS.'timeclockprefs.php';
-require_once $adminbase.DS.'tables'.DS.'timeclockprojects.php';
-require_once $adminbase.DS.'tables'.DS.'timeclockusers.php';
-require_once $base.DS.'tables'.DS.'timeclocktimesheet.php';
+require_once $adminbase.'/tables/timeclockcustomers.php';
+require_once $adminbase.'/tables/timeclockprefs.php';
+require_once $adminbase.'/tables/timeclockprojects.php';
+require_once $adminbase.'/tables/timeclockusers.php';
+require_once $base.'/tables/timeclocktimesheet.php';
 
 /**
  * ComTimeclock model
@@ -54,30 +54,30 @@ require_once $base.DS.'tables'.DS.'timeclocktimesheet.php';
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelTools extends JModel
+class TimeclockAdminModelTools extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT c.*
+    private $_allQuery = "SELECT c.*
                       FROM #__timeclock_customers AS c ";
     /**
     * Constructor that retrieves the ID from the request
     *
     * @return    void
     */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-        $this->_customers =& JTable::getInstance("TimeclockCustomers", "Table");
-        $this->_prefs =& JTable::getInstance("TimeclockPrefs", "Table");
-        $this->_projects =& JTable::getInstance("TimeclockProjects", "Table");
-        $this->_users =& JTable::getInstance("TimeclockUsers", "Table");
-        $this->_timesheet =& JTable::getInstance("TimeclockTimesheet", "Table");
-        $this->_db =& JFactory::getDBO();
+        $this->_customers = JTable::getInstance("TimeclockCustomers", "Table");
+        $this->_prefs = JTable::getInstance("TimeclockPrefs", "Table");
+        $this->_projects = JTable::getInstance("TimeclockProjects", "Table");
+        $this->_users = JTable::getInstance("TimeclockUsers", "Table");
+        $this->_timesheet = JTable::getInstance("TimeclockTimesheet", "Table");
+        $this->_db = JFactory::getDBO();
 
     }
 
@@ -86,7 +86,7 @@ class TimeclockAdminModelTools extends JModel
     *
     * @return array The problem array
     */
-    function convertPrefs()
+    public function convertPrefs()
     {
         $ret = array(
             "System Preferences" => $this->_convertSysPrefs(),
@@ -253,7 +253,7 @@ class TimeclockAdminModelTools extends JModel
     *
     * @return array The problem array
     */
-    function dbCheck()
+    public function dbCheck()
     {
         $ret = array(
             "Preferences" => $this->_dbCheckPrefs(),
@@ -313,6 +313,7 @@ class TimeclockAdminModelTools extends JModel
             "result" => true,
             "description" => "Fix: Please go into the project editor and select a "
                             ." valid parent project.",
+            "log" => "",
         );
         $ret = $this->_dbCheckProjectsGetProjects();
         $valid_array = array("CATEGORY");
@@ -340,6 +341,7 @@ class TimeclockAdminModelTools extends JModel
             "result" => true,
             "description" => "Fix: Please go into the project editor and select a "
                             ." valid project manager.",
+            "log" => "",
         );
         $ret = $this->_dbCheckProjectsGetProjects();
 
@@ -400,6 +402,7 @@ class TimeclockAdminModelTools extends JModel
             "description" => "These should be fixed in the timesheet entry in the "
                 ." administrator panel.  These will show up on reports and no where "
                 ." else.",
+            "log" => "",
         );
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " p.name IS NULL "
@@ -425,6 +428,7 @@ class TimeclockAdminModelTools extends JModel
             "description" => "These should be fixed in the timesheet entry in the "
                 ." administrator panel.  These will show up on reports and no where "
                 ." else.",
+            "log" => "",
         );
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " u.name IS NULL "
@@ -450,6 +454,7 @@ class TimeclockAdminModelTools extends JModel
             "description" => "These should be fixed in the timesheet entry in the "
                 ." administrator panel.  These will show up on reports and no where "
                 ." else.",
+            "log" => "",
         );
         $ret = $this->_dbCheckTimesheetsGetTimesheet(
             " worked = '0000-00-00' "
@@ -472,7 +477,7 @@ class TimeclockAdminModelTools extends JModel
     private function _dbCheckTimesheetsGetTimesheet($where=null)
     {
         static $data;
-        if (!is_array($data[$where])) {
+        if (!isset($data[$where]) || !is_array($data[$where])) {
             $sql = "select t.*, u.name as user_name, p.name as project_name
                     from #__timeclock_timesheet as t
                     LEFT JOIN #__timeclock_projects as p
@@ -534,6 +539,7 @@ class TimeclockAdminModelTools extends JModel
             "result" => true,
             "description" => "If you edit the user in 'User Configurations' you can"
                 ." remove them from the offending projects.",
+            "log" => "",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ((array)$ret as $row) {
@@ -557,6 +563,7 @@ class TimeclockAdminModelTools extends JModel
             "result" => true,
             "description" => "If this fails data is lost.  The database entries for "
                 ." this should be removed with your favorite database tool.",
+            "log" => "",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ((array)$ret as $row) {
@@ -579,6 +586,7 @@ class TimeclockAdminModelTools extends JModel
             "result" => true,
             "description" => "If this fails data is lost.  The database entries for "
                 ." this should be removed with your favorite database tool.",
+            "log" => "",
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ((array)$ret as $row) {

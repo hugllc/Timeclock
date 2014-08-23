@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -37,9 +37,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
-$base = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
 
-require_once $base.DS.'controller.php';
+require_once $base.'/controller.php';
 
 /**
  * ComTimeclock World Component Controller
@@ -48,7 +48,7 @@ require_once $base.DS.'controller.php';
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -57,10 +57,13 @@ class TimeclockControllerPreferences extends TimeclockController
     /**
      * Method to display the view
      *
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
      * @access public
      * @return null
      */
-    function display()
+    public function display($cachable = false, $urlparams = array())
     {
         JRequest::setVar('view', 'preferences');
         parent::display();
@@ -70,7 +73,7 @@ class TimeclockControllerPreferences extends TimeclockController
      *
      * @return void
      */
-    function save()
+    public function save()
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(

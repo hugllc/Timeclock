@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -45,18 +45,18 @@ jimport('joomla.application.component.controller');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminControllerTools extends JController
+class TimeclockAdminControllerTools extends JControllerLegacy
 {
     /**
      * Custom Constructor
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -64,10 +64,13 @@ class TimeclockAdminControllerTools extends JController
     /**
      * Method to display the view
      *
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
      * @access public
      * @return null
      */
-    function display()
+    public function display($cachable = false, $urlparams = array())
     {
         // Load the submenu.
         TimeclockHelper::addSubmenu(
@@ -84,7 +87,7 @@ class TimeclockAdminControllerTools extends JController
      * @access public
      * @return null
      */
-    function edit()
+    public function edit()
     {
         JRequest::setVar('model', 'tools');
         JRequest::setVar('view', 'tools');
@@ -98,26 +101,12 @@ class TimeclockAdminControllerTools extends JController
      * @access public
      * @return null
      */
-    function dbcheck()
+    public function dbcheck()
     {
         JRequest::setVar('model', 'tools');
         JRequest::setVar('view', 'tools');
         JRequest::setVar('layout', 'dbcheck');
         JRequest::setVar('tpl', 'check');
-        self::display();
-    }
-
-    /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    function convertprefs()
-    {
-        JRequest::setVar('model', 'tools');
-        JRequest::setVar('view', 'tools');
-        JRequest::setVar('layout', 'convertprefs');
         self::display();
     }
 
@@ -128,7 +117,7 @@ class TimeclockAdminControllerTools extends JController
      *
      * @return void
      */
-    function reset($msg=null)
+    public function reset($msg=null)
     {
         $link = 'index.php?option=com_timeclock&task=tools.display';
         $this->setRedirect($link, $msg);
@@ -140,7 +129,7 @@ class TimeclockAdminControllerTools extends JController
      *
      * @return void
      */
-    function apply()
+    public function apply()
     {
 
     }
@@ -150,7 +139,7 @@ class TimeclockAdminControllerTools extends JController
      *
      * @return void
      */
-    function save()
+    public function save()
     {
 
     }
@@ -160,7 +149,7 @@ class TimeclockAdminControllerTools extends JController
      *
      * @return void
      */
-    function cancel()
+    public function cancel()
     {
 
     }

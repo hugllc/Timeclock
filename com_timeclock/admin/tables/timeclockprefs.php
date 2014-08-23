@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_Preferences is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package    ComTimeclock
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
@@ -141,11 +141,12 @@ class TableTimeclockPrefs extends JTable
     /**
      * Load a row and bind it to the object
      *
-     * @param int $oid Optional Id argument
+     * @param int  $oid   Optional Id argument
+     * @param bool $reset The reset
      *
      * @return true
      */
-    function load($oid = -1)
+    public function load($oid = -1, $reset = true)
     {
         $ret = parent::load($oid);
         $prefs = self::decode($this->prefs);
@@ -165,7 +166,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function getDefaults($pref)
+    public function getDefaults($pref)
     {
         return self::$_defaults[$pref];
     }
@@ -177,7 +178,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return true
      */
-    function create($oid)
+    public function create($oid)
     {
         $this->id = (int) $oid;
         $this->id = $oid;
@@ -203,26 +204,28 @@ class TableTimeclockPrefs extends JTable
     /**
      * Load a row and bind it to the object
      *
-     * @param int $cid     The id of the user to activate
-     * @param int $publish 0 = deactivate, 1 = activate
-     * @param int $user_id The id of the user making the change
+     * @param int $pks    The id of the user to activate
+     * @param int $state  0 = deactivate, 1 = activate
+     * @param int $userId The id of the user making the change
      *
      * @return true
      */
-    function publish($cid, $publish, $user_id)
+    public function publish($pks = NULL, $state = 1, $userId = 0)
     {
-        foreach ($cid as $oid) {
+        foreach ($pks as $oid) {
             self::load($oid);
         }
-        return parent::publish($cid, $publish, $user_id);
+        return parent::publish($pks, $state, $userId);
     }
 
     /**
      * Save a row that is bound to this object
      *
+     * @param bool $updateNulls Update the nulls
+     *
      * @return true
      */
-    function store()
+    public function store($updateNulls = false)
     {
         $this->_prefs = $this->prefs;
         $this->prefs = self::encode($this->prefs);
@@ -241,7 +244,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @param object &$db Database connector object
      */
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct('#__timeclock_prefs', "id", $db);
     }
@@ -255,11 +258,11 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function getPref($name, $oid = null, $reload=false)
+    public function getPref($name, $oid = null, $reload=false)
     {
         static $instance;
         if (empty($oid)) {
-            $u =& JFactory::getUser();
+            $u = JFactory::getUser();
             $oid = $u->get("id");
         }
         // Unauthenticated user.  We don't care
@@ -268,7 +271,7 @@ class TableTimeclockPrefs extends JTable
         }
         $type = "user";
 
-        $inst =& $instance[$oid];
+        $inst = $instance[$oid];
         if (empty($inst)) {
             $inst = JTable::getInstance("TimeclockPrefs", "Table");
             $reload = true;
@@ -295,7 +298,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function getDefaultPref($name)
+    public function getDefaultPref($name)
     {
         return self::filterPref($name, self::$_defaults[$name]);
     }
@@ -308,7 +311,7 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed Filtered value
      */
-    function filterPref($name, $value)
+    public function filterPref($name, $value)
     {
         // Protect it from calling itself.
         if (empty($name)) {
@@ -336,10 +339,10 @@ class TableTimeclockPrefs extends JTable
      *
      * @return mixed The value of the parameter.
      */
-    function setPref($name, $value, $oid=null)
+    public function setPref($name, $value, $oid=null)
     {
         if (empty($oid)) {
-            $u =& JFactory::getUser();
+            $u = JFactory::getUser();
             $oid = $u->id;
         }
         if (empty($oid)) {

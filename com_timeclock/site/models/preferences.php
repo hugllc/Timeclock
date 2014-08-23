@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -48,11 +48,11 @@ require_once "timeclock.php";
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelPreferences extends JModel
+class TimeclockModelPreferences extends JModelLegacy
 {
     /** @var string The start date in MySQL format */
     protected $period = array(
@@ -64,9 +64,9 @@ class TimeclockModelPreferences extends JModel
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $this->_id = $user->get("id");
         parent::__construct();
     }
@@ -76,7 +76,7 @@ class TimeclockModelPreferences extends JModel
      * @access public
      * @return string
      */
-    function getData()
+    public function getData()
     {
         $row = $this->getTable("TimeclockPrefs");
         $row->load($this->_id);
@@ -89,10 +89,10 @@ class TimeclockModelPreferences extends JModel
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
-        $row =& $this->getTable("TimeclockPrefs");
-        $user =& JFactory::getUser();
+        $row = $this->getTable("TimeclockPrefs");
+        $user = JFactory::getUser();
         $id = $user->get("id");
         $prefs = JRequest::getVar('prefs', array(), "post", "array");
         if (!is_array($prefs) || empty($id)) {

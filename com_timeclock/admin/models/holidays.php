@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /** Get the timesheet table */
-require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
+require_once JPATH_COMPONENT_SITE.'/tables/timeclocktimesheet.php';
 
 /**
  * ComTimeclock model
@@ -48,17 +48,17 @@ require_once JPATH_COMPONENT_SITE.DS.'tables'.DS.'timeclocktimesheet.php';
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelHolidays extends JModel
+class TimeclockAdminModelHolidays extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, u.name as created_by_name, p.name as project_name,
+    private $_allQuery = "SELECT t.*, u.name as created_by_name, p.name as project_name,
                       (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5
-                      + t.hours6) as hours
+                      + t.hours6) as hours, 1 as published
                       FROM #__timeclock_timesheet AS t
                       LEFT JOIN #__timeclock_projects as p ON t.project_id = p.id
                       LEFT JOIN #__users as u ON t.created_by = u.id ";
@@ -68,7 +68,7 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -82,7 +82,7 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id      = $id;
     }
@@ -92,7 +92,7 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return string
      */
-    function &getData()
+    public function &getData()
     {
         $row = $this->getTable("TimeclockTimesheet");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
@@ -110,7 +110,7 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return string
      */
-    function getHolidays($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getHolidays($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         if (empty($where)) {
             $where = " WHERE p.Type='HOLIDAY' ";
@@ -130,7 +130,7 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return string
      */
-    function countHolidays($where="")
+    public function countHolidays($where="")
     {
         if (empty($where)) {
             $where = " WHERE Type='HOLIDAY' ";
@@ -148,7 +148,7 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkin($oid);
@@ -162,7 +162,7 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkout($who, $oid);
@@ -173,11 +173,11 @@ class TimeclockAdminModelHolidays extends JModel
      *
      * @return array
      */
-    function projectOptions()
+    public function projectOptions()
     {
         $ret = array();
         $query = "SELECT id, name FROM #__timeclock_projects where Type='HOLIDAY'";
-        $proj = $this->_getList($query, $limitstart, $limit);
+        $proj = $this->_getList($query, 0, 0);
         if (!is_array($proj)) {
             return $ret;
         }
@@ -193,14 +193,14 @@ class TimeclockAdminModelHolidays extends JModel
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
-        $row =& $this->getTable("TimeclockTimesheet");
+        $row  = $this->getTable("TimeclockTimesheet");
         $data = JRequest::get('post');
 
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
+            $user = JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
 

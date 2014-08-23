@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -45,22 +45,22 @@ jimport('joomla.application.component.model');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelCustomers extends JModel
+class TimeclockAdminModelCustomers extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT c.*
+    private $_allQuery = "SELECT c.*
                       FROM #__timeclock_customers AS c ";
     /**
      * Constructor that retrieves the ID from the request
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -74,7 +74,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id      = $id;
     }
@@ -84,7 +84,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return string
      */
-    function &getData()
+    public function &getData()
     {
         $row = $this->getTable("TimeclockCustomers");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
@@ -102,7 +102,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return string
      */
-    function getCustomers($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getCustomers($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         $query = $this->_allQuery." "
                 .$where." "
@@ -117,7 +117,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return string
      */
-    function countCustomers($where="")
+    public function countCustomers($where="")
     {
         $query = $this->_allQuery." ".$where;
         return $this->_getListCount($query);
@@ -130,7 +130,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockCustomers");
         return $table->checkin($oid);
@@ -144,7 +144,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockCustomers");
         return $table->checkout($who, $oid);
@@ -158,11 +158,13 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return array
      */
-    function getOptions($where = "", $name = "None")
+    public function getOptions($where = "", $name = "None")
     {
         $ret = array(JHTML::_("select.option", 0, $name));
         $query = " SELECT id, name, company, published "
                 ." FROM #__timeclock_customers ".$where;
+        $limitstart = 0;
+        $limit = 0;
         $proj = $this->_getList($query, $limitstart, $limit);
         if (!is_array($proj)) {
             return $ret;
@@ -179,14 +181,14 @@ class TimeclockAdminModelCustomers extends JModel
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
-        $row =& $this->getTable("TimeclockCustomers");
+        $row  = $this->getTable("TimeclockCustomers");
         $data = JRequest::get('post');
 
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
+            $user = JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
 
@@ -217,7 +219,7 @@ class TimeclockAdminModelCustomers extends JModel
      *
      * @return bool
      */
-    function publish($publish, $user_id)
+    public function publish($publish, $user_id)
     {
         $table = $this->getTable("TimeclockCustomers");
         $id = is_array($this->_id) ? $this->_id : array($this->_id);

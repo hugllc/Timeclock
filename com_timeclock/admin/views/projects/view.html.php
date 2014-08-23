@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -36,7 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."lib".DS."sql.inc.php");
+require_once(JPATH_COMPONENT_ADMINISTRATOR."/lib/sql.inc.php");
 
 /** Import the views */
 jimport('joomla.application.component.view');
@@ -48,11 +48,11 @@ jimport('joomla.application.component.view');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewProjects extends JView
+class TimeclockAdminViewProjects extends JViewLegacy
 {
     /**
      * The display function
@@ -61,7 +61,7 @@ class TimeclockAdminViewProjects extends JView
      *
      * @return none
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
@@ -79,13 +79,13 @@ class TimeclockAdminViewProjects extends JView
      *
      * @return none
      */
-    function showList($tpl = null)
+    public function showList($tpl = null)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model = $this->getModel("Projects");
 
-        $db =& JFactory::getDBO();
+        $db = JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.projects.filter_order",
             'filter_order',
@@ -195,16 +195,17 @@ class TimeclockAdminViewProjects extends JView
         $lists["wCompCodes"] = TimeclockHelper::getWCompCodes();
         $lists["wCompEnable"] = TimeclockHelper::getParam("wCompEnable");
 
+        $user = JFactory::getUser();
         $this->assignRef("lists", $lists);
-        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("user", $user);
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_PROJECTS"));
         JToolBarHelper::publishList('projects.publish', "COM_TIMECLOCK_ACTIVATE");
         JToolBarHelper::unpublishList('projects.unpublish', "COM_TIMECLOCK_DEACTIVATE");
-        JToolBarHelper::editListX('projects.edit');
-        JToolBarHelper::addNewX('projects.add');
+        JToolBarHelper::editList('projects.edit');
+        JToolBarHelper::addNew('projects.add');
         JToolBarHelper::preferences('com_timeclock');
 
         parent::display($tpl);
@@ -216,11 +217,11 @@ class TimeclockAdminViewProjects extends JView
      *
      * @return none
      */
-    function form($tpl = null)
+    public function form($tpl = null)
     {
-        $model =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
-        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $model         = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $userModel     = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
+        $customerModel = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
 
         // Set this as the default model
         $this->setModel($model, true);
@@ -228,7 +229,7 @@ class TimeclockAdminViewProjects extends JView
         if (!empty($row->parent_id)) {
             $cat = $model->getData($row->parent_id);
         }
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'
@@ -277,6 +278,7 @@ class TimeclockAdminViewProjects extends JView
             $uUser[] = $u->id;
         }
 
+        $userWhere = "";
         //$userWhere = "WHERE p.published=1
         //      AND (p.endDate >= '".date("Y-m-d")."' OR p.endDate = '0000-00-00')";
         $lists["allUsers"] = $userModel->getOptions($userWhere, "None");

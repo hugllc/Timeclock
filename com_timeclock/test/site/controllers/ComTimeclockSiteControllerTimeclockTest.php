@@ -6,7 +6,7 @@
  *
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
- * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
@@ -35,7 +35,7 @@
 
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../include.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerTest.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JControllerLegacyTest.php';
 /** Require the module under test */
 require_once dirname(__FILE__).'/../../../site/controllers/timeclock.php';
 
@@ -47,11 +47,11 @@ require_once dirname(__FILE__).'/../../../site/controllers/timeclock.php';
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockSiteControllerTimeclockTest extends JControllerTest
+class ComTimeclockSiteControllerTimeclockTest extends JControllerLegacyTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -165,10 +165,10 @@ class ComTimeclockSiteControllerTimeclockTest extends JControllerTest
      */
     public function testStoreTasks($task, $storeRet, $expect, $checkToken=true)
     {
-        $GLOBALS["JModel"]["actionReturn"] = $storeRet;
+        $GLOBALS["JModelLegacy"]["actionReturn"] = $storeRet;
         $GLOBALS["JRequest"]["checkToken"] = $checkToken;
         $this->o->$task();
-        $this->assertSame($expect, $GLOBALS["JController"]["setRedirect"]);
+        $this->assertSame($expect, $GLOBALS["JControllerLegacy"]["setRedirect"]);
     }
 
 }

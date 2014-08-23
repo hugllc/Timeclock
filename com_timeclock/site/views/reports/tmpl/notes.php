@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 
-$document        =& JFactory::getDocument();
+$document        = JFactory::getDocument();
 $dateFormat      = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat = JText::_("DATE_FORMAT_LC3");
 $document->setTitle($this->params->get('page_title'));
@@ -50,7 +50,7 @@ $document->setTitle($this->params->get('page_title'));
         <?php echo $this->escape($this->params->get('page_title')); ?>
 </div>
 <?php endif; ?>
-<?php if (is_array($this->controls)) : ?>
+<?php if (isset($this->controls) && is_array($this->controls)) : ?>
     <?php print $this->loadTemplate("controls"); ?>
 <?php endif; ?>
 <form action="<?php print JROUTE::_("index.php"); ?>" method="post" name="userform">
@@ -64,7 +64,7 @@ foreach ($this->notes as $key => $note) {
     <div class="contentpaneopen">
         <div>
             <div class="contentheading"><?php print $title; ?></div>
-            <div class="small"> <?php print JText::_("COM_TIMECLOCK_BY")." ".$note->author; ?> <span>(<?php print $note->hours." ".JText::_("COM_TIMECLOCK_HOURS");?>)</span></div>
+            <div class="small"> <?php print JText::_("COM_TIMECLOCK_BY")." ".(!empty($note->author)  ? $note->author : $note->user_id); ?> <span>(<?php print $note->hours." ".JText::_("COM_TIMECLOCK_HOURS");?>)</span></div>
             <div class="createdate"><?php echo JText::_("COM_TIMECLOCK_WORKED")." ".JHTML::_('date', $note->worked." 06:00:00", JText::_('DATE_FORMAT_LC1')); ?></div>
         </div>
         <div><?php print $note->notes; ?></div>

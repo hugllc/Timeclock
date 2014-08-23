@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -45,12 +45,12 @@ jimport('joomla.application.component.view');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class TimeclockViewReportsBase extends JView
+class TimeclockViewReportsBase extends JViewLegacy
 {
     /**
      * The display function
@@ -59,13 +59,13 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function pdisplay($tpl = null)
+    public function pdisplay($tpl = null)
     {
         $mainframe = JFactory::getApplication();
 
         $layout        = $this->getLayout();
-        $model         =& $this->getModel();
-        $this->_params =& $mainframe->getParams('com_timeclock');
+        $model         = $this->getModel();
+        $this->_params = $mainframe->getParams('com_timeclock');
 
         $this->assignRef("params", $this->_params);
 
@@ -87,7 +87,7 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function where()
+    public function where()
     {
         $cat_id = JRequest::getVar('cat_id', "0", '', 'int');
         if (!empty($cat_id)) {
@@ -121,10 +121,10 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function catBy()
+    public function catBy()
     {
         if (!is_object($this->_params)) {
-            $this->_params =& $mainframe->getParams('com_timeclock');
+            $this->_params = $mainframe->getParams('com_timeclock');
         }
         $catBy = JRequest::getVar(
             'cat_by',
@@ -148,7 +148,7 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function cellFill()
+    public function cellFill()
     {
         $cell_fill = " ";
         if (is_object($this->_params)) {
@@ -164,15 +164,15 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function filter()
+    public function filter()
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $layout = $this->getLayout();
-        $db     =& JFactory::getDBO();
+        $db     = JFactory::getDBO();
 
         if (!is_object($this->_params)) {
-            $this->_params =& $mainframe->getParams('com_timeclock');
+            $this->_params = $mainframe->getParams('com_timeclock');
         }
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.reports.$layout.filter_order",
@@ -230,13 +230,17 @@ class TimeclockViewReportsBase extends JView
             'string'
         );
 
-        $filter_order_dir =
-            (trim(strtolower($filter_order_Dir)) == "asc") ? "ASC" : "DESC";
-        $filter_order_dir2 =
-            (trim(strtolower($filter_order_Dir2)) == "asc") ? "ASC" : "DESC";
-        $filter_order_dir3 =
-            (trim(strtolower($filter_order_Dir3)) == "asc") ? "ASC" : "DESC";
-
+        $filters = array(
+            "filter_order_Dir", "filter2_order_Dir", "filter3_order_Dir"
+        );
+        foreach ($filters as $filter) {
+            if (!isset($$filter) || trim(strtolower($$filter)) == "asc")
+            {
+                $$filter = "ASC";
+            } else {
+                $$filter = "DESC";
+            }
+        }
         if (!empty($filter_order)) {
             $this->_orderby = ' ORDER BY '
                                 .TimeclockAdminSql::dotNameQuote($filter_order)
@@ -251,6 +255,8 @@ class TimeclockViewReportsBase extends JView
                                 .TimeclockAdminSql::dotNameQuote($filter3_order)
                                 .' '. $filter3_order_Dir;
             }
+        } else {
+            $this->_orderby = "";
         }
 
         if ($search) {
@@ -285,7 +291,7 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function pagination($total)
+    public function pagination($total)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -314,10 +320,10 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function payroll($tpl = null)
+    public function payroll($tpl = null)
     {
 
-        $model =& $this->getModel();
+        $model = $this->getModel();
         $model->setPeriodType("payperiod");
 
         $this->filter();
@@ -329,17 +335,33 @@ class TimeclockViewReportsBase extends JView
         $data  = array();
 
         foreach ($ret as $d) {
+            if (!isset($data[$d->user_id])) {
+                $data[$d->user_id] = array();
+            }
+            if (!isset($data[$d->user_id][$d->project_id])) {
+                $data[$d->user_id][$d->project_id] = array();
+            }
+            if (!isset($data[$d->user_id][$d->project_id][$d->worked])) {
+                $data[$d->user_id][$d->project_id][$d->worked] = array(
+                    "hours" => 0.0,
+                    "notes" => "",
+                );
+            }
             $data[$d->user_id][$d->project_id][$d->worked]['hours'] += $d->hours;
             $data[$d->user_id][$d->project_id][$d->worked]['notes'] .= $d->notes;
             $data[$d->user_id][$d->project_id][$d->worked]['rec']    = $d;
         }
 
         $period = $model->getPeriodDates();
+        $periodType     = $model->get("type");
+        $this->assignRef("period", $period);
+        $this->assignRef("periodType", $periodType);
+
         $days   = 7;
 
         $report = array();
         $notes  = array();
-        $totals = array();
+        $totals = array("type" => array(), "user" => array(), "total" => 0.0);
         $weeks  = round($period["length"] / $days);
         if (($period["length"] % $days) > 0) {
             $weeks++;  // Get that extra bit in.
@@ -356,19 +378,63 @@ class TimeclockViewReportsBase extends JView
                     $hours = $dates[$key]["hours"];
                     $type  = $dates[$key]["rec"]->type;
 
+                    if (!isset($report[$user_id])) {
+                        $report[$user_id] = array();
+                    }
+                    if (!isset($report[$user_id][$week])) {
+                        $report[$user_id][$week] = array();
+                    }
+                    if (!isset($report[$user_id][$week][$type])) {
+                        $report[$user_id][$week][$type] = array("hours" => 0.0);
+                    }
+                    if (!isset($report[$user_id][$week]["TOTAL"])) {
+                        $report[$user_id][$week]["TOTAL"] = array("hours" => 0.0);
+                    }
+
+
                     $report[$user_id][$week][$type]["hours"]   += $hours;
                     $report[$user_id][$week]["TOTAL"]["hours"] += $hours;
-                    if (empty($report[$user_id]["name"])) {
-                        $report[$user_id]["name"] = $dates[$key]["rec"]->author;
+                    $username = $dates[$key]["rec"]->author;
+                    if (empty($username)) {
+                        $username = $user_id;
                     }
                     $projname = $dates[$key]["rec"]->project_name;
-                    $username = $dates[$key]["rec"]->author;
+                    if (empty($projname)) {
+                        $projname = $proj_id;
+                    }
+                    if (empty($report[$user_id]["name"])) {
+                        $report[$user_id]["name"] = $username;
+                    }
 
+                    if (!isset($notes[$username])) {
+                        $notes[$username] = array();
+                    }
+                    if (!isset($notes[$username][$projname])) {
+                        $notes[$username][$projname] = array();
+                    }
+                    if (!isset($notes[$username][$projname][$key])) {
+                        $notes[$username][$projname][$key] = array(
+                            "notes" => "",
+                            "hours" => 0.0,
+                        );
+                    }
                     $notes[$username][$projname][$key]["hours"]
                         += $dates[$key]["hours"];
                     $notes[$username][$projname][$key]["notes"]
                         .= $dates[$key]["notes"];
 
+                    if (!isset($totals["type"][$week])) {
+                        $totals["type"][$week] = array();
+                    }
+                    if (!isset($totals["type"][$week][$type])) {
+                        $totals["type"][$week][$type] = 0.0;
+                    }
+                    if (!isset($totals["type"][$week]["TOTAL"])) {
+                        $totals["type"][$week]["TOTAL"] = 0.0;
+                    }
+                    if (!isset($totals["user"][$user_id])) {
+                        $totals["user"][$user_id] = 0.0;
+                    }
                     $totals["type"][$week][$type]   += $hours;
                     $totals["type"][$week]["TOTAL"] += $hours;
                     $totals["user"][$user_id]       += $hours;
@@ -393,9 +459,10 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function notes($tpl = null)
+    public function notes($tpl = null)
     {
-        $model =& $this->getModel();
+        $model = $this->getModel();
+        $this->_reportGetPeriod();
         $this->filter();
         $this->where();
 
@@ -412,6 +479,7 @@ class TimeclockViewReportsBase extends JView
             JHTML::_('select.option', 'c.company', "Company Name"),
             JHTML::_('select.option', 'c.name', "Company Contact"),
         );
+        $this->_lists["search_options_default"] = "";
         $total = $model->getTimesheetDataCount($where);
         $this->pagination($total);
         $notes = $model->getTimesheetData(
@@ -425,6 +493,7 @@ class TimeclockViewReportsBase extends JView
         $control = $this->_params->get("show_controls");
         if ($control) {
             $this->_reportControls();
+            $cat_name = $this->catBy();
         }
 
     }
@@ -435,9 +504,9 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function report($tpl = null)
+    public function report($tpl = null)
     {
-        $model   =& $this->getModel();
+        $model   = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -468,9 +537,9 @@ class TimeclockViewReportsBase extends JView
      * @return null
      */
 
-    function hours($tpl = null)
+    public function hours($tpl = null)
     {
-        $model   =& $this->getModel();
+        $model   = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -510,10 +579,10 @@ class TimeclockViewReportsBase extends JView
      * @return null
      */
 
-    function hoursgraph($tpl = null)
+    public function hoursgraph($tpl = null)
     {
 
-        $model   =& $this->getModel();
+        $model   = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -557,9 +626,9 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function _hoursgraphGetData()
+    private function _hoursgraphGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
         $this->assignRef("cat_id", $cat_id);
         $user_id = JRequest::getVar('userid', "0", '', 'int');
         if (!empty($user_id)) {
@@ -605,10 +674,10 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function wcomp($tpl = null)
+    public function wcomp($tpl = null)
     {
         $this->enable = (bool)TimeclockHelper::getParam("wCompEnable");
-        $model =& $this->getModel();
+        $model = $this->getModel();
         $this->_reportGetPeriod();
 
         $this->filter();
@@ -637,9 +706,9 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function _wcompGetData()
+    private function _wcompGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
 
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 
@@ -684,31 +753,44 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function _hoursGetData()
+    private function _hoursGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
 
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
 
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
-        $totals   = array("user" => array(), "proj" => array());
+        $totals   = array("user" => array(), "cat" => array());
         $cat_name = $this->catBy();
-        $users = array();
+        $total    = 0.0;
+        $users    = array();
         foreach ($ret as $d) {
             if ($d->category_id < -1) {
                 continue;
             }
-            $hours = $d->hours;
+            $hours = (float)$d->hours;
             $user  = $d->created_by;
             $cat   = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
             if (empty($users[$user])) {
-                $users[$user] = $d->author;
+                $users[$user] = !empty($d->author) ? $d->author : $d->user_id;
             }
-            $report[$user][$cat] += $hours;
-            $totals["user"][$user]      += $hours;
-            $totals["cat"][$cat]        += $hours;
-            $total                      += $hours;
+            if (!isset($report[$user])) {
+                $report[$user] = array();
+            }
+            if (!isset($report[$user][$cat])) {
+                $report[$user][$cat] = 0.0;
+            }
+            if (!isset($totals["user"][$user])) {
+                $totals["user"][$user] = 0.0;
+            }
+            if (!isset($totals["cat"][$cat])) {
+                $totals["cat"][$cat] = 0.0;
+            }
+            $report[$user][$cat]   += $hours;
+            $totals["user"][$user] += $hours;
+            $totals["cat"][$cat]   += $hours;
+            $total                 += $hours;
         }
         $this->assignRef("report", $report);
         $this->assignRef("totals", $totals);
@@ -723,20 +805,35 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function _reportGetData()
+    private function _reportGetData()
     {
-        $model    =& $this->getModel();
+        $model    = $this->getModel();
         $where    = (count($this->_where) ? implode(' AND ', $this->_where) : '');
         $ret      = $model->getTimesheetData($where, null, null, $this->_orderby);
         $report   = array();
         $totals   = array("user" => array(), "proj" => array());
         $cat_name = $this->catBy();
+        $total    = 0.0;
         foreach ($ret as $d) {
-            $hours = $d->hours;
-            $user  = $d->author;
-            $proj  = $d->project_name;
+            $hours = (float)$d->hours;
+            $user  = !empty($d->author) ? $d->author : $d->user_id;
+            $proj  = !empty($d->project_name) ? $d->project_name : $d->proj_id;
             $cat   = (empty($d->$cat_name)) ? JText::_("COM_TIMECLOCK_GENERAL") : $d->$cat_name;
-
+            if (!isset($report[$cat])) {
+                $report[$cat] = array();
+            }
+            if (!isset($report[$cat][$proj])) {
+                $report[$cat][$proj] = array();
+            }
+            if (!isset($report[$cat][$proj][$user])) {
+                $report[$cat][$proj][$user] = 0.0;
+            }
+            if (!isset($totals["proj"][$proj])) {
+                $totals["proj"][$proj] = 0.0;
+            }
+            if (!isset($totals["user"][$user])) {
+                $totals["user"][$user] = 0.0;
+            }
             $report[$cat][$proj][$user] += $hours;
             $totals["proj"][$proj]      += $hours;
             $totals["user"][$user]      += $hours;
@@ -754,9 +851,9 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function _reportGetPeriod()
+    private function _reportGetPeriod()
     {
-        $model          =& $this->getModel();
+        $model          = $this->getModel();
         $period         = $model->getPeriodDates();
         $periodType     = $model->get("type");
         $this->_where[] = $model->dateWhere(
@@ -773,16 +870,16 @@ class TimeclockViewReportsBase extends JView
      *
      * @return null
      */
-    function _reportControls()
+    private function _reportControls()
     {
-        $userModel     =& JModel::getInstance("Users", "TimeclockAdminModel");
-        $projectModel  =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $customerModel =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $userModel     = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
+        $projectModel  = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $customerModel = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         $layout        = $this->getLayout();
 
         $controls["category"] = $projectModel->getParentOptions(
             0,
-            $value,
+            array(),
             "Select Category"
         );
         $controls["project"]  = $projectModel->getOptions(

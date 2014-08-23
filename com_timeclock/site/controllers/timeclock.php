@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -37,9 +37,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
-$base = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
 
-require_once $base.DS.'models'.DS.'timeclock.php';
+require_once $base.'/models/timeclock.php';
 
 /**
  * ComTimeclock World Component Controller
@@ -48,7 +48,7 @@ require_once $base.DS.'models'.DS.'timeclock.php';
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -59,7 +59,7 @@ class TimeclockControllerTimeclock extends TimeclockController
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -69,13 +69,16 @@ class TimeclockControllerTimeclock extends TimeclockController
     /**
      * Method to display the view
      *
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
      * @access public
      * @return null
      */
-    function display()
+    public function display($cachable = false, $urlparams = array())
     {
-        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         $user    = JFactory::getUser();
         $user_id = $user->get("id");
 
@@ -99,12 +102,12 @@ class TimeclockControllerTimeclock extends TimeclockController
     * @access public
     * @return null
     */
-    function addhours()
+    public function addhours()
     {
-        include_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'projects.php';
+        include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
         $projid   = JRequest::getVar('projid', null, '', 'string');
         if (!empty($projid)) {
-            $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+            $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
             $user      = JFactory::getUser();
             $user_id   = $user->get("id");
             if ($projModel->userInProject($user_id, $projid) == false) {
@@ -116,6 +119,7 @@ class TimeclockControllerTimeclock extends TimeclockController
                 return;
             }
         }
+
         $date = JRequest::getVar('date', null, '', 'string');
         if (!TimeclockModelTimeclock::checkDates($date)) {
             return;
@@ -131,7 +135,7 @@ class TimeclockControllerTimeclock extends TimeclockController
     * @access public
     * @return null
     */
-    function savehours()
+    public function savehours()
     {
 
         if (!JRequest::checkToken()) {
@@ -165,7 +169,13 @@ class TimeclockControllerTimeclock extends TimeclockController
         $task = JRequest::getVar('task', '', '', 'word');
 
         if ($task == 'applyhours') {
-            $url = $_SERVER["HTTP_REFERER"]."&referer=".urlencode($referer);
+            $url = $_SERVER["HTTP_REFERER"];
+            if (strpos("?", $url) === false) {
+                $url .= "?";
+            } else {
+                $url .= "&";
+            }
+            $url .= "referer=".urlencode($referer);
         } else {
             $url = $referer;
         }

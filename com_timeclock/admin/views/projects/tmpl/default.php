@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -135,30 +135,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
                     <?php echo $checked; ?>
             </td>
             <td>
-            <?php
-    if (JTable::isCheckedOut($this->user->get('id'), $row->checked_out)) {
-        echo $row->name;
-    } else {
-        ?>
-        <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_PROJECT");?>::<?php echo $row->name; ?>">
-        <a href="<?php echo $link  ?>">
-        <?php echo $row->name; ?></a></span>
-        <?php
-    }
-            ?>
+                <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_PROJECT");?>::<?php echo $row->name; ?>">
+                <a href="<?php echo $link  ?>">
+                <?php echo $row->name; ?></a></span>
             </td>
             <td>
             <?php
     if ($row->parent_id > 0) {
-        if (JTable::isCheckedOut($this->user->get('id'), $row->parent_checked_out)) {
-                echo $row->parentname;
-        } else {
             ?>
             <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_PROJECT");?>::<?php echo $row->parentname; ?>">
             <a href="<?php echo $parentlink  ?>">
             <?php echo $row->parentname; ?></a></span>
             <?php
-        }
     } else {
         echo JText::_("COM_TIMECLOCK_NONE");
     }
@@ -167,15 +155,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++) {
             <td>
             <?php
     if ($row->customer > 0) {
-        if (JTable::isCheckedOut($this->user->get('id'), $row->customer_checked_out)) {
-                echo $row->customer_name;
-        } else {
             ?>
             <span class="editlinktip hasTip" title="<?php echo JText::_("COM_TIMECLOCK_EDIT_CUSTOMER");?>::<?php echo $row->customer_name; ?>">
             <a href="<?php echo $customerlink  ?>">
             <?php echo $row->customer_name; ?></a></span>
             <?php
-        }
     } else {
         echo JText::_("COM_TIMECLOCK_NONE");
     }

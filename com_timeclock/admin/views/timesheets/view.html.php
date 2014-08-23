@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -46,11 +46,11 @@ jimport('joomla.application.component.view');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewTimesheets extends JView
+class TimeclockAdminViewTimesheets extends JViewLegacy
 {
     /**
      * The display function
@@ -59,7 +59,7 @@ class TimeclockAdminViewTimesheets extends JView
      *
      * @return none
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
@@ -76,13 +76,13 @@ class TimeclockAdminViewTimesheets extends JView
      *
      * @return none
      */
-    function showList($tpl = null)
+    public function showList($tpl = null)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model = $this->getModel();
 
-        $db           =& JFactory::getDBO();
+        $db           = JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.timesheets.filter_order",
             'filter_order',
@@ -141,11 +141,9 @@ class TimeclockAdminViewTimesheets extends JView
                         LIKE '
                         .$db->Quote('%'.$db->getEscaped($search, true).'%', false);
         }
-
         $where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
         $orderby = ' ORDER BY '. TimeclockAdminSql::dotNameQuote($filter_order)
                 .' '. $filter_order_Dir;
-
         $rows  = $model->getTimesheets($where, $limitstart, $limit, $orderby);
         $total = $model->countTimesheets($where);
 
@@ -176,14 +174,15 @@ class TimeclockAdminViewTimesheets extends JView
             JHTML::_('select.option', 't.created', "Date Created"),
         );
 
+        $user = JFactory::getUser();
         $this->assignRef("lists", $lists);
-        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("user", $user);
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_TIMESHEETS"));
-        JToolBarHelper::editListX("timesheets.edit");
-        JToolBarHelper::addNewX("timesheets.add");
+        JToolBarHelper::editList("timesheets.edit");
+        JToolBarHelper::addNew("timesheets.add");
         JToolBarHelper::preferences('com_timeclock');
 
         parent::display($tpl);
@@ -195,14 +194,14 @@ class TimeclockAdminViewTimesheets extends JView
      *
      * @return none
      */
-    function form($tpl = null)
+    public function form($tpl = null)
     {
         $model = $this->getModel();
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
-        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
+        $userModel = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
         $row = $this->get("Data");
 
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'
@@ -226,7 +225,7 @@ class TimeclockAdminViewTimesheets extends JView
             $row->worked = date("Y-m-d");
         }
 
-        $user =& JFactory::getUser($row->created_by);
+        $user = JFactory::getUser($row->created_by);
         $author = $user->get("name");
         $this->assignRef("author", $author);
 

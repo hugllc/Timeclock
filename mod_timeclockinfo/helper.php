@@ -9,7 +9,7 @@
  *
  * <pre>
  * mod_timeclockinfo is a Joomla! 1.5 module
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  * Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  *
@@ -33,7 +33,7 @@
  * @package    Comtimeclock
  * @subpackage Com_timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -42,11 +42,11 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$path = JPATH_ROOT.DS."components".DS."com_timeclock";
-$adminPath = JPATH_ROOT.DS."administrator".DS."components".DS."com_timeclock";
+$path = JPATH_ROOT."/components/com_timeclock";
+$adminPath = JPATH_ROOT."/administrator/components/com_timeclock";
 
-require_once $adminPath.DS."helpers".DS."timeclock.php";
-require_once $path.DS."models".DS."timeclock.php";
+require_once $adminPath."/helpers/timeclock.php";
+require_once $path."/models/timeclock.php";
 
 /**
 * This class is the 'model' for the module.
@@ -55,7 +55,7 @@ require_once $path.DS."models".DS."timeclock.php";
 * @package    Comtimeclock
 * @subpackage Com_timeclock
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
@@ -75,9 +75,9 @@ class ModTimeclockInfoHelper
 
         $decimalPlaces = TimeclockHelper::getParam("decimalPlaces");
 
-        $user =& JFactory::getUser();
-        $timeclockModel =& JModel::getInstance("Timeclock", "TimeclockModel");
-        $userModel =& JModel::getInstance("Users", "TimeclockAdminModel");
+        $user = JFactory::getUser();
+        $timeclockModel = JModelLegacy::getInstance("Timeclock", "TimeclockModel");
+        $userModel = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
         $ytdWhere = " `t`.`worked` >= '".date("Y")."-1-1'";
         $ytdhours = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
         if ($params->get("showYTDHours") == 1) {

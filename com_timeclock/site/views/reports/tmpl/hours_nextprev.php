@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -40,14 +40,14 @@ $baseurl = "index.php?option=com_timeclock&view=reports&layout=hours&period=".$t
 if (!empty($this->cat_by)) $baseurl .= "&cat_by=".$this->cat_by;
 
 $tip = "Go to the next pay period";
-$img = "components".DS."com_timeclock".DS."images".DS."1rightarrow.png";
+$img = "components/com_timeclock/images/1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
 $url = JROUTE::_($baseurl."&date=".$this->period["next"]);
 $nextImg = '<a href="'.$url.'">'.$text.'</a>';
 $next = '<a href="'.$url.'">'.JText::_("JNEXT").'</a>';
 
 $tip = "Go to the previous pay period";
-$img = "components".DS."com_timeclock".DS."images".DS."1leftarrow.png";
+$img = "components/com_timeclock/images/1leftarrow.png";
 $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
 $url = JROUTE::_($baseurl."&date=".$this->period["prevend"]);
 $prevImg = '<a href="'.$url.'">'.$text.'</a>';

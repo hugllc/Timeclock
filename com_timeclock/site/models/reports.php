@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -48,7 +48,7 @@ require_once "timeclock.php";
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -64,7 +64,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         $this->set(
             JRequest::getVar('period', $this->get("type"), '', 'word'),
@@ -84,8 +84,9 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      *
      * @return string
      */
-    function getTimesheetData($where, $limitstart=null, $limit=null, $orderby="")
-    {
+    public function getTimesheetData(
+        $where = "1", $limitstart=null, $limit=null, $orderby=""
+    ) {
         $db = TimeclockHelper::getParam("decimalPlaces");
         if (empty($where)) {
             $where = " 1 ";
@@ -102,7 +103,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
             foreach ($this->data[$key] as $k => $d) {
                 $endDate = TimeclockHelper::getUserParam("endDate", $d->user_id);
                 if (empty($endDate)
-                    || ($this->compareDates($endDate, $d->worked) > 0)
+                    || (self::compareDates($endDate, $d->worked) > 0)
                 ) {
                     if ($d->type == "HOLIDAY") {
                         $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
@@ -125,7 +126,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
      *
      * @return string
      */
-    function getTimesheetDataCount($where)
+    public function getTimesheetDataCount($where)
     {
         if (empty($where)) {
             $where = " 1 ";

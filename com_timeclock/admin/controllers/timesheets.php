@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -48,18 +48,18 @@ require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminControllerTimesheets extends JController
+class TimeclockAdminControllerTimesheets extends JControllerLegacy
 {
     /**
      * Custom Constructor
      *
      * @param array $default The configuration array.
      */
-    function __construct($default = array())
+    public function __construct($default = array())
     {
         parent::__construct($default);
 
@@ -69,10 +69,13 @@ class TimeclockAdminControllerTimesheets extends JController
     /**
      * Method to display the view
      *
+     * @param bool  $cachable Whether to cache or not
+     * @param array $params   The parameters to use for the URL
+     *
      * @access public
      * @return null
      */
-    function display()
+    public function display($cachable = false, $urlparams = array())
     {
         //require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php';
         // Load the submenu.
@@ -90,7 +93,7 @@ class TimeclockAdminControllerTimesheets extends JController
      * @access public
      * @return null
      */
-    function edit()
+    public function edit()
     {
         JRequest::setVar('model', 'timesheets');
         JRequest::setVar('view', 'timesheets');
@@ -106,7 +109,7 @@ class TimeclockAdminControllerTimesheets extends JController
      *
      * @return void
      */
-    function reset($msg=null)
+    public function reset($msg=null)
     {
         $link = 'index.php?option=com_timeclock&task=timesheets.display';
         $this->setRedirect($link, $msg);
@@ -120,7 +123,7 @@ class TimeclockAdminControllerTimesheets extends JController
      *
      * @return void
      */
-    function save($apply=false)
+    public function save($apply=false)
     {
         if (!JRequest::checkToken()) {
             $this->setRedirect(
@@ -162,7 +165,7 @@ class TimeclockAdminControllerTimesheets extends JController
      *
      * @return void
      */
-    function apply()
+    public function apply()
     {
         $this->save(true);
     }
@@ -172,11 +175,11 @@ class TimeclockAdminControllerTimesheets extends JController
      *
      * @return void
      */
-    function cancel()
+    public function cancel()
     {
         $model = $this->getModel("Timesheets");
-        $cid = JRequest::getVar('cid', 0, '', 'array');
-        $model->checkin($cid[0]);
+        $id = JRequest::getVar('id', 0, '', 'int');
+        $model->checkin($id);
         $this->reset();
 
     }

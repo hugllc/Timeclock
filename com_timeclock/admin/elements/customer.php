@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -38,7 +38,7 @@ defined('_JEXEC') or die();
 jimport( 'joomla.html.parameter.element' );
 /** get the model we need */
 require_once realpath(
-    dirname(__FILE__).DS."..".DS.'models'.DS.'customers.php'
+    dirname(__FILE__).'/../models/customers.php'
 );
 
 
@@ -49,7 +49,7 @@ require_once realpath(
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -60,7 +60,7 @@ class JElementCustomer extends JElement
      *
      * @var string
      */
-    var    $_name = 'Customer';
+    public $_name = 'Customer';
 
     /**
      * get the element
@@ -73,9 +73,9 @@ class JElementCustomer extends JElement
      * @return string
      */
 
-    function fetchElement($name, $value, &$node, $control_name)
+    public function fetchElement($name, $value, &$node, $control_name)
     {
-        $model =& JModel::getInstance("Customers", "TimeclockAdminModel");
+        $model = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
         $options = $model->getOptions("", "All");
         return JHTML::_(
             "select.genericList",

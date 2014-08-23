@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -46,11 +46,11 @@ jimport('joomla.application.component.view');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewHolidays extends JView
+class TimeclockAdminViewHolidays extends JViewLegacy
 {
     /**
      * The display function
@@ -59,7 +59,7 @@ class TimeclockAdminViewHolidays extends JView
      *
      * @return none
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         $layout = $this->getLayout();
         if (method_exists($this, $layout)) {
@@ -76,13 +76,13 @@ class TimeclockAdminViewHolidays extends JView
      *
      * @return none
      */
-    function showList($tpl = null)
+    public function showList($tpl = null)
     {
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model = $this->getModel("Holidays");
 
-        $db           =& JFactory::getDBO();
+        $db           = JFactory::getDBO();
         $filter_order = $mainframe->getUserStateFromRequest(
             "$option.holidays.filter_order",
             'filter_order',
@@ -173,14 +173,15 @@ class TimeclockAdminViewHolidays extends JView
         // search filter
         $lists['search']         = $search;
 
+        $user = JFactory::getUser();
         $this->assignRef("lists", $lists);
-        $this->assignRef("user", JFactory::getUser());
+        $this->assignRef("user", $user);
         $this->assignRef("rows", $rows);
         $this->assignRef("pagination", $pagination);
 
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_HOLIDAYS"));
-        JToolBarHelper::editListX("holidays.edit");
-        JToolBarHelper::addNewX("holidays.add");
+        JToolBarHelper::editList("holidays.edit");
+        JToolBarHelper::addNew("holidays.add");
         JToolBarHelper::preferences('com_timeclock');
 
         parent::display($tpl);
@@ -192,15 +193,15 @@ class TimeclockAdminViewHolidays extends JView
      *
      * @return none
      */
-    function form($tpl = null)
+    public function form($tpl = null)
     {
-        $model =& JModel::getInstance("Holidays", "TimeclockAdminModel");
-        $projModel =& JModel::getInstance("Projects", "TimeclockAdminModel");
+        $model = JModelLegacy::getInstance("Holidays", "TimeclockAdminModel");
+        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
         // Set this as the default model
         $this->setModel($model, true);
         $row = $this->get("Data");
 
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
 
         $cid = JRequest::getVar('cid', 0, '', 'array');
         // fail if checked out not by 'me'

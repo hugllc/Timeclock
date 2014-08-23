@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -37,6 +37,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
+JHTML::_('behavior.modal');
+JHTML::_('bootstrap.framework');
+JHTML::_('jquery.framework');
+JHTML::_('behavior.formvalidation');
 jimport("joomla.html.pane");
 
 if (empty($this->days)) $this->days = 7;
@@ -47,7 +51,7 @@ $this->cellStyle  = "text-align:center; padding: 1px;";
 $this->totalStyle = $this->cellStyle." font-weight: bold;";
 $this->catStyle   = "font-weight: bold; padding: 1px; text-align: left;";
 $this->rowk       = 0;
-$document         =& JFactory::getDocument();
+$document         = JFactory::getDocument();
 $dateFormat       = JText::_("DATE_FORMAT_LC1");
 $shortDateFormat  = JText::_("DATE_FORMAT_LC3");
 $document->setTitle(
@@ -59,10 +63,9 @@ $document->setTitle(
     )
 );
 
-$pane = JPane::getInstance("sliders");
+JHTML::_('tabs.start', "sliders");
 $initPanes = array();
-JHTML::script("category.js", JURI::base()."components/com_timeclock/views/timeclock/tmpl/");
-JHTML::_('behavior.mootools');
+JHTML::script(Juri::base()."components/com_timeclock/views/timeclock/tmpl/category.js");
 ?>
 <div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
@@ -82,7 +85,6 @@ JHTML::_('behavior.mootools');
     <?php print $this->loadTemplate("header"); ?>
 <?php
 $rows = 0;
-//var_dump($this->projects);
 foreach ($this->projects as $cat) {
     if (($cat->mine == false) || !$cat->published) {
         $array = array_intersect_key($cat->subprojects, $this->hours);
@@ -121,7 +123,7 @@ foreach ($this->projects as $cat) {
     <?php
 }
 
-$document =& JFactory::getDocument();
+$document = JFactory::getDocument();
 $js = 'window.addEvent(\'domready\', function() {'.implode(" ", $initPanes).'});';
 $document->addScriptDeclaration($js);
 

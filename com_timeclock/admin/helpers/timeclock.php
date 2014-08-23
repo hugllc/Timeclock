@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -37,8 +37,8 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.parameter');
 
-if (file_exists(JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php")) {
-    include_once JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.php";
+if (file_exists(JPATH_ROOT."/plugins/user/timeclock/timeclock.php")) {
+    include_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 } else {
     // This is purely for test purposes
     include_once dirname(__FILE__)."/../plugins/plg_user_timeclock/timeclock.php";
@@ -50,7 +50,7 @@ if (file_exists(JPATH_ROOT.DS."plugins".DS."user".DS."timeclock".DS."timeclock.p
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -113,7 +113,7 @@ class TimeclockHelper
         $mainframe = JFactory::getApplication();
 
         $html  = "<div class=\"pagetitle\" style=\"background-image: url("
-                ."components".DS."com_timeclock".DS."images".DS
+                ."components/com_timeclock/images/"
                 ."clock-48.png); background-repeat: no-repeat;\">\n";
         $html .= "<h2>$title</h2>";
         $html .= "</div>\n";
@@ -251,7 +251,7 @@ class TimeclockHelper
     {
         static $component;
         if (!is_object($component)) {
-            $component = &JComponentHelper::getComponent('com_timeclock');
+            $component = JComponentHelper::getComponent('com_timeclock');
         }
         $ret = $component->params->get($param);
         return $ret;

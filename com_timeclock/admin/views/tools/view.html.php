@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -46,11 +46,11 @@ jimport('joomla.application.component.view');
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminViewTools extends JView
+class TimeclockAdminViewTools extends JViewLegacy
 {
     /**
      * The display function
@@ -59,7 +59,7 @@ class TimeclockAdminViewTools extends JView
      *
      * @return none
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         JToolBarHelper::preferences('com_timeclock');
         $layout = $this->getLayout();
@@ -77,7 +77,7 @@ class TimeclockAdminViewTools extends JView
      *
      * @return none
      */
-    function defaultLayout($tpl = null)
+    public function defaultLayout($tpl = null)
     {
         parent::display($tpl);
     }
@@ -89,7 +89,7 @@ class TimeclockAdminViewTools extends JView
      *
      * @return none
      */
-    function dbcheck($tpl = null)
+    public function dbcheck($tpl = null)
     {
         TimeclockHelper::title(JText::_("COM_TIMECLOCK_CHECK_DATABASE"));
         $this->noResults = JText::_("COM_TIMECLOCK_NO_TESTS");
@@ -106,7 +106,7 @@ class TimeclockAdminViewTools extends JView
      *
      * @return none
      */
-    function convertprefs($tpl = null)
+    public function convertprefs($tpl = null)
     {
         $model = $this->getModel();
         $this->results = $model->convertPrefs();

@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -47,21 +47,21 @@ require_once dirname(__FILE__)."/../tables/timeclockprojects.php";
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelProjects extends JModel
+class TimeclockAdminModelProjects extends JModelLegacy
 {
     /** The fixed categories and their IDs */
-    static $cat = array(
+    static public $cat = array(
         "general" => -1,
         "special" => -2,
         "unpaid" =>  -3,
     );
     /** The ID to load */
     private $_id = -1;
-    var $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name,
+    private $_allQuery = "SELECT t.*, p.name as parentname, u.name as created_by_name,
                       m.name as manager_name,
                       p.checked_out as parent_checked_out,
                       c.company as customer_name, c.name as customer_contact,
@@ -77,7 +77,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $array = JRequest::getVar('cid', 0, '', 'array');
@@ -90,7 +90,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id = $id;
     }
@@ -102,7 +102,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function &getData($id = null)
+    public function &getData($id = null)
     {
         $row = $this->getTable("TimeclockProjects");
         if (is_null($id)) {
@@ -122,7 +122,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function getProjects($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getProjects($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         $key = (string)$limitstart.$limit;
         $query = $this->_allQuery." "
@@ -138,7 +138,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function countProjects($where="")
+    public function countProjects($where="")
     {
         $query = $this->_allQuery." ".$where;
         return $this->_getListCount($query);
@@ -151,7 +151,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function addUser()
+    public function addUser()
     {
         $this->store();
         $id = (int) JRequest::getVar('id', 0, '', 'int');
@@ -173,7 +173,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function addOneUser($id, $user_id)
+    public function addOneUser($id, $user_id)
     {
         $row = $this->getTable("TimeclockUsers");
         $data = array(
@@ -205,7 +205,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function removeUser()
+    public function removeUser()
     {
         $this->store();
         $id = (int) JRequest::getVar('id', 0, '', 'int');
@@ -228,7 +228,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function removeOneUser($id, $user_id)
+    public function removeOneUser($id, $user_id)
     {
         $row = $this->getTable("TimeclockUsers");
         $data = array(
@@ -256,7 +256,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function publish($publish, $user_id)
+    public function publish($publish, $user_id)
     {
         $table = $this->getTable("TimeclockProjects");
         $id = is_array($this->_id) ? $this->_id : array($this->_id);
@@ -270,7 +270,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkin($oid);
@@ -284,7 +284,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockProjects");
         return $table->checkout($who, $oid);
@@ -297,9 +297,9 @@ class TimeclockAdminModelProjects extends JModel
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
-        $row =& $this->getTable("TimeclockProjects");
+        $row  = $this->getTable("TimeclockProjects");
         $data = JRequest::get('post');
 
         for ($i = 1; $i < 7; $i++) {
@@ -310,7 +310,7 @@ class TimeclockAdminModelProjects extends JModel
 
         if (empty($data['id'])) {
             $data["created"] = date("Y-m-d H:i:s");
-            $user =& JFactory::getUser();
+            $user = JFactory::getUser();
             $data["created_by"] = $user->get("id");
         }
 
@@ -343,7 +343,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getParentOptions($id=0, $selected=0, $text = "None")
+    public function getParentOptions($id=0, $selected=0, $text = "None")
     {
         $parents = array(JHTML::_("select.option", 0, $text));
         $query = "SELECT id, name FROM #__timeclock_projects WHERE parent_id=0
@@ -372,7 +372,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getOptions($where, $text = "None", $exclude=array(), $textValue = -1)
+    public function getOptions($where, $text = "None", $exclude=array(), $textValue = -1)
     {
         if (!is_null($text)) {
             $ret = array(JHTML::_("select.option", $textValue, $text));
@@ -405,7 +405,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return string
      */
-    function countParents($id)
+    public function countParents($id)
     {
         if (empty($this->_parentCount[$id])) {
             $query = "select * from #__timeclock_projects where parent_id=".(int)$id;
@@ -422,7 +422,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getProjectUsers($oid, $limitstart = null, $limit = null)
+    public function getProjectUsers($oid, $limitstart = null, $limit = null)
     {
         $query = "select u.id as proj_id, p.*,
                   u.user_id as id from #__timeclock_users as u
@@ -445,7 +445,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getUserProjectsBare($oid, $limitstart = null, $limit = null)
+    public function getUserProjectsBare($oid, $limitstart = null, $limit = null)
     {
         $query = "select * from #__timeclock_users as u
                   LEFT JOIN #__timeclock_projects as p on u.id = p.id
@@ -471,7 +471,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getUserProjectIds($oid, $limitstart = null, $limit = null)
+    public function getUserProjectIds($oid, $limitstart = null, $limit = null)
     {
         $projects = $this->getUserProjectsBare($oid, $limitstart, $limit);
         $proj = array();
@@ -490,7 +490,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getUserProjects(
+    public function getUserProjects(
         $oid,
         $limitstart = null,
         $limit = null,
@@ -658,7 +658,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function getUserProjectsCount($oid)
+    public function getUserProjectsCount($oid)
     {
         $query = "select * from #__timeclock_users as u
                   WHERE u.user_id = ".(int)$oid."";
@@ -673,7 +673,7 @@ class TimeclockAdminModelProjects extends JModel
      *
      * @return array
      */
-    function userInProject($oid, $projid)
+    public function userInProject($oid, $projid)
     {
         $query = "select * from #__timeclock_users as u
                   WHERE u.user_id = ".(int)$oid."

@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -39,14 +39,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 
 /** Include the project stuff */
-$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
-$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
+$adminbase = JPATH_ADMINISTRATOR."/components/com_timeclock";
 
-require_once $adminbase.DS.'models'.DS.'users.php';
-require_once $adminbase.DS.'models'.DS.'projects.php';
-require_once $adminbase.DS.'models'.DS.'customers.php';
-require_once $base.DS.'tables'.DS.'timeclocktimesheet.php';
-require_once $base.DS.'controller.php';
+require_once $adminbase.'/models/users.php';
+require_once $adminbase.'/models/projects.php';
+require_once $adminbase.'/models/customers.php';
+require_once $base.'/tables/timeclocktimesheet.php';
+require_once $base.'/controller.php';
 
 /**
  * ComTimeclock model
@@ -59,11 +59,11 @@ require_once $base.DS.'controller.php';
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelTimeclock extends JModel
+class TimeclockModelTimeclock extends JModelLegacy
 {
 
     /** @var string The type of period */
@@ -100,7 +100,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -117,7 +117,7 @@ class TimeclockModelTimeclock extends JModel
             $cid = JRequest::getVar('cid', 0, '', 'array');
         }
         if (empty($cid)) {
-            $u =& JFactory::getUser();
+            $u = JFactory::getUser();
             $cid = $u->get("id");
         }
         $this->setId($cid);
@@ -140,7 +140,7 @@ class TimeclockModelTimeclock extends JModel
         $this->set($type, "type");
 
         $date = JRequest::getString('date', date("Y-m-d"));
-        $this->setDate($this->fixDate($date), "date", true);
+        $this->setDate(self::fixDate($date), "date", true);
         $startDate = JRequest::getString('startDate');
         $this->setPeriodDate($startDate, "start");
         $endDate = JRequest::getString('endDate');
@@ -156,7 +156,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         if (is_array($id)) {
             $this->_id = (int)$id[0];
@@ -173,7 +173,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function set($data, $field)
+    public function set($data, $field = NULL)
     {
         return $this->period[$field] = $data;
     }
@@ -185,18 +185,19 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function setUnix($data, $field)
+    public function setUnix($data, $field)
     {
         return $this->period["unix"][$field] = $data;
     }
     /**
      * Where statement for the reporting period dates
      *
-     * @param string $field The field to set
+     * @param string $field   The field to set
+     * @param mixed  $default The default to use
      *
      * @return array
      */
-    function get($field)
+    public function get($field, $default = NULL)
     {
         return isset($this->period[$field]) ? $this->period[$field] : null;
     }
@@ -207,7 +208,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getUnix($field)
+    public function getUnix($field)
     {
         return $this->period["unix"][$field];
     }
@@ -220,13 +221,13 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return null
      */
-    function setDate($date, $field, $force=false)
+    public function setDate($date, $field, $force=false)
     {
-        $date = $this->fixDate($date);
+        $date = self::fixDate($date);
         if (empty($date) && $force) {
             $date = date("Y-m-d");
         }
-        $this->setUnix($this->dateUnixSql($date), $field);
+        $this->setUnix(self::dateUnixSql($date), $field);
         return $this->set($date, $field);
     }
 
@@ -238,9 +239,9 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return null
      */
-    function setPeriodDate($date, $field)
+    public function setPeriodDate($date, $field)
     {
-        $date = $this->fixDate($date);
+        $date = self::fixDate($date);
         $this->setDate($date, $field);
         if ($this->get($field)) {
             return;
@@ -248,7 +249,7 @@ class TimeclockModelTimeclock extends JModel
         $date = $this->get("date");
         $type = $this->get("type");
         $method = "get".$type.$field;
-        $unixDate = $this->dateUnixSql($date);
+        $unixDate = self::dateUnixSql($date);
         if (method_exists($this, $method)) {
             $dateFormat = $this->$method($date);
         } else {
@@ -269,7 +270,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return    void
      */
-    function setProject($project)
+    public function setProject($project)
     {
         $project = (int) $project;
         if (empty($project)) {
@@ -301,18 +302,16 @@ class TimeclockModelTimeclock extends JModel
             p.wcCode4 as wcCode4, p.wcCode5 as wcCode5, p.wcCode6 as wcCode6,
             t.created_by as created_by, p.name as project_name, p.type as type,
             u.name as author, pc.name as category_name, c.company as company_name,
-            c.name as contact_name, p.id as project_id, u.id as user_id,
-            p.parent_id as category_id
+            c.name as contact_name, t.project_id as project_id, 
+            t.created_by as user_id, p.parent_id as category_id
             FROM      #__timeclock_timesheet as t
             LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-            LEFT JOIN #__timeclock_users as j on (j.id = p.id OR p.type != 'HOLIDAY')
-            LEFT JOIN #__users as u on j.user_id = u.id
+            LEFT JOIN #__users as u on t.created_by = u.id
             LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
             LEFT JOIN #__timeclock_customers as c on p.customer = c.id
             WHERE
             (
                 ".$where1." AND (p.type = 'PROJECT' OR p.type = 'PTO')
-                AND (j.user_id = t.created_by OR j.user_id IS NULL)
             )
             OR
             (
@@ -325,10 +324,16 @@ class TimeclockModelTimeclock extends JModel
     /**
      * Method to display the view
      *
+     * @param string $where      The where clause to add. Must NOT include "WHERE"
+     * @param int    $limitstart The record to start on
+     * @param int    $limit      The max number of records to retrieve
+     * @param string $orderby    The orderby clause.  Must include "ORDER BY"
+     *
      * @return string
      */
-    function getTimesheetData()
-    {
+    public function getTimesheetData(
+        $where = "1", $limitstart=null, $limit=null, $orderby=""
+    ) {
         if (empty($this->data)) {
             $db = TimeclockHelper::getParam("decimalPlaces");
 
@@ -338,7 +343,7 @@ class TimeclockModelTimeclock extends JModel
                 $this->periodWhere("t.worked"),
             );
             $holidaywhere = array(
-                "j.user_id = ".$this->_db->Quote($this->_id),
+                "t.created_by = ".$this->_db->Quote($this->_id),
                 $this->employmentDateWhere("t.worked"),
                 $this->periodWhere("t.worked"),
             );
@@ -368,7 +373,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return int
      */
-    function getHolidayPerc($id, $date)
+    public function getHolidayPerc($id, $date)
     {
         return TimeclockHelper::getUserParam("holidayperc", $id, $date) / 100;
     }
@@ -380,7 +385,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function employmentDateWhere($field)
+    public function employmentDateWhere($field)
     {
         $dates = self::getEmploymentDates();
         return self::dateWhere($field, $dates["start"], $dates["end"]);
@@ -395,7 +400,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function dateWhere($field, $start, $end="")
+    public function dateWhere($field, $start, $end="")
     {
         $ret = "($field >= ".$this->_db->Quote($start)."";
 
@@ -411,15 +416,15 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getEmploymentDates()
+    static public function getEmploymentDates()
     {
         static $eDates;
         if (empty($eDates)) {
             $eDates = array(
-                "start" => $this->fixDate(
+                "start" => self::fixDate(
                     TimeclockHelper::getUserParam("startDate")
                 ),
-                "end"   => $this->fixDate(
+                "end"   => self::fixDate(
                     TimeclockHelper::getUserParam("endDate")
                 ),
             );
@@ -432,13 +437,13 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getEmploymentDatesUnix()
+    static public function getEmploymentDatesUnix()
     {
         static $eDatesUnix;
         if (empty($eDatesUnix)) {
             $eDatesUnix = self::getEmploymentDates();
             foreach ($eDatesUnix as $key => $val) {
-                $eDatesUnix[$key] = $this->dateUnixSql($val);
+                $eDatesUnix[$key] = self::dateUnixSql($val);
             }
         }
         return $eDatesUnix;
@@ -451,7 +456,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function periodWhere($field)
+    public function periodWhere($field)
     {
         $period = $this->getPeriodDates();
         return self::dateWhere($field, $period["start"], $period["end"]);
@@ -464,7 +469,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getPayPeriodStart($date)
+    public function getPayPeriodStart($date)
     {
         $type = TimeclockHelper::getParam("payPeriodType");
         if (trim(strtolower($type)) == "month") {
@@ -480,7 +485,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getPayPeriodEnd($date)
+    public function getPayPeriodEnd($date)
     {
         $type = TimeclockHelper::getParam("payPeriodType");
         if (trim(strtolower($type)) == "month") {
@@ -496,9 +501,9 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getQuarterStart($date)
+    public function getQuarterStart($date)
     {
-        $date = $this->explodeDate($date);
+        $date = self::explodeDate($date);
         if ($date["m"] < 4) {
             return date("Y-01-01");
         }
@@ -518,9 +523,9 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getQuarterEnd($date)
+    public function getQuarterEnd($date)
     {
-        $date = $this->explodeDate($date);
+        $date = self::explodeDate($date);
         if ($date["m"] < 4) {
             return date("Y-03-31");
         }
@@ -541,14 +546,14 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getPayPeriodMonthStart($date)
+    public function getPayPeriodMonthStart($date)
     {
         $first = TimeclockHelper::getParam("firstPayPeriodStart");
-        $first = $this->explodeDate($first);
+        $first = self::explodeDate($first);
         $dateFormat = $this->periods["month"]["start"];
-        $unixDate = $this->dateUnixSql($date);
+        $unixDate = self::dateUnixSql($date);
         $start = date($dateFormat, $unixDate);
-        $s = $this->explodeDate($start);
+        $s = self::explodeDate($start);
         $this->set((int) date("t", $unixDate), "length");
         return self::_date($s["m"], $s["d"]+$first["d"]-1, $s["y"]);
     }
@@ -560,11 +565,11 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getPayPeriodMonthEnd($date)
+    public function getPayPeriodMonthEnd($date)
     {
-        $unixDate = $this->dateUnixSql($date);
+        $unixDate = self::dateUnixSql($date);
         $s = self::getPayPeriodMonthStart($date);
-        $s = $this->explodeDate($s);
+        $s = self::explodeDate($s);
         $len = (int) date("t", $unixDate);
         $this->set($len, "length");
         $end = self::_date($s["m"], $s["d"]+$len-1, $s["y"]);
@@ -580,7 +585,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getFixedStart($date)
+    public function getFixedStart($date)
     {
         // Get the pay period start
         $startTime = TimeclockHelper::getParam("firstViewPeriodStart");
@@ -595,11 +600,11 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getFixedEnd($date)
+    public function getFixedEnd($date)
     {
         $len = TimeclockHelper::getParam("viewPeriodLengthFixed");
         $s = self::getFixedStart($date);
-        $s = $this->explodeDate($s);
+        $s = self::explodeDate($s);
         $this->set($len, "length");
         $end = self::_date($s["m"], $s["d"]+$len-1, $s["y"]);
         return $end;
@@ -613,13 +618,13 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getOffsetFromDate($date, $startTime, $len)
+    public function getOffsetFromDate($date, $startTime, $len)
     {
         // Get this date
-        $uDate = $this->dateUnixSql($date);
-        $d = $this->explodeDate($date);
+        $uDate = self::dateUnixSql($date);
+        $d = self::explodeDate($date);
 
-        $start = $this->dateUnixSql($startTime);
+        $start = self::dateUnixSql($startTime);
 
         // Get the time difference in days
         $timeDiff = round(($uDate - $start) / 86400);
@@ -644,7 +649,7 @@ class TimeclockModelTimeclock extends JModel
     {
 
         $s = self::_getPayPeriodFixedStart($date);
-        $s = $this->explodeDate($s);
+        $s = self::explodeDate($s);
         $length = TimeclockHelper::getParam("payPeriodLengthFixed");
         $this->set($length, "length");
         $end = self::_date($s["m"], $s["d"]+$length-1, $s["y"]);
@@ -656,10 +661,10 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getLength()
+    public function getLength()
     {
-        $startUnix = $this->dateUnixSql($this->get("start"));
-        $endUnix = $this->dateUnixSql($this->get("end"));
+        $startUnix = self::dateUnixSql($this->get("start"));
+        $endUnix = self::dateUnixSql($this->get("end"));
         $length = (int)round(($endUnix - $startUnix) / 86400) + 1;
         return $this->set($length, "length");
     }
@@ -669,36 +674,36 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function getPeriodDates()
+    public function getPeriodDates()
     {
         if (!$this->get("_done")) {
-            $startDate =& $this->get("start");
-            $endDate =& $this->get("end");
-            $s = $this->explodeDate($startDate);
-            $e = $this->explodeDate($endDate);
+            $startDate = $this->get("start");
+            $endDate   = $this->get("end");
+            $s = self::explodeDate($startDate);
+            $e = self::explodeDate($endDate);
 
             $length = $this->getLength();
             // These are all of the dates in the pay period
             for ($i = 0; $i < $length; $i++) {
                 $this->period['dates'][self::_date($s["m"], $s["d"]+$i, $s["y"])]
-                    = $this->dateUnix($s["m"], $s["d"]+$i, $s["y"]);
+                    = self::dateUnix($s["m"], $s["d"]+$i, $s["y"]);
             }
 
             // Get the start and end
             $this->setUnix(
-                $this->dateUnix($s["m"], $s["d"]-$length, $s["y"]),
+                self::dateUnix($s["m"], $s["d"]-$length, $s["y"]),
                 "prev"
             );
             $this->setUnix(
-                $this->dateUnix($s["m"], $s["d"]-1, $s["y"]),
+                self::dateUnix($s["m"], $s["d"]-1, $s["y"]),
                 "prevend"
             );
             $this->setUnix(
-                $this->dateUnix($e["m"], $e["d"]+1, $e["y"]),
+                self::dateUnix($e["m"], $e["d"]+1, $e["y"]),
                 "next"
             );
             $this->setUnix(
-                $this->dateUnix($e["m"], $e["d"]+$length, $e["y"]),
+                self::dateUnix($e["m"], $e["d"]+$length, $e["y"]),
                 "nextend"
             );
 
@@ -739,7 +744,7 @@ class TimeclockModelTimeclock extends JModel
     private function _date($m, $d=null, $y=null)
     {
         if (!(is_null($d) && is_null($y))) {
-            $m = $this->dateUnix($m, $d, $y);
+            $m = self::dateUnix($m, $d, $y);
         }
         return date("Y-m-d", $m);
     }
@@ -750,7 +755,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function getData()
+    public function getData()
     {
         $query = "SELECT t.*,
                   (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
@@ -777,7 +782,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function getTotal($where, $id=null)
+    public function getTotal($where, $id=null)
     {
         if (empty($id)) {
             $id = $this->_id;
@@ -810,7 +815,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function getNextHoliday($where=1)
+    public function getNextHoliday($where=1)
     {
         $key = urlencode(date("Ymd").$where);
         if (!isset($this->_holidays[$key])) {
@@ -833,7 +838,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function daysSinceStart($id=null)
+    public function daysSinceStart($id=null)
     {
         if (empty($id)) {
             $id = $this->_id;
@@ -850,12 +855,12 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return bool
      */
-    function store()
+    public function store()
     {
         $row = $this->getTable("TimeclockTimesheet");
         $timesheet = JRequest::getVar('timesheet', array(), '', 'array');
         $date = JRequest::getVar('date', '', '', 'string');
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         if (empty($date)) {
             return false;
         }
@@ -866,7 +871,11 @@ class TimeclockModelTimeclock extends JModel
         foreach ($timesheet as $data) {
             $htotal = 0;
             for ($i = 1; $i < 7; $i++) {
-                $data["hours".$i] = (float) $data["hours".$i];
+                if (!isset($data["hours".$i])) {
+                    $data["hours".$i] = 0.0;
+                } else {
+                    $data["hours".$i] = (float) $data["hours".$i];
+                }
                 $htotal += $data["hours".$i];
             }
             // If there are no hours don't create a record.
@@ -876,7 +885,7 @@ class TimeclockModelTimeclock extends JModel
             }
             // Remove white space from the notes
             $data["notes"] = trim($data["notes"]);
-            $data["id"] = (int) $data["id"];
+            $data["id"] = isset($data["id"]) ? (int)$data["id"] : null;
             $data["created_by"] = $user->get("id");
             $data["worked"] = $date;
             if (empty($data["created"])) {
@@ -913,11 +922,10 @@ class TimeclockModelTimeclock extends JModel
      * @access public
      * @return null
      */
-    function checkDates($date)
+    static public function checkDates($date)
     {
-        $model = $this->getModel("Timeclock");
         $date = self::dateUnixSql($date);
-        $eDates = $model->getEmploymentDatesUnix();
+        $eDates = self::getEmploymentDatesUnix();
         return self::checkEmploymentDates($eDates["start"], $eDates["end"], $date);
     }
     /**
@@ -930,7 +938,7 @@ class TimeclockModelTimeclock extends JModel
      * @access public
      * @return null
      */
-    function checkEmploymentDates($start, $end, $date)
+    static public function checkEmploymentDates($start, $end, $date)
     {
         if ($date < $start) {
             return false;
@@ -949,7 +957,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return string
      */
-    function formatProjId($id)
+    static public function formatProjId($id)
     {
         return sprintf("%04d", (int)$id);
     }
@@ -961,7 +969,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    function fixDate($date)
+    static public function fixDate($date)
     {
         static $fixDate;
         if (empty($fixDate[$date])) {
@@ -987,7 +995,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    public function dateUnix($m, $d, $y)
+    static public function dateUnix($m, $d, $y)
     {
         return mktime(6, 0, 0, (int)$m, (int)$d, (int)$y);
     }
@@ -1000,7 +1008,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    public function compareDates($date1, $date2)
+    static public function compareDates($date1, $date2)
     {
         $date1 = self::dateUnixSql($date1);
         $date2 = self::dateUnixSql($date2);
@@ -1020,7 +1028,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    public function dateUnixSql($sqlDate)
+    static public function dateUnixSql($sqlDate)
     {
         $date = self::explodeDate($sqlDate);
         if (empty($date["y"])) {
@@ -1035,7 +1043,7 @@ class TimeclockModelTimeclock extends JModel
      *
      * @return array
      */
-    public function explodeDate($date)
+    static public function explodeDate($date)
     {
 
         $date = self::fixDate($date);

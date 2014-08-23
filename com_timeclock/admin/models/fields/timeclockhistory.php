@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -36,7 +36,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.form.field');
-require_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS.'helpers'.DS.'timeclock.php';
+require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 
 /**
  * This creates a select box with the user types in it.
@@ -45,7 +45,7 @@ require_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -64,8 +64,13 @@ class JFormFieldTimeclockHistory extends JFormField
     }
     public function getInput()
     {
+        $index = 0;
         $ret[] = "<div>";
-        $this->value["timestamps"] = (array)$this->value["timestamps"];
+        if (isset($this->value["timestamps"])) {
+            $this->value["timestamps"] = (array)$this->value["timestamps"];
+        } else {
+            $this->value["timestamps"] = array();
+        }
         krsort($this->value["timestamps"]);
         foreach ($this->value["timestamps"] as $date => $user) {
             if (empty($date)) {
@@ -78,7 +83,7 @@ class JFormFieldTimeclockHistory extends JFormField
             $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">'.$labeltext.'</label>'.$date;
             $ret[] = '<a href="#" onClick="document.getElementById(\''.$id.'\').style.display=\'\';document.getElementById(\'effectiveDate'.$index.'Set\').value=\'1\';">['.JText::_("COM_TIMECLOCK_EDIT").']</a>';
             $ret[] = '<div id="'.$id.'" style="display: none;">';
-            $ret[] = JHTML::_("calendar", $date, $this->name."[effectiveDate][$date]", $id, "%Y-%m-%d %H:%M:%S", "");
+            $ret[] = JHTML::_("calendar", $date, $this->name."[effectiveDate][$date]", $id, "%Y-%m-%d %H:%M:%S", array());
             $ret[] = '<input type="hidden" name="'.$this->name.'[effectiveDateSet]['.$date.']" id="effectiveDate'.$index.'Set" value="0" />';
             $ret[] = '</div>';
             $ret[] = '<div style="clear:both; padding-bottom: 2em;">';

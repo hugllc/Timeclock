@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -58,9 +58,9 @@ JHTML::_('behavior.formvalidation');
     <input type="hidden" name="view" value="reports" />
     <div style="white-space: nowrap;">
         <strong><?php echo ucfirst(JText::_("COM_TIMECLOCK_FROM")); ?></strong>
-        <?php print JHTML::_("calendar", $this->period["start"], "startDate", "startDate", "%Y-%m-%d", 'class="inputbox validate-dateverify date_label"');?>
+        <?php print JHTML::_("calendar", $this->period["start"], "startDate", "startDate", "%Y-%m-%d", array('class' => "inputbox validate-dateverify date_label"));?>
         <strong><?php echo JText::_("COM_TIMECLOCK_TO"); ?></strong>
-        <?php print JHTML::_("calendar", $this->period["end"], "endDate", "endDate", "%Y-%m-%d", 'class="inputbox validate-dateverify date_label"'); ?>
+        <?php print JHTML::_("calendar", $this->period["end"], "endDate", "endDate", "%Y-%m-%d", array('class' => "inputbox validate-dateverify date_label")); ?>
     </div>
     <div>
         <?php print JHTML::_("select.genericList", $this->controls["category"], "cat_id", "", 'value', 'text', $this->cat_id); ?>

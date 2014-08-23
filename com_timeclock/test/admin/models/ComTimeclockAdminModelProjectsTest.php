@@ -6,7 +6,7 @@
  *
  * <pre>
  * ComTimeclock is a Joomla application to keep track of employee time
- * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,14 +27,14 @@
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 /** Require the JoomlaMock stuff */
 require_once dirname(__FILE__).'/../../include.php';
-require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelTest.php';
+require_once dirname(__FILE__).'/../../JoomlaMock/testCases/JModelLegacyTest.php';
 require_once dirname(__FILE__).'/../../../admin/models/projects.php';
 
 /**
@@ -45,11 +45,11 @@ require_once dirname(__FILE__).'/../../../admin/models/projects.php';
  * @package    ComTimeclockTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class ComTimeclockAdminModelProjectsTest extends JModelTest
+class ComTimeclockAdminModelProjectsTest extends JModelLegacyTest
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -248,19 +248,19 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     static public function dataGetUserProjects()
     {
         $data1 = new SimpleXMLElement(
-            dirname(__FILE__).DS."ProjectReturn01.xml",
+            dirname(__FILE__)."/ProjectReturn01.xml",
             null,
             true
         );
         $data2 = new SimpleXMLElement(
-            dirname(__FILE__).DS."ProjectReturn02.xml",
+            dirname(__FILE__)."/ProjectReturn02.xml",
             null,
             true
         );
 
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 5,
                 null,
                 null,
@@ -324,7 +324,7 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
         );
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 null,
                 null,
@@ -363,12 +363,12 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     {
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 2,
                 1,
             ),
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 0,
             ),
@@ -402,12 +402,12 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     {
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 5,
                 1,
             ),
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 0,
             ),
@@ -442,13 +442,13 @@ class ComTimeclockAdminModelProjectsTest extends JModelTest
     {
         return array(
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 5,
                 1,
                 1,
             ),
             array(
-                dirname(__FILE__).DS."ProjectDataSet01.xml",
+                dirname(__FILE__)."/ProjectDataSet01.xml",
                 1,
                 1,
                 0,

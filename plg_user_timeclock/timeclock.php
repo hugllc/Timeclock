@@ -10,7 +10,7 @@
  *
  * <pre>
  * mod_timeclockinfo is a Joomla! 1.5 module
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  * Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
  *
@@ -35,7 +35,7 @@
  * @package    Comtimeclock
  * @subpackage Com_timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @copyright  2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -43,12 +43,13 @@
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  *
  */
-defined('_JEXEC') or die('Restricted access');
+
+ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.utilities.date');
 jimport('joomla.form.form');
-JForm::addFieldPath(JPATH_COMPONENT.DS.'..'.DS.'com_timeclock'.DS.'models'.DS.'fields');
+JForm::addFieldPath(JPATH_COMPONENT.'/../com_timeclock/models/fields');
 if (!class_exists("TimeclockHelper")) {
-    include_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_timeclock'.DS.'helpers'.DS.'timeclock.php';
+    include_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 }
 /**
 * This is a plugin to display timeclock user information in the user screen
@@ -57,7 +58,7 @@ if (!class_exists("TimeclockHelper")) {
 * @package    Comtimeclock
 * @subpackage Com_timeclock
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+* @copyright  2014 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
@@ -72,7 +73,7 @@ class plgUserTimeclock extends JPlugin
     *
     * @return boolean
     */
-    function onContentPrepareData($context, $data)
+    public function onContentPrepareData($context, $data)
     {
         // Check we are manipulating a valid form.
         if (!in_array($context, array('com_users.timeclock','com_users.user', 'com_users.registration', 'com_admin.timeclock'))) {
@@ -142,7 +143,7 @@ class plgUserTimeclock extends JPlugin
     static protected function decodeArrays(&$data)
     {
         foreach (array_keys($data) as $key) {
-            if (substr($data[$key], 0, 5) === "array") {
+            if (isset($data[$key]) && (substr($data[$key], 0, 5) === "array")) {
                 self::_decodeArray($key, $data);
             }
         }
@@ -231,8 +232,10 @@ class plgUserTimeclock extends JPlugin
     protected function removeProjects($id, &$data)
     {
         $model = TimeclockHelper::getModel('projects');
-        foreach ((array)$data['removeProject'] as $proj) {
-            $model->removeOneUser((int)$proj, (int)$id);
+        if (isset($data['removeProject'])) {
+            foreach ((array)$data['removeProject'] as $proj) {
+                $model->removeOneUser((int)$proj, (int)$id);
+            }
         }
         unset($data['removeProject']);
     }
@@ -247,8 +250,10 @@ class plgUserTimeclock extends JPlugin
     protected function addProjects($id, &$data)
     {
         $model = TimeclockHelper::getModel('projects');
-        foreach ((array)$data['addProject'] as $proj) {
-            $model->addOneUser((int)$proj, (int)$id);
+        if (isset($data['addProject'])) {
+            foreach ((array)$data['addProject'] as $proj) {
+                $model->addOneUser((int)$proj, (int)$id);
+            }
         }
         unset($data['addProject']);
     }
@@ -262,7 +267,7 @@ class plgUserTimeclock extends JPlugin
     */
     protected function addUserProjects($id, &$data)
     {
-        if (!empty($data['addProjFromUser'])) {
+        if (isset($data['addProjFromUser']) && !empty($data['addProjFromUser'])) {
             $model = TimeclockHelper::getModel('projects');
             $projects = $model->getUserProjectIds($data['addProjFromUser']);
             foreach ((array)$projects as $proj) {
@@ -399,7 +404,7 @@ class plgUserTimeclock extends JPlugin
     *
     * @return boolean
     */
-    function onContentPrepareForm($form, $data)
+    public function onContentPrepareForm($form, $data)
     {
         // Load user_timeclock plugin language
         $lang = JFactory::getLanguage();
@@ -519,7 +524,7 @@ class plgUserTimeclock extends JPlugin
         return true;
     }
 
-    function onUserAfterSave($data, $isNew, $result, $error)
+    public function onUserAfterSave($data, $isNew, $result, $error)
     {
         $userId    = JArrayHelper::getValue($data, 'id', 0, 'int');
 
@@ -532,7 +537,7 @@ class plgUserTimeclock extends JPlugin
                 foreach (array("startDate", "endDate") as $date) {
                     if (!empty($data['timeclock'][$date])) {
                         $jdate = new JDate($data['timeclock'][$date]);
-                        $data['timeclock'][$date] = $jdate->toFormat('%Y-%m-%d');
+                        $data['timeclock'][$date] = $jdate->format('Y-m-d');
                     }
                 }
                 // Do the stuff not related to this table
@@ -540,8 +545,12 @@ class plgUserTimeclock extends JPlugin
                 $this->addUserProjects($userId, $data['timeclock']);
                 $this->removeProjects($userId, $data['timeclock']);
                 // get the history before it is encoded
-                $history = $data['timeclock']['history'];
-                unset($data['timeclock']['history']);
+                if (isset($data['timeclock']['history'])) {
+                    $history = $data['timeclock']['history'];
+                    unset($data['timeclock']['history']);
+                } else {
+                    $history = array();
+                }
                 // Encode the arrays
                 $this->encodeArrays($data['timeclock']);
                 // Now change the history
@@ -592,7 +601,7 @@ class plgUserTimeclock extends JPlugin
      * @param    boolean        $success    True if user was succesfully stored in the database
      * @param    string        $msg        Message
      */
-    function onUserAfterDelete($user, $success, $msg)
+    public function onUserAfterDelete($user, $success, $msg)
     {
         if (!$success) {
             return false;
@@ -639,18 +648,21 @@ class plgUserTimeclock extends JPlugin
         $date = new JDate();
         $old = $this->getAllParams($userId, "admin");
         $changeDates = array();
+        if (!isset($history['effectiveDateSet'])) {
+            $history['effectiveDateSet'] = array();
+        }
         foreach((array)$history['effectiveDateSet'] as $d => $v) {
             if ((bool)$v && !empty($history['effectiveDate'][$d])) {
                 $changeDates[$d] = $history['effectiveDate'][$d];
-                $data["history_effectiveDateChange_".$date->toMySql()] = $d;
-                $data["history_timestamps_".$date->toMySql()] = $id;
+                $data["history_effectiveDateChange_".$date->toSql()] = $d;
+                $data["history_timestamps_".$date->toSql()] = $id;
             }
         }
         foreach ($old as $row) {
             $key = substr($row[0], 16);
             $vals = explode("_", $key);
             if ($vals[0] === "history") {
-                if (isset($changeDates[$vals[2]])) {
+                if (isset($vals[2]) && isset($changeDates[$vals[2]])) {
                     $vals[2] = $changeDates[$vals[2]];
                     $key = implode("_", $vals);
                 }
@@ -663,8 +675,8 @@ class plgUserTimeclock extends JPlugin
                 $pkey = $key;
             }
             if (($data[$key] != $row[1]) && (substr($data[$key], 0, 5) !== "array")) {
-                $data["history_".$pkey."_".$date->toMySql()] = $row[1];
-                $data["history_timestamps_".$date->toMySql()] = $id;
+                $data["history_".$pkey."_".$date->toSql()] = $row[1];
+                $data["history_timestamps_".$date->toSql()] = $id;
                 $data["history"] = "array()";
             }
         }

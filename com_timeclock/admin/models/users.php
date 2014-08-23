@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -38,10 +38,10 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-$base      = dirname(JApplicationHelper::getPath("front", "com_timeclock"));
-$adminbase = dirname(JApplicationHelper::getPath("admin", "com_timeclock"));
+$base      = JPATH_SITE."/components/com_timeclock";
+$adminbase = JPATH_ADMINISTRATOR."/components/com_timeclock";
 
-require_once $base.DS.'models'.DS.'timeclock.php';
+require_once $base.'/models/timeclock.php';
 
 /**
  * ComTimeclock model
@@ -50,11 +50,11 @@ require_once $base.DS.'models'.DS.'timeclock.php';
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelUsers extends JModel
+class TimeclockAdminModelUsers extends JModelLegacy
 {
     /** The ID to load */
     private $_id = -1;
@@ -68,7 +68,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return    void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -82,7 +82,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return    void
      */
-    function setId($id)
+    public function setId($id)
     {
         $this->_id      = $id;
     }
@@ -92,7 +92,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return string
      */
-    function &getData()
+    public function &getData()
     {
         $row = $this->getTable("TimeclockPrefs");
         $id = is_int($this->_id) ? $this->_id : $this->_id[0];
@@ -110,7 +110,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return string
      */
-    function getUsers($where = "", $limitstart=null, $limit=null, $orderby = "")
+    public function getUsers($where = "", $limitstart=null, $limit=null, $orderby = "")
     {
         $key = (string)$limitstart.$limit;
         $query = $this->_allQuery." "
@@ -133,7 +133,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return string
      */
-    function countUsers($where="")
+    public function countUsers($where="")
     {
         $query = $this->_allQuery." ".$where;
         return $this->_getListCount($query);
@@ -146,9 +146,9 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return bool
      */
-    function publish($publish)
+    public function publish($publish)
     {
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $user_id = $user->get("id");
         $table = $this->getTable("TimeclockPrefs");
         $id = is_array($this->_id) ? $this->_id : array($this->_id);
@@ -162,7 +162,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return bool
      */
-    function checkin($oid)
+    public function checkin($oid)
     {
         $table = $this->getTable("TimeclockPrefs");
         return $table->checkin($oid);
@@ -176,7 +176,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return bool
      */
-    function addproject($id = array(), $user_id = 0)
+    public function addproject($id = array(), $user_id = 0)
     {
         $row = $this->getTable("TimeclockUsers");
 
@@ -221,7 +221,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return bool
      */
-    function removeproject($projid, $user_id)
+    public function removeproject($projid, $user_id)
     {
         $this->store();
 
@@ -255,7 +255,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return bool
      */
-    function checkout($who, $oid)
+    public function checkout($who, $oid)
     {
         $table = $this->getTable("TimeclockPrefs");
         return $table->checkout($who, $oid);
@@ -268,10 +268,10 @@ class TimeclockAdminModelUsers extends JModel
      * @access    public
      * @return    boolean    True on success
      */
-    function store()
+    public function store()
     {
         /*
-        $row =& $this->getTable("TimeclockPrefs");
+        $row = $this->getTable("TimeclockPrefs");
         $data = JRequest::get('post');
         if (empty($data["id"])) {
             return false;
@@ -320,7 +320,7 @@ class TimeclockAdminModelUsers extends JModel
      */
     private function _checkHistory(&$prefs, &$data)
     {
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $id = $user->get("name");
         if (!is_array($data["effectiveDateSet"])) {
             return;
@@ -387,7 +387,7 @@ class TimeclockAdminModelUsers extends JModel
     {
         // Load the new data
         $timestamp = date("Y-m-d H:i:s");
-        $user =& JFactory::getUser();
+        $user = JFactory::getUser();
         $id = $user->get("name");
         foreach ($data as $f => $v) {
             if (substr($f, 0, 6) == "") {
@@ -417,7 +417,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function getUserProjects($oid, $limitstart = null, $limit = null)
+    public function getUserProjects($oid, $limitstart = null, $limit = null)
     {
         $query = "select * from #__timeclock_users as u
                   LEFT JOIN #__timeclock_projects as p on u.id = p.id
@@ -443,7 +443,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function getUserProjectIds($oid, $limitstart = null, $limit = null)
+    public function getUserProjectIds($oid, $limitstart = null, $limit = null)
     {
         $projects = $this->getUserProjects($oid, $limitstart, $limit);
         foreach ($projects as $p) {
@@ -460,7 +460,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function getOptions($where, $text = "None", $ignore = array())
+    public function getOptions($where, $text = "None", $ignore = array())
     {
         if (!is_null($text)) {
             $ret = array(JHTML::_("select.option", 0, $text));
@@ -490,7 +490,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function getPTO($oid, $date=null)
+    public function getPTO($oid, $date=null)
     {
         $pto  = $this->_getPTO($oid, $date);
         $pto += $this->_getPTOCarryOver($oid, $date);
@@ -505,7 +505,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function _getPTO($oid, $date=null)
+    public function _getPTO($oid, $date=null)
     {
         if (empty($date)) {
             $date = date("Y-m-d");
@@ -540,7 +540,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function _getPTOCarryOver($oid, $date=null)
+    public function _getPTOCarryOver($oid, $date=null)
     {
         if (empty($date)) {
             $date = date("Y-m-d");
@@ -579,7 +579,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function _getPTODonation($oid, $date=null)
+    public function _getPTODonation($oid, $date=null)
     {
         if (empty($date)) {
             $date = date("Y-m-d");
@@ -596,7 +596,7 @@ class TimeclockAdminModelUsers extends JModel
     *
     * @return array
     */
-    function _getPTOWeek($oid, $date=null)
+    public function _getPTOWeek($oid, $date=null)
     {
         $accTime = (int)TimeclockHelper::getParam("ptoAccrualTime");
         $date = strtotime($date);
@@ -617,7 +617,7 @@ class TimeclockAdminModelUsers extends JModel
     *
     * @return array
     */
-    function _getPTOMonth($oid, $date=null)
+    public function _getPTOMonth($oid, $date=null)
     {
         $accTime = (int)TimeclockHelper::getParam("ptoAccrualTime");
         $date = strtotime($date);
@@ -639,7 +639,7 @@ class TimeclockAdminModelUsers extends JModel
     *
     * @return array
     */
-    function _getPTOYear($oid, $date=null)
+    public function _getPTOYear($oid, $date=null)
     {
         $date = strtotime($date);
         $time = mktime(6, 0, 0, 1, 1, date("Y", $date));
@@ -656,7 +656,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return int
      */
-    function getPTOAccrualRate($oid, $date)
+    public function getPTOAccrualRate($oid, $date)
     {
         static $rate;
         $key = $oid.$date;
@@ -691,7 +691,7 @@ class TimeclockAdminModelUsers extends JModel
      *
      * @return array
      */
-    function getServiceLength($oid, $date=null)
+    public function getServiceLength($oid, $date=null)
     {
         if (empty($date)) {
             $date = time();

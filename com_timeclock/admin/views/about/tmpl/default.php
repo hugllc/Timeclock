@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -64,9 +64,9 @@ modified to fit my needs.  Most notably com_content and com_poll.  This code is 
 </ul>
 </p>
 <h2 style="clear:both;">License</h2>
-<a href="<?php echo COM_TIMECLOCK_FRONT.DS."LICENSE.TXT";?>">License File</a>
+<a href="../components/com_timeclock/LICENSE.TXT">License File</a>
 <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a> is a Joomla! 1.6 component<br />
-Copyright &copy; 2008-2009, 2011 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a><br />
+Copyright &copy; 2014 <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a><br />
 Portions &copy; Open Source Matters
 <p>
 This program is free software; you can redistribute it and/or

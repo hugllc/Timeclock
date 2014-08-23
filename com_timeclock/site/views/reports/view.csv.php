@@ -6,7 +6,7 @@
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2008-2009, 2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -45,7 +45,7 @@ require_once "view.php";
  * @package    ComTimeclock
  * @subpackage Com_Timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
+ * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
@@ -64,7 +64,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function display($tpl = null)
+    public function display($tpl = null)
     {
         parent::pdisplay($tpl);
         $layout        = $this->getLayout();
@@ -89,7 +89,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function reportCSV()
+    public function reportCSV()
     {
         $this->dateCSV();
         $this->reportCSVHeader();
@@ -129,7 +129,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function payrollCSV()
+    public function payrollCSV()
     {
         $this->dateCSV();
         $this->payrollCSVHeader();
@@ -142,7 +142,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
                     if (empty($time[$w][$type]["hours"])) {
                         $hours = $this->cell_fill;
                     } else {
-                        $hours = $time[$w][$type]["hours"];
+                        $hours = (float)$time[$w][$type]["hours"];
                     }
                     print $this->quoteCSV($hours);
                     print $this->separator;
@@ -158,7 +158,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
             if (empty($this->totals["user"][$id])) {
                 $hours = 0;
             } else {
-                $hours = $this->totals["user"][$id];
+                $hours = (float)$this->totals["user"][$id];
             }
             print $this->quoteCSV($hours);
             print $this->lineSep;
@@ -168,9 +168,9 @@ class TimeclockViewReports extends TimeclockViewReportsBase
         for ($w = 0; $w < $this->weeks; $w++) {
             foreach (array("PROJECT", "PTO", "HOLIDAY") as $type) {
                 if (empty($this->totals["type"][$w][$type])) {
-                    $hours = 0;
+                    $hours = 0.0;
                 } else {
-                    $hours = $this->totals["type"][$w][$type];
+                    $hours = (float)$this->totals["type"][$w][$type];
                 }
                 print $this->quoteCSV($hours);
                 print $this->separator;
@@ -183,7 +183,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
             print $this->quoteCSV($hours);
             print $this->separator;
         }
-        $hours = (empty($this->totals["total"])) ? 0 : $this->totals["total"];
+        $hours = (empty($this->totals["total"])) ? 0.0 : $this->totals["total"];
         print $this->quoteCSV($hours);
         print $this->lineSep;
 
@@ -194,7 +194,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function payrollCSVHeader()
+    public function payrollCSVHeader()
     {
         print $this->quoteCSV("Project");
         print $this->separator;
@@ -217,7 +217,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function hoursCSV()
+    public function hoursCSV()
     {
         $this->dateCSV();
         $this->hoursCSVHeader();
@@ -261,7 +261,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function hoursCSVHeader()
+    public function hoursCSVHeader()
     {
         print $this->quoteCSV("User");
         print $this->separator;
@@ -282,7 +282,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function dateCSV()
+    public function dateCSV()
     {
         print $this->quoteCSV($this->period["start"]);
         print $this->separator;
@@ -297,7 +297,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function reportCSVHeader()
+    public function reportCSVHeader()
     {
         print $this->quoteCSV("Project");
         print $this->separator;
@@ -314,7 +314,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function wcompCSV()
+    public function wcompCSV()
     {
         $this->dateCSV();
         $this->wcompCSVHeader();
@@ -351,7 +351,7 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return null
      */
-    function wcompCSVHeader()
+    public function wcompCSVHeader()
     {
         print $this->quoteCSV("User");
         print $this->separator;
@@ -370,12 +370,16 @@ class TimeclockViewReports extends TimeclockViewReportsBase
      *
      * @return string
      */
-    function quoteCSV($str)
+    public function quoteCSV($str)
     {
         if (is_string($str)) {
-            $str = str_replace(" ", "", $str);
+            //$str = str_replace(" ", "", $str);
+            $str = trim($str);
             $str = htmlspecialchars_decode($str);
-            return '"'.JText::_($str).'"';
+            $str = str_replace("&nbsp;", "", $str);
+            if ($str !== "") {
+                return '"'.JText::_($str).'"';
+            }
         }
         return $str;
     }
