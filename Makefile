@@ -17,18 +17,29 @@ test: test-php
 test-php:
 	mkdir -p Documentation/test
 	${PHPUNIT} --coverage-html Documentation/test/codecoverage/ \
-                --log-junit Documentation/test/log.xml \
-                --testdox-html Documentation/test/testdox.html \
+		--log-junit Documentation/test/log.xml \
+		--testdox-html Documentation/test/testdox.html \
 		ComTimeclock/test/ |tee Documentation/test/testoutput.txt
 
 
 test-unit: tests/joomla
 	mkdir -p Documentation/test
 	${PHPUNIT} --coverage-html Documentation/test/codecoverage/ \
-                --log-junit Documentation/test/log.xml \
+		--log-junit Documentation/test/log.xml \
                 --testdox-html Documentation/test/testdox.html \
                 tests/unit/suite |tee Documentation/test/testoutput.txt
 
+package:
+	rm -Rf build/pkg_timeclock/ rel/pkg_timeclock.zip
+	mkdir -p build/pkg_timeclock/packages
+	cp pkg_timeclock.xml build/pkg_timeclock/
+	zip -r build/pkg_timeclock/packages/com_timeclock.zip com_timeclock
+	zip -r build/pkg_timeclock/packages/plg_user_timeclock.zip plg_user_timeclock
+	zip -r build/pkg_timeclock/packages/mod_timeclockinfo.zip mod_timeclockinfo
+	mkdir -p rel/
+	cd build; zip -r ../rel/pkg_timeclock.zip pkg_timeclock
+	rm -Rf build/pkg_timeclock/
+	
 doc: doc-php
 
 doc-php: doc-ComTimeclock

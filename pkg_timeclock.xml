@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="3.3">
+    <name>Timeclock Package</name>
+    <author>Scott Price</author>
+    <authorEmail>prices@hugllc.com</authorEmail>
+    <creationDate>2014 08 23</creationDate>
+    <packagename>timeclock</packagename>
+    <version>0.9.0</version>
+    <url>http://www.hugllc.com/</url>
+    <packager>Scott Price</packager>
+    <packagerurl>http://www.hugllc.com/</packagerurl>
+    <description>Package to install Timeclock system</description>
+    <update>http://downloads.hugllc.com/Joomla/Timeclock/ComTimeclock-update.xml</update>
+    <files folder="packages">
+        <file type="component" id="timeclock" >com_timeclock.zip</file>
+        <file type="module" id="timeclockinfo" >mod_timeclockinfo.zip</file>
+        <file type="plugin" id="timeclock" group="user">plg_user_timeclock.zip</file>
+    </files>
+</extension>

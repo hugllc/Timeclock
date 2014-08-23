@@ -62,8 +62,6 @@ class com_timeclockInstallerScript
     */
     public function install($parent)
     {
-        $this->installModule("mod_timeclockinfo");
-        $this->installPlugin("user", "plg_user_timeclock");
         $parent->getParent()->setRedirectURL('index.php?option=com_timeclock&view=about');
     }
     /**
@@ -75,8 +73,6 @@ class com_timeclockInstallerScript
     */
     public function uninstall($parent)
     {
-        $this->uninstallModule("mod_timeclockinfo");
-        $this->uninstallPlugin("user", "plg_user_timeclock");
     }
     /**
     * This updates everthing
@@ -87,8 +83,6 @@ class com_timeclockInstallerScript
     */
     public function update($parent)
     {
-        $this->installModule("mod_timeclockinfo");
-        $this->installPlugin("user", "plg_user_timeclock");
     }
     /**
     * This runs before install/update/uninstall
@@ -145,123 +139,6 @@ class com_timeclockInstallerScript
             }
         }
 
-    }
-
-    /**
-    * This runs after install/update/uninstall
-    *
-    * @param string $name The name of the module to install
-    *
-    * @return null
-    */
-    public function installModule($name)
-    {
-        $basedir = dirname(__FILE__).DS."admin".DS."modules";
-        $inst = new JInstaller();
-        $this->uninstallModule($name);
-        $ret = $inst->install($basedir.DS.$name);
-        if ($ret) {
-            $mod = $this->getExtensionId($name, "module");
-            $ret = $this->protectExtension($mod, 1);
-        }
-        return $ret;
-    }
-
-    /**
-    * This runs after install/update/uninstall
-    *
-    * @param string $name The name of the module to install
-    *
-    * @return null
-    */
-    public function uninstallModule($name)
-    {
-        $mod = $this->getExtensionId($name, "module");
-        if ($this->protectExtension($mod, 0)) {
-            $inst = new JInstaller();
-            return $inst->uninstall('module', $mod);
-        }
-        return false;
-
-    }
-
-    /**
-    * This runs after install/update/uninstall
-    *
-    * @param string $type The type of plugin to use
-    * @param string $name The name of the module to install
-    *
-    * @return null
-    */
-    public function installPlugin($type, $name)
-    {
-        $basedir = dirname(__FILE__).DS."admin".DS."plugins";
-        $this->uninstallPlugin($name, $type);
-        $inst = new JInstaller();
-        $ret = $inst->install($basedir.DS.$name);
-        if ($ret) {
-            $plug = $this->getExtensionId($name, "plugin", $type);
-            $ret = $this->protectExtension($plug, 1);
-        }
-        return $ret;
-    }
-    /**
-    * This runs after install/update/uninstall
-    *
-    * @param string $type The type of plugin to use
-    * @param string $name The name of the module to install
-    *
-    * @return null
-    */
-    public function uninstallPlugin($type, $name)
-    {
-        $plug = $this->getExtensionId($name, "plugin", $type);
-        if ($this->protectExtension($plug, 0)) {
-            $inst = new JInstaller();
-            return $inst->uninstall('plugin', $plug);
-        }
-        return true;
-    }
-
-    /**
-    * This runs after install/update/uninstall
-    *
-    * @param string $name   The name of the module to install
-    * @param string $type   The type of plugin to use
-    * @param string $folder The folder to find the extension in
-    *
-    * @return null
-    */
-    public function getExtensionId($name, $type = null, $folder=null)
-    {
-        $db = &JFactory::getDBO ();
-        $query = "SELECT extension_id FROM #__extensions WHERE name='$name' AND type='$type'";
-        if (!is_null($folder)) {
-            $query .= " AND folder='$folder'";
-        }
-        $db->setQuery($query);
-        $plug = $db->loadObject();
-        return $plug->extension_id;
-
-    }
-    /**
-    * This runs after install/update/uninstall
-    *
-    * @param int $id The extension_id to protect
-    *
-    * @return null
-    */
-    public function protectExtension($id, $value=1)
-    {
-        $row = JTable::getInstance('extension');
-        if ($ret = $row->load($id)) {
-            if (!empty($row->extension_id)) {
-                $row->enabled = (int)$value;
-                $row->protected = (int)$value;
-                return $row->store();
-            }
-        }
-        return false;
     }
 
 }
