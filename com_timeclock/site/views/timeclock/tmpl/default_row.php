@@ -44,7 +44,6 @@ defined('_JEXEC') or die('Restricted access');
 $rowtotal = 0;
 $dtotal = 0;
 $d = 0;
-$url = isset($url) ? $url : "";
 foreach ($this->period["dates"] as $key => $uDate) {
     $hours               = isset($this->hours[$this->proj->id][$key]) ? $this->hours[$this->proj->id][$key]['hours'] : 0;
     $rowtotal           += $hours;
