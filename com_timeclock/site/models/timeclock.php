@@ -287,7 +287,7 @@ class TimeclockModelTimeclock extends JModelLegacy
      *
      * @return string
      */
-    protected function sqlQuery($where1, $where2=null)
+    protected function sqlQuery($where1, $where2=null, $id = null)
     {
         if (empty($where2)) {
             $where2 = $where1;
@@ -303,11 +303,13 @@ class TimeclockModelTimeclock extends JModelLegacy
             t.created_by as created_by, p.name as project_name, p.type as type,
             u.name as author, pc.name as category_name, c.company as company_name,
             c.name as contact_name, t.project_id as project_id, 
-            t.created_by as user_id, p.parent_id as category_id
+            u.id as user_id, p.parent_id as category_id
             FROM      #__timeclock_timesheet as t
             LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-            LEFT JOIN #__timeclock_users as j on (j.id = p.id OR p.type != 'HOLIDAY')
-            LEFT JOIN #__users as u on j.user_id = u.id
+            LEFT JOIN #__timeclock_users as j on (j.id = p.id "
+            .((!is_null($id)) ? " AND j.user_id = $id " : " ")
+            .")
+            LEFT JOIN #__users as u on ((j.user_id = u.id AND p.type = 'HOLIDAY') OR (t.created_by = u.id AND p.type <> 'HOLIDAY'))
             LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
             LEFT JOIN #__timeclock_customers as c on p.customer = c.id
             WHERE
@@ -351,7 +353,7 @@ class TimeclockModelTimeclock extends JModelLegacy
             );
             $where = implode(" AND ", $where);
             $holidaywhere = implode(" AND ", $holidaywhere);
-            $query = $this->sqlQuery($where, $holidaywhere);
+            $query = $this->sqlQuery($where, $holidaywhere, $this->_id);
             $this->data = $this->_getList($query);
             if (!is_array($this->data)) {
                 return array();
@@ -887,7 +889,7 @@ class TimeclockModelTimeclock extends JModelLegacy
             }
             // Remove white space from the notes
             $data["notes"] = trim($data["notes"]);
-            $data["id"] = (int) $data["id"];
+            $data["id"] = isset($data["id"]) ? (int)$data["id"] : null;
             $data["created_by"] = $user->get("id");
             $data["worked"] = $date;
             if (empty($data["created"])) {

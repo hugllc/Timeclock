@@ -100,11 +100,20 @@ class TimeclockModelReports extends TimeclockModelTimeclock
             if (!is_array($this->data[$key])) {
                 return array();
             }
+            $eDates = array();
             foreach ($this->data[$key] as $k => $d) {
-                $endDate = TimeclockHelper::getUserParam("endDate", $d->user_id);
-                if (empty($endDate)
-                    || (self::compareDates($endDate, $d->worked) > 0)
-                ) {
+                if (!isset($eDates[$d->user_id])) {
+                    $eDates[$d->user_id] = array(
+                        "start" => self::dateUnixSql(TimeclockHelper::getUserParam("startDate", $d->user_id)),
+                        "end" => self::dateUnixSql(TimeclockHelper::getUserParam("endDate", $d->user_id)),
+                    );
+                }
+                $good = self::checkEmploymentDates(
+                    $eDates[$d->user_id]["start"], 
+                    $eDates[$d->user_id]["end"], 
+                    self::dateUnixSql($d->worked)
+                );
+                if ($good) {
                     if ($d->type == "HOLIDAY") {
                         $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
                         $this->data[$key][$k]->hours = $d->hours * $hperc;
