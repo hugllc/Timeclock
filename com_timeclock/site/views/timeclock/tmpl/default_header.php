@@ -66,6 +66,8 @@ foreach ($this->period["dates"] as $key => $uDate) :
                 print '<strong>'.$tipTitle.'</strong><br />'.$tip.'">';
                 if ($url != "") {
                     print '<a href="'.$url.'&tmpl=component" class="modal"> '.$date->format($headerDateFormat).' </a>';
+                } else {
+                    print $date->format($headerDateFormat);
                 }
                 print '</span>';
                 //print JHTML::_('tooltip', $tip, $tipTitle, '', $date->format($headerDateFormat), $url); 
