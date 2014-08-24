@@ -248,12 +248,11 @@ class TimeclockAdminControllerProjects extends JControllerLegacy
         }
         $model = $this->getModel("Projects");
 
-        if ($model->store()) {
+        if ($id = $model->store()) {
             $msg = JText::_("COM_TIMECLOCK_PROJECT_SAVED");
         } else {
             $msg = JText::_("COM_TIMECLOCK_PROJECT_FAILED");
         }
-        $id = JRequest::getVar('id', 0, '', 'int');
         $model->checkin($id);
         $this->reset($msg);
 
