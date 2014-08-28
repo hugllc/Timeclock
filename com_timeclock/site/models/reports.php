@@ -96,7 +96,6 @@ class TimeclockModelReports extends TimeclockModelTimeclock
         $key = base64_encode($where.$orderby);
         if (empty($this->data[$key])) {
             $query = $this->sqlQuery($where).$orderby;
-
             $this->data[$key] = $this->_getList($query, $limitstart, $limit);
 
             if (!is_array($this->data[$key])) {
@@ -106,7 +105,7 @@ class TimeclockModelReports extends TimeclockModelTimeclock
             foreach ($this->data[$key] as $k => $d) {
                 // This fixes someone deleted from the user table
                 $d->user_id = (is_null($d->user_id)) ? $d->created_by : $d->user_id;
-                if ($this->_checkUserDates($d->user_id, $d->worked) {
+                if ($this->_checkUserDates($d->user_id, $d->worked)) {
                     if ($d->type == "HOLIDAY") {
                         $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
                         $this->data[$key][$k]->hours = $d->hours * $hperc;

@@ -306,10 +306,9 @@ class TimeclockModelTimeclock extends JModelLegacy
             u.id as user_id, p.parent_id as category_id
             FROM      #__timeclock_timesheet as t
             LEFT JOIN #__timeclock_projects as p on t.project_id = p.id
-            LEFT JOIN #__timeclock_users as j on (j.id = p.id "
-            .((!is_null($id)) ? " AND j.user_id = $id " : " ")
-            .")
-            LEFT JOIN #__users as u on ((j.user_id = u.id AND p.type = 'HOLIDAY') OR (t.created_by = u.id AND p.type <> 'HOLIDAY'))
+            LEFT JOIN #__timeclock_users as j on (j.id = p.id 
+                 AND (j.user_id = t.created_by OR p.type = 'HOLIDAY' OR j.user_id IS NULL))
+            LEFT JOIN #__users as u on ((j.user_id = u.id AND p.type = 'HOLIDAY') OR (t.created_by = u.id AND (p.type = 'PROJECT' OR p.type = 'PTO')))
             LEFT JOIN #__timeclock_projects as pc on p.parent_id = pc.id
             LEFT JOIN #__timeclock_customers as c on p.customer = c.id
             WHERE
