@@ -373,7 +373,6 @@ class TimeclockViewReports extends TimeclockViewReportsBase
     public function quoteCSV($str)
     {
         if (is_string($str)) {
-            //$str = str_replace(" ", "", $str);
             $str = trim($str);
             $str = htmlspecialchars_decode($str);
             $str = str_replace("&nbsp;", "", $str);
