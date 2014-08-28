@@ -54,6 +54,8 @@ require_once "timeclock.php";
  */
 class TimeclockModelReports extends TimeclockModelTimeclock
 {
+    /** @var This is our cache of user data */
+    private $_userCache = array();
     /** @var string The start date in MySQL format */
     protected $period = array(
         "type" => "month",
@@ -102,18 +104,9 @@ class TimeclockModelReports extends TimeclockModelTimeclock
             }
             $eDates = array();
             foreach ($this->data[$key] as $k => $d) {
-                if (!isset($eDates[$d->user_id])) {
-                    $eDates[$d->user_id] = array(
-                        "start" => self::dateUnixSql(TimeclockHelper::getUserParam("startDate", $d->user_id)),
-                        "end" => self::dateUnixSql(TimeclockHelper::getUserParam("endDate", $d->user_id)),
-                    );
-                }
-                $good = self::checkEmploymentDates(
-                    $eDates[$d->user_id]["start"], 
-                    $eDates[$d->user_id]["end"], 
-                    self::dateUnixSql($d->worked)
-                );
-                if ($good) {
+                // This fixes someone deleted from the user table
+                $d->user_id = (is_null($d->user_id)) ? $d->created_by : $d->user_id;
+                if ($this->_checkUserDates($d->user_id, $d->worked) {
                     if ($d->type == "HOLIDAY") {
                         $hperc = $this->getHolidayPerc($d->user_id, $d->worked);
                         $this->data[$key][$k]->hours = $d->hours * $hperc;
@@ -127,6 +120,27 @@ class TimeclockModelReports extends TimeclockModelTimeclock
 
         }
         return $this->data[$key];
+    }
+    /**
+    * Method to check employment dates for a user
+    *
+    * @param int $user_id User ID of the user to check
+    * @param int $date    The date worked
+    *
+    * @return bool True if the date is within the users range of employment
+    */
+    private function _checkUserDates($user_id, $date) {
+        if (!isset($this->_userCache[$user_id])) {
+            $this->_userCache[$user_id] = array(
+                "start" => self::dateUnixSql(TimeclockHelper::getUserParam("startDate", $user_id)),
+                "end" => self::dateUnixSql(TimeclockHelper::getUserParam("endDate", $user_id)),
+            );
+        }
+        return self::checkEmploymentDates(
+            $this->_userCache[$user_id]["start"], 
+            $this->_userCache[$user_id]["end"], 
+            self::dateUnixSql($date)
+        );
     }
     /**
      * Method to display the view

@@ -57,6 +57,7 @@ foreach ($this->period["dates"] as $key => $uDate) :
         $url = "";
         $tipTitle = JText::_("COM_TIMECLOCK_NO_HOURS");
         $tip = JText::_("COM_TIMECLOCK_NO_HOURS_BEFORE_START");
+        $class .= " nohours ";
     };
     $date = JFactory::getDate($uDate);
     ?>
