@@ -38,6 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.tooltip');
 JHTML::_('behavior.modal');
+JHTML::_('behavior.calendar');
 JHTML::_('bootstrap.framework');
 JHTML::_('jquery.framework');
 JHTML::_('behavior.formvalidation');
@@ -66,6 +67,7 @@ $document->setTitle(
 JHTML::_('tabs.start', "sliders");
 $initPanes = array();
 JHTML::script(Juri::base()."components/com_timeclock/views/timeclock/tmpl/category.js");
+JHTML::script(Juri::base()."components/com_timeclock/views/timeclock/tmpl/addhours.js");
 ?>
 <div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">

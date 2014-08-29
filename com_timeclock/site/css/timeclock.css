@@ -89,3 +89,7 @@
 #timeclockTable .nohours {
     background: #FF0000;
 }
+.calendar {
+    z-index: 65560;
+    position: relative;
+}
