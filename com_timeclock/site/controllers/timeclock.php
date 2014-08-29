@@ -177,7 +177,7 @@ class TimeclockControllerTimeclock extends TimeclockController
             }
             $url .= "referer=".urlencode($referer);
         } else {
-            $url = $referer;
+            $url = $referer."#timeclocktop";
         }
         $this->setRedirect($url, $msg);
     }

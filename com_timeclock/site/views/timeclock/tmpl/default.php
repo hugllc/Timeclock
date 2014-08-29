@@ -71,7 +71,7 @@ JHTML::script(Juri::base()."components/com_timeclock/views/timeclock/tmpl/addhou
 ?>
 <div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
-    <div class="componentheading"><?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->get("name"));?></div>
+    <div class="componentheading"><a id="timeclocktop"><?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->get("name"));?></a></div>
     <?php print $this->loadTemplate("nextprev"); ?>
     <div id="dateheader" style="clear:both;">
         <strong>
