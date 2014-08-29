@@ -7,10 +7,18 @@ This is a time tracking component for Joomla 1.6+.
 ### Directory Structure
 This project is broken up into the following directories:
 
-- The ComTimeclock/ directory contains the component
+- The com_timeclock/ directory contains the component
+- The mod_timeclockinfo/ directory contains the info module
+- the plg_user_timeclock/ directory contains the user setup plugin
 
 ### Requirements
-Joomla must be installed for this to work.
+Installation:
+- PHP 5.3+
+- Joomla 3.1+
+
+Development:
+- phpunit
+- GNU Make
 
 ### Setup
 
@@ -23,6 +31,10 @@ This project uses phpunit to do unit testing.
 _The unit testing for this is currently broken, badly_
 
 ## Deploying
+
+The command to create the package is:
+
+ $ make package
 
 This gets put into tarballs, all ready for installation in Joomla.
 
