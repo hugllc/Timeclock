@@ -1,6 +1,6 @@
 # _Timeclock_
 
-This is a time tracking component for Joomla 1.6+.
+This is a time tracking component for Joomla 3.1+.
 
 ## Project Setup
 
@@ -12,11 +12,11 @@ This project is broken up into the following directories:
 - the plg_user_timeclock/ directory contains the user setup plugin
 
 ### Requirements
-Installation:
+#### Installation
 - PHP 5.3+
 - Joomla 3.1+
 
-Development:
+#### Development
 - phpunit
 - GNU Make
 
