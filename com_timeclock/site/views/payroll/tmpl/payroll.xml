@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="Payroll">
+        <message>
+            Shows the payroll information for this pay period.
+        </message>
+    </layout>
+    <state>
+        <name>Payroll</name>
+        <description>Shows payroll information.</description>
+    </state>
+</metadata>

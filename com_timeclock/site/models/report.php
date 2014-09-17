@@ -48,7 +48,7 @@ require_once __DIR__."/default.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
+class TimeclockModelsReport extends TimeclockModelsSiteDefault
 {    
     /** This is where we cache our projects */
     private $_projects = null;
@@ -249,18 +249,13 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
-        $usercutoff = TimeclockHelpersTimeclock::getUserParam("noTimeBefore", $user->id, $date);
-        $registry->set("payperiod.usercutoff", $usercutoff);
-
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
         foreach ($dates as $date => &$value) {
             $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
             $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
-            $uservalid = (TimeclockHelpersDate::compareDates($date, $usercutoff)  >= 0);
-            $value = $here && $valid && $uservalid;
+            $value = $here && $valid;
         }
         $registry->set("payperiod.dates", $dates);
-        
         
         $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
         $registry->set("holiday.perc", $this->_holiday_perc);
@@ -326,11 +321,6 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     protected function _buildWhere(&$query)
     { 
         $db = JFactory::getDBO();
-
-        $start = $this->getState("payperiod.start");
-        $end   = $this->getState("payperiod.end");
-        $query->where($db->quoteName("t.worked").">=".$db->quote($start));
-        $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
         
         $query->where(
             "((".$db->quoteName("t.user_id")."=".$db->quote($this->_user->id)." AND "

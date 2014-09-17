@@ -48,7 +48,7 @@ require_once __DIR__."/default.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
+class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
 {    
     /** This is where we cache our projects */
     private $_projects = null;
@@ -77,12 +77,27 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $this->listProjects();
         $return = array();
         foreach ($list as $row) {
-            $proj_id = (int)$row->project_id;
-            $cat_id  = (int)$row->cat_id;
-            $return[$proj_id] = isset($return[$proj_id]) ? $return[$proj_id] : array();
+            $user_id = (int)$row->user_id;
+            $return[$user_id] = isset($return[$user_id]) ? $return[$user_id] : array(
+                "user_id" => $user_id,
+                "name"    => $row->user,
+                "worked"  => 0,
+                "pto"     => 0,
+                "holiday" => 0,
+            );
             $this->checkTimesheet($row);
             $this->checkTimesheetProject($row);
-            $return[$proj_id][$row->worked] = $row;
+            switch ($row->type) {
+            case "HOLIDAY":
+                $return[$user_id]["holiday"] += $row->hours;
+                break;
+            case "PTO":
+                $return[$user_id]["pto"] += $row->hours;
+                break;
+            default:
+                $return[$user_id]["worked"] += $row->hours;
+                break;
+            }
         }
         return $return;
     }
@@ -249,18 +264,13 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
-        $usercutoff = TimeclockHelpersTimeclock::getUserParam("noTimeBefore", $user->id, $date);
-        $registry->set("payperiod.usercutoff", $usercutoff);
-
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
         foreach ($dates as $date => &$value) {
             $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
             $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
-            $uservalid = (TimeclockHelpersDate::compareDates($date, $usercutoff)  >= 0);
-            $value = $here && $valid && $uservalid;
+            $value = $here && $valid;
         }
         $registry->set("payperiod.dates", $dates);
-        
         
         $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
         $registry->set("holiday.perc", $this->_holiday_perc);
@@ -299,7 +309,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
-            as hours, t.worked, t.project_id, t.notes, t.user_id as user_id');
+            as hours, t.worked, t.project_id, t.notes, z.user_id as user_id');
         $query->from('#__timeclock_timesheet as t');
         $query->select('p.name as project, p.type as project_type, 
             p.description as project_description, p.parent_id as cat_id');
@@ -307,11 +317,9 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->select('q.name as cat_name, q.description as cat_description');
         $query->leftjoin('#__timeclock_projects as q on p.parent_id = q.project_id');
         $query->select('u.name as user');
-        $query->leftjoin('#__users as u on t.user_id = u.id');
-        $query->select('v.name as author');
-        $query->leftjoin('#__users as v on t.created_by = v.id');
         $query->leftjoin('#__timeclock_users as z on 
-            (z.user_id = '.$db->quote($this->_user->id).' AND t.project_id = z.project_id)');
+            (z.user_id IS NOT NULL AND t.project_id = z.project_id)');
+        $query->leftjoin('#__users as u on z.user_id = u.id');
         return $query;
     }
     /**
@@ -326,12 +334,12 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     protected function _buildWhere(&$query)
     { 
         $db = JFactory::getDBO();
-
         $start = $this->getState("payperiod.start");
         $end   = $this->getState("payperiod.end");
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
-        
+
+        /*
         $query->where(
             "((".$db->quoteName("t.user_id")."=".$db->quote($this->_user->id)." AND "
             .$db->quoteName("p.type")."<>'HOLIDAY') OR ("
@@ -344,6 +352,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         if (!empty($end)) {
             $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
         }
+        */
         return $query;
     }
     /**

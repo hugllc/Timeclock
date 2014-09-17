@@ -72,6 +72,11 @@ table.timesheet thead tr.header th {
     height: 4em;
     background-color: #CCC;
 }
+table.timesheet thead tr.subheader th {
+    height: 1em;
+    background-color: #CCC;
+}
+
 table.timesheet tfoot tr.header th {
     vertical-align: top;
     padding: 1px;
@@ -88,6 +93,10 @@ table.timesheet tr.subtotal th {
     padding: 1px;
     padding-right: 5px;
     text-align: right;
+}
+table.timesheet tr.subtotal td {
+    vertical-align: middle;
+    text-align: center;
 }
 table.timesheet tr.category th {
     background-color: #CCC;
