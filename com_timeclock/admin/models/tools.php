@@ -1,11 +1,11 @@
 <?php
 /**
- * This component is the user interface for the endpoints
+ * This component is for tracking tim
  *
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.6 component
+ * com_timeclock is a Joomla! 3.1 component
  * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -24,46 +24,31 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    GIT: $Id: 10047929d21a2fbd9c667b0a61cbd703279bcbc8 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
-/** Include the project stuff */
-$base      = JPATH_SITE."/components/com_timeclock";
-$adminbase = JPATH_ADMINISTRATOR."/components/com_timeclock";
-
-require_once $adminbase.'/tables/timeclockcustomers.php';
-require_once $adminbase.'/tables/timeclockprefs.php';
-require_once $adminbase.'/tables/timeclockprojects.php';
-require_once $adminbase.'/tables/timeclockusers.php';
-require_once $base.'/tables/timeclocktimesheet.php';
-
+ 
 /**
- * ComTimeclock model
+ * Description Here
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelTools extends JModelLegacy
+class TimeclockModelsTools extends JModelBase
 {
-    /** The ID to load */
-    private $_id = -1;
-    private $_allQuery = "SELECT c.*
-                      FROM #__timeclock_customers AS c ";
     /**
     * Constructor that retrieves the ID from the request
     *
@@ -73,7 +58,7 @@ class TimeclockAdminModelTools extends JModelLegacy
     {
         parent::__construct();
         $this->_customers = JTable::getInstance("TimeclockCustomers", "Table");
-        $this->_prefs = JTable::getInstance("TimeclockPrefs", "Table");
+        $this->_prefs = JTable::getInstance("TimeclockDepartments", "Table");
         $this->_projects = JTable::getInstance("TimeclockProjects", "Table");
         $this->_users = JTable::getInstance("TimeclockUsers", "Table");
         $this->_timesheet = JTable::getInstance("TimeclockTimesheet", "Table");
@@ -86,167 +71,13 @@ class TimeclockAdminModelTools extends JModelLegacy
     *
     * @return array The problem array
     */
-    public function convertPrefs()
+    public function setup()
     {
         $ret = array(
-            "System Preferences" => $this->_convertSysPrefs(),
-            "User Preferences" => $this->_convertUserPrefs(),
+            "PHPGraphLib" => $this->_setupPHPGraphLib(),
+            "PHPExcel" => $this->_setupPHPExcel(),
         );
         return $ret;
-    }
-    /**
-    * This function goes through and checks the prefs
-    *
-    * @return array The problem array
-    */
-    private function _convertSysPrefs()
-    {
-        $test = array(
-            "name" => "Converting System Prefs",
-            "result" => true,
-            "description" => "This converts the system preferences",
-        );
-        $component = JComponentHelper::getComponent("com_timeclock");
-        $row = JTable::getInstance('extension');
-        if ($row->load($component->id)) {
-            $table = $this->getTable("TimeclockPrefs");
-            $table->load(-1);
-            $row->set('params', json_encode($table->prefs));
-            $row->store();
-        } else {
-            $test["result"] = false;
-        }
-
-        return array($test);
-    }
-    /**
-    * This function goes through and checks the prefs
-    *
-    * @return array The problem array
-    */
-    private function _convertUserPrefs()
-    {
-        $ret = $this->_convertPrefsGetUsers();
-        foreach ((array)$ret as $row) {
-            $test[] = $this->_convertUserPref($row);
-        }
-        return $test;
-    }
-    /**
-    * This function goes through and checks the prefs
-    *
-    * @param array $user The user to convert
-    *
-    * @return array The problem array
-    */
-    private function _convertUserPref($user)
-    {
-        $test = array(
-            "name" => $user["name"],
-            "result" => true,
-            "description" => "",
-        );
-        $table = $this->getTable("TimeclockPrefs");
-        $table->load($user["id"]);
-        foreach((array)$table->prefs as $okey => $value) {
-            if (strpos($okey, "admin_") === 0) {
-                $key = str_replace("admin_", "", $okey);
-                $prefix = "admin.";
-            } else if (strpos($okey, "admin_") === 0) {
-                $key = str_replace("user_", "", $okey);
-                $prefix = "user.";
-            } else {
-                continue;
-            }
-            if ($key === "ptoCarryOver") {
-                foreach ((array)$value as $year => $amount) {
-                    plgUserTimeclock::setParamValue(
-                        $key."_".$year."_amount", $amount, $user["id"], $prefix
-                    );
-                }
-                plgUserTimeclock::setParamValue(
-                    $key, "array()", $user["id"], "admin."
-                );
-
-            } else if ($key === "ptoCarryOverExpire") {
-                foreach ((array)$value as $year => $expire) {
-                    plgUserTimeclock::setParamValue(
-                        "ptoCarryOver_".$year."_expires", $expire, $user["id"], $prefix
-                    );
-                }
-            } else {
-                plgUserTimeclock::setParamValue(
-                    $key, (string)$value, $user["id"], $prefix
-                );
-            }
-            $test["description"] .= "$okey -> $key<br />";
-        }
-        $vals = array(
-            "manager" => "manager", "startDate" => "startDate",
-            "endDate" => "endDate", "published" => "active",
-        );
-        foreach ($vals as $old => $new) {
-            $value = (string)$table->$old;
-            if ($value == "0000-00-00") {
-                $value = "";
-            }
-            plgUserTimeclock::setParamValue(
-                $new, $value, $user["id"], "admin."
-            );
-            $test["description"] .= "$old -> $new<br />";
-        }
-
-        foreach((array)$table->history as $okey => $dates) {
-            foreach((array)$dates as $date => $value) {
-                $key = str_replace("admin_", "", $okey);
-                $prefix = "history_";
-                if ($key === "ptoCarryOver") {
-                    foreach ((array)$value as $year => $amount) {
-                        plgUserTimeclock::setParamValue(
-                            $prefix.$key."*".$year."*amount_".$date, $amount, $user["id"], "admin."
-                        );
-                    }
-                } else if ($key === "ptoCarryOverExpire") {
-                    foreach ((array)$value as $year => $expire) {
-                        plgUserTimeclock::setParamValue(
-                            $prefix."ptoCarryOver*".$year."*expires_".$date, $expire, $user["id"], "admin."
-                        );
-                    }
-                } else {
-                    plgUserTimeclock::setParamValue(
-                        $prefix.$key."_".$date, (string)$value, $user["id"], "admin."
-                    );
-                }
-                plgUserTimeclock::setParamValue(
-                    "history", "array()", $user["id"], "admin."
-                );
-                $test["description"] .= "$okey -> $prefix$key<br />";
-            }
-        }
-        /*
-            if (array_search($row["parent_type"], $valid_array) === false) {
-                $test["result"] = false;
-                $test["log"] .= "Project ".$row["name"]." has invalid parent "
-                                .$row["parent_name"]."\n";
-            }
-        */
-        return $test;
-    }
-    /**
-    * This checks for users in categories.
-    *
-    * @return array The problem array
-    */
-    private function _convertPrefsGetUsers()
-    {
-        static $data;
-        if (!is_array($data)) {
-            $data = array();
-            $sql = "SELECT id, name FROM #__users";
-            $this->_db->setQuery($sql);
-            $data = $this->_db->loadAssocList();
-        }
-        return $data;
     }
     /**
     * This function goes through and checks all of the databases
@@ -256,7 +87,7 @@ class TimeclockAdminModelTools extends JModelLegacy
     public function dbCheck()
     {
         $ret = array(
-            "Preferences" => $this->_dbCheckPrefs(),
+            "Departments" => $this->_dbCheckDepartments(),
             "Customers" => $this->_dbCheckCustomers(),
             "Projects" => $this->_dbCheckProjects(),
             "Timesheets" => $this->_dbCheckTimesheets(),
@@ -272,7 +103,7 @@ class TimeclockAdminModelTools extends JModelLegacy
     *
     * @return array The problem array
     */
-    private function _dbCheckPrefs()
+    private function _dbCheckDepartments()
     {
         $ret = array();
         return $ret;
@@ -367,9 +198,9 @@ class TimeclockAdminModelTools extends JModelLegacy
                     pp.name as parent_name
                     FROM #__timeclock_projects as p
                     LEFT JOIN #__users as u
-                    ON p.manager = u.id
+                    ON p.manager_id = u.id
                     LEFT JOIN #__timeclock_projects as pp
-                    ON p.parent_id = pp.id";
+                    ON p.parent_id = pp.project_id";
             $this->_db->setQuery($sql);
             $data = $this->_db->loadAssocList();
         }
@@ -409,7 +240,7 @@ class TimeclockAdminModelTools extends JModelLegacy
         );
         foreach ((array)$ret as $row) {
             $test["result"] = false;
-            $test["log"] .= "Record #".$row["id"];
+            $test["log"] .= "Record #".$row["timesheet_id"];
             $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
             $test["log"] .= " has no attached project\n";
         }
@@ -435,7 +266,7 @@ class TimeclockAdminModelTools extends JModelLegacy
         );
         foreach ((array)$ret as $row) {
             $test["result"] = false;
-            $test["log"] .= "Record #".$row["id"];
+            $test["log"] .= "Record #".$row["timesheet_id"];
             $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
             $test["log"] .= " has no attached user\n";
         }
@@ -461,7 +292,7 @@ class TimeclockAdminModelTools extends JModelLegacy
         );
         foreach ((array)$ret as $row) {
             $test["result"] = false;
-            $test["log"] .= "Record #".$row["id"];
+            $test["log"] .= "Record #".$row["timesheet_id"];
             $test["log"] .= " (".$row["user_name"]." on ".$row["project_name"].") ";
             $test["log"] .= " has no date\n";
         }
@@ -481,7 +312,7 @@ class TimeclockAdminModelTools extends JModelLegacy
             $sql = "select t.*, u.name as user_name, p.name as project_name
                     from #__timeclock_timesheet as t
                     LEFT JOIN #__timeclock_projects as p
-                    ON t.project_id = p.id
+                    ON t.project_id = p.project_id
                     LEFT JOIN #__users as u
                     ON u.id = t.created_by ";
             if (!empty($where)) {
@@ -516,10 +347,10 @@ class TimeclockAdminModelTools extends JModelLegacy
     {
         static $data;
         if (!is_array($data)) {
-            $sql = "select u.*, p.*, u.id as proj_id, ju.name as user_name
+            $sql = "select u.*, p.*, u.project_id as proj_id, ju.name as user_name
                     from #__timeclock_users as u
                     LEFT JOIN #__timeclock_projects as p
-                    ON u.id = p.id
+                    ON u.project_id = p.project_id
                     LEFT JOIN #__users as ju
                     ON ju.id = u.user_id";
             $this->_db->setQuery($sql);
@@ -590,7 +421,7 @@ class TimeclockAdminModelTools extends JModelLegacy
         );
         $ret = $this->_dbCheckUsersGetUsers();
         foreach ((array)$ret as $row) {
-            if (is_null($row["id"])) {
+            if (is_null($row["project_id"])) {
                 $test["result"] = false;
                 $test["log"]   .= "Project #".$row["proj_id"]." does not exist.\n";
             }
@@ -598,5 +429,3 @@ class TimeclockAdminModelTools extends JModelLegacy
         return $test;
     }
 }
-
-?>

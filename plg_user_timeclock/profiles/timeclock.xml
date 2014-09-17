@@ -87,26 +87,6 @@
                         <option value="90">90%</option>
                         <option value="100">100%</option>
             </field>
-            <field
-                name="addProject"
-                type="timeclockSelectProject"
-                class="inputbox"
-                label="PLG_USER_TIMECLOCK_ADD_PROJECTS"
-                description="PLG_USER_TIMECLOCK_ADD_PROJECTS_DESC"
-                default=""
-                size="10"
-                multiple="true"
-                required="false"
-                    />
-            <field
-                name="addProjFromUser"
-                type="user"
-                class="inputbox"
-                label="PLG_USER_TIMECLOCK_ADD_PROJECTS_FROM_USER"
-                description="PLG_USER_TIMECLOCK_ADD_PROJECTS_FROM_USER_DESC"
-                default="0"
-                required="false"
-                    />
         </fieldset>
         <fieldset name="timeclockPTO"
             label="PLG_USER_TIMECLOCK_PTO_CARRYOVER_SLIDER"
@@ -127,15 +107,26 @@
             label="PLG_USER_TIMECLOCK_REMOVE_PROJECTS_SLIDER"
         >
             <field
-                name="removeProject"
-                type="TimeclockProjectList"
+                name="addProject"
+                type="timeclockUserProjects"
                 class="inputbox"
-                label="PLG_USER_TIMECLOCK_REMOVE_PROJECTS"
-                description="PLG_USER_TIMECLOCK_REMOVE_PROJECTS_DESC"
-                emptyMessage="PLG_USER_TIMECLOCK_PROJECT_LIST_EMPTY"
-                remove="true"
-                    />
-        </fieldset>
+                label="PLG_USER_TIMECLOCK_ADD_PROJECTS"
+                description="PLG_USER_TIMECLOCK_ADD_PROJECTS_DESC"
+                default=""
+                size="10"
+                multiple="true"
+                required="false"
+                />
+            <field
+                name="addProjFromUser"
+                type="user"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_ADD_PROJECTS_FROM_USER"
+                description="PLG_USER_TIMECLOCK_ADD_PROJECTS_FROM_USER_DESC"
+                default="0"
+                required="false"
+                />
+            </fieldset>
         <fieldset name="timeclockHistory"
             label="PLG_USER_TIMECLOCK_CHANGE_HISTORY_SLIDER"
         >

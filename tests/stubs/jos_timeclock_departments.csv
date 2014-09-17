@@ -1,0 +1,7 @@
+'department_id','name','description','created_by','created','modified','manager_id','checked_out','checked_out_time','published'
+'1','Sales','The sales department','43','2014-08-29 12:17:30','2014-08-29 12:17:30','42','0','0000-00-00 00:00:00','1'
+'2','Marketing','The marketing department','43','2014-08-29 12:17:30','2014-08-29 12:17:30','42','1','0000-00-00 00:00:00','1'
+'3','Engineering','The engineering department','43','2014-08-29 12:17:30','2014-08-29 12:17:30','43','1','0000-00-00 00:00:00','1'
+'4','Information Technology','The Information Technology department','43','2014-08-29 12:17:30','2014-08-29 12:17:30','43','1','0000-00-00 00:00:00','1'
+'5','Customer Service','The Customer Service department','43','2014-08-29 12:17:30','2014-08-29 12:17:30','43','1','0000-00-00 00:00:00','1'
+'6','Quality Assurance','The Quality Assurance department','43','2014-08-29 12:17:30','2014-08-29 12:17:30','43','1','0000-00-00 00:00:00','1'

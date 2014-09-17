@@ -24,61 +24,39 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    GIT: $Id: cf4c4c441ff422f81fc1068eaf088254353faea5 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-defined('_JEXEC') or die('Restricted access');
-
-// Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_timeclock'))
-{
-    return JError::raiseWarning(404, JText::_("JERROR_ALERTNOAUTHOR"));
-}
-
-// import joomla controller library
-jimport('joomla.application.component.controller');
-
-// require helper file
-JLoader::register('TimeclockHelper', dirname(__FILE__).'/helpers/timeclock.php');
-
-// This loads the prefs table file.
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/timeclockprefs.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/sql.inc.php';
-/*
+// load table paths
+JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_timeclock/tables');
+JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
+//load classes
+JLoader::registerPrefix('Timeclock', JPATH_COMPONENT_ADMINISTRATOR);
+//Load plugins
+JPluginHelper::importPlugin('timeclock');
+//application
+$app = JFactory::getApplication();
 // Require specific controller if requested
-if ($controller = JRequest::getCmd('controller')) {
-    $path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
-    if (file_exists($path)) {
-        include_once $path;
-    } else {
-        $controller = '';
-    }
+$task = $app->input->get('task', null);
+if (strpos($task, ".")) {
+    list($controller) = explode(".", $task);
 }
-*/
+$controller = empty($controller) ? "about" : trim($controller);
+$controller = $app->input->get('controller', $controller);
+
 // Create the controller
-//$classname    = 'TimeclockAdminController'.ucfirst($controller);
-//$controller   = new $classname();
-$controller = JControllerLegacy::getInstance('TimeclockAdmin');
-
+$classname = 'TimeclockControllers'.ucwords($controller);
+if (!class_exists($classname)) {
+    $classname = "TimeclockControllersAbout";
+}
+$controller = new $classname();
 // Perform the Request task
-$controller->execute(JRequest::getCmd('task'));
-
-// Redirect if set by the controller
-$controller->redirect();
-
-?>
-<p class="copyright">
-<a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
-Copyright &copy; 2014 
-    <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
-<br /><?php print JText::_("COM_TIMECLOCK_FOUND_A_BUG"); ?>
-<a href="https://dev.hugllc.com/bugs/project_page.php?project_id=7">
-<?php print JText::_("COM_TIMECLOCK_REPORT_IT_HERE"); ?></a>
-</p>
+$controller->execute();

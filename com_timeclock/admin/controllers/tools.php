@@ -1,11 +1,11 @@
 <?php
 /**
- * This component is the user interface for the endpoints
+ * This component is for tracking tim
  *
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.6 component
+ * com_timeclock is a Joomla! 3.1 component
  * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -24,136 +24,128 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    GIT: $Id: 7e641fa474f49c089e5636e4aba78940f3bf6ea8 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-
-defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
-
+defined( '_JEXEC' ) or die( 'Restricted access' );
+ 
 /**
- * ComTimeclock World Component Controller
+ * Description Here
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminControllerTools extends JControllerLegacy
+class TimeclockControllersTools extends TimeclockControllersDefault
 {
     /**
-     * Custom Constructor
-     *
-     * @param array $default The configuration array.
-     */
-    public function __construct($default = array())
+    * This function performs everything for this controller.  It is the goto 
+    * function.
+    *
+    * @access public
+    * @return boolean
+    */
+    public function execute()
     {
-        parent::__construct($default);
-
+        $task = $this->getTask();
+        $fct  = "tools".ucfirst($task);
+        if (method_exists($this, $fct)) {
+            return $this->$fct();
+        }
+        return $this->display();
     }
     /**
-     * Method to display the view
-     *
-     * @param bool  $cachable Whether to cache or not
-     * @param array $params   The parameters to use for the URL
-     *
-     * @access public
-     * @return null
-     */
-    public function display($cachable = false, $urlparams = array())
+    * This function performs everything for this controller.  It is the goto 
+    * function.
+    *
+    * @access public
+    * @return boolean
+    */
+    protected function display()
     {
-        // Load the submenu.
-        TimeclockHelper::addSubmenu(
-            JRequest::getCmd('view', 'timeclock'),
-            'tools'
-        );
-
-        JRequest::setVar('view', 'tools');
-        parent::display();
+        // Get the application
+        $app = $this->getApplication();
+        // Get the document object.
+        $document = JFactory::getDocument();
+        $viewName = $app->input->getWord('view', 'tools');
+        $viewFormat = $document->getType();
+        $layoutName = $app->input->getWord('layout', 'default');
+        $app->input->set('view', $viewName);
+        // Register the layout paths for the view
+        $paths = new SplPriorityQueue;
+        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
+        $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
+        $modelClass = 'TimeclockModelsTools';
+        $view = new $viewClass(new $modelClass, $paths);
+        $view->setLayout($layoutName);
+        // Render our view.
+        echo $view->render();
+        return true;
     }
     /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    public function edit()
+    * This function performs everything for this controller.  It is the goto 
+    * function.
+    *
+    * @access public
+    * @return boolean
+    */
+    protected function toolsDbcheck()
     {
-        JRequest::setVar('model', 'tools');
-        JRequest::setVar('view', 'tools');
-        JRequest::setVar('layout', 'form');
-        JRequest::setVar('hidemainmenu', 1);
-        parent::display();
+        // Get the application
+        $app = $this->getApplication();
+        // Get the document object.
+        $document = JFactory::getDocument();
+        $viewName = 'tools';
+        $viewFormat = $document->getType();
+        $layoutName = 'check';
+        $app->input->set('view', $viewName);
+        // Register the layout paths for the view
+        $paths = new SplPriorityQueue;
+        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
+        $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
+        $modelClass = 'TimeclockModelsTools';
+        $view = new $viewClass(new $modelClass, $paths);
+        $view->setLayout($layoutName);
+        // Render our view.
+        echo $view->render();
+        return true;
     }
     /**
-     * Method to display the view
-     *
-     * @access public
-     * @return null
-     */
-    public function dbcheck()
+    * This function performs everything for this controller.  It is the goto 
+    * function.
+    *
+    * @access public
+    * @return boolean
+    */
+    protected function toolsSetup()
     {
-        JRequest::setVar('model', 'tools');
-        JRequest::setVar('view', 'tools');
-        JRequest::setVar('layout', 'dbcheck');
-        JRequest::setVar('tpl', 'check');
-        self::display();
+        // Get the application
+        $app = $this->getApplication();
+        // Get the document object.
+        $document = JFactory::getDocument();
+        $viewName = 'tools';
+        $viewFormat = $document->getType();
+        $layoutName = 'setup';
+        $app->input->set('view', $viewName);
+        // Register the layout paths for the view
+        $paths = new SplPriorityQueue;
+        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
+        $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
+        $modelClass = 'TimeclockModelsTools';
+        $view = new $viewClass(new $modelClass, $paths);
+        $view->setLayout($layoutName);
+        // Render our view.
+        echo $view->render();
+        return true;
     }
-
-    /**
-     * redirects to a default url
-     *
-     * @param string $msg The message to have when redirected
-     *
-     * @return void
-     */
-    public function reset($msg=null)
-    {
-        $link = 'index.php?option=com_timeclock&task=tools.display';
-        $this->setRedirect($link, $msg);
-
-    }
-
-    /**
-     * save a record (and redirect to main page)
-     *
-     * @return void
-     */
-    public function apply()
-    {
-
-    }
-
-    /**
-     * save a record (and redirect to main page)
-     *
-     * @return void
-     */
-    public function save()
-    {
-
-    }
-
-    /**
-     * save a record (and redirect to main page)
-     *
-     * @return void
-     */
-    public function cancel()
-    {
-
-    }
-
 }
-
-?>

@@ -19,77 +19,101 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-#timeclock {
-    padding: 0.5em;
-    background-color: transparent;
-}
-#timeclock #addHoursTotal {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    background: white;
-    color: black;
-    border: 3px solid black;
-    padding: .5em;
-}
-#timeclock #addHoursTotal .error {
-    background: white;
-    color: red;
-    font-weight: bold;
-    padding-left: 1em;
-    padding-right: 1em;
+
+.nextprev span {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-#timeclockTable {
-    background-color: transparent;
-    color: #000;
-    margin: 5px;
-    width: 95%;
+.nextprev {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 2em;
 }
-
-#timeclockTable th {
-    background-color: #CCC;
-    height: 25px;
-
+.dateheader {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 2em;
 }
-#timeclockTable a,  #timeclockTable tr.row0 a, #timeclockTable tr.row1 a {
-    background-color: transparent;
-    font-weight: bold;
-    color: #000;
+.vertical-text {
+    padding: 0px;
+    margin: 0px;
+    transform: rotate(-90deg);
+    transform-origin: center middle 0;
+    float: right;
+    text-align: center;
+    width: 1.5em;
+    height: 1.5em;
+    position: relative;
 }
-#timeclockTable th span, #timeclockTable tr.row0 th span, #timeclockTable tr.row1 th span {
-    background-color: transparent;
-    font-weight: bold;
-    color: #000;
+.bottom {
+    vertical-align: bottom;
 }
-#timeclockTable td, #timeclockTable tr.row0 td, #timeclockTable tr.row1 td {
-    background-color: transparent;
-    color: #000;
+.middle {
+    vertical-align: middle;
 }
-#timeclockTable td span, #timeclockTable tr.row0 td span, #timeclockTable tr.row1 td span {
-    background-color: transparent;
-    color: #000;
+.top {
+    vertical-align: top;
 }
-#timeclockTable tr.row0 {
-    text-align: left;
-    background: #EFEFEF;
-}
-#timeclockTable tr.row1 {
-    background: #FFF;
-    text-align: left;
-}
-
-#timeclockTable .today {
+table.timesheet tr.header th.today {
     background: #00FF00;
 }
 
-#timeclockTable .row1 .holiday, #timeclockTable .row0 .holiday {
-    background: #D3FF21;
+table.timesheet {
+   /*table-layout:fixed;*/
+   border-spacing: 0;
+   border-collapse: separate;
+   width: 100%;  
 }
-#timeclockTable .nohours {
-    background: #FF0000;
+table.timesheet thead tr.header th {
+    vertical-align: bottom;
+    padding: 1px;
+    text-align: center;
+    height: 4em;
+    background-color: #CCC;
 }
-.calendar {
-    z-index: 65560;
-    position: relative;
+table.timesheet tfoot tr.header th {
+    vertical-align: top;
+    padding: 1px;
+    text-align: center;
+    height: 4em;
+    background-color: #CCC;
+}
+table.timesheet tfoot tr.header th.vertical {
+    vertical-align: bottom;
+}    
+table.timesheet tr.subtotal th {
+    background-color: #CCC;
+    vertical-align: middle;
+    padding: 1px;
+    padding-right: 5px;
+    text-align: right;
+}
+table.timesheet tr.category th {
+    background-color: #CCC;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 1em;
+}
+table.timesheet td {
+    padding: 0px;
+}
+table.timesheet td.hours {
+    text-align: center;
+}
+table.timesheet td.subtotal, table.timesheet td.total{
+    text-align: center;
+    font-weight: bold;
+}
+table.timesheet tr.holiday td.holiday {
+    background-color: #8defd9;
+}
+#timeclock #addHoursTotal {
+position: fixed;
+left: 0px;
+top: 0px;
+background: white;
+color: black;
+border: 3px solid black;
+padding: .5em;
 }

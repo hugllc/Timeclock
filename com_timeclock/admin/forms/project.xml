@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="main" label="COM_TIMECLOCK_EDIT_DEPARTMENT">
+        <field
+            name="name"
+            type="text"
+            label="COM_TIMECLOCK_NAME"
+            description="COM_TIMECLOCK_NAME_DEPARTMENT_DESC"
+            class="span4"
+            size="40"
+            required="true"/>
+        <field
+            name="manager_id"
+            type="user"
+            class="inputbox"
+            label="COM_TIMECLOCK_MANAGER"
+            description="COM_TIMECLOCK_MANAGER_DESC"
+            default="0"
+            required="true"
+                />
+        <field
+            name="description"
+            type="textarea"
+            label="COM_TIMECLOCK_DESCRIPTION"
+            description="COM_TIMECLOCK_NOTES_DEPARTMENT_DESC"
+            rows="3"
+            cols="40"/>
+
+    </fieldset>
+    <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_DEPARTMENT">
+        <field
+            name="published"
+            type="list"
+            class="chzn-color-state span10"
+            default="1"
+            size="1"
+            label="COM_TIMECLOCK_ACTIVE"
+            required="true"
+            description="COM_TIMECLOCK_ACTIVE_DEPARTMENT_DESC">
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+        <field
+            name="research"
+            type="list"
+            class="chzn-color-state span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_RESEARCH"
+            required="true"
+            description="COM_TIMECLOCK_RESEARCH_PROJECT_DESC">
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+        <field
+            name="type"
+            type="list"
+            class="span10"
+            default="PROJECT"
+            size="1"
+            label="COM_TIMECLOCK_TYPE"
+            required="true"
+            description="COM_TIMECLOCK_TYPE_PROJECT_DESC">
+            <option value="PROJECT">COM_TIMECLOCK_PROJECT</option>
+            <option value="CATEGORY">JCATEGORY</option>
+            <option value="PTO">COM_TIMECLOCK_PTO</option>
+            <option value="HOLIDAY">COM_TIMECLOCK_HOLIDAY</option>
+            <option value="UNPAID">COM_TIMECLOCK_UNPAID</option>
+        </field>
+        <field
+            name="parent_id"
+            type="TimeclockCategory"
+            class="span10"
+            default="-1"
+            size="1"
+            label="JCATEGORY"
+            required="true"
+            description="COM_TIMECLOCK_CATEGORY_PROJECT_DESC"/>
+        <field
+            name="department_id"
+            type="TimeclockDepartment"
+            class="span10"
+            default=""
+            size="1"
+            label="COM_TIMECLOCK_DEPARTMENT"
+            required="true"
+            description="COM_TIMECLOCK_DEPARTMENT_PROJECT_DESC"/>
+    </fieldset>
+    <fieldset name="wcomp" label="COM_TIMECLOCK_WORKERS_COMP_CODES">
+        <field
+            name="wcCode1"
+            type="TimeclockWCompCodes"
+            class="span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_CODE_1"
+            required="true"
+            description="COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"/>
+        <field
+            name="wcCode2"
+            type="TimeclockWCompCodes"
+            class="span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_CODE_2"
+            required="false"
+            description="COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"/>
+        <field
+            name="wcCode3"
+            type="TimeclockWCompCodes"
+            class="span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_CODE_3"
+            required="false"
+            description="COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"/>
+        <field
+            name="wcCode4"
+            type="TimeclockWCompCodes"
+            class="span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_CODE_4"
+            required="false"
+            description="COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"/>
+        <field
+            name="wcCode5"
+            type="TimeclockWCompCodes"
+            class="span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_CODE_5"
+            required="false"
+            description="COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"/>
+        <field
+            name="wcCode6"
+            type="TimeclockWCompCodes"
+            class="span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_CODE_6"
+            required="false"
+            description="COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"/>
+    </fieldset>
+    <fieldset name="users" label="COM_TIMECLOCK_USERS">
+        <field
+            name="users"
+            type="TimeclockProjectUsers"
+            class="span10"
+            default="0"
+            size="1"
+            label="COM_TIMECLOCK_USERS"
+            description="COM_TIMECLOCK_USERS_PROJECT_DESC"/>
+        
+    </fieldset>
+</form>

@@ -7,6 +7,10 @@ Documentation/
 build/
 *.kate-swp
 *.old
-tests/
 *.kdev4
-
+Joomla/
+composer.lock
+composer/
+bin/
+tests/config.php
+contrib/

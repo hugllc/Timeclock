@@ -37,7 +37,6 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
-require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 
 /**
  * This creates a select box with the user types in it.
@@ -65,7 +64,7 @@ class JFormFieldTimeclockUserTypes extends JFormFieldList
         $lang = JFactory::getLanguage();
         $lang->load("com_timeclock");
         $options = array();
-        $status = TimeclockHelper::getUserTypes();
+        $status = TimeclockHelpersTimeclock::getUserTypes();
         foreach ((array)$status as $value => $name) {
             $options[] = JHTML::_(
                 'select.option',

@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: 008825a1a092a2ab5410f0cd663815540d2a905b $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
@@ -49,123 +49,27 @@ defined('_JEXEC') or die('Restricted access');
  */
 class TableTimeclockProjects extends JTable
 {
-    /**
-     * Primary Key
-     *
-     * @var int
-     */
-    public $id = null;
-
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $name = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $description = '';
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $created_by = null;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $created = '';
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $manager = 0;
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $research = 0;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $type = 'PROJECT';
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $parent_id = 0;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $wcCode1 = 0;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $wcCode2 = 0;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $wcCode3 = 0;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $wcCode4 = 0;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $wcCode5 = 0;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $wcCode6 = 0;
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $customer = 0;
-
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $checked_out = 0;
-
-    /**
-     * Variable
-     *
-     * @var string
-     */
+    public $project_id      = null;
+    public $name             = '';
+    public $description      = '';
+    public $created_by       = 0;
+    public $created          = '';
+    public $modified         = '';
+    public $manager_id       = 0;
+    public $research         = 0;
+    public $type             = 'PROJECT';
+    public $parent_id        = 0;
+    public $wcCode1          = 8803;
+    public $wcCode2          = 0;
+    public $wcCode3          = 0;
+    public $wcCode4          = 0;
+    public $wcCode5          = 0;
+    public $wcCode6          = 0;
+    public $customer_id      = 0;
+    public $department_id    = 0;
+    public $checked_out      = 0;
     public $checked_out_time = '';
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $published = 1;
+    public $published        = 1;
 
     /**
      * Constructor
@@ -174,7 +78,7 @@ class TableTimeclockProjects extends JTable
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__timeclock_projects', "id", $db);
+        parent::__construct('#__timeclock_projects', "project_id", $db);
     }
     /**
      * Checks the row
@@ -185,18 +89,8 @@ class TableTimeclockProjects extends JTable
     {
 
         if ($this->type == "CATEGORY") {
-            $this->parent_id = 0;
-        }
-        if ($this->type == "PTO") {
-            $this->parent_id = -2;
-        }
-        if ($this->type == "HOLIDAY") {
-            $this->parent_id = -2;
-        }
-        if ($this->type == "UNPAID") {
-            $this->parent_id = -3;
-        }
-        if (($this->type == "PROJECT") && ($this->parent_id < -1)) {
+            $this->parent_id = -1;
+        } else if ($this->parent_id < 0) {
             $this->parent_id = 0;
         }
         return true;

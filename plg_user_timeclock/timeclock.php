@@ -39,18 +39,15 @@
  * @copyright  2009 Scott Price
  * @copyright  2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: 8dbcb324639e0accf8ba00987a32318c13d5984a $
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  *
  */
-
  defined('_JEXEC') or die('Restricted access');
 jimport('joomla.utilities.date');
 jimport('joomla.form.form');
-JForm::addFieldPath(JPATH_COMPONENT.'/../com_timeclock/models/fields');
-if (!class_exists("TimeclockHelper")) {
-    include_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
-}
+require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
+JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
 /**
 * This is a plugin to display timeclock user information in the user screen
 *
@@ -114,7 +111,7 @@ class plgUserTimeclock extends JPlugin
     *
     * @return boolean
     */
-    protected function getAllParams($userId, $type)
+    static protected function getAllParams($userId, $type)
     {
         // Load the timeclock data from the database.
         $db = JFactory::getDbo();
@@ -231,13 +228,13 @@ class plgUserTimeclock extends JPlugin
     */
     protected function removeProjects($id, &$data)
     {
-        $model = TimeclockHelper::getModel('projects');
-        if (isset($data['removeProject'])) {
-            foreach ((array)$data['removeProject'] as $proj) {
-                $model->removeOneUser((int)$proj, (int)$id);
+        $model = TimeclockHelpersTimeclock::getModel('project');
+        if (isset($data['addProject']) && isset($data['addProject']['out'])) {
+            foreach ((array)$data['addProject']['out'] as $proj) {
+                $model->removeUsers((int)$id, (int)$proj);
             }
         }
-        unset($data['removeProject']);
+        unset($data['addProject']['out']);
     }
     /**
     * This rebuilds arrays
@@ -249,13 +246,13 @@ class plgUserTimeclock extends JPlugin
     */
     protected function addProjects($id, &$data)
     {
-        $model = TimeclockHelper::getModel('projects');
-        if (isset($data['addProject'])) {
-            foreach ((array)$data['addProject'] as $proj) {
-                $model->addOneUser((int)$proj, (int)$id);
+        $model = TimeclockHelpersTimeclock::getModel('project');
+        if (isset($data['addProject']) && isset($data['addProject']['in'])) {
+            foreach ((array)$data['addProject']['in'] as $proj) {
+                $model->addUsers((int)$id, (int)$proj);
             }
         }
-        unset($data['addProject']);
+        unset($data['addProject']['in']);
     }
     /**
     * This rebuilds arrays
@@ -268,10 +265,10 @@ class plgUserTimeclock extends JPlugin
     protected function addUserProjects($id, &$data)
     {
         if (isset($data['addProjFromUser']) && !empty($data['addProjFromUser'])) {
-            $model = TimeclockHelper::getModel('projects');
+            $model = TimeclockHelpersTimeclock::getModel('project');
             $projects = $model->getUserProjectIds($data['addProjFromUser']);
             foreach ((array)$projects as $proj) {
-                $model->addOneUser((int)$proj, (int)$id);
+                //$model->addOneUser((int)$proj, (int)$id);
             }
 
         }
@@ -337,7 +334,7 @@ class plgUserTimeclock extends JPlugin
         }
         $history = self::stripKeys(self::getAllParams($userId, "admin.history"));
         self::decodeArrays($history);
-        $history = (array)$history['history'][$param];
+        $history = isset($history['history']) ? $history['history'][$param] : array();
         ksort($history);
         $date = new JDate($date);
         foreach ((array)$history as $change => $value) {

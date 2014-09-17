@@ -75,8 +75,8 @@ class JFormFieldTimeclockProjectList extends JFormField
             '<h2>Check box to remove the project</h2>',
             '<div class="'.$this->class.'" style="clear:both;">'
         );
-        $model = TimeclockHelper::getModel("projects");
-        $projects = $model->getUserProjectsBare($id, null, null);
+        $model = TimeclockHelpersTimeclock::getModel("project");
+        $projects = array(); //$model->getUserProjectsBare($id, null, null);
         foreach ((array)$projects as $proj) {
             if (($proj->id > 0)) {
                 $ret[] = '<div style="white-space: nowrap;">';

@@ -24,60 +24,40 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    GIT: $Id: e18e940bbce50eadc20eca3bd29cea99da26026a $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-defined('_JEXEC') or die('Restricted access');
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
+//sessions
+jimport( 'joomla.session.session' );
 // require helper file
-JLoader::register('TimeclockHelper', JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php');
+JLoader::register('TimeclockHelpersTimeclock', JPATH_COMPONENT_ADMINISTRATOR.'/helpers/timeclock.php');
+JLoader::register('TimeclockHelpersView', JPATH_COMPONENT_ADMINISTRATOR.'/helpers/view.php');
+JLoader::register('TimeclockHelpersDate', JPATH_COMPONENT_SITE.'/helpers/date.php');
+//load tables
+JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/tables');
+//load classes
+JLoader::registerPrefix('Timeclock', JPATH_COMPONENT);
+//Load plugins
+//JPluginHelper::importPlugin('lendr');
+//Load styles and javascripts
+//LendrHelpersStyle::load();
+//application
+$app = JFactory::getApplication();
+// Require specific controller if requested
+$controller = $app->input->get('controller','timesheet');
+// Create the controller
+$classname = 'TimeclockControllers'.ucwords($controller);
+// Set a default if the one requested doesn't work.
+$classname = class_exists($classname) ? $classname : "TimeclockControllersTimesheet";
 
-// Access check.
-if ((!JFactory::getUser()->authorise('core.login.site', 'com_timeclock'))
-    || (!TimeclockHelper::getUserParam('active')
-    && !TimeclockHelper::getUserParam('reports'))
-){
-    return JError::raiseWarning(404, JText::_("JERROR_ALERTNOAUTHOR"));
-}
-
-// import joomla controller library
-jimport('joomla.application.component.controller');
-jimport('joomla.html.html');
-
-// This loads the prefs table file.
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/timeclockprefs.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/sql.inc.php';
-
-JHTML::stylesheet(
-    "components/com_timeclock/css/timeclock.css"
-);
-$controller = JControllerLegacy::getInstance('Timeclock');
-
-
+$controller = new $classname();
 // Perform the Request task
-$controller->execute(JRequest::getVar('task'));
-
-// Redirect if set by the controller
-$controller->redirect();
-
-$document = JFactory::getDocument();
-$tmpl     = trim(strtolower(JRequest::getVar('tmpl', '', '', 'word')));
-$type     = trim(strtolower($document->getType()));
-if (($type == "html") && ($tmpl != "component") && ($tmpl != "raw")) {
-?>
-<p class="copyright" style="font-size: 80%;">
-<a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock">Timeclock</a>
-Copyright &copy; 2014 
-    <a href="http://www.hugllc.com">Hunt Utilities Group, LLC</a>
-<br /><?php print JText::_("COM_TIMECLOCK_FOUND_A_BUG"); ?>
-<a href="https://dev.hugllc.com/bugs"><?php print JText::_("COM_TIMECLOCK_REPORT_IT_HERE"); ?></a>
-</p>
-<?php
-}
-?>
+$controller->execute();

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="main" label="COM_TIMECLOCK_EDIT_TIMESHEET">
+        <field
+            name="worked"
+            type="calendar"
+            label="COM_TIMECLOCK_WORK_DATE"
+            description="COM_TIMECLOCK_WORK_DATE_NAME_TIMESHEET_DESC"
+            class="span4"
+            default="0000-00-00"
+            format="%Y-%m-%d"
+            size="40"
+            required="true"/>
+        <field
+            name="hours1"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+        <field
+            name="notes"
+            type="textarea"
+            label="COM_TIMECLOCK_NOTES"
+            description="COM_TIMECLOCK_NOTES_TIMESHEET_DESC"
+            rows="1"
+            required="true"
+            cols="40"/>
+    </fieldset>
+    <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_TIMESHEET">
+        <field
+            name="project_id"
+            type="TimeclockHoliday"
+            class="span10"
+            default="1"
+            size="1"
+            label="COM_TIMECLOCK_PROJECT"
+            required="true"
+            description="COM_TIMECLOCK_PROJECT_TIMESHEET_DESC"/>
+        </fieldset>
+</form>

@@ -1,0 +1,35 @@
+<?php
+    $user = JFactory::getUser();
+    $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
+    $cols = $this->payperiod->days + 2 + $subtotalcols;
+    $this->payperiod->cols = $cols;
+    $this->payperiod->subtotalcols = $subtotalcols;
+?>
+<div id="timeclock">
+<form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">
+    <div class="">
+        <fieldset class="form-horizontal">
+            <input type="hidden" name="worked" value="<?php print $this->date; ?>" />
+            <h3><?php printf(JText::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, $this->date); ?></h3>
+<?php 
+    $cat = reset($this->projects);
+    $proj = reset($cat["proj"]);
+    $allproj[$proj->project_id] = $proj->project_id;
+    $proj->payperiod = &$this->payperiod;
+    $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
+    $proj->form      = &$this->form;
+    $proj->params    = &$this->params;
+    print $this->_entry->render($proj);
+?>
+        </fieldset>
+        <fieldset id="extra">
+            <?php print JHTML::_("form.token"); ?>
+        </fieldset>
+    </div>
+</form>
+<script type="text/JavaScript">
+    jQuery( document ).ready(function() {
+        //total();
+    });
+</script>
+</div>

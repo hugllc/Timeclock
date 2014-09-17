@@ -1,11 +1,11 @@
 <?php
 /**
- * This component is the user interface for the endpoints
+ * This component is for tracking tim
  *
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.6 component
+ * com_timeclock is a Joomla! 3.1 component
  * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -24,147 +24,94 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    GIT: $Id: 1d35dec121960365c28c1d00a51fc8c424131138 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
+defined( '_JEXEC' ) or die( 'Restricted access' );
+require_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 
-defined('_JEXEC') or die('Restricted access');
-jimport('joomla.html.parameter');
-
-if (file_exists(JPATH_ROOT."/plugins/user/timeclock/timeclock.php")) {
-    include_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
-} else {
-    // This is purely for test purposes
-    include_once dirname(__FILE__)."/../plugins/plg_user_timeclock/timeclock.php";
-}
 /**
- * ComTimeclock World Component Controller
+ * Description Here
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockHelper
+class TimeclockHelpersTimeclock
 {
+    public static $extension = 'com_timeclock';
     /**
-    * Configure the links below the header
-    *
-    * @param string $vName The name of the active view.
-    * @param string $cName The name of the active controller.
-    *
-    * @return null
+    * This returns the actions that we could take.
+    * 
+    * @return JObject
     */
-    public static function addSubmenu($vName, $cName)
-    {
-        JSubMenuHelper::addEntry(
-            JText::_("COM_TIMECLOCK_CUSTOMERS"),
-            'index.php?option=com_timeclock&task=customers.display',
-            $cName == 'customers'
-        );
-        JSubMenuHelper::addEntry(
-            JText::_("COM_TIMECLOCK_PROJECTS"),
-            'index.php?option=com_timeclock&task=projects.display',
-            $cName == 'projects'
-        );
-        JSubMenuHelper::addEntry(
-            JText::_("COM_TIMECLOCK_HOLIDAYS"),
-            'index.php?option=com_timeclock&task=holidays.display',
-            $cName == 'holidays'
-        );
-        JSubMenuHelper::addEntry(
-            JText::_("COM_TIMECLOCK_TIMESHEETS"),
-            'index.php?option=com_timeclock&task=timesheets.display',
-            $cName == 'timesheets'
-        );
-        JSubMenuHelper::addEntry(
-            JText::_("COM_TIMECLOCK_MISC_TOOLS"),
-            'index.php?option=com_timeclock&task=tools.display',
-            $cName == 'tools'
-        );
-        JSubMenuHelper::addEntry(
-            JText::_("COM_TIMECLOCK_ABOUT"),
-            'index.php?option=com_timeclock&view=about',
-            $vName == 'about'
-        );
-    }
-    /**
-    * Title cell
-    * For the title and toolbar to be rendered correctly,
-    * this title fucntion must be called before the starttable function and
-    * the toolbars icons this is due to the nature of how the css has been used
-    * to postion the title in respect to the toolbar
-    *
-    * @param string $title The title
-    *
-    * @return none
-    */
-    static public function title($title)
-    {
-        $mainframe = JFactory::getApplication();
-
-        $html  = "<div class=\"pagetitle\" style=\"background-image: url("
-                ."components/com_timeclock/images/"
-                ."clock-48.png); background-repeat: no-repeat;\">\n";
-        $html .= "<h2>$title</h2>";
-        $html .= "</div>\n";
-
-        $mainframe->set('JComponentTitle', $html);
-    }
-    /**
-    * Get the actions
-    */
-    public static function getActions($messageId = 0)
+    public static function getActions()
     {
         $user   = JFactory::getUser();
         $result = new JObject;
-
-        if (empty($messageId)) {
-            $assetName = 'com_timeclock';
-        }
-        else {
-            $assetName = 'com_timeclock.message.'.(int) $messageId;
-        }
-
-        $actions = array(
-            'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.delete'
-        );
-
+        $assetName = 'com_timeclock';
+        $level = 'component';
+        $actions = JAccess::getActions('com_timeclock', $level);
         foreach ($actions as $action) {
-            $result->set($action, $user->authorise($action, $assetName));
+            $result->set($action->name, $user->authorise($action->name, $assetName));
         }
-
         return $result;
     }
     /**
-     * Get Referrer
-     *
-     * @return string
-     */
-    static public function referer()
+    * This returns the actions that we could take.
+    * 
+    * @param string $model The model class to get
+    * 
+    * @return JModel object
+    */
+    public static function getModel($model)
     {
-        $referer = JRequest::getString('referer', "", 'post');
-        if (!empty($referer)) {
-            return $referer;
+        $modelClass = 'TimeclockModels'.ucfirst($model);
+        $file = strtolower($model);
+        include_once dirname(__DIR__)."/models/".$file.".php";
+        if (!class_exists($modelClass)) {
+            include_once dirname(__DIR__)."/models/default.php";
+            $modelClass = "TimeclockModelsDefault";
         }
-        $referer = $_SERVER["HTTP_REFERER"];
-        if (!empty($referer)) {
-            return $referer;
-        }
-        return "index.php";
-
+        return new $modelClass();
     }
-
-
+    /**
+    * This returns all of the users that are active in timeclock
+    * 
+    * @param mixed $publish Whether to get published items or not.  Null for either.
+    * 
+    * @return array of user objects
+    */
+    public static function getUsers($blocked = null)
+    {
+        $ret   = array();
+        $db    = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('*');
+        $query->from('#__users');
+        if (!is_null($blocked)) {
+            $query->where("block = ".(int)$blocked);
+        }
+        $query->order("name asc");
+        $db->setQuery($query);
+        $rows = $db->loadObjectList();
+        foreach ($rows as $row) {
+            if ((bool)self::getUserParam("active", $row->id)) {
+                $ret[$row->id] = $row;
+            }
+        }
+        return $ret;
+    }
     /**
      * Get an array of user types
      *
@@ -211,32 +158,8 @@ class TimeclockHelper
             $val = implode(" ", $line);
             $ret[(int)$key] = $val;
         }
-        return (array)$ret;
-    }
-    /**
-     * get an array of PTO accrual rates
-     *
-     * @return array
-     */
-    static public function getPtoAccrualRates()
-    {
-        $enabled = (bool)self::getParam("ptoEnable");
-        if (!$enabled) {
-            return array();
-        }
-        $ret = array();
-
-        $rates = self::getParam("ptoAccrualRates");
-        foreach (explode("\n", $rates) as $line) {
-            $line = trim($line);
-            if (!isset($keys)) {
-                $keys = explode(":", $line);
-            } else {
-                $line = explode(":", $line);
-                foreach ($keys as $k => $name) {
-                    $ret[$name][$line[0]] = $line[$k+1];
-                }
-            }
+        if (empty($ret)) {
+            $ret = array(1 => "Hours");
         }
         return (array)$ret;
     }
@@ -282,23 +205,5 @@ class TimeclockHelper
     {
         return plgUserTimeclock::setParamValue($param, $value, $id);
     }
-    /**
-    * gets a model
-    *
-    * @param string $model The model to get
-    *
-    * @return array
-    */
-    static public function getModel($model)
-    {
-        $file = dirname(__FILE__)."/../models/$model.php";
-        if (file_exists($file)) {
-            include_once($file);
-            $class = "TimeclockAdminModel".ucfirst($model);
-            return new $class();
-        }
-        return false;
-    }
 
 }
-?>

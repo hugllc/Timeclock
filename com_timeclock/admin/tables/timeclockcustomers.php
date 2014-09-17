@@ -13,7 +13,7 @@
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  * 
- * This program is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful;
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id: 1c44074ad153f94ca235220ed62f23129b8b335f $    
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
@@ -49,106 +49,25 @@ defined('_JEXEC') or die('Restricted access');
  */
 class TableTimeclockCustomers extends JTable
 {
-    /**
-     * Primary Key
-     *
-     * @var int
-     */
-    public $id = null;
-
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $company = null;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $name = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $address1 = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $address2 = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $city = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $state = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $zip = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $country = 'USA';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $notes = '';
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $published = '';
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $checked_out = 0;
-
-    /**
-     * Variable
-     *
-     * @var string
-     */
+    public $customer_id      = null;
+    public $company          = '';
+    public $name             = '';
+    public $address1         = '';
+    public $address2         = '';
+    public $city             = '';
+    public $state            = '';
+    public $zip              = '';
+    public $country          = 'US';
+    public $notes            = '';
+    public $published        = 1;
+    public $contact_id       = 0;
+    public $created_by       = 0;
+    public $created          = '';
+    public $modified         = '';
+    public $bill_pto         = 0;
+    public $checked_out      = 0;
     public $checked_out_time = '';
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $created_by = null;
-    /**
-     * Variable
-     *
-     * @var string
-     */
-    public $created = '';
-    /**
-     * Variable
-     *
-     * @var int
-     */
-    public $bill_pto = null;
 
-    
     /**
      * Constructor
      *
@@ -156,7 +75,7 @@ class TableTimeclockCustomers extends JTable
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__timeclock_customers', "id", $db);
+        parent::__construct('#__timeclock_customers', "customer_id", $db);
     }
     
 }

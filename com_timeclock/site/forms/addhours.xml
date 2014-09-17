@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="main" label="COM_TIMECLOCK_EDIT_TIMESHEET">
+        <field
+            name="worked"
+            type="calendar"
+            label="JDATE"
+            description="COM_TIMECLOCK_DATE_WORKED_HELP"
+            class="span4"
+            default="0000-00-00"
+            format="%Y-%m-%d"
+            size="40"
+            required="true"/>
+        <field
+            name="notes"
+            type="textarea"
+            label="COM_TIMECLOCK_NOTES"
+            description="COM_TIMECLOCK_WORK_NOTES_HELP"
+            rows="8"
+            cols="80"/>
+    </fieldset>
+    <fieldset name="wcomphours">
+        <field
+            name="hours1"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+        <field
+            name="hours2"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+        <field
+            name="hours3"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+        <field
+            name="hours4"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+        <field
+            name="hours5"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+        <field
+            name="hours6"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+        
+    </fieldset>
+    <fieldset name="hours">
+        <field
+            name="hours1"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
+            size="8"
+            required="true" />
+    </fieldset>
+</form>

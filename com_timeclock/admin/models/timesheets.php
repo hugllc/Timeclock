@@ -1,11 +1,11 @@
 <?php
 /**
- * This component is the user interface for the endpoints
+ * This component is for tracking tim
  *
  * PHP Version 5
  *
  * <pre>
- * com_ComTimeclock is a Joomla! 1.6 component
+ * com_timeclock is a Joomla! 3.1 component
  * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -24,212 +24,162 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    GIT: $Id: 6b8d5a6331c8adfcb151cb0c9b474d783d23a465 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-
-defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
-
-/** Get the timesheet table */
-require_once JPATH_COMPONENT_SITE.'/tables/timeclocktimesheet.php';
-/** Get the projects model */
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/projects.php';
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /**
- * ComTimeclock model
+ * Description Here
  *
- * @category   UI
- * @package    ComTimeclock
- * @subpackage Com_Timeclock
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockAdminModelTimesheets extends JModelLegacy
+class TimeclockModelsTimesheets extends TimeclockModelsDefault
 {
-    /** The ID to load */
-    private $_id = -1;
-    private $_allQuery = "SELECT t.*, u.name as created_by_name,
-                      (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5
-                      + t.hours6) as hours,
-                      p.name as project_name, u.name as created_by_name,
-                      1 as published
-                      FROM #__timeclock_timesheet AS t
-                      LEFT JOIN #__timeclock_projects as p
-                        ON (t.project_id = p.id OR p.id = 0)
-                      LEFT JOIN #__users as u ON t.created_by = u.id ";
+    /** Where Fields */
+    protected $_timesheet_id   = null;
+    protected $_published      = 1;
+    protected $_total          = null;
+    protected $_pagination     = null;
+    protected $_defaultSort    = "t.worked";
+    protected $_defaultSortDir = "desc";
+    protected $table           = "TimeclockTimesheet";
 
     /**
-     * Constructor that retrieves the ID from the request
-     *
-     * @return    void
-     */
+    * This is the constructor
+    */
     public function __construct()
     {
-        parent::__construct();
-
-        $array = JRequest::getVar('cid', 0, '', 'array');
-        $this->setId($array);
-        $this->_created_by = JRequest::getVar('created_by', 0, '', 'int');
+        parent::__construct(); 
+        $this->_timesheet_id = !empty($this->id) ? (int) reset($this->id) : null;
     }
     /**
-     * Method to set the id
-     *
-     * @param int $id The ID of the Project to get
-     *
-     * @return    void
-     */
-    public function setId($id)
+    * Builds the query to be used by the model
+    *
+    * @return object Query object
+    */
+    protected function _buildQuery()
     {
-        $this->_id      = $id;
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('DISTINCT t.timesheet_id,
+            (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
+            as hours,
+            t.worked, t.project_id, t.notes,
+            t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3,
+            t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6,
+            t.user_id as user_id, t.created_by as created_by');
+        $query->from('#__timeclock_timesheet as t');
+        $query->select('p.name as project, p.type as project_type, 
+            p.wcCode1, p.wcCode2, p.wcCode3, p.wcCode4, p.wcCode5, p.wcCode6');
+        $query->leftjoin('#__timeclock_projects as p on t.project_id = p.project_id');
+        $query->select('u.name as user');
+        $query->leftjoin('#__users as u on t.user_id = u.id');
+        $query->select('v.name as author');
+        $query->leftjoin('#__users as v on t.created_by = v.id');
+        // We only want non-holiday timesheets
+        $query->where("p.type <> 'HOLIDAY'");
+        return $query;
     }
-
+    /*
+            p.wcCode1 as wcCode1, p.wcCode2 as wcCode2, p.wcCode3 as wcCode3,
+            p.wcCode4 as wcCode4, p.wcCode5 as wcCode5, p.wcCode6 as wcCode6,
+            t.user_id as user_id, p.name as project_name, p.type as type,
+            u.name as author, pc.name as category_name, c.company as company_name,
+            c.name as contact_name, t.project_id as project_id, 
+            u.id as user_id, p.parent_id as category_id');
+    */
     /**
-     * Method to display the view
-     *
-     * @return string
-     */
-    public function &getData()
+    * Builds the query to be used to count the number of rows
+    *
+    * @return object Query object
+    */
+    protected function _buildCountQuery()
     {
-        $row = $this->getTable("TimeclockTimesheet");
-        $id = is_int($this->_id) ? $this->_id : $this->_id[0];
-        $row->load($id);
-        if (empty($row->id)) {
-            $row->created_by = $this->_created_by;
-        }
-        return $row;
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('COUNT(t.timesheet_id) as count');
+        $query->from('#__timeclock_timesheet as t');
+        $query->select('p.name as project, p.type as project_type');
+        $query->leftjoin('#__timeclock_projects as p on t.project_id = p.project_id');
+        $query->where("p.type <> 'HOLIDAY'");
+        return $query;
     }
-
     /**
-     * Method to display the view
-     *
-     * @param string $where      The where clause to use.  Must include 'WHERE'
-     * @param int    $limitstart The record to start on
-     * @param int    $limit      The max number of records to retrieve
-     * @param string $orderby    The order by clause.  Must include 'ORDER BY'
-     *
-     * @return string
-     */
-    public function getTimesheets($where = "", $limitstart=null, $limit=null, $orderby = "")
-    {
-        if (empty($where)) {
-            $where = " WHERE p.Type<>'HOLIDAY'";
-        } else {
-            $where .= " AND p.Type<>'HOLIDAY' ";
+    * Builds the filter for the query
+    * 
+    * @param object $query Query object
+    * @param int    $id    The id of the object to get
+    * 
+    * @return object Query object
+    *
+    */
+    protected function _buildWhere(&$query, $id = null)
+    { 
+        $db = JFactory::getDBO();
+        $id = is_numeric($id) ? $id : $this->_timesheet_id;
+        
+        if(is_numeric($id)) {
+            $query->where('t.timesheet_id = ' . (int) $id);
         }
-        $query = $this->_allQuery." "
-                .$where." "
-                .$orderby;
-        return $this->_getList($query, $limitstart, $limit);
+        $search = $this->getState("filter.search");
+        if(!empty($search) && is_string($search)) {
+            $query->where("t.notes LIKE ".$db->quote("%".$search."%"));
+        }
+        return $query;
     }
-
     /**
-     * Method to display the view
+     * Returns an array of fields the table can be sorted by
      *
-     * @param string $where The where clause to use.  Must include 'WHERE'
+     * @return  array  Array containing the field name to sort by as the key and display text as value
      *
-     * @return string
+     * @since   3.0
      */
-    public function countTimesheets($where="")
+    protected function getSortFields()
     {
-        if (empty($where)) {
-            $where = " WHERE Type<>'HOLIDAY' ";
-        } else {
-            $where .= " AND Type<>'HOLIDAY' ";
-        }
-        $query = $this->_allQuery." ".$where;
-        return $this->_getListCount($query);
+        return array(
+            'user',
+            'author',
+            'project',
+            't.worked',
+            't.created',
+            't.modified',
+            't.timesheet_id'
+        );
     }
-
     /**
-     * Checks in an item
-     *
-     * @param int $oid The id of the item to save
-     *
-     * @return bool
-     */
-    public function checkin($oid)
+    * Checks out this record
+    * 
+    * @param int $id The id of the item to check in
+    * 
+    * @return  boolean
+    */
+    public function publish($id = null)
     {
-        $table = $this->getTable("TimeclockProjects");
-        return $table->checkin($oid);
+        return true;
     }
-
     /**
-     * Publishes or unpublishes an item
-     *
-     * @param int $who The uid of the person doing the checkout
-     * @param int $oid The id of the item to save
-     *
-     * @return bool
-     */
-    public function checkout($who, $oid)
+    * Checks out this record
+    * 
+    * @param int $id The id of the item to check in
+    * 
+    * @return  boolean
+    */
+    public function unpublish($id = null)
     {
-        $table = $this->getTable("TimeclockProjects");
-        return $table->checkout($who, $oid);
+        return true;
     }
-
-    /**
-     * Method to store a record
-     *
-     * @access    public
-     * @return    boolean    True on success
-     */
-    public function store()
-    {
-        $row       = $this->getTable("TimeclockTimesheet");
-        $projModel = JModelLegacy::getInstance("Projects", "TimeclockAdminModel");
-        $data = JRequest::get('post');
-        $this->lastError = null;
-        $this->lastStoreId = $data['id'];
-
-        // Can't have an empty project id.
-        if (empty($data["project_id"])) {
-            $this->lastError = "Project doesn't exist";
-            return false;
-        }
-        if ($projModel->getUserProjectsCount($data["created_by"]) == 0) {
-            $this->lastError = "User has no projects!";
-            return false;
-        }
-
-        if (empty($data['id'])) {
-            $data["created"] = date("Y-m-d H:i:s");
-            if (empty($data["created_by"])) {
-                $user = JFactory::getUser();
-                $data["created_by"] = $user->get("id");
-            }
-        }
-
-        // Bind the form fields to the hello table
-        if (!$row->bind($data)) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-        // Make sure the record is valid
-        if (!$row->check()) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-
-        // Store the web link table to the database
-        if (!$row->store()) {
-            $this->setError($this->_db->getErrorMsg());
-            return false;
-        }
-
-        return $row->id;
-    }
-
 
 }
-
-?>

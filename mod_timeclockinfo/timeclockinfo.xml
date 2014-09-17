@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="1.6.0" client="site" method="upgrade">
+<extension type="module" version="2.5.0" client="site" method="upgrade">
 	<name>mod_timeclockinfo</name>
 	<author>Scott Price</author>
 	<creationDate>2011 06 21</creationDate>

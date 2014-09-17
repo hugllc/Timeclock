@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="main" label="COM_TIMECLOCK_EDIT_DEPARTMENT">
+        <field
+            name="name"
+            type="text"
+            label="COM_TIMECLOCK_NAME"
+            description="COM_TIMECLOCK_NAME_DEPARTMENT_DESC"
+            class="span4"
+            size="40"
+            required="true"/>
+        <field
+            name="manager_id"
+            type="user"
+            class="inputbox"
+            label="COM_TIMECLOCK_MANAGER"
+            description="COM_TIMECLOCK_MANAGER_DESC"
+            default="0"
+            required="true"
+                />
+        <field
+            name="description"
+            type="textarea"
+            label="COM_TIMECLOCK_DESCRIPTION"
+            description="COM_TIMECLOCK_NOTES_DEPARTMENT_DESC"
+            rows="3"
+            cols="40"/>
+
+    </fieldset>
+    <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_DEPARTMENT">
+        <field
+            name="published"
+            type="list"
+            class="chzn-color-state span10"
+            default="1"
+            size="1"
+            label="JSTATUS"
+            required="true"
+            description="COM_TIMECLOCK_ACTIVE_DEPARTMENT_DESC">
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+    </fieldset>
+</form>

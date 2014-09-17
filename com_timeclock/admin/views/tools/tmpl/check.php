@@ -30,60 +30,62 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: 395f76552bdc30c83e33b68c23ab76e0020d684f $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-
-$style = "width: 10em; font-weight: bold; text-align: center;";
-
-$baseUrl = "index.php?option=com_timeclock&task=tools.display";
+$baseUrl = "index.php?option=com_timeclock&controller=tools";
 ?>
-<div style="width: 500px;">
-<h2><?php print $this->pageheader; ?>...</h2>
-<?php foreach ((array)$this->results as $cat => $results): ?>
-    <h3><?php print JText::_($cat); ?>...</h3>
-    <?php if (empty($results)): ?>
-    <p><?php print $this->noResults; ?></p>
-    <?php endif; ?>
-    <?php foreach ((array)$results as $test): ?>
-        <div style="margin: 3px; border: 1px solid grey; padding: 3px;">
-            <div>
-                <?php print $test["name"]; ?>
-                <?php if ($test["result"] === true) : ?>
-                    <span style="float: right; <?php print $style;?> background: green; color: white; "><?php print JText::_("COM_TIMECLOCK_PASS"); ?></span>
-                <?php elseif (is_null($test["result"])) : ?>
-                    <span style="float: right; <?php print $style;?> background: yellow; color: black; "><?php print JText::_("COM_TIMECLOCK_WARNING"); ?></span>
-                <?php elseif ($test["result"] === false) : ?>
-                    <span style="float: right; <?php print $style;?> background: red; color: white; "><?php print JText::_("COM_TIMECLOCK_FAIL"); ?></span>
-                <?php else: ?>
-                    <span style="float: right; <?php print $style;?>"><?php print JText::_("COM_TIMECLOCK_NO_RESULT"); ?></span>
-                <?php endif; ?>
+<form id="adminForm">
+<div id="j-sidebar-container" class="span2">
+    <?php echo $this->sidebar; ?>
+</div>
+<div id="j-main-container" class="span10">
+    <h2><?php print JText::_("COM_TIMECLOCK_CHECKING_DATABASE"); ?>...</h2>
+    <?php foreach ((array)$this->results as $cat => $results): ?>
+        <h3><?php print JText::_($cat); ?>...</h3>
+        <?php if (empty($results)): ?>
+        <p><?php print $this->noResults; ?></p>
+        <?php endif; ?>
+        <?php foreach ((array)$results as $test): ?>
+            <div style="margin: 3px; border: 1px solid grey; padding: 3px;">
+                <div>
+                    <?php print $test["name"]; ?>
+                    <?php if ($test["result"] === true) : ?>
+                        <span style="float: right; <?php print $style;?> background: green; color: white; "><?php print JText::_("COM_TIMECLOCK_PASS"); ?></span>
+                    <?php elseif (is_null($test["result"])) : ?>
+                        <span style="float: right; <?php print $style;?> background: yellow; color: black; "><?php print JText::_("COM_TIMECLOCK_WARNING"); ?></span>
+                    <?php elseif ($test["result"] === false) : ?>
+                        <span style="float: right; <?php print $style;?> background: red; color: white; "><?php print JText::_("COM_TIMECLOCK_FAIL"); ?></span>
+                    <?php else: ?>
+                        <span style="float: right; <?php print $style;?>"><?php print JText::_("COM_TIMECLOCK_NO_RESULT"); ?></span>
+                    <?php endif; ?>
+                </div>
+                <p>
+                    <?php print $test["description"]; ?>
+                </p>
+                <p style="padding-left: 2em;">
+                    <?php print (isset($test["log"])) ? nl2br($test["log"]) : "None"; ?>
+                </p>
             </div>
-            <p>
-                <?php print $test["description"]; ?>
-            </p>
-            <p style="padding-left: 2em;">
-                <?php print (isset($test["log"])) ? nl2br($test["log"]) : "None"; ?>
-            </p>
-        </div>
+        <?php endforeach; ?>
     <?php endforeach; ?>
-<?php endforeach; ?>
-<h2><?php print JText::_("COM_TIMECLOCK_KEY"); ?></h2>
-<div>
-    <span style="float: left; margin-right: 1em; <?php print $style;?> background: green; color: white; "><?php print JText::_("COM_TIMECLOCK_PASS"); ?></span>
-    <?php print JText::_("COM_TIMECLOCK_PASS_MSG"); ?>
-</div>
-<div>
-    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: yellow; color: black; "><?php print JText::_("COM_TIMECLOCK_WARNING"); ?></span>
-    <?php print JText::_("COM_TIMECLOCK_WARNING_MSG"); ?>
-</div>
-<div>
-    <span style="float: left; margin-right: 1em;  <?php print $style;?> background: red; color: white; "><?php print JText::_("COM_TIMECLOCK_FAIL"); ?></span>
-    <?php print JText::_("COM_TIMECLOCK_FAIL_MSG"); ?>
-</div>
+    <h2><?php print JText::_("COM_TIMECLOCK_KEY"); ?></h2>
+    <div>
+        <span style="float: left; margin-right: 1em; <?php print $style;?> background: green; color: white; "><?php print JText::_("COM_TIMECLOCK_PASS"); ?></span>
+        <?php print JText::_("COM_TIMECLOCK_PASS_MSG"); ?>
+    </div>
+    <div>
+        <span style="float: left; margin-right: 1em;  <?php print $style;?> background: yellow; color: black; "><?php print JText::_("COM_TIMECLOCK_WARNING"); ?></span>
+        <?php print JText::_("COM_TIMECLOCK_WARNING_MSG"); ?>
+    </div>
+    <div>
+        <span style="float: left; margin-right: 1em;  <?php print $style;?> background: red; color: white; "><?php print JText::_("COM_TIMECLOCK_FAIL"); ?></span>
+        <?php print JText::_("COM_TIMECLOCK_FAIL_MSG"); ?>
+    </div>
 
-</pre>
+    </pre>
 </div>
+</form>

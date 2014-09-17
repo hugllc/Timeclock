@@ -1,0 +1,50 @@
+<?php
+defined('_JEXEC') or die('Restricted access');
+
+$headerDateFormat = 'D <b\r/>M<b\r>d';
+?>
+    <tr class="header">
+        <th>Project</th>
+<?php
+$today = date("Y-m-d");
+$d = 0;
+foreach ($displayData->dates as $date => $timeentry) :
+    $class = "";
+    if ($date == $today) {
+        $class .= " today";
+    }
+    if ($timeentry) {
+        $url = JRoute::_('index.php?&option=com_timeclock&controller=timesheet&task=addhours&date='.urlencode($date));
+        $tipTitle = JText::_("COM_TIMECLOCK_ADD_HOURS");
+        $tip = "on ".JHTML::_('date', $date, JText::_("DATE_FORMAT_LC1"));
+    } else {
+        $url = "";
+        $tipTitle = JText::_("COM_TIMECLOCK_NO_HOURS");
+        $tip = JText::_("COM_TIMECLOCK_NO_HOURS_BEFORE_START");
+        $class .= " nohours ";
+    };
+    $jdate = JFactory::getDate($date);
+    ?>
+        <th class="timeclockheader <?php print $class; ?>">
+            <?php 
+                print '<span class="hasTooltip" title="';
+                print '<strong>'.$tipTitle.'</strong><br />'.$tip.'">';
+                if ($url != "") {
+                    print '<a href="'.$url.'"> '.$jdate->format($headerDateFormat).' </a>';
+                } else {
+                    print $jdate->format($headerDateFormat);
+                }
+                print '</span>';
+                //print JHTML::_('tooltip', $tip, $tipTitle, '', $date->format($headerDateFormat), $url); 
+            ?>
+        </th>
+    <?php if (($displayData->splitdays != 0) && ((++$d % $displayData->splitdays) == 0)) : ?>
+        <th class="vertical">
+            <span class="vertical-text nowrap"><?php print JText::_("COM_TIMECLOCK_SUBTOTAL"); ?></span>
+        </th>
+    <?php endif; ?>
+<?php endforeach; ?>
+        <th class="vertical">
+            <span class="vertical-text nowrap"><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></span>
+        </th>
+    </tr>

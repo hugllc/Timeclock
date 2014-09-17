@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: 49c7d569947893ae484e0ae46c7707b65d7186d9 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 
@@ -49,19 +49,8 @@ defined('_JEXEC') or die('Restricted access');
  */
 class TableTimeclockUsers extends JTable
 {
-    /**
-     * Primary Key
-     *
-     * @var int
-     */
-    public $id = null;
-
-    /**
-     * Primary Key
-     *
-     * @var int
-     */
-    public $user_id = null;
+    public $project_id      = null;
+    public $user_id         = null;
     /**
      * Constructor
      *
@@ -69,7 +58,7 @@ class TableTimeclockUsers extends JTable
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__timeclock_users', "id", $db);
+        parent::__construct('#__timeclock_users', "project_id", $db);
     }
 
     /**
@@ -81,24 +70,44 @@ class TableTimeclockUsers extends JTable
      */
     public function store($updateNulls = false)
     {
-        $this->delete($this->id, $this->user_id);
-        return $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+        $this->delete($this->project_id, $this->user_id);
+        return $db->insertObject("#__timeclock_users", $this, $this->_tbl_key);
     }
 
     /**
      * Deletes data
      *
-     * @param mixed $pk The PK to use
+     * @param mixed $id The id to delete
      *
      * @return bool
      */
-    public function delete($pk = NULL)
+    public function delete($id = NULL)
     {
-        $query = "DELETE FROM `#__timeclock_users`"
-                ." WHERE id=".$this->_db->Quote($this->id)
-                ." AND user_id=".$this->_db->Quote($this->user_id);
-        $this->_db->setQuery($query);
-        return (bool) $this->_db->query();
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(TRUE);
+        
+        $query->delete($db->quoteName('#__timeclock_users'));
+        $query->where(
+            array(
+                $db->quoteName("project_id")." = ".$db->Quote($this->project_id),
+                $db->quoteName("user_id")." = ".$db->Quote($this->user_id)
+            )
+        );
+        $db->setQuery($query);
+        return (bool) $db->query();
+    }
+    /**
+     * Checks the row
+     *
+     * @return array
+     */
+    public function check()
+    {
+
+        if (($this->project_id == 0) || ($this->user_id == 0)) {
+            return false;
+        }
+        return true;
     }
 
 

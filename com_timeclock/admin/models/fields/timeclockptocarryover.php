@@ -71,7 +71,7 @@ class JFormFieldTimeclockPTOCarryOver extends JFormField
             'title' => $this->element["title"],
         );
         $ret = array();
-        $startDate = new JDate(TimeclockHelper::getUserParam("startDate", $id), "UTC");
+        $startDate = new JDate(TimeclockHelpersTimeclock::getUserParam("startDate", $id), "UTC");
         $end = (int)$startDate->year;
         if (empty($end)) {
             $end = (int)date("Y");
@@ -85,14 +85,14 @@ class JFormFieldTimeclockPTOCarryOver extends JFormField
             $labeltext = JText::sprintf($this->element['label'], $year);
             $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($this->description), ENT_COMPAT, 'UTF-8');
             if (empty($value["expires"])) {
-                $expire = TimeclockHelper::getParam("ptoCarryOverDefExpire");
+                $expire = TimeclockHelpersTimeclock::getParam("ptoCarryOverDefExpire");
                 $value["expires"] = (empty($expire)) ? $year."-3-31" : $year."-".$expire;
             }
-
+            $value["amount"] = isset($value["amount"]) ? $value["amount"] : 0.0;
             $ret[] = '<fieldset style="border: thin solid grey; margin: 0px; padding: 3px;">';
             $ret[] = '<label class="'.$labelclass.'" title="'.$labeltitle.'" for="'.$id.'_amount">'.$labeltext.'<span class="star">&#160;*</span></label>';
             $ret[] = '<input type="text" class="'.$this->element["class"].'" name="';
-            $ret[] = $name.'[amount]" size="7" maxlength="5" value="'.(float)$value["amount"].'" id="'.$id.'_amount" />';
+            $ret[] = $name.'[amount]" size="7" maxlength="5" value="'.$value["amount"].'" id="'.$id.'_amount" />';
 
             $labeltext = JText::sprintf($this->element['labelExpires'], $year);
             $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($this->element['descriptionExpires']), ENT_COMPAT, 'UTF-8');

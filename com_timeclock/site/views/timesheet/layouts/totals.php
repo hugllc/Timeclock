@@ -1,0 +1,9 @@
+<?php defined('_JEXEC') or die('Restricted access'); ?>
+            <tr class="subtotal">
+                <th colspan="<?php print ($displayData->cols - 1); ?>">
+                    <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
+                </th>
+                <td class="total">
+                    <span id="total">-</span>
+                </td>
+            </tr>

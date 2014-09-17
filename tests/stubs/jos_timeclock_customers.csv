@@ -1,0 +1,3 @@
+'customer_id','company','name','address1','address2','city','state','zip','country','notes','checked_out','checked_out_time','published','contact_id', 'created_by','created','modified','bill_pto'
+'1','Hunt Utilities Group LLC','Scott Price','2331 Dancing Wind Rd SW',,'Pine River','MN','56474','US','I work there!','0','0000-00-00 00:00:00','1','42', '42','2014-08-29 12:17:30','2014-08-29 12:17:30','1'
+'2','Happy Dancing Turtle','Jeff Liesmaki','2322 Dancing Wind Rd SW',,'Pine River','MN','56474','US','I work there!','0','0000-00-00 00:00:00','1','43', '43','2014-08-29 12:17:30','2014-08-29 12:17:30','1'

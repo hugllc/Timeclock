@@ -30,26 +30,34 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: 7946a752adea5e6c66038cc8c30ce7efe84854dc $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-TimeclockHelper::title(JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS"));
-
-$baseUrl = "index.php?option=com_timeclock&task=tools.display";
+$baseUrl = "index.php?option=com_timeclock&controller=tools";
 ?>
-<div style="width: 500px;">
-<p>
-<?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC"); ?>
-</p>
-<ol>
-    <li>
-        <a href="<?php print JRoute::_($baseUrl."&task=tools.dbcheck"); ?>">
-            <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"); ?>
-        </a>
-    </li>
-</ol>
-
+<form id="adminForm">
+<div id="j-sidebar-container" class="span2">
+    <?php echo $this->sidebar; ?>
 </div>
+<div id="j-main-container" class="span10">
+    <p>
+    <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC"); ?>
+    </p>
+    <ol>
+        <li>
+            <a href="<?php print JRoute::_($baseUrl."&task=setup"); ?>">
+                <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_SETUP"); ?>
+            </a>
+        </li>
+        <li>
+            <a href="<?php print JRoute::_($baseUrl."&task=dbcheck"); ?>">
+                <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"); ?>
+            </a>
+        </li>
+    </ol>
+
+    </div>
+</form>
