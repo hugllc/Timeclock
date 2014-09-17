@@ -73,10 +73,51 @@ class TimeclockModelsTools extends JModelBase
     */
     public function setup()
     {
-        $ret = array(
-            "PHPGraphLib" => $this->_setupPHPGraphLib(),
-            "PHPExcel" => $this->_setupPHPExcel(),
-        );
+        $app = JFactory::getApplication();
+        $package = $app->input->get("package", null);
+        return $this->_setupDownload($package);
+    }
+    /**
+    * This function goes through and checks all of the databases
+    *
+    * @param string $package The name of the package to download
+    *
+    * @return array The problem array
+    */
+    private function _setupDownload($package)
+    {
+        $url = "http://downloads.hugllc.com/Joomla/Timeclock/contrib/";
+        switch($package) {
+        case "phpgraph":
+            $url .= "phpgraph.zip";
+            break;
+        case "phpexcel":
+            $url .= "phpexcel.zip";
+            break;
+        default:
+            return null;
+        }
+        if (file_exists(JPATH_ROOT."/compoents/com_timeclock/contrib/".$package)) {
+            // Don't install something twice.
+            return null;
+        }
+        $data = file_get_contents($url);
+        $file = tempnam(sys_get_temp_dir(), "timeclock");
+        $fd = fopen($file, "w");
+        $ret = false;
+        if ($fd) {
+            fwrite($fd, $data);
+            fclose($fd);
+            $zip = new ZipArchive();
+            if ($zip->open($file)) {
+                $path = JPATH_ROOT."/components/com_timeclock/contrib/";
+                if ($zip->extractTo($path)) {
+                    $ret = true;
+                }
+                $zip->close();
+            }
+            unlink($file);
+        }
         return $ret;
     }
     /**

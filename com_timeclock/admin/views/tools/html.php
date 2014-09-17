@@ -119,5 +119,26 @@ class TimeclockViewsToolsHtml extends JViewHtml
         $this->sidebar = JHtmlSidebar::render();
         return parent::render();
     }
+    /**
+     * The display function
+     *
+     * @param string $tpl The template to use
+     *
+     * @return none
+     */
+    public function viewSetup($tpl = null)
+    {
+
+        $this->setLayout("setup");
+        
+        $this->phpgraph = file_exists(JPATH_ROOT."/components/com_timeclock/contrib/phpgraph/phpgraphlib.php");
+        $this->phpexcel = file_exists(JPATH_ROOT."/components/com_timeclock/contrib/phpexcel/PHPExcel.php");
+
+        $this->addToolbar("COM_TIMECLOCK_CHECK_DATABASE");
+        TimeclockHelpersView::addSubmenu("tools");
+        
+        $this->sidebar = JHtmlSidebar::render();
+        return parent::render();
+    }
 }
 ?>

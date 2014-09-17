@@ -45,9 +45,14 @@ defined('_JEXEC') or die('Restricted access');
         <p>
         Timeclock is a component designed to track the time employees spend on projects.
         It is designed to be used to facilitate payroll for employees that range across multiple sites.
-        </p>
         More information on Timeclock can be found on the <a href="http://www.hugllc.com/wiki/index.php/Project:Timeclock"
         >Hunt Utilities Group, LLC wiki</a>
+        </p>
+        <p>
+        There are some add on packages that can be downloaded for timeclock to add
+        extra functionality.  If you haven't yet, please go to the setup page under
+        tools to add them.  <a href="index.php?option=com_timeclock&controller=tools&task=setup">Click here to go there</a>.
+        </p>
         <p>
         Timeclock was written by Scott Price (<a href="mailto:prices@hugllc.com">prices@hugllc.com</a>) an employee of
         <a href="http://www.hugllc.com">Hunt Utilities Group, LLC.</a>.

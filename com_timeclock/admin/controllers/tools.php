@@ -129,6 +129,7 @@ class TimeclockControllersTools extends TimeclockControllersDefault
     */
     protected function toolsSetup()
     {
+
         // Get the application
         $app = $this->getApplication();
         // Get the document object.
@@ -142,8 +143,17 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsTools';
+        $model = new $modelClass;
         $view = new $viewClass(new $modelClass, $paths);
         $view->setLayout($layoutName);
+
+        $ret = $model->setup();
+        if ($ret === false) {
+            $app->enqueueMessage(
+                "Install Failed", 'warning'
+            );
+        }
+
         // Render our view.
         echo $view->render();
         return true;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="2.5.0" method="upgrade" client="site">
+<extension type="component" version="3.1.0" method="upgrade" client="site">
     <name>COM_TIMECLOCK</name>
     <creationDate>2014 08 21</creationDate>
     <author>Scott Price</author>

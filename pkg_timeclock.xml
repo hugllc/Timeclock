@@ -10,7 +10,7 @@
     <packager>Scott Price</packager>
     <packagerurl>http://www.hugllc.com/</packagerurl>
     <description>Package to install Timeclock system</description>
-    <update>http://downloads.hugllc.com/Joomla/Timeclock/ComTimeclock-update.xml</update>
+    <update>http://downloads.hugllc.com/Joomla/Timeclock/com_timeclock-update.xml</update>
     <files folder="packages">
         <file type="component" id="timeclock" >com_timeclock.zip</file>
         <file type="module" id="timeclockinfo" >mod_timeclockinfo.zip</file>
