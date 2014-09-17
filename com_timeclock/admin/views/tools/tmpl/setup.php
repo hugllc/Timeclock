@@ -37,6 +37,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $baseUrl = "index.php?option=com_timeclock&controller=tools&task=setup";
+$installed = '<span class="alert alert-success">Installed</span>';
 ?>
 <form id="adminForm">
 <div id="j-sidebar-container" class="span2">
@@ -51,13 +52,13 @@ $baseUrl = "index.php?option=com_timeclock&controller=tools&task=setup";
     <dd>
         Github link: <a href="http://github.com/PHPOffice/PHPExcel">http://github.com/PHPOffice/PHPExcel</a> 
         <p>Export reports to Excel format</p>
-        <p>Status: <?php print $this->phpexcel ? "Installed" : '<a href="'.$baseUrl.'&package=phpexcel">Not Installed (click to install)</a>'; ?></p>
+        <p>Status: <?php print $this->phpexcel ? $installed : '<a href="'.$baseUrl.'&package=phpexcel">Not Installed (click to install)</a>'; ?></p>
     </dd>
     <dt>PHPGraphLib</dt>
     <dd>
         Github link: <a href="http://github.com/elliottb/phpgraphlib">http://github.com/elliottb/phpgraphlib</a> 
         <p>Creates graphs for reports</p>
-        <p>Status: <?php print $this->phpgraph ? "Installed" : '<a href="'.$baseUrl.'&package=phpgraph">Not Installed (click to install)</a>'; ?></p>
+        <p>Status: <?php print $this->phpgraph ? $installed : '<a href="'.$baseUrl.'&package=phpgraph">Not Installed (click to install)</a>'; ?></p>
     </dd>
 </dl>
 </div>
