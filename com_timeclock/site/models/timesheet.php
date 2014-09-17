@@ -249,13 +249,18 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
+        $usercutoff = TimeclockHelpersTimeclock::getUserParam("noTimeBefore", $user->id, $date);
+        $registry->set("payperiod.usercutoff", $usercutoff);
+
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
         foreach ($dates as $date => &$value) {
             $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
             $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
-            $value = $here && $valid;
+            $uservalid = (TimeclockHelpersDate::compareDates($date, $usercutoff)  >= 0);
+            $value = $here && $valid && $uservalid;
         }
         $registry->set("payperiod.dates", $dates);
+        
         
         $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
         $registry->set("holiday.perc", $this->_holiday_perc);

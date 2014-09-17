@@ -37,6 +37,16 @@
                 required="false"
                     />
             <field
+                name="noTimeBefore"
+                type="calendar"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_NO_TIME_BEFORE"
+                description="PLUG_USER_TIMECLOCK_NO_TIME_BEFORE_DESC"
+                format="%Y-%m-%d"
+                default=""
+                required="false"
+                    />
+            <field
                 name="reports"
                 type="radio"
                 class="inputbox"

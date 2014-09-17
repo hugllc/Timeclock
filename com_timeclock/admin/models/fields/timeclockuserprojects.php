@@ -71,7 +71,7 @@ class JFormFieldTimeclockUserProjects extends JFormField
                 JText::_($row->name)
             );
         }
-        $id = JFactory::getApplication()->input->get("id", null, int);
+        $id = JFactory::getApplication()->input->get("id", null, "int");
         $uprojects = $model->listUserProjects($id);
         foreach ($uprojects as $row) {
             if (isset($displayData["outOptions"][$row->project_id])) {
