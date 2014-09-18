@@ -99,7 +99,7 @@ var Timesheet = {
     {
         var self = this;
         jQuery.ajax({
-            url: 'index.php?option=com_timeclock&controller=timesheet&format=json',
+            url: 'index.php?option=com_timeclock&controller=timesheet&format=json&date='+self.payperiod.start,
             type: 'POST',
             data: {},
             dataType: 'JSON',
