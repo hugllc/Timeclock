@@ -52,7 +52,14 @@ JLoader::registerPrefix('Timeclock', JPATH_COMPONENT);
 //application
 $app = JFactory::getApplication();
 // Require specific controller if requested
-$controller = $app->input->get('controller','timesheet');
+$controller = $app->input->get('controller', null);
+if (is_null($controller)) {
+    // See if the view is specified
+    $controller = $app->input->get('view', null);
+    if (is_null($controller)) {
+        $controller = "timesheet";
+    }
+}
 // Create the controller
 $classname = 'TimeclockControllers'.ucwords($controller);
 // Set a default if the one requested doesn't work.

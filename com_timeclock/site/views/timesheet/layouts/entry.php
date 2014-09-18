@@ -47,5 +47,5 @@ defined('_JEXEC') or die;
         <input type="hidden" name="created" value="<?php print isset($displayData->created) ? $displayData->created : 0; ?>" />
         <input type="hidden" name="created_by" value="<?php print isset($displayData->created_by) ? $displayData->created_by : 0; ?>" />
         <input type="hidden" name="project_id" value="<?php print $displayData->project_id; ?>" />
-        <input type="hidden" name="timesheet_id" value="<?php print isset($displayData->timesheet_id) ? $displayData->timesheet_id : ""; ?>" />
+        <input type="hidden" name="timesheet_id" value="<?php print isset($displayData->data->timesheet_id) ? $displayData->data->timesheet_id : ""; ?>" />
     </fieldset>

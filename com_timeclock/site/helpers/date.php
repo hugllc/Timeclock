@@ -231,5 +231,35 @@ class TimeclockHelpersDate
         }
         return $ret;
     }
+    /**
+    * gets a component parameter
+    *
+    * @param string $date The date to check
+    * @param int    $id   The user id to get values about
+    *
+    * @return array
+    */
+    static public function beforeStartDate($date, $id=null)
+    {
+        $start = TimeclockHelpersTimeclock::getUserParam("startDate", $id, $date);
+        $ret   = self::compareDates($date, $start) < 0;
+        return $ret;
+    }
+    /**
+    * gets a component parameter
+    *
+    * @param string $date The date to check
+    * @param int    $id   The user id to get values about
+    *
+    * @return array
+    */
+    static public function afterEndDate($date, $id=null)
+    {
+        $end = TimeclockHelpersTimeclock::getUserParam("endDate", $id, $date);
+        if ($end == 0) {
+            return false;
+        }
+        return self::compareDates($date, $end) > 0;
+    }
 
 }

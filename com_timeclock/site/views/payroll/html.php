@@ -79,9 +79,9 @@ class TimeclockViewsPayrollHtml extends JViewHtml
         $this->_subtotals  = new JLayoutFile('subtotals', __DIR__.'/layouts');
         $this->_psubtotals = new JLayoutFile('psubtotals', __DIR__.'/layouts');
 
-        $this->data      = $this->model->listItems();
-        $this->projects  = $this->model->listProjects();
-        
+        $this->data   = $this->model->listItems();
+        $this->totals = $this->model->getTotals();
+        $this->users  = $this->model->listUsers();
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
             array(), 

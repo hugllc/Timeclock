@@ -3,25 +3,23 @@
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHTML::_('behavior.modal'); 
     JHTML::_('behavior.calendar');
-    $user = JFactory::getUser();
     $cols = ($this->payperiod->subtotals * 4) + 3;
     $this->payperiod->cols = $cols;
 
     JFactory::getDocument()->setTitle(
         JText::sprintf(
-            "COM_TIMECLOCK_TIMESHEET_TITLE",
-            $user->name,
+            "COM_TIMECLOCK_PAYROLL_TITLE",
             JHTML::_('date', $this->payperiod->start, JText::_("DATE_FORMAT_LC3")),
             JHTML::_('date', $this->payperiod->end, JText::_("DATE_FORMAT_LC3"))
         )
     );
-    
+    $totals = (object)array("payperiod" => $this->payperiod, "totals" => $this->totals);
 ?>
 <div id="timeclock">
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="page-header">
         <h2 itemprop="name">
-            <a id="timeclocktop"><?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $user->name);?></a>
+            <a id="timeclocktop"><?php print JText::sprintf("COM_TIMECLOCK_PAYROLL", $user->name);?></a>
         </h2>
     </div>
     <?php print $this->_nextprev->render($this->payperiod); ?>
@@ -40,28 +38,15 @@
 <?php print $this->_header->render($this->payperiod); ?>
             </thead>
             <tfoot>
-<?php print $this->_totals->render($this->payperiod); ?>
+<?php print $this->_totals->render($totals); ?>
             </tfoot>
             <tbody>
 <?php 
     $allproj = array();
-    foreach ($this->projects as $cat => $projects) {
-        if ($cat > -2) {
-            print $this->_category->render(
-                array(
-                    "cols" => $cols,
-                    "id" => $cat,
-                    "name" => $projects["name"],
-                    "description" => $projects["description"],
-                )
-            );
-        }
-        foreach ($projects["proj"] as $proj) {
-            $allproj[$proj->project_id] = $proj->project_id;
-            $proj->payperiod = $this->payperiod;
-            $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
-            print $this->_row->render($proj);
-        }
+    foreach ($this->users as $user_id => $user) {
+        $user->payperiod = $this->payperiod;
+        $user->data = $this->data[$user_id];
+        print $this->_row->render($user);
     }
 ?>
             </tbody>

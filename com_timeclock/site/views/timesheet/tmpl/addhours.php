@@ -54,7 +54,8 @@
     jQuery( document ).ready(function() {
         Addhours.setup();
     });
-    Timeclock.params       = <?php print json_encode($this->params); ?>
+    Addhours.payperiod    = <?php print json_encode($this->payperiod); ?>;
+    Timeclock.params   = <?php print json_encode($this->params); ?>
 
 </script>
 </div>

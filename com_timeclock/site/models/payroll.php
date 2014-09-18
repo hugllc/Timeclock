@@ -35,7 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once __DIR__."/default.php";
+require_once __DIR__."/report.php";
 
 /**
  * Description Here
@@ -48,13 +48,14 @@ require_once __DIR__."/default.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
+class TimeclockModelsPayroll extends TimeclockModelsReport
 {    
-    /** This is where we cache our projects */
-    private $_projects = null;
+    /** This is where we cache our users */
+    private $_users = null;
     /** This is our percentage of holiday pay */
     private $_holiday_perc = 1;
-    
+    /** This is where we store our totals */
+    private $_totals = array();
     /**
     * The constructor
     */
@@ -74,29 +75,61 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
         $query = $this->_buildQuery();
         $query = $this->_buildWhere($query);
         $list = $this->_getList($query);
-        $this->listProjects();
+        $this->listUsers();
         $return = array();
+        $worked = array();
         foreach ($list as $row) {
-            $user_id = (int)$row->user_id;
-            $return[$user_id] = isset($return[$user_id]) ? $return[$user_id] : array(
-                "user_id" => $user_id,
-                "name"    => $row->user,
-                "worked"  => 0,
-                "pto"     => 0,
-                "holiday" => 0,
-            );
-            $this->checkTimesheet($row);
-            $this->checkTimesheetProject($row);
-            switch ($row->type) {
-            case "HOLIDAY":
-                $return[$user_id]["holiday"] += $row->hours;
-                break;
-            case "PTO":
-                $return[$user_id]["pto"] += $row->hours;
-                break;
-            default:
-                $return[$user_id]["worked"] += $row->hours;
-                break;
+            $worked[$row->worked][] = $row;
+        }
+        $dates = $this->getState("payperiod.dates");
+        $split = $this->getState("payperiod.splitdays");
+        $period = -1;
+        $days   = 0;
+        foreach (array_keys($dates) as $date) {
+            if (($days++ % $split) == 0) {
+                $period++;
+            }
+            if (!isset($this->_totals[$period])) {
+                $this->_totals[$period] = (object)array(
+                    "worked"   => 0,
+                    "pto"      => 0,
+                    "holiday"  => 0,
+                    "subtotal" => 0,
+                );
+            }
+            if (!isset($worked[$date])) {
+                continue;
+            }
+            foreach ($worked[$date] as $row) {
+                $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
+                $row->user_id = $user_id;
+                $return[$user_id] = isset($return[$user_id]) ? $return[$user_id] : array();
+                if (!isset($return[$user_id][$period])) {
+                    $return[$user_id][$period] = (object)array(
+                        "worked"   => 0,
+                        "pto"      => 0,
+                        "holiday"  => 0,
+                        "subtotal" => 0,
+                    );
+                }
+                $this->checkTimesheet($row);
+                $this->checkTimesheetUser($row);
+                switch ($row->project_type) {
+                case "HOLIDAY":
+                    $return[$user_id][$period]->holiday += $row->hours;
+                    $this->_totals[$period]->holiday    += $row->hours;
+                    break;
+                case "PTO":
+                    $return[$user_id][$period]->pto += $row->hours;
+                    $this->_totals[$period]->pto    += $row->hours;
+                    break;
+                default:
+                    $return[$user_id][$period]->worked += $row->hours;
+                    $this->_totals[$period]->worked    += $row->hours;
+                    break;
+                }
+                $return[$user_id][$period]->subtotal += $row->hours;
+                $this->_totals[$period]->subtotal    += $row->hours;
             }
         }
         return $return;
@@ -113,8 +146,12 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
         if ($entry->project_type == "HOLIDAY") {
             $entry->hours = $entry->hours * $this->_holiday_perc;
         }
-        $entry->cat_name = JText::_($entry->cat_name);
-        $entry->cat_description = JText::_($entry->cat_description);
+        if (TimeclockHelpersDate::beforeStartDate($entry->worked, $entry->user_id)) {
+            $entry->hours = 0;
+        }
+        if (TimeclockHelpersDate::afterEndDate($entry->worked, $entry->user_id)) {
+            $entry->hours = 0;
+        }
     }
     /**
     * Checks to make sure this project exists
@@ -123,29 +160,16 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
     * 
     * @return array An array of results.
     */
-    protected function checkTimesheetProject(&$row)
+    protected function checkTimesheetUser(&$row)
     {
-        $proj_id = (int)$row->project_id;
-        $cat_id  = (int)$row->cat_id;
-        $projs = &$this->_projects;
+        $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
+        $users = &$this->_users;
         // This adds in projects and categories that the user has time in,
         // but isn't currently a member.
-        if (!isset($projs[$cat_id])) {
-            $projs[$cat_id] = array(
-                "project_id" => $cat_id,
-                "name" => $row->cat_name,
-                "description" => $row->cat_description,
-                "proj" => array()
-            );
-        }
-        if (!isset($projs[$cat_id]["proj"][$proj_id])) {
-            $projs[$cat_id]["proj"][$proj_id] = (object)array(
-                "project_id" => $proj_id,
-                "name" => $row->project,
-                "description" => $row->project_description,
-                "type" => $row->project_type,
-                "nohours" => 1,
-                "mine" => 0,
+        if (($row->hours > 0) && !isset($users[$user_id])) {
+            $users[$user_id] = (object)array(
+                "user_id" => $user_id,
+                "name" => empty($row->user) ? "User $user_id" : $row->user,
             );
         }
     }
@@ -156,28 +180,23 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
     * 
     * @return array An array of results.
     */
-    public function listProjects()
+    public function listUsers()
     {
-        if (is_null($this->_projects)) {
-            $query = $this->_buildProjQUery();
-            $list = $this->_getList($query, 0, 0);
-
-            $this->_projects = array();
-            $ret = &$this->_projects;
-            foreach ($list as $entry) {
-                $cat  = (int)$entry->parent_id;
-                $proj = (int)$entry->project_id;
-                $ret[$cat] = isset($ret[$cat]) ? $ret[$cat] : array(
-                    "id" => $cat, 
-                    "name" => $entry->parent_name, 
-                    "description" => $entry->parent_description,
-                    "proj" => array()
-                );
-                $this->_checkProject($entry);
-                $ret[$cat]["proj"][$proj] = $entry;
-            }
+        if (is_null($this->_users)) {
+            $this->_users = TimeclockHelpersTimeclock::getUsers(0);
         }
-        return $this->_projects;
+        return $this->_users;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param int $user_id The user to get the projects for
+    * 
+    * @return array An array of results.
+    */
+    public function getTotals()
+    {
+        return $this->_totals;
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -225,16 +244,10 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
         ) {
-                $registry->set('filter.published', 1);
-                $registry->set('filter.archived', 2);
+            $registry->set('filter.published', 1);
+            $registry->set('filter.archived', 2);
         }
 
-        $estart = TimeclockHelpersTimeclock::getUserParam("startDate");
-        $estart = empty($estart) ? 0 : TimeclockHelpersDate::fixDate($estart);
-        $registry->set('employment.start', $estart);
-        $eend = TimeclockHelpersTimeclock::getUserParam("endDate");
-        $eend = empty($eend) ? 0 : TimeclockHelpersDate::fixDate($eend);
-        $registry->set('employment.end', $eend);
         $date = TimeclockHelpersDate::fixDate(
             $app->input->get('date', date("Y-m-d"), "raw")
         );
@@ -307,7 +320,7 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
-        $query->select('DISTINCT t.timesheet_id,
+        $query->select('DISTINCT t.timesheet_id, t.user_id as worked_by,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
             as hours, t.worked, t.project_id, t.notes, z.user_id as user_id');
         $query->from('#__timeclock_timesheet as t');
@@ -318,7 +331,7 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
         $query->leftjoin('#__timeclock_projects as q on p.parent_id = q.project_id');
         $query->select('u.name as user');
         $query->leftjoin('#__timeclock_users as z on 
-            (z.user_id IS NOT NULL AND t.project_id = z.project_id)');
+            ((z.user_id = t.user_id OR p.type = "HOLIDAY") AND t.project_id = z.project_id)');
         $query->leftjoin('#__users as u on z.user_id = u.id');
         return $query;
     }
@@ -338,6 +351,8 @@ class TimeclockModelsPayroll extends TimeclockModelsSiteDefault
         $end   = $this->getState("payperiod.end");
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
+        $query->where($db->quoteName("p.type")." <> 'UNPAID'");
+        $query->order("t.worked asc");
 
         /*
         $query->where(
