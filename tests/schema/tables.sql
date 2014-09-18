@@ -19,6 +19,24 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_timesheet` (
   CONSTRAINT `project_id` UNIQUE (`project_id`,`user_id`,`worked`)
 );
 
+CREATE TABLE IF NOT EXISTS `jos_timeclock_reports` (
+  `report_id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `name` varchar(64) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  `startDate` date NOT NULL,
+  `endDate` date NOT NULL,
+  `type` varchar(16) NOT NULL,
+  `users` longtext NOT NULL,
+  `timesheets` longtext NOT NULL,
+  `projects` longtext NOT NULL,
+  `customers` longtext NOT NULL,
+  `departments` longtext NOT NULL,
+  `published` smallint(6) NOT NULL,
+  CONSTRAINT `date` UNIQUE (`startDate`,`endDate`,`type`)
+);
+
 CREATE TABLE IF NOT EXISTS `jos_timeclock_users` (
   `project_id` int(11) NOT NULL default '0',
   `user_id` int(11) NOT NULL default '0',

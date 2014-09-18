@@ -16,12 +16,12 @@
     $totals = (object)array("payperiod" => $this->payperiod, "totals" => $this->totals);
 ?>
 <div id="timeclock">
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="page-header">
         <h2 itemprop="name">
-            <a id="timeclocktop"><?php print JText::sprintf("COM_TIMECLOCK_PAYROLL", $user->name);?></a>
+            <a id="timeclocktop"><?php print JText::_("COM_TIMECLOCK_PAYROLL"); ?><?php print $this->payperiod->locked ? " (".JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED").")" : ""; ?></a>
         </h2>
     </div>
+    <?php print $this->_toolbar->render($this->payperiod); ?>
     <?php print $this->_nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
@@ -45,13 +45,15 @@
     $allproj = array();
     foreach ($this->users as $user_id => $user) {
         $user->payperiod = $this->payperiod;
-        $user->data = $this->data[$user_id];
+        $user->data = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
         print $this->_row->render($user);
     }
 ?>
             </tbody>
         </table>
     </div>
+<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" class="payroll">
+    <?php print JHTML::_("form.token"); ?>
 </form>
 <script type="text/JavaScript">
     jQuery( document ).ready(function() {

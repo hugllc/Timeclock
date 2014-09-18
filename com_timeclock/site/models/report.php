@@ -50,6 +50,8 @@ require_once __DIR__."/default.php";
  */
 class TimeclockModelsReport extends TimeclockModelsSiteDefault
 {    
+    /** This is where we cache our users */
+    private $_users = null;
     /** This is where we cache our projects */
     private $_projects = null;
     /** This is our percentage of holiday pay */
@@ -71,20 +73,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     public function listItems()
     {
-        $query = $this->_buildQuery();
-        $query = $this->_buildWhere($query);
-        $list = $this->_getList($query);
-        $this->listProjects();
-        $return = array();
-        foreach ($list as $row) {
-            $proj_id = (int)$row->project_id;
-            $cat_id  = (int)$row->cat_id;
-            $return[$proj_id] = isset($return[$proj_id]) ? $return[$proj_id] : array();
-            $this->checkTimesheet($row);
-            $this->checkTimesheetProject($row);
-            $return[$proj_id][$row->worked] = $row;
-        }
-        return $return;
+        return array();
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -178,6 +167,60 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $entry->nohours = 0;
         }
     }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param int $user_id The user to get the projects for
+    * 
+    * @return array An array of results.
+    */
+    public function listUsers()
+    {
+        if (is_null($this->_users)) {
+            $this->_users = TimeclockHelpersTimeclock::getUsers(0);
+        }
+        return $this->_users;
+    }
+    /**
+    * Stores the data given, or request data.
+    *
+    * @return JTable instance with data in it.
+    */
+    public function store()
+    {
+        $row = JTable::getInstance('TimeclockReports', 'Table');
+
+        if (!is_object($row)) {
+            return false;
+        }
+        $date = date("Y-m-d H:i:s");
+
+        $row->created_by = JFactory::getUser()->id;
+        $row->created    = $date;
+        $row->startDate  = $this->getState("start");
+        $row->endDate    = $this->getState("end");
+        $row->type       = $this->getState("type");
+        $row->users      = $this->listUsers();
+        $row->projects   = $this->listProjects();
+        $row->timesheets = $this->listItems();
+        
+        // Make sure the record is valid
+        if (!$row->check()) {
+            return false;
+        }
+    
+        if (!$row->store()) {
+            return false;
+        }
+        // Set our id for things after this.
+        if (empty($this->id) || (isset($this->id[0]) && empty($this->id[0]))) {
+            $key = $row->getKeyName();
+            $this->id = array($row->$key);
+        }
+        return $row;
+
+    }
+    
     /**
     * Method to auto-populate the model state.
     *

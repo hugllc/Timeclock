@@ -48,6 +48,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class TimeclockControllersDefault extends JControllerBase
 {
+    /** This is where we store our task */
+    private $_task = null;
     /**
     * This is the main function that executes everything.
     *
@@ -89,4 +91,27 @@ class TimeclockControllersDefault extends JControllerBase
         }
         return true;
     }
+    /**
+    * This function get the task for us
+    * 
+    * @return null
+    */
+    protected function getTask()
+    {
+        if (is_null($this->_task)) {
+            // Get the application
+            $app = $this->getApplication();
+            // Get the document object.
+            $document = JFactory::getDocument();
+            $task = $app->input->get('task', 'list');
+            $task = empty($task) ? 'list' : $task;
+            $task = ($task == "display") ? 'list' : $task;
+            if (strpos($task, ".")) {
+                list($controller, $task) = explode(".", $task);
+            }
+            $this->_task = $task;
+        }
+        return $this->_task;
+    }
+
 }

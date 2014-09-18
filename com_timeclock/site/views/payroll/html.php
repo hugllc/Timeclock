@@ -71,17 +71,16 @@ class TimeclockViewsPayrollHtml extends JViewHtml
             true
         );
 
-        $this->_header     = new JLayoutFile('header', __DIR__.'/layouts');
-        $this->_row        = new JLayoutFile('row', __DIR__.'/layouts');
-        $this->_totals     = new JLayoutFile('totals', __DIR__.'/layouts');
-        $this->_nextprev   = new JLayoutFile('nextprev', __DIR__.'/layouts');
-        $this->_category   = new JLayoutFile('category', __DIR__.'/layouts');
-        $this->_subtotals  = new JLayoutFile('subtotals', __DIR__.'/layouts');
-        $this->_psubtotals = new JLayoutFile('psubtotals', __DIR__.'/layouts');
+        $this->_header   = new JLayoutFile('header', __DIR__.'/layouts');
+        $this->_row      = new JLayoutFile('row', __DIR__.'/layouts');
+        $this->_totals   = new JLayoutFile('totals', __DIR__.'/layouts');
+        $this->_nextprev = new JLayoutFile('nextprev', __DIR__.'/layouts');
+        $this->_toolbar  = new JLayoutFile('toolbar', __DIR__.'/layouts');
 
-        $this->data   = $this->model->listItems();
-        $this->totals = $this->model->getTotals();
-        $this->users  = $this->model->listUsers();
+        $this->data     = $this->model->listItems();
+        $this->totals   = $this->model->getTotals();
+        $this->users    = $this->model->listUsers();
+        $this->projects = $this->model->listProjects();
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
             array(), 

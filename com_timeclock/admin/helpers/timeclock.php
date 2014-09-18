@@ -78,7 +78,9 @@ class TimeclockHelpersTimeclock
     {
         $modelClass = 'TimeclockModels'.ucfirst($model);
         $file = strtolower($model);
-        include_once dirname(__DIR__)."/models/".$file.".php";
+        if (!@include_once dirname(__DIR__)."/models/".$file.".php") {
+            @include_once JPATH_ROOT."/components/com_timeclock/models/".$file.".php";
+        }
         if (!class_exists($modelClass)) {
             include_once dirname(__DIR__)."/models/default.php";
             $modelClass = "TimeclockModelsDefault";

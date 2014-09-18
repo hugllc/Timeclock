@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-require_once __DIR__."/report.php";
+require_once __DIR__."/default.php";
 /**
  * Description Here
  *
@@ -46,7 +46,7 @@ require_once __DIR__."/report.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockControllersPayroll extends TimeclockControllersReport
+class TimeclockControllersReport extends TimeclockControllersDefault
 {
     /**
     * This function performs everything for this controller.  It is the goto 
@@ -100,24 +100,24 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     * 
     * @return null
     */
-    protected function taskLock()
+    protected function taskSave()
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = $this->getApplication();
-        $model = TimeclockHelpersTimeclock::getModel("payroll");
+        $model = TimeclockHelpersTimeclock::getModel("addhours");
 
-        if ($index = $model->lock()) {
+        if ($index = $model->store()) {
             $json = new JResponseJson(
-                $index, 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"),
+                get_object_vars($index), 
+                JText::_("COM_TIMECLOCK_HOURS_SAVED"),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
             $json = new JResponseJson(
                 array(), 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_LOCK_FAILED"),
+                JText::_("COM_TIMECLOCK_HOURS_FAILED"),
                 true,    // Error
                 false     // Ignore Message Queue
             );

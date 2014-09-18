@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
         <tr class="header">
-            <th rowspan="2" style="<?php print $cellStyle; ?>"><?php print JHTML::_('grid.sort', "COM_TIMECLOCK_EMPLOYEE", 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
+            <th rowspan="2"><?php print JHTML::_('grid.sort', "COM_TIMECLOCK_EMPLOYEE", 'u.name', @$this->lists['order_Dir'], @$this->lists['order']); ?><?php //print JText::_("Employee"); ?></td>
 <?php
 for ($w = 0; $w < $displayData->subtotals; $w++) {
     ?>
