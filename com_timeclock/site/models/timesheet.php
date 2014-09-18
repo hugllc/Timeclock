@@ -229,6 +229,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
         $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
+        $len = empty($len) ? 14 : $len;
         $start = TimeclockHelpersDate::fixedPayPeriodStart($startTime, $date, $len);
         $registry->set("payperiod.days", $len);
         $registry->set("payperiod.start", $start);
@@ -331,7 +332,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $end   = $this->getState("payperiod.end");
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
-        
+
         $query->where(
             "((".$db->quoteName("t.user_id")."=".$db->quote($this->_user->id)." AND "
             .$db->quoteName("p.type")."<>'HOLIDAY') OR ("

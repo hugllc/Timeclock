@@ -65,6 +65,7 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
             "Super User" => array(
                 array(
                     "id" => 2,
+                    "date" => "2014-09-10",
                 ), // Input array (Mocks $_REQUEST)
                 array(
                     "get.user.id"       => 42,
@@ -105,6 +106,7 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
             ),
             "Get All" => array(
                 array(
+                    "date" => "2014-09-10",
                 ), // Input array (Mocks $_REQUEST)
                 array(
                     "get.user.id"       => 44,
