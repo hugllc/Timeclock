@@ -105,9 +105,10 @@ table.timesheet td {
 table.timesheet td.hours, table.report td.hours {
     text-align: center;
 }
-table.timesheet td.subtotal, table.timesheet td.total,  table.report td.subtotal, table.report td.total{
+table.timesheet td.subtotal, table.timesheet td.total,  table.report td.subtotal, table.report td.total {
     text-align: center;
     font-weight: bold;
+    background-color: #EEE !important;
 }
 table.timesheet tr.holiday td.holiday {
     background-color: #8defd9;

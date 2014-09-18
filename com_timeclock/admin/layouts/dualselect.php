@@ -11,8 +11,8 @@
     $hidID    = 'hid_'.$displayData["id"];
     $inID     = $displayData["id"].'_in';
     $outID    = $displayData["id"].'_out';
-    $inName   = ($nameIsArray) ? str_replace("][]", "][in][]", $name) : $name."_in[]";
-    $outName  = ($nameIsArray) ? str_replace("][]", "][out][]", $name) : $name."_out[]";
+    $inName   = ($nameIsArray) ? str_replace("][]", "][in]", $name) : $name."_in[]";
+    $outName  = ($nameIsArray) ? str_replace("][]", "][out]", $name) : $name."_out[]";
 ?>
             <script type="text/javascript">
                 jQuery(document).ready(function() {
@@ -21,7 +21,7 @@
                         if (selectedOpts.length > 0) {
                             jQuery("#<?php print $selOutID; ?>").append(jQuery(selectedOpts).clone());
                             selectedOpts.each(function(ind, elem) {
-                                jQuery("#<?php print $hidID; ?>_"+parseInt(elem.value, 10)).prop("name", "<?php print $outID; ?>[]");
+                                jQuery("#<?php print $hidID; ?>_"+parseInt(elem.value, 10)).prop("name", "<?php print $outName; ?>[]");
                             });
                             jQuery(selectedOpts).remove();
                         }
@@ -33,7 +33,7 @@
                         if (selectedOpts.length > 0) {
                             jQuery("#<?php print $selInID; ?>").append(jQuery(selectedOpts).clone());
                             selectedOpts.each(function(ind, elem) {
-                                jQuery("#<?php print $hidID; ?>_"+parseInt(elem.value, 10)).prop("name", "<?php print $inID; ?>[]");
+                                jQuery("#<?php print $hidID; ?>_"+parseInt(elem.value, 10)).prop("name", "<?php print $inName; ?>[]");
                             });
                             jQuery(selectedOpts).remove();
                         }
@@ -80,7 +80,7 @@
     foreach (array($inName => "inOptions", $outName => "outOptions") as $id => $data) {
         foreach ($displayData[$data] as $key => $obj) {
             print '<input type="hidden" id="'.$hidID.'_'.(int)$key.'" ';
-            print 'name="'.$id.'" ';
+            print 'name="'.$id.'[]" ';
             print 'value="'.$obj->value.'" />';
             print "\n";
         }
