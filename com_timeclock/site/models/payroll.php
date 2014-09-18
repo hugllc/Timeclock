@@ -55,7 +55,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     /** This is our percentage of holiday pay */
     private $_holiday_perc = 1;
     /** This is where we store our totals */
-    private $_totals = array();
+    private $_totals = array(
+        "total" => 0,
+    );
     /**
     * The constructor
     */
@@ -130,6 +132,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                 }
                 $return[$user_id][$period]->subtotal += $row->hours;
                 $this->_totals[$period]->subtotal    += $row->hours;
+                $this->_totals["total"]              += $row->hours;
             }
         }
         return $return;

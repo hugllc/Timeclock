@@ -55,7 +55,7 @@
 </form>
 <script type="text/JavaScript">
     jQuery( document ).ready(function() {
-        Payroll.setup();
+        //Payroll.setup();
     });
     Payroll.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
     Payroll.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;

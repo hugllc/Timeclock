@@ -17,6 +17,6 @@ for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
                     <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
                 </th>
                 <td class="total">
-                    <span id="total">-</span>
+                    <span id="total"><?php print $displayData->totals["total"]; ?></span>
                 </td>
             </tr>
