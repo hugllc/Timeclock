@@ -227,6 +227,7 @@ class ComponentXmlTest extends PHPUnit_Framework_TestCase
             if (is_dir($dir."/".$file) && $recursive) {
                 if (substr($file, 0, 1) == ".") continue;
                 if (substr($file, 0, 4) == "test") continue;
+                if (substr($file, 0, 7) == "contrib") continue;
                 $filearray = array_merge($filearray, self::getFilesInDir($dir."/".$file, $recursive, $fakedir.$file));
                 $filearray[] = $fakedir.$file."/index.html";
             } else {
