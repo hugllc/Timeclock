@@ -150,7 +150,7 @@ class ComponentXmlTest extends PHPUnit_Framework_TestCase
         $xmlstr = file_get_contents($this->basedir."/".$this->xmlfile);
         $xml = new SimpleXMLElement($xmlstr);
         $version = trim((string)$xml["version"]);
-        $this->assertSame("2.5", substr($version, 0, 3));
+        $this->assertSame("3.1", substr($version, 0, 3));
     }
 
     /**
