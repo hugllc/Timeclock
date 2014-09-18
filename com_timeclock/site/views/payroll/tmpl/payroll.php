@@ -32,8 +32,8 @@
                 ); ?>
         </strong>
     </div>
-    <div class="">
-        <table class="timesheet">
+    <div class="table-responsive">
+        <table class="report table table-striped table-bordered table-hover table-condensed">
             <thead>
 <?php print $this->_header->render($this->payperiod); ?>
             </thead>

@@ -1,5 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
-            <tr class="subtotal">
+            <tr class="header">
                 <th>
                     <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
                 </th>

@@ -155,6 +155,10 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         if (TimeclockHelpersDate::afterEndDate($entry->worked, $entry->user_id)) {
             $entry->hours = 0;
         }
+        // Round the hours
+        $params = $this->getState("params");
+        $decimals = empty($params->decimalPlaces) ? 2 : $params->decimalPlaces;
+        $entry->hours = round($entry->hours, $decimals);
     }
     /**
     * Checks to make sure this project exists

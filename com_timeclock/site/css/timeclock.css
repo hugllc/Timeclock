@@ -72,11 +72,6 @@ table.timesheet thead tr.header th {
     height: 4em;
     background-color: #CCC;
 }
-table.timesheet thead tr.subheader th {
-    height: 1em;
-    background-color: #CCC;
-}
-
 table.timesheet tfoot tr.header th {
     vertical-align: top;
     padding: 1px;
@@ -107,16 +102,37 @@ table.timesheet tr.category th {
 table.timesheet td {
     padding: 0px;
 }
-table.timesheet td.hours {
+table.timesheet td.hours, table.report td.hours {
     text-align: center;
 }
-table.timesheet td.subtotal, table.timesheet td.total{
+table.timesheet td.subtotal, table.timesheet td.total,  table.report td.subtotal, table.report td.total{
     text-align: center;
     font-weight: bold;
 }
 table.timesheet tr.holiday td.holiday {
     background-color: #8defd9;
 }
+
+table.report thead tr.header th {
+    vertical-align: bottom;
+    padding: 1px;
+    text-align: center;
+    height: 2em;
+    background-color: #CCC;
+}
+table.report thead tr.subheader th {
+    height: 1em;
+    background-color: #CCC;
+}
+
+table.report tfoot tr.header th {
+    vertical-align: top;
+    padding: 1px;
+    text-align: center;
+    height: 2em;
+    background-color: #CCC;
+}
+
 #timeclock #addHoursTotal {
 position: fixed;
 left: 0px;
