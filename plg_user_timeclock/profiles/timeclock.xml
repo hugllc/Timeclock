@@ -68,6 +68,15 @@
                 required="true"
                     />
             <field
+                name="department"
+                type="timeclockdepartment"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_DEPARTMENT"
+                description="PLG_USER_TIMECLOCK_DEPARTMENT_DESC"
+                default="0"
+                required="true"
+                    />
+            <field
                 name="status"
                 type="TimeclockUserTypes"
                 class="inputbox"

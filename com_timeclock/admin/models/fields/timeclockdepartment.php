@@ -64,7 +64,13 @@ class JFormFieldTimeclockDepartment extends JFormField
             array("d.published=1"),
             "d.name ASC"
         );
-        $options = array();
+        $options = array(
+            JHTML::_(
+                'select.option', 
+                0, 
+                JText::_("JNONE")
+            )
+        );
         foreach ($depts as $value) {
             $options[] = JHTML::_(
                 'select.option', 

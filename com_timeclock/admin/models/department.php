@@ -35,6 +35,8 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+require_once __DIR__."/default.php";
+
 /**
  * Description Here
  *

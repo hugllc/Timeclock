@@ -34,6 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+require_once __DIR__."/default.php";
 
 /**
  * Description Here
