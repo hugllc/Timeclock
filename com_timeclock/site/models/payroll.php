@@ -50,8 +50,6 @@ require_once __DIR__."/report.php";
  */
 class TimeclockModelsPayroll extends TimeclockModelsReport
 {    
-    /** This is where we cache our users */
-    private $_users = null;
     /** This is our percentage of holiday pay */
     private $_holiday_perc = 1;
     /** This is where we store our totals */
@@ -66,6 +64,35 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $app = JFactory::getApplication();
         $this->_user = JFactory::getUser();
         parent::__construct(); 
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
+    public function lock()
+    {
+        $next = $this->getState("payperiod.next");
+        // Get the params and set the new values
+        $params = JComponentHelper::getParams('com_timeclock');
+        $params->set('payperiodCutoff', $next);
+
+        // Get a new database query instance
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+
+        // Build the query
+        $query->update('#__extensions AS a');
+        $query->set('a.params = ' . $db->quote((string)$params));
+        $query->where('a.element = "com_timeclock"');
+
+        // Execute the query
+        $db->setQuery($query);
+        $db->query();
+        
+        $set = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
+        error_log($set);
+        return $set == $next;
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -187,37 +214,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     * 
     * @return array An array of results.
     */
-    public function listUsers()
-    {
-        if (is_null($this->_users)) {
-            $this->_users = TimeclockHelpersTimeclock::getUsers(0);
-        }
-        return $this->_users;
-    }
-    /**
-    * Build query and where for protected _getList function and return a list
-    *
-    * @param int $user_id The user to get the projects for
-    * 
-    * @return array An array of results.
-    */
     public function getTotals()
     {
         return $this->_totals;
-    }
-    /**
-    * Build query and where for protected _getList function and return a list
-    *
-    * @param int $user_id The user to get the projects for
-    * 
-    * @return array An array of results.
-    */
-    private function _checkProject(&$entry)
-    {
-        $entry->nohours = 1;
-        if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID")) {
-            $entry->nohours = 0;
-        }
     }
     /**
     * Method to auto-populate the model state.
@@ -261,17 +260,21 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $date = empty($date) ?  date("Y-m-d") : $date;
         $registry->set('date', $date);
         
+        $registry->set('type', "payroll");
+        
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
         $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
         $start = TimeclockHelpersDate::fixedPayPeriodStart($startTime, $date, $len);
         $registry->set("payperiod.days", $len);
         $registry->set("payperiod.start", $start);
+        $registry->set("start", $start);
         $s = TimeclockHelpersDate::explodeDate($start);
         $end = TimeclockHelpersDate::dateUnix(
             $s["m"], $s["d"]+$len-1, $s["y"]
         );
         $registry->set("payperiod.end", date("Y-m-d", $end));
+        $registry->set("end", date("Y-m-d", $end));
         $next = TimeclockHelpersDate::dateUnix(
             $s["m"], $s["d"]+$len, $s["y"]
         );
@@ -284,11 +287,12 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
+        $locked = TimeclockHelpersDate::compareDates($cutoff, $next) >= 0;
+        $registry->set("payperiod.locked", $locked);
+
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
         foreach ($dates as $date => &$value) {
-            $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
-            $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
-            $value = $here && $valid;
+            $value = true;
         }
         $registry->set("payperiod.dates", $dates);
         
@@ -361,20 +365,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $query->where($db->quoteName("p.type")." <> 'UNPAID'");
         $query->order("t.worked asc");
 
-        /*
-        $query->where(
-            "((".$db->quoteName("t.user_id")."=".$db->quote($this->_user->id)." AND "
-            .$db->quoteName("p.type")."<>'HOLIDAY') OR ("
-            .$db->quoteName("z.user_id")."=".$db->quote($this->_user->id)." AND "
-            .$db->quoteName("p.type")."='HOLIDAY'))"
-        );
-        $start = $this->getState("employment.start");
-        $query->where($db->quoteName("t.worked").">=".$db->quote($start));
-        $end = $this->getState("employment.end");
-        if (!empty($end)) {
-            $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
-        }
-        */
         return $query;
     }
     /**

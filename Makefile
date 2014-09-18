@@ -12,7 +12,7 @@ all: check copy_from_dev
 copy_from_dev: check copy-com_timeclock copy-mod_timeclockinfo copy-plg_user_timeclock
 
 copy-com_timeclock:
-	rsync -av --delete --exclude="contrib/*" ${SRC}/com_timeclock/site/* ${DEST}/components/com_timeclock/
+	rsync -av --delete --include="contrib/index.html" --exclude="contrib/*" ${SRC}/com_timeclock/site/* ${DEST}/components/com_timeclock/
 	rsync -av --delete ${SRC}/com_timeclock/admin/* ${DEST}/administrator/components/com_timeclock/
 	rsync -av ${SRC}/com_timeclock/admin/languages/en-GB/* ${DEST}/administrator/language/en-GB/
 	rsync -av ${SRC}/com_timeclock/site/languages/en-GB/* ${DEST}/language/en-GB/

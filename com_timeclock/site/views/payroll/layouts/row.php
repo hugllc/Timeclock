@@ -2,6 +2,7 @@
     defined('_JEXEC') or die('Restricted access'); 
     $name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
     $total = 0;
+    $user_id = $displayData->id;
 ?>
             <tr class="employee">
                 <th>
@@ -9,7 +10,7 @@
                 </th>
 <?php
 for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
-    $class    = "user-".$w."-".$displayData->user_id;
+    $class    = "user-".$w."-".$user_id;
     $worked   = 0;
     $pto      = 0;
     $holiday  = 0;
@@ -23,16 +24,16 @@ for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
     $total   += $subtotal;
     ?>
             <td class="hours">
-                <span id="hours-<?php print $displayData->user_id."-".$w; ?>" class="worked-<?php print $w; ?> <?php print $class;?>"><?php print $worked; ?></span>
+                <span id="hours-<?php print $user_id."-".$w; ?>" class="worked-<?php print $w; ?> <?php print $class;?>"><?php print $worked; ?></span>
             </td>
             <td class="hours">
-                <span id="pto-<?php print $displayData->user_id."-".$w; ?>" class="pto-<?php print $w; ?> <?php print $class;?>"><?php print $pto; ?></span>
+                <span id="pto-<?php print $user_id."-".$w; ?>" class="pto-<?php print $w; ?> <?php print $class;?>"><?php print $pto; ?></span>
             </td>
             <td class="hours">
-                <span id="holiday-<?php print $displayData->user_id."-".$w; ?>" class="holiday-<?php print $w; ?> <?php print $class;?>"><?php print $holiday; ?></span>
+                <span id="holiday-<?php print $user_id."-".$w; ?>" class="holiday-<?php print $w; ?> <?php print $class;?>"><?php print $holiday; ?></span>
             </td>
             <td class="subtotal">
-                <span id="subtotal-<?php print $displayData->user_id."-".$w; ?>" class="subtotal-<?php print $w."-".$displayData->user_id; ?>"><?php print $subtotal; ?></span>
+                <span id="subtotal-<?php print $user_id."-".$w; ?>" class="subtotal-<?php print $w."-".$user_id; ?>"><?php print $subtotal; ?></span>
             </td>
     <?php
 }
@@ -41,7 +42,7 @@ for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
                     <?php print $name ?>
                 </th>
                 <td class="total">
-                    <span id="total-<?php print $displayData->user_id?>"><?php print $total; ?></span>
+                    <span id="total-<?php print $user_id?>"><?php print $total; ?></span>
                 </td>
             </tr>
             
