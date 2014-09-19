@@ -94,6 +94,7 @@ class TimeclockViewsPayrollCsv extends JViewHtml
     {
         $return = $this->_header().PHP_EOL;
         foreach ($users as $user_id => $user) {
+            $user = (object)$user;
             $user->data = isset($data[$user_id]) ? $data[$user_id] : array();
             $return .= $this->_row($user).PHP_EOL;
         }
