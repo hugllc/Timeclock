@@ -40,7 +40,7 @@ for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
 }
 ?>
                 <th>
-                    <?php print $name ?>
+                    <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
                 </th>
                 <td class="total">
                     <span id="total-<?php print $user_id?>"><?php print $total; ?></span>
