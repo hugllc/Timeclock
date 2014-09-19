@@ -81,6 +81,7 @@ class TimeclockViewsPayrollHtml extends JViewHtml
         $this->totals   = $this->model->getTotals();
         $this->users    = $this->model->listUsers();
         $this->projects = $this->model->listProjects();
+        $this->report   = $this->model->getReport();
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
             array(), 

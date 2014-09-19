@@ -1,5 +1,34 @@
 // Only define the Joomla namespace if not defined.
 var Payroll = {
+    setup: function ()
+    {
+        this.setLocked(Payroll.payperiod.locked);
+        this.setReport(true);
+    },
+    setLocked: function (locked)
+    {
+        if (locked) {
+            jQuery("#timeclock .locked").show();
+            jQuery("#timeclock .notlocked").hide();
+        } else {
+            jQuery("#timeclock .locked").hide();
+            jQuery("#timeclock .notlocked").show();
+        }
+    },
+    setReport: function (live)
+    {
+        if (this.doreports) {
+            if (live) {
+                jQuery("#timeclock .livedata").show();
+                jQuery("#timeclock .reportdata").hide();
+            } else {
+                jQuery("#timeclock .livedata").hide();
+                jQuery("#timeclock .reportdata").show();
+            }
+        } else {
+            jQuery("#timeclock .noreport").hide();
+        }
+    },
     lock: function ()
     {
         var self = this;
@@ -12,6 +41,7 @@ var Payroll = {
             {
                 if ( ret.success ){
                     Joomla.renderMessages({'success': [ret.message]});
+                    self.setLocked(true);
                 } else {
                     Joomla.renderMessages({'error': [ret.message]});
                 }
@@ -35,6 +65,8 @@ var Payroll = {
             {
                 if ( ret.success ){
                     Joomla.renderMessages({'success': [ret.message]});
+                    self.doreports = 1;
+                    self.setReport(true);
                 } else {
                     Joomla.renderMessages({'error': [ret.message]});
                 }

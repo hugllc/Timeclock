@@ -110,6 +110,7 @@ class TimeclockHelpersTimeclock
         $rows = $db->loadObjectList();
         foreach ($rows as $row) {
             if ((bool)self::getUserParam("active", $row->id)) {
+                $row->params = is_string($row->params) ? json_decode($row->params, true) : $row->params;
                 $ret[$row->id] = $row;
             }
         }

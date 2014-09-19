@@ -18,7 +18,9 @@
 <div id="timeclock">
     <div class="page-header">
         <h2 itemprop="name">
-            <a id="timeclocktop"><?php print JText::_("COM_TIMECLOCK_PAYROLL"); ?><?php print $this->payperiod->locked ? " (".JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED").")" : ""; ?></a>
+            <a id="timeclocktop"></a>
+            <?php print JText::_("COM_TIMECLOCK_PAYROLL"); ?>
+             <span class="locked">(<?php print JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>)</span>
         </h2>
     </div>
     <?php print $this->_toolbar->render($this->payperiod); ?>
@@ -38,14 +40,23 @@
 <?php print $this->_header->render($this->payperiod); ?>
             </thead>
             <tfoot>
-<?php print $this->_totals->render($totals); ?>
+<?php 
+    print $this->_totals->render($totals); 
+?>
             </tfoot>
             <tbody>
 <?php 
-    $allproj = array();
     foreach ($this->users as $user_id => $user) {
         $user->payperiod = $this->payperiod;
         $user->data = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
+        $user->rowClass = "livedata";
+        print $this->_row->render($user);
+    }
+    foreach ((array)$this->report->users as $user_id => $user) {
+        $user = (object)$user;
+        $user->payperiod = $this->payperiod;
+        $user->data = isset($this->report->timesheets[$user_id]) ? $this->report->timesheets[$user_id] : array();
+        $user->rowClass = "reportdata";
         print $this->_row->render($user);
     }
 ?>
@@ -57,7 +68,7 @@
 </form>
 <script type="text/JavaScript">
     jQuery( document ).ready(function() {
-        //Payroll.setup();
+        Payroll.setup();
     });
     Payroll.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
     Payroll.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
@@ -65,7 +76,14 @@
     Payroll.projects     = <?php print json_encode($this->projects); ?>;
     Payroll.payperiod    = <?php print json_encode($this->payperiod); ?>;
     Payroll.data         = <?php print json_encode($this->data); ?>;
-    Timeclock.params     = <?php print json_encode($this->params); ?>
+    Payroll.report       = {
+        "projects": <?php print json_encode($this->report->projects); ?>,
+        "users": <?php print json_encode($this->report->users); ?>,
+        "data": <?php print json_encode($this->report->timesheets); ?>,
+    };
+    Payroll.doreports = <?php print (int)($this->report->report_id != 0); ?>;
+    Timeclock.params     = <?php print json_encode($this->params); ?>;
+    
 
 </script>
 </div>

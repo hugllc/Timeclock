@@ -4,7 +4,7 @@
     $total = 0;
     $user_id = $displayData->id;
 ?>
-            <tr class="employee">
+            <tr class="employee <?php print $displayData->rowClass; ?>">
                 <th>
                     <?php print $name ?>
                 </th>
@@ -16,10 +16,11 @@ for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
     $holiday  = 0;
     $subtotal = 0;
     if (isset($displayData->data[$w])) {
-        $worked   = $displayData->data[$w]->worked;
-        $pto      = $displayData->data[$w]->pto;
-        $holiday  = $displayData->data[$w]->holiday;
-        $subtotal = $displayData->data[$w]->subtotal;
+        $data = (object)$displayData->data[$w];
+        $worked   = $data->worked;
+        $pto      = $data->pto;
+        $holiday  = $data->holiday;
+        $subtotal = $data->subtotal;
     }
     $total   += $subtotal;
     ?>
