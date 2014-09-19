@@ -40,7 +40,7 @@
         print $this->_export->render(
             (object)array(
                 "url" => JRoute::_('&option=com_timeclock&controller=payroll&date='.$this->payperiod->start),
-                "export" => array("CSV" => "csv"),
+                "export" => $this->export,
             )
         ); 
     ?>
