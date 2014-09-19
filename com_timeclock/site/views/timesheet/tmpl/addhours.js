@@ -111,6 +111,8 @@ var Addhours = {
                     for (key in data.data) {
                         fieldset.find('[name="'+key+'"]').val(data.data[key]);
                     }
+                    // Set the complete flag to 0
+                    Timesheet.setComplete(0);
                     self.message(elem.project_id, data.message, "success");
                     fieldset.find('[name="notes"]').off("keypress", self.validateNotes);
                     self.count++;

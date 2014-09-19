@@ -19,7 +19,7 @@ $prevImg = '<a href="'.$url.'">'.$text.'</a>';
 $prev = '<a href="'.$url.'">'.JText::_("JPREVIOUS").'</a>';
 
 ?>
-<div class="row-fluid">
+<div class="row-fluid" style="clear: both;">
     <div align="left" class="pull-left nextprev span3">
         <?php print $prevImg; ?><span><?php print $prev; ?></span>
     </div>

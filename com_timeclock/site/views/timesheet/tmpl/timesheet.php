@@ -19,12 +19,14 @@
     
 ?>
 <div id="timeclock">
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" autocomplete="off">
     <div class="page-header">
         <h2 itemprop="name">
-            <a id="timeclocktop"><?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $user->name);?></a>
+            <a id="timeclocktop"></a>
+            <?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $user->name);?>
+            <span class="complete">(<?php print JText::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
         </h2>
     </div>
+    <?php print $this->_toolbar->render($this->payperiod); ?>
     <?php print $this->_nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
@@ -71,19 +73,21 @@
             </tbody>
         </table>
     </div>
-</form>
-<script type="text/JavaScript">
-    jQuery( document ).ready(function() {
-        Timesheet.setup();
-        Addhours.setup();
-    });
-    Timesheet.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
-    Timesheet.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
-    Timesheet.allprojs     = <?php print json_encode($allproj); ?>;
-    Timesheet.projects     = <?php print json_encode($this->projects); ?>;
-    Timesheet.payperiod    = <?php print json_encode($this->payperiod); ?>;
-    Timesheet.data         = <?php print json_encode($this->data); ?>;
-    Timeclock.params       = <?php print json_encode($this->params); ?>
+    <form action="<?php JROUTE::_("index.php"); ?>" method="post" class="timesheet">
+        <?php print JHTML::_("form.token"); ?>
+    </form>
+    <script type="text/JavaScript">
+        jQuery( document ).ready(function() {
+            Timesheet.setup();
+            Addhours.setup();
+        });
+        Timesheet.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
+        Timesheet.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
+        Timesheet.allprojs     = <?php print json_encode($allproj); ?>;
+        Timesheet.projects     = <?php print json_encode($this->projects); ?>;
+        Timesheet.payperiod    = <?php print json_encode($this->payperiod); ?>;
+        Timesheet.data         = <?php print json_encode($this->data); ?>;
+        Timeclock.params       = <?php print json_encode($this->params); ?>
 
-</script>
+    </script>
 </div>
