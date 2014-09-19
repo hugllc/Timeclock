@@ -52,9 +52,16 @@ jimport('joomla.application.component.view');
  */
 class TimeclockViewsPayrollBase extends JViewBase
 {
-    /** This is our output */
-    protected $output = "";
-    
+    /** This is our mime type */
+    protected $mimetype = "text/html";
+    /** This is our file extension */
+    protected $fileext  = "html";
+    /** This is our PHPExcel object */
+    protected $phpexcel;
+    /** This is the line we are currently on */
+    protected $line = 1;
+    /** This is maximum column */
+    protected $maxCol = "A";
     /**
     * Renders this view
     *
@@ -104,12 +111,53 @@ class TimeclockViewsPayrollBase extends JViewBase
         $this->totals($data["totals"]);
     }
     /**
-    * This sets up our format
+    * This prints out a row in the file
+    *
+    * @param string $file The filename to use
     *
     * @return null
     */
     protected function setup($file)
     {
+        $user = JFactory::getUser();
+        include_once JPATH_COMPONENT.'/contrib/phpexcel/PHPExcel.php';
+        // Create new PHPExcel object
+        $this->phpexcel = new PHPExcel();
+        // Set document properties
+        $payroll = JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $this->payperiod->start, $this->payperiod->end);
+        $this->phpexcel->getProperties()->setCreator($user->name)
+            ->setLastModifiedBy($user->name)
+            ->setTitle($payroll)
+            ->setSubject($payroll)
+            ->setKeywords(JText::_("COM_TIMECLOCK_PAYROLL"));
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: '.$this->mimetype);
+        header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        
+        // Rename worksheet
+        $this->phpexcel->getActiveSheet()->setTitle($this->payperiod->start);
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $this->phpexcel->setActiveSheetIndex(0);
+
+    }
+    /**
+    * This prints out a row in the file
+    *
+    * @return null
+    */
+    protected function finalize()
+    {
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter->setPreCalculateFormulas(true);
+        $objWriter->save('php://output');
     }
     /**
     * This prints out a row in the file
@@ -120,7 +168,36 @@ class TimeclockViewsPayrollBase extends JViewBase
     */
     protected function row($data)
     {
-        return "";
+        $col = "A";
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
+        $total = array();
+        for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
+            $worked   = 0;
+            $pto      = 0;
+            $holiday  = 0;
+            if (isset($data->data[$w])) {
+                $d        = (object)$data->data[$w];
+                $worked   = $d->worked;
+                $pto      = $d->pto;
+                $holiday  = $d->holiday;
+            }
+            $col = $this->nextCol($col);
+            $subtotal = $col.$this->line;
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $worked);
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $pto);
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $holiday);
+            $subtotal .= ":".$col.$this->line;
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM($subtotal)");
+            $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
+            $total[] = $col.$this->line;
+        }
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
+        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
+        $this->line++;
     }
     /**
     * This prints out a row in the file
@@ -131,7 +208,14 @@ class TimeclockViewsPayrollBase extends JViewBase
     */
     protected function totals($data)
     {
-        return "";
+        $col = "A";
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
+        $end = $this->line - 1;
+        foreach (range("B", $this->maxCol) as $col) {
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
+        }
+        $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
+        $this->line++;
     }
     /**
     * This prints out a header row in the file
@@ -140,18 +224,39 @@ class TimeclockViewsPayrollBase extends JViewBase
     */
     protected function header()
     {
-        return "";
+        $col = "A";
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_EMPLOYEE"));
+        
+        for ($w = 1; $w <= $this->payperiod->subtotals; $w++) {
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_WORKED"));
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_PTO"));
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_HOLIDAY"));
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_SUBTOTAL"));
+        }
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
+        foreach(range('A',$col) as $columnID) {
+            $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $this->maxCol = $col;
+        $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
+        $this->line++;
     }
     /**
-    * This prints out a row in the file
+    * This gets the next column
     *
-    * @param array $data
+    * @param array $col The current column
     *
-    * @return string The row created
+    * @return string The next column
     */
-    protected function quote($data)
+    protected function nextCol($col)
     {
-        return '"'.$data.'"';
+        $next = chr(ord($col) + 1);
+        return $next;
     }
 }
 ?>

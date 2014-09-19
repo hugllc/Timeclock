@@ -39,6 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 /** Import the views */
 jimport('joomla.application.component.view');
 
+require __DIR__."/base.php";
 /**
  * HTML View class for the ComTimeclockWorld Component
  *
@@ -50,49 +51,22 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsPayrollHtml extends JViewHtml
+class TimeclockViewsPayrollXlsx extends TimeclockViewsPayrollBase
 {
+    /** This is our mime type */
+    protected $mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    /** This is our file extension */
+    protected $fileext  = "xlsx";
     /**
-    * Renders this view
+    * This prints out a row in the file
     *
-    * @return unknown
+    * @return null
     */
-    function render()
+    protected function finalize()
     {
-        $app = JFactory::getApplication();
-        $layout = $this->getLayout();
-        
-        $this->params    = JComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->model->getState('payperiod');
-
-        JHTML::stylesheet(
-            JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
-        );
-
-        $this->_header   = new JLayoutFile('header', __DIR__.'/layouts');
-        $this->_row      = new JLayoutFile('row', __DIR__.'/layouts');
-        $this->_totals   = new JLayoutFile('totals', __DIR__.'/layouts');
-        $this->_nextprev = new JLayoutFile('nextprev', __DIR__.'/layouts');
-        $this->_toolbar  = new JLayoutFile('toolbar', __DIR__.'/layouts');
-        $this->_export   = new JLayoutFile('export', dirname(__DIR__).'/layouts');
-
-        $this->data     = $this->model->listItems();
-        $this->users    = $this->model->listUsers();
-        $this->projects = $this->model->listProjects();
-        $this->report   = $this->model->getReport();
-        $this->export   = array(
-            "CSV" => "csv",
-            "Excel 2007" => "xlsx",
-        );
-        JHTML::stylesheet(
-            JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
-        );
-
-        return parent::render();
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter->setPreCalculateFormulas(true);
+        $objWriter->save('php://output');
     }
 }
 ?>

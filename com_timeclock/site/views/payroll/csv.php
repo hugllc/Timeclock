@@ -53,19 +53,10 @@ require __DIR__."/base.php";
  */
 class TimeclockViewsPayrollCsv extends TimeclockViewsPayrollBase
 {
-    /**
-    * This prints out a row in the file
-    *
-    * @param string $file The filename to use
-    *
-    * @return null
-    */
-    protected function setup($file)
-    {
-        header('Content-Type: text/csv; charset=utf-8', true);
-        header('Content-Disposition: attachment;filename="'.$file.'.csv"', true);
-        $this->output = "";
-    }
+    /** This is our mime type */
+    protected $mimetype = "text/csv";
+    /** This is our file extension */
+    protected $fileext  = "csv";
     /**
     * This prints out a row in the file
     *
@@ -73,98 +64,13 @@ class TimeclockViewsPayrollCsv extends TimeclockViewsPayrollBase
     */
     protected function finalize()
     {
-    }
-    /**
-    * This prints out a row in the file
-    *
-    * @param array $data The data for this row
-    *
-    * @return string The row created
-    */
-    protected function row($data)
-    {
-        $this->output .= $this->quote(empty($data->name) ? "User ".$data->user_id : $data->name);
-        $total  = 0;
-        for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
-            $worked   = 0;
-            $pto      = 0;
-            $holiday  = 0;
-            $subtotal = 0;
-            if (isset($data->data[$w])) {
-                $d        = (object)$data->data[$w];
-                $worked   = $d->worked;
-                $pto      = $d->pto;
-                $holiday  = $d->holiday;
-                $subtotal = $d->subtotal;
-            }
-            $total   += $subtotal;
-            $this->output .= ",".$worked;
-            $this->output .= ",".$pto;
-            $this->output .= ",".$holiday;
-            $this->output .= ",".$subtotal;
-        }
-        $this->output .= ",".$total;
-        $this->output .= PHP_EOL;
-    }
-    /**
-    * This prints out a row in the file
-    *
-    * @param array $data The data for this row
-    *
-    * @return string The row created
-    */
-    protected function totals($data)
-    {
-        $this->output .= $this->quote(JText::_("COM_TIMECLOCK_TOTAL"));
-        $total  = 0;
-        for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
-            $worked   = 0;
-            $pto      = 0;
-            $holiday  = 0;
-            $subtotal = 0;
-            if (isset($data[$w])) {
-                $d        = (object)$data[$w];
-                $worked   = $d->worked;
-                $pto      = $d->pto;
-                $holiday  = $d->holiday;
-                $subtotal = $d->subtotal;
-            }
-            $total   += $subtotal;
-            $this->output .= ",".$worked;
-            $this->output .= ",".$pto;
-            $this->output .= ",".$holiday;
-            $this->output .= ",".$subtotal;
-        }
-        $this->output .= ",".$total;
-        $this->output .= PHP_EOL;
-    }
-    /**
-    * This prints out a header row in the file
-    *
-    * @return string The header row created
-    */
-    protected function header()
-    {
-        $this->output .= $this->quote(JText::_("COM_TIMECLOCK_EMPLOYEE"));
-        for ($w = 1; $w <= $this->payperiod->subtotals; $w++) {
-            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_WORKED"));
-            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_PTO"));
-            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_HOLIDAY"));
-            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_SUBTOTAL"));
-        }
-        $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_TOTAL"));
-        $this->output .= PHP_EOL;
-    }
-    /**
-    * This prints out a row in the file
-    *
-    * @param array $data
-    *
-    * @return string The row created
-    */
-    protected function quote($data)
-    {
-        return '"'.$data.'"';
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'CSV')
+                                                    ->setDelimiter(',')
+                                                    ->setEnclosure('"')
+                                                    ->setLineEnding("\r\n")
+                                                    ->setSheetIndex(0);
+        $objWriter->setPreCalculateFormulas(true);
+        $objWriter->save('php://output');
     }
 }
 ?>

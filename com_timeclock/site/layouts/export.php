@@ -1,5 +1,6 @@
 <?php
     defined( '_JEXEC' ) or die( 'Restricted access' );
+    $sep = "";
 ?>
 <div class="export">
     <iframe src="about:blank" style="display: none;"></iframe>
@@ -15,6 +16,7 @@
     <?php print JText::_("COM_TIMECLOCK_EXPORT_TO"); ?>:
     <?php foreach ($displayData->export as $name => $format) : ?>
         <span>
+            <?php print $sep; $sep = " | "; ?>
             <a href="javascript:void(0)" onClick="doReportExport('<?php print $format; ?>');"><?php print $name; ?></a>
         </span>
     <?php endforeach; ?>
