@@ -1,6 +1,7 @@
 <?php
     defined( '_JEXEC' ) or die( 'Restricted access' );
     $sep = "";
+    if (file_exists(JPATH_COMPONENT.'/contrib/phpexcel/PHPExcel.php')):
 ?>
 <div class="export">
     <iframe src="about:blank" style="display: none;"></iframe>
@@ -21,3 +22,4 @@
         </span>
     <?php endforeach; ?>
 </div>
+<?php endif; ?>
