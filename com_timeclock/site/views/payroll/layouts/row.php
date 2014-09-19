@@ -1,12 +1,12 @@
 <?php 
     defined('_JEXEC') or die('Restricted access'); 
+    $user_id = $displayData->id;
     $name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
     $total = 0;
-    $user_id = $displayData->id;
 ?>
             <tr class="employee <?php print $displayData->rowClass; ?>">
                 <th>
-                    <?php print $name ?>
+                    <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
                 </th>
 <?php
 for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {

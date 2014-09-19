@@ -135,11 +135,21 @@ table.report tfoot tr.header th {
 }
 
 #timeclock #addHoursTotal {
-position: fixed;
-left: 0px;
-top: 0px;
-background: white;
-color: black;
-border: 3px solid black;
-padding: .5em;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background: white;
+    color: black;
+    border: 3px solid black;
+    padding: .5em;
+}
+.hidden {
+    display: none;
+}
+.notes .noteheader {
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+.notes .note {
+    padding-left:  4em;
 }

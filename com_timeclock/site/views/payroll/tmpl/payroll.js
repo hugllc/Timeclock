@@ -7,6 +7,7 @@ var Payroll = {
         if (!this.payperiod.unlock) {
             jQuery("#timeclock .unlock").hide();
         }
+        jQuery("#timeclock .notes").hide();
     },
     setLocked: function (locked)
     {

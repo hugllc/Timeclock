@@ -96,8 +96,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $query = $this->_buildWhere($query);
         $list = $this->_getList($query);
         $this->listUsers();
-        $return = array("totals" => array("total" => 0));
         $worked = array();
+        $notes  = array();
         foreach ($list as $row) {
             $worked[$row->worked][] = $row;
         }
@@ -105,6 +105,10 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $split = $this->getState("payperiod.splitdays");
         $period = -1;
         $days   = 0;
+        $return = array(
+            "totals" => array("total" => 0),
+            "notes"  => $notes
+        );
         foreach (array_keys($dates) as $date) {
             if (($days++ % $split) == 0) {
                 $period++;
@@ -151,8 +155,18 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                 $return[$user_id][$period]->subtotal += $row->hours;
                 $return["totals"][$period]->subtotal    += $row->hours;
                 $return["totals"]["total"]              += $row->hours;
+                
+                // Get the notes
+                $notes[$user_id] = isset($notes[$user_id]) ? $notes[$user_id] : array();
+                $notes[$user_id][$row->project_id] = isset($notes[$user_id][$row->project_id]) ? $notes[$user_id][$row->project_id] : array(
+                    "project_id" => $row->project_id,
+                    "project_name" => $row->project,
+                    "worked" => array(),
+                );
+                $notes[$user_id][$row->project_id]["worked"][$row->worked] = $row;
             }
         }
+        $return["notes"] = $notes;
         return $return;
     }
     /**
