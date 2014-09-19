@@ -73,25 +73,17 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     public function lock()
     {
         $next = $this->getState("payperiod.next");
-        // Get the params and set the new values
-        $params = JComponentHelper::getParams('com_timeclock');
-        $params->set('payperiodCutoff', $next);
-
-        // Get a new database query instance
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-
-        // Build the query
-        $query->update('#__extensions AS a');
-        $query->set('a.params = ' . $db->quote((string)$params));
-        $query->where('a.element = "com_timeclock"');
-
-        // Execute the query
-        $db->setQuery($query);
-        $db->query();
-        
-        $set = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
-        return $set == $next;
+        return $this->setParam("payperiodCutoff", $next);
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
+    public function unlock()
+    {
+        $start = $this->getState("payperiod.start");
+        return $this->setParam("payperiodCutoff", $start);
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -104,7 +96,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $query = $this->_buildWhere($query);
         $list = $this->_getList($query);
         $this->listUsers();
-        $return = array();
+        $return = array("totals" => array("total" => 0));
         $worked = array();
         foreach ($list as $row) {
             $worked[$row->worked][] = $row;
@@ -117,8 +109,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             if (($days++ % $split) == 0) {
                 $period++;
             }
-            if (!isset($this->_totals[$period])) {
-                $this->_totals[$period] = (object)array(
+            if (!isset($return["totals"][$period])) {
+                $return["totals"][$period] = (object)array(
                     "worked"   => 0,
                     "pto"      => 0,
                     "holiday"  => 0,
@@ -145,20 +137,20 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                 switch ($row->project_type) {
                 case "HOLIDAY":
                     $return[$user_id][$period]->holiday += $row->hours;
-                    $this->_totals[$period]->holiday    += $row->hours;
+                    $return["totals"][$period]->holiday    += $row->hours;
                     break;
                 case "PTO":
                     $return[$user_id][$period]->pto += $row->hours;
-                    $this->_totals[$period]->pto    += $row->hours;
+                    $return["totals"][$period]->pto    += $row->hours;
                     break;
                 default:
                     $return[$user_id][$period]->worked += $row->hours;
-                    $this->_totals[$period]->worked    += $row->hours;
+                    $return["totals"][$period]->worked    += $row->hours;
                     break;
                 }
                 $return[$user_id][$period]->subtotal += $row->hours;
-                $this->_totals[$period]->subtotal    += $row->hours;
-                $this->_totals["total"]              += $row->hours;
+                $return["totals"][$period]->subtotal    += $row->hours;
+                $return["totals"]["total"]              += $row->hours;
             }
         }
         return $return;
@@ -207,17 +199,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         }
     }
     /**
-    * Build query and where for protected _getList function and return a list
-    *
-    * @param int $user_id The user to get the projects for
-    * 
-    * @return array An array of results.
-    */
-    public function getTotals()
-    {
-        return $this->_totals;
-    }
-    /**
     * Method to auto-populate the model state.
     *
     * This method should only be called once per instantiation and is designed
@@ -237,7 +218,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
 
         $app = JFactory::getApplication();
         $registry = $this->loadState();
-        
+
+        $user = JFactory::getUser();
 
         $date = TimeclockHelpersDate::fixDate(
             $app->input->get('date', date("Y-m-d"), "raw")
@@ -276,6 +258,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
 
         $locked = TimeclockHelpersDate::compareDates($cutoff, $next) >= 0;
         $registry->set("payperiod.locked", $locked);
+
+        $unlock = TimeclockHelpersDate::compareDates($cutoff, $next) == 0;
+        $registry->set("payperiod.unlock", $unlock);
 
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
         foreach ($dates as $date => &$value) {

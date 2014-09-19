@@ -207,4 +207,35 @@ class TimeclockModelsSiteDefault extends JModelBase
     {
         return JTable::getInstance($this->table, 'Table');
     }
+    /**
+    * This sets a parameter of com_timeclock.
+    *
+    * @param string $name  The name of the param to set
+    * @param mixed  $value The value to set it to
+    * 
+    * @return The value set if successful, false otherwise
+    */
+    public function setParam($name, $value)
+    {
+        // Get the params and set the new values
+        $params = JComponentHelper::getParams('com_timeclock');
+        $params->set($name, $value);
+
+        // Get a new database query instance
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+
+        // Build the query
+        $query->update('#__extensions AS a');
+        $query->set('a.params = ' . $db->quote((string)$params));
+        $query->where('a.element = "com_timeclock"');
+
+        // Execute the query
+        $db->setQuery($query);
+        $db->query();
+        
+        $set = TimeclockHelpersTimeclock::getParam($name);
+        return $set == $value ? $set : false;
+    }
+
 }

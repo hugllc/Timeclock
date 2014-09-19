@@ -78,7 +78,6 @@ class TimeclockViewsPayrollHtml extends JViewHtml
         $this->_toolbar  = new JLayoutFile('toolbar', __DIR__.'/layouts');
 
         $this->data     = $this->model->listItems();
-        $this->totals   = $this->model->getTotals();
         $this->users    = $this->model->listUsers();
         $this->projects = $this->model->listProjects();
         $this->report   = $this->model->getReport();

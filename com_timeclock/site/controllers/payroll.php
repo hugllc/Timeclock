@@ -130,6 +130,38 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
         return true;
     }
     /**
+    * This function saves our stuff and returns a json response
+    * 
+    * @return null
+    */
+    protected function taskUnlock()
+    {
+        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
+        // Get the application
+        $app   = $this->getApplication();
+
+        if ($index = $this->model->unlock()) {
+            $json = new JResponseJson(
+                $index, 
+                JText::_("COM_TIMECLOCK_PAYPERIOD_UNLOCKED"),
+                false,  // Error
+                false    // Ignore Message Queue
+            );
+        } else {
+            $json = new JResponseJson(
+                array(), 
+                JText::_("COM_TIMECLOCK_PAYPERIOD_UNLOCK_FAILED"),
+                true,    // Error
+                false     // Ignore Message Queue
+            );
+        }
+        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        echo $json;
+        $app->close();
+        return true;
+    }
+    /**
     * This function returns the message to show when a controller is saved
     *
     * @param mixed $data The data to output

@@ -2,8 +2,11 @@
 var Payroll = {
     setup: function ()
     {
-        this.setLocked(Payroll.payperiod.locked);
+        this.setLocked(this.payperiod.locked);
         this.setReport(true);
+        if (!this.payperiod.unlock) {
+            jQuery("#timeclock .unlock").hide();
+        }
     },
     setLocked: function (locked)
     {
@@ -27,6 +30,7 @@ var Payroll = {
             }
         } else {
             jQuery("#timeclock .noreport").hide();
+            jQuery("#timeclock .reportdata").hide();
         }
     },
     lock: function ()
@@ -40,8 +44,32 @@ var Payroll = {
             success: function(ret)
             {
                 if ( ret.success ){
-                    Joomla.renderMessages({'success': [ret.message]});
+                    //Joomla.renderMessages({'success': [ret.message]});
                     self.setLocked(true);
+                } else {
+                    Joomla.renderMessages({'error': [ret.message]});
+                }
+            },
+            error: function(ret)
+            {
+                Joomla.renderMessages({'error': ['Locking failed']});
+            }
+        });
+        
+    },
+    unlock: function ()
+    {
+        var self = this;
+        jQuery.ajax({
+            url: 'index.php?option=com_timeclock&controller=payroll&task=unlock&format=json',
+            type: 'GET',
+            data: self._formData(),
+            dataType: 'JSON',
+            success: function(ret)
+            {
+                if ( ret.success ){
+                    //Joomla.renderMessages({'success': [ret.message]});
+                    self.setLocked(false);
                 } else {
                     Joomla.renderMessages({'error': [ret.message]});
                 }
@@ -65,8 +93,7 @@ var Payroll = {
             {
                 if ( ret.success ){
                     Joomla.renderMessages({'success': [ret.message]});
-                    self.doreports = 1;
-                    self.setReport(true);
+                    window.location.href = window.location.href;
                 } else {
                     Joomla.renderMessages({'error': [ret.message]});
                 }

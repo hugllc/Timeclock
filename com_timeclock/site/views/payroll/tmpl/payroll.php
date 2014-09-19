@@ -13,14 +13,16 @@
             JHTML::_('date', $this->payperiod->end, JText::_("DATE_FORMAT_LC3"))
         )
     );
-    $totals = (object)array("payperiod" => $this->payperiod, "totals" => $this->totals);
+    $doreports = ($this->report->report_id != 0);
 ?>
 <div id="timeclock">
     <div class="page-header">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print JText::_("COM_TIMECLOCK_PAYROLL"); ?>
-             <span class="locked">(<?php print JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>)</span>
+            <span class="locked"><?php print JHtml::_('image', 'system/checked_out.png', null, null, true); ?></span>
+            <span class="livedata noreport">(<?php print JText::_("COM_TIMECLOCK_LIVE_DATA"); ?>)</span>
+            <span class="reportdata noreport">(<?php print JText::_("COM_TIMECLOCK_SAVED_DATA"); ?>)</span>
         </h2>
     </div>
     <?php print $this->_toolbar->render($this->payperiod); ?>
@@ -41,7 +43,22 @@
             </thead>
             <tfoot>
 <?php 
-    print $this->_totals->render($totals); 
+    print $this->_totals->render(
+        (object)array(
+            "payperiod" => $this->payperiod, 
+            "totals" => $this->data["totals"], 
+            "rowClass" => "livedata"
+        )
+    ); 
+    if ($doreports) {
+        print $this->_totals->render(
+            (object)array(
+                "payperiod" => $this->payperiod, 
+                "totals" => $this->report->timesheets["totals"], 
+                "rowClass" => "reportdata"
+            )
+        );
+    }
 ?>
             </tfoot>
             <tbody>
@@ -52,12 +69,14 @@
         $user->rowClass = "livedata";
         print $this->_row->render($user);
     }
-    foreach ((array)$this->report->users as $user_id => $user) {
-        $user = (object)$user;
-        $user->payperiod = $this->payperiod;
-        $user->data = isset($this->report->timesheets[$user_id]) ? $this->report->timesheets[$user_id] : array();
-        $user->rowClass = "reportdata";
-        print $this->_row->render($user);
+    if ($doreports) {
+        foreach ((array)$this->report->users as $user_id => $user) {
+            $user = (object)$user;
+            $user->payperiod = $this->payperiod;
+            $user->data = isset($this->report->timesheets[$user_id]) ? $this->report->timesheets[$user_id] : array();
+            $user->rowClass = "reportdata noreport";
+            print $this->_row->render($user);
+        }
     }
 ?>
             </tbody>
@@ -72,7 +91,6 @@
     });
     Payroll.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
     Payroll.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
-    Payroll.allprojs     = <?php print json_encode($allproj); ?>;
     Payroll.projects     = <?php print json_encode($this->projects); ?>;
     Payroll.payperiod    = <?php print json_encode($this->payperiod); ?>;
     Payroll.data         = <?php print json_encode($this->data); ?>;
@@ -81,7 +99,7 @@
         "users": <?php print json_encode($this->report->users); ?>,
         "data": <?php print json_encode($this->report->timesheets); ?>,
     };
-    Payroll.doreports = <?php print (int)($this->report->report_id != 0); ?>;
+    Payroll.doreports = <?php print (int)$doreports; ?>;
     Timeclock.params     = <?php print json_encode($this->params); ?>;
     
 
