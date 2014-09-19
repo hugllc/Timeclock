@@ -92,7 +92,9 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsPayroll';
         $view = new $viewClass(new $modelClass, $paths);
-        $view->setLayout($layoutName);
+        if (method_exists($view, "setLayout")) {
+            $view->setLayout($layoutName);
+        }
         // Render our view.
         echo $view->render();
         return true;

@@ -39,6 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 /** Import the views */
 jimport('joomla.application.component.view');
 
+require __DIR__."/base.php";
 /**
  * HTML View class for the ComTimeclockWorld Component
  *
@@ -50,56 +51,28 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsPayrollCsv extends JViewHtml
+class TimeclockViewsPayrollCsv extends TimeclockViewsPayrollBase
 {
     /**
-    * Renders this view
+    * This prints out a row in the file
     *
-    * @return unknown
+    * @param string $file The filename to use
+    *
+    * @return null
     */
-    function render()
+    protected function setup($file)
     {
-        $app = JFactory::getApplication();
-        $layout = $this->getLayout();
-        
-        $useReport = $app->input->get("report", 0, "int");
-        $this->params    = JComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->model->getState('payperiod');
-
-        if ($useReport) {
-            $report = $this->model->getReport();
-            $data   = $report->timesheets;
-            $users  = $report->users;
-            $file   = "payroll-saved-";
-        } else {
-            $data  = $this->model->listItems();
-            $users = $this->model->listUsers();
-            $file   = "payroll-live-";
-        }
-        $file .= $this->payperiod->start;
         header('Content-Type: text/csv; charset=utf-8', true);
         header('Content-Disposition: attachment;filename="'.$file.'.csv"', true);
-        
-        echo $this->_export($users, $data);
-        $app->close();
+        $this->output = "";
     }
     /**
     * This prints out a row in the file
     *
-    * @param array $data The data to use
-    *
-    * @return string The row created
+    * @return null
     */
-    private function _export($users, $data)
+    protected function finalize()
     {
-        $return = $this->_header().PHP_EOL;
-        foreach ($users as $user_id => $user) {
-            $user = (object)$user;
-            $user->data = isset($data[$user_id]) ? $data[$user_id] : array();
-            $return .= $this->_row($user).PHP_EOL;
-        }
-        $return .= $this->_totals($data["totals"]);
-        return utf8_encode($return);
     }
     /**
     * This prints out a row in the file
@@ -108,9 +81,9 @@ class TimeclockViewsPayrollCsv extends JViewHtml
     *
     * @return string The row created
     */
-    private function _row($data)
+    protected function row($data)
     {
-        $return = $this->_quote(empty($data->name) ? "User ".$data->user_id : $data->name);
+        $this->output .= $this->quote(empty($data->name) ? "User ".$data->user_id : $data->name);
         $total  = 0;
         for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
             $worked   = 0;
@@ -125,13 +98,13 @@ class TimeclockViewsPayrollCsv extends JViewHtml
                 $subtotal = $d->subtotal;
             }
             $total   += $subtotal;
-            $return .= ",".$worked;
-            $return .= ",".$pto;
-            $return .= ",".$holiday;
-            $return .= ",".$subtotal;
+            $this->output .= ",".$worked;
+            $this->output .= ",".$pto;
+            $this->output .= ",".$holiday;
+            $this->output .= ",".$subtotal;
         }
-        $return .= ",".$total;
-        return $return;
+        $this->output .= ",".$total;
+        $this->output .= PHP_EOL;
     }
     /**
     * This prints out a row in the file
@@ -140,9 +113,9 @@ class TimeclockViewsPayrollCsv extends JViewHtml
     *
     * @return string The row created
     */
-    private function _totals($data)
+    protected function totals($data)
     {
-        $return = $this->_quote(JText::_("COM_TIMECLOCK_TOTAL"));
+        $this->output .= $this->quote(JText::_("COM_TIMECLOCK_TOTAL"));
         $total  = 0;
         for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
             $worked   = 0;
@@ -157,30 +130,30 @@ class TimeclockViewsPayrollCsv extends JViewHtml
                 $subtotal = $d->subtotal;
             }
             $total   += $subtotal;
-            $return .= ",".$worked;
-            $return .= ",".$pto;
-            $return .= ",".$holiday;
-            $return .= ",".$subtotal;
+            $this->output .= ",".$worked;
+            $this->output .= ",".$pto;
+            $this->output .= ",".$holiday;
+            $this->output .= ",".$subtotal;
         }
-        $return .= ",".$total;
-        return $return;
+        $this->output .= ",".$total;
+        $this->output .= PHP_EOL;
     }
     /**
     * This prints out a header row in the file
     *
     * @return string The header row created
     */
-    private function _header()
+    protected function header()
     {
-        $return = $this->_quote(JText::_("COM_TIMECLOCK_EMPLOYEE"));
+        $this->output .= $this->quote(JText::_("COM_TIMECLOCK_EMPLOYEE"));
         for ($w = 1; $w <= $this->payperiod->subtotals; $w++) {
-            $return .= ",".$this->_quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_WORKED"));
-            $return .= ",".$this->_quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_PTO"));
-            $return .= ",".$this->_quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_HOLIDAY"));
-            $return .= ",".$this->_quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_SUBTOTAL"));
+            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_WORKED"));
+            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_PTO"));
+            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_HOLIDAY"));
+            $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_SUBTOTAL"));
         }
-        $return .= ",".$this->_quote(JText::_("COM_TIMECLOCK_TOTAL"));
-        return $return;
+        $this->output .= ",".$this->quote(JText::_("COM_TIMECLOCK_TOTAL"));
+        $this->output .= PHP_EOL;
     }
     /**
     * This prints out a row in the file
@@ -189,7 +162,7 @@ class TimeclockViewsPayrollCsv extends JViewHtml
     *
     * @return string The row created
     */
-    private function _quote($data)
+    protected function quote($data)
     {
         return '"'.$data.'"';
     }
