@@ -99,6 +99,40 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         return true;
     }
     /**
+    * This function saves our stuff and returns a json response
+    * 
+    * @return null
+    */
+    protected function taskComplete()
+    {
+        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
+        // Get the application
+        $app   = $this->getApplication();
+
+        $model = TimeclockHelpersTimeclock::getModel("timesheet");
+
+        if ($index = $model->complete()) {
+            $json = new JResponseJson(
+                $index, 
+                JText::_("COM_TIMECLOCK_PAYPERIOD_COMPLETE"),
+                false,  // Error
+                false    // Ignore Message Queue
+            );
+        } else {
+            $json = new JResponseJson(
+                array(), 
+                JText::_("COM_TIMECLOCK_PAYPERIOD_COMPLETE_FAILED"),
+                true,    // Error
+                false     // Ignore Message Queue
+            );
+        }
+        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        echo $json;
+        $app->close();
+        return true;
+    }
+    /**
     * This displays our forms
     * 
     * @return bool

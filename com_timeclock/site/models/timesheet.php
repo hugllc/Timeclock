@@ -69,6 +69,21 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     *
     * @return array An array of results.
     */
+    public function complete()
+    {
+        $start = $this->getState("payperiod.start");
+        TimeclockHelpersTimeclock::setUserParam("timesheetDone", $start);
+        $set = TimeclockHelpersTimeclock::getUserParam("timesheetDone");
+        if ($start == $set) {
+            return $set;
+        }
+        return false;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
     public function listItems()
     {
         $query = $this->_buildQuery();
@@ -273,7 +288,10 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $subtotals = (int)($len / $split);
         $registry->set("payperiod.subtotals", $subtotals);
 
-
+        $timesheetDone = TimeclockHelpersTimeclock::getUserParam("timesheetDone");
+        $done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
+        $registry->set("payperiod.done", $done);
+        
         $this->setState($registry);
     }
     /**

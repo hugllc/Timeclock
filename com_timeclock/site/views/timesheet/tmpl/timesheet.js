@@ -5,6 +5,7 @@ var Timesheet = {
     {
         this.decimals = Timeclock.params.decimalPlaces;
         this.update();
+        this.setComplete(this.payperiod.done);
     },
     round: function (value)
     {
@@ -13,6 +14,16 @@ var Timesheet = {
             return value;
         }
         return parseFloat(val.toFixed(this.decimals));
+    },
+    setComplete: function (complete)
+    {
+        if (complete) {
+            jQuery("#timeclock .complete").show();
+            jQuery("#timeclock .notcomplete").hide();
+        } else {
+            jQuery("#timeclock .complete").hide();
+            jQuery("#timeclock .notcomplete").show();
+        }
     },
     _subtotalDates: function (key, name)
     {
@@ -80,6 +91,30 @@ var Timesheet = {
             }
         });
     },
+    complete: function ()
+    {
+        var self = this;
+        jQuery.ajax({
+            url: 'index.php?option=com_timeclock&controller=timesheet&task=complete&format=json',
+            type: 'GET',
+            data: self._formData(),
+            dataType: 'JSON',
+            success: function(ret)
+            {
+                if ( ret.success ){
+                    //Joomla.renderMessages({'success': [ret.message]});
+                    self.setComplete(true);
+                } else {
+                    Joomla.renderMessages({'error': [ret.message]});
+                }
+            },
+            error: function(ret)
+            {
+                Joomla.renderMessages({'error': ['Setting as complete failed']});
+            }
+        });
+        
+    },
     update: function ()
     {
         var proj;
@@ -119,5 +154,17 @@ var Timesheet = {
             }
         });
         
+    },
+    _formData: function ()
+    {
+        // Collect the base information from the form
+        var base = {};
+        jQuery("form.timesheet").find(":input").each(function(ind,elem) {
+            var name = jQuery(elem).attr('name');
+            var value = jQuery(elem).val();
+            base[name] = value;
+        });
+        base.date = this.payperiod.start;
+        return base;
     }
 }
