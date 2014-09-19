@@ -24,13 +24,16 @@ var Payroll = {
             if (live) {
                 jQuery("#timeclock .livedata").show();
                 jQuery("#timeclock .reportdata").hide();
+                Timeclock.report = 0;
             } else {
                 jQuery("#timeclock .livedata").hide();
                 jQuery("#timeclock .reportdata").show();
+                Timeclock.report = 1;
             }
         } else {
             jQuery("#timeclock .noreport").hide();
             jQuery("#timeclock .reportdata").hide();
+            Timeclock.report = 0;
         }
     },
     lock: function ()

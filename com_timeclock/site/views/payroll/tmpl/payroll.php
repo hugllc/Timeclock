@@ -109,6 +109,7 @@
     };
     Payroll.doreports = <?php print (int)$doreports; ?>;
     Timeclock.params     = <?php print json_encode($this->params); ?>;
+    Timeclock.report     = 0;
     
 
 </script>

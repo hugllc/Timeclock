@@ -62,16 +62,24 @@ class TimeclockViewsPayrollCsv extends JViewHtml
         $app = JFactory::getApplication();
         $layout = $this->getLayout();
         
+        $useReport = $app->input->get("report", 0, "int");
         $this->params    = JComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->model->getState('payperiod');
 
-        $data     = $this->model->listItems();
-        $users    = $this->model->listUsers();
-        $projects = $this->model->listProjects();
-        $report   = $this->model->getReport();
-
+        if ($useReport) {
+            $report = $this->model->getReport();
+            $data   = $report->timesheets;
+            $users  = $report->users;
+            $file   = "payroll-saved-";
+        } else {
+            $data  = $this->model->listItems();
+            $users = $this->model->listUsers();
+            $file   = "payroll-live-";
+        }
+        $file .= $this->payperiod->start;
         header('Content-Type: text/csv; charset=utf-8', true);
-        header('Content-Disposition: attachment;filename="payroll.csv"', true);
+        header('Content-Disposition: attachment;filename="'.$file.'.csv"', true);
+        
         echo $this->_export($users, $data);
         $app->close();
     }
