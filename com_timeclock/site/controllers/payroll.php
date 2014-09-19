@@ -58,6 +58,8 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     public function execute()
     {
         $this->checkAuth();
+        $this->model = TimeclockHelpersTimeclock::getModel("payroll");
+
         $task = $this->getTask();
         $fct  = "task".ucfirst($task);
         if (method_exists($this, $fct)) {
@@ -105,9 +107,8 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = $this->getApplication();
-        $model = TimeclockHelpersTimeclock::getModel("payroll");
 
-        if ($index = $model->lock()) {
+        if ($index = $this->model->lock()) {
             $json = new JResponseJson(
                 $index, 
                 JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"),

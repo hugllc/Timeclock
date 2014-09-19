@@ -99,7 +99,8 @@ class TimeclockHelpersTimeclock
         $ret   = array();
         $db    = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
-        $query->select('*');
+        $query->select('id, id as user_id, name, username, email, block, 
+            registerDate, lastvisitDate, params');
         $query->from('#__users');
         if (!is_null($blocked)) {
             $query->where("block = ".(int)$blocked);

@@ -56,6 +56,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     private $_projects = null;
     /** This is our percentage of holiday pay */
     private $_holiday_perc = 1;
+    /** This is our report ID */
+    private $_report_id = null;
     
     /**
     * The constructor
@@ -64,6 +66,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         $app = JFactory::getApplication();
         $this->_user = JFactory::getUser();
+        
         parent::__construct(); 
     }
     /**
@@ -76,52 +79,28 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         return array();
     }
     /**
-    * Build query and where for protected _getList function and return a list
-    *
-    * @param int $user_id The user to get the projects for
+    * Checks to see if there is a saved report and returns the ID
     * 
-    * @return array An array of results.
-    */
-    protected function checkTimesheet(&$entry)
-    {
-        if ($entry->project_type == "HOLIDAY") {
-            $entry->hours = $entry->hours * $this->_holiday_perc;
-        }
-        $entry->cat_name = JText::_($entry->cat_name);
-        $entry->cat_description = JText::_($entry->cat_description);
-    }
-    /**
-    * Checks to make sure this project exists
+    * @param string $type  The type of report to look for
+    * @param string $start The start date for the report
+    * @param string $end   The end date for the report
     *
-    * @param object &$row The row to check
-    * 
-    * @return array An array of results.
+    * @return int The ID of the report
     */
-    protected function checkTimesheetProject(&$row)
+    private function _getReportID($type = null, $start = null, $end = null)
     {
-        $proj_id = (int)$row->project_id;
-        $cat_id  = (int)$row->cat_id;
-        $projs = &$this->_projects;
-        // This adds in projects and categories that the user has time in,
-        // but isn't currently a member.
-        if (!isset($projs[$cat_id])) {
-            $projs[$cat_id] = array(
-                "project_id" => $cat_id,
-                "name" => $row->cat_name,
-                "description" => $row->cat_description,
-                "proj" => array()
-            );
+        if (is_null($this->_report_id)) {
+            $db = JFactory::getDBO();
+            $query = $db->getQuery(TRUE);
+            $query->select('report_id');
+            $query->from('#__timeclock_reports');
+            $query->where($db->quoteName("type")." = ".$db->quote($type));
+            $query->where($db->quoteName("startDate")." = ".$db->quote($start));
+            $query->where($db->quoteName("endDate")." = ".$db->quote($end));
+            $db->setQuery($query);
+            $this->_report_id = (int)$db->loadResult();
         }
-        if (!isset($projs[$cat_id]["proj"][$proj_id])) {
-            $projs[$cat_id]["proj"][$proj_id] = (object)array(
-                "project_id" => $proj_id,
-                "name" => $row->project,
-                "description" => $row->project_description,
-                "type" => $row->project_type,
-                "nohours" => 1,
-                "mine" => 0,
-            );
-        }
+        return $this->_report_id;
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -182,28 +161,43 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         return $this->_users;
     }
     /**
+    * This creates data for the store.  It should be overwritten by child classes
+    * if they want to store a different set.
+    *
+    * @return JTable instance with data in it.
+    */
+    protected function buildStore()
+    {
+        $app = JFactory::getApplication();
+        $row = JTable::getInstance('TimeclockReports', 'Table');
+        
+        if (!is_object($row)) {
+            return false;
+        }
+        $date = date("Y-m-d H:i:s");
+
+        $row->name        = $app->input->get("name", "");
+        $row->description = $app->input->get("description", "");
+        $row->created_by  = JFactory::getUser()->id;
+        $row->created     = $date;
+        $row->startDate   = $this->getState("start");
+        $row->endDate     = $this->getState("end");
+        $row->type        = $this->getState("type");
+        $row->users       = json_encode($this->listUsers());
+        $row->projects    = json_encode($this->listProjects());
+        $row->timesheets  = json_encode($this->listItems());
+        return $row;
+    }
+    /**
     * Stores the data given, or request data.
     *
     * @return JTable instance with data in it.
     */
     public function store()
     {
-        $row = JTable::getInstance('TimeclockReports', 'Table');
+        $row = $this->buildStore();
+        $row->report_id = $this->getState("report_id");
 
-        if (!is_object($row)) {
-            return false;
-        }
-        $date = date("Y-m-d H:i:s");
-
-        $row->created_by = JFactory::getUser()->id;
-        $row->created    = $date;
-        $row->startDate  = $this->getState("start");
-        $row->endDate    = $this->getState("end");
-        $row->type       = $this->getState("type");
-        $row->users      = $this->listUsers();
-        $row->projects   = $this->listProjects();
-        $row->timesheets = $this->listItems();
-        
         // Make sure the record is valid
         if (!$row->check()) {
             return false;
@@ -228,18 +222,21 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     * to be called on the first call to the getState() method unless the model
     * configuration flag to ignore the request is set.
     * 
+    * @param object $registry Ignored in subclasses
+    * 
     * @return  void
     *
     * @note    Calling getState in this method will result in recursion.
     * @since   12.2
     */
-    protected function populateState()
+    protected function populateState($registry = null)
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = JFactory::getApplication();
-        $registry = $this->loadState();
-        
+        if (!is_object($registry)) {
+            $registry = $this->loadState();
+        }
         // Load state from the request.
         $pk = $app->input->get('id', array(), "array");
         $registry->set('id', $pk);
@@ -257,58 +254,13 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
                 $registry->set('filter.archived', 2);
         }
 
-        $estart = TimeclockHelpersTimeclock::getUserParam("startDate");
-        $estart = empty($estart) ? 0 : TimeclockHelpersDate::fixDate($estart);
-        $registry->set('employment.start', $estart);
-        $eend = TimeclockHelpersTimeclock::getUserParam("endDate");
-        $eend = empty($eend) ? 0 : TimeclockHelpersDate::fixDate($eend);
-        $registry->set('employment.end', $eend);
-        $date = TimeclockHelpersDate::fixDate(
-            $app->input->get('date', date("Y-m-d"), "raw")
+        $report_id = $this->_getReportID(
+            $registry->get("type"), 
+            $registry->get("start"), 
+            $registry->get("end")
         );
-        $date = empty($date) ?  date("Y-m-d") : $date;
-        $registry->set('date', $date);
+        $registry->set("report_id", $report_id);
         
-        // Get the pay period Dates
-        $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
-        $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
-        $start = TimeclockHelpersDate::fixedPayPeriodStart($startTime, $date, $len);
-        $registry->set("payperiod.days", $len);
-        $registry->set("payperiod.start", $start);
-        $s = TimeclockHelpersDate::explodeDate($start);
-        $end = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len-1, $s["y"]
-        );
-        $registry->set("payperiod.end", date("Y-m-d", $end));
-        $next = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len, $s["y"]
-        );
-        $registry->set("payperiod.next", date("Y-m-d", $next));
-        $prev = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]-$len, $s["y"]
-        );
-        $registry->set("payperiod.prev", date("Y-m-d", $prev));
-        
-        $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
-        $registry->set("payperiod.cutoff", $cutoff);
-
-        $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
-        foreach ($dates as $date => &$value) {
-            $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
-            $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
-            $value = $here && $valid;
-        }
-        $registry->set("payperiod.dates", $dates);
-        
-        $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
-        $registry->set("holiday.perc", $this->_holiday_perc);
-
-        $split = (int)TimeclockHelpersTimeclock::getParam("payPeriodSplitDays");
-        $split = empty($split) ? 7 : $split;
-        $registry->set("payperiod.splitdays", $split);
-
-        $subtotals = (int)($len / $split);
-        $registry->set("payperiod.subtotals", $subtotals);
 
 
         $this->setState($registry);

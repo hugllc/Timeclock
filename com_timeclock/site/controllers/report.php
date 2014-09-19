@@ -48,6 +48,8 @@ require_once __DIR__."/default.php";
  */
 class TimeclockControllersReport extends TimeclockControllersDefault
 {
+    /** This is our model */
+    protected $model = null;
     /**
     * This function performs everything for this controller.  It is the goto 
     * function.
@@ -58,6 +60,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     public function execute()
     {
         $this->checkAuth();
+        $this->model = TimeclockHelpersTimeclock::getModel("report");
         $task = $this->getTask();
         $fct  = "task".ucfirst($task);
         if (method_exists($this, $fct)) {
@@ -105,19 +108,18 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = $this->getApplication();
-        $model = TimeclockHelpersTimeclock::getModel("addhours");
 
-        if ($index = $model->store()) {
+        if ($index = $this->model->store()) {
             $json = new JResponseJson(
                 get_object_vars($index), 
-                JText::_("COM_TIMECLOCK_HOURS_SAVED"),
+                JText::_("COM_TIMECLOCK_REPORT_SAVED"),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
             $json = new JResponseJson(
                 array(), 
-                JText::_("COM_TIMECLOCK_HOURS_FAILED"),
+                JText::_("COM_TIMECLOCK_REPORT_SAVE_FAILED"),
                 true,    // Error
                 false     // Ignore Message Queue
             );

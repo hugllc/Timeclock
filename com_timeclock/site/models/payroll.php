@@ -91,7 +91,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $db->query();
         
         $set = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
-        error_log($set);
         return $set == $next;
     }
     /**
@@ -225,34 +224,20 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     * to be called on the first call to the getState() method unless the model
     * configuration flag to ignore the request is set.
     * 
+    * @param object $registry Ignored in subclasses
+    * 
     * @return  void
     *
     * @note    Calling getState in this method will result in recursion.
     * @since   12.2
     */
-    protected function populateState()
+    protected function populateState($registry = null)
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = JFactory::getApplication();
         $registry = $this->loadState();
         
-        // Load state from the request.
-        $pk = $app->input->get('id', array(), "array");
-        $registry->set('id', $pk);
-
-        // Load the parameters.
-        $params = JComponentHelper::getParams('com_timeclock');
-        $registry->set('params', $params);
-
-        $user = JFactory::getUser();
-
-        if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
-            &&  (!$user->authorise('core.edit', 'com_timeclock'))
-        ) {
-            $registry->set('filter.published', 1);
-            $registry->set('filter.archived', 2);
-        }
 
         $date = TimeclockHelpersDate::fixDate(
             $app->input->get('date', date("Y-m-d"), "raw")
@@ -260,7 +245,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $date = empty($date) ?  date("Y-m-d") : $date;
         $registry->set('date', $date);
         
-        $registry->set('type', "payroll");
+        $type = 'payroll';
+        $registry->set('type', $type);
         
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
@@ -275,6 +261,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         );
         $registry->set("payperiod.end", date("Y-m-d", $end));
         $registry->set("end", date("Y-m-d", $end));
+        
         $next = TimeclockHelpersDate::dateUnix(
             $s["m"], $s["d"]+$len, $s["y"]
         );
@@ -307,7 +294,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $registry->set("payperiod.subtotals", $subtotals);
 
 
-        $this->setState($registry);
+        //$this->setState($registry);
+        parent::populateState($registry);
     }
     /**
     * This function gets the dates of the period, and says wheter or not time can 

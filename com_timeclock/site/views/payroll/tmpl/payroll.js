@@ -11,9 +11,9 @@ var Payroll = {
             success: function(ret)
             {
                 if ( ret.success ){
-                    Joomla.renderMessages({'success': ['Payperiod locked']});
+                    Joomla.renderMessages({'success': [ret.message]});
                 } else {
-                    Joomla.renderMessages({'error': ['Locking failed']});
+                    Joomla.renderMessages({'error': [ret.message]});
                 }
             },
             error: function(ret)
@@ -34,9 +34,9 @@ var Payroll = {
             success: function(ret)
             {
                 if ( ret.success ){
-                    Joomla.renderMessages({'success': ret.message});
+                    Joomla.renderMessages({'success': [ret.message]});
                 } else {
-                    Joomla.renderMessages({'error': ret.message});
+                    Joomla.renderMessages({'error': [ret.message]});
                 }
             },
             error: function(ret)
@@ -55,6 +55,7 @@ var Payroll = {
             var value = jQuery(elem).val();
             base[name] = value;
         });
+        base.date = this.payperiod.start;
         return base;
     }
 }

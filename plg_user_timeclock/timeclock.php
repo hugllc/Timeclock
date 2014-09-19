@@ -334,7 +334,7 @@ class plgUserTimeclock extends JPlugin
         }
         $history = self::stripKeys(self::getAllParams($userId, "admin.history"));
         self::decodeArrays($history);
-        $history = isset($history['history']) ? $history['history'][$param] : array();
+        $history = isset($history['history']) ? (array)$history['history'][$param] : array();
         ksort($history);
         $date = new JDate($date);
         foreach ((array)$history as $change => $value) {
