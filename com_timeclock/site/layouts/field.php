@@ -1,4 +1,5 @@
-                    <div class="control-group">
+<?php  defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+                  <div class="control-group">
                         <div class="control-label">
                             <?php echo $displayData->label; ?>
                         </div>

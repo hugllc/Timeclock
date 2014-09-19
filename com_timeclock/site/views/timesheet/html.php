@@ -95,11 +95,6 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
         $this->data      = $this->model->listItems();
         $this->projects  = $this->model->listProjects();
         
-        JHTML::stylesheet(
-            JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
-        );
 
         return parent::render();
     }

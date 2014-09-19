@@ -36,6 +36,14 @@
                 ); ?>
         </strong>
     </div>
+    <?php 
+        print $this->_export->render(
+            (object)array(
+                "url" => JRoute::_('&option=com_timeclock&controller=payroll&date='.$this->payperiod->start),
+                "export" => array("CSV" => "csv"),
+            )
+        ); 
+    ?>
     <div class="table-responsive">
         <table class="report table table-striped table-bordered table-hover table-condensed">
             <thead>
