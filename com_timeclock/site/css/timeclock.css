@@ -124,6 +124,7 @@ table.report thead tr.header th {
 table.report thead tr.subheader th {
     height: 1em;
     background-color: #CCC;
+    text-align: center;
 }
 
 table.report tfoot tr.header th {
