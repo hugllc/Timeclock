@@ -188,6 +188,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         if (is_null($this->_users)) {
             $this->_users = TimeclockHelpersTimeclock::getUsers(0);
+            foreach ($this->_users as &$user) {
+                $user->timeclock = TimeclockHelpersTimeclock::getUserParams($user->id);
+            }
         }
         return $this->_users;
     }

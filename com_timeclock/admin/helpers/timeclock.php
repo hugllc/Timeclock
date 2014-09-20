@@ -199,6 +199,17 @@ class TimeclockHelpersTimeclock
     /**
     * gets a component parameter
     *
+    * @param int $id The user id to get values about
+    *
+    * @return array
+    */
+    static public function getUserParams($id=null)
+    {
+        return plgUserTimeclock::getParams($id);
+    }
+    /**
+    * gets a component parameter
+    *
     * @param string $param The parameter to get
     * @param mixed  $value The value of the parameter
     * @param int    $id    The user id to get values about

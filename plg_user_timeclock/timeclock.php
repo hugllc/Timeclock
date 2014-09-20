@@ -99,6 +99,20 @@ class plgUserTimeclock extends JPlugin
     *
     * @return boolean
     */
+    static public function getParams($userId)
+    {
+        $ret = self::getAllParams($userId);
+        self::decodeArrays($ret);
+        return self::stripKeys($ret);
+
+    }
+    /**
+    * This happens when we are preparing the form
+    *
+    * @param int    $userId The id of the user to get
+    *
+    * @return boolean
+    */
     static protected function getAllParams($userId)
     {
         // Load the timeclock data from the database.
