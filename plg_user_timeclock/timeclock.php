@@ -81,24 +81,13 @@ class plgUserTimeclock extends JPlugin
         {
             $userId = isset($data->id) ? $data->id : 0;
 
-            $results = $this->getAllParams($userId, "admin");
+            $results = $this->getAllParams($userId);
             if ($results === false) {
                 return false;
             }
             $data->timeclock = self::stripKeys($results);
 
             self::decodeArrays($data->timeclock);
-            /*
-            if (!JHtml::isRegistered('users.url')) {
-                JHtml::register('users.url', array(__CLASS__, 'url'));
-            }
-            if (!JHtml::isRegistered('users.calendar')) {
-                JHtml::register('users.calendar', array(__CLASS__, 'calendar'));
-            }
-            if (!JHtml::isRegistered('users.tos')) {
-                JHtml::register('users.tos', array(__CLASS__, 'tos'));
-            }
-            */
         }
 
         return true;
@@ -107,17 +96,16 @@ class plgUserTimeclock extends JPlugin
     * This happens when we are preparing the form
     *
     * @param int    $userId The id of the user to get
-    * @param string $type   The type of data
     *
     * @return boolean
     */
-    static protected function getAllParams($userId, $type)
+    static protected function getAllParams($userId)
     {
         // Load the timeclock data from the database.
         $db = JFactory::getDbo();
         $db->setQuery(
             'SELECT profile_key, profile_value FROM #__user_profiles' .
-            ' WHERE user_id = '.(int) $userId." AND profile_key LIKE 'timeclock.$type%'" .
+            ' WHERE user_id = '.(int) $userId." AND profile_key LIKE 'timeclock.%'" .
             ' ORDER BY ordering'
         );
         $results = $db->loadRowList();
@@ -154,16 +142,22 @@ class plgUserTimeclock extends JPlugin
     *
     * @return boolean
     */
-    static protected function stripKeys($data, $strip = 'timeclock.admin.')
+    static protected function stripKeys($data, $strip = 'timeclock.')
     {
         $ret = array();
         foreach ($data as $key => $v)
         {
             if (is_array($v)) {
                 $k = str_replace($strip, '', $v[0]);
+                $k = str_replace("admin.", "", $k);
+                $k = str_replace("site.", "", $k);
+                $k = str_replace("set.", "", $k);
                 $ret[$k] = $v[1];
             } else {
                 $k = str_replace($strip, '', $key);
+                $k = str_replace("admin.", "", $k);
+                $k = str_replace("site.", "", $k);
+                $k = str_replace("set.", "", $k);
                 $ret[$k] = $v;
             }
         }
@@ -266,9 +260,9 @@ class plgUserTimeclock extends JPlugin
     {
         if (isset($data['addProjFromUser']) && !empty($data['addProjFromUser'])) {
             $model = TimeclockHelpersTimeclock::getModel('project');
-            $projects = $model->getUserProjectIds($data['addProjFromUser']);
-            foreach ((array)$projects as $proj) {
-                //$model->addOneUser((int)$proj, (int)$id);
+            $projects = $model->listUserProjects($data['addProjFromUser']);
+            foreach (array_keys((array)$projects) as $proj) {
+                $model->addUsers((int)$id, (int)$proj);
             }
 
         }
@@ -316,8 +310,9 @@ class plgUserTimeclock extends JPlugin
         $db->setQuery(
             'SELECT profile_value, profile_key FROM #__user_profiles' .
             ' WHERE user_id = '.(int) $userId." AND (".
-            "profile_key = 'timeclock.admin.$param'".
-            "OR profile_key = 'timeclock.user.$param'".
+            "profile_key = 'timeclock.$param' ".
+            "OR profile_key = 'timeclock.admin.$param' ".
+            "OR profile_key = 'timeclock.user.$param' ".
             "OR profile_key = 'timeclock.set.$param')"
         );
         $results = $db->loadRowList();
@@ -332,7 +327,7 @@ class plgUserTimeclock extends JPlugin
         if (is_null($date) || is_array($res)) {
             return $res;
         }
-        $history = self::stripKeys(self::getAllParams($userId, "admin.history"));
+        $history = self::stripKeys(self::getAllParams($userId, "history"));
         self::decodeArrays($history);
         $history = isset($history['history']) ? (array)$history['history'][$param] : array();
         ksort($history);
@@ -352,12 +347,11 @@ class plgUserTimeclock extends JPlugin
     * @param string $param  The profile parameter to get
     * @param mixed  $value  The value to set the param to
     * @param int    $userId The userId to use.  Current user if left null
-    * @param string $prefix The prefix to use.  "set." is the default
     *
     * @return boolean
     */
     static public function setParamValue(
-        $param, $value, $userId=null, $prefix="set."
+        $param, $value, $userId=null
     ) {
         if (empty($userId)) {
             $userId = JFactory::getUser()->id;
@@ -369,7 +363,7 @@ class plgUserTimeclock extends JPlugin
             $db = JFactory::getDbo();
             $db->setQuery(
                 'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
-                " AND profile_key = 'timeclock.$prefix$param'"
+                " AND profile_key = 'timeclock.$param'"
             );
 
             if (!$db->query()) {
@@ -378,7 +372,7 @@ class plgUserTimeclock extends JPlugin
 
             $db->setQuery(
                 'INSERT INTO #__user_profiles VALUES '.
-                '('.(int)$userId.', '.$db->quote('timeclock.'.$prefix.$param).', '.$db->quote($value).', -1)'
+                '('.(int)$userId.', '.$db->quote('timeclock.'.$param).', '.$db->quote($value).', -1)'
             );
 
             if (!$db->query()) {
@@ -421,103 +415,7 @@ class plgUserTimeclock extends JPlugin
         // Add the registration fields to the form.
         JForm::addFormPath(dirname(__FILE__).'/profiles');
         $form->loadFile('timeclock', false);
-/*
-        // Toggle whether the address1 field is required.
-        if ($this->params->get('register-require_address1', 1) > 0) {
-            $form->setFieldAttribute('address1', 'required', $this->params->get('register-require_address1') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('address1', 'timeclock');
-        }
 
-        // Toggle whether the address2 field is required.
-        if ($this->params->get('register-require_address2', 1) > 0) {
-            $form->setFieldAttribute('address2', 'required', $this->params->get('register-require_address2') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('address2', 'timeclock');
-        }
-
-        // Toggle whether the city field is required.
-        if ($this->params->get('register-require_city', 1) > 0) {
-            $form->setFieldAttribute('city', 'required', $this->params->get('register-require_city') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('city', 'timeclock');
-        }
-
-        // Toggle whether the region field is required.
-        if ($this->params->get('register-require_region', 1) > 0) {
-            $form->setFieldAttribute('region', 'required', $this->params->get('register-require_region') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('region', 'timeclock');
-        }
-
-        // Toggle whether the country field is required.
-        if ($this->params->get('register-require_country', 1) > 0) {
-            $form->setFieldAttribute('country', 'required', $this->params->get('register-require_country') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('country', 'timeclock');
-        }
-
-        // Toggle whether the postal code field is required.
-        if ($this->params->get('register-require_postal_code', 1) > 0) {
-            $form->setFieldAttribute('postal_code', 'required', $this->params->get('register-require_postal_code') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('postal_code', 'timeclock');
-        }
-
-        // Toggle whether the phone field is required.
-        if ($this->params->get('register-require_phone', 1) > 0) {
-            $form->setFieldAttribute('phone', 'required', $this->params->get('register-require_phone') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('phone', 'timeclock');
-        }
-
-        // Toggle whether the website field is required.
-        if ($this->params->get('register-require_website', 1) > 0) {
-            $form->setFieldAttribute('website', 'required', $this->params->get('register-require_website') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('website', 'timeclock');
-        }
-
-        // Toggle whether the favoritebook field is required.
-        if ($this->params->get('register-require_favoritebook', 1) > 0) {
-            $form->setFieldAttribute('favoritebook', 'required', $this->params->get('register-require_favoritebook') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('favoritebook', 'timeclock');
-        }
-
-        // Toggle whether the aboutme field is required.
-        if ($this->params->get('register-require_aboutme', 1) > 0) {
-            $form->setFieldAttribute('aboutme', 'required', $this->params->get('register-require_aboutme') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('aboutme', 'timeclock');
-        }
-
-        // Toggle whether the tos field is required.
-        if ($this->params->get('register-require_tos', 1) > 0) {
-            $form->setFieldAttribute('tos', 'required', $this->params->get('register-require_tos') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('tos', 'timeclock');
-        }
-
-        // Toggle whether the dob field is required.
-        if ($this->params->get('register-require_dob', 1) > 0) {
-            $form->setFieldAttribute('dob', 'required', $this->params->get('register-require_dob') == 2, 'timeclock');
-        }
-        else {
-            $form->removeField('dob', 'timeclock');
-        }
-*/
         return true;
     }
 
@@ -556,7 +454,7 @@ class plgUserTimeclock extends JPlugin
                 $db = JFactory::getDbo();
                 $db->setQuery(
                     'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
-                    " AND profile_key LIKE 'timeclock.admin.%'"
+                    " AND profile_key LIKE 'timeclock.%'"
                 );
 
                 if (!$db->query()) {
@@ -569,7 +467,7 @@ class plgUserTimeclock extends JPlugin
 
                 foreach ($data['timeclock'] as $k => $v)
                 {
-                    $tuples[] = '('.$userId.', '.$db->quote('timeclock.admin.'.$k).', '.$db->quote($v).', '.$order++.')';
+                    $tuples[] = '('.$userId.', '.$db->quote('timeclock.'.$k).', '.$db->quote($v).', '.$order++.')';
                 }
 
                 $db->setQuery('INSERT INTO #__user_profiles VALUES '.implode(', ', $tuples));
@@ -643,7 +541,7 @@ class plgUserTimeclock extends JPlugin
         // Load the new data
         $id = JFactory::getUser()->get("name");
         $date = new JDate();
-        $old = $this->getAllParams($userId, "admin");
+        $old = $this->getAllParams($userId);
         $changeDates = array();
         if (!isset($history['effectiveDateSet'])) {
             $history['effectiveDateSet'] = array();
