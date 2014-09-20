@@ -61,7 +61,6 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     public function __construct()
     {
         $app = JFactory::getApplication();
-        $this->_user = JFactory::getUser();
         parent::__construct(); 
     }
     /**
@@ -136,98 +135,6 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
         return $return;
     }
     /**
-    * Method to auto-populate the model state.
-    *
-    * This method should only be called once per instantiation and is designed
-    * to be called on the first call to the getState() method unless the model
-    * configuration flag to ignore the request is set.
-    * 
-    * @return  void
-    *
-    * @note    Calling getState in this method will result in recursion.
-    * @since   12.2
-    */
-    protected function populateState()
-    {
-        $context = is_null($this->context) ? $this->table : $this->context;
-
-        $app = JFactory::getApplication();
-        $registry = $this->loadState();
-        
-        // Load state from the request.
-        $pk = $app->input->get('id', array(), "array");
-        $registry->set('id', $pk);
-
-        // Load state from the request.
-        $project_id = $app->input->get('project_id', null, "int");
-        $registry->set('project_id', $project_id);
-
-        // Load the parameters.
-        $params = JComponentHelper::getParams('com_timeclock');
-        $registry->set('params', $params);
-
-        $user = JFactory::getUser();
-
-        if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
-            &&  (!$user->authorise('core.edit', 'com_timeclock'))
-        ) {
-                $registry->set('filter.published', 1);
-                $registry->set('filter.archived', 2);
-        }
-
-        $estart = TimeclockHelpersTimeclock::getUserParam("startDate");
-        $estart = empty($estart) ? 0 : TimeclockHelpersDate::fixDate($estart);
-        $registry->set('employment.start', $estart);
-        $eend = TimeclockHelpersTimeclock::getUserParam("endDate");
-        $eend = empty($eend) ? 0 : TimeclockHelpersDate::fixDate($eend);
-        $registry->set('employment.end', $eend);
-        $date = TimeclockHelpersDate::fixDate(
-            $app->input->get('date', date("Y-m-d"), "raw")
-        );
-        $date = empty($date) ?  date("Y-m-d") : $date;
-        $registry->set('date', $date);
-        
-        // Get the pay period Dates
-        $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
-        $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
-        $start = TimeclockHelpersDate::fixedPayPeriodStart($startTime, $date, $len);
-        $registry->set("payperiod.days", $len);
-        $registry->set("payperiod.start", $start);
-        $s = TimeclockHelpersDate::explodeDate($start);
-        $end = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len-1, $s["y"]
-        );
-        $registry->set("payperiod.end", date("Y-m-d", $end));
-        $next = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len, $s["y"]
-        );
-        $registry->set("payperiod.next", date("Y-m-d", $next));
-        $prev = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]-$len, $s["y"]
-        );
-        $registry->set("payperiod.prev", date("Y-m-d", $prev));
-        
-        $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
-        $registry->set("payperiod.cutoff", $cutoff);
-
-        $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
-        foreach ($dates as $date => &$value) {
-            $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
-            $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
-            $value = $here && $valid;
-        }
-        $registry->set("payperiod.dates", $dates);
-        
-        $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
-        $registry->set("holiday.perc", $this->_holiday_perc);
-
-        $split = (int)TimeclockHelpersTimeclock::getParam("payPeriodSplitDays");
-        $split = empty($split) ? 7 : $split;
-        $registry->set("payperiod.splitdays", $split);
-
-        $this->setState($registry);
-    }
-    /**
     * This function gets the dates of the period, and says wheter or not time can 
     * be added to it
     *
@@ -282,7 +189,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     { 
         $db = JFactory::getDBO();
         
-        $query->where($db->quoteName("t.user_id")."=".$db->quote($this->_user->id));
+        $query->where($db->quoteName("t.user_id")."=".$db->quote($this->getUser()->id));
         $date = $this->getState("date");
         $query->where($db->quoteName("t.worked")."=".$db->quote($date));
         $query->where($db->quoteName("p.type")."<> 'HOLIDAY'");
@@ -308,7 +215,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
         $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');
         $query->select('r.name as parent_name, r.description as parent_description');
         $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');
-        $query->where('q.user_id = '.$db->quote($this->_user->id));
+        $query->where('q.user_id = '.$db->quote($this->getUser()->id));
         $query->where('q.project_id > 0');
         $query->where($db->quoteName("p.type")."<> 'HOLIDAY'");
         $query->where($db->quoteName("p.type")."<> 'CATEGORY'");

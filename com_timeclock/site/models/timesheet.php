@@ -61,7 +61,6 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     public function __construct()
     {
         $app = JFactory::getApplication();
-        $this->_user = JFactory::getUser();
         parent::__construct(); 
     }
     /**
@@ -217,6 +216,10 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $pk = $app->input->get('id', array(), "array");
         $registry->set('id', $pk);
 
+        // Load state from the request.
+        $project_id = $app->input->get('project_id', null, "int");
+        $registry->set('project_id', $project_id);
+        
         // Load the parameters.
         $params = JComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
@@ -230,10 +233,10 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
                 $registry->set('filter.archived', 2);
         }
 
-        $estart = TimeclockHelpersTimeclock::getUserParam("startDate");
+        $estart = $user->timeclock["startDate"];
         $estart = empty($estart) ? 0 : TimeclockHelpersDate::fixDate($estart);
         $registry->set('employment.start', $estart);
-        $eend = TimeclockHelpersTimeclock::getUserParam("endDate");
+        $eend = $user->timeclock["endDate"];
         $eend = empty($eend) ? 0 : TimeclockHelpersDate::fixDate($eend);
         $registry->set('employment.end', $eend);
         $date = TimeclockHelpersDate::fixDate(
@@ -266,7 +269,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
-        $usercutoff = TimeclockHelpersTimeclock::getUserParam("noTimeBefore", $user->id, $date);
+        $usercutoff = $user->timeclock["noTimeBefore"];
         $registry->set("payperiod.usercutoff", $usercutoff);
 
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
@@ -289,7 +292,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $subtotals = (int)($len / $split);
         $registry->set("payperiod.subtotals", $subtotals);
 
-        $timesheetDone = TimeclockHelpersTimeclock::getUserParam("timesheetDone");
+        $timesheetDone = $user->timeclock["timesheetDone"];
         $done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
         $registry->set("payperiod.done", $done);
         
@@ -331,7 +334,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->select('v.name as author');
         $query->leftjoin('#__users as v on t.created_by = v.id');
         $query->leftjoin('#__timeclock_users as z on 
-            (z.user_id = '.$db->quote($this->_user->id).' AND t.project_id = z.project_id)');
+            (z.user_id = '.$db->quote($this->getUser()->id).' AND t.project_id = z.project_id)');
         return $query;
     }
     /**
@@ -353,9 +356,9 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
 
         $query->where(
-            "((".$db->quoteName("t.user_id")."=".$db->quote($this->_user->id)." AND "
+            "((".$db->quoteName("t.user_id")."=".$db->quote($this->getUser()->id)." AND "
             .$db->quoteName("p.type")."<>'HOLIDAY') OR ("
-            .$db->quoteName("z.user_id")."=".$db->quote($this->_user->id)." AND "
+            .$db->quoteName("z.user_id")."=".$db->quote($this->getUser()->id)." AND "
             .$db->quoteName("p.type")."='HOLIDAY'))"
         );
         $start = $this->getState("employment.start");
@@ -383,7 +386,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');
         $query->select('r.name as parent_name, r.description as parent_description');
         $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');
-        $query->where('q.user_id = '.$db->quote($this->_user->id));
+        $query->where('q.user_id = '.$db->quote($this->getUser()->id));
         $query->where('q.project_id > 0');
         $query->order("p.name asc");
         return $query;

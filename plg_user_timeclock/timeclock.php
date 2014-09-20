@@ -102,9 +102,9 @@ class plgUserTimeclock extends JPlugin
     static public function getParams($userId)
     {
         $ret = self::getAllParams($userId);
+        $ret = self::stripKeys($ret);
         self::decodeArrays($ret);
-        return self::stripKeys($ret);
-
+        return $ret;
     }
     /**
     * This happens when we are preparing the form
