@@ -95,6 +95,7 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
 
         $this->data      = $this->model->listItems();
         $this->projects  = $this->model->listProjects();
+        $this->user      = $this->model->getUser();
         
 
         return parent::render();

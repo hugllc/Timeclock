@@ -4,14 +4,13 @@
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHTML::_('behavior.modal'); 
     JHTML::_('behavior.calendar');
-    $user = JFactory::getUser();
     $cols = $this->payperiod->days + 2 + $this->payperiod->subtotals;
     $this->payperiod->cols = $cols;
 
     JFactory::getDocument()->setTitle(
         JText::sprintf(
             "COM_TIMECLOCK_TIMESHEET_TITLE",
-            $user->name,
+            $this->user->name,
             JHTML::_('date', $this->payperiod->start, JText::_("DATE_FORMAT_LC3")),
             JHTML::_('date', $this->payperiod->end, JText::_("DATE_FORMAT_LC3"))
         )
@@ -22,7 +21,7 @@
     <div class="page-header">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
-            <?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $user->name);?>
+            <?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->name);?>
             <span class="complete">(<?php print JText::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
         </h2>
     </div>

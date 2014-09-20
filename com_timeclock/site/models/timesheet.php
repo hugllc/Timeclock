@@ -101,6 +101,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         }
         return $return;
     }
+
     /**
     * Build query and where for protected _getList function and return a list
     *
@@ -220,8 +221,8 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $params = JComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
 
-        $user = JFactory::getUser();
-
+        $user = $this->getUser();
+        
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
         ) {

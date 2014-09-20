@@ -59,7 +59,8 @@ class TimeclockModelsSiteDefault extends JModelBase
     protected $id              = array();
     protected $context         = null;
     protected $_defaultSortDir = "asc";
-    
+    private   $_user           = null;
+    private   $_users          = null;
     /**
     * The constructor
     */
@@ -236,6 +237,38 @@ class TimeclockModelsSiteDefault extends JModelBase
         
         $set = TimeclockHelpersTimeclock::getParam($name);
         return $set == $value ? $set : false;
+    }
+    /**
+    * Gets the user and returns the timeclock params
+    *
+    * @param int $id The id of the user to get
+    * 
+    * @return array An array of results.
+    */
+    public function getUser($id = null)
+    {
+        if (is_null($this->_user)) {
+            $this->_user = JFactory::getUser($id);
+            $this->_user->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user->id);
+        }
+        return $this->_user;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param int $user_id The user to get the projects for
+    * 
+    * @return array An array of results.
+    */
+    public function listUsers()
+    {
+        if (is_null($this->_users)) {
+            $this->_users = TimeclockHelpersTimeclock::getUsers(0);
+            foreach ($this->_users as &$user) {
+                $user->timeclock = TimeclockHelpersTimeclock::getUserParams($user->id);
+            }
+        }
+        return $this->_users;
     }
 
 }

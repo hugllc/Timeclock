@@ -178,23 +178,6 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         }
     }
     /**
-    * Build query and where for protected _getList function and return a list
-    *
-    * @param int $user_id The user to get the projects for
-    * 
-    * @return array An array of results.
-    */
-    public function listUsers()
-    {
-        if (is_null($this->_users)) {
-            $this->_users = TimeclockHelpersTimeclock::getUsers(0);
-            foreach ($this->_users as &$user) {
-                $user->timeclock = TimeclockHelpersTimeclock::getUserParams($user->id);
-            }
-        }
-        return $this->_users;
-    }
-    /**
     * This creates data for the store.  It should be overwritten by child classes
     * if they want to store a different set.
     *
