@@ -117,6 +117,17 @@ table.timesheet tr.holiday td.holiday {
     background-color: #8defd9;
 }
 
+table.report .employee .complete {
+    text-align: center; 
+}
+table.report .employee .complete.yes {
+    background-color: #bcd996; 
+}
+
+table.report .employee .complete.no {
+    background-color: #d99696; 
+}
+
 table.report th {
     background-color: #CCC;
 }

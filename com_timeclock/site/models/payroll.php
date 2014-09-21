@@ -56,6 +56,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     private $_totals = array(
         "total" => 0,
     );
+    /** This is our percentage of holiday pay */
+    private $_myusers = null;
     /**
     * The constructor
     */
@@ -64,6 +66,25 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $app = JFactory::getApplication();
         $this->_user = JFactory::getUser();
         parent::__construct(); 
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param int $user_id The user to get the projects for
+    * 
+    * @return array An array of results.
+    */
+    public function listUsers()
+    {
+        if (is_null($this->_myusers)) {
+            $this->_myusers = parent::listUsers();
+            foreach ($this->_myusers as &$user) {
+                $start = $this->getState("payperiod.start");
+                $timesheetDone = $user->timeclock["timesheetDone"];
+                $user->done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
+            }
+        }
+        return $this->_myusers;
     }
     /**
     * Build query and where for protected _getList function and return a list

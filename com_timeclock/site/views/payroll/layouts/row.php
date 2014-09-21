@@ -5,11 +5,11 @@
     $total = 0;
 ?>
             <tr class="employee <?php print $displayData->rowClass; ?>">
-                <th>
+                <td>
                     <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
-                </th>
+                </td>
 <?php
-for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
+for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) :
     $class    = "user-".$w."-".$user_id;
     $worked   = 0;
     $pto      = 0;
@@ -24,24 +24,22 @@ for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
     }
     $total   += $subtotal;
     ?>
-            <td class="hours">
-                <span id="hours-<?php print $user_id."-".$w; ?>" class="worked-<?php print $w; ?> <?php print $class;?>"><?php print $worked; ?></span>
-            </td>
-            <td class="hours">
-                <span id="pto-<?php print $user_id."-".$w; ?>" class="pto-<?php print $w; ?> <?php print $class;?>"><?php print $pto; ?></span>
-            </td>
-            <td class="hours">
-                <span id="holiday-<?php print $user_id."-".$w; ?>" class="holiday-<?php print $w; ?> <?php print $class;?>"><?php print $holiday; ?></span>
-            </td>
-            <td class="subtotal">
-                <span id="subtotal-<?php print $user_id."-".$w; ?>" class="subtotal-<?php print $w."-".$user_id; ?>"><?php print $subtotal; ?></span>
-            </td>
-    <?php
-}
-?>
-                <th>
-                    <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
-                </th>
+                <td class="hours">
+                    <span id="hours-<?php print $user_id."-".$w; ?>" class="worked-<?php print $w; ?> <?php print $class;?>"><?php print $worked; ?></span>
+                </td>
+                <td class="hours">
+                    <span id="pto-<?php print $user_id."-".$w; ?>" class="pto-<?php print $w; ?> <?php print $class;?>"><?php print $pto; ?></span>
+                </td>
+                <td class="hours">
+                    <span id="holiday-<?php print $user_id."-".$w; ?>" class="holiday-<?php print $w; ?> <?php print $class;?>"><?php print $holiday; ?></span>
+                </td>
+                <td class="subtotal">
+                    <span id="subtotal-<?php print $user_id."-".$w; ?>" class="subtotal-<?php print $w."-".$user_id; ?>"><?php print $subtotal; ?></span>
+                </td>
+    <?php endfor; ?>
+                <td class="complete <?php print $displayData->done ? "yes" : "no"; ?>">
+                    <?php print $displayData->done ? JText::_("JYES") : Jtext::_("JNO"); ?>
+                </td>
                 <td class="total">
                     <span id="total-<?php print $user_id?>"><?php print $total; ?></span>
                 </td>

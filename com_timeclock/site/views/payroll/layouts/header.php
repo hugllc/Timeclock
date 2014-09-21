@@ -10,7 +10,7 @@ for ($w = 0; $w < $displayData->subtotals; $w++) {
     <?php
 }
 ?>
-            <th rowspan="2"><?php print JText::_("COM_TIMECLOCK_EMPLOYEE"); ?></th>
+            <th rowspan="2"><?php print JText::_("COM_TIMECLOCK_COMPLETE"); ?></th>
             <th rowspan="2"><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></th>
         </tr>
         <tr class="subheader">
