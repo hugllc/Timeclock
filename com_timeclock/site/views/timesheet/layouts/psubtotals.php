@@ -24,7 +24,7 @@
                     <?php print ($key == 1) ? JText::_("COM_TIMECLOCK_PERIODIC_SUBTOTALS") : "&nbsp;" ?>
                 </th>
                 <td class="subtotal">
-                    <span id="psubtotal-proj-<?php print $key; ?>" class="">-</span>
+                    <span class="psubtotal-proj-<?php print $key; ?>">-</span>
                 </td>
 <?php endforeach;?>
                 <th>

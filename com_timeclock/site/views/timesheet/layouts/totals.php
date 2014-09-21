@@ -4,6 +4,6 @@
                     <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
                 </th>
                 <td class="total">
-                    <span id="total">-</span>
+                    <span class="grandtotal">-</span>
                 </td>
             </tr>

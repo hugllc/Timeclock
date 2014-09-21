@@ -92,6 +92,7 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
         $this->_subtotals  = new JLayoutFile('subtotals', __DIR__.'/layouts');
         $this->_psubtotals = new JLayoutFile('psubtotals', __DIR__.'/layouts');
         $this->_toolbar    = new JLayoutFile('toolbar', __DIR__.'/layouts');
+        $this->_name       = new JLayoutFile('name', __DIR__.'/layouts');
 
         $this->data      = $this->model->listItems();
         $this->projects  = $this->model->listProjects();

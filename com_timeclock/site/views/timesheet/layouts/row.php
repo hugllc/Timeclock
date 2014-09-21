@@ -46,12 +46,12 @@
             $tooltip = sprintf(JText::_("COM_TIMECLOCK_SUBTOTAL_FOR"), $sub, $displayData->name);
     ?>
                 <td class="subtotal">
-                    <span id="subtotal-proj-<?php print $sub."-".$displayData->project_id; ?>" class="<?php print $class; ?> hasTooltip" title="<?php print $tooltip; ?>">-</span>
+                    <span class="subtotal-proj-<?php print $sub."-".$displayData->project_id; ?> <?php print $class; ?> hasTooltip" title="<?php print $tooltip; ?>">-</span>
                 </td>
     <?php endif; ?>
 <?php endforeach;?>
                 <td class="subtotal">
-                    <span id="total-proj-<?php print $displayData->project_id; ?>" class="total-proj hasTooltip" title="<?php printf(JText::_("COM_TIMECLOCK_TOTAL_FOR"), $displayData->name); ?>">-</span>
+                    <span class="total-proj-<?php print $displayData->project_id; ?> total-proj hasTooltip" title="<?php printf(JText::_("COM_TIMECLOCK_TOTAL_FOR"), $displayData->name); ?>">-</span>
                 </td>
             </tr>
             

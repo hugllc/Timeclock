@@ -4,8 +4,14 @@ var Timesheet = {
     setup: function ()
     {
         this.decimals = Timeclock.params.decimalPlaces;
-        this.update("timesheet");
+        this.update();
         this.setComplete(this.payperiod.done);
+        if (this.volunteer == 0) {
+            jQuery("table.volunteer").hide();
+        }
+        if (this.paid == 0) {
+            jQuery("table.paid").hide();
+        }
     },
     round: function (value)
     {
@@ -34,7 +40,7 @@ var Timesheet = {
                 total += hours;
             }
         });
-        jQuery("table."+sel+" #subtotal-"+key).text(this.round(total));
+        jQuery("table."+sel+" .subtotal-"+key).text(this.round(total));
     },
     _subtotalProj: function (key, parts, sel)
     {
@@ -47,10 +53,10 @@ var Timesheet = {
                     subtotal += hours;
                 }
             });
-            jQuery("table."+sel+" #subtotal-proj-"+i+"-"+key).text(this.round(subtotal));
+            jQuery("table."+sel+" .subtotal-proj-"+i+"-"+key).text(this.round(subtotal));
             total += subtotal;
         }
-        jQuery("#total-proj-"+key).text(this.round(total));
+        jQuery("table."+sel+" .total-proj-"+key).text(this.round(total));
     },
     _psubtotal: function (parts, sel)
     {
@@ -63,16 +69,13 @@ var Timesheet = {
                     subtotal += hours;
                 }
             });
-            jQuery("table."+sel+" #psubtotal-proj-"+i).text(this.round(subtotal));
+            jQuery("table."+sel+" .psubtotal-proj-"+i).text(this.round(subtotal));
             total += subtotal;
         }
-        jQuery("table."+sel+" #total").text(this.round(total));
+        jQuery("table."+sel+" .grandtotal").text(this.round(total));
     },
     total: function (sel)
     {
-        if (!sel) {
-            $sel = "timeclock"
-        }
         var self = this;
         jQuery.each(self.dates, function(ind,key) {
             self._subtotalDates(key, sel);
@@ -118,7 +121,7 @@ var Timesheet = {
         });
         
     },
-    update: function (sel)
+    update: function ()
     {
         var proj;
         var hours;
@@ -128,10 +131,11 @@ var Timesheet = {
             jQuery.each(self.dates, function(ind2,date) {
                 hours = (self.data[proj] && self.data[proj][date]) ? parseFloat(self.data[proj][date].hours) : 0;
                 
-                jQuery("table."+sel+" #hours-"+proj+"-"+date).text(self.round(hours));
+                jQuery("table.timesheet #hours-"+proj+"-"+date).text(self.round(hours));
             });
         });
-        this.total(sel);
+        this.total("paid");
+        this.total("volunteer");
     },
     refresh: function ()
     {
@@ -149,7 +153,7 @@ var Timesheet = {
                     // record will be entered into the database when save is pressed
                     // again.
                     self.data = ret.data;
-                    self.update("timesheet");
+                    self.update();
                 }
             },
             error: function(ret)

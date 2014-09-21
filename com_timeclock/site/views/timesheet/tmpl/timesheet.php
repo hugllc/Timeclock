@@ -36,10 +36,18 @@
                 ); ?>
         </strong>
     </div>
-    <div class="">
-        <table class="timesheet">
+    <div class="paid">
+        <table class="paid timesheet">
             <thead>
-<?php print $this->_header->render($this->payperiod); ?>
+<?php 
+    print $this->_name->render(
+        (object)array(
+            "cols" => $this->payperiod->cols,
+            "name" => "COM_TIMECLOCK_PAID_TIME",
+        )
+    );
+    print $this->_header->render($this->payperiod); 
+?>
             </thead>
             <tfoot>
 <?php print $this->_header->render($this->payperiod);  ?>
@@ -49,9 +57,22 @@
             </tfoot>
             <tbody>
 <?php 
+    $paid = 0;
     $allproj = array();
     foreach ($this->projects as $cat => $projects) {
-        if ($cat > -2) {
+        $render = "";
+        $cnt    = 0;
+        foreach ($projects["proj"] as $proj) {
+            if ($proj->type == "UNPAID") {
+                continue;
+            }
+            $cnt++;
+            $allproj[$proj->project_id] = $proj->project_id;
+            $proj->payperiod = $this->payperiod;
+            $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
+            $render .= $this->_row->render($proj);
+        }
+        if ($cnt > 0) {
             print $this->_category->render(
                 array(
                     "cols" => $cols,
@@ -60,13 +81,61 @@
                     "description" => $projects["description"],
                 )
             );
+            print $render;
         }
+        $paid += $cnt;
+    }
+?>
+            </tbody>
+        </table>
+    </div>
+    <div class="volunteer">
+        <table class="volunteer timesheet">
+            <thead>
+<?php 
+    print $this->_name->render(
+        (object)array(
+            "cols" => $this->payperiod->cols,
+            "name" => "COM_TIMECLOCK_VOLUNTEER_TIME",
+        )
+    );
+    print $this->_header->render($this->payperiod); 
+?>
+            </thead>
+            <tfoot>
+<?php print $this->_header->render($this->payperiod);  ?>
+<?php print $this->_subtotals->render($this->payperiod); ?>
+<?php print $this->_psubtotals->render($this->payperiod); ?>
+<?php print $this->_totals->render($this->payperiod); ?>
+            </tfoot>
+            <tbody>
+<?php 
+    $unpaid = 0;
+    foreach ($this->projects as $cat => $projects) {
+        $cnt = 0;
+        $render = "";
         foreach ($projects["proj"] as $proj) {
+            if ($proj->type != "UNPAID") {
+                continue;
+            }
+            $cnt++;
             $allproj[$proj->project_id] = $proj->project_id;
             $proj->payperiod = $this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
-            print $this->_row->render($proj);
+            $render .= $this->_row->render($proj);
         }
+        if ($cnt > 0) {
+            print $this->_category->render(
+                array(
+                    "cols" => $cols,
+                    "id" => $cat,
+                    "name" => $projects["name"],
+                    "description" => $projects["description"],
+                )
+            );
+            print $render;
+        }
+        $unpaid += $cnt;
     }
 ?>
             </tbody>
@@ -86,7 +155,9 @@
         Timesheet.projects     = <?php print json_encode($this->projects); ?>;
         Timesheet.payperiod    = <?php print json_encode($this->payperiod); ?>;
         Timesheet.data         = <?php print json_encode($this->data); ?>;
-        Timeclock.params       = <?php print json_encode($this->params); ?>
+        Timesheet.paid         = <?php print $paid; ?>;
+        Timesheet.volunteer    = <?php print $unpaid; ?>;
+        Timeclock.params       = <?php print json_encode($this->params); ?>;
 
     </script>
 </div>
