@@ -269,6 +269,9 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
+        $locked = TimeclockHelpersDate::compareDates($cutoff, $next) >= 0;
+        $registry->set("payperiod.locked", $locked);
+
         $usercutoff = $user->timeclock["noTimeBefore"];
         $registry->set("payperiod.usercutoff", $usercutoff);
 

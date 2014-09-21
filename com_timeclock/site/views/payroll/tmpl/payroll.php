@@ -20,7 +20,7 @@
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print JText::_("COM_TIMECLOCK_PAYROLL"); ?>
-            <span class="locked"><?php print JHtml::_('image', 'system/checked_out.png', null, null, true); ?></span>
+            <span class="locked hasTooltip" title="<?php print JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>"><?php print JHtml::_('image', 'system/checked_out.png', null, null, true); ?></span>
             <span class="livedata noreport">(<?php print JText::_("COM_TIMECLOCK_LIVE_DATA"); ?>)</span>
             <span class="reportdata noreport">(<?php print JText::_("COM_TIMECLOCK_SAVED_DATA"); ?>)</span>
         </h2>

@@ -6,6 +6,7 @@ var Timesheet = {
         this.decimals = Timeclock.params.decimalPlaces;
         this.update();
         this.setComplete(this.payperiod.done);
+        this.setLocked(this.payperiod.locked);
         if (this.volunteer == 0) {
             jQuery("table.volunteer").hide();
         }
@@ -20,6 +21,16 @@ var Timesheet = {
             return value;
         }
         return parseFloat(val.toFixed(this.decimals));
+    },
+    setLocked: function (locked)
+    {
+        if (locked) {
+            jQuery("#timeclock .locked").show();
+            jQuery("#timeclock .notlocked").hide();
+        } else {
+            jQuery("#timeclock .locked").hide();
+            jQuery("#timeclock .notlocked").show();
+        }
     },
     setComplete: function (complete)
     {
