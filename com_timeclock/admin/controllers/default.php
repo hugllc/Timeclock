@@ -220,7 +220,7 @@ class TimeclockControllersDefault extends JControllerBase
     * 
     * @return null
     */
-    protected function taskApply()
+    protected function taskApply($output = true)
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
@@ -242,8 +242,12 @@ class TimeclockControllersDefault extends JControllerBase
                 false     // Ignore Message Queue
             );
         }
-        $this->echoJSON($json);
-        return true;
+        if ($output) {
+            $this->echoJSON($json);
+            return true;
+        } else {
+            return $json;
+        }
     }
     /**
     * This function saves our stuff and returns a json response

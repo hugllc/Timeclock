@@ -11,8 +11,8 @@
     $hidID    = 'hid_'.$displayData["id"];
     $inID     = $displayData["id"].'_in';
     $outID    = $displayData["id"].'_out';
-    $inName   = ($nameIsArray) ? str_replace("][]", "][in]", $name) : $name."_in[]";
-    $outName  = ($nameIsArray) ? str_replace("][]", "][out]", $name) : $name."_out[]";
+    $inName   = ($nameIsArray) ? str_replace("[]", "[in]", $name) : $name."_in";
+    $outName  = ($nameIsArray) ? str_replace("[]", "[out]", $name) : $name."_out";
 ?>
             <script type="text/javascript">
                 jQuery(document).ready(function() {

@@ -76,8 +76,9 @@ class TimeclockControllersProject extends TimeclockControllersDefault
     */
     protected function taskApply()
     {
-        $ret = parent::taskApply();
+        $ret = parent::taskApply(false);
         $this->applyUsers();
+        $this->echoJSON($ret);
         return $ret;
     }
     /**

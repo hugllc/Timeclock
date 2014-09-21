@@ -112,7 +112,7 @@ class TimeclockModelsDefault extends JModelBase
             $key = $row->getKeyName();
             $this->id = array($row->$key);
         }
-        $this->insert_id = $this->id;
+        $this->insert_id = $this->id[0];
         
         return $row;
 
