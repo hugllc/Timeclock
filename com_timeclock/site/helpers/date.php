@@ -222,8 +222,9 @@ class TimeclockHelpersDate
         $start = self::fixDate($start);
         $end   = self::fixDate($end);
         $first = self::explodeDate($start);
-        for ($i = $first["d"]; $i < 50; $i++) {
-            $date = self::fixDate($first["y"]."-".$first["m"]."-".$i);
+        $day = $first["d"];
+        for ($i = 0; $i < 50; $i++) {
+            $date = self::fixDate(self::dateUnix($first["m"], $day++, $first["y"]));
             $ret[] = $date;
             if ($date == $end) {
                 break;
