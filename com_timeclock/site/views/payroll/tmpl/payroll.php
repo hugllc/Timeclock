@@ -115,9 +115,6 @@
 </script>
 <?php 
     foreach ($this->users as $user_id => $user) {
-        if (!isset($this->data["notes"][$user_id])) {
-            continue;
-        }
         $user->payperiod = $this->payperiod;
         $user->data = $this->data["notes"][$user_id];
         print $this->_notes->render($user);

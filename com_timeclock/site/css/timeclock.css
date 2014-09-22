@@ -170,6 +170,13 @@ table.report tfoot tr.header th {
 .hidden {
     display: none;
 }
+div.notes {
+    padding-bottom: 2em;
+}
+.notes .name {
+    background-color: #CCC;
+    padding: 0.2em;
+}
 .notes .noteheader {
     margin-top: 0.5em;
     font-weight: bold;
