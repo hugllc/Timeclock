@@ -80,7 +80,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             $this->_myusers = parent::listUsers();
             foreach ($this->_myusers as &$user) {
                 $start = $this->getState("payperiod.start");
-                $timesheetDone = $user->timeclock["timesheetDone"];
+                $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
                 $user->done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
             }
         }
