@@ -112,13 +112,13 @@ var Addhours = {
                         fieldset.find('[name="'+key+'"]').val(data.data[key]);
                     }
                     // Set the complete flag to 0
-                    Timesheet.setComplete(0);
                     self.message(elem.project_id, data.message, "success");
                     fieldset.find('[name="notes"]').off("keypress", self.validateNotes);
                     self.count++;
                     if (self.count >= self.total) {
                         if (typeof Timesheet !== 'undefined') {
                             Timesheet.refresh();
+                            Timesheet.setComplete(0);
                         }
                         if (task == 'save') {
                             if (typeof Timesheet === 'undefined') {
