@@ -59,7 +59,7 @@ class TimeclockHelpersView
     */
     static function getForm($form, $data)
     {
-        $layout = new JLayoutFile('detailsedit', JPATH_COMPONENT.'/layouts');
+        $layout = new JLayoutFile('detailsedit', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("data" => $data, "form" => $form)
@@ -76,7 +76,7 @@ class TimeclockHelpersView
     */
     static function getFormSet($name, $form, $data)
     {
-        $layout = new JLayoutFile('fieldset', JPATH_COMPONENT.'/layouts');
+        $layout = new JLayoutFile('fieldset', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("name" => $name, "data" => $data, "form" => $form)
@@ -93,7 +93,7 @@ class TimeclockHelpersView
     */
     static function getFormSetH($name, $form, $data)
     {
-        $layout = new JLayoutFile('hfieldset', JPATH_COMPONENT.'/layouts');
+        $layout = new JLayoutFile('hfieldset', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("name" => $name, "data" => $data, "form" => $form)
@@ -110,7 +110,7 @@ class TimeclockHelpersView
     */
     static function getFormSetV($name, $form, $data)
     {
-        $layout = new JLayoutFile('vfieldset', JPATH_COMPONENT.'/layouts');
+        $layout = new JLayoutFile('vfieldset', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("name" => $name, "data" => $data, "form" => $form)
@@ -127,7 +127,7 @@ class TimeclockHelpersView
     */
     static function getFormField($data)
     {
-        $layout = new JLayoutFile('field', JPATH_COMPONENT.'/layouts');
+        $layout = new JLayoutFile('field', dirname(__DIR__).'/layouts');
 
         return $layout->render($data);
     }

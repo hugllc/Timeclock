@@ -1,7 +1,6 @@
 <?php
-
 defined('_JEXEC') or die;
-
+$displayData->data = isset($displayData->data) ? (object)$displayData->data : new stdClass();
 ?>
     <h2><?php print $displayData->name; ?></h2>
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
@@ -29,6 +28,7 @@ defined('_JEXEC') or die;
             print TimeclockHelpersView::getFormField($field);
         }
     } else {
+        $displayData->data->hours1 = isset($displayData->data->hours) ? $displayData->data->hours : 0;
         print TimeclockHelpersView::getFormSetH("hours", $displayData->form, $displayData->data);
     }
     
