@@ -343,7 +343,7 @@ class plgUserTimeclock extends JPlugin
         }
         $history = self::stripKeys(self::getAllParams($userId, "history"));
         self::decodeArrays($history);
-        $history = isset($history['history']) ? (array)$history['history'][$param] : array();
+        $history = isset($history['history'][$param]) ? (array)$history['history'][$param] : array();
         ksort($history);
         $date = new JDate($date);
         foreach ((array)$history as $change => $value) {
@@ -365,7 +365,7 @@ class plgUserTimeclock extends JPlugin
     * @return boolean
     */
     static public function setParamValue(
-        $param, $value, $userId=null
+        $param, $value, $userId=null, $order=-1
     ) {
         if (empty($userId)) {
             $userId = JFactory::getUser()->id;
@@ -377,16 +377,21 @@ class plgUserTimeclock extends JPlugin
             $userId = (int)$userId;
             $db = JFactory::getDbo();
             $db->transactionStart();
+            // Delete all the possible old values.  This will slowly remove them
+            // from the database.
             $db->setQuery(
                 'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
-                " AND profile_key = 'timeclock.$param'"
+                " AND (profile_key = 'timeclock.$param'".
+                " OR profile_key = 'timeclock.admin.$param'".
+                " OR profile_key = 'timeclock.set.$param'".
+                " OR profile_key = 'timeclock.user.$param')"
             );
             if (!$db->query()) {
                 throw new Exception($db->getErrorMsg());
             }
             $db->setQuery(
                 'INSERT INTO #__user_profiles VALUES '.
-                '('.(int)$userId.", 'timeclock.$param', ".$db->quote($value).', -1)'
+                '('.(int)$userId.", 'timeclock.$param', ".$db->quote($value).', '.$db->quote((int)$order).')'
             );
 
             if (!$db->query()) {
@@ -441,63 +446,38 @@ class plgUserTimeclock extends JPlugin
 
         if ($userId && $result && isset($data['timeclock']) && (count($data['timeclock'])))
         {
-            try
-            {
-
-                //Sanitize the date
-                foreach (array("startDate", "endDate") as $date) {
-                    if (!empty($data['timeclock'][$date])) {
-                        $jdate = new JDate($data['timeclock'][$date]);
-                        $data['timeclock'][$date] = $jdate->format('Y-m-d');
-                    }
+            //Sanitize the date
+            foreach (array("startDate", "endDate") as $date) {
+                if (!empty($data['timeclock'][$date])) {
+                    $jdate = new JDate($data['timeclock'][$date]);
+                    $data['timeclock'][$date] = $jdate->format('Y-m-d');
                 }
-                // Do the stuff not related to this table
-                $this->addProjects($userId, $data['timeclock']);
-                $this->addUserProjects($userId, $data['timeclock']);
-                $this->removeProjects($userId, $data['timeclock']);
-                // get the history before it is encoded
-                if (isset($data['timeclock']['history'])) {
-                    $history = $data['timeclock']['history'];
-                    unset($data['timeclock']['history']);
-                } else {
-                    $history = array();
-                }
-                // Encode the arrays
-                $this->encodeArrays($data['timeclock']);
-                // Now change the history
-                $this->_setHistory($userId, $data['timeclock'], $history);
-                // Now delete the old stuff
-                $db = JFactory::getDbo();
-                $db->setQuery(
-                    'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
-                    " AND profile_key LIKE 'timeclock.%'"
-                );
-
-                if (!$db->query()) {
-                    throw new Exception($db->getErrorMsg());
-                }
-
-                // Now save the new stuff
-                $tuples = array();
-                $order    = 1;
-
-                foreach ($data['timeclock'] as $k => $v)
-                {
-                    $tuples[] = '('.$userId.', '.$db->quote('timeclock.'.$k).', '.$db->quote($v).', '.$order++.')';
-                }
-
-                $db->setQuery('INSERT INTO #__user_profiles VALUES '.implode(', ', $tuples));
-
-                if (!$db->query()) {
-                    throw new Exception($db->getErrorMsg());
-                }
-
             }
-            catch (JException $e)
-            {
-                $this->_subject->setError($e->getMessage());
-                return false;
+            // Do the stuff not related to this table
+            $this->addProjects($userId, $data['timeclock']);
+            $this->addUserProjects($userId, $data['timeclock']);
+            $this->removeProjects($userId, $data['timeclock']);
+            // get the history before it is encoded
+            if (isset($data['timeclock']['history'])) {
+                $history = $data['timeclock']['history'];
+                unset($data['timeclock']['history']);
+            } else {
+                $history = array();
             }
+            // Encode the arrays
+            $this->encodeArrays($data['timeclock']);
+            // Now change the history
+            $this->_setHistory($userId, $data['timeclock'], $history);
+
+            // Now save the new stuff
+            $tuples = array();
+            $order    = 1;
+
+            foreach ($data['timeclock'] as $k => $v)
+            {
+                self::setParamValue($k, $v, $userId, $order++);
+            }
+
         }
 
         return true;
@@ -570,7 +550,7 @@ class plgUserTimeclock extends JPlugin
             }
         }
         foreach ($old as $row) {
-            $key = substr($row[0], 16);
+            $key = substr($row[0], 10);
             $vals = explode("_", $key);
             if ($vals[0] === "history") {
                 if (isset($vals[2]) && isset($changeDates[$vals[2]])) {
@@ -580,12 +560,12 @@ class plgUserTimeclock extends JPlugin
                 // Propigate the old history
                 $data[$key] = $row[1];
                 continue;
-            } else if (substr($data[$vals[0]], 0, 5) == "array") {
+            } else if (isset($data[$vals[0]]) && (substr($data[$vals[0]], 0, 5) == "array")) {
                 $pkey = str_replace("_", "*", $key);
             } else {
                 $pkey = $key;
             }
-            if (($data[$key] != $row[1]) && (substr($data[$key], 0, 5) !== "array")) {
+            if (isset($data[$key]) && ($data[$key] != $row[1]) && (substr($data[$key], 0, 5) !== "array")) {
                 $data["history_".$pkey."_".$date->toSql()] = $row[1];
                 $data["history_timestamps_".$date->toSql()] = $id;
                 $data["history"] = "array()";
