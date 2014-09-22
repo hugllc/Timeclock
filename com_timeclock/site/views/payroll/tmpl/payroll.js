@@ -8,6 +8,16 @@ var Payroll = {
             jQuery("#timeclock .unlock").hide();
         }
         jQuery("#timeclock .notes").hide();
+        this.otHighlight();
+    },
+    otHighlight: function ()
+    {
+        jQuery("table.report span.overtime").each(function(ind,elem) {
+            var value = parseInt(jQuery(elem).text(), 10);
+            if (!isNaN(value) && (value != 0)) {
+                jQuery(elem).closest("td").addClass("highlight");
+            }
+        });
     },
     setLocked: function (locked)
     {

@@ -123,7 +123,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             $worked[$row->worked][] = $row;
         }
         $dates = $this->getState("payperiod.dates");
-        $split = $this->getState("payperiod.splitdays");
+        $split = 7;
         $period = -1;
         $days   = 0;
         $return = array(
@@ -133,14 +133,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         foreach (array_keys($dates) as $date) {
             if (($days++ % $split) == 0) {
                 $period++;
-            }
-            if (!isset($return["totals"][$period])) {
-                $return["totals"][$period] = (object)array(
-                    "worked"   => 0,
-                    "pto"      => 0,
-                    "holiday"  => 0,
-                    "subtotal" => 0,
-                );
             }
             if (!isset($worked[$date])) {
                 continue;
@@ -155,6 +147,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                         "pto"      => 0,
                         "holiday"  => 0,
                         "subtotal" => 0,
+                        "overtime" => 0,
                     );
                 }
                 $this->checkTimesheet($row);
@@ -162,20 +155,15 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                 switch ($row->project_type) {
                 case "HOLIDAY":
                     $return[$user_id][$period]->holiday += $row->hours;
-                    $return["totals"][$period]->holiday    += $row->hours;
                     break;
                 case "PTO":
                     $return[$user_id][$period]->pto += $row->hours;
-                    $return["totals"][$period]->pto    += $row->hours;
                     break;
                 default:
                     $return[$user_id][$period]->worked += $row->hours;
-                    $return["totals"][$period]->worked    += $row->hours;
                     break;
                 }
                 $return[$user_id][$period]->subtotal += $row->hours;
-                $return["totals"][$period]->subtotal    += $row->hours;
-                $return["totals"]["total"]              += $row->hours;
                 
                 // Get the notes
                 $notes[$user_id] = isset($notes[$user_id]) ? $notes[$user_id] : array();
@@ -188,7 +176,49 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             }
         }
         $return["notes"] = $notes;
+        $this->_checkOvertime($return);
         return $return;
+    }
+    /**
+    * This checks for overtime and sets the overtime field if there is any
+    *
+    * @param array $data The data to check
+    * 
+    * @return array An array of results.
+    */
+    private function _checkOvertime(&$data)
+    {
+        $fulltime = $this->getState("payperiod.fulltimeHours");
+        $users = $this->listUsers();
+        foreach ($users as $user_id => $user) {
+            if (!isset($data[$user_id])) {
+                continue;
+            }
+            foreach ($data[$user_id] as $period => &$wk) {
+                if (!isset($data["totals"][$period])) {
+                    $data["totals"][$period] = (object)array(
+                        "worked"   => 0,
+                        "pto"      => 0,
+                        "holiday"  => 0,
+                        "subtotal" => 0,
+                        "overtime" => 0,
+                    );
+                }
+                if ($wk->worked > $fulltime) {
+                    $wk->overtime = $wk->worked - $fulltime;
+                    $wk->worked = $fulltime;
+                    $wk->subtotal = $wk->worked + $wk->holiday + $wk->pto;
+                } else {
+                    $wk->overtime = 0;
+                }
+                $data["totals"][$period]->worked   += $wk->worked;
+                $data["totals"][$period]->holiday  += $wk->holiday;
+                $data["totals"][$period]->pto      += $wk->pto;
+                $data["totals"][$period]->overtime += $wk->overtime;
+                $data["totals"][$period]->subtotal += $wk->subtotal;
+            }
+            $data["totals"]["total"]           += $wk->subtotal;
+        }
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -291,6 +321,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
+        $fulltimeHours = TimeclockHelpersTimeclock::getParam("fulltimeHours");
+        $registry->set("payperiod.fulltimeHours", $fulltimeHours);
+
         $locked = TimeclockHelpersDate::compareDates($cutoff, $next) >= 0;
         $registry->set("payperiod.locked", $locked);
 
@@ -306,8 +339,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
         $registry->set("holiday.perc", $this->_holiday_perc);
 
-        $split = (int)TimeclockHelpersTimeclock::getParam("payPeriodSplitDays");
-        $split = empty($split) ? 7 : $split;
+        $split = 7;
+        $registry->set("payperiod.splitdays", $split);
+        $split = 7;
         $registry->set("payperiod.splitdays", $split);
 
         $subtotals = (int)($len / $split);

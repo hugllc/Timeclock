@@ -93,7 +93,6 @@ class TimeclockViewsPayrollBase extends JViewBase
         $this->setup($file);
         $this->export($users, $data);
         $this->finalize();
-        echo $this->output;
         $app->close();
     }
     /**
@@ -174,29 +173,35 @@ class TimeclockViewsPayrollBase extends JViewBase
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
         $total = array();
+        $worked   = 0;
+        $pto      = 0;
+        $holiday  = 0;
+        $subtotal = 0;
+        $overtime = 0;
         for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
-            $worked   = 0;
-            $pto      = 0;
-            $holiday  = 0;
             if (isset($data->data[$w])) {
                 $d        = (object)$data->data[$w];
-                $worked   = $d->worked;
-                $pto      = $d->pto;
-                $holiday  = $d->holiday;
+                $worked   += $d->worked;
+                $pto      += $d->pto;
+                $holiday  += $d->holiday;
+                $subtotal += $d->subtotal;
+                $overtime += $d->overtime;
             }
-            $col = $this->nextCol($col);
-            $subtotal = $col.$this->line;
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $worked);
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $pto);
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $holiday);
-            $subtotal .= ":".$col.$this->line;
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM($subtotal)");
-            $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
-            $total[] = $col.$this->line;
         }
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $worked);
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $pto);
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $holiday);
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $subtotal);
+        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
+        $total[] = $col.$this->line;
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $overtime);
+        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
+        $total[] = $col.$this->line;
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
@@ -230,16 +235,16 @@ class TimeclockViewsPayrollBase extends JViewBase
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_EMPLOYEE"));
         
-        for ($w = 1; $w <= $this->payperiod->subtotals; $w++) {
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_WORKED"));
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_PTO"));
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_HOLIDAY"));
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WEEK")." $w ".JText::_("COM_TIMECLOCK_SUBTOTAL"));
-        }
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WORKED"));
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PTO"));
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_HOLIDAY"));
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_SUBTOTAL"));
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_OVERTIME"));
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
         foreach(range('A',$col) as $columnID) {

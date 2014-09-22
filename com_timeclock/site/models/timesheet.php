@@ -272,6 +272,9 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $locked = TimeclockHelpersDate::compareDates($cutoff, $next) >= 0;
         $registry->set("payperiod.locked", $locked);
 
+        $fulltimeHours = TimeclockHelpersTimeclock::getParam("fulltimeHours");
+        $registry->set("payperiod.fulltimeHours", $fulltimeHours);
+
         $usercutoff = $user->timeclock["noTimeBefore"];
         $registry->set("payperiod.usercutoff", $usercutoff);
 
@@ -288,8 +291,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
         $registry->set("holiday.perc", $this->_holiday_perc);
 
-        $split = (int)TimeclockHelpersTimeclock::getParam("payPeriodSplitDays");
-        $split = empty($split) ? 7 : $split;
+        $split = 7;
         $registry->set("payperiod.splitdays", $split);
 
         $subtotals = (int)($len / $split);
