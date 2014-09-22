@@ -131,14 +131,22 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         return true;
     }
     /**
-    * This function returns the message to show when a controller is saved
+    * This is the main function that executes everything.
     *
-    * @param mixed $data The data to output
-    *
-    * @return null
+    * @return bool
     */
-    protected function echoJSON($data)
+    public function authorize()
     {
+        $user = JFactory::getUser();
+        if ($user->get('guest')) {
+            return false;
+        }
+        $active = TimeclockHelpersTimeclock::getUserParam("active", $user->id);
+        if ($active) {
+            $reports = TimeclockHelpersTimeclock::getUserParam("reports", $user->id);
+            return (bool)$reports;
+        }
+        return false;
     }
 
 }
