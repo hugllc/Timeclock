@@ -39,7 +39,7 @@
  * @copyright  2009 Scott Price
  * @copyright  2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: 8dbcb324639e0accf8ba00987a32318c13d5984a $
+ * @version    GIT: $Id: 8dbcb324639e0accf8ba00987a32318c13d5984a $
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  *
  */

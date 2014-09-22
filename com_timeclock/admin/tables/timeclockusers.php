@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: 49c7d569947893ae484e0ae46c7707b65d7186d9 $
+ * @version    GIT: $Id: 49c7d569947893ae484e0ae46c7707b65d7186d9 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
 

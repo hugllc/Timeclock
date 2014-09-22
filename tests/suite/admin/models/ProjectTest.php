@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: bb50ae32fcdac3cff02b501ec153d389d59df183 $
+ * @version    GIT: $Id: bb50ae32fcdac3cff02b501ec153d389d59df183 $
  * @link       https://dev.hugllc.com/index.php/Project:JoomlaMock
  */
 namespace com_timeclock\tests\admin\models;

@@ -30,7 +30,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: 1ce2dfd95bfe6b01c9973cf1ca27a60121c30e18 $
+ * @version    GIT: $Id: 1ce2dfd95bfe6b01c9973cf1ca27a60121c30e18 $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
