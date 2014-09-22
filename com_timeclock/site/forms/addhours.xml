@@ -23,7 +23,7 @@
         <field
             name="hours1"
             type="text"
-            class="span2"
+            class="span2 hours"
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -31,7 +31,7 @@
         <field
             name="hours2"
             type="text"
-            class="span2"
+            class="span2 hours"
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -39,7 +39,7 @@
         <field
             name="hours3"
             type="text"
-            class="span2"
+            class="span2 hours"
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -47,7 +47,7 @@
         <field
             name="hours4"
             type="text"
-            class="span2"
+            class="span2 hours"
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -55,7 +55,7 @@
         <field
             name="hours5"
             type="text"
-            class="span2"
+            class="span2 hours"
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -63,7 +63,7 @@
         <field
             name="hours6"
             type="text"
-            class="span2"
+            class="span2 hours"
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -74,7 +74,7 @@
         <field
             name="hours1"
             type="text"
-            class="span2"
+            class="span2 hours"
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
