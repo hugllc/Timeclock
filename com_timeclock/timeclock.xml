@@ -17,6 +17,7 @@
             <file driver="mysql" charset="utf8">sql/timeclock_projects.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_timesheet.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_users.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/timeclock_reports.mysql.utf8.sql</file>
         </sql>
     </install>
     <uninstall>
