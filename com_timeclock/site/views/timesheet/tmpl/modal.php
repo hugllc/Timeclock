@@ -10,7 +10,7 @@
     <div class="">
         <fieldset class="form-horizontal">
             <input type="hidden" name="worked" value="<?php print $this->date; ?>" />
-            <h3><?php printf(JText::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, $this->date); ?></h3>
+            <h3><?php printf(JText::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, JHtml::_("date", $this->date)); ?></h3>
 <?php 
     $cat = reset($this->projects);
     $proj = reset($cat["proj"]);

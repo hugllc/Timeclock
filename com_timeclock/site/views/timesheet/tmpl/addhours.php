@@ -18,16 +18,14 @@
 <div id="timeclock">
 <form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">
     <div class="page-header">
-        <h2 itemprop="name">
-            <a id="timeclocktop"><?php print JText::_("COM_TIMECLOCK_ADD_HOURS");?></a>
-        </h2>
+        <h3 itemprop="name">
+            <?php printf(JText::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, JHtml::_("date", $this->date)); ?>
+        </h3>
     </div>
     <div class="">
         <fieldset class="form-horizontal">
+            <input type="hidden" name="worked" value="<?php print $this->date; ?>" />
 <?php 
-    $field = $this->form->getField("worked");
-    $field->setValue($this->date);
-    print TimeclockHelpersView::getFormField($field);
     $allproj = array();
     foreach ($this->projects as $cat => $projects) {
         print "<h2>".JText::_("JCATEGORY").": ".JText::_($projects["name"])."</h2>";

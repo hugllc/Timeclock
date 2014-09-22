@@ -3,14 +3,10 @@
     <fieldset name="main" label="COM_TIMECLOCK_EDIT_TIMESHEET">
         <field
             name="worked"
-            type="calendar"
+            type="hidden"
             label="JDATE"
             description="COM_TIMECLOCK_DATE_WORKED_HELP"
-            class="span4"
-            default="0000-00-00"
-            format="%Y-%m-%d"
-            size="40"
-            required="true"/>
+            />
         <field
             name="notes"
             type="textarea"
