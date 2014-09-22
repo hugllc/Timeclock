@@ -38,7 +38,7 @@
         </strong>
     </div>
     <div class="paid">
-        <table class="paid timesheet">
+        <table class="paid timesheet table table-striped table-bordered table-hover table-condensed">
             <thead>
 <?php 
     print $this->_name->render(
