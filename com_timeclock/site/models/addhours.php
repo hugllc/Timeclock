@@ -105,10 +105,11 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
             $key = $row->getKeyName();
             $this->id = array($row->$key);
         }
-        // This clears the complete flag
-        $prev = $this->getState("payperiod.prev");
-        TimeclockHelpersTimeclock::setUserParam("timesheetDone", $prev);
-
+        if ($this->getState("payperiod.done")) {
+            // This clears the complete flag
+            $prev = $this->getState("payperiod.prev");
+            TimeclockHelpersTimeclock::setUserParam("timesheetDone", $prev);
+        }
         return $row;
 
     }

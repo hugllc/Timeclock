@@ -374,28 +374,30 @@ class plgUserTimeclock extends JPlugin
         $db = JFactory::getDbo();
         try
         {
+            $userId = (int)$userId;
             $db = JFactory::getDbo();
+            $db->transactionStart();
             $db->setQuery(
                 'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
                 " AND profile_key = 'timeclock.$param'"
             );
-
             if (!$db->query()) {
                 throw new Exception($db->getErrorMsg());
             }
-
             $db->setQuery(
                 'INSERT INTO #__user_profiles VALUES '.
-                '('.(int)$userId.', '.$db->quote('timeclock.'.$param).', '.$db->quote($value).', -1)'
+                '('.(int)$userId.", 'timeclock.$param', ".$db->quote($value).', -1)'
             );
 
             if (!$db->query()) {
                 throw new Exception($db->getErrorMsg());
             }
+            $db->transactionCommit();
 
         }
         catch (JException $e)
         {
+            $db->transactionRollback();
             $this->_subject->setError($e->getMessage());
             return false;
         }
