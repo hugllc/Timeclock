@@ -86,7 +86,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
         }
 
         $row->modified = $date;
-        if (!$row->created) {
+        if ($row->created_by <= 0) {
             $row->created_by = JFactory::getUser()->id;
             $row->created    = $date;
         }
