@@ -116,7 +116,7 @@
 <?php 
     foreach ($this->users as $user_id => $user) {
         $user->payperiod = $this->payperiod;
-        $user->data = $this->data["notes"][$user_id];
+        $user->data = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
         print $this->_notes->render($user);
     }
 ?>
