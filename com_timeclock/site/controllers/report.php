@@ -92,7 +92,10 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $view = new $viewClass($this->model, $paths);
-        $view->setLayout($layoutName);
+
+        if (method_exists($view, "setLayout")) {
+            $view->setLayout($layoutName);
+        }
         // Render our view.
         echo $view->render();
         return true;

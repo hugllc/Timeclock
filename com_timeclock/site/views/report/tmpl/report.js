@@ -22,54 +22,6 @@ var Report = {
             Timeclock.report = 0;
         }
     },
-    lock: function ()
-    {
-        var self = this;
-        jQuery.ajax({
-            url: 'index.php?option=com_timeclock&controller=payroll&task=lock&format=json',
-            type: 'GET',
-            data: self._formData(),
-            dataType: 'JSON',
-            success: function(ret)
-            {
-                if ( ret.success ){
-                    //Joomla.renderMessages({'success': [ret.message]});
-                    self.setLocked(true);
-                } else {
-                    Joomla.renderMessages({'error': [ret.message]});
-                }
-            },
-            error: function(ret)
-            {
-                Joomla.renderMessages({'error': ['Locking failed']});
-            }
-        });
-        
-    },
-    unlock: function ()
-    {
-        var self = this;
-        jQuery.ajax({
-            url: 'index.php?option=com_timeclock&controller=payroll&task=unlock&format=json',
-            type: 'GET',
-            data: self._formData(),
-            dataType: 'JSON',
-            success: function(ret)
-            {
-                if ( ret.success ){
-                    //Joomla.renderMessages({'success': [ret.message]});
-                    self.setLocked(false);
-                } else {
-                    Joomla.renderMessages({'error': [ret.message]});
-                }
-            },
-            error: function(ret)
-            {
-                Joomla.renderMessages({'error': ['Locking failed']});
-            }
-        });
-        
-    },
     save: function ()
     {
         var self = this;

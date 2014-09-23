@@ -66,6 +66,8 @@ class TimeclockViewsReportBase extends JViewBase
     protected $line = 1;
     /** This is maximum column */
     protected $maxCol = "A";
+    /** This is maximum column */
+    protected $colBase = "";
     /**
     * Renders this view
     *
@@ -77,39 +79,48 @@ class TimeclockViewsReportBase extends JViewBase
         
         $useReport = $app->input->get("report", 0, "int");
         $this->params    = JComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->model->getState('payperiod');
+        $this->start  = $this->model->getState('start');
+        $this->end    = $this->model->getState('end');
 
         if ($useReport) {
-            $report = $this->model->getReport();
-            $data   = $report->timesheets;
-            $users  = $report->users;
-            $file   = "payroll-saved-";
+            $report       = $this->model->getReport();
+            $data         = $report->timesheets;
+            $projects     = $report->projects;
+            $this->users  = $report->users;
+            $file         = "report-saved-";
         } else {
-            $data  = $this->model->listItems();
-            $users = $this->model->listUsers();
-            $file   = "payroll-live-";
+            $data        = $this->model->listItems();
+            $this->users = $this->model->listUsers();
+            $projects    = $this->model->listProjects();
+            $file        = "report-live-";
         }
-        $file .= $this->payperiod->start;
+        $projs = array();
+        foreach ($projects as $cat) {
+            foreach ($cat["proj"] as $proj) {
+                $projs[$proj->project_id] = $proj;
+            }
+        }
+        $file .= $this->start;
         $this->setup($file);
-        $this->export($users, $data);
+        $this->export($projs, $data);
         $this->finalize();
         $app->close();
     }
     /**
     * This prints out a row in the file
     *
-    * @param array $users The user list to use
-    * @param array $data  The data to use
+    * @param array $projects The user list to use
+    * @param array $data     The data to use
     *
     * @return string The row created
     */
-    protected function export($users, $data)
+    protected function export($projects, $data)
     {
         $this->header();
-        foreach ($users as $user_id => $user) {
-            $user = (object)$user;
-            $user->data = isset($data[$user_id]) ? $data[$user_id] : array();
-            $this->row($user);
+        foreach ($projects as $proj_id => $proj) {
+            $proj = (object)$proj;
+            $proj->data = isset($data[$proj_id]) ? $data[$proj_id] : array();
+            $this->row($proj);
         }
         $this->totals($data["totals"]);
     }
@@ -126,12 +137,12 @@ class TimeclockViewsReportBase extends JViewBase
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $payroll = JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $this->payperiod->start, $this->payperiod->end);
+        $report = JText::sprintf("COM_TIMECLOCK_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
-            ->setTitle($payroll)
-            ->setSubject($payroll)
-            ->setKeywords(JText::_("COM_TIMECLOCK_PAYROLL"));
+            ->setTitle($report)
+            ->setSubject($report)
+            ->setKeywords(JText::_("COM_TIMECLOCK_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -145,7 +156,7 @@ class TimeclockViewsReportBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle($this->payperiod->start);
+        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -172,38 +183,14 @@ class TimeclockViewsReportBase extends JViewBase
     {
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
-        $total = array();
-        $worked   = 0;
-        $pto      = 0;
-        $holiday  = 0;
-        $subtotal = 0;
-        $overtime = 0;
-        for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
-            if (isset($data->data[$w])) {
-                $d        = (object)$data->data[$w];
-                $worked   += $d->worked;
-                $pto      += $d->pto;
-                $holiday  += $d->holiday;
-                $subtotal += $d->subtotal;
-                $overtime += $d->overtime;
-            }
+        foreach ($this->users as $user) {
+            $value = isset($data->data[$user->id]) ? $data->data[$user->id] : 0;
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
         }
+        $total = "B".$this->line.":".$col.$this->line;
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $worked);
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $pto);
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $holiday);
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $subtotal);
-        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
-        $total[] = $col.$this->line;
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $overtime);
-        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
-        $total[] = $col.$this->line;
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$total.")");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
         $this->line++;
     }
@@ -233,18 +220,12 @@ class TimeclockViewsReportBase extends JViewBase
     protected function header()
     {
         $col = "A";
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_EMPLOYEE"));
-        
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WORKED"));
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PTO"));
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_HOLIDAY"));
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_SUBTOTAL"));
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_OVERTIME"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PROJECT"));
+        foreach ($this->users as $user) {
+            $name = isset($user->name) ? $user->name : "User ".$user->id;
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name);
+        }
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
         foreach(range('A',$col) as $columnID) {
@@ -255,7 +236,7 @@ class TimeclockViewsReportBase extends JViewBase
         $this->line++;
     }
     /**
-    * This gets the next column
+    * This gets the next column.  This works up to column ZZ.
     *
     * @param array $col The current column
     *
@@ -263,7 +244,15 @@ class TimeclockViewsReportBase extends JViewBase
     */
     protected function nextCol($col)
     {
-        $next = chr(ord($col) + 1);
+        $col = substr($col, -1);
+        $next = $this->colBase.chr(ord($col) + 1);
+        if (substr($next, -1) == "Z") {
+            if ($this->colBase == "") {
+                $this->colBase = "A";
+            } else {
+                $this->colBase = chr(ord($this->colBase) + 1);
+            }
+        }
         return $next;
     }
 }
