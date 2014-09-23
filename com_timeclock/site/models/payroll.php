@@ -224,29 +224,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         }
     }
     /**
-    * Build query and where for protected _getList function and return a list
-    *
-    * @param int $user_id The user to get the projects for
-    * 
-    * @return array An array of results.
-    */
-    protected function checkTimesheet(&$entry)
-    {
-        if ($entry->project_type == "HOLIDAY") {
-            $entry->hours = $entry->hours * $this->_holiday_perc;
-        }
-        if (TimeclockHelpersDate::beforeStartDate($entry->worked, $entry->user_id)) {
-            $entry->hours = 0;
-        }
-        if (TimeclockHelpersDate::afterEndDate($entry->worked, $entry->user_id)) {
-            $entry->hours = 0;
-        }
-        // Round the hours
-        $params = $this->getState("params");
-        $decimals = empty($params->decimalPlaces) ? 2 : $params->decimalPlaces;
-        $entry->hours = round($entry->hours, $decimals);
-    }
-    /**
     * Checks to make sure this project exists
     *
     * @param object &$row The row to check
@@ -353,7 +330,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
 
 
         //$this->setState($registry);
-        parent::populateState($registry);
+        $this->_populateState($registry);
     }
     /**
     * This function gets the dates of the period, and says wheter or not time can 
@@ -367,30 +344,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     private function _getPayPeriodDates($start, $end, $cutoff)
     {
-    }
-    /**
-    * Builds the query to be used by the model
-    *
-    * @return object Query object
-    */
-    protected function _buildQuery()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(TRUE);
-        $query->select('DISTINCT t.timesheet_id, t.user_id as worked_by,
-            (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
-            as hours, t.worked, t.project_id, t.notes, z.user_id as user_id');
-        $query->from('#__timeclock_timesheet as t');
-        $query->select('p.name as project, p.type as project_type, 
-            p.description as project_description, p.parent_id as cat_id');
-        $query->leftjoin('#__timeclock_projects as p on t.project_id = p.project_id');
-        $query->select('q.name as cat_name, q.description as cat_description');
-        $query->leftjoin('#__timeclock_projects as q on p.parent_id = q.project_id');
-        $query->select('u.name as user');
-        $query->leftjoin('#__timeclock_users as z on 
-            ((z.user_id = t.user_id OR p.type = "HOLIDAY") AND t.project_id = z.project_id)');
-        $query->leftjoin('#__users as u on z.user_id = u.id');
-        return $query;
     }
     /**
     * Builds the filter for the query
@@ -411,28 +364,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $query->where($db->quoteName("p.type")." <> 'UNPAID'");
         $query->order("t.worked asc");
 
-        return $query;
-    }
-    /**
-    * Builds the query to be used by the model
-    *
-    * @return object Query object
-    */
-    protected function _buildProjQuery()
-    {
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(TRUE);
-        $query->select('q.project_id as project_id, q.user_id as user_id');
-        $query->from('#__timeclock_users as q');
-        $query->select('p.project_id as project_id, 1 as mine, 
-            p.name as name, p.parent_id as parent_id, p.description as description,
-            p.type as type');
-        $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');
-        $query->select('r.name as parent_name, r.description as parent_description');
-        $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');
-        $query->where('q.user_id = '.$db->quote($this->_user->id));
-        $query->where('q.project_id > 0');
-        $query->order("p.name asc");
         return $query;
     }
 }

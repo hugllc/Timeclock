@@ -82,17 +82,16 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $params = JComponentHelper::getParams('com_timeclock');
         // Get the document object.
         $document = JFactory::getDocument();
-        $viewName = "payroll";
+        $viewName = "report";
         $viewFormat = $document->getType();
-        $layoutName = 'payroll';
-        
+        $layoutName = 'report';
+
         $app->input->set('view', $viewName);
         // Register the layout paths for the view
         $paths = new SplPriorityQueue;
         $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
-        $modelClass = 'TimeclockModelsPayroll';
-        $view = new $viewClass(new $modelClass, $paths);
+        $view = new $viewClass($this->model, $paths);
         $view->setLayout($layoutName);
         // Render our view.
         echo $view->render();

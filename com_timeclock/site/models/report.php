@@ -76,7 +76,26 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     public function listItems()
     {
-        return array();
+        $query = $this->_buildQuery();
+        $query = $this->_buildWhere($query);
+        $list = $this->_getList($query);
+        $this->listUsers();
+        $this->listProjects();
+        $return = array(
+            "totals" => array(),
+        );
+        foreach ($list as $row) {
+            $this->checkTimesheet($row);
+            $proj_id                     = (int)$row->project_id;
+            $user_id                     = (int)$row->user_id;
+            $return[$proj_id]            = isset($return[$proj_id]) ? $return[$proj_id] : array("total" => 0);
+            $return[$proj_id][$user_id]  = isset($return[$proj_id][$user_id]) ? $return[$proj_id][$user_id] : 0;
+            $return[$proj_id][$user_id] += $row->hours;
+            $return[$proj_id]["total"]  += $row->hours;
+            $return["totals"][$user_id]  = isset($return["totals"][$user_id]) ? $return["totals"][$user_id] : 0;
+            $return["totals"][$user_id] += $row->hours;
+        }
+        return $return;
     }
     /**
     * Checks to see if there is a saved report and returns the ID
@@ -178,6 +197,30 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         }
     }
     /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param int $user_id The user to get the projects for
+    * 
+    * @return array An array of results.
+    */
+    protected function checkTimesheet(&$entry)
+    {
+        if ($entry->project_type == "HOLIDAY") {
+            $entry->hours = $entry->hours * $this->_holiday_perc;
+        }
+        if (TimeclockHelpersDate::beforeStartDate($entry->worked, $entry->user_id)) {
+            $entry->hours = 0;
+        }
+        if (TimeclockHelpersDate::afterEndDate($entry->worked, $entry->user_id)) {
+            $entry->hours = 0;
+        }
+        // Round the hours
+        $params = $this->getState("params");
+        $decimals = empty($params->decimalPlaces) ? 2 : $params->decimalPlaces;
+        $entry->hours = round($entry->hours, $decimals);
+    }
+
+    /**
     * This creates data for the store.  It should be overwritten by child classes
     * if they want to store a different set.
     *
@@ -239,6 +282,51 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     * to be called on the first call to the getState() method unless the model
     * configuration flag to ignore the request is set.
     * 
+    * @return  void
+    *
+    * @note    Calling getState in this method will result in recursion.
+    * @since   12.2
+    */
+    protected function populateState()
+    {
+        $context = is_null($this->context) ? $this->table : $this->context;
+
+        $app = JFactory::getApplication();
+        $registry = $this->loadState();
+
+        $start = TimeclockHelpersDate::fixDate(
+            $app->input->get('start', "", "raw")
+        );
+        $start = empty($start) ?  date("Y-m-01") : $start;
+        $registry->set('start', $start);
+
+        $end = TimeclockHelpersDate::fixDate(
+            $app->input->get('end', "", "raw")
+        );
+        $end = empty($end) ?  date("Y-m-d") : $end;
+        $registry->set('end', $end);
+        
+        $user = JFactory::getUser();
+
+        $date = TimeclockHelpersDate::fixDate(
+            $app->input->get('date', date("Y-m-d"), "raw")
+        );
+        $date = empty($date) ?  date("Y-m-d") : $date;
+        $registry->set('date', $date);
+        
+        $type = 'report';
+        $registry->set('type', $type);
+        
+        //$this->setState($registry);
+        $this->_populateState($registry);
+    }
+    /**
+    * Method to auto-populate the model state.
+    *
+    * This method should only be called once per instantiation and is designed
+    * to be called on the first call to the getState() method unless the model
+    * configuration flag to ignore the request is set.
+    * 
     * @param object $registry Ignored in subclasses
     * 
     * @return  void
@@ -246,7 +334,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     * @note    Calling getState in this method will result in recursion.
     * @since   12.2
     */
-    protected function populateState($registry = null)
+    protected function _populateState($registry = null)
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
@@ -304,9 +392,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
-        $query->select('DISTINCT t.timesheet_id,
+        $query->select('DISTINCT t.timesheet_id, t.user_id as worked_by,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
-            as hours, t.worked, t.project_id, t.notes, t.user_id as user_id');
+            as hours, t.worked, t.project_id, t.notes, z.user_id as user_id');
         $query->from('#__timeclock_timesheet as t');
         $query->select('p.name as project, p.type as project_type, 
             p.description as project_description, p.parent_id as cat_id');
@@ -314,11 +402,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $query->select('q.name as cat_name, q.description as cat_description');
         $query->leftjoin('#__timeclock_projects as q on p.parent_id = q.project_id');
         $query->select('u.name as user');
-        $query->leftjoin('#__users as u on t.user_id = u.id');
-        $query->select('v.name as author');
-        $query->leftjoin('#__users as v on t.created_by = v.id');
         $query->leftjoin('#__timeclock_users as z on 
-            (z.user_id = '.$db->quote($this->_user->id).' AND t.project_id = z.project_id)');
+            ((z.user_id = t.user_id OR p.type = "HOLIDAY") AND t.project_id = z.project_id)');
+        $query->leftjoin('#__users as u on z.user_id = u.id');
         return $query;
     }
     /**
@@ -333,19 +419,12 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     protected function _buildWhere(&$query)
     { 
         $db = JFactory::getDBO();
-        
-        $query->where(
-            "((".$db->quoteName("t.user_id")."=".$db->quote($this->_user->id)." AND "
-            .$db->quoteName("p.type")."<>'HOLIDAY') OR ("
-            .$db->quoteName("z.user_id")."=".$db->quote($this->_user->id)." AND "
-            .$db->quoteName("p.type")."='HOLIDAY'))"
-        );
-        $start = $this->getState("employment.start");
+        $start = $this->getState("start");
+        $end   = $this->getState("end");
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
-        $end = $this->getState("employment.end");
-        if (!empty($end)) {
-            $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
-        }
+        $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
+        $query->order("t.worked asc");
+
         return $query;
     }
     /**
