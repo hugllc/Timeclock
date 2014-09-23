@@ -15,6 +15,7 @@
     $doreports = ($this->report->report_id != 0);
 ?>
 <div id="timeclock">
+<form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=report"); ?>" method="get" name="userform" class="report">
     <div class="page-header">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
@@ -24,6 +25,7 @@
         </h2>
     </div>
     <?php print $this->_toolbar->render($this); ?>
+    <?php print $this->_control->render($this->filter); ?>
     <div class="dateheader">
         <strong>
             <?php print JText::sprintf(
@@ -106,7 +108,6 @@
             </tbody>
         </table>
     </div>
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" class="report">
     <?php print JHTML::_("form.token"); ?>
 </form>
 <script type="text/JavaScript">

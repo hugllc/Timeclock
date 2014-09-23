@@ -2,17 +2,17 @@
     defined( '_JEXEC' ) or die( 'Restricted access' );
     $form = JForm::getInstance(
         'reportcontrol', 
-        JPATH_COMPONENT."/forms/reportcontrol.xml"
+        JPATH_ROOT."/components/com_timeclock/forms/reportcontrol.xml"
     );
-    $from = $displayData->form->getField("from");
-    $from->setValue($displayData->startDate);
-    $to = $displayData->form->getField("to");
-    $to->setValue($displayData->startDate);
+    $from = $form->getField("start");
+    $from->setValue($displayData->start);
+    $to = $form->getField("end");
+    $to->setValue($displayData->end);
 ?>
-<div class="row-fluid">
-    <span class="span3"><?php print $from->label; ?></span>
-    <span class="span3"><?php print $from->input; ?></span>
-    <span class="span3"><?php print $to->label; ?></span>
-    <span class="span3"><?php print $to->input; ?></span>
-    
+<div class="row-fluid" style="clear: both;">
+    <?php print $from->label; ?>
+    <?php print $from->input; ?>
+    <?php print $to->label; ?>
+    <?php print $to->input; ?>
+    <button type="submit">Submit</button>
 </div>

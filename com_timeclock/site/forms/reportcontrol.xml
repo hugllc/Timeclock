@@ -2,16 +2,16 @@
 <form>
     <fieldset name="main" label="COM_TIMECLOCK_EDIT_TIMESHEET">
         <field
-            name="since"
+            name="start"
             type="calendar"
             label="from"
             description="COM_TIMECLOCK_DATE_FROM_HELP"
             required="true"
         />
         <field
-            name="until"
+            name="end"
             type="calendar"
-            label="from"
+            label="to"
             description="COM_TIMECLOCK_DATE_TO_HELP"
             required="true"
         />

@@ -66,6 +66,10 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->start  = $this->model->getState('start');
         $this->end    = $this->model->getState('end');
 
+        $this->filter = (object)array(
+            "start" => $this->start,
+            "end"   => $this->end,
+        );
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
             array(), 
@@ -78,7 +82,7 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->_category = new JLayoutFile('category', __DIR__.'/layouts');
         $this->_toolbar  = new JLayoutFile('toolbar', __DIR__.'/layouts');
         $this->_export   = new JLayoutFile('export', dirname(__DIR__).'/layouts');
-        $this->_notes    = new JLayoutFile('notes', dirname(__DIR__).'/layouts');
+        $this->_control  = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
 
         $this->data     = $this->model->listItems();
         $this->users    = $this->model->listUsers();
