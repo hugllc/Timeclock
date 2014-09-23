@@ -19,13 +19,16 @@
         }
     }
     $total = $subtotal + $overtime;
+    $timesheeturl = JRoute::_('index.php?&option=com_timeclock&controller=timesheet&id='.$user_id);
 ?>
             <tr class="employee <?php print $displayData->rowClass; ?>">
                 <td>
                     <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
                 </td>
                 <td class="complete <?php print $displayData->done ? "yes" : "no"; ?>">
+                    <a href="<?php print $timesheeturl; ?>">
                     <?php print $displayData->done ? JText::_("JYES") : Jtext::_("JNO"); ?>
+                    </a>
                 </td>
                 <td class="hours">
                     <span id="hours-<?php print $user_id; ?>" class="worked <?php print $class;?>"><?php print $worked; ?></span>

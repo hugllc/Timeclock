@@ -10,6 +10,9 @@ var Timesheet = {
         if (this.volunteer == 0) {
             jQuery("table.volunteer").hide();
         }
+        if (Timeclock.me == 0) {
+            jQuery(".mine").hide();
+        }
         if (this.paid == 0) {
             jQuery("table.paid").hide();
         }

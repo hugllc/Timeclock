@@ -26,7 +26,7 @@
             <span class="complete">(<?php print JText::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
         </h2>
     </div>
-    <?php print $this->_toolbar->render($this->payperiod); ?>
+    <?php print $this->_toolbar->render($this->user); ?>
     <?php print $this->_nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
@@ -58,8 +58,9 @@
             </tfoot>
             <tbody>
 <?php 
-    $paid = 0;
+    $paid    = 0;
     $allproj = array();
+    $proj    = array();
     foreach ($this->projects as $cat => $projects) {
         $render = "";
         $cnt    = 0;
@@ -68,7 +69,7 @@
                 continue;
             }
             $cnt++;
-            $allproj[$proj->project_id] = $proj->project_id;
+            $allproj[$proj->project_id] = $proj;
             $proj->payperiod = $this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
             $render .= $this->_row->render($proj);
@@ -120,7 +121,7 @@
                 continue;
             }
             $cnt++;
-            $allproj[$proj->project_id] = $proj->project_id;
+            $allproj[$proj->project_id] = $proj;
             $proj->payperiod = $this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
             $render .= $this->_row->render($proj);
@@ -145,6 +146,25 @@
     <form action="<?php JROUTE::_("index.php"); ?>" method="post" class="timesheet">
         <?php print JHTML::_("form.token"); ?>
     </form>
+<?php 
+    if (!$this->user->me) {
+        $user = $this->user;
+        $user->user_id = $user->id;
+        $user->payperiod = $this->payperiod;
+        $user->data = array();
+        foreach ($allproj as $proj_id => $proj) {
+            if (!isset($this->data[$proj_id])) {
+                continue;
+            }
+            $user->data[$proj_id] = array(
+                "project_id" => $proj->project_id,
+                "project_name" => $proj->name,
+                "worked" => $this->data[$proj_id],
+            );
+        }
+        print $this->_notes->render($user);
+    }
+?>
     <script type="text/JavaScript">
         jQuery( document ).ready(function() {
             Timesheet.setup();
@@ -152,13 +172,14 @@
         });
         Timesheet.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
         Timesheet.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
-        Timesheet.allprojs     = <?php print json_encode($allproj); ?>;
+        Timesheet.allprojs     = <?php print json_encode(array_keys($allproj)); ?>;
         Timesheet.projects     = <?php print json_encode($this->projects); ?>;
         Timesheet.payperiod    = <?php print json_encode($this->payperiod); ?>;
         Timesheet.data         = <?php print json_encode($this->data); ?>;
         Timesheet.paid         = <?php print $paid; ?>;
         Timesheet.volunteer    = <?php print $unpaid; ?>;
         Timeclock.params       = <?php print json_encode($this->params); ?>;
+        Timeclock.me           = <?php print (int)$this->user->me; ?>;
 
     </script>
 </div>

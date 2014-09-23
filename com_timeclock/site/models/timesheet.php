@@ -211,20 +211,21 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
 
         $app = JFactory::getApplication();
         $registry = $this->loadState();
-        
+
         // Load state from the request.
-        $pk = $app->input->get('id', array(), "array");
+        $pk = $app->input->get('id', null, "int");
         $registry->set('id', $pk);
 
+        
         // Load state from the request.
         $project_id = $app->input->get('project_id', null, "int");
         $registry->set('project_id', $project_id);
-        
+
         // Load the parameters.
         $params = JComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
 
-        $user = $this->getUser();
+        $user = $this->getUser($pk);
         
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
@@ -280,10 +281,15 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
 
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
         foreach ($dates as $date => &$value) {
-            $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
-            $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
-            $uservalid = (TimeclockHelpersDate::compareDates($date, $usercutoff)  >= 0);
-            $value = $here && $valid && $uservalid;
+            if ($user->me) {
+                $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
+                $valid = (TimeclockHelpersDate::compareDates($date, $cutoff)  >= 0);
+                $uservalid = (TimeclockHelpersDate::compareDates($date, $usercutoff)  >= 0);
+                $value = $here && $valid && $uservalid;
+            } else {
+                // Reading someone else's timesheet
+                $value = false;
+            }
         }
         $registry->set("payperiod.dates", $dates);
         
@@ -297,7 +303,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $subtotals = (int)($len / $split);
         $registry->set("payperiod.subtotals", $subtotals);
 
-        $timesheetDone = $user->timeclock["timesheetDone"];
+        $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
         $done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
         $registry->set("payperiod.done", $done);
         

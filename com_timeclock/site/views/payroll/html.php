@@ -77,7 +77,7 @@ class TimeclockViewsPayrollHtml extends JViewHtml
         $this->_nextprev = new JLayoutFile('nextprev', __DIR__.'/layouts');
         $this->_toolbar  = new JLayoutFile('toolbar', __DIR__.'/layouts');
         $this->_export   = new JLayoutFile('export', dirname(__DIR__).'/layouts');
-        $this->_notes    = new JLayoutFile('notes', __DIR__.'/layouts');
+        $this->_notes    = new JLayoutFile('notes', dirname(__DIR__).'/layouts');
 
         $this->data     = $this->model->listItems();
         $this->users    = $this->model->listUsers();
