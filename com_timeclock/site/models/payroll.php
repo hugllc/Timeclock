@@ -190,7 +190,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     {
         $fulltime = $this->getState("payperiod.fulltimeHours");
         $users = $this->listUsers();
-        foreach ($users as $user_id => $user) {
+        foreach ($users as $user_id => &$user) {
             if (!isset($data[$user_id])) {
                 continue;
             }
@@ -208,6 +208,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                     $wk->overtime = $wk->worked - $fulltime;
                     $wk->worked = $fulltime;
                     $wk->subtotal = $wk->worked + $wk->holiday + $wk->pto;
+                    if (($wk->pto > 0) && ($wk->overtime > 0)) {
+                        $user->error .= JText::_("COM_TIMECLOCK_ERROR_PTO_AND_OVERTIME");
+                    }
                 } else {
                     $wk->overtime = 0;
                 }

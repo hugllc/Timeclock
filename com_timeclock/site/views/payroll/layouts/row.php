@@ -20,8 +20,15 @@
     }
     $total = $subtotal + $overtime;
     $timesheeturl = JRoute::_('index.php?&option=com_timeclock&controller=timesheet&id='.$user_id);
+    if (!empty($displayData->error)) {
+        $errorClass   = "error hasTooltip";
+        $errorTooltip = ' title="'.$displayData->error.'"';
+    } else {
+        $errorClass = "";
+        $errorTooltip = "";
+    }
 ?>
-            <tr class="employee <?php print $displayData->rowClass; ?>">
+            <tr class="employee <?php print $displayData->rowClass." ".$errorClass; ?>"<?php print $errorTooltip; ?>>
                 <td>
                     <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
                 </td>
