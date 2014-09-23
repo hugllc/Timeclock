@@ -55,7 +55,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     /** This is where we cache our projects */
     private $_projects = null;
     /** This is our percentage of holiday pay */
-    private $_holiday_perc = 1;
+    private $_holiday_perc = array();
     /** This is our saved report */
     private $_report = null;
     
@@ -82,18 +82,19 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $this->listUsers();
         $this->listProjects();
         $return = array(
-            "totals" => array(),
+            "totals" => array("total" => 0),
         );
         foreach ($list as $row) {
             $this->checkTimesheet($row);
             $proj_id                     = (int)$row->project_id;
-            $user_id                     = (int)$row->user_id;
+            $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
             $return[$proj_id]            = isset($return[$proj_id]) ? $return[$proj_id] : array("total" => 0);
             $return[$proj_id][$user_id]  = isset($return[$proj_id][$user_id]) ? $return[$proj_id][$user_id] : 0;
             $return[$proj_id][$user_id] += $row->hours;
             $return[$proj_id]["total"]  += $row->hours;
             $return["totals"][$user_id]  = isset($return["totals"][$user_id]) ? $return["totals"][$user_id] : 0;
             $return["totals"][$user_id] += $row->hours;
+            $return["totals"]["total"]  += $row->hours;
         }
         return $return;
     }
@@ -162,9 +163,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function listProjects()
     {
         if (is_null($this->_projects)) {
-            $query = $this->_buildProjQUery();
+            $query = $this->_buildProjQuery();
             $list = $this->_getList($query, 0, 0);
-
             $this->_projects = array();
             $ret = &$this->_projects;
             foreach ($list as $entry) {
@@ -206,7 +206,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     protected function checkTimesheet(&$entry)
     {
         if ($entry->project_type == "HOLIDAY") {
-            $entry->hours = $entry->hours * $this->_holiday_perc;
+            $entry->hours = $entry->hours * $this->getHolidayPerc($entry->user_id);
         }
         if (TimeclockHelpersDate::beforeStartDate($entry->worked, $entry->user_id)) {
             $entry->hours = 0;
@@ -218,6 +218,20 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $params = $this->getState("params");
         $decimals = empty($params->decimalPlaces) ? 2 : $params->decimalPlaces;
         $entry->hours = round($entry->hours, $decimals);
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param int $user_id The user to get the projects for
+    * 
+    * @return array An array of results.
+    */
+    protected function getHolidayPerc($id)
+    {
+        if (!isset($this->_holiday_perc[$id])) {
+            $this->_holiday_perc[$id] = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $id)) / 100;
+        }
+        return $this->_holiday_perc[$id];
     }
 
     /**
@@ -436,16 +450,13 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
-        $query->select('q.project_id as project_id, q.user_id as user_id');
-        $query->from('#__timeclock_users as q');
-        $query->select('p.project_id as project_id, 1 as mine, 
+        $query->select('p.project_id as project_id, 
             p.name as name, p.parent_id as parent_id, p.description as description,
             p.type as type');
-        $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');
+        $query->from('#__timeclock_projects as p');
         $query->select('r.name as parent_name, r.description as parent_description');
         $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');
-        $query->where('q.user_id = '.$db->quote($this->_user->id));
-        $query->where('q.project_id > 0');
+        $query->where("p.type <> 'CATEGORY'");
         $query->order("p.name asc");
         return $query;
     }

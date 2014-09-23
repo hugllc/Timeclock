@@ -138,7 +138,7 @@ table.report .employee .complete.no {
 }
 
 table.report th {
-    background-color: #CCC;
+    background-color: #CCC !important;
 }
 table.report thead tr.header th {
     vertical-align: bottom;

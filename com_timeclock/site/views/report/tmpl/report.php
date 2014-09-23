@@ -83,7 +83,7 @@
         }
         if ($cnt > 0) {
             print $this->_category->render(
-                array(
+                (object)array(
                     "cols" => $cols,
                     "id" => $cat,
                     "name" => $projects["name"],
