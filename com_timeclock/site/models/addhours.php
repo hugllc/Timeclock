@@ -60,7 +60,10 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     */
     public function __construct()
     {
-        $app = JFactory::getApplication();
+        // Set the user
+        $app  = JFactory::getApplication();
+        $pk = $app->input->get('id', null, "int");
+        $user = $this->getUser($pk);
         parent::__construct(); 
     }
     /**

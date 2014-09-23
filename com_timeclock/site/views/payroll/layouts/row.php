@@ -26,7 +26,7 @@
                     <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
                 </td>
                 <td class="complete <?php print $displayData->done ? "yes" : "no"; ?>">
-                    <a href="<?php print $timesheeturl; ?>">
+                    <a href="<?php print $timesheeturl; ?>" class="hasTooltip" title="<?php print JText::_("COM_TIMECLOCK_CLICK_TO_VIEW_TIMESHEET"); ?>">
                     <?php print $displayData->done ? JText::_("JYES") : Jtext::_("JNO"); ?>
                     </a>
                 </td>

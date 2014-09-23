@@ -60,7 +60,10 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     */
     public function __construct()
     {
-        $app = JFactory::getApplication();
+        // Set the user
+        $app  = JFactory::getApplication();
+        $pk   = $app->input->get('id', null, "int");
+        $user = $this->getUser($pk);
         parent::__construct(); 
     }
     /**
@@ -224,8 +227,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         // Load the parameters.
         $params = JComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
-
-        $user = $this->getUser($pk);
+        $user = $this->getUser();
         
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))

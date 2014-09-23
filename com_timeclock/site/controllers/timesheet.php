@@ -110,6 +110,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         $app   = $this->getApplication();
 
         $model = TimeclockHelpersTimeclock::getModel("timesheet");
+        $this->checkMe($model);
 
         if ($index = $model->complete()) {
             $json = new JResponseJson(
@@ -155,8 +156,9 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         $paths = new SplPriorityQueue;
         $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
-        $modelClass = 'TimeclockModelsAddhours';
-        $view = new $viewClass(new $modelClass, $paths);
+        $model = TimeclockHelpersTimeclock::getModel("addhours");
+        $this->checkMe($model);
+        $view = new $viewClass($model, $paths);
         $view->setLayout($layoutName);
         // Render our view.
         echo $view->render();
@@ -173,6 +175,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         // Get the application
         $app   = $this->getApplication();
         $model = TimeclockHelpersTimeclock::getModel("addhours");
+        $this->checkMe($model);
 
         if ($index = $model->store()) {
             $json = new JResponseJson(
@@ -194,6 +197,13 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         echo $json;
         $app->close();
         return true;
+    }
+    protected function checkMe($model)
+    {
+        if (!$model->getUser()->me) {
+            $this->getApplication()->redirect('index.php',JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+        }
+
     }
     /**
     * This function get the task for us
