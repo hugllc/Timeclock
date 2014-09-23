@@ -263,6 +263,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             $users[$user_id] = (object)array(
                 "user_id" => $user_id,
                 "name" => empty($row->user) ? "User $user_id" : $row->user,
+                "done" => false,
             );
         }
     }

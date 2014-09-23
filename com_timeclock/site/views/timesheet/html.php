@@ -64,6 +64,7 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
         
         $this->params    = JComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->model->getState('payperiod');
+        $this->payperiod->controller = "timesheet";
 
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
@@ -87,7 +88,7 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
         $this->_header     = new JLayoutFile('header', __DIR__.'/layouts');
         $this->_row        = new JLayoutFile('row', __DIR__.'/layouts');
         $this->_totals     = new JLayoutFile('totals', __DIR__.'/layouts');
-        $this->_nextprev   = new JLayoutFile('nextprev', __DIR__.'/layouts');
+        $this->_nextprev   = new JLayoutFile('payperiodnextprev', dirname(__DIR__).'/layouts');
         $this->_category   = new JLayoutFile('category', __DIR__.'/layouts');
         $this->_subtotals  = new JLayoutFile('subtotals', __DIR__.'/layouts');
         $this->_psubtotals = new JLayoutFile('psubtotals', __DIR__.'/layouts');
