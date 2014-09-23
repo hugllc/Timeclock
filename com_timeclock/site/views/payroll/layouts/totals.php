@@ -6,6 +6,9 @@
     $subtotal = 0;
     $overtime = 0;
     for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
+        if (!isset($displayData->totals[$w])) {
+            continue;
+        }
         $data = (object)$displayData->totals[$w];
         $worked   += $data->worked;
         $pto      += $data->pto;
