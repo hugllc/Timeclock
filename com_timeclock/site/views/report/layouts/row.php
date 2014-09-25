@@ -8,7 +8,7 @@
                 </td>
 <?php foreach ($displayData->users as $user) : ?>
                 <td class="hours">
-                    <?php print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : "&nbsp;"; ?>
+                    <?php print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : '<span class="zero">0</span>'; ?>
                 </td>
 <?php endforeach; ?>
                 <td class="total">

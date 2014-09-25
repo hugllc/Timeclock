@@ -9,10 +9,11 @@
     $to = $form->getField("end");
     $to->setValue($displayData->end);
 ?>
-<div class="row-fluid" style="clear: both;">
-    <?php print $from->label; ?>
-    <?php print $from->input; ?>
-    <?php print $to->label; ?>
-    <?php print $to->input; ?>
+<div class="reportcontrol row">
+    <div class="row-fluid">
+        <div class="span4"><?php print $from->input; ?></div>
+        <div class="span1"><?php print JText::_("COM_TIMECLOCK_TO"); ?></div>
+        <div class="span4"><?php print $to->input; ?></div>
+    </div>
     <button type="submit">Submit</button>
 </div>

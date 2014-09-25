@@ -14,9 +14,9 @@
     );
     $doreports = ($this->report->report_id != 0);
 ?>
-<div id="timeclock">
+<div id="timeclock" class="container-fluid">
 <form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=report"); ?>" method="get" name="userform" class="report">
-    <div class="page-header">
+    <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print JText::_("COM_TIMECLOCK_REPORT"); ?>

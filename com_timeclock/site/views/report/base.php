@@ -100,7 +100,7 @@ class TimeclockViewsReportBase extends JViewBase
                 $projs[$proj->project_id] = $proj;
             }
         }
-        $file .= $this->start;
+        $file .= $this->start."to".$this->end;
         $this->setup($file);
         $this->export($projs, $data);
         $this->finalize();

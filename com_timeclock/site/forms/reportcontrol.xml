@@ -5,6 +5,8 @@
             name="start"
             type="calendar"
             label="from"
+            class="inputbox date"
+            maxlength="20"
             description="COM_TIMECLOCK_DATE_FROM_HELP"
             required="true"
         />
@@ -12,6 +14,8 @@
             name="end"
             type="calendar"
             label="to"
+            class="inputbox date"
+            maxlength="20"
             description="COM_TIMECLOCK_DATE_TO_HELP"
             required="true"
         />

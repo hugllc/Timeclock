@@ -184,3 +184,12 @@ div.notes {
 .notes .note {
     padding-left:  4em;
 }
+div.reportcontrol {
+    clear: both;
+}
+input.date {
+    width: 8em;
+}
+div.input-append {
+    width: 100%;
+}
