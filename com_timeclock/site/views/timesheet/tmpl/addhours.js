@@ -6,7 +6,7 @@ var Addhours = {
     setup: function ()
     {
         var self = this;
-        this.decimals = Timeclock.params.decimalPlaces;
+        this.decimals = (Timeclock.params.decimalPlaces) ? Timeclock.params.decimalPlaces : 2;
         this.calculateHourTotal();
         // Immedately validate everything.
         jQuery("form.addhours fieldset.addhours").each(function(ind,elem) {

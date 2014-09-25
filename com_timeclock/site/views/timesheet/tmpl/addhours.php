@@ -53,7 +53,7 @@
         Addhours.setup();
     });
     Addhours.payperiod    = <?php print json_encode($this->payperiod); ?>;
-    Timeclock.params   = <?php print json_encode($this->params); ?>
+    Timeclock.params   = <?php print json_encode($this->params->toArray()); ?>
 
 </script>
 </div>

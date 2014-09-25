@@ -178,7 +178,7 @@
         Timesheet.data         = <?php print json_encode($this->data); ?>;
         Timesheet.paid         = <?php print $paid; ?>;
         Timesheet.volunteer    = <?php print $unpaid; ?>;
-        Timeclock.params       = <?php print json_encode($this->params); ?>;
+        Timeclock.params       = <?php print json_encode($this->params->toArray()); ?>;
         Timeclock.me           = <?php print (int)$this->user->me; ?>;
 
     </script>

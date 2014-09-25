@@ -3,7 +3,7 @@ var Timesheet = {
     decimals: 2,
     setup: function ()
     {
-        this.decimals = Timeclock.params.decimalPlaces;
+        this.decimals = (Timeclock.params.decimalPlaces) ? Timeclock.params.decimalPlaces : 2;
         this.update();
         this.setComplete(this.payperiod.done);
         this.setLocked(this.payperiod.locked);
