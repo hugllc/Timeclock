@@ -51,6 +51,7 @@
         <menu>COM_TIMECLOCK_MENU</menu>
         <submenu>
             <menu controller="customer" task="list">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
+            <menu controller="department" task="list">COM_TIMECLOCK_SUBMENU_DEPARTMENTS</menu>
             <menu controller="project" task="list">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
             <menu controller="holiday" task="list">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
             <menu controller="timesheet" task="list">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
