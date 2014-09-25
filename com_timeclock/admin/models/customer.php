@@ -57,6 +57,7 @@ class TimeclockModelsCustomer extends TimeclockModelsDefault
     protected $_pagination  = null;
     protected $_defaultSort = "c.customer_id";
     protected $table        = "TimeclockCustomers";
+    protected $namefield    = "company";
 
     /**
     * This is the constructor

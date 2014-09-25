@@ -123,6 +123,21 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         if (is_numeric($published)) {
             $query->where('p.published = ' . (int) $published);
         }
+
+        $category = $this->getState("filter.category");
+        if (is_numeric($category)) {
+            $query->where('p.parent_id = ' . (int) $category);
+        }
+        
+        $department = $this->getState("filter.department");
+        if (is_numeric($department)) {
+            $query->where('p.department_id = ' . (int) $department);
+        }
+        
+        $customer = $this->getState("filter.customer");
+        if (is_numeric($customer)) {
+            $query->where('p.customer_id = ' . (int) $customer);
+        }
         return $query;
     }
     /**

@@ -130,6 +130,40 @@ class TimeclockViewsProjectHtml extends JViewHtml
             'filter_published',
             JHtml::_('select.options', array(0 => JText::_("JUNPUBLISHED"), 1 => JText::_("JPUBLISHED")), 'value', 'text', $this->state->get('filter.published'), true)
         );
+
+        $model = TimeclockHelpersTimeclock::getModel("project");
+        $options = $model->getOptions(
+            array("p.published=1", "p.type = 'CATEGORY'"),
+            "p.name ASC"
+        );
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_CATEGORY'),
+            'filter_category',
+            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.category'), true)
+        );
+
+        $model = TimeclockHelpersTimeclock::getModel("department");
+        $options = $model->getOptions(
+            array("d.published=1"),
+            "d.name ASC"
+        );
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_DEPARTMENT'),
+            'filter_department',
+            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.department'), true)
+        );
+
+        $model = TimeclockHelpersTimeclock::getModel("customer");
+        $options = $model->getOptions(
+            array("c.published=1"),
+            "c.company ASC"
+        );
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_CUSTOMER'),
+            'filter_customer',
+            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.customer'), true)
+        );
+
     }
     /**
     * Adds the toolbar for this view.

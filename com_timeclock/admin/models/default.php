@@ -60,7 +60,8 @@ class TimeclockModelsDefault extends JModelBase
     protected $context         = null;
     protected $_defaultSortDir = "asc";
     public $insert_id          = null;
-    
+    protected $namefield       = "name";
+
     /**
     * The constructor
     */
@@ -195,10 +196,11 @@ class TimeclockModelsDefault extends JModelBase
     *
     * @param array  $where The where clauses to use (defaults to stuff from input)
     * @param string $sort  The sort clause to uses (defaults to stuff from input)
+    * @param bool   $limit Limit the list for paging
     * 
     * @return array An array of results.
     */
-    public function listItems($where = array(), $sort = null)
+    public function listItems($where = array(), $sort = null, $limit = true)
     {
         $query = $this->_buildQuery();
         if (empty($where) || !is_array($where)) {
@@ -213,11 +215,15 @@ class TimeclockModelsDefault extends JModelBase
         } else {
             $query->order($sort);
         }
-        $list = $this->_getList(
-            $query, 
-            $this->getState("limitstart"), 
-            $this->getState("limit")
-        );
+        if ($limit) {
+            $list = $this->_getList(
+                $query, 
+                $this->getState("limitstart"), 
+                $this->getState("limit")
+            );
+        } else {
+            $list = $this->_getList($query);
+        }
         return $list;
     }
     
@@ -378,6 +384,15 @@ class TimeclockModelsDefault extends JModelBase
         $published = $app->getUserStateFromRequest($context.'.filter.published', 'filter_published', '');
         $registry->set('filter.published', $published);
 
+        $category = $app->getUserStateFromRequest($context.'.filter.category', 'filter_category', '');
+        $registry->set('filter.category', $category);
+
+        $department = $app->getUserStateFromRequest($context.'.filter.department', 'filter_department', '');
+        $registry->set('filter.department', $department);
+
+        $customer = $app->getUserStateFromRequest($context.'.filter.customer', 'filter_customer', '');
+        $registry->set('filter.customer', $customer);
+
         $this->setState($registry);
     }
     /**
@@ -470,16 +485,38 @@ class TimeclockModelsDefault extends JModelBase
         return $table->publish($id, 0);
     }
     /**
-    * Checks out this record
+    * Gets an array of options
     * 
-    * @param int $id The id of the item to check in
+    * @param array  $where The where clauses to use (defaults to stuff from input)
+    * @param string $sort  The sort clause to uses (defaults to stuff from input)
     * 
-    * @return  boolean
+    * @return  array
     */
-    public function getOptions($where = "")
+    public function getOptions($where = null, $sort = null)
     {
         $table = $this->getTable();
-        $id = is_null($id) ? $this->id : $id;
-        return $table->publish($id, 0);
+        $id    = $table->getKeyName();
+        $list  = $this->listItems($where, $sort, false);
+        $options = array();
+        foreach ($list as $value) {
+            $options[] = JHTML::_(
+                'select.option', 
+                $value->$id, 
+                $this->name($value)
+            );
+        }
+        return $options;
+    }
+    /**
+    * Returns the name associated with this record
+    * 
+    * @param object $row The row to get the name of
+    * 
+    * @return string
+    */
+    public function name($row)
+    {
+        $name  = $this->namefield;
+        return JText::_($row->$name);
     }
 }

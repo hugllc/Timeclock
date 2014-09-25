@@ -72,9 +72,11 @@ class TimeclockControllersProject extends TimeclockControllersDefault
     /**
     * This function saves our stuff and returns a json response
     * 
+    * @param bool $output Not used in this function
+    *
     * @return null
     */
-    protected function taskApply()
+    protected function taskApply($output = true)
     {
         $ret = parent::taskApply(false);
         $this->applyUsers();
