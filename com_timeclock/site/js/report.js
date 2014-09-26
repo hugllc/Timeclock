@@ -1,8 +1,31 @@
 // Only define the Joomla namespace if not defined.
 var Report = {
+    zero: true,
+    empty: true,
     setup: function ()
     {
         this.setReport(true);
+        this.toggleEmpty();
+    },
+    toggleZero: function ()
+    {
+        if (this.zero) {
+            jQuery("#timeclock .zero").hide();
+            this.zero = false;
+        } else {
+            jQuery("#timeclock .zero").show();
+            this.zero = true;
+        }
+    },
+    toggleEmpty: function ()
+    {
+        if (this.empty) {
+            jQuery("#timeclock tr.empty").hide();
+            this.empty = false;
+        } else {
+            jQuery("#timeclock tr.empty").show();
+            this.empty = true;
+        }
     },
     setReport: function (live)
     {

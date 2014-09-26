@@ -193,3 +193,8 @@ input.date {
 div.input-append {
     width: 100%;
 }
+
+.reportcontrol .controls button {
+    width: 100%;
+    max-width: 10em;
+}

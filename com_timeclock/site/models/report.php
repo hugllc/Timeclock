@@ -331,8 +331,41 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $type = 'report';
         $registry->set('type', $type);
         
-        //$this->setState($registry);
+        $this->_populateFilter($registry);
         $this->_populateState($registry);
+    }
+    /**
+    * This populates the filter used for narrowing down reports.
+    *
+    * This method should only be called once per instantiation and is designed
+    * to be called on the first call to the getState() method unless the model
+    * configuration flag to ignore the request is set.
+    * 
+    * @param object $registry Ignored in subclasses
+    * 
+    * @return  void
+    */
+    protected function _populateFilter($registry = null)
+    {
+        $app = JFactory::getApplication();
+
+        $category = $app->getUserStateFromRequest($context.'.filter.category', 'filter_category', '');
+        $registry->set('filter.category', $category);
+
+        $department = $app->getUserStateFromRequest($context.'.filter.department', 'filter_department', '');
+        $registry->set('filter.department', $department);
+
+        $customer = $app->getUserStateFromRequest($context.'.filter.customer', 'filter_customer', '');
+        $registry->set('filter.customer', $customer);
+
+        $user_manager_id = $app->getUserStateFromRequest($context.'.filter.user_manager_id', 'filter_user_manager_id', '');
+        $registry->set('filter.user_manager_id', $user_manager_id);
+
+        $proj_manager_id = $app->getUserStateFromRequest($context.'.filter.proj_manager_id', 'filter_proj_manager_id', '');
+        $registry->set('filter.proj_manager_id', $proj_manager_id);
+
+        $proj_type = $app->getUserStateFromRequest($context.'.filter.project_type', 'filter_project_type', '');
+        $registry->set('filter.project_type', $proj_type);
     }
     /**
     * Method to auto-populate the model state.
@@ -439,6 +472,22 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
         $query->order("t.worked asc");
 
+        $filter = $this->getState("filter");
+        if (!empty($filter->project_type)) {
+            $query->where($db->quoteName("p.type")." = ".$db->quote($filter->project_type));
+        }
+        if (is_numeric($filter->proj_manager_id)) {
+            $query->where($db->quoteName("p.manager_id")." = ".$db->quote((int)$filter->proj_manager_id));
+        }
+        if (is_numeric($filter->customer)) {
+            $query->where($db->quoteName("p.customer_id")." = ".$db->quote((int)$filter->customer));
+        }
+        if (is_numeric($filter->department)) {
+            $query->where($db->quoteName("p.department_id")." = ".$db->quote((int)$filter->department));
+        }
+        if (is_numeric($filter->category)) {
+            $query->where($db->quoteName("p.parent_id")." = ".$db->quote((int)$filter->category));
+        }
         return $query;
     }
     /**

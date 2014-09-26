@@ -1,5 +1,5 @@
 <?php
-    JHTML::script(Juri::base()."components/com_timeclock/views/report/tmpl/report.js");
+    JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHTML::_('behavior.modal'); 
     JHTML::_('behavior.calendar');
@@ -24,7 +24,6 @@
             <span class="reportdata noreport">(<?php print JText::_("COM_TIMECLOCK_SAVED_DATA"); ?>)</span>
         </h2>
     </div>
-    <?php print $this->_toolbar->render($this); ?>
     <?php print $this->_control->render($this->filter); ?>
     <div class="dateheader">
         <strong>
