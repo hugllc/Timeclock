@@ -163,6 +163,12 @@ class TimeclockViewsProjectHtml extends JViewHtml
             'filter_customer',
             JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.customer'), true)
         );
+        $options = TimeclockHelpersView::getUsersOptions();
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_MANAGER'),
+            'filter_user_id',
+            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.user_id'), true)
+        );
 
     }
     /**

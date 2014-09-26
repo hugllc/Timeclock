@@ -49,6 +49,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class TimeclockHelpersView
 {
+    /** This holds the start year for the drop down */
+    static protected $yearstart = null;
+    /** This holds the end year for the drop down */
+    static protected $yearend = null;
     /**
     * Gets the HTML for a layout
     *
@@ -130,6 +134,47 @@ class TimeclockHelpersView
         $layout = new JLayoutFile('field', dirname(__DIR__).'/layouts');
 
         return $layout->render($data);
+    }
+    /**
+    * Gets a reasonable range of years for a year dropdown
+    *
+    * @return array of HTML options
+    */
+    static function getYearOptions()
+    {
+        if (is_null(self::$yearstart)) {
+            $start = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
+            $start = explode("-", $start);
+            self::$yearstart = ((int) $start[0]) - 1;
+            self::$yearend   = ((int)date("Y"))+1;
+        }
+        $options = array();
+        for ($year = self::$yearend;  $year >= self::$yearstart; $year--) {
+            $options[] = JHTML::_(
+                'select.option', 
+                $year, 
+                $year
+            );
+        }
+        return $options;
+    }
+    /**
+    * Gets a reasonable range of years for a year dropdown
+    *
+    * @return array of HTML options
+    */
+    static function getUsersOptions()
+    {
+        $users = TimeclockHelpersTimeclock::getUsers();
+        $options = array();
+        foreach ($users as $user) {
+            $options[] = JHTML::_(
+                'select.option', 
+                $user->user_id, 
+                $user->name
+            );
+        }
+        return $options;
     }
     /**
     * Configure the links below the header

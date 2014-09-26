@@ -114,14 +114,18 @@ class TimeclockModelsDepartment extends TimeclockModelsDefault
         if(is_numeric($id)) {
             $query->where('d.department_id = ' . (int) $id);
         }
-        $search = $this->getState("filter.search");
-        if(!empty($search) && is_string($search)) {
-            $query->where("d.name LIKE ".$db->quote("%".$search."%"));
+
+        $filter = $this->getState("filter");
+        if(!empty($filter->search) && is_string($filter->search)) {
+            $query->where("d.name LIKE ".$db->quote("%".$filter->search."%"));
         }
         
-        $published = $this->getState("filter.published");
-        if (is_numeric($published)) {
-            $query->where('d.published = ' . (int) $published);
+        if (is_numeric($filter->published)) {
+            $query->where('d.published = ' . (int) $filter->published);
+        }
+        
+        if (is_numeric($filter->user_id)) {
+            $query->where("d.manager_id = " . (int) $filter->user_id);
         }
         return $query;
     }

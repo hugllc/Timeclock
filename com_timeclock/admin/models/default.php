@@ -393,6 +393,12 @@ class TimeclockModelsDefault extends JModelBase
         $customer = $app->getUserStateFromRequest($context.'.filter.customer', 'filter_customer', '');
         $registry->set('filter.customer', $customer);
 
+        $year = $app->getUserStateFromRequest($context.'.filter.year', 'filter_year', '');
+        $registry->set('filter.year', $year);
+
+        $user_id = $app->getUserStateFromRequest($context.'.filter.user_id', 'filter_user_id', '');
+        $registry->set('filter.user_id', $user_id);
+
         $this->setState($registry);
     }
     /**

@@ -114,29 +114,30 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         if(is_numeric($id)) {
             $query->where('p.project_id = ' . (int) $id);
         }
-        $search = $this->getState("filter.search");
-        if(!empty($search) && is_string($search)) {
-            $query->where("p.name LIKE ".$db->quote("%".$search."%"));
+
+        $filter = $this->getState("filter");
+
+        if(!empty($filter->search) && is_string($filter->search)) {
+            $query->where("p.name LIKE ".$db->quote("%".$filter->search."%"));
         }
         
-        $published = $this->getState("filter.published");
-        if (is_numeric($published)) {
-            $query->where('p.published = ' . (int) $published);
+        if (is_numeric($filter->published)) {
+            $query->where('p.published = ' . (int) $filter->published);
         }
 
-        $category = $this->getState("filter.category");
-        if (is_numeric($category)) {
-            $query->where('p.parent_id = ' . (int) $category);
+        if (is_numeric($filter->category)) {
+            $query->where('p.parent_id = ' . (int) $filter->category);
         }
         
-        $department = $this->getState("filter.department");
-        if (is_numeric($department)) {
-            $query->where('p.department_id = ' . (int) $department);
+        if (is_numeric($filter->department)) {
+            $query->where('p.department_id = ' . (int) $filter->department);
         }
         
-        $customer = $this->getState("filter.customer");
-        if (is_numeric($customer)) {
-            $query->where('p.customer_id = ' . (int) $customer);
+        if (is_numeric($filter->customer)) {
+            $query->where('p.customer_id = ' . (int) $filter->customer);
+        }
+        if (is_numeric($filter->user_id)) {
+            $query->where("p.manager_id = " . (int) $filter->user_id);
         }
         return $query;
     }

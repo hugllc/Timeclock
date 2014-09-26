@@ -130,6 +130,12 @@ class TimeclockViewsDepartmentHtml extends JViewHtml
             'filter_published',
             JHtml::_('select.options', array(0 => JText::_("JUNPUBLISHED"), 1 => JText::_("JPUBLISHED")), 'value', 'text', $this->state->get('filter.published'), true)
         );
+        $options = TimeclockHelpersView::getUsersOptions();
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_MANAGER'),
+            'filter_user_id',
+            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.user_id'), true)
+        );
     }
     /**
     * Adds the toolbar for this view.

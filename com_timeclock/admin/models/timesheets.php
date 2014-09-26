@@ -135,10 +135,20 @@ class TimeclockModelsTimesheets extends TimeclockModelsDefault
         if(is_numeric($id)) {
             $query->where('t.timesheet_id = ' . (int) $id);
         }
-        $search = $this->getState("filter.search");
-        if(!empty($search) && is_string($search)) {
-            $query->where("t.notes LIKE ".$db->quote("%".$search."%"));
+        $filter = $this->getState("filter");
+        if(!empty($filter->search) && is_string($filter->search)) {
+            $query->where("t.notes LIKE ".$db->quote("%".$filter->search."%"));
         }
+        
+        if (is_numeric($filter->year)) {
+            $query->where("t.worked >= '" . (int) $filter->year."-01-01'");
+            $query->where("t.worked <= '" . (int) $filter->year."-12-31'");
+        }
+        
+        if (is_numeric($filter->user_id)) {
+            $query->where("t.user_id = " . (int) $filter->user_id);
+        }
+
         return $query;
     }
     /**
