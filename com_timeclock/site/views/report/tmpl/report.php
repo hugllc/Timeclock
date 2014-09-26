@@ -113,6 +113,7 @@
     jQuery( document ).ready(function() {
         Report.setup();
     });
+    Report.filter       = <?php print json_encode($this->filter); ?>;
     Report.projects     = <?php print json_encode($this->projects); ?>;
     Report.data         = <?php print json_encode($this->data); ?>;
     Report.report       = {

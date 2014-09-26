@@ -5,24 +5,30 @@ var Report = {
     setup: function ()
     {
         this.setReport(true);
+        this.toggleZero();
+        this.toggleEmpty();
     },
     toggleZero: function ()
     {
         if (this.zero) {
             jQuery("#timeclock .zero").hide();
+            jQuery("#timeclock .nonzero").show();
             this.zero = false;
         } else {
             jQuery("#timeclock .zero").show();
+            jQuery("#timeclock .nonzero").hide();
             this.zero = true;
         }
     },
     toggleEmpty: function ()
     {
         if (this.empty) {
-            jQuery("#timeclock tr.empty").hide();
+            jQuery("#timeclock .empty").hide();
+            jQuery("#timeclock .nonempty").show();
             this.empty = false;
         } else {
-            jQuery("#timeclock tr.empty").show();
+            jQuery("#timeclock .empty").show();
+            jQuery("#timeclock .nonempty").hide();
             this.empty = true;
         }
     },
@@ -48,7 +54,7 @@ var Report = {
     {
         var self = this;
         jQuery.ajax({
-            url: 'index.php?option=com_timeclock&controller=payroll&task=save&format=json',
+            url: 'index.php?option=com_timeclock&controller=report&task=save&format=json',
             type: 'GET',
             data: self._formData(),
             dataType: 'JSON',
@@ -72,12 +78,12 @@ var Report = {
     {
         // Collect the base information from the form
         var base = {};
-        jQuery("form.payroll").find(":input").each(function(ind,elem) {
+        jQuery("form.report").find(":input").each(function(ind,elem) {
             var name = jQuery(elem).attr('name');
             var value = jQuery(elem).val();
             base[name] = value;
         });
-        base.date = this.payperiod.start;
+        base.date = this.filter.start;
         return base;
     }
 }

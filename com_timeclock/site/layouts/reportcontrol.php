@@ -85,8 +85,10 @@
             <button class="livedata" type="button" onclick="Report.save();"><?php print JText::_("COM_TIMECLOCK_SAVE_REPORT"); ?></button>
             <button class="livedata noreport" type="button" onclick="Report.setReport(false);"><?php print JText::_("COM_TIMECLOCK_SAVED_DATA"); ?></button>
             <button class="reportdata noreport" type="button" onclick="Report.setReport(true);"><?php print JText::_("COM_TIMECLOCK_LIVE_DATA"); ?></button>
-            <button class="" type="button" onclick="Report.toggleZero();"><?php print JText::_("COM_TIMECLOCK_TOGGLE_ZERO"); ?></button>
-            <button class="" type="button" onclick="Report.toggleEmpty();"><?php print JText::_("COM_TIMECLOCK_TOGGLE_EMPTY"); ?></button>
+            <button class="nonzero" type="button" onclick="Report.toggleZero();"><?php print JText::_("COM_TIMECLOCK_SHOW_ZERO"); ?></button>
+            <button class="zero" type="button" onclick="Report.toggleZero();"><?php print JText::_("COM_TIMECLOCK_HIDE_ZERO"); ?></button>
+            <button class="nonempty" type="button" onclick="Report.toggleEmpty();"><?php print JText::_("COM_TIMECLOCK_SHOW_EMPTY"); ?></button>
+            <button class="empty" type="button" onclick="Report.toggleEmpty();"><?php print JText::_("COM_TIMECLOCK_HIDE_EMPTY"); ?></button>
             <hr class="hr-condensed hidden-desktop" />
         </div>
     </div>
