@@ -58,6 +58,7 @@ class TableTimeclockReports extends JTable
     public $created          = '';
     public $type             = 'generic';
     public $customers        = '';
+    public $filter           = '';
     public $departments      = '';
     public $projects         = '';
     public $timesheets       = '';

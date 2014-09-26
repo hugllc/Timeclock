@@ -323,6 +323,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $registry->set('report.type', "payroll");
         $registry->set('report.description', JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
 
+        // This saves the payperiod information into the report
+        $registry->set('filter', $registry->get('payperiod'));
         //$this->setState($registry);
         $this->_populateState($registry);
     }

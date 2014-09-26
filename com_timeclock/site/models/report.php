@@ -292,6 +292,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $row->startDate   = $this->getState("start");
         $row->endDate     = $this->getState("end");
         $row->type        = $this->getState("type");
+        $row->filter      = json_encode($this->getState("filter"));
         $row->users       = json_encode($this->listUsers());
         $row->projects    = json_encode($this->listProjects());
         $row->timesheets  = json_encode($this->listItems());
@@ -450,19 +451,6 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
 
 
         $this->setState($registry);
-    }
-    /**
-    * This function gets the dates of the period, and says wheter or not time can 
-    * be added to it
-    *
-    * @param string $start  The first day of employment
-    * @param string $end    The last day of employment
-    * @param string $cutoff The last day locked down so time can't be entered
-    *
-    * @return array, keys are the dates, values are true if time can be added
-    */
-    private function _getPayPeriodDates($start, $end, $cutoff)
-    {
     }
     /**
     * Builds the query to be used by the model
