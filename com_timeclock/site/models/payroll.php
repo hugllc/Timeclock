@@ -266,9 +266,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $date = empty($date) ?  date("Y-m-d") : $date;
         $registry->set('date', $date);
         
-        $type = 'payroll';
-        $registry->set('type', $type);
-        
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
         $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
@@ -277,11 +274,12 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $registry->set("payperiod.start", $start);
         $registry->set("start", $start);
         $s = TimeclockHelpersDate::explodeDate($start);
-        $end = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len-1, $s["y"]
+        $end = date(
+            "Y-m-d", 
+            TimeclockHelpersDate::dateUnix($s["m"], $s["d"]+$len-1, $s["y"])
         );
-        $registry->set("payperiod.end", date("Y-m-d", $end));
-        $registry->set("end", date("Y-m-d", $end));
+        $registry->set("payperiod.end", $end);
+        $registry->set("end", $end);
         
         $next = TimeclockHelpersDate::dateUnix(
             $s["m"], $s["d"]+$len, $s["y"]
@@ -321,22 +319,12 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $subtotals = (int)($len / $split);
         $registry->set("payperiod.subtotals", $subtotals);
 
+        $registry->set('report.name', "$start $end");
+        $registry->set('report.type', "payroll");
+        $registry->set('report.description', JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
 
         //$this->setState($registry);
         $this->_populateState($registry);
-    }
-    /**
-    * This function gets the dates of the period, and says wheter or not time can 
-    * be added to it
-    *
-    * @param string $start  The first day of employment
-    * @param string $end    The last day of employment
-    * @param string $cutoff The last day locked down so time can't be entered
-    *
-    * @return array, keys are the dates, values are true if time can be added
-    */
-    private function _getPayPeriodDates($start, $end, $cutoff)
-    {
     }
     /**
     * Builds the filter for the query

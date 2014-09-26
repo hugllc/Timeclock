@@ -138,13 +138,12 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     /**
     * Checks to see if there is a saved report and returns the ID
     * 
-    * @param string $type  The type of report to look for
-    * @param string $start The start date for the report
-    * @param string $end   The end date for the report
+    * @param string $type The type of report to look for
+    * @param string $name The name of the report
     *
     * @return int The ID of the report
     */
-    private function _getReportID($type = null, $start = null, $end = null)
+    private function _getReportID($type = null, $name = nulll)
     {
         if (is_null($this->_report)) {
             $db = JFactory::getDBO();
@@ -152,8 +151,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $query->select('*');
             $query->from('#__timeclock_reports');
             $query->where($db->quoteName("type")." = ".$db->quote($type));
-            $query->where($db->quoteName("startDate")." = ".$db->quote($start));
-            $query->where($db->quoteName("endDate")." = ".$db->quote($end));
+            $query->where($db->quoteName("name")." = ".$db->quote($name));
             $db->setQuery($query);
             $this->_report = $db->loadObject();
             if (is_object($this->_report)) {
@@ -287,8 +285,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         }
         $date = date("Y-m-d H:i:s");
 
-        $row->name        = $app->input->get("name", "");
-        $row->description = $app->input->get("description", "");
+        $row->name        = $this->getState("report.name");
+        $row->description = $this->getState("report.description");
         $row->created_by  = JFactory::getUser()->id;
         $row->created     = $date;
         $row->startDate   = $this->getState("start");
@@ -444,9 +442,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         }
 
         $report_id = $this->_getReportID(
-            $registry->get("type"), 
-            $registry->get("start"), 
-            $registry->get("end")
+            $registry->get("report.type"), 
+            $registry->get("report.name")
         );
         $registry->set("report_id", $report_id);
         

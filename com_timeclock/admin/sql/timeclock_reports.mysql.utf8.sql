@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_reports` (
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
   `type` varchar(16) CHARACTER SET utf8 NOT NULL,
+  `filter` text CHARACTER SET utf8 NOT NULL,
   `users` longtext CHARACTER SET utf8 NOT NULL,
   `timesheets` longtext CHARACTER SET utf8 NOT NULL,
   `projects` longtext CHARACTER SET utf8 NOT NULL,
@@ -14,5 +15,5 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_reports` (
   `departments` longtext CHARACTER SET utf8 NOT NULL,
   `published` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`report_id`),
-  UNIQUE KEY `date` (`startDate`,`endDate`,`type`)
+  UNIQUE KEY `date` (`type`,`name`)
 ) DEFAULT CHARSET=utf8;

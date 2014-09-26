@@ -28,13 +28,14 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_reports` (
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
   `type` varchar(16) NOT NULL,
+  `filter` text NOT NULL,
   `users` longtext NOT NULL,
   `timesheets` longtext NOT NULL,
   `projects` longtext NOT NULL,
   `customers` longtext NOT NULL,
   `departments` longtext NOT NULL,
   `published` smallint(6) NOT NULL,
-  CONSTRAINT `date` UNIQUE (`startDate`,`endDate`,`type`)
+  CONSTRAINT `date` UNIQUE (`type`,`name`)
 );
 
 CREATE TABLE IF NOT EXISTS `jos_timeclock_users` (
