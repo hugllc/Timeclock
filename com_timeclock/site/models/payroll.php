@@ -56,8 +56,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     private $_totals = array(
         "total" => 0,
     );
-    /** This is our percentage of holiday pay */
-    private $_myusers = null;
     /**
     * The constructor
     */
@@ -68,23 +66,18 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         parent::__construct(); 
     }
     /**
-    * Build query and where for protected _getList function and return a list
+    * Checks the user record, and adds anything extra needed
     *
-    * @param int $user_id The user to get the projects for
+    * @param object &$user The user object to check
     * 
     * @return array An array of results.
     */
-    public function listUsers()
+    public function checkUser(&$user)
     {
-        if (is_null($this->_myusers)) {
-            $this->_myusers = parent::listUsers();
-            foreach ($this->_myusers as &$user) {
-                $start = $this->getState("payperiod.start");
-                $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
-                $user->done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
-            }
-        }
-        return $this->_myusers;
+        $start = $this->getState("payperiod.start");
+        $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
+        $user->done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
+        return true;
     }
     /**
     * Build query and where for protected _getList function and return a list

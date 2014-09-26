@@ -5,7 +5,6 @@ var Report = {
     setup: function ()
     {
         this.setReport(true);
-        this.toggleEmpty();
     },
     toggleZero: function ()
     {

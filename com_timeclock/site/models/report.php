@@ -58,7 +58,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     private $_holiday_perc = array();
     /** This is our saved report */
     private $_report = null;
-    
+    /** This is our percentage of holiday pay */
+    private $_myusers = null;
+
     /**
     * The constructor
     */
@@ -74,12 +76,44 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     *
     * @return array An array of results.
     */
+    public function listUsers()
+    {
+        if (is_null($this->_myusers)) {
+            $this->_myusers = parent::listUsers();
+            foreach ($this->_myusers as $key => &$user) {
+                $this->checkUser($user);
+            }
+        }
+        return $this->_myusers;
+    }
+    /**
+    * Checks the user record, and adds anything extra needed
+    *
+    * @param object &$user The user object to check
+    * 
+    * @return array An array of results.
+    */
+    public function checkUser(&$user)
+    {
+        $user->hide = false;
+        $manager_id = $this->getState("filter.user_manager_id");
+        if (is_numeric($manager_id)) {
+            if ($user->timeclock["manager"] != $manager_id) {
+                $user->hide = true;
+            }
+        }
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
     public function listItems()
     {
         $query = $this->_buildQuery();
         $query = $this->_buildWhere($query);
-        $list = $this->_getList($query);
-        $this->listUsers();
+        $list  = $this->_getList($query);
+        $users = $this->listUsers();
         $this->listProjects();
         $return = array(
             "totals" => array("total" => 0),
@@ -88,6 +122,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $this->checkTimesheet($row);
             $proj_id                     = (int)$row->project_id;
             $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
+            if ($users[$user_id]->hide) {
+                continue;
+            }
             $return[$proj_id]            = isset($return[$proj_id]) ? $return[$proj_id] : array("total" => 0);
             $return[$proj_id][$user_id]  = isset($return[$proj_id][$user_id]) ? $return[$proj_id][$user_id] : 0;
             $return[$proj_id][$user_id] += $row->hours;
@@ -475,6 +512,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $filter = $this->getState("filter");
         if (!empty($filter->project_type)) {
             $query->where($db->quoteName("p.type")." = ".$db->quote($filter->project_type));
+        }
+        if (is_numeric($filter->category)) {
+            $query->where($db->quoteName("p.parent_id")." = ".$db->quote((int)$filter->category));
         }
         if (is_numeric($filter->proj_manager_id)) {
             $query->where($db->quoteName("p.manager_id")." = ".$db->quote((int)$filter->proj_manager_id));

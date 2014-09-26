@@ -8,6 +8,7 @@
                     <?php print $displayData->name ?>
                 </td>
 <?php foreach ($displayData->users as $user) : ?>
+    <?php if ($user->hide) continue; ?>
                 <td class="hours">
                     <?php print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : '<span class="zero">0</span>'; ?>
                 </td>
