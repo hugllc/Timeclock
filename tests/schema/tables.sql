@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_reports` (
   `description` text NOT NULL,
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
   `type` varchar(16) NOT NULL,

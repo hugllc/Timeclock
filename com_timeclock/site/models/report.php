@@ -285,10 +285,19 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         }
         $date = date("Y-m-d H:i:s");
 
-        $row->name        = $this->getState("report.name");
-        $row->description = $this->getState("report.description");
-        $row->created_by  = JFactory::getUser()->id;
-        $row->created     = $date;
+        $id = $this->getState("report.id");
+        if (is_numeric($id)) {
+            $row->load($id);
+        } else {
+            $row->name        = $this->getState("report.name");
+            $row->created_by  = JFactory::getUser()->id;
+            $row->created     = $date;
+        }
+        $desc = $this->getState("report.description");
+        if (!empty($desc)) {
+            $row->description = $desc;
+        }
+        $row->modified    = $date;
         $row->startDate   = $this->getState("start");
         $row->endDate     = $this->getState("end");
         $row->type        = $this->getState("type");
@@ -402,6 +411,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
 
         $proj_type = $app->getUserStateFromRequest($context.'.filter.project_type', 'filter_project_type', '');
         $registry->set('filter.project_type', $proj_type);
+
     }
     /**
     * Method to auto-populate the model state.
@@ -446,7 +456,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $registry->get("report.type"), 
             $registry->get("report.name")
         );
-        $registry->set("report_id", $report_id);
+        $registry->set("report.id", $report_id);
         
 
 

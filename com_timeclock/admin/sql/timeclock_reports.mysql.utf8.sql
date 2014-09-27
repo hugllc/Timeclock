@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_reports` (
   `description` text CHARACTER SET utf8 NOT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
   `type` varchar(16) CHARACTER SET utf8 NOT NULL,

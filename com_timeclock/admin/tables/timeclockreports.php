@@ -56,6 +56,7 @@ class TableTimeclockReports extends JTable
     public $endDate          = '';
     public $created_by       = 0;
     public $created          = '';
+    public $modified         = '';
     public $type             = 'generic';
     public $customers        = '';
     public $filter           = '';
