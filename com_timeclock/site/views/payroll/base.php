@@ -148,7 +148,6 @@ class TimeclockViewsPayrollBase extends JViewBase
         $this->phpexcel->getActiveSheet()->setTitle($this->payperiod->start);
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
-
     }
     /**
     * This prints out a row in the file

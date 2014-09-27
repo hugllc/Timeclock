@@ -319,7 +319,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $subtotals = (int)($len / $split);
         $registry->set("payperiod.subtotals", $subtotals);
 
-        $registry->set('report.name', "$start $end");
+        $registry->set('report.name', "payroll $start $end");
         $registry->set('report.type', "payroll");
         $registry->set('report.description', JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
 

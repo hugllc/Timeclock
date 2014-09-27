@@ -286,9 +286,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $date = date("Y-m-d H:i:s");
 
         $id = $this->getState("report.id");
-        if (is_numeric($id)) {
-            $row->load($id);
-        } else {
+        if (empty($id)) {
             $row->name        = $this->getState("report.name");
             $row->created_by  = JFactory::getUser()->id;
             $row->created     = $date;
@@ -300,7 +298,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $row->modified    = $date;
         $row->startDate   = $this->getState("start");
         $row->endDate     = $this->getState("end");
-        $row->type        = $this->getState("type");
+        $row->type        = $this->getState("report.type");
         $row->filter      = json_encode($this->getState("filter"));
         $row->users       = json_encode($this->listUsers());
         $row->projects    = json_encode($this->listProjects());
@@ -315,8 +313,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function store()
     {
         $row = $this->buildStore();
-        $row->report_id = $this->getState("report_id");
-
+        $row->report_id = $this->getState("report.id");
         // Make sure the record is valid
         if (!$row->check()) {
             return false;

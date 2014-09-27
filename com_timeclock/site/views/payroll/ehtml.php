@@ -64,6 +64,17 @@ class TimeclockViewsPayrollEhtml extends TimeclockViewsPayrollBase
     */
     protected function finalize()
     {
+        $styleArray = array(
+        'borders' => array(
+            'allborders' => array(
+            'style' => PHPExcel_Style_Border::BORDER_THIN
+            )
+        )
+        );
+
+        $this->phpexcel->getActiveSheet()->getStyle('A1:'.$this->maxCol.($this->line - 1))->applyFromArray($styleArray);
+        unset($styleArray);
+
         header('Content-Disposition: inline');
         $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'HTML');
         $objWriter->setPreCalculateFormulas(true);
