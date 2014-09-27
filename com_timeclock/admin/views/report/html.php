@@ -63,6 +63,12 @@ class TimeclockViewsReportHtml extends JViewHtml
         $app = JFactory::getApplication();
         $layout = $this->getLayout();
 
+        JHTML::stylesheet(
+            JURI::base().'/components/com_timeclock/css/timeclock.css', 
+            array(), 
+            true
+        );
+
         $this->params = JComponentHelper::getParams('com_timeclock');
         $this->state  = $this->model->getState();
         if ($layout == 'edit') {

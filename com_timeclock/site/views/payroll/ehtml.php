@@ -75,11 +75,11 @@ class TimeclockViewsPayrollEhtml extends TimeclockViewsPayrollBase
         $this->phpexcel->getActiveSheet()->getStyle('A1:'.$this->maxCol.($this->line - 1))->applyFromArray($styleArray);
         unset($styleArray);
 
-        header('Content-Disposition: inline');
         $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'HTML');
         $objWriter->setPreCalculateFormulas(true);
         $inline = JFactory::getApplication()->input->get("inline", 0, "int");
         if ($inline) {
+            header('Content-Disposition: inline');
             print $objWriter->generateSheetData();
         } else {
             $objWriter->save('php://output');

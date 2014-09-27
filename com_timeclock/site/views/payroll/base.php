@@ -75,21 +75,20 @@ class TimeclockViewsPayrollBase extends JViewBase
     {
         $app = JFactory::getApplication();
         
-        $useReport = $app->input->get("report", 0, "int");
+        $report_id = $this->model->getState("report.id");
         $this->params    = JComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->model->getState('payperiod');
 
-        if ($useReport) {
+        if (!empty($report_id)) {
             $report = $this->model->getReport();
             $data   = $report->timesheets;
             $users  = $report->users;
-            $file   = "payroll-saved-";
+            $file   = str_replace(" ", "_", $report->name);
         } else {
             $data  = $this->model->listItems();
             $users = $this->model->listUsers();
-            $file   = "payroll-live-";
+            $file   = "payroll-live-".$this->payperiod->start;
         }
-        $file .= $this->payperiod->start;
         $this->setup($file);
         $this->export($users, $data);
         $this->finalize();

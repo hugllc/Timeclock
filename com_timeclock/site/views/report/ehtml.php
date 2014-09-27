@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 /** Import the views */
 jimport('joomla.application.component.view');
 
-require __DIR__."/base.php";
+require_once __DIR__."/base.php";
 /**
  * HTML View class for the ComTimeclockWorld Component
  *

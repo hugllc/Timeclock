@@ -77,17 +77,18 @@ class TimeclockViewsReportBase extends JViewBase
     {
         $app = JFactory::getApplication();
         
-        $useReport = $app->input->get("report", 0, "int");
+        $report_id = $this->model->getState("report.id");
         $this->params    = JComponentHelper::getParams('com_timeclock');
         $this->start  = $this->model->getState('start');
         $this->end    = $this->model->getState('end');
 
-        if ($useReport) {
+
+        if (!empty($report_id)) {
             $report       = $this->model->getReport();
             $data         = $report->timesheets;
             $projects     = $report->projects;
             $this->users  = $report->users;
-            $file         = "report-saved-";
+            $file   = str_replace(" ", "_", $report->name);
         } else {
             $data        = $this->model->listItems();
             $this->users = $this->model->listUsers();

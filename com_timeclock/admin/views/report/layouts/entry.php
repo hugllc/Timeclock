@@ -5,6 +5,7 @@ $canEdit    = $user->authorise('core.edit',       'com_timeclock');
 $canCheckin = $user->authorise('core.manage',     'com_checkin') || $displayData["data"]->checked_out == $userId || $displayData["data"]->checked_out == 0;
 $canEditOwn = $user->authorise('core.edit.own',   'com_timeclock') && $displayData["data"]->created_by == $user->id;
 $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canCheckin;
+$selectname = "export".$displayData["index"];
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->report_id?>">
                     <td class="center">
@@ -27,6 +28,14 @@ $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canChecki
                                 <?php echo $displayData["data"]->name; ?>
                             <?php endif; ?>
                         </div>
+                    </td>
+                    <td class="center">
+                        <select name="<?php print $selectname; ?>" class="narrow" onChange="exportReport(this, <?php print $displayData["data"]->report_id; ?>, this.value, '<?php print $displayData["data"]->type; ?>');">
+                            <option value=""><?php print JText::_("COM_TIMECLOCK_SELECT_FORMAT"); ?></option>
+                            <option value="csv">CSV</option>
+                            <option value="ehtml">HTML</option>
+                            <option value="xlsx">Excel 2007</option>
+                        </select>
                     </td>
                     <td class="center hidden-phone">
                         <?php echo $displayData["data"]->type; ?>

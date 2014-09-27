@@ -1,11 +1,12 @@
 <?php
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
-JHtml::_('formbehavior.chosen', 'select');
+JHtml::_('formbehavior.chosen', 'select:not(.plain)');
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 $sortFields = $this->sortFields;
 ?>
+<div id="timeclock">
 <script language="javascript" type="text/javascript">
 Joomla.orderTable = function()
 {
@@ -17,6 +18,14 @@ Joomla.orderTable = function()
         form.filter_order_Dir.value = dir.options[dir.selectedIndex].value;
         
         form.submit();
+}
+function exportReport(element, id, format, type)
+{
+    if (format) {
+        var url = "<?php echo str_replace("/administrator", "", JRoute::_('index.php?option=com_timeclock')); ?>&controller="+type+"&report_id="+id+"&format="+format;
+        jQuery("iframe#exportframe").prop("src", url);
+    }
+    jQuery(element).find('option:eq(0)').prop('selected', true);
 }
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_timeclock'); ?>" method="post" name="adminForm" id="adminForm">
@@ -66,6 +75,9 @@ Joomla.orderTable = function()
                     <th>
                         <?php echo JHtml::_('grid.sort', 'COM_TIMECLOCK_NAME', 'r.name', $listDirn, $listOrder); ?>
                     </th>
+                    <th class="center">
+                        <?php echo JText::_("COM_TIMECLOCK_EXPORT"); ?>
+                    </th>
                     <th class="center hidden-phone">
                         <?php echo JHtml::_('grid.sort', 'COM_TIMECLOCK_TYPE', 'r.type', $listDirn, $listOrder); ?>
                     </th>
@@ -109,3 +121,5 @@ Joomla.orderTable = function()
         <?php echo JHtml::_('form.token'); ?>
     </div>
 </form>
+<iframe class="element-invisible" id="exportframe"></iframe>
+</div>

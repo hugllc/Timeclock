@@ -20,3 +20,6 @@
  * MA  02110-1301, USA.
  */
 
+select.narrow {
+    width: 10em;
+}
