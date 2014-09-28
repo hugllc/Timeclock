@@ -236,10 +236,10 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
                 $registry->set('filter.archived', 2);
         }
 
-        $estart = $user->timeclock["startDate"];
+        $estart = isset($user->timeclock["startDate"]) ? $user->timeclock["startDate"] : 0;
         $estart = empty($estart) ? 0 : TimeclockHelpersDate::fixDate($estart);
         $registry->set('employment.start', $estart);
-        $eend = $user->timeclock["endDate"];
+        $eend = isset($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
         $eend = empty($eend) ? 0 : TimeclockHelpersDate::fixDate($eend);
         $registry->set('employment.end', $eend);
         $date = TimeclockHelpersDate::fixDate(
@@ -278,7 +278,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $fulltimeHours = TimeclockHelpersTimeclock::getParam("fulltimeHours");
         $registry->set("payperiod.fulltimeHours", $fulltimeHours);
 
-        $usercutoff = $user->timeclock["noTimeBefore"];
+        $usercutoff = isset($user->timeclock["noTimeBefore"]) ? $user->timeclock["noTimeBefore"] : 0;
         $registry->set("payperiod.usercutoff", $usercutoff);
 
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));

@@ -64,13 +64,13 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
         return array(
             "Super User" => array(
                 array(
-                    "id" => 2,
+                    "id" => 42,
                     "date" => "2014-09-10",
                 ), // Input array (Mocks $_REQUEST)
                 array(
-                    "get.user.id"       => 42,
-                    "get.user.name"     => "Super User",
-                    "get.user.username" => "admin",
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
                     "get.user.guest"    => 0,
                 ),  // The session information
                 array(
@@ -175,12 +175,12 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
         return array(
             "Super User" => array(
                 array(
-                    "id" => 2,
+                    "id" => 42,
                 ), // Input array (Mocks $_REQUEST)
                 array(
-                    "get.user.id"       => 42,
-                    "get.user.name"     => "Super User",
-                    "get.user.username" => "admin",
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
                     "get.user.guest"    => 0,
                 ),  // The session information
                 array(
