@@ -80,6 +80,44 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         return true;
     }
     /**
+    * Checks to see if there is a saved report and returns the ID
+    * 
+    * @param string $type The type of report to look for
+    * @param string $name The name of the report
+    *
+    * @return int The ID of the report
+    */
+    private function _getReportID($type = null, $name = nulll)
+    {
+        if (is_null($this->_report)) {
+            $db = JFactory::getDBO();
+            $query = $db->getQuery(TRUE);
+            $query->select('*');
+            $query->from('#__timeclock_reports');
+            $query->where($db->quoteName("type")." = ".$db->quote($type));
+            $query->where($db->quoteName("name")." = ".$db->quote($name));
+            $db->setQuery($query);
+            $report = $db->loadObject();
+            if (is_object($report)) {
+                $report->projects = json_decode($report->projects, true);
+                $report->users = json_decode($report->users, true);
+                $report->timesheets = json_decode($report->timesheets, true);
+                $report->customers = json_decode($report->customers, true);
+                $report->departments = json_decode($report->departments, true);
+            } else {
+                $this->_report = (object) array(
+                    "report_id" => 0,
+                    "users" => array(),
+                    "timesheets" => array(),
+                    "customers" => array(),
+                    "projects" => array(),
+                    "departments" => array(),
+                );
+            }
+        }
+        return (int)$report->report_id;
+    }
+    /**
     * Build query and where for protected _getList function and return a list
     *
     * @return array An array of results.
@@ -260,11 +298,20 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
 
         $user = JFactory::getUser();
 
-        $date = TimeclockHelpersDate::fixDate(
-            $app->input->get('date', date("Y-m-d"), "raw")
-        );
-        $date = empty($date) ?  date("Y-m-d") : $date;
-        $registry->set('date', $date);
+        
+        $report_id = $app->input->get("report_id", 0, "int");
+        if (empty($report_id)) {
+            $date = TimeclockHelpersDate::fixDate(
+                $app->input->get('date', date("Y-m-d"), "raw")
+            );
+            $date = empty($date) ?  date("Y-m-d") : $date;
+            $registry->set('date', $date);
+        } else {
+            $registry->set("report.id", $report_id);
+            $report = $this->getReport($report_id);
+            $date   = $report->startDate;
+            $registry->set('date', $date);
+        }
         
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
@@ -307,7 +354,18 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             $value = true;
         }
         $registry->set("payperiod.dates", $dates);
-        
+
+        if (empty($report_id)) {
+            $registry->set('report.name', "payroll $start $end");
+            $registry->set('report.type', "payroll");
+            $registry->set('report.description', JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
+
+            $report_id = $this->_getReportID(
+                $registry->get("report.type"), 
+                $registry->get("report.name")
+            );
+            $registry->set("report.id", $report_id);
+        }
         $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
         $registry->set("holiday.perc", $this->_holiday_perc);
 
@@ -318,10 +376,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
 
         $subtotals = (int)($len / $split);
         $registry->set("payperiod.subtotals", $subtotals);
-
-        $registry->set('report.name', "payroll $start $end");
-        $registry->set('report.type', "payroll");
-        $registry->set('report.description', JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
 
         // This saves the payperiod information into the report
         $registry->set('filter', $registry->get('payperiod'));
