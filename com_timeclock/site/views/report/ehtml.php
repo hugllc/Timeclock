@@ -78,7 +78,7 @@ class TimeclockViewsReportEhtml extends TimeclockViewsReportBase
         $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'HTML');
         $objWriter->setPreCalculateFormulas(true);
         $inline = JFactory::getApplication()->input->get("inline", 0, "int");
-        
+
         if ($inline) {
             header('Content-Disposition: inline');
         }

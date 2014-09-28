@@ -1,6 +1,7 @@
 <?php
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
+JHTML::_('behavior.modal');
 JHtml::_('formbehavior.chosen', 'select:not(.plain)');
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
@@ -23,7 +24,13 @@ function exportReport(element, id, format)
 {
     if (format) {
         var url = "<?php echo str_replace("/administrator", "", JRoute::_('index.php?option=com_timeclock')); ?>&controller=report&report_id="+id+"&format="+format;
-        jQuery("iframe#exportframe").prop("src", url);
+        if (format == "ehtml") {
+            url = url + "&inline=1";
+            console.log(url);
+            SqueezeBox.setContent('iframe', url);
+        } else {
+            jQuery("iframe#exportframe").prop("src", url);
+        }
     }
     jQuery(element).find('option:eq(0)').prop('selected', true);
 }

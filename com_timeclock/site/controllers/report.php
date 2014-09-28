@@ -92,8 +92,9 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $report = JTable::getInstance('TimeclockReports', 'Table');
         $report->load($report_id);
         if (!empty($report->type) && ($report->type != "report")) {
+            $inline = $app->input->get("inline", 0, int);
             $app->redirect(
-                "index.php?option=com_timeclock&controller=".$report->type."&task=display&report_id=".$report_id."&format=".$viewFormat
+                "index.php?option=com_timeclock&controller=".$report->type."&task=display&report_id=".$report_id."&format=".$viewFormat."&inline=".$inline
             );
         }
     }
