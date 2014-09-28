@@ -30,7 +30,7 @@ $selectname = "export".$displayData["index"];
                         </div>
                     </td>
                     <td class="center">
-                        <select name="<?php print $selectname; ?>" class="narrow" onChange="exportReport(this, <?php print $displayData["data"]->report_id; ?>, this.value, '<?php print $displayData["data"]->type; ?>');">
+                        <select name="<?php print $selectname; ?>" class="narrow" onChange="exportReport(this, <?php print $displayData["data"]->report_id; ?>, this.value);">
                             <option value=""><?php print JText::_("COM_TIMECLOCK_SELECT_FORMAT"); ?></option>
                             <option value="csv">CSV</option>
                             <option value="ehtml">HTML</option>

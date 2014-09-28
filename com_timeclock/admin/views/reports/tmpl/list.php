@@ -19,10 +19,10 @@ Joomla.orderTable = function()
         
         form.submit();
 }
-function exportReport(element, id, format, type)
+function exportReport(element, id, format)
 {
     if (format) {
-        var url = "<?php echo str_replace("/administrator", "", JRoute::_('index.php?option=com_timeclock')); ?>&controller="+type+"&report_id="+id+"&format="+format;
+        var url = "<?php echo str_replace("/administrator", "", JRoute::_('index.php?option=com_timeclock')); ?>&controller=report&report_id="+id+"&format="+format;
         jQuery("iframe#exportframe").prop("src", url);
     }
     jQuery(element).find('option:eq(0)').prop('selected', true);

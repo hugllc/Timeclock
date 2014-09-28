@@ -63,10 +63,39 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $this->model = TimeclockHelpersTimeclock::getModel("report");
         $task = $this->getTask();
         $fct  = "task".ucfirst($task);
+        $this->checkReportID();
+        
         if (method_exists($this, $fct)) {
             return $this->$fct();
         }
         return $this->display();
+    }
+    /**
+    * This function checks to see if we are loading a specific report.  If we are,
+    * it checks to see what controller is involved, and redirects accordingly.
+    * function.
+    *
+    * @access public
+    * @return boolean
+    */
+    protected function checkReportID()
+    {
+        $viewFormat = strtolower(JFactory::getDocument()->getType());
+        if ($viewFormat == "html") {
+            return;
+        }
+        $app = $this->getApplication();
+        $report_id = $app->input->get("report_id", null, int);
+        if (empty($report_id)) {
+            return;
+        }
+        $report = JTable::getInstance('TimeclockReports', 'Table');
+        $report->load($report_id);
+        if (!empty($report->type) && ($report->type != "report")) {
+            $app->redirect(
+                "index.php?option=com_timeclock&controller=".$report->type."&task=display&report_id=".$report_id."&format=".$viewFormat
+            );
+        }
     }
     /**
     * This function performs everything for this controller.  It is the goto 
