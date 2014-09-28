@@ -82,39 +82,18 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     /**
     * Checks to see if there is a saved report and returns the ID
     * 
-    * @param string $type The type of report to look for
-    * @param string $name The name of the report
-    *
     * @return int The ID of the report
     */
-    private function _getReportID($type = null, $name = nulll)
+    private function _getReportIDs()
     {
-        if (is_null($this->_report)) {
-            $db = JFactory::getDBO();
-            $query = $db->getQuery(TRUE);
-            $query->select('*');
-            $query->from('#__timeclock_reports');
-            $query->where($db->quoteName("type")." = ".$db->quote($type));
-            $query->where($db->quoteName("name")." = ".$db->quote($name));
-            $db->setQuery($query);
-            $report = $db->loadObject();
-            if (is_object($report)) {
-                $report->projects = json_decode($report->projects, true);
-                $report->users = json_decode($report->users, true);
-                $report->timesheets = json_decode($report->timesheets, true);
-                $report->customers = json_decode($report->customers, true);
-                $report->departments = json_decode($report->departments, true);
-            } else {
-                $this->_report = (object) array(
-                    "report_id" => 0,
-                    "users" => array(),
-                    "timesheets" => array(),
-                    "customers" => array(),
-                    "projects" => array(),
-                    "departments" => array(),
-                );
-            }
-        }
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('*');
+        $query->from('#__timeclock_reports');
+        $query->where($db->quoteName("type")." = ".$db->quote($type));
+        $query->where($db->quoteName("name")." = ".$db->quote($name));
+        $db->setQuery($query);
+        $report = $db->loadObject();
         return (int)$report->report_id;
     }
     /**

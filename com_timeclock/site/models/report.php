@@ -149,7 +149,13 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         }
         if (!isset($this->_report[$id])) {
             $this->_report[$id] = JTable::getInstance('TimeclockReports', 'Table');
-            $this->_report[$id]->load($id);
+            $report = &$this->_report[$id];
+            $report->load($id);
+            $report->projects = json_decode($report->projects, true);
+            $report->users = json_decode($report->users, true);
+            $report->timesheets = json_decode($report->timesheets, true);
+            $report->customers = json_decode($report->customers, true);
+            $report->departments = json_decode($report->departments, true);
         }
         return $this->_report[$id];
 
