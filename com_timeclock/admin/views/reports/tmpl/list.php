@@ -113,7 +113,7 @@ function exportReport(element, id, format, type)
                 </tr>
             </tfoot>
         </table>
-        <input type="hidden" name="controller" value="report" />
+        <input type="hidden" name="controller" value="reports" />
         <input type="hidden" name="task" value="" />
         <input type="hidden" name="boxchecked" value="0" />
         <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />

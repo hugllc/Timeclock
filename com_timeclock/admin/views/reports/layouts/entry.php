@@ -19,10 +19,10 @@ $selectname = "export".$displayData["index"];
                     <td class="nowrap has-context">
                         <div class="pull-left hasTooltip" title="<?php print $displayData["data"]->description; ?>">
                             <?php if ($displayData["data"]->checked_out) : ?>
-                                <?php echo JHtml::_('jgrid.checkedout', $displayData["index"], $displayData["data"]->checked_out, $displayData["data"]->checked_out_time, 'report.', $canCheckin); ?>
+                                <?php echo JHtml::_('jgrid.checkedout', $displayData["index"], $displayData["data"]->checked_out, $displayData["data"]->checked_out_time, 'reports.', $canCheckin); ?>
                             <?php endif; ?>
                             <?php if (($canEdit || $canEditOwn) && !($displayData["data"]->checked_out)): ?>
-                                <a href="<?php echo JRoute::_('index.php?option=com_timeclock&controller=report&task=edit&id='.(int) $displayData["data"]->report_id); ?>">
+                                <a href="<?php echo JRoute::_('index.php?option=com_timeclock&controller=reports&task=edit&id='.(int) $displayData["data"]->report_id); ?>">
                                 <?php echo $displayData["data"]->name; ?></a>
                             <?php else : ?>
                                 <?php echo $displayData["data"]->name; ?>

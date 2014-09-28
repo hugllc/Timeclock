@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsReportHtml extends JViewHtml
+class TimeclockViewsReportsHtml extends JViewHtml
 {
     /** Whether we are adding or editing */
     protected $add = false;
@@ -84,7 +84,7 @@ class TimeclockViewsReportHtml extends JViewHtml
             $this->data = $this->model->listItems();
             $this->_reportListView = new JLayoutFile('entry', __DIR__.'/layouts');
             $this->sortFields = $this->model->checkSortFields($this->getSortFields());
-            TimeclockHelpersView::addSubmenu("report");
+            TimeclockHelpersView::addSubmenu("reports");
             $this->listToolbar();
             $this->sidebar = JHtmlSidebar::render();
 
@@ -113,13 +113,13 @@ class TimeclockViewsReportHtml extends JViewHtml
 
         if (($actions->get('core.edit')) || ($actions->get('core.edit.own')))
         {
-            JToolbarHelper::editList('report.edit');
-            JToolbarHelper::deleteList("Delete Records?", 'report.delete');
+            JToolbarHelper::editList('reports.edit');
+            JToolbarHelper::deleteList("Delete Selected Records?", 'reports.delete');
         }
         if ($actions->get('core.edit.state'))
         {
-            JToolbarHelper::publish('report.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolbarHelper::unpublish('report.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+            JToolbarHelper::publish('reports.publish', 'JTOOLBAR_PUBLISH', true);
+            JToolbarHelper::unpublish('reports.unpublish', 'JTOOLBAR_UNPUBLISH', true);
         }
         JHtmlSidebar::setAction('index.php?option=com_timeclock');
 

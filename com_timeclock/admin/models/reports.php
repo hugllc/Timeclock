@@ -48,7 +48,7 @@ require_once __DIR__."/default.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsReport extends TimeclockModelsDefault
+class TimeclockModelsReports extends TimeclockModelsDefault
 {
     /** Where Fields */
     protected $_report_id = null;

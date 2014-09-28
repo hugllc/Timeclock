@@ -212,8 +212,8 @@ class TimeclockHelpersView
         );
         JHtmlSidebar::addEntry(
             JText::_("COM_TIMECLOCK_REPORTS"),
-            'index.php?option=com_timeclock&controller=report',
-            $cName == 'report'
+            'index.php?option=com_timeclock&controller=reports',
+            $cName == 'reports'
         );
         JHtmlSidebar::addEntry(
             JText::_("COM_TIMECLOCK_MISC_TOOLS"),

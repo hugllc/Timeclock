@@ -46,18 +46,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockControllersReport extends TimeclockControllersDefault
+class TimeclockControllersReports extends TimeclockControllersDefault
 {
     /** This is our basic link */
-    protected $baselink = "index.php?option=com_timeclock&controller=report";
+    protected $baselink = "index.php?option=com_timeclock&controller=reports";
     /** This is our controller name */
-    protected $controller = "report";
+    protected $controller = "reports";
     /** This is our model name */
-    protected $model = "report";
+    protected $model = "reports";
     /** These are our system messages */
     protected $msgs = array(
-        "saved" => "COM_TIMECLOCK_DEPARTMENT_SAVED",
-        "saveFailed" => "COM_TIMECLOCK_DEPARTMENT_SAVE_FAILED",
+        "saved" => "COM_TIMECLOCK_REPORT_SAVED",
+        "saveFailed" => "COM_TIMECLOCK_REPORT_FAILED",
     );
     /**
     * This function saves our stuff.
@@ -73,11 +73,11 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $model = $this->getModel();
         if ($index = $model->delete()) {
             $app->enqueueMessage(
-                $this->savedMsg(), 'message'
+                JText::_("COM_TIMECLOCK_REPORT_DELETED"), 'message'
             );
         } else {
             $app->enqueueMessage(
-                $this->saveFailedMsg(), 'warning'
+                JText::_("COM_TIMECLOCK_REPORT_DELETE_FAILED"), 'warning'
             );
         }
         $app->redirect($this->baselink);
