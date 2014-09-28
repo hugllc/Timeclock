@@ -64,15 +64,25 @@ class TimeclockViewsReportEhtml extends TimeclockViewsReportBase
     */
     protected function finalize()
     {
-        header('Content-Disposition: inline');
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            )
+        );
+
+        $this->phpexcel->getActiveSheet()->getStyle('A1:'.$this->maxCol.($this->line - 1))->applyFromArray($styleArray);
+        unset($styleArray);
+
         $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'HTML');
         $objWriter->setPreCalculateFormulas(true);
         $inline = JFactory::getApplication()->input->get("inline", 0, "int");
+        
         if ($inline) {
-            print $objWriter->generateSheetData();
-        } else {
-            $objWriter->save('php://output');
+            header('Content-Disposition: inline');
         }
+        $objWriter->save('php://output');
     }
 }
 ?>

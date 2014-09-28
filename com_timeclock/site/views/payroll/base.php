@@ -75,11 +75,12 @@ class TimeclockViewsPayrollBase extends JViewBase
     {
         $app = JFactory::getApplication();
         
+        $doReport = $app->input->get("report", 1, "int");
         $report_id = $this->model->getState("report.id");
         $this->params    = JComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->model->getState('payperiod');
 
-        if (!empty($report_id)) {
+        if (!empty($report_id) && $doReport) {
             $report = $this->model->getReport();
             $data   = $report->timesheets;
             $users  = $report->users;

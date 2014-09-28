@@ -32,6 +32,7 @@ var Payroll = {
     setReport: function (live)
     {
         if (this.doreports) {
+            jQuery("#timeclock .hasreport").hide();
             if (live) {
                 jQuery("#timeclock .livedata").show();
                 jQuery("#timeclock .reportdata").hide();
@@ -42,6 +43,7 @@ var Payroll = {
                 Timeclock.report = 1;
             }
         } else {
+            jQuery("#timeclock .hasreport").show();
             jQuery("#timeclock .noreport").hide();
             jQuery("#timeclock .reportdata").hide();
             Timeclock.report = 0;

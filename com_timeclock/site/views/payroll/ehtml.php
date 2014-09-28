@@ -65,11 +65,11 @@ class TimeclockViewsPayrollEhtml extends TimeclockViewsPayrollBase
     protected function finalize()
     {
         $styleArray = array(
-        'borders' => array(
-            'allborders' => array(
-            'style' => PHPExcel_Style_Border::BORDER_THIN
+            'borders' => array(
+                'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
             )
-        )
         );
 
         $this->phpexcel->getActiveSheet()->getStyle('A1:'.$this->maxCol.($this->line - 1))->applyFromArray($styleArray);
@@ -80,10 +80,8 @@ class TimeclockViewsPayrollEhtml extends TimeclockViewsPayrollBase
         $inline = JFactory::getApplication()->input->get("inline", 0, "int");
         if ($inline) {
             header('Content-Disposition: inline');
-            print $objWriter->generateSheetData();
-        } else {
-            $objWriter->save('php://output');
         }
+        $objWriter->save('php://output');
     }
 }
 ?>
