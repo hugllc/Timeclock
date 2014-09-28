@@ -30,6 +30,7 @@ check:
 	    echo "Joomla 3.x needs to be installed in the Joomla subdirectory"; \
 	    exit 1; \
 	fi;
+	@./fixini.php
 	
 package: rel/pkg_timeclock.zip clean
 
