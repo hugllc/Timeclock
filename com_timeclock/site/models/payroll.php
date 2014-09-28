@@ -82,9 +82,12 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     /**
     * Checks to see if there is a saved report and returns the ID
     * 
+    * @param string $type The type of report to look for
+    * @param string $name The name of the report
+    *
     * @return int The ID of the report
     */
-    private function _getReportIDs()
+    private function _getReportID($type = null, $name = nulll)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
