@@ -114,8 +114,10 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $document = JFactory::getDocument();
         $viewName = "report";
         $viewFormat = $document->getType();
-        $layoutName = 'report';
-
+        $layoutName = $app->input->get("layout", "report");
+        if ($layoutName != "modalsave") {
+            $layoutName = 'report';
+        }
         $app->input->set('view', $viewName);
         // Register the layout paths for the view
         $paths = new SplPriorityQueue;

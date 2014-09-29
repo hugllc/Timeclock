@@ -124,7 +124,7 @@ var Addhours = {
                             if (typeof Timesheet === 'undefined') {
                                 window.location.href = "index.php?option=com_timeclock&controller=timesheet&date="+self.payperiod.start;
                             } else {
-                                SqueezeBox.close()
+                                SqueezeBox.close();
                             }
                         }
                     }

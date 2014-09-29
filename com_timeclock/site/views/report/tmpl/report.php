@@ -3,6 +3,7 @@
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHTML::_('behavior.modal'); 
     JHTML::_('behavior.calendar');
+    JHtml::_('formbehavior.chosen', 'select:not(.plain)');
     $cols = count($this->users) + 2;
 
     JFactory::getDocument()->setTitle(

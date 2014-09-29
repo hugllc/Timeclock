@@ -69,6 +69,7 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->filter = $this->model->getState("filter");
         $this->filter->start = $this->start;
         $this->filter->end = $this->end;
+        $this->filter->report_id = $this->model->getState("report.id");
         
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 

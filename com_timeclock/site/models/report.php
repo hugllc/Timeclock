@@ -136,6 +136,45 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         return $return;
     }
     /**
+    * Returns a list of compatible saved reports
+    * 
+    * @return array of objects
+    */
+    public function listReports()
+    {
+        $db = JFactory::getDBO();
+        $start = $this->getState("start");
+        $end   = $this->getState("end");
+        $type   = $this->getState("report.type");
+        $query = $db->getQuery(TRUE);
+        $query->select('*');
+        $query->from('#__timeclock_reports');
+        $query->where($db->quoteName("type")." = ".$db->quote($type));
+        $query->where($db->quoteName("startDate")." = ".$db->quote($start));
+        $query->where($db->quoteName("endDate")." = ".$db->quote($end));
+        $list = $this->_getList($query, 0, 0);
+        return $list;
+    }
+    /**
+    * Returns a list of compatible saved reports
+    * 
+    * @return array of objects
+    */
+    public function getReportOptions()
+    {
+        $list = $this->listReports();
+        $options = array();
+        foreach ($list as $value) {
+            $options[] = JHTML::_(
+                'select.option', 
+                $value->report_id, 
+                $value->name
+            );
+        }
+        return $options;
+        
+    }
+    /**
     * Checks to see if there is a saved report and returns the record
     * 
     * @param int $id The ID of the report to get.
@@ -255,22 +294,26 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (!is_object($row)) {
             return false;
         }
-        $date = date("Y-m-d H:i:s");
+        $date  = date("Y-m-d H:i:s");
+        $type  = $this->getState("report.type");
+        $start = $this->getState("start");
+        $end   = $this->getState("end");
 
-        $id = $this->getState("report.id");
-        if (empty($id)) {
-            $row->name        = $this->getState("report.name");
-            $row->created_by  = JFactory::getUser()->id;
-            $row->created     = $date;
+        $name = $app->input->get("report_name", "", "raw");
+        if (empty($name)) {
+            return false;
         }
-        $desc = $this->getState("report.description");
+        $row->name        = $name;
+        $row->created_by  = JFactory::getUser()->id;
+        $row->created     = $date;
+        $desc             = $app->input->get("report_description", "", "raw");
         if (!empty($desc)) {
             $row->description = $desc;
         }
         $row->modified    = $date;
-        $row->startDate   = $this->getState("start");
-        $row->endDate     = $this->getState("end");
-        $row->type        = $this->getState("report.type");
+        $row->startDate   = $start;
+        $row->endDate     = $end;
+        $row->type        = $type;
         $row->filter      = json_encode($this->getState("filter"));
         $row->users       = json_encode($this->listUsers());
         $row->projects    = json_encode($this->listProjects());
@@ -345,7 +388,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $registry->set('date', $date);
         
         $type = 'report';
-        $registry->set('type', $type);
+        $registry->set('report.type', $type);
         
         $this->_populateFilter($registry);
         $this->_populateState($registry);

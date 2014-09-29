@@ -54,6 +54,13 @@
         'filter_proj_manager_id',
         JHtml::_('select.options', $options, 'value', 'text', $displayData->proj_manager_id, true)
     );
+    $model = TimeclockHelpersTimeclock::getModel("report");
+    $options = $model->getReportOptions();
+    JHtmlSidebar::addFilter(
+        JText::_('COM_TIMECLOCK_SELECT_SAVED_REPORT'),
+        'report_id',
+        JHtml::_('select.options', $options, 'value', 'text', $displayData->report_id, true)
+    );
 
 ?>
 <div class="reportcontrol row">

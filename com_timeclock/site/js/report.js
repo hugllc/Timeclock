@@ -52,27 +52,58 @@ var Report = {
     },
     save: function ()
     {
+        //SqueezeBox.initialize();
+        var url = "index.php?option=com_timeclock&controller=report&layout=modalsave&tmpl=component";
+        SqueezeBox.open(url, {
+            size: {x: 500, y: 300},
+        });
+        //SqueezeBox.fromElement('div#savereport');
+    },
+    submit: function ()
+    {
         var self = this;
+        var data = self._formData();
+        data.report_name = jQuery('[name="report_name"]').val();
+        data.report_description = jQuery('[name="report_description"]').val();
+        console.log(data);
         jQuery.ajax({
             url: 'index.php?option=com_timeclock&controller=report&task=save&format=json',
-            type: 'GET',
-            data: self._formData(),
+            type: 'POST',
+            data: data,
             dataType: 'JSON',
             success: function(ret)
             {
                 if ( ret.success ){
-                    Joomla.renderMessages({'success': [ret.message]});
                     window.location.href = window.location.href;
                 } else {
-                    Joomla.renderMessages({'error': [ret.message]});
+                    self.message(ret.message, "error");
                 }
             },
             error: function(ret)
             {
-                Joomla.renderMessages({'error': ['Save failed']});
+                self.message("No response from server", "error");
             }
         });
         
+    },
+    /**
+     * This posts a message on the individual project form.
+     * 
+     * @param msg        The message to post
+     * @param type       The type of message (success, error, info)
+     * 
+     * @return null
+     */
+    message: function (msg, type)
+    {
+        var div = jQuery("#sbox-content div.alert");
+        div.text(msg);
+        div.removeClass('alert-success');
+        div.removeClass('alert-error');
+        div.removeClass('alert-info');
+        div.removeClass('element-invisible');
+        div.addClass('alert-'+type);
+        div.show();
     },
     _formData: function ()
     {
