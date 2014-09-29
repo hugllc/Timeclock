@@ -130,9 +130,18 @@ class TimeclockViewsReportsHtml extends JViewHtml
         );
         $options = TimeclockHelpersView::getUsersOptions();
         JHtmlSidebar::addFilter(
-            JText::_('COM_TIMECLOCK_SELECT_MANAGER'),
+            JText::_('COM_TIMECLOCK_SELECT_USER'),
             'filter_user_id',
             JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.user_id'), true)
+        );
+        $options = array(
+            JHTML::_('select.option', "payroll", JText::_("COM_TIMECLOCK_PAYROLL")),
+            JHTML::_('select.option', "report", JText::_("COM_TIMECLOCK_REPORT")),
+        );
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_TYPE'),
+            'filter_type',
+            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.type'), true)
         );
     }
     /**

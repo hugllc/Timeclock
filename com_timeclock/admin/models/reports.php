@@ -199,6 +199,10 @@ class TimeclockModelsReports extends TimeclockModelsDefault
         if (is_numeric($filter->user_id)) {
             $query->where("r.created_by = " . (int) $filter->user_id);
         }
+
+        if (!empty($filter->type)) {
+            $query->where($db->quoteName("r.type")." = ".$db->quote($filter->type));
+        }
         return $query;
     }
     /**
