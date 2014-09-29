@@ -77,9 +77,14 @@ class TimeclockHelpersTimeclock
     public static function getModel($model)
     {
         $modelClass = 'TimeclockModels'.ucfirst($model);
-        $file = strtolower($model);
-        if (!@include_once dirname(__DIR__)."/models/".$file.".php") {
-            @include_once JPATH_ROOT."/components/com_timeclock/models/".$file.".php";
+        $file     = strtolower($model);
+        $fullfile = dirname(__DIR__)."/models/".$file.".php";
+        if (file_exists($fullfile)) {
+            include_once($fullfile);
+        }
+        $fullfile = JPATH_ROOT."/components/com_timeclock/models/".$file.".php";
+        if (file_exists($fullfile)) {
+            include_once $fullfile;
         }
         if (!class_exists($modelClass)) {
             include_once dirname(__DIR__)."/models/default.php";
