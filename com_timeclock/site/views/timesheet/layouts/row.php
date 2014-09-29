@@ -14,7 +14,7 @@
         if ($timeentry) {
             $tipTitle           = JText::_("COM_TIMECLOCK_ADD_HOURS");
             $tip                = "for ".$displayData->name." on ".JHTML::_('date', $date, JText::_("DATE_FORMAT_LC1"));
-            $link = JRoute::_('index.php?component=com_timeclock&controller=timesheet&task=addhours&layout=modal&tmpl=component&project_id='.$displayData->project_id.'&date='.$date);
+            $link = JRoute::_('index.php?option=com_timeclock&controller=timesheet&task=addhours&layout=modal&tmpl=component&project_id='.$displayData->project_id.'&date='.$date);
         } else {
             $tipTitle = JText::_("COM_TIMECLOCK_NO_HOURS");
             if ($employed) {
