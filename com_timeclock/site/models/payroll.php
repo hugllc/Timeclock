@@ -97,7 +97,40 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $query->where($db->quoteName("name")." = ".$db->quote($name));
         $db->setQuery($query);
         $report = $db->loadObject();
-        return (int)$report->report_id;
+        return is_object($report) ? (int)$report->report_id : 0;
+    }
+    /**
+    * This creates data for the store.  It should be overwritten by child classes
+    * if they want to store a different set.
+    *
+    * @return JTable instance with data in it.
+    */
+    protected function buildStore()
+    {
+        $app = JFactory::getApplication();
+        $row = JTable::getInstance('TimeclockReports', 'Table');
+        
+        if (!is_object($row)) {
+            return false;
+        }
+        $date  = date("Y-m-d H:i:s");
+        $type  = $this->getState("report.type");
+        $start = $this->getState("start");
+        $end   = $this->getState("end");
+
+        $row->name        = $this->getState("report.name");
+        $row->created_by  = JFactory::getUser()->id;
+        $row->created     = $date;
+        $row->description = $this->getState("report.description");
+        $row->modified    = $date;
+        $row->startDate   = $start;
+        $row->endDate     = $end;
+        $row->type        = $type;
+        $row->filter      = json_encode($this->getState("filter"));
+        $row->users       = json_encode($this->listUsers());
+        $row->projects    = json_encode($this->listProjects());
+        $row->timesheets  = json_encode($this->listItems());
+        return $row;
     }
     /**
     * Build query and where for protected _getList function and return a list

@@ -3,7 +3,7 @@ var Payroll = {
     setup: function ()
     {
         this.setLocked(this.payperiod.locked);
-        this.setReport(true);
+        this.setReport(false);
         if (!this.payperiod.unlock) {
             jQuery("#timeclock .unlock").hide();
         }
