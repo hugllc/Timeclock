@@ -173,6 +173,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (!is_object($report)) {
             return;
         }
+        $report->filter     = (object)json_decode($report->filter, true);
         $report->timesheets = json_decode($report->timesheets, true);
         foreach (array("users", "customers", "departments") as $field) {
             $report->$field = json_decode($report->$field, true);
@@ -440,6 +441,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     protected function _populateFilter($registry = null)
     {
         $app = JFactory::getApplication();
+        $context = is_null($this->context) ? $this->table : $this->context;
 
         $category = $app->getUserStateFromRequest($context.'.filter.category', 'filter_category', '');
         $registry->set('filter.category', $category);
@@ -459,7 +461,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $proj_type = $app->getUserStateFromRequest($context.'.filter.project_type', 'filter_project_type', '');
         $registry->set('filter.project_type', $proj_type);
 
-        $report_id = $app->input->get("report_id", 0, int);
+        $report_id = $app->input->get("report_id", 0, "int");
         $registry->set("report.id", $report_id);
         
     }

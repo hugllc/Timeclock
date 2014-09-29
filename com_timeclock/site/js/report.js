@@ -79,7 +79,10 @@ var Report = {
             success: function(ret)
             {
                 if ( ret.success ){
-                    window.location.href = window.location.href;
+                    var report = jQuery('[name="report_id"]');
+                    report.append(jQuery("<option></option>").attr("value", ret.data.report_id).text(ret.data.name));
+                    report.val(ret.data.report_id);
+                    jQuery("form.report").submit();
                 } else {
                     self.message(ret.message, "error");
                 }

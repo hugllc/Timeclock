@@ -13,7 +13,7 @@
             JHTML::_('date', $this->end, JText::_("DATE_FORMAT_LC3"))
         )
     );
-    $doreports = ($this->report->report_id != 0);
+    $doreports = ($this->report_id != 0);
 ?>
 <div id="timeclock" class="container-fluid">
 <form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=report"); ?>" method="post" name="userform" class="report">
@@ -94,17 +94,12 @@
     jQuery( document ).ready(function() {
         Report.setup();
     });
-    Report.filter       = <?php print json_encode($this->filter); ?>;
-    Report.projects     = <?php print json_encode($this->projects); ?>;
-    Report.data         = <?php print json_encode($this->data); ?>;
-    Report.report       = {
-        "projects": <?php print json_encode($this->report->projects); ?>,
-        "users": <?php print json_encode($this->report->users); ?>,
-        "data": <?php print json_encode($this->report->timesheets); ?>,
-    };
+    Report.filter    = <?php print json_encode($this->filter); ?>;
+    Report.projects  = <?php print json_encode($this->projects); ?>;
+    Report.data      = <?php print json_encode($this->data); ?>;
     Report.doreports = <?php print (int)$doreports; ?>;
-    Timeclock.params     = <?php print json_encode($this->params); ?>;
-    Timeclock.report     = 0;
+    Timeclock.params = <?php print json_encode($this->params); ?>;
+    Timeclock.report = 0;
     
 
 </script>

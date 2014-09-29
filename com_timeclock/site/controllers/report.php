@@ -85,7 +85,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
             return;
         }
         $app = $this->getApplication();
-        $report_id = $app->input->get("report_id", null, int);
+        $report_id = $app->input->get("report_id", null, "int");
         if (empty($report_id)) {
             return;
         }

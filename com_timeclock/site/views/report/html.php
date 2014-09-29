@@ -62,14 +62,10 @@ class TimeclockViewsReportHtml extends JViewHtml
         $app = JFactory::getApplication();
         $layout = $this->getLayout();
         
-        $this->params = JComponentHelper::getParams('com_timeclock');
-        $this->start  = $this->model->getState('start');
-        $this->end    = $this->model->getState('end');
-
-        $this->filter = $this->model->getState("filter");
-        $this->filter->start = $this->start;
-        $this->filter->end = $this->end;
-        $this->filter->report_id = $this->model->getState("report.id");
+        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->start     = $this->model->getState('start');
+        $this->end       = $this->model->getState('end');
+        $this->report_id = $this->model->getState("report.id");
         
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
@@ -85,15 +81,22 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->_export   = new JLayoutFile('export', dirname(__DIR__).'/layouts');
         $this->_control  = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
 
-        if (empty($this->filter->report_id)) {
-            $this->data     = $this->model->listItems();
-            $this->users    = $this->model->listUsers();
-            $this->projects = $this->model->listProjects();
+        if (empty($this->report_id)) {
+            $this->data              = $this->model->listItems();
+            $this->users             = $this->model->listUsers();
+            $this->projects          = $this->model->listProjects();
+            $this->filter            = $this->model->getState("filter");
+            $this->filter->start     = $this->start;
+            $this->filter->end       = $this->end;
+            $this->filter->report_id = $this->report_id;
         } else {
             $this->report   = $this->model->getReport();
             $this->data     = $this->report->timesheets;
             $this->users    = $this->report->users;
             $this->projects = $this->report->projects;
+            $this->filter   = $this->report->filter;
+            
+            $this->filter->report_id = $this->report_id;
         }
         $this->export   = array(
             "CSV" => "csv",
