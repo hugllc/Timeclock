@@ -362,7 +362,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function store()
     {
         $row = $this->buildStore();
-        if (!empty($this->getState("report.id")) || !is_object($row)) {
+        $report_id = $this->getState("report.id");
+        if (!empty($report_id) || !is_object($row)) {
             return false;
         }
         // Make sure the record is valid
