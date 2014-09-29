@@ -16,13 +16,12 @@
     $doreports = ($this->report->report_id != 0);
 ?>
 <div id="timeclock" class="container-fluid">
-<form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=report"); ?>" method="get" name="userform" class="report">
+<form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=report"); ?>" method="post" name="userform" class="report">
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print JText::_("COM_TIMECLOCK_REPORT"); ?>
-            <span class="livedata noreport">(<?php print JText::_("COM_TIMECLOCK_LIVE_DATA"); ?>)</span>
-            <span class="reportdata noreport">(<?php print JText::_("COM_TIMECLOCK_SAVED_DATA"); ?>)</span>
+            <?php print ($doreports) ? " - ".JText::_("COM_TIMECLOCK_SAVED_DATA").":  ".$this->report->name : ""; ?>
         </h2>
     </div>
     <?php print $this->_control->render($this->filter); ?>
@@ -57,15 +56,6 @@
             "rowClass" => "livedata"
         )
     ); 
-    if ($doreports) {
-        print $this->_totals->render(
-            (object)array(
-                "users" => $this->report->users, 
-                "data" => $this->report->timesheets["totals"], 
-                "rowClass" => "reportdata"
-            )
-        );
-    }
 ?>
             </tfoot>
             <tbody>
@@ -79,7 +69,6 @@
             $proj_id = (int)$proj->project_id;
             $allproj[$proj_id] = $proj;
             $proj->data     = isset($this->data[$proj_id]) ? $this->data[$proj_id] : array();
-            $proj->rowClass = "livedata";
             $proj->users    = $this->users;
             $render .= $this->_row->render($proj);
         }
@@ -90,18 +79,9 @@
                     "id" => $cat,
                     "name" => $projects["name"],
                     "description" => $projects["description"],
-                    "rowClass" => "livedata",
                 )
             );
             print $render;
-        }
-    }
-    if ($doreports) {
-        foreach ((array)$this->report->projects as $proj_id => $proj) {
-            $proj = (object)$proj;
-            $proj->data = isset($this->report->timesheets[$proj_id]) ? $this->report->timesheets[$proj_id] : array();
-            $proj->rowClass = "reportdata noreport";
-            print $this->_row->render($proj);
         }
     }
 ?>

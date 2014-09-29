@@ -4,7 +4,7 @@ var Report = {
     empty: true,
     setup: function ()
     {
-        this.setReport(true);
+        this.setReport(false);
         this.toggleZero();
         this.toggleEmpty();
     },
@@ -49,6 +49,11 @@ var Report = {
             jQuery("#timeclock .reportdata").hide();
             Timeclock.report = 0;
         }
+    },
+    livedata: function ()
+    {
+        jQuery('form.report [name="report_id"]').val("");
+        jQuery('form.report').submit();
     },
     save: function ()
     {

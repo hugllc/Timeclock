@@ -3,7 +3,7 @@
     $proj_id = $displayData->project_id;
     $total = isset($displayData->data["total"]) ? $displayData->data["total"] : "0";
 ?>
-            <tr class="project <?php print $displayData->rowClass; ?><?php print ($total == 0) ? " empty" : ""; ?>">
+            <tr class="project<?php print ($total == 0) ? " empty" : ""; ?>">
                 <td>
                     <?php print $displayData->name ?>
                 </td>

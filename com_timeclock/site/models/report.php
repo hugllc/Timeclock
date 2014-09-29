@@ -153,7 +153,42 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $query->where($db->quoteName("startDate")." = ".$db->quote($start));
         $query->where($db->quoteName("endDate")." = ".$db->quote($end));
         $list = $this->_getList($query, 0, 0);
+        foreach ($list as &$item) {
+            $this->fixReport($item);
+        }
         return $list;
+    }
+    /**
+    * Checks to see if there is a saved report and returns the record
+    * 
+    * @param mixed $report Either array or object with report information in it
+    * 
+    * @return int The ID of the report
+    */
+    protected function fixReport(&$report)
+    {
+        if (is_array($report)) {
+            $report = (object)$report;
+        }
+        if (!is_object($report)) {
+            return;
+        }
+        $report->timesheets = json_decode($report->timesheets, true);
+        foreach (array("users", "customers", "departments") as $field) {
+            $report->$field = json_decode($report->$field, true);
+            if (is_array($report->$field)) {
+                foreach ($report->$field as &$item) {
+                    $item = (object)$item;
+                }
+            }
+        }
+        $report->projects = json_decode($report->projects, true);
+        foreach ($report->projects as &$cat) {
+            foreach ($cat["proj"] as &$proj) {
+                $proj = (object)$proj;
+            }
+        }
+        
     }
     /**
     * Returns a list of compatible saved reports
@@ -190,11 +225,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $this->_report[$id] = JTable::getInstance('TimeclockReports', 'Table');
             $report = &$this->_report[$id];
             $report->load($id);
-            $report->projects = json_decode($report->projects, true);
-            $report->users = json_decode($report->users, true);
-            $report->timesheets = json_decode($report->timesheets, true);
-            $report->customers = json_decode($report->customers, true);
-            $report->departments = json_decode($report->departments, true);
+            $this->fixReport($report);
         }
         return $this->_report[$id];
 
@@ -241,6 +272,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID")) {
             $entry->nohours = 0;
         }
+        $entry->name = JText::_($entry->name);
+        $entry->description = JText::_($entry->description);
     }
     /**
     * Build query and where for protected _getList function and return a list

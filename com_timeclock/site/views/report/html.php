@@ -85,10 +85,16 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->_export   = new JLayoutFile('export', dirname(__DIR__).'/layouts');
         $this->_control  = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
 
-        $this->data     = $this->model->listItems();
-        $this->users    = $this->model->listUsers();
-        $this->projects = $this->model->listProjects();
-        $this->report   = $this->model->getReport();
+        if (empty($this->filter->report_id)) {
+            $this->data     = $this->model->listItems();
+            $this->users    = $this->model->listUsers();
+            $this->projects = $this->model->listProjects();
+        } else {
+            $this->report   = $this->model->getReport();
+            $this->data     = $this->report->timesheets;
+            $this->users    = $this->report->users;
+            $this->projects = $this->report->projects;
+        }
         $this->export   = array(
             "CSV" => "csv",
             "Excel 2007" => "xlsx",
