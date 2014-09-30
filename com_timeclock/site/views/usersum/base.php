@@ -85,46 +85,37 @@ class TimeclockViewsUsersumBase extends JViewBase
 
 
         if (!empty($report_id) && $doReport) {
-            $report       = $this->model->getReport();
-            $data         = $report->timesheets;
-            $projects     = $report->projects;
-            $this->users  = $report->users;
+            $report         = $this->model->getReport();
+            $this->data     = $report->timesheets;
+            $this->projects = $report->projects;
+            $this->users    = $report->users;
             $file   = str_replace(" ", "_", $report->name);
         } else {
-            $data        = $this->model->listItems();
-            $this->users = $this->model->listUsers();
-            $projects    = $this->model->listProjects();
-            $file        = "report-live-";
-        }
-        $projs = array();
-        foreach ($projects as $cat) {
-            foreach ($cat["proj"] as $proj) {
-                $projs[$proj->project_id] = $proj;
-            }
+            $this->data     = $this->model->listItems();
+            $this->users    = $this->model->listUsers();
+            $this->projects = $this->model->listProjects();
+            $file           = "report-live-";
         }
         $file .= $this->start."to".$this->end;
         $this->setup($file);
-        $this->export($projs, $data);
+        $this->export();
         $this->finalize();
         $app->close();
     }
     /**
     * This prints out a row in the file
     *
-    * @param array $projects The user list to use
-    * @param array $data     The data to use
-    *
     * @return string The row created
     */
-    protected function export($projects, $data)
+    protected function export()
     {
         $this->header();
-        foreach ($projects as $proj_id => $proj) {
-            $proj = (object)$proj;
-            $proj->data = isset($data[$proj_id]) ? $data[$proj_id] : array();
-            $this->row($proj);
+        foreach ($this->users as $user_id => $user) {
+            $user = (object)$user;
+            $user->data   = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
+            $this->row($user);
         }
-        $this->totals($data["totals"]);
+        $this->totals($this->data["totals"]);
     }
     /**
     * This prints out a row in the file
@@ -184,15 +175,25 @@ class TimeclockViewsUsersumBase extends JViewBase
     protected function row($data)
     {
         $col = "A";
+        $places = $this->params->get("decimalPlaces");
+        $total  = array();
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
-        foreach ($this->users as $user) {
-            $value = isset($data->data[$user->id]) ? $data->data[$user->id] : 0;
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
+        foreach ($this->projects as $projects) {
+            foreach ($projects["proj"] as $proj) {
+                $proj_id = (int)$proj->project_id;
+                $value = isset($data->data[$proj_id]) ? $data->data[$proj_id] : 0;
+                $col = $this->nextCol($col);
+                $dat = $col.$this->line;
+                $total[] = $dat;
+                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
+                $col  = $this->nextCol($col);
+                $tot  = $this->maxCol.$this->line;
+                $perc = "=IF($tot>0,ROUND(($dat/$tot)*100, $places),0)";
+                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $perc);
+            }
         }
-        $total = "B".$this->line.":".$col.$this->line;
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$total.")");
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
         $this->line++;
     }
@@ -206,10 +207,21 @@ class TimeclockViewsUsersumBase extends JViewBase
     protected function totals($data)
     {
         $col = "A";
+        $places = $this->params->get("decimalPlaces");
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
         $end = $this->line - 1;
+        $state = 0;
         foreach (range("B", $this->maxCol) as $col) {
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
+            if ($state == 0) {
+                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
+                $dat = $col.$this->line;
+                $state = 1;
+            } else {
+                $tot  = $this->maxCol.$this->line;
+                $perc = "=IF($tot>0,ROUND(($dat/$tot)*100, $places),0)";
+                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $perc);
+                $state = 0;
+            }
         }
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
         $this->line++;
@@ -223,10 +235,14 @@ class TimeclockViewsUsersumBase extends JViewBase
     {
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PROJECT"));
-        foreach ($this->users as $user) {
-            $name = isset($user->name) ? $user->name : "User ".$user->id;
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name);
+        foreach ($this->projects as $projects) {
+            foreach ($projects["proj"] as $proj) {
+                $name = isset($proj->name) ? $proj->name : "Project ".$proj->project_id;
+                $col = $this->nextCol($col);
+                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name);
+                $col = $this->nextCol($col);
+                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name." %");
+            }
         }
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));

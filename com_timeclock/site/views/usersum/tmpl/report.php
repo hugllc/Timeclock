@@ -37,7 +37,7 @@
     <?php 
         print $this->_export->render(
             (object)array(
-                "url" => JRoute::_('&option=com_timeclock&controller=report'),
+                "url" => JRoute::_('&option=com_timeclock&controller=usersum'),
                 "export" => $this->export,
             )
         ); 
