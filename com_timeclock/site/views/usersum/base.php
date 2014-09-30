@@ -139,12 +139,12 @@ class TimeclockViewsUsersumBase extends JViewBase
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $report = JText::sprintf("COM_TIMECLOCK_REPORT_TITLE", $this->start, $this->end);
+        $report = JText::sprintf("COM_TIMECLOCK_USERSUM_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_REPORT"));
+            ->setKeywords(JText::_("COM_TIMECLOCK_USERSUM_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -158,7 +158,7 @@ class TimeclockViewsUsersumBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_USERSUM_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 

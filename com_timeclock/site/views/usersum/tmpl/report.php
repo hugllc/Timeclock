@@ -8,7 +8,7 @@
 
     JFactory::getDocument()->setTitle(
         JText::sprintf(
-            "COM_TIMECLOCK_REPORT_TITLE",
+            "COM_TIMECLOCK_USERSUM_REPORT_TITLE",
             JHTML::_('date', $this->start, JText::_("DATE_FORMAT_LC3")),
             JHTML::_('date', $this->end, JText::_("DATE_FORMAT_LC3"))
         )
@@ -20,7 +20,7 @@
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
-            <?php print JText::_("COM_TIMECLOCK_REPORT"); ?>
+            <?php print JText::_("COM_TIMECLOCK_USERSUM_REPORT"); ?>
             <?php print ($doreports) ? " - ".JText::_("COM_TIMECLOCK_SAVED_DATA").":  ".$this->report->name : ""; ?>
         </h2>
     </div>
