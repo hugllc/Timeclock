@@ -529,7 +529,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             as hours, t.worked, t.project_id, t.notes, z.user_id as user_id');
         $query->from('#__timeclock_timesheet as t');
         $query->select('p.name as project, p.type as project_type, 
-            p.description as project_description, p.parent_id as cat_id');
+            p.description as project_description, p.parent_id as cat_id, 
+            p.department_id as department_id, p.customer_id as customer_id,
+            p.manager_id as proj_manager_id');
         $query->leftjoin('#__timeclock_projects as p on t.project_id = p.project_id');
         $query->select('q.name as cat_name, q.description as cat_description');
         $query->leftjoin('#__timeclock_projects as q on p.parent_id = q.project_id');

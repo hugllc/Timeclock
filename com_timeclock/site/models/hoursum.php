@@ -48,7 +48,7 @@ require_once __DIR__."/report.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsUsersum extends TimeclockModelsReport
+class TimeclockModelsHoursum extends TimeclockModelsReport
 {    
 
     /**
@@ -64,22 +64,37 @@ class TimeclockModelsUsersum extends TimeclockModelsReport
         $users = $this->listUsers();
         $this->listProjects();
         $return = array(
-            "totals" => array("total" => 0),
+            "total"       => 0,
         );
+        $ids = array(
+            "department"   => "department_id",
+            "customer"     => "department_id",
+            "user_manager" => "user_manager_id",
+            "proj_manager" => "proj_manager_id",
+            "category"     => "cat_id",
+            "project"      => "proj_id",
+            "user"         => "user_id",
+            "type"         => "project_type",
+        );
+        // Now add in stuff
         foreach ($list as $row) {
             $this->checkTimesheet($row);
-            $proj_id                     = (int)$row->project_id;
-            $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
-            if ($users[$user_id]->hide) {
-                continue;
+            $user_id         = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
+            $proj_id         = (int)$row->project_id;
+
+            $proj_manager_id = (int)$row->proj_manager_id;
+            $user_manager_id = (isset($user[$user_id]->timeclock["manager_id"])) ? (int)$user[$user_id]->timeclock["manager_id"] : 0;
+            $department_id   = (int)$row->department_id;
+            $customer_id     = (int)$row->customer_id;
+            $cat_id          = (int)$row->cat_id;
+            $project_type    = $row->project_type;
+
+            foreach ($ids as $key => $var) {
+                $return[$key]        = isset($return[$key]) ? $return[$key] : array();
+                $return[$key][$$var] = isset($return[$key][$$var]) ? $return[$key][$$var] : 0;
+                $return[$key][$$var] += $row->hours;
             }
-            $return[$user_id]            = isset($return[$user_id]) ? $return[$user_id] : array("total" => 0);
-            $return[$user_id][$proj_id]  = isset($return[$user_id][$proj_id]) ? $return[$user_id][$proj_id] : 0;
-            $return[$user_id][$proj_id] += $row->hours;
-            $return[$user_id]["total"]  += $row->hours;
-            $return["totals"][$proj_id]  = isset($return["totals"][$proj_id]) ? $return["totals"][$proj_id] : 0;
-            $return["totals"][$proj_id] += $row->hours;
-            $return["totals"]["total"]  += $row->hours;
+            $return["total"]  += $row->hours;
         }
         return $return;
     }

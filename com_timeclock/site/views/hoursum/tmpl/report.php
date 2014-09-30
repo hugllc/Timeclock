@@ -16,11 +16,11 @@
     $doreports = ($this->report_id != 0);
 ?>
 <div id="timeclock" class="container-fluid">
-<form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=usersum"); ?>" method="post" name="userform" class="report">
+<form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=hoursum"); ?>" method="post" name="userform" class="report">
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
-            <?php print JText::_("COM_TIMECLOCK_USERSUM_REPORT"); ?>
+            <?php print JText::_("COM_TIMECLOCK_HOURSUM_REPORT"); ?>
             <?php print ($doreports) ? " - ".JText::_("COM_TIMECLOCK_SAVED_DATA").":  ".$this->report->name : ""; ?>
         </h2>
     </div>
@@ -34,42 +34,23 @@
                 ); ?>
         </strong>
     </div>
-    <?php 
+    <?php /*
         print $this->_export->render(
             (object)array(
-                "url" => JRoute::_('&option=com_timeclock&controller=usersum'),
+                "url" => JRoute::_('&option=com_timeclock&controller=hoursum'),
                 "export" => $this->export,
             )
-        ); 
+        ); */
     ?>
-    <div class="table-responsive">
-        <table class="report table table-striped table-bordered table-hover table-condensed">
-            <thead>
-<?php print $this->_header->render($this->projects); ?>
-            </thead>
-            <tfoot>
-<?php 
-    print $this->_totals->render(
-        (object)array(
-            "projects" => $this->projects, 
-            "data" => $this->data["totals"], 
-            "params" => $this->params,
-        )
-    ); 
-?>
-            </tfoot>
-            <tbody>
-<?php 
-    foreach ($this->users as $user) {
-        $user_id = (int)$user->id;
-        $user->data      = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
-        $user->genparams = $this->params;
-        $user->projects  = $this->projects;
-        print $this->_row->render($user);
-    }
-?>
-            </tbody>
-        </table>
+    <div class="container-fluid">
+    <?php
+        print $this->_proj_manager->render(
+            (object)array(
+                "users" => $this->users,
+                "data"  => $this->data,
+            )
+        );
+    ?>
     </div>
     <?php print JHTML::_("form.token"); ?>
 </form>
