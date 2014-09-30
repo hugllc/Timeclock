@@ -9,27 +9,28 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
     $wcomp = (bool)$displayData->params->get("wCompEnable");
     if ($wcomp) {
         $codes = TimeclockHelpersTimeclock::getWCompCodes();
-        for ($i = 1; $i <= 6; $i++) {
-            $name = "wcCode".$i;
-            $code = isset($displayData->$name) ? (int)$displayData->$name : 0;
-            if (($code == 0) && ($i > 1)) {
-                continue;
-            }
-            $fname = "hours".$i;
-            $hours = isset($displayData->data->$fname) ? $displayData->data->$fname : 0;
-
-            $field = new stdClass();
-            $name  = (empty($codes[$code])) ? JText::_("COM_TIMECLOCK_HOURS") : $codes[$code];
-            $label = '<label id="'.$fname.'-lbl" for="'.$fname.'" class="required">';
-            $star  = '<span class="star">&#160;*</span>';
-            $field->label = $label.$name.$star."</label>";
-            $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';
-            $field->input .= 'name="hours'.$i.'" value="'.$hours.'" onblur="Addhours.validateHours(this);"/>';
-            print TimeclockHelpersView::getFormField($field);
-        }
+        $count = 6;
     } else {
-        $displayData->data->hours1 = isset($displayData->data->hours) ? $displayData->data->hours : 0;
-        print TimeclockHelpersView::getFormSetH("hours", $displayData->form, $displayData->data);
+        $codes = array(1 => "");
+        $count = 1;
+    }
+    for ($i = 1; $i <= $count; $i++) {
+        $name = "wcCode".$i;
+        $code = isset($displayData->$name) ? (int)$displayData->$name : 0;
+        if (($code == 0) && ($i > 1)) {
+            continue;
+        }
+        $fname = "hours".$i;
+        $hours = isset($displayData->data->$fname) ? $displayData->data->$fname : 0;
+
+        $field = new stdClass();
+        $name  = (empty($codes[$code])) ? JText::_("COM_TIMECLOCK_HOURS") : $codes[$code];
+        $label = '<label id="'.$fname.'-lbl" for="'.$fname.'" class="required">';
+        $star  = '<span class="star">&#160;*</span>';
+        $field->label = $label.$name.$star."</label>";
+        $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';
+        $field->input .= 'name="hours'.$i.'" value="'.$hours.'" onblur="Addhours.validateHours(this);"/>';
+        print TimeclockHelpersView::getFormField($field);
     }
     $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
     $notes = array(

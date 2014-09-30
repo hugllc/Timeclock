@@ -29,11 +29,11 @@
         }
         $tooltip = "<strong>".$tipTitle."</strong><br />".$tip;
         $sub = (int)(($d - 1) / $split) + 1;
-        $class = "date-$date proj-".$sub."-".$displayData->project_id;
+        $class = "date-$date proj-".$sub."-".$displayData->project_id." proj-".$displayData->project_id;
 ?>
                 <td class="hours hasTooltip" title="<?php print $tooltip; ?>">
                     <?php if ($timeentry) : ?>
-                    <a href="<?php print $link; ?>" class="modal">
+                    <a href="<?php print $link; ?>" class="modal" rel="{onOpen : function(){ Addhours.reset(<?php print $displayData->project_id; ?>, '<?php print $date; ?>'); }}">
                     <?php endif; ?>
                     <span id="hours-<?php print $displayData->project_id."-".$date; ?>" class="<?php print $class;?> ">-</span>
                     <?php if ($timeentry) : ?>
