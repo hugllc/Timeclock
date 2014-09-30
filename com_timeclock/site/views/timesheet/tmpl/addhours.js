@@ -21,6 +21,29 @@ var Addhours = {
      * 
      * @return null
      */
+    reset: function (proj_id, date)
+    {
+        this.proj_id = proj_id;
+        this.date = date;
+        var total = 0;
+        var sel = ".hours .date-"+date+":not(.proj-"+proj_id+")";
+        jQuery(sel).each(function(ind,elem){
+            var hours = parseFloat(jQuery(elem).text());
+            if (!isNaN(hours)) {
+                total += hours;
+            }
+        });
+        this.hoursoffset = total;
+        this.calculateHourTotal();
+        this.validateFieldset(jQuery("fieldset#addhours-"+proj_id));
+    },
+    /**
+     * This submits the form
+     * 
+     * @param task The task to perform
+     * 
+     * @return null
+     */
     submitform: function (task)
     {
         // Hide all of the alerts
@@ -164,7 +187,6 @@ var Addhours = {
      */
     calculateHourTotal: function() {
         var total = this.getHours();
-        total += this.hoursoffset;
         jQuery('#hoursTotal').text(this.round(total));
     },
     /**
@@ -179,15 +201,19 @@ var Addhours = {
         var ret = true;
         var self = this;
         var max = Timeclock.params.maxDailyHours;
+        var total = this.getHours();
+
         if (max < this.getHours()) {
             ret = false;
         }
         
         fieldset.find("input.hours").each(function(ind, elem) {
-            ret = ret && self._validateHours(elem);
+            var res = self._validateHours(elem);
+            ret = ret && res;
         });
         fieldset.find('[name="notes"]').each(function(ind, elem) {
-            ret = ret && self._validateNotes(elem);
+            var res = self._validateNotes(elem);
+            ret = ret && res;
         });
         return ret;
     },
@@ -203,7 +229,9 @@ var Addhours = {
         if (typeof self === "undefined") {
             var self = this;
         }
-        Addhours._validateHours(self);
+        var fieldset = jQuery(self).closest("fieldset");
+        
+        Addhours.validateFieldset(fieldset);
     },
     /**
      * Prints out a message for max number of hours
@@ -253,21 +281,22 @@ var Addhours = {
             max = 0;
         }
 
-        // Round the hours
-        hours = Addhours.round(hours);
         total = this.getHours();
-        
+
         // Check the max
         var div = jQuery('#hoursTotal')
         if (total > max) {
             this.setValid(false, parent);
             this.maxHoursMessage(fieldset);
             div.addClass('invalid');
+            ret = false;
         } else {
             this.setValid(true, parent);
             fieldset.find("div.alert").hide();
             div.removeClass('invalid');
         }
+        // Round the hours
+        hours = Addhours.round(hours);
         // Show/hide the star
         if (hours > 0) {
             var star = fieldset.find("#notes-lbl span.star");
@@ -369,6 +398,7 @@ var Addhours = {
                 hours += hrs;
             }
         });
+        hours += this.hoursoffset;
         return hours;
     },
     /**

@@ -11,6 +11,11 @@
         <fieldset class="form-horizontal">
             <input type="hidden" name="worked" value="<?php print $this->date; ?>" />
             <h3><?php printf(JText::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, JHtml::_("date", $this->date)); ?></h3>
+            <div>
+                <?php print JText::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal">-</span>
+                (<?php print JText::_("COM_TIMECLOCK_MAX").":  ".$this->params->get("maxDailyHours"); ?>)
+            </div>
+
 <?php 
     $cat = reset($this->projects);
     $proj = reset($cat["proj"]);
@@ -27,9 +32,4 @@
         </fieldset>
     </div>
 </form>
-<script type="text/JavaScript">
-    jQuery( document ).ready(function() {
-        //total();
-    });
-</script>
 </div>
