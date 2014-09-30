@@ -96,9 +96,14 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function checkUser(&$user)
     {
         $user->hide = false;
-        $manager_id = $this->getState("filter.user_manager_id");
-        if (is_numeric($manager_id)) {
-            if ($user->timeclock["manager"] != $manager_id) {
+        $filter = $this->getState("filter");
+        if (is_numeric($filter->user_manager_id)) {
+            if ($user->timeclock["manager"] != $filter->user_manager_id) {
+                $user->hide = true;
+            }
+        }
+        if (is_numeric($filter->user_id)) {
+            if ($user->id != $filter->user_id) {
                 $user->hide = true;
             }
         }
@@ -456,6 +461,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $user_manager_id = $app->getUserStateFromRequest($context.'.filter.user_manager_id', 'filter_user_manager_id', '');
         $registry->set('filter.user_manager_id', $user_manager_id);
 
+        $user_id = $app->getUserStateFromRequest($context.'.filter.user_id', 'filter_user_id', '');
+        $registry->set('filter.user_id', $user_id);
+
         $proj_manager_id = $app->getUserStateFromRequest($context.'.filter.proj_manager_id', 'filter_proj_manager_id', '');
         $registry->set('filter.proj_manager_id', $proj_manager_id);
 
@@ -564,6 +572,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         }
         if (is_numeric($filter->department)) {
             $query->where($db->quoteName("p.department_id")." = ".$db->quote((int)$filter->department));
+        }
+        if (is_numeric($filter->user_id)) {
+            $query->where($db->quoteName("z.user_id")." = ".$db->quote((int)$filter->user_id));
         }
         if (is_numeric($filter->category)) {
             $query->where($db->quoteName("p.parent_id")." = ".$db->quote((int)$filter->category));

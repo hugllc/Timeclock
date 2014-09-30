@@ -56,6 +56,11 @@
             'filter_proj_manager_id',
             JHtml::_('select.options', $options, 'value', 'text', $displayData->proj_manager_id, true)
         );
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_USER'),
+            'filter_user_id',
+            JHtml::_('select.options', $options, 'value', 'text', $displayData->user_id, true)
+        );
     }
     $model = TimeclockHelpersTimeclock::getModel("report");
     $options = $model->getReportOptions();
