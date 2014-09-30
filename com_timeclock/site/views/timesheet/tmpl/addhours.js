@@ -12,7 +12,7 @@ var Addhours = {
         jQuery("form.addhours fieldset.addhours").each(function(ind,elem) {
             self.validateFieldset(jQuery(elem));
         });
-        jQuery("form.addhours input.hours").on("blur", this.validateHours);
+        //jQuery("form.addhours input.hours").on("blur", this.validateHours);
     },
     /**
      * This submits the form
@@ -163,7 +163,7 @@ var Addhours = {
      * @return null
      */
     calculateHourTotal: function() {
-        var total = this.getHours(jQuery("form.addhours"));
+        var total = this.getHours();
         total += this.hoursoffset;
         jQuery('#hoursTotal').text(this.round(total));
     },
@@ -178,6 +178,11 @@ var Addhours = {
     {
         var ret = true;
         var self = this;
+        var max = Timeclock.params.maxDailyHours;
+        if (max < this.getHours()) {
+            ret = false;
+        }
+        
         fieldset.find("input.hours").each(function(ind, elem) {
             ret = ret && self._validateHours(elem);
         });
@@ -193,9 +198,27 @@ var Addhours = {
      * 
      * @return null
      */
-    validateHours: function()
+    validateHours: function(self)
     {
-        Addhours._validateHours(this);
+        if (typeof self === "undefined") {
+            var self = this;
+        }
+        Addhours._validateHours(self);
+    },
+    /**
+     * Prints out a message for max number of hours
+     * 
+     * @param fieldset The fieldset to print message for
+     * 
+     * @return null
+     */
+    maxHoursMessage: function(fieldset)
+    {
+        this.message(
+            fieldset.find('[name="project_id"]').val(), 
+            'Only '+Timeclock.params.maxDailyHours+' are allowed',
+            "error"
+        );
     },
     /**
      * Validates the number of hours
@@ -208,6 +231,8 @@ var Addhours = {
     {
         var ret = true;
         var fieldset = jQuery(obj).closest("fieldset");
+        var parent   = jQuery(obj).closest(".control-group");
+        
         // Get the hours
         var hours = parseFloat(obj.value);
         if (isNaN(hours)) {
@@ -230,11 +255,18 @@ var Addhours = {
 
         // Round the hours
         hours = Addhours.round(hours);
-
+        total = this.getHours();
+        
         // Check the max
-        if (hours > max) {
-            hours = max;
-            Joomla.renderMessages({'error': ['Only '+Timeclock.params.maxDailyHours+' are allowed']});
+        var div = jQuery('#hoursTotal')
+        if (total > max) {
+            this.setValid(false, parent);
+            this.maxHoursMessage(fieldset);
+            div.addClass('invalid');
+        } else {
+            this.setValid(true, parent);
+            fieldset.find("div.alert").hide();
+            div.removeClass('invalid');
         }
         // Show/hide the star
         if (hours > 0) {
@@ -261,15 +293,36 @@ var Addhours = {
         return ret;
     },
     /**
+     * Sets the classes to show if a field is valid or not
+     * 
+     * @param valid True or false
+     * @param group jQuery object for the field in question
+     * 
+     * @return null
+     */
+    setValid: function (valid, group)
+    {
+        if (valid) {
+            group.find("label").removeClass("invalid");
+            group.find(":input").removeClass("invalid");
+        } else {
+            group.find("label").addClass("invalid");
+            group.find(":input").addClass("invalid");
+        }
+    },
+    /**
      * Validates the notes
      * 
      * This should be called from a event trigger
      * 
      * @return null
      */
-    validateNotes: function()
+    validateNotes: function(self)
     {
-        Addhours._validateNotes(this);
+        if (typeof self === "undefined") {
+            var self = this;
+        }
+        Addhours._validateNotes(self);
     },
     /**
      * Validates the notes
@@ -288,13 +341,11 @@ var Addhours = {
         if ((hours > 0)
             && (jQuery(obj).val().length < Timeclock.params.minNoteChars)) {
             parent.find("span.minchars").addClass("invalid");
-            jQuery(obj).addClass("invalid");
-            parent.find("label").addClass("invalid");
+            this.setValid(false, parent);
             ret = false;
         } else {
+            this.setValid(true, parent);
             parent.find("span.minchars").removeClass("invalid");
-            jQuery(obj).removeClass("invalid");
-            parent.find("label").removeClass("invalid");
         }
         return ret
     },
@@ -307,6 +358,10 @@ var Addhours = {
      */
     getHours: function(group)
     {
+        if (typeof group === "undefined") {
+            // Get everything if nothing is given.
+            var group = jQuery("form.addhours");
+        }
         var hours = 0;
         group.find("input.hours").each(function(ind, elem) {
             var hrs = parseFloat(jQuery(elem).val());
@@ -315,35 +370,6 @@ var Addhours = {
             }
         });
         return hours;
-    },
-    /**
-     * Validates the number of date
-     * 
-     * This should be called from a event trigger
-     * 
-     * @return null
-     */
-    validateDate: function ()
-    {
-        Addhours._validateDate(this);
-    },
-    /**
-     * Validates the date
-     * 
-     * @param obj The object to validate.  (DOM Object)
-     * 
-     * @return null
-     */
-    _validateDate: function(obj)
-    {
-        regex=/^[1-9][0-9]{3}-[0-1]{0,1}[0-9]{1,1}-[0-3]{0,1}[0-9]$/;
-        if (regex.test(obj.value)) {
-            jQuery(obj).removeClass("invalid");
-            jQuery("#date_label").removeClass("invalid");
-        } else {
-            jQuery(obj).addClass("invalid");
-            jQuery("#date_label").addClass("invalid");
-        }
     },
     /**
      * Rounds the value to a certain number of decimal places

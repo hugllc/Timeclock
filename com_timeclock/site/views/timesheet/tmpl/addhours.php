@@ -1,6 +1,7 @@
 <?php
     JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
+    JHtmlBehavior::core();
 
     $user = JFactory::getUser();
     $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
@@ -47,6 +48,7 @@
 </form>
 <div id="addHoursTotal">
     <?php print JText::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal">-</span>
+    (<?php print JText::_("COM_TIMECLOCK_MAX").":  ".$this->params->get("maxDailyHours"); ?>)
 </div>
 <script type="text/JavaScript">
     jQuery( document ).ready(function() {

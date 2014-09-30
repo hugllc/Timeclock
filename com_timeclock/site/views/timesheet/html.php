@@ -116,11 +116,6 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
         $this->projects  = $this->model->listProjects();
         $this->date      = $this->model->getState('date');
         
-        $this->form = JForm::getInstance(
-            'addhours', 
-            JPATH_COMPONENT."/forms/addhours.xml"
-        );
-
         return parent::render();
     }
 }

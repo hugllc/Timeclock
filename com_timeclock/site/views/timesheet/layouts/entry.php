@@ -24,23 +24,19 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
             $star  = '<span class="star">&#160;*</span>';
             $field->label = $label.$name.$star."</label>";
             $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';
-            $field->input .= 'name="hours'.$i.'" value="'.$hours.'" />';
+            $field->input .= 'name="hours'.$i.'" value="'.$hours.'" onblur="Addhours.validateHours(this);"/>';
             print TimeclockHelpersView::getFormField($field);
         }
     } else {
         $displayData->data->hours1 = isset($displayData->data->hours) ? $displayData->data->hours : 0;
         print TimeclockHelpersView::getFormSetH("hours", $displayData->form, $displayData->data);
     }
-    
-    $field = $displayData->form->getField("notes");
-    $field->setValue(isset($displayData->data->notes) ? $displayData->data->notes : "");
     $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
-    print TimeclockHelpersView::getFormField(
-        (object)array(
-            "label" => $field->label,
-            "input" => $field->input."<br/>".$minimum
-        )
+    $notes = array(
+        "input" => '<textarea name="notes" id="notes" cols="80" rows="8" onblur="Addhours.validateNotes(this);">'.$displayData->data->notes.'</textarea><br />'.$minimum,
+        "label" => '<label id="notes-lbl" for="notes" class="hasTooltip" title="<strong>'.JText::_('COM_TIMECLOCK_NOTES').'</strong><br />'.JText::_('COM_TIMECLOCK_WORK_NOTES_HELP').'">'.JText::_('COM_TIMECLOCK_NOTES').'</label>'
     );
+    print TimeclockHelpersView::getFormField((object)$notes);
 ?>
         <button type="button" name="apply" onClick="Addhours.submitform('apply');">Save</button>
         <button type="button" name="save" onClick="Addhours.submitform('save');">Save &amp; Close</button>
