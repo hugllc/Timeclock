@@ -23,6 +23,8 @@ if (file_exists(JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php')):
     $total = $displayData->data["total"];
 endif;
 ?>
+        <h3><?php print JText::_("COM_TIMECLOCK_HOURS_BY_PROJ_MANAGER"); ?></h3>
+        <hr />
         <div class="row-fluid">
             <div class="span6">
                 <table class="report table table-striped table-bordered table-hover table-condensed">
