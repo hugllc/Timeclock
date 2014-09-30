@@ -1,5 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+$png = "";
 if (file_exists(JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php')):
     include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php';
     include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib_pie.php';
@@ -50,5 +51,7 @@ endif;
                     </tbody>
                 </table>
             </div>
+<?php if (!empty($png)) : ?>
             <img class="span6" alt="graph" src="data:image/png;base64,<?php print base64_encode($png); ?>" />
+<?php endif; ?>
         </div>
