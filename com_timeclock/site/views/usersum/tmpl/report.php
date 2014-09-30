@@ -53,6 +53,7 @@
         (object)array(
             "projects" => $this->projects, 
             "data" => $this->data["totals"], 
+            "params" => $this->params,
         )
     ); 
 ?>
