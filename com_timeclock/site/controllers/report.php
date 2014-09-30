@@ -48,6 +48,10 @@ require_once __DIR__."/default.php";
  */
 class TimeclockControllersReport extends TimeclockControllersDefault
 {
+    /** This is the name of our model */
+    protected $modelName = "report";
+    /** This is the name of our view */
+    protected $viewName = "report";
     /** This is our model */
     protected $model = null;
     /**
@@ -60,7 +64,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     public function execute()
     {
         $this->checkAuth();
-        $this->model = TimeclockHelpersTimeclock::getModel("report");
+        $this->model = TimeclockHelpersTimeclock::getModel($this->modelName);
         $task = $this->getTask();
         $fct  = "task".ucfirst($task);
         $this->checkReportID();
@@ -112,17 +116,16 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $params = JComponentHelper::getParams('com_timeclock');
         // Get the document object.
         $document = JFactory::getDocument();
-        $viewName = "report";
         $viewFormat = $document->getType();
         $layoutName = $app->input->get("layout", "report");
         if ($layoutName != "modalsave") {
             $layoutName = 'report';
         }
-        $app->input->set('view', $viewName);
+        $app->input->set('view', $this->viewName);
         // Register the layout paths for the view
         $paths = new SplPriorityQueue;
-        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
-        $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
+        $paths->insert(JPATH_COMPONENT . '/views/' . $this->viewName . '/tmpl', 'normal');
+        $viewClass = 'TimeclockViews' . ucfirst($this->viewName) . ucfirst($viewFormat);
         $view = new $viewClass($this->model, $paths);
 
         if (method_exists($view, "setLayout")) {
