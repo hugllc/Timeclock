@@ -179,6 +179,24 @@
                 ),
             )
         );
+        /******************** HOURS BY USER MANAGER ************************/
+        $data  = array();
+        foreach ($this->data["user"] as $user_id => $hours) {
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "User $user_id";
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
+            (object)array(
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_USER"),
+                "group"    => JText::_("COM_TIMECLOCK_USER"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_USER_PLOT_TITLE"), $data
+                ),
+            )
+        );
     ?>
     </div>
     <?php print JHTML::_("form.token"); ?>
