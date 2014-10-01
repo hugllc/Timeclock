@@ -54,6 +54,10 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     private $_users = null;
     /** This is where we cache our projects */
     private $_projects = null;
+    /** This is where we cache our departments */
+    private $_departments = null;
+    /** This is where we cache our customers */
+    private $_customers = null;
     /** This is our percentage of holiday pay */
     private $_holiday_perc = array();
     /** This is our saved report */
@@ -280,6 +284,56 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     /**
     * Build query and where for protected _getList function and return a list
     *
+    * @return array An array of results.
+    */
+    public function listDepartments()
+    {
+        if (is_null($this->_departments)) {
+            $query = $this->_buildDeptQuery();
+            $list = $this->_getList($query, 0, 0);
+            $this->_departments = array(
+                0 => array(
+                    "id"          => 0,
+                    "name"        => JText::_("JNONE"),
+                    "description" => "",
+                )
+            );
+            $ret = &$this->_departments;
+            foreach ($list as $entry) {
+                $dept = (int)$entry->department_id;
+                $ret[$dept] = $entry;
+            }
+        }
+        return $this->_departments;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
+    public function listCustomers()
+    {
+        if (is_null($this->_customers)) {
+            $query = $this->_buildCustQuery();
+            $list = $this->_getList($query, 0, 0);
+            $this->_customers = array(
+                0 => array(
+                    "id"          => 0,
+                    "name"        => JText::_("JNONE"),
+                    "description" => "",
+                )
+            );
+            $ret = &$this->_customers;
+            foreach ($list as $entry) {
+                $cust = (int)$entry->customer_id;
+                $ret[$cust] = $entry;
+            }
+        }
+        return $this->_customers;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
     * @param int $user_id The user to get the projects for
     * 
     * @return array An array of results.
@@ -367,8 +421,10 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $row->type        = $type;
         $row->filter      = json_encode($this->getState("filter"));
         $row->users       = json_encode($this->listUsers());
-        $row->projects    = json_encode($this->listProjects());
         $row->timesheets  = json_encode($this->listItems());
+        $row->projects    = json_encode($this->listProjects());
+        $row->customers   = json_encode($this->listCustomers());
+        $row->departments = json_encode($this->listDepartments());
         return $row;
     }
     /**
@@ -612,6 +668,34 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');
         $query->where("p.type <> 'CATEGORY'");
         $query->order("p.name asc");
+        return $query;
+    }
+    /**
+    * Builds the query to be used by the model
+    *
+    * @return object Query object
+    */
+    protected function _buildDeptQuery()
+    {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('*');
+        $query->from('#__timeclock_departments as d');
+        $query->order("d.name asc");
+        return $query;
+    }
+    /**
+    * Builds the query to be used by the model
+    *
+    * @return object Query object
+    */
+    protected function _buildCustQuery()
+    {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('*');
+        $query->from('#__timeclock_customers as c');
+        $query->order("c.company asc");
         return $query;
     }
 }

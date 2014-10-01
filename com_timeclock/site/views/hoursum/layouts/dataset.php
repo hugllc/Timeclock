@@ -23,7 +23,7 @@ $total = $displayData->total;
                     </tfoot>
                     <tbody>
 <?php foreach ($displayData->data as $name => $hours) : ?>
-                        <tr class="user">
+                        <tr class="user <?php print ($hours == 0) ? "empty" : ""; ?>">
                             <td class="user"><?php print $name; ?></td>
                             <td class="hours"><?php print $hours; ?></td>
                             <td class="percent"><?php print empty($total) ? 0 : round(($hours/$total)*100, $displayData->decimals); ?>%</td>

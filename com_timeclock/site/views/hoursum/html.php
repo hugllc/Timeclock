@@ -88,16 +88,20 @@ class TimeclockViewsHoursumHtml extends JViewHtml
             $this->data              = $this->model->listItems();
             $this->users             = $this->model->listUsers();
             $this->projects          = $this->model->listProjects();
+            $this->customers         = $this->model->listCustomers();
+            $this->departments       = $this->model->listDepartments();
             $this->filter            = $this->model->getState("filter");
             $this->filter->start     = $this->start;
             $this->filter->end       = $this->end;
             $this->filter->report_id = $this->report_id;
         } else {
-            $this->report   = $this->model->getReport();
-            $this->data     = $this->report->timesheets;
-            $this->users    = $this->report->users;
-            $this->projects = $this->report->projects;
-            $this->filter   = $this->report->filter;
+            $this->report      = $this->model->getReport();
+            $this->filter      = $this->report->filter;
+            $this->users       = $this->report->users;
+            $this->data        = $this->report->timesheets;
+            $this->projects    = $this->report->projects;
+            $this->customers   = $this->report->customers;
+            $this->departments = $this->report->departments;
             
             $this->filter->report_id = $this->report_id;
         }

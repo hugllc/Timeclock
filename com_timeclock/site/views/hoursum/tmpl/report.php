@@ -116,6 +116,42 @@
                 ),
             )
         );
+        /******************** HOURS BY CUSTOMER ************************/
+        $data  = array();
+        foreach ($this->data["customer"] as $cust_id => $hours) {
+            $name = isset($this->customers[$cust_id]) ? $this->customers[$cust_id]->company : "Customer $cust_id";
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
+            (object)array(
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_CUSTOMER"),
+                "group"    => JText::_("COM_TIMECLOCK_CUSTOMER"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_CUSTOMER_PLOT_TITLE"), $data
+                ),
+            )
+        );
+        /******************** HOURS BY DEPARTMENT ************************/
+        $data  = array();
+        foreach ($this->data["department"] as $dept_id => $hours) {
+            $name = isset($this->departments[$dept_id]) ? $this->departments[$dept_id]->name : "Department $dept_id";
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
+            (object)array(
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_DEPARTMENT"),
+                "group"    => JText::_("COM_TIMECLOCK_DEPARTMENT"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_DEPARTMENT_PLOT_TITLE"), $data
+                ),
+            )
+        );
     ?>
     </div>
     <?php print JHTML::_("form.token"); ?>
