@@ -39,10 +39,6 @@ defined('_JEXEC') or die('Restricted access');
 /** Import the views */
 jimport('joomla.application.component.view');
 
-/** This is our excel writer */
-require_once JPATH_COMPONENT.'/contrib/phpexcel/PHPExcel.php';
-
-
 /**
  * HTML View class for the ComTimeclockWorld Component
  *
@@ -73,6 +69,9 @@ class TimeclockViewsPayrollBase extends JViewBase
     */
     function render()
     {
+        if (!TimeclockHelpersContrib::phpexcel()) {
+            return false;
+        }
         $app = JFactory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");

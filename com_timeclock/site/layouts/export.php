@@ -1,7 +1,7 @@
 <?php
     defined( '_JEXEC' ) or die( 'Restricted access' );
     $sep = "";
-    if (file_exists(JPATH_COMPONENT.'/contrib/phpexcel/PHPExcel.php')):
+    if (TimeclockHelpersContrib::phpexcel()):
 ?>
 <div class="export">
     <iframe src="about:blank" style="display: none;"></iframe>

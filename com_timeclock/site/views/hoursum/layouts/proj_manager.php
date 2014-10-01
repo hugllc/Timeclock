@@ -1,10 +1,9 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 $png = "";
+$total = $displayData->data["total"];
 $decimals = $displayData->params->get("decimalPlaces");
-if (file_exists(JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php')):
-    include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php';
-    include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib_pie.php';
+if (TimeclockHelpersContrib::phpgraph() && !empty($total)):
     $graph = new PHPGraphLibPie(400, 200);
     $data  = array();
     foreach ($displayData->data["proj_manager"] as $user_id => $hours) {
@@ -21,7 +20,6 @@ if (file_exists(JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php')):
     $png = ob_get_contents();
     ob_end_clean();
     
-    $total = $displayData->data["total"];
 endif;
 ?>
         <h3><?php print JText::_("COM_TIMECLOCK_HOURS_BY_PROJ_MANAGER"); ?></h3>
