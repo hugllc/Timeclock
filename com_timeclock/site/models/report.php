@@ -483,7 +483,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $start = TimeclockHelpersDate::fixDate(
             $app->input->get('start', "", "raw")
         );
-        $start = empty($start) ?  date("Y-m-01") : $start;
+        // If this is the first day of the month, we want to see last month.
+        $start = empty($start) ?  date("Y-m-01", time() - 86400) : $start;
         $registry->set('start', $start);
 
         $end = TimeclockHelpersDate::fixDate(
