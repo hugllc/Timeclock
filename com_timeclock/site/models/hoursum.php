@@ -68,7 +68,7 @@ class TimeclockModelsHoursum extends TimeclockModelsReport
         );
         $ids = array(
             "department"   => "department_id",
-            "customer"     => "department_id",
+            "customer"     => "customer_id",
             "user_manager" => "user_manager_id",
             "proj_manager" => "proj_manager_id",
             "category"     => "cat_id",
@@ -88,7 +88,7 @@ class TimeclockModelsHoursum extends TimeclockModelsReport
             $customer_id     = (int)$row->customer_id;
             $cat_id          = (int)$row->cat_id;
             $project_type    = $row->project_type;
-
+            
             foreach ($ids as $key => $var) {
                 $return[$key]        = isset($return[$key]) ? $return[$key] : array();
                 $return[$key][$$var] = isset($return[$key][$$var]) ? $return[$key][$$var] : 0;
