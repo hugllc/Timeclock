@@ -121,13 +121,13 @@ class TimeclockModelsCustomer extends TimeclockModelsDefault
         }
         $filter = $this->getState("filter");
         if(!empty($filter->search) && is_string($filter->search)) {
-            $query->where("c.company LIKE ".$db->quote("%".$filter->search."%"));
+            $query->where($db->quoteName("c.company")." LIKE ".$db->quote("%".$filter->search."%"));
         }
         if (is_numeric($filter->published)) {
-            $query->where('c.published = ' . (int) $filter->published);
+            $query->where($db->quoteName('c.published').' = ' . $db->quote((int) $filter->published));
         }
         if (is_numeric($filter->user_id)) {
-            $query->where("c.contact_id = " . (int) $filter->user_id);
+            $query->where($db->quoteName("c.contact_id")." = " . $db->quote((int) $filter->user_id));
         }
         return $query;
     }
