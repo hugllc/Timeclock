@@ -56,7 +56,10 @@
         /******************** HOURS BY PROJECT MANAGER ************************/
         $data  = array();
         foreach ($this->data["proj_manager"] as $user_id => $hours) {
-            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "User $user_id";
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "";
+            if (empty($name)) {
+                $name = "User $user_id";
+            }
             $data[$name] = $hours;
         }
         print $this->_dataset->render(
@@ -74,7 +77,10 @@
         /******************** HOURS BY USER MANAGER ************************/
         $data  = array();
         foreach ($this->data["user_manager"] as $user_id => $hours) {
-            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "User $user_id";
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "";
+            if (empty($name)) {
+                $name = "User $user_id";
+            }
             $data[$name] = $hours;
         }
         print $this->_dataset->render(
@@ -110,7 +116,10 @@
         /******************** HOURS BY CATEGORY ************************/
         $data  = array();
         foreach ($this->data["category"] as $cat_id => $hours) {
-            $name = isset($this->projects[$cat_id]) ? $this->projects[$cat_id]["name"] : "Category $cat_id";
+            $name = isset($this->projects[$cat_id]) ? $this->projects[$cat_id]["name"] : "";
+            if (empty($name)) {
+                $name = "Category $cat_id";
+            }
             $data[$name] = $hours;
         }
         print $this->_dataset->render(
@@ -128,7 +137,10 @@
         /******************** HOURS BY CUSTOMER ************************/
         $data  = array();
         foreach ($this->data["customer"] as $cust_id => $hours) {
-            $name = isset($this->customers[$cust_id]) ? $this->customers[$cust_id]->company : "Customer $cust_id";
+            $name = isset($this->customers[$cust_id]) ? $this->customers[$cust_id]->company : "";
+            if (empty($name)) {
+                $name = "Customer $cust_id";
+            }
             $data[$name] = $hours;
         }
         print $this->_dataset->render(
@@ -146,7 +158,10 @@
         /******************** HOURS BY DEPARTMENT ************************/
         $data  = array();
         foreach ($this->data["department"] as $dept_id => $hours) {
-            $name = isset($this->departments[$dept_id]) ? $this->departments[$dept_id]->name : "Department $dept_id";
+            $name = isset($this->departments[$dept_id]) ? $this->departments[$dept_id]->name : "";
+            if (empty($name)) {
+                $name = "Department $dept_id";
+            }
             $data[$name] = $hours;
         }
         print $this->_dataset->render(
@@ -164,7 +179,10 @@
         /******************** HOURS BY PROJECT ************************/
         $data  = array();
         foreach ($this->data["project"] as $proj_id => $hours) {
-            $name = isset($allproj[$proj_id]) ? $allproj[$proj_id]["name"] : "Project $proj_id";
+            $name = isset($allproj[$proj_id]) ? $allproj[$proj_id]["name"] : "";
+            if (empty($name)) {
+                $name = "Project $proj_id";
+            }
             $data[$name] = $hours;
         }
         print $this->_dataset->render(
@@ -182,7 +200,10 @@
         /******************** HOURS BY USER MANAGER ************************/
         $data  = array();
         foreach ($this->data["user"] as $user_id => $hours) {
-            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "User $user_id";
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "";
+            if (empty($name)) {
+                $name = "User $user_id";
+            }
             $data[$name] = $hours;
         }
         print $this->_dataset->render(

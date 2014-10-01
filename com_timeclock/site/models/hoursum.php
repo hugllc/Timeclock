@@ -83,7 +83,7 @@ class TimeclockModelsHoursum extends TimeclockModelsReport
             $proj_id         = (int)$row->project_id;
 
             $proj_manager_id = (int)$row->proj_manager_id;
-            $user_manager_id = (isset($user[$user_id]->timeclock["manager_id"])) ? (int)$user[$user_id]->timeclock["manager_id"] : 0;
+            $user_manager_id = (isset($users[$user_id]->timeclock["manager"])) ? (int)$users[$user_id]->timeclock["manager"] : 0;
             $department_id   = (int)$row->department_id;
             $customer_id     = (int)$row->customer_id;
             $cat_id          = (int)$row->cat_id;

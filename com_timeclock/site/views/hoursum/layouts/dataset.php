@@ -5,7 +5,7 @@ $total = $displayData->total;
         <h3><?php print $displayData->title; ?></h3>
         <hr />
         <div class="row-fluid">
-            <div class="span6">
+            <div class="span4">
                 <table class="report table table-striped table-bordered table-hover table-condensed">
                     <thead>
                         <tr class="header">
@@ -33,6 +33,6 @@ $total = $displayData->total;
                 </table>
             </div>
 <?php if (!empty($displayData->png)) : ?>
-            <img class="span6" alt="graph" src="data:image/png;base64,<?php print base64_encode($displayData->png); ?>" />
+            <img class="span8" alt="graph" src="data:image/png;base64,<?php print base64_encode($displayData->png); ?>" />
 <?php endif; ?>
         </div>
