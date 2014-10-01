@@ -98,6 +98,24 @@
                 ),
             )
         );
+        /******************** HOURS BY CATEGORY ************************/
+        $data  = array();
+        foreach ($this->data["category"] as $cat_id => $hours) {
+            $name = isset($this->projects[$cat_id]) ? $this->projects[$cat_id]["name"] : "Category $cat_id";
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
+            (object)array(
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_CATEGORY"),
+                "group"    => JText::_("COM_TIMECLOCK_CATEGORY"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_CATEGORY_PLOT_TITLE"), $data
+                ),
+            )
+        );
     ?>
     </div>
     <?php print JHTML::_("form.token"); ?>
