@@ -14,6 +14,15 @@
         )
     );
     $doreports = ($this->report_id != 0);
+    $allproj = array();
+    foreach ($this->projects as $cat) {
+        foreach ($cat["proj"] as $proj) {
+            $allproj[$proj->project_id] = array(
+                "name" => $proj->name,
+                "description" => $proj->description,
+            );
+        }
+    }
 ?>
 <div id="timeclock" class="container-fluid">
 <form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=hoursum"); ?>" method="post" name="userform" class="report">
@@ -149,6 +158,24 @@
                 "group"    => JText::_("COM_TIMECLOCK_DEPARTMENT"),
                 "png"      => $this->pie(
                     JText::_("COM_TIMECLOCK_HOURSUM_DEPARTMENT_PLOT_TITLE"), $data
+                ),
+            )
+        );
+        /******************** HOURS BY PROJECT ************************/
+        $data  = array();
+        foreach ($this->data["project"] as $proj_id => $hours) {
+            $name = isset($allproj[$proj_id]) ? $allproj[$proj_id]["name"] : "Project $proj_id";
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
+            (object)array(
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_PROJECT"),
+                "group"    => JText::_("COM_TIMECLOCK_PROJECT"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_PROJECT_PLOT_TITLE"), $data
                 ),
             )
         );
