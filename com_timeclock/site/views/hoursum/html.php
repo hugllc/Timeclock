@@ -52,6 +52,13 @@ jimport('joomla.application.component.view');
  */
 class TimeclockViewsHoursumHtml extends JViewHtml
 {
+    private $_projType = array(
+        "PROJECT"  => "COM_TIMECLOCK_PROJECT",
+        "CATEGORY" => "JCATEGORY",
+        "PTO"      => "COM_TIMECLOCK_PTO",
+        "HOLIDAY"  => "COM_TIMECLOCK_HOLIDAY",
+        "UNPAID"   => "COM_TIMECLOCK_UNPAID",
+    );
     /**
     * Renders this view
     *
@@ -73,10 +80,9 @@ class TimeclockViewsHoursumHtml extends JViewHtml
             true
         );
 
-        $this->_proj_manager = new JLayoutFile('proj_manager', __DIR__.'/layouts');
-        $this->_user_manager = new JLayoutFile('user_manager', __DIR__.'/layouts');
-        $this->_export       = new JLayoutFile('export', dirname(__DIR__).'/layouts');
-        $this->_control      = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
+        $this->_dataset = new JLayoutFile('dataset', __DIR__.'/layouts');
+        $this->_export  = new JLayoutFile('export', dirname(__DIR__).'/layouts');
+        $this->_control = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
 
         if (empty($this->report_id)) {
             $this->data              = $this->model->listItems();
@@ -106,6 +112,49 @@ class TimeclockViewsHoursumHtml extends JViewHtml
         );
 
         return parent::render();
+    }
+    /**
+    * This creates a pie graph for us
+    *
+    * @param string $title The header for the graph
+    * @param array  $data  The data to use for the graph
+    *
+    * @return binary string that is the image
+    */
+    protected function pie($title, $data)
+    {
+        $total = 0;
+        foreach ($data as $val) {
+            $total += $val;
+        }
+        $png = "";
+        if (TimeclockHelpersContrib::phpgraph() && !empty($total)) {
+            $graph = new PHPGraphLibPie(400, 200);
+            $graph->addData($data);
+            $graph->setTitle($title);
+            $graph->setLabelTextColor('black');
+            $graph->setLegendTextColor('black');
+
+            ob_start();
+            $graph->createGraph();
+            $png = ob_get_contents();
+            ob_end_clean();
+        }
+        return $png;
+    }
+    /**
+    * This creates a pie graph for us
+    *
+    * @param string $type The type of project
+    *
+    * @return binary string that is the image
+    */
+    protected function getProjType($type)
+    {
+        if (isset($this->_projType[$type])) {
+            return JText::_($this->_projType[$type]);
+        }
+        return JText::_("COM_TIMECLOCK_UNKNOWN");
     }
 }
 ?>

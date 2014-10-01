@@ -8,7 +8,7 @@
 
     JFactory::getDocument()->setTitle(
         JText::sprintf(
-            "COM_TIMECLOCK_USERSUM_REPORT_TITLE",
+            "COM_TIMECLOCK_HOURSUM_REPORT_TITLE",
             JHTML::_('date', $this->start, JText::_("DATE_FORMAT_LC3")),
             JHTML::_('date', $this->end, JText::_("DATE_FORMAT_LC3"))
         )
@@ -44,20 +44,58 @@
     ?>
     <div class="container-fluid">
     <?php
-        print $this->_proj_manager->render(
+        /******************** HOURS BY PROJECT MANAGER ************************/
+        $data  = array();
+        foreach ($this->data["proj_manager"] as $user_id => $hours) {
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "User $user_id";
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
             (object)array(
-                "users"  => $this->users,
-                "data"   => $this->data,
-                "params" => $this->params,
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_PROJ_MANAGER"),
+                "group"    => JText::_("COM_TIMECLOCK_PROJECT_MANAGER"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_PROJ_MANAGER_PLOT_TITLE"), $data
+                ),
             )
         );
-    ?>
-    <?php
-        print $this->_user_manager->render(
+        /******************** HOURS BY USER MANAGER ************************/
+        $data  = array();
+        foreach ($this->data["user_manager"] as $user_id => $hours) {
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "User $user_id";
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
             (object)array(
-                "users"  => $this->users,
-                "data"   => $this->data,
-                "params" => $this->params,
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_USER_MANAGER"),
+                "group"    => JText::_("COM_TIMECLOCK_USER_MANAGER"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_USER_MANAGER_PLOT_TITLE"), $data
+                ),
+            )
+        );
+        /******************** HOURS BY PROJECT TYPE ************************/
+        $data  = array();
+        foreach ($this->data["type"] as $type => $hours) {
+            $name = $this->getProjType($type);
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
+            (object)array(
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_PROJECT_TYPE"),
+                "group"    => JText::_("COM_TIMECLOCK_PROJECT_TYPE"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_PROJECT_TYPE_PLOT_TITLE"), $data
+                ),
             )
         );
     ?>
