@@ -31,8 +31,11 @@ JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
         print JHtml::_('bootstrap.endTab');
     }
     print JHtml::_('bootstrap.addTab', 'myTab', 'users', JText::_('COM_TIMECLOCK_USERS'));
-    print '<div class="span10">'."\n";
+    print '<div class="span10 users">'."\n";
     print TimeclockHelpersView::getFormSetV("users", $this->form, $this->data);
+    print "</div>\n";
+    print '<div class="span10 nousers">'."\n";
+    print JText::_("COM_TIMECLOCK_CATEGORY_NO_USERS");
     print "</div>\n";
     print JHtml::_('bootstrap.endTab');
     print JHtml::_('bootstrap.endTabSet');
@@ -43,5 +46,21 @@ JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
     <input type="hidden" name="created_by" value="<?php print $this->data->created_by; ?>" />
     <input type="hidden" name="task" value="" />
     <?php print JHTML::_("form.token"); ?>
+    <script type="text/JavaScript">
+        jQuery( document ).ready(function() {
+            jQuery("select#type").on("change", checkProjectType);
+            checkProjectType();
+        });
+        function checkProjectType() {
+            var sel = jQuery("select#type");
+            if (sel.val() == "CATEGORY") {
+                jQuery("div.users").hide();
+                jQuery("div.nousers").show();
+            } else {
+                jQuery("div.users").show();
+                jQuery("div.nousers").hide();
+            }
+        }
+    </script>
 </div>
 </form>
