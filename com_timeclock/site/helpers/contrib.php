@@ -72,8 +72,8 @@ class TimeclockHelpersContrib
     static public function phpgraph()
     {
         if (file_exists(JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php')) {
-            include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php';
-            include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib_pie.php';
+            include_once JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php';
+            include_once JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib_pie.php';
             return true;
         }
         return false;

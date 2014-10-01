@@ -52,6 +52,15 @@
             )
         );
     ?>
+    <?php
+        print $this->_user_manager->render(
+            (object)array(
+                "users"  => $this->users,
+                "data"   => $this->data,
+                "params" => $this->params,
+            )
+        );
+    ?>
     </div>
     <?php print JHTML::_("form.token"); ?>
 </form>

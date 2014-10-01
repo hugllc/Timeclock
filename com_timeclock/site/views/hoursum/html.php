@@ -74,6 +74,7 @@ class TimeclockViewsHoursumHtml extends JViewHtml
         );
 
         $this->_proj_manager = new JLayoutFile('proj_manager', __DIR__.'/layouts');
+        $this->_user_manager = new JLayoutFile('user_manager', __DIR__.'/layouts');
         $this->_export       = new JLayoutFile('export', dirname(__DIR__).'/layouts');
         $this->_control      = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
 

@@ -165,7 +165,14 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
             $query = $this->_buildProjQUery();
             $list = $this->_getList($query, 0, 0);
 
-            $this->_projects = array();
+            $this->_projects = array(
+                0 => array(
+                    "id"          => 0,
+                    "name"        => JText::_("JNONE"),
+                    "description" => "",
+                    "proj"        => array(),
+                )
+            );
             $ret = &$this->_projects;
             foreach ($list as $entry) {
                 $cat  = (int)$entry->parent_id;

@@ -83,6 +83,11 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             foreach ($this->_myusers as $key => &$user) {
                 $this->checkUser($user);
             }
+            $this->_myusers[0] = (object)array(
+                "name"    => JText::_("JNONE"),
+                "user_id" => 0,
+                "id"      => 0,
+            );
         }
         return $this->_myusers;
     }
@@ -248,7 +253,14 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (is_null($this->_projects)) {
             $query = $this->_buildProjQuery();
             $list = $this->_getList($query, 0, 0);
-            $this->_projects = array();
+            $this->_projects = array(
+                0 => array(
+                    "id"          => 0,
+                    "name"        => JText::_("JNONE"),
+                    "description" => "",
+                    "proj"        => array(),
+                )
+            );
             $ret = &$this->_projects;
             foreach ($list as $entry) {
                 $cat  = (int)$entry->parent_id;

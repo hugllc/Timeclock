@@ -6,12 +6,12 @@ $decimals = $displayData->params->get("decimalPlaces");
 if (TimeclockHelpersContrib::phpgraph() && !empty($total)):
     $graph = new PHPGraphLibPie(400, 200);
     $data  = array();
-    foreach ($displayData->data["proj_manager"] as $user_id => $hours) {
+    foreach ($displayData->data["user_manager"] as $user_id => $hours) {
         $name = isset($displayData->users[$user_id]) ? $displayData->users[$user_id]->name : "User $user_id";
         $data[$name] = $hours;
     }
     $graph->addData($data);
-    $graph->setTitle(JText::_("COM_TIMECLOCK_HOURSUM_PROJ_MANAGER_PLOT_TITLE"));
+    $graph->setTitle(JText::_("COM_TIMECLOCK_HOURSUM_USER_MANAGER_PLOT_TITLE"));
     $graph->setLabelTextColor('black');
     $graph->setLegendTextColor('black');
 
@@ -21,14 +21,14 @@ if (TimeclockHelpersContrib::phpgraph() && !empty($total)):
     ob_end_clean();
 endif;
 ?>
-        <h3><?php print JText::_("COM_TIMECLOCK_HOURS_BY_PROJ_MANAGER"); ?></h3>
+        <h3><?php print JText::_("COM_TIMECLOCK_HOURS_BY_USER_MANAGER"); ?></h3>
         <hr />
         <div class="row-fluid">
             <div class="span6">
                 <table class="report table table-striped table-bordered table-hover table-condensed">
                     <thead>
                         <tr class="header">
-                            <th><?php print JText::_("COM_TIMECLOCK_PROJECT_MANAGER"); ?></th>
+                            <th><?php print JText::_("COM_TIMECLOCK_USER_MANAGER"); ?></th>
                             <th><?php print JText::_("COM_TIMECLOCK_HOURS"); ?></th>
                             <th>%</th>
                         </tr>
@@ -51,7 +51,7 @@ endif;
                     </tbody>
                 </table>
             </div>
-<?php if (!empty($png)) : ?>
+<?php if (!empty($png)) :  ?>
             <img class="span6" alt="graph" src="data:image/png;base64,<?php print base64_encode($png); ?>" />
 <?php endif; ?>
         </div>
