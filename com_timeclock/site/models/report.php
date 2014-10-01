@@ -292,7 +292,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $query = $this->_buildDeptQuery();
             $list = $this->_getList($query, 0, 0);
             $this->_departments = array(
-                0 => array(
+                0 => (object)array(
                     "id"          => 0,
                     "name"        => JText::_("JNONE"),
                     "description" => "",
@@ -301,7 +301,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $ret = &$this->_departments;
             foreach ($list as $entry) {
                 $dept = (int)$entry->department_id;
-                $ret[$dept] = $entry;
+                if (!isset($ret[$dept])) {
+                    $ret[$dept] = $entry;
+                }
             }
         }
         return $this->_departments;
@@ -317,16 +319,19 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $query = $this->_buildCustQuery();
             $list = $this->_getList($query, 0, 0);
             $this->_customers = array(
-                0 => array(
+                0 => (object)array(
                     "id"          => 0,
                     "name"        => JText::_("JNONE"),
+                    "company"     => JText::_("JNONE"),
                     "description" => "",
                 )
             );
             $ret = &$this->_customers;
             foreach ($list as $entry) {
                 $cust = (int)$entry->customer_id;
-                $ret[$cust] = $entry;
+                if (!isset($ret[$cust])) {
+                    $ret[$cust] = $entry;
+                }
             }
         }
         return $this->_customers;
