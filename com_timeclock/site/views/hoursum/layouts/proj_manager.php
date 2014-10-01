@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 $png = "";
+$decimals = $displayData->params->get("decimalPlaces");
 if (file_exists(JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php')):
     include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib.php';
     include JPATH_COMPONENT.'/contrib/phpgraph/phpgraphlib_pie.php';
@@ -47,7 +48,7 @@ endif;
                         <tr class="user">
                             <td class="user"><?php print $name; ?></td>
                             <td class="hours"><?php print $hours; ?></td>
-                            <td class="percent"><?php print empty($total) ? 0 : ($hours/$total)*100; ?>%</td>
+                            <td class="percent"><?php print empty($total) ? 0 : round(($hours/$total)*100, $decimals); ?>%</td>
                         </tr>
 <?php endforeach; ?>
                     </tbody>

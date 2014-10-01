@@ -46,8 +46,9 @@
     <?php
         print $this->_proj_manager->render(
             (object)array(
-                "users" => $this->users,
-                "data"  => $this->data,
+                "users"  => $this->users,
+                "data"   => $this->data,
+                "params" => $this->params,
             )
         );
     ?>
