@@ -118,26 +118,26 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         $filter = $this->getState("filter");
 
         if(!empty($filter->search) && is_string($filter->search)) {
-            $query->where("p.name LIKE ".$db->quote("%".$filter->search."%"));
+            $query->where($db->quoteName("p.name")." LIKE ".$db->quote("%".$filter->search."%"));
         }
         
         if (is_numeric($filter->published)) {
-            $query->where('p.published = ' . (int) $filter->published);
+            $query->where($db->quoteName('p.published').' = ' . $db->quote((int) $filter->published));
         }
 
         if (is_numeric($filter->category)) {
-            $query->where('p.parent_id = ' . (int) $filter->category);
+            $query->where($db->quoteName('p.parent_id').' = ' . $db->quote((int) $filter->category));
         }
         
         if (is_numeric($filter->department)) {
-            $query->where('p.department_id = ' . (int) $filter->department);
+            $query->where($db->quoteName('p.department_id').' = ' . $db->quote((int) $filter->department));
         }
         
         if (is_numeric($filter->customer)) {
-            $query->where('p.customer_id = ' . (int) $filter->customer);
+            $query->where($db->quoteName('p.customer_id').' = ' . $db->quote((int) $filter->customer));
         }
         if (is_numeric($filter->user_id)) {
-            $query->where("p.manager_id = " . (int) $filter->user_id);
+            $query->where($db->quoteName("p.manager_id")." = " . $db->quote((int) $filter->user_id));
         }
         return $query;
     }
@@ -179,7 +179,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         $query->select('u.*');
         $query->leftjoin('#__users as u on p.user_id = u.id');
 
-        $query->where('p.project_id = ' . (int) $project_id);
+        $query->where('p.project_id = ' . $db->quote((int) $project_id));
 
         $list = $this->_getList($query, 0, 0);
         $ret  = array();
@@ -209,7 +209,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         $query->select('p.*');
         $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');
 
-        $query->where('q.user_id = '.(int)$user_id);
+        $query->where('q.user_id = '.$db->quote((int)$user_id));
 
         $list = $this->_getList($query, 0, 0);
         $ret  = array();
@@ -239,7 +239,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         $values = array();
         foreach ($users as $user) {
             if (!isset($all[$user])) {
-                $values[] = (int)$project_id.", ".(int)$user;
+                $values[] = $db->quote((int)$project_id).", ".$db->quote((int)$user);
             }
         }
         return $this->_addUser($values);
@@ -304,8 +304,8 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         $query->delete($db->quoteName('#__timeclock_users'));
         $query->where(
             array(
-                $db->quoteName("project_id")." = ".(int)$project_id, 
-                $db->quoteName("user_id")." = ".(int)$user_id
+                $db->quoteName("project_id")." = ".$db->quote((int)$project_id), 
+                $db->quoteName("user_id")." = ".$db->quote((int)$user_id)
             )
         );
         $db->setQuery($query);
