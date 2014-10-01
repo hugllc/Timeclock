@@ -123,11 +123,6 @@ class TimeclockViewsHolidayHtml extends JViewHtml
         }
         JHtmlSidebar::setAction('index.php?option=com_timeclock');
 
-        JHtmlSidebar::addFilter(
-            JText::_('JOPTION_SELECT_PUBLISHED'),
-            'filter_published',
-            JHtml::_('select.options', array(0 => JText::_("JUNPUBLISHED"), 1 => JText::_("JPUBLISHED")), 'value', 'text', $this->state->get('filter.published'), true)
-        );
         $options = TimeclockHelpersView::getYearOptions();
         JHtmlSidebar::addFilter(
             JText::_('COM_TIMECLOCK_SELECT_YEAR'),
