@@ -85,6 +85,15 @@
             label="COM_TIMECLOCK_DEPARTMENT"
             required="true"
             description="COM_TIMECLOCK_DEPARTMENT_PROJECT_DESC"/>
+        <field
+            name="customer_id"
+            type="TimeclockCustomer"
+            class="span10"
+            default=""
+            size="1"
+            label="COM_TIMECLOCK_CUSTOMER"
+            required="true"
+            description="COM_TIMECLOCK_CUSTOMER_PROJECT_DESC"/>
     </fieldset>
     <fieldset name="wcomp" label="COM_TIMECLOCK_WORKERS_COMP_CODES">
         <field
