@@ -9,8 +9,14 @@
         function doReportExport (format)
         {
             var url = '<?php print $displayData->url; ?>';
-            url = url+'&format='+format;
-            url = url+'&report='+Timeclock.report;
+            // This gets all of our filter variables.
+            var data = Report.formData();
+            
+            // Add in the format
+            data.format=format;
+            // Add in the report value
+            data.report=Timeclock.report;
+            url = url + "&" + jQuery.param(data);
             jQuery("#timeclock .export iframe").attr("src", url);
         }
     </script>

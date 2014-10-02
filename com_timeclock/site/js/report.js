@@ -67,7 +67,7 @@ var Report = {
     submit: function ()
     {
         var self = this;
-        var data = self._formData();
+        var data = self.formData();
         data.report_name = jQuery('[name="report_name"]').val();
         data.report_description = jQuery('[name="report_description"]').val();
         console.log(data);
@@ -113,7 +113,7 @@ var Report = {
         div.addClass('alert-'+type);
         div.show();
     },
-    _formData: function ()
+    formData: function ()
     {
         // Collect the base information from the form
         var base = {};
