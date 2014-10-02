@@ -220,6 +220,7 @@
         );
     ?>
     </div>
+    <input type="hidden" name="controller" value="hoursum" />
     <?php print JHTML::_("form.token"); ?>
 </form>
 <script type="text/JavaScript">

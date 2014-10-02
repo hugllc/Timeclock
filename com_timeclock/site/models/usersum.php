@@ -50,6 +50,8 @@ require_once __DIR__."/report.php";
  */
 class TimeclockModelsUsersum extends TimeclockModelsReport
 {    
+    /** This is the type of report */
+    protected $type = "usersum";
 
     /**
     * Build query and where for protected _getList function and return a list

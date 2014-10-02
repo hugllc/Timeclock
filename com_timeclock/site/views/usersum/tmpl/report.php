@@ -71,6 +71,7 @@
             </tbody>
         </table>
     </div>
+    <input type="hidden" name="controller" value="usersum" />
     <?php print JHTML::_("form.token"); ?>
 </form>
 <script type="text/JavaScript">

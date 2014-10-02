@@ -102,7 +102,6 @@ class TimeclockViewsHoursumHtml extends JViewHtml
             $this->projects    = $this->report->projects;
             $this->customers   = $this->report->customers;
             $this->departments = $this->report->departments;
-            
             $this->filter->report_id = $this->report_id;
         }
         $this->export   = array(

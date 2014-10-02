@@ -70,9 +70,9 @@ var Report = {
         var data = self.formData();
         data.report_name = jQuery('[name="report_name"]').val();
         data.report_description = jQuery('[name="report_description"]').val();
-        console.log(data);
+
         jQuery.ajax({
-            url: 'index.php?option=com_timeclock&controller=report&task=save&format=json',
+            url: 'index.php?option=com_timeclock&task=save&format=json',
             type: 'POST',
             data: data,
             dataType: 'JSON',

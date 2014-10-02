@@ -64,6 +64,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     private $_report = array();
     /** This is our percentage of holiday pay */
     private $_myusers = null;
+    /** This is the type of report */
+    protected $type = "report";
 
     /**
     * The constructor
@@ -91,6 +93,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
                 "name"    => JText::_("JNONE"),
                 "user_id" => 0,
                 "id"      => 0,
+                "hide"    => true,
             );
         }
         return $this->_myusers;
@@ -501,8 +504,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $date = empty($date) ?  date("Y-m-d") : $date;
         $registry->set('date', $date);
         
-        $type = 'report';
-        $registry->set('report.type', $type);
+        $registry->set('report.type', $this->type);
         
         $this->_populateFilter($registry);
         $this->_populateState($registry);

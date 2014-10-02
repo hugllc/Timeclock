@@ -301,7 +301,7 @@ class TimeclockViewsHoursumBase extends JViewBase
         $places = $this->params->get("decimalPlaces");
         $total  = array();
         $start  = $this->line;
-        $sheet  = &$this->phpexcel->getActiveSheet();
+        $sheet  = $this->phpexcel->getActiveSheet();
         $sheet->mergeCells('A'.$this->line.':C'.$this->line);
         $sheet->getStyle("A".$this->line.":C".$this->line)->getFont()->setBold(true);
         $sheet->setCellValue("A".$this->line, $header);
@@ -352,7 +352,7 @@ class TimeclockViewsHoursumBase extends JViewBase
         );
         $row += 2;
         $end = $count + $row - 1;
-        error_log($row." => ".$end);
+
         $xAxisTickValues1 = array(
             new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$A$'.$row.':$A$'.$end, NULL, $count),
         );
