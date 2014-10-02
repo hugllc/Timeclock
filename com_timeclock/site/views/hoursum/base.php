@@ -211,6 +211,18 @@ class TimeclockViewsHoursumBase extends JViewBase
             JText::_("COM_TIMECLOCK_DEPARTMENT"),
             $data
         );
+        /******************** HOURS BY WCOMP CODE ************************/
+        $data  = array();
+        foreach ($this->data["wcomp"] as $code => $hours) {
+            $name = sprintf("%04d", $code);
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_WCOMP_CODE"),
+            JText::_("COM_TIMECLOCK_WCOMP_CODE"),
+            $data
+        );
+        
         /******************** HOURS BY PROJECT ************************/
         $data  = array();
         foreach ($this->data["project"] as $proj_id => $hours) {
