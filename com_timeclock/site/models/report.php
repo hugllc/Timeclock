@@ -66,6 +66,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     private $_myusers = null;
     /** This is the type of report */
     protected $type = "report";
+    /** This is our context */
+    protected $context = null;
 
     /**
     * The constructor
@@ -74,7 +76,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         $app = JFactory::getApplication();
         $this->_user = JFactory::getUser();
-        
+        $this->context = $this->type;
         parent::__construct(); 
     }
     /**
@@ -484,14 +486,14 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $registry = $this->loadState();
 
         $start = TimeclockHelpersDate::fixDate(
-            $app->input->get('start', "", "raw")
+            $app->getUserStateFromRequest($context.'.start', 'start', '')
         );
         // If this is the first day of the month, we want to see last month.
         $start = empty($start) ?  date("Y-m-01", time() - 86400) : $start;
         $registry->set('start', $start);
 
         $end = TimeclockHelpersDate::fixDate(
-            $app->input->get('end', "", "raw")
+            $app->getUserStateFromRequest($context.'.end', 'end', '')
         );
         $end = empty($end) ?  date("Y-m-d") : $end;
         $registry->set('end', $end);
@@ -603,12 +605,16 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id, t.user_id as worked_by,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
-            as hours, t.worked, t.project_id, t.notes, z.user_id as user_id');
+            as hours, t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3,
+            t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6,
+            t.worked, t.project_id, t.notes, z.user_id as user_id');
         $query->from('#__timeclock_timesheet as t');
         $query->select('p.name as project, p.type as project_type, 
             p.description as project_description, p.parent_id as cat_id, 
             p.department_id as department_id, p.customer_id as customer_id,
-            p.manager_id as proj_manager_id');
+            p.manager_id as proj_manager_id, p.wcCode1 as wcCode1, 
+            p.wcCode2 as wcCode2, p.wcCode3 as wcCode3, p.wcCode4 as wcCode4,
+            p.wcCode5 as wcCode5, p.wcCode6 as wcCode6');
         $query->leftjoin('#__timeclock_projects as p on t.project_id = p.project_id');
         $query->select('q.name as cat_name, q.description as cat_description');
         $query->leftjoin('#__timeclock_projects as q on p.parent_id = q.project_id');

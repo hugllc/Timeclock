@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="Worker's Comp Report">
+        <message>
+            This report shows the users and what worker's comp categories they put time into.
+        </message>
+    </layout>
+</metadata>
