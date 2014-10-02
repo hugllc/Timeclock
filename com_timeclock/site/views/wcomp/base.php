@@ -95,6 +95,7 @@ class TimeclockViewsWcompBase extends JViewBase
             $this->projects = $this->model->listProjects();
             $file           = "report-live-";
         }
+        $this->codes = $this->data["codes"];
         $file .= $this->start."to".$this->end;
         $this->setup($file);
         $this->export();
@@ -110,6 +111,9 @@ class TimeclockViewsWcompBase extends JViewBase
     {
         $this->header();
         foreach ($this->users as $user_id => $user) {
+            if ($user_id == 0) {
+                continue;
+            }
             $user = (object)$user;
             $user->data   = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
             $this->row($user);
@@ -129,12 +133,12 @@ class TimeclockViewsWcompBase extends JViewBase
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $report = JText::sprintf("COM_TIMECLOCK_USERSUM_REPORT_TITLE", $this->start, $this->end);
+        $report = JText::sprintf("COM_TIMECLOCK_WCOMP_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_USERSUM_REPORT"));
+            ->setKeywords(JText::_("COM_TIMECLOCK_WCOMP_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -148,7 +152,7 @@ class TimeclockViewsWcompBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_USERSUM_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_WCOMP_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -177,19 +181,12 @@ class TimeclockViewsWcompBase extends JViewBase
         $places = $this->params->get("decimalPlaces");
         $total  = array();
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
-        foreach ($this->projects as $projects) {
-            foreach ($projects["proj"] as $proj) {
-                $proj_id = (int)$proj->project_id;
-                $value = isset($data->data[$proj_id]) ? $data->data[$proj_id] : 0;
-                $col = $this->nextCol($col);
-                $dat = $col.$this->line;
-                $total[] = $dat;
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
-                $col  = $this->nextCol($col);
-                $tot  = $this->maxCol.$this->line;
-                $perc = "=IF($tot>0,ROUND(($dat/$tot)*100, $places),0)";
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $perc);
-            }
+        foreach ($this->codes as $code) {
+            $value = isset($data->data[$code]) ? $data->data[$code] : 0;
+            $col = $this->nextCol($col);
+            $dat = $col.$this->line;
+            $total[] = $dat;
+            $this->phpexcel->getActiveSheet()->setCellValue($dat, $value);
         }
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
@@ -205,24 +202,13 @@ class TimeclockViewsWcompBase extends JViewBase
     */
     protected function totals($data)
     {
-        $col = "A";
         $places = $this->params->get("decimalPlaces");
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
-        $end = $this->line - 1;
-        $state = 0;
-        foreach (range("B", $this->maxCol) as $col) {
-            if ($state == 0) {
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
-                $dat = $col.$this->line;
-                $state = 1;
-            } else {
-                $tot  = $this->maxCol.$this->line;
-                $perc = "=IF($tot>0,ROUND(($dat/$tot)*100, $places),0)";
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $perc);
-                $state = 0;
-            }
-        }
+        $this->phpexcel->getActiveSheet()->setCellValue("A".$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
+        $end = $this->line - 1;
+        foreach (range("B", $this->maxCol) as $col) {
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
+        }
         $this->line++;
     }
     /**
@@ -233,15 +219,10 @@ class TimeclockViewsWcompBase extends JViewBase
     protected function header()
     {
         $col = "A";
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PROJECT"));
-        foreach ($this->projects as $projects) {
-            foreach ($projects["proj"] as $proj) {
-                $name = isset($proj->name) ? $proj->name : "Project ".$proj->project_id;
-                $col = $this->nextCol($col);
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name);
-                $col = $this->nextCol($col);
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name." %");
-            }
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_USER"));
+        foreach ($this->codes as $code) {
+            $col = $this->nextCol($col);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $code);
         }
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));

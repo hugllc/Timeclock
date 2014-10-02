@@ -185,6 +185,10 @@ class TimeclockViewsReportBase extends JViewBase
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
         foreach ($this->users as $user) {
+            if ($user->id == 0) {
+                continue;
+            }
+
             $value = isset($data->data[$user->id]) ? $data->data[$user->id] : 0;
             $col = $this->nextCol($col);
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
@@ -223,6 +227,9 @@ class TimeclockViewsReportBase extends JViewBase
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PROJECT"));
         foreach ($this->users as $user) {
+            if ($user->id == 0) {
+                continue;
+            }
             $name = isset($user->name) ? $user->name : "User ".$user->id;
             $col = $this->nextCol($col);
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name);

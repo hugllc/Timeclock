@@ -110,6 +110,9 @@ class TimeclockViewsUsersumBase extends JViewBase
     {
         $this->header();
         foreach ($this->users as $user_id => $user) {
+            if ($user_id == 0) {
+                continue;
+            }
             $user = (object)$user;
             $user->data   = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
             $this->row($user);
