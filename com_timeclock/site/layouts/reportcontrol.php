@@ -62,7 +62,8 @@
             JHtml::_('select.options', $options, 'value', 'text', $displayData->user_id, true)
         );
     }
-    $model = TimeclockHelpersTimeclock::getModel("report");
+    $model = empty($displayData->type) ? "report" : $displayData->type;
+    $model = TimeclockHelpersTimeclock::getModel($model);
     $options = $model->getReportOptions();
     JHtmlSidebar::addFilter(
         JText::_('COM_TIMECLOCK_SELECT_SAVED_REPORT'),

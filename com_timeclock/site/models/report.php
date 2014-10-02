@@ -548,7 +548,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
 
         $report_id = $app->input->get("report_id", 0, "int");
         $registry->set("report.id", $report_id);
-        
+
+        $registry->set("filter.type", $this->type);
     }
     /**
     * Method to auto-populate the model state.
