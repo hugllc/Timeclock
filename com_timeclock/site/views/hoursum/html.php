@@ -57,7 +57,7 @@ class TimeclockViewsHoursumHtml extends JViewHtml
         "CATEGORY" => "JCATEGORY",
         "PTO"      => "COM_TIMECLOCK_PTO",
         "HOLIDAY"  => "COM_TIMECLOCK_HOLIDAY",
-        "UNPAID"   => "COM_TIMECLOCK_UNPAID",
+        "UNPAID"   => "COM_TIMECLOCK_VOLUNTEER",
     );
     /**
     * Renders this view

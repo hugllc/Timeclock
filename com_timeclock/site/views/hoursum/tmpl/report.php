@@ -43,13 +43,13 @@
                 ); ?>
         </strong>
     </div>
-    <?php /*
+    <?php
         print $this->_export->render(
             (object)array(
                 "url" => JRoute::_('&option=com_timeclock&controller=hoursum'),
                 "export" => $this->export,
             )
-        ); */
+        );
     ?>
     <div class="container-fluid">
     <?php
@@ -197,7 +197,7 @@
                 ),
             )
         );
-        /******************** HOURS BY USER MANAGER ************************/
+        /******************** HOURS BY USER ************************/
         $data  = array();
         foreach ($this->data["user"] as $user_id => $hours) {
             $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "";

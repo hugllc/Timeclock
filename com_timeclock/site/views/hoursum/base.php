@@ -53,6 +53,13 @@ jimport('joomla.application.component.view');
  */
 class TimeclockViewsHoursumBase extends JViewBase
 {
+    private $_projType = array(
+        "PROJECT"  => "COM_TIMECLOCK_PROJECT",
+        "CATEGORY" => "JCATEGORY",
+        "PTO"      => "COM_TIMECLOCK_PTO",
+        "HOLIDAY"  => "COM_TIMECLOCK_HOLIDAY",
+        "UNPAID"   => "COM_TIMECLOCK_VOLUNTEER",
+    );
     /** This is our mime type */
     protected $mimetype = "text/html";
     /** This is our file extension */
@@ -85,16 +92,20 @@ class TimeclockViewsHoursumBase extends JViewBase
 
 
         if (!empty($report_id) && $doReport) {
-            $report         = $this->model->getReport();
-            $this->data     = $report->timesheets;
-            $this->projects = $report->projects;
-            $this->users    = $report->users;
+            $report            = $this->model->getReport();
+            $this->data        = $report->timesheets;
+            $this->projects    = $report->projects;
+            $this->users       = $report->users;
+            $this->customers   = $this->report->customers;
+            $this->departments = $this->report->departments;
             $file   = str_replace(" ", "_", $report->name);
         } else {
-            $this->data     = $this->model->listItems();
-            $this->users    = $this->model->listUsers();
-            $this->projects = $this->model->listProjects();
-            $file           = "report-live-";
+            $this->data        = $this->model->listItems();
+            $this->users       = $this->model->listUsers();
+            $this->projects    = $this->model->listProjects();
+            $this->customers   = $this->model->listCustomers();
+            $this->departments = $this->model->listDepartments();
+            $file              = "report-live-";
         }
         $file .= $this->start."to".$this->end;
         $this->setup($file);
@@ -109,13 +120,126 @@ class TimeclockViewsHoursumBase extends JViewBase
     */
     protected function export()
     {
-        $this->header();
-        foreach ($this->users as $user_id => $user) {
-            $user = (object)$user;
-            $user->data   = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
-            $this->row($user);
+        $allproj = array();
+        foreach ($this->projects as $cat) {
+            foreach ($cat["proj"] as $proj) {
+                $allproj[$proj->project_id] = array(
+                    "name" => $proj->name,
+                    "description" => $proj->description,
+                );
+            }
         }
-        $this->totals($this->data["totals"]);
+
+        /******************** HOURS BY PROJECT MANAGER ************************/
+        $data  = array();
+        foreach ($this->data["proj_manager"] as $user_id => $hours) {
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "";
+            if (empty($name)) {
+                $name = "User $user_id";
+            }
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_PROJ_MANAGER"),
+            JText::_("COM_TIMECLOCK_PROJECT_MANAGER"),
+            $data
+        );
+        /******************** HOURS BY USER MANAGER ************************/
+        $data  = array();
+        foreach ($this->data["user_manager"] as $user_id => $hours) {
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "";
+            if (empty($name)) {
+                $name = "User $user_id";
+            }
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_USER_MANAGER"),
+            JText::_("COM_TIMECLOCK_USER_MANAGER"),
+            $data
+        );
+        /******************** HOURS BY PROJECT TYPE ************************/
+        $data  = array();
+        foreach ($this->data["type"] as $type => $hours) {
+            $name = $this->getProjType($type);
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_PROJECT_TYPE"),
+            JText::_("COM_TIMECLOCK_PROJECT_TYPE"),
+            $data
+        );
+        /******************** HOURS BY CATEGORY ************************/
+        $data  = array();
+        foreach ($this->data["category"] as $cat_id => $hours) {
+            $name = isset($this->projects[$cat_id]) ? $this->projects[$cat_id]["name"] : "";
+            if (empty($name)) {
+                $name = "Category $cat_id";
+            }
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_CATEGORY"),
+            JText::_("COM_TIMECLOCK_CATEGORY"),
+            $data
+        );
+        /******************** HOURS BY CUSTOMER ************************/
+        $data  = array();
+        foreach ($this->data["customer"] as $cust_id => $hours) {
+            $name = isset($this->customers[$cust_id]) ? $this->customers[$cust_id]->company : "";
+            if (empty($name)) {
+                $name = "Customer $cust_id";
+            }
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_CUSTOMER"),
+            JText::_("COM_TIMECLOCK_CUSTOMER"),
+            $data
+        );
+        /******************** HOURS BY DEPARTMENT ************************/
+        $data  = array();
+        foreach ($this->data["department"] as $dept_id => $hours) {
+            $name = isset($this->departments[$dept_id]) ? $this->departments[$dept_id]->name : "";
+            if (empty($name)) {
+                $name = "Department $dept_id";
+            }
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_DEPARTMENT"),
+            JText::_("COM_TIMECLOCK_DEPARTMENT"),
+            $data
+        );
+        /******************** HOURS BY PROJECT ************************/
+        $data  = array();
+        foreach ($this->data["project"] as $proj_id => $hours) {
+            $name = isset($allproj[$proj_id]) ? $allproj[$proj_id]["name"] : "";
+            if (empty($name)) {
+                $name = "Project $proj_id";
+            }
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_PROJECT"),
+            JText::_("COM_TIMECLOCK_PROJECT"),
+            $data
+        );
+        /******************** HOURS BY USER ************************/
+        $data  = array();
+        foreach ($this->data["user"] as $user_id => $hours) {
+            $name = isset($this->users[$user_id]) ? $this->users[$user_id]->name : "";
+            if (empty($name)) {
+                $name = "User $user_id";
+            }
+            $data[$name] = $hours;
+        }
+        $this->dataset(
+            JText::_("COM_TIMECLOCK_HOURS_BY_USER"),
+            JText::_("COM_TIMECLOCK_USER"),
+            $data
+        );
+
     }
     /**
     * This prints out a row in the file
@@ -135,7 +259,7 @@ class TimeclockViewsHoursumBase extends JViewBase
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_USERSUM_REPORT"));
+            ->setKeywords(JText::_("COM_TIMECLOCK_HOURSUM_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -149,7 +273,7 @@ class TimeclockViewsHoursumBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_USERSUM_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_HOURSUM_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -172,86 +296,104 @@ class TimeclockViewsHoursumBase extends JViewBase
     *
     * @return string The row created
     */
-    protected function row($data)
+    protected function dataset($header, $group, $data)
     {
-        $col = "A";
         $places = $this->params->get("decimalPlaces");
         $total  = array();
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
-        foreach ($this->projects as $projects) {
-            foreach ($projects["proj"] as $proj) {
-                $proj_id = (int)$proj->project_id;
-                $value = isset($data->data[$proj_id]) ? $data->data[$proj_id] : 0;
-                $col = $this->nextCol($col);
-                $dat = $col.$this->line;
-                $total[] = $dat;
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
-                $col  = $this->nextCol($col);
-                $tot  = $this->maxCol.$this->line;
-                $perc = "=IF($tot>0,ROUND(($dat/$tot)*100, $places),0)";
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $perc);
-            }
-        }
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
-        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
+        $start  = $this->line;
+        $sheet  = &$this->phpexcel->getActiveSheet();
+        $sheet->mergeCells('A'.$this->line.':C'.$this->line);
+        $sheet->getStyle("A".$this->line.":C".$this->line)->getFont()->setBold(true);
+        $sheet->setCellValue("A".$this->line, $header);
         $this->line++;
+        $sheet->setCellValue("A".$this->line, $group);
+        $sheet->setCellValue("B".$this->line, JText::_("COM_TIMECLOCK_HOURS"));
+        $sheet->setCellValue("C".$this->line, "%");
+        $sheet->getStyle("A".$this->line.":C".$this->line)->getFont()->setBold(true);
+        $this->line++;
+        $tot    = "B".($this->line + count($data));
+        // Do the the label and data
+        foreach ($data as $name => $hours) {
+            $sheet->setCellValue("A".$this->line, $name);
+            $total[] = "B".$this->line;
+            $sheet->setCellValue("B".$this->line, $hours);
+            $perc = "=IF($tot>0,(B".$this->line."/$tot),0)";
+            $sheet->setCellValue("C".$this->line, $perc);
+            $sheet->getStyle("C".$this->line)->getNumberFormat()->applyFromArray( 
+                array( 
+                    'code' => PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00
+                )
+            );  
+            $this->line++;
+        }
+        $sheet->setCellValue("A".$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
+        $sheet->setCellValue("B".$this->line, "=SUM(".implode(",", $total).")");
+        $sheet->getStyle("A".$this->line.":A".$this->line)->getFont()->setBold(true);
+
+        while (($this->line - $start) < 15) {
+            $this->line++;
+        }
+        $this->dataGraph($header, $start, count($data));
     }
     /**
-    * This prints out a row in the file
+    * Creates a graph
     *
-    * @param array $data The data for this row
+    * @param string $title The title for the graph
+    * @param int    $row   The row to start on.
+    * @param int    $count The number of rows to use
     *
     * @return string The row created
     */
-    protected function totals($data)
+    protected function datagraph($title, $start, $count)
     {
-        $col = "A";
-        $places = $this->params->get("decimalPlaces");
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
-        $end = $this->line - 1;
-        $state = 0;
-        foreach (range("B", $this->maxCol) as $col) {
-            if ($state == 0) {
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
-                $dat = $col.$this->line;
-                $state = 1;
-            } else {
-                $tot  = $this->maxCol.$this->line;
-                $perc = "=IF($tot>0,ROUND(($dat/$tot)*100, $places),0)";
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $perc);
-                $state = 0;
-            }
-        }
-        $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
-        $this->line++;
-    }
-    /**
-    * This prints out a header row in the file
-    *
-    * @return string The header row created
-    */
-    protected function header()
-    {
-        $col = "A";
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PROJECT"));
-        foreach ($this->projects as $projects) {
-            foreach ($projects["proj"] as $proj) {
-                $name = isset($proj->name) ? $proj->name : "Project ".$proj->project_id;
-                $col = $this->nextCol($col);
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name);
-                $col = $this->nextCol($col);
-                $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $name." %");
-            }
-        }
-        $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
-        foreach(range('A',$col) as $columnID) {
-            $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
-        }
-        $this->maxCol = $col;
-        $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
-        $this->line++;
+        $row = $start;
+        $dataSeriesLabels1 = array(
+            new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$A$'.$row, null, 1),
+        );
+        $row += 2;
+        $end = $count + $row - 1;
+        error_log($row." => ".$end);
+        $xAxisTickValues1 = array(
+            new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$A$'.$row.':$A$'.$end, NULL, $count),
+        );
+        $dataSeriesValues1 = array(
+            new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$B$'.$row.':$B$'.$end, NULL, $count),
+        );
+        // Build the dataseries
+        $series1 = new PHPExcel_Chart_DataSeries(
+            PHPExcel_Chart_DataSeries::TYPE_PIECHART,   // plotType
+            NULL,   // plotGrouping
+            range(0, count($dataSeriesValues1)-1),  // plotOrder
+            $dataSeriesLabels1, // plotLabel
+            $xAxisTickValues1,  // plotCategory
+            $dataSeriesValues1  // plotValues
+            );
+        // Set up a layout object for the Pie chart
+        $layout1 = new PHPExcel_Chart_Layout();
+        $layout1->setShowVal(false);
+        $layout1->setShowPercent(true);
+        // Set the series in the plot area
+        $plotArea1 = new PHPExcel_Chart_PlotArea($layout1, array($series1));
+        // Set the chart legend
+        $legend1 = new PHPExcel_Chart_Legend(PHPExcel_Chart_Legend::POSITION_RIGHT, null, false);
+        $title1 = new PHPExcel_Chart_Title($title);
+        // Create the chart
+        $chart1 = new PHPExcel_Chart(
+            'chart1',   // name
+            $title1,    // title
+            $legend1,   // legend
+            $plotArea1, // plotArea
+            true,   // plotVisibleOnly
+            0,  // displayBlanksAs
+            null,   // xAxisLabel
+            null    // yAxisLabel - Pie charts don't have a Y-Axis
+        );
+        // Set the position where the chart should appear in the worksheet
+        $chart1->setTopLeftPosition('D'.$start);
+        $chart1->setBottomRightPosition('J'.($start+ 10));
+        
+        // Add the chart to the worksheet
+        $this->phpexcel->getActiveSheet()->addChart($chart1);
     }
     /**
     * This gets the next column.  This works up to column ZZ.
@@ -272,6 +414,20 @@ class TimeclockViewsHoursumBase extends JViewBase
             }
         }
         return $next;
+    }
+    /**
+    * This creates a pie graph for us
+    *
+    * @param string $type The type of project
+    *
+    * @return binary string that is the image
+    */
+    protected function getProjType($type)
+    {
+        if (isset($this->_projType[$type])) {
+            return JText::_($this->_projType[$type]);
+        }
+        return JText::_("COM_TIMECLOCK_UNKNOWN");
     }
 }
 ?>

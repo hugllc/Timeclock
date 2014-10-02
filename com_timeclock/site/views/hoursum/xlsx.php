@@ -65,6 +65,7 @@ class TimeclockViewsHoursumXlsx extends TimeclockViewsHoursumBase
     protected function finalize()
     {
         $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter->setIncludeCharts(TRUE);
         $objWriter->setPreCalculateFormulas(true);
         $objWriter->save('php://output');
     }
