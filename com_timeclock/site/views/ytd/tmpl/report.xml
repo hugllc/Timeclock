@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="Year To Date">
+        <message>
+            This report shows users time for the year.
+        </message>
+    </layout>
+</metadata>
