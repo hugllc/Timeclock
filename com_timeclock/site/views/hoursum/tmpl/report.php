@@ -176,6 +176,24 @@
                 ),
             )
         );
+        /******************** HOURS BY WCOMP CODE ************************/
+        $data  = array();
+        foreach ($this->data["wcomp"] as $code => $hours) {
+            $name = sprintf("%04d", $code);
+            $data[$name] = $hours;
+        }
+        print $this->_dataset->render(
+            (object)array(
+                "data"     => $data,
+                "total"    => $this->data["total"],
+                "decimals" => $this->params->get("decimalPlaces"),
+                "title"    => JText::_("COM_TIMECLOCK_HOURS_BY_WCOMP_CODE"),
+                "group"    => JText::_("COM_TIMECLOCK_WCOMP_CODE"),
+                "png"      => $this->pie(
+                    JText::_("COM_TIMECLOCK_HOURSUM_WCOMP_CODE_PLOT_TITLE"), $data
+                ),
+            )
+        );
         /******************** HOURS BY PROJECT ************************/
         $data  = array();
         foreach ($this->data["project"] as $proj_id => $hours) {

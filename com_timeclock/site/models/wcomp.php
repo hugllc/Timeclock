@@ -80,13 +80,13 @@ class TimeclockModelsWcomp extends TimeclockModelsReport
                 $hours = $row->{"hours".$i};
                 $code  = $row->{"wcCode".$i};
                 if ($hours != 0) {
-                    $return[$user_id][$code]  = isset($return[$user_id][$code]) ? $return[$user_id][$code] : 0;
-                    $return[$user_id][$code] += $row->hours;
-                    $return[$user_id]["total"]  += $row->hours;
-                    $return["totals"][$code]  = isset($return["totals"][$code]) ? $return["totals"][$code] : 0;
-                    $return["totals"][$code] += $row->hours;
-                    $return["totals"]["total"]  += $row->hours;
-                    $return["codes"][$code] = $code;
+                    $return[$user_id][$code]    = isset($return[$user_id][$code]) ? $return[$user_id][$code] : 0;
+                    $return[$user_id][$code]   += $hours;
+                    $return[$user_id]["total"] += $hours;
+                    $return["totals"][$code]    = isset($return["totals"][$code]) ? $return["totals"][$code] : 0;
+                    $return["totals"][$code]   += $hours;
+                    $return["totals"]["total"] += $hours;
+                    $return["codes"][$code]     = $code;
                 }
             }
         }

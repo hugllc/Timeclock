@@ -97,6 +97,14 @@ class TimeclockModelsHoursum extends TimeclockModelsReport
                 $return[$key][$$var] += $row->hours;
             }
             $return["total"]  += $row->hours;
+            for ($i = 1; $i <= 6; $i++) {
+                $hours = $row->{"hours".$i};
+                $code  = $row->{"wcCode".$i};
+                if ($hours != 0) {
+                    $return["wcomp"][$code]  = isset($return[$user_id][$code]) ? $return[$user_id][$code] : 0;
+                    $return["wcomp"][$code] += $hours;
+                }
+            }
         }
         return $return;
     }
