@@ -68,6 +68,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     protected $type = "report";
     /** This is our context */
     protected $context = null;
+    /** This is the default date to start this report on */
+    protected $defaultDate = "Y-m-01";
 
     /**
     * The constructor
@@ -489,7 +491,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $app->getUserStateFromRequest($context.'.start', 'start', '')
         );
         // If this is the first day of the month, we want to see last month.
-        $start = empty($start) ?  date("Y-m-01", time() - 86400) : $start;
+        $start = empty($start) ?  date($this->defaultStart, time() - 86400) : $start;
         $registry->set('start', $start);
 
         $end = TimeclockHelpersDate::fixDate(
