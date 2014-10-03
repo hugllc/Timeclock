@@ -5,7 +5,6 @@ if (!$displayData->hide) :
     $total   = isset($displayData->data["total"]) ? $displayData->data["total"] : "0";
     $places  = $displayData->genparams->get("decimalPlaces");
     $zero    = '<span class="zero">0</span>';
-    $cols    = array("PROJECT", "HOLIDAY", "UNPAID", "PTO");
 ?>
             <tr class="project<?php print ($total == 0) ? " empty" : ""; ?>">
                 <td>
@@ -13,7 +12,7 @@ if (!$displayData->hide) :
                 </td>
                
 <?php 
-    foreach ($cols as $col) :
+    foreach (array_keys($displayData->cols) as $col) :
         if (isset($displayData->data[$col]) && ($displayData->data[$col] > 0)) :
             $hours = (float)$displayData->data[$col];
         else :

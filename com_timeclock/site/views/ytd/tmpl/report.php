@@ -14,6 +14,7 @@
         )
     );
     $doreports = ($this->report_id != 0);
+
 ?>
 <div id="timeclock" class="container-fluid">
 <form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=ytd"); ?>" method="post" name="userform" class="report">
@@ -45,13 +46,13 @@
     <div class="table-responsive">
         <table class="report table table-striped table-bordered table-hover table-condensed">
             <thead>
-<?php print $this->_header->render($this->data["codes"]); ?>
+<?php print $this->_header->render($this->data["cols"]); ?>
             </thead>
             <tfoot>
 <?php 
     print $this->_totals->render(
         (object)array(
-            "codes" => $this->data["codes"], 
+            "cols" => $this->data["cols"], 
             "data" => $this->data["totals"], 
             "params" => $this->params,
         )
@@ -64,7 +65,7 @@
         $user_id = (int)$user->id;
         $user->data      = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
         $user->genparams = $this->params;
-        $user->codes     = $this->data["codes"];
+        $user->cols = $this->data["cols"];
         print $this->_row->render($user);
     }
 ?>

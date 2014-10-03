@@ -102,6 +102,7 @@ class TimeclockViewsYtdHtml extends JViewHtml
             "CSV" => "csv",
             "Excel 2007" => "xlsx",
         );
+
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
             array(), 
