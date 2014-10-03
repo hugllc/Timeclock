@@ -205,7 +205,7 @@ class TimeclockHelpersDateTest extends \PHPUnit_Framework_TestCase
     public static function dataFixedPayPeriodStart()
     {
         return array(
-            "positive offset" => array(
+            "normal" => array(
                 "2000-12-11", "2014-09-08", 14, "2014-09-01"
             ),
             "positive offset" => array(
@@ -236,6 +236,149 @@ class TimeclockHelpersDateTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $expect, 
             \TimeclockHelpersDate::fixedPayPeriodStart(
+                $firstPeriodStart, $date, $len
+            )
+        );
+    }
+    /**
+    * data provider for testGet
+    *
+    * @return array
+    */
+    public static function dataFixedPayPeriod()
+    {
+        return array(
+            "normal" => array(
+                "2000-12-11", 
+                "2014-09-08", 
+                14, 
+                array(
+                    'days' => 14,
+                    'start' => '2014-09-01',
+                    'end' => '2014-09-14',
+                    'next' => '2014-09-15',
+                    'prev' => '2014-08-18',
+                    'dates' => array(
+                        0 => '2014-09-01',
+                        1 => '2014-09-02',
+                        2 => '2014-09-03',
+                        3 => '2014-09-04',
+                        4 => '2014-09-05',
+                        5 => '2014-09-06',
+                        6 => '2014-09-07',
+                        7 => '2014-09-08',
+                        8 => '2014-09-09',
+                        9 => '2014-09-10',
+                        10 => '2014-09-11',
+                        11 => '2014-09-12',
+                        12 => '2014-09-13',
+                        13 => '2014-09-14',
+                    ),
+                ),
+            ),
+            "positive offset" => array(
+                "2014-09-01", 
+                "2000-12-12", 
+                14, 
+                array(
+                    'days' => 14,
+                    'start' => '2000-12-11',
+                    'end' => '2000-12-24',
+                    'next' => '2000-12-25',
+                    'prev' => '2000-11-27',
+                    'dates' => array(
+                        0 => '2000-12-11',
+                        1 => '2000-12-12',
+                        2 => '2000-12-13',
+                        3 => '2000-12-14',
+                        4 => '2000-12-15',
+                        5 => '2000-12-16',
+                        6 => '2000-12-17',
+                        7 => '2000-12-18',
+                        8 => '2000-12-19',
+                        9 => '2000-12-20',
+                        10 => '2000-12-21',
+                        11 => '2000-12-22',
+                        12 => '2000-12-23',
+                        13 => '2000-12-24',
+                    ),
+                ),
+            ),
+            "First day" => array(
+                "2000-12-11", 
+                "2014-09-01", 
+                14, 
+                array(
+                    'days' => 14,
+                    'start' => '2014-09-01',
+                    'end' => '2014-09-14',
+                    'next' => '2014-09-15',
+                    'prev' => '2014-08-18',
+                    'dates' => array(
+                        0 => '2014-09-01',
+                        1 => '2014-09-02',
+                        2 => '2014-09-03',
+                        3 => '2014-09-04',
+                        4 => '2014-09-05',
+                        5 => '2014-09-06',
+                        6 => '2014-09-07',
+                        7 => '2014-09-08',
+                        8 => '2014-09-09',
+                        9 => '2014-09-10',
+                        10 => '2014-09-11',
+                        11 => '2014-09-12',
+                        12 => '2014-09-13',
+                        13 => '2014-09-14',
+                    ),
+                ),
+            ),
+            "Last day" => array(
+                "2000-12-11", 
+                "2014-09-14", 
+                14, 
+                array(
+                    'days' => 14,
+                    'start' => '2014-09-01',
+                    'end' => '2014-09-14',
+                    'next' => '2014-09-15',
+                    'prev' => '2014-08-18',
+                    'dates' => array(
+                        0 => '2014-09-01',
+                        1 => '2014-09-02',
+                        2 => '2014-09-03',
+                        3 => '2014-09-04',
+                        4 => '2014-09-05',
+                        5 => '2014-09-06',
+                        6 => '2014-09-07',
+                        7 => '2014-09-08',
+                        8 => '2014-09-09',
+                        9 => '2014-09-10',
+                        10 => '2014-09-11',
+                        11 => '2014-09-12',
+                        12 => '2014-09-13',
+                        13 => '2014-09-14',
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Checks to see if we get proper stuff from this function
+    *
+    * @param mixed  $firstPeriodStart The first pay period start date.
+    * @param mixed  $date             The date in question
+    * @param int    $len              The length of the period
+    * @param string $expect           The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFixedPayPeriod
+    */
+    public function testFixedPayPeriod($firstPeriodStart, $date, $len, $expect)
+    {
+        $this->assertSame(
+            $expect, 
+            \TimeclockHelpersDate::fixedPayPeriod(
                 $firstPeriodStart, $date, $len
             )
         );

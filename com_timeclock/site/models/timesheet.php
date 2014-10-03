@@ -260,28 +260,18 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
         $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
-        $len = empty($len) ? 14 : $len;
-        $start = TimeclockHelpersDate::fixedPayPeriodStart($startTime, $date, $len);
-        $registry->set("payperiod.days", $len);
-        $registry->set("payperiod.start", $start);
-        $s = TimeclockHelpersDate::explodeDate($start);
-        $end = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len-1, $s["y"]
-        );
-        $registry->set("payperiod.end", date("Y-m-d", $end));
-        $next = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len, $s["y"]
-        );
-        $registry->set("payperiod.next", date("Y-m-d", $next));
-        $prev = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]-$len, $s["y"]
-        );
-        $registry->set("payperiod.prev", date("Y-m-d", $prev));
+        $period = TimeclockHelpersDate::fixedPayPeriod($startTime, $date, $len);
+
+        $registry->set("payperiod.days", $period["days"]);
+        $registry->set("payperiod.start", $period["start"]);
+        $registry->set("payperiod.end", $period["end"]);
+        $registry->set("payperiod.next", $period["next"]);
+        $registry->set("payperiod.prev", $period["prev"]);
         
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
         $registry->set("payperiod.cutoff", $cutoff);
 
-        $locked = TimeclockHelpersDate::compareDates($cutoff, $next) >= 0;
+        $locked = TimeclockHelpersDate::compareDates($cutoff, $period["next"]) >= 0;
         $registry->set("payperiod.locked", $locked);
 
         $fulltimeHours = TimeclockHelpersTimeclock::getParam("fulltimeHours");
@@ -290,7 +280,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $usercutoff = isset($user->timeclock["noTimeBefore"]) ? $user->timeclock["noTimeBefore"] : 0;
         $registry->set("payperiod.usercutoff", $usercutoff);
 
-        $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
+        $dates = array_flip($period["dates"]);
         foreach ($dates as $date => &$value) {
             if ($user->me) {
                 $here = TimeclockHelpersDate::checkEmploymentDates($estart, $eend, $date);
@@ -315,7 +305,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $registry->set("payperiod.subtotals", $subtotals);
 
         $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
-        $done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
+        $done = TimeclockHelpersDate::compareDates($timesheetDone, $period["start"]) >= 0;
         $registry->set("payperiod.done", $done);
         
         $this->setState($registry);

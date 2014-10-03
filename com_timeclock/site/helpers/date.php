@@ -209,6 +209,42 @@ class TimeclockHelpersDate
 
     }
     /**
+    * Calculates the start date of the pay period that $date is in, based on
+    * the payperiod length, and the start of the first period.
+    *
+    * @param mixed  $firstPeriodStart The first pay period start date.
+    * @param mixed  $date             The date in question
+    * @param int    $len              The length of the period
+    *
+    * @return array
+    */
+    static public function fixedPayPeriod($firstPeriodStart, $date, $len)
+    {
+        $return = array();
+        $len = empty($len) ? 14 : $len;
+        $start = TimeclockHelpersDate::fixedPayPeriodStart($firstPeriodStart, $date, $len);
+        $return["days"] = $len;
+        $return["start"] = $start;
+        $s = TimeclockHelpersDate::explodeDate($start);
+        $end = TimeclockHelpersDate::dateUnix(
+            $s["m"], $s["d"]+$len-1, $s["y"]
+        );
+        $return["end"] = date("Y-m-d", $end);
+        $next = TimeclockHelpersDate::dateUnix(
+            $s["m"], $s["d"]+$len, $s["y"]
+        );
+        $return["next"] = date("Y-m-d", $next);
+        $prev = TimeclockHelpersDate::dateUnix(
+            $s["m"], $s["d"]-$len, $s["y"]
+        );
+        $return["prev"] = date("Y-m-d", $prev);
+        $return["dates"] = TimeclockHelpersDate::payPeriodDates(
+            $return["start"], $return["end"]
+        );
+
+        return $return;
+    }
+    /**
     * Creates an array where the values are the dates of the payperiod days, in order
     *
     * @param string $start The first day of the payperiod
