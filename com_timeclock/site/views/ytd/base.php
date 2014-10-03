@@ -133,12 +133,12 @@ class TimeclockViewsYtdBase extends JViewBase
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $report = JText::sprintf("COM_TIMECLOCK_WCOMP_REPORT_TITLE", $this->start, $this->end);
+        $report = JText::sprintf("COM_TIMECLOCK_YTD_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_WCOMP_REPORT"));
+            ->setKeywords(JText::_("COM_TIMECLOCK_YTD_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -152,7 +152,7 @@ class TimeclockViewsYtdBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_WCOMP_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_YTD_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -181,8 +181,8 @@ class TimeclockViewsYtdBase extends JViewBase
         $places = $this->params->get("decimalPlaces");
         $total  = array();
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
-        foreach ($this->codes as $code) {
-            $value = isset($data->data[$code]) ? $data->data[$code] : 0;
+        foreach (array_keys($this->data["cols"]) as $column) {
+            $value = isset($data->data[$column]) ? $data->data[$column] : 0;
             $col = $this->nextCol($col);
             $dat = $col.$this->line;
             $total[] = $dat;
@@ -220,9 +220,9 @@ class TimeclockViewsYtdBase extends JViewBase
     {
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_USER"));
-        foreach ($this->codes as $code) {
+        foreach ($this->data["cols"] as $column) {
             $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $code);
+            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_($column));
         }
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
