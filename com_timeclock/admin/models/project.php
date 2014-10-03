@@ -228,6 +228,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
     */
     public function addUsers($users, $project_id = null)
     {
+        $db = JFactory::getDBO();
         $project_id = is_null($project_id) ? $this->_project_id : $project_id;
         if(!is_numeric($project_id)) {
             return false;

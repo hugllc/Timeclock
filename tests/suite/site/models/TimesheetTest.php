@@ -186,8 +186,8 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
                 array(
                     0 => array(
                         'id' => 0,
-                        'name' => 'COM_TIMECLOCK_GENERAL',
-                        'description' => 'COM_TIMECLOCK_GENERAL_DESC',
+                        'name' => 'JNONE',
+                        'description' => '',
                         'proj' => array(
                             1 => array(
                                 "project_id" => 1,
@@ -221,8 +221,8 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
                 array(
                     0 => array(
                         'id' => 0,
-                        'name' => 'COM_TIMECLOCK_GENERAL',
-                        'description' => 'COM_TIMECLOCK_GENERAL_DESC',
+                        'name' => 'JNONE',
+                        'description' => '',
                         'proj' => array(
                             1 => array(
                                 "project_id" => 1,
