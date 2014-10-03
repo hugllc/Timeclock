@@ -87,10 +87,10 @@ class TimeclockModelsYtd extends TimeclockModelsReport
             $return["totals"]["total"] += $row->hours;
         }
         $return["cols"] = array(
-            "PROJECT" => COM_TIMECLOCK_WORKED, 
-            "HOLIDAY" => COM_TIMECLOCK_HOLIDAY, 
-            "UNPAID" => COM_TIMECLOCK_VOLUNTEER, 
-            "PTO" => COM_TIMECLOCK_PTO
+            "PROJECT" => "COM_TIMECLOCK_WORKED", 
+            "HOLIDAY" => "COM_TIMECLOCK_HOLIDAY", 
+            "UNPAID" => "COM_TIMECLOCK_VOLUNTEER", 
+            "PTO" => "COM_TIMECLOCK_PTO_TAKEN"
         );
         return $return;
     }
