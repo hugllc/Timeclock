@@ -624,6 +624,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $query->leftjoin('#__timeclock_users as z on 
             ((z.user_id = t.user_id OR p.type = "HOLIDAY") AND t.project_id = z.project_id)');
         $query->leftjoin('#__users as u on z.user_id = u.id');
+        $query->where($db->quoteName("t.project_id").">=".$db->quote(0));
         return $query;
     }
     /**

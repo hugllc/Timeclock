@@ -355,6 +355,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->leftjoin('#__users as v on t.created_by = v.id');
         $query->leftjoin('#__timeclock_users as z on 
             (z.user_id = '.$db->quote($this->getUser()->id).' AND t.project_id = z.project_id)');
+        $query->where($db->quoteName("t.project_id").">=".$db->quote(0));
         return $query;
     }
     /**
