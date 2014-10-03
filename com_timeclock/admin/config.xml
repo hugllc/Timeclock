@@ -260,6 +260,7 @@
             required="true"
                 >
                     <option value="week">COM_TIMECLOCK_WEEK</option>
+                    <option value="payperiod">COM_TIMECLOCK_PAYPERIOD</option>
                     <option value="month">COM_TIMECLOCK_MONTH</option>
                     <option value="year">COM_TIMECLOCK_YEAR</option>
         </field>

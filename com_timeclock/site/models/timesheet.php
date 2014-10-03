@@ -54,6 +54,8 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     private $_projects = null;
     /** This is our percentage of holiday pay */
     private $_holiday_perc = 1;
+    /** This is our percentage of holiday pay */
+    private $_user_id = null;
     
     /**
     * The constructor
@@ -61,9 +63,9 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     public function __construct()
     {
         // Set the user
-        $app  = JFactory::getApplication();
-        $pk   = $app->input->get('id', null, "int");
-        $user = $this->getUser($pk);
+        $app      = JFactory::getApplication();
+        $pk = $app->input->get('id', null, "int");
+        $this->_user_id = empty($pk) ? $this->getUser()->id : $pk;
         parent::__construct(); 
     }
     /**
@@ -322,22 +324,47 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     * This function gets the dates of the period, and says wheter or not time can 
     * be added to it
     *
-    * @param string $start  The first day of employment
-    * @param string $end    The last day of employment
-    * @param string $cutoff The last day locked down so time can't be entered
+    * @param int    $id    The user id of the timesheet to get
+    * @param string $start The first day of employment
+    * @param string $end   The last day of employment
+    * @param bool   $paid  Only paid records?
     *
-    * @return array, keys are the dates, values are true if time can be added
+    * @return The total hours for this time period
     */
-    private function _getPayPeriodDates($start, $end, $cutoff)
-    {
+    public function periodTotal(
+        $id = null, $start = null, $end = null, $paid = true
+    ) {
+        $id    = empty($id) ? $this->_user_id : $id;
+        $start = empty($start) ? $this->getState('start') : $start;
+        $end   = empty($end) ? $this->getState('end') : $end;
+        $query = $this->_buildQuery($id);
+        $this->_periodWhere($query, $start, $end);
+        $this->_userWhere($query, $id);
+
+        $list = $this->_getList($query);
+        $this->listProjects();
+        $return = 0.0;
+        foreach ($list as $row) {
+            if ($paid && ($row->project_type == "UNPAID")) {
+                continue;
+            }
+            $proj_id = (int)$row->project_id;
+            $cat_id  = (int)$row->cat_id;
+            $this->checkTimesheet($row);
+            $return += $row->hours;
+        }
+        return (float)$return;
     }
     /**
     * Builds the query to be used by the model
     *
+    * @param int $id The user id of the timesheet to get
+    *
     * @return object Query object
     */
-    protected function _buildQuery()
+    protected function _buildQuery($id = null)
     {
+        $id = empty($id) ? $this->_user_id : $id;
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id,
@@ -354,7 +381,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->select('v.name as author');
         $query->leftjoin('#__users as v on t.created_by = v.id');
         $query->leftjoin('#__timeclock_users as z on 
-            (z.user_id = '.$db->quote($this->getUser()->id).' AND t.project_id = z.project_id)');
+            (z.user_id = '.$db->quote((int)$id).' AND t.project_id = z.project_id)');
         $query->where($db->quoteName("t.project_id").">=".$db->quote(0));
         return $query;
     }
@@ -371,25 +398,59 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     { 
         $db = JFactory::getDBO();
 
-        $start = $this->getState("payperiod.start");
-        $end   = $this->getState("payperiod.end");
+        $this->_periodWhere($query);
+        $this->_userWhere($query);
+        
+        return $query;
+    }
+    /**
+    * This function gets the dates of the period, and says wheter or not time can 
+    * be added to it
+    *
+    * @param object $query The query to build on
+    * @param string $start The first day
+    * @param string $end   The last day
+    *
+    * @return The total hours for this time period
+    */
+    private function _periodWhere($query, $start = null, $end = null)
+    {
+        $db = JFactory::getDBO();
+        $start = empty($start) ? $this->getState("payperiod.start") : $start;
+        $end   = empty($end)   ? $this->getState("payperiod.end")   : $end;
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
 
+    }
+    /**
+    * This function gets the dates of the period, and says wheter or not time can 
+    * be added to it
+    *
+    * @param object $query The query to build on
+    * @param int    $id    The ID to use
+    *
+    * @return The total hours for this time period
+    */
+    private function _userWhere($query, $id = null)
+    {
+        $db = JFactory::getDBO();
+        $id = empty($id) ? $this->_user_id : $id;
+        $user = $this->getUser($id);
         $query->where(
-            "((".$db->quoteName("t.user_id")."=".$db->quote($this->getUser()->id)." AND "
+            "((".$db->quoteName("t.user_id")."=".$db->quote($user->id)." AND "
             .$db->quoteName("p.type")."<>'HOLIDAY') OR ("
-            .$db->quoteName("z.user_id")."=".$db->quote($this->getUser()->id)." AND "
+            .$db->quoteName("z.user_id")."=".$db->quote($user->id)." AND "
             .$db->quoteName("p.type")."='HOLIDAY'))"
         );
-        $start = $this->getState("employment.start");
+        $start = isset($user->timeclock["startDate"]) ? $user->timeclock["startDate"] : 0;
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
-        $end = $this->getState("employment.end");
+        $end = isset($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
         if (!empty($end)) {
             $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
         }
-        return $query;
+
     }
+
     /**
     * Builds the query to be used by the model
     *
@@ -407,7 +468,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');
         $query->select('r.name as parent_name, r.description as parent_description');
         $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');
-        $query->where('q.user_id = '.$db->quote($this->getUser()->id));
+        $query->where('q.user_id = '.$db->quote($this->_user_id));
         $query->where('q.project_id > 0');
         $query->order("p.name asc");
         return $query;

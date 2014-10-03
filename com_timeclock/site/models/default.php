@@ -60,7 +60,7 @@ class TimeclockModelsSiteDefault extends JModelBase
     protected $context         = null;
     protected $_defaultSortDir = "asc";
     private   $_user           = null;
-    private   $_users          = null;
+    private   $_users          = array();
     /**
     * The constructor
     */
@@ -245,14 +245,15 @@ class TimeclockModelsSiteDefault extends JModelBase
     * 
     * @return array An array of results.
     */
-    public function getUser($id = null)
+    public function &getUser($id = null)
     {
-        if (is_null($this->_user)) {
-            $this->_user = JFactory::getUser($id);
-            $this->_user->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user->id);
-            $this->_user->me = is_null($id);
+        $id = empty($id) ? null : (int)$id;
+        if (!isset($this->_user[$id])) {
+            $this->_user[$id] = JFactory::getUser($id);
+            $this->_user[$id]->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user[$id]->id);
+            $this->_user[$id]->me = is_null($id);
         }
-        return $this->_user;
+        return $this->_user[$id];
     }
     /**
     * Build query and where for protected _getList function and return a list

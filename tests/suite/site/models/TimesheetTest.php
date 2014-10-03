@@ -362,6 +362,151 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
             ),
         );
     }
+    /**
+    * data provider for testGetList
+    *
+    * @return array
+    */
+    public static function dataPeriodTotal()
+    {
+        return array(
+             "No Hours" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                null,
+                null,
+                null,
+                true,
+                0.0 // Expected Return
+            ),
+             "Full Week Paid Only" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                null,
+                "2014-09-01",
+                "2014-09-07",
+                true,
+                24.0 // Expected Return
+            ),
+             "3 days Paid Only" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                null,
+                "2014-09-01",
+                "2014-09-03",
+                true,
+                16.0 // Expected Return
+            ),
+             "Full Week Indirect ID" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                null,
+                "2014-09-01",
+                "2014-09-07",
+                false,
+                40.0 // Expected Return
+            ),
+             "3 days Indirect ID" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                null,
+                "2014-09-01",
+                "2014-09-03",
+                false,
+                24.0 // Expected Return
+            ),
+             "Full Week Indirect ID" => array(
+                array(
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                42,
+                "2014-09-01",
+                "2014-09-07",
+                false,
+                40.0 // Expected Return
+            ),
+             "3 days Direct ID" => array(
+                array(
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                42,
+                "2014-09-01",
+                "2014-09-03",
+                false,
+                24.0 // Expected Return
+            ),
+       );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $input   The name of the variable to test.
+    * @param array  $options The options to give the mock session.
+    * @param int    $id      The user id of the timesheet to get
+    * @param string $start   The first day of employment
+    * @param string $end     The last day of employment
+    * @param bool   $paid    Only paid records?
+    * @param array  $expects The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPeriodTotal
+    */
+    public function testPeriodTotal(
+        $input, $options, $id, $start, $end, $paid, $expect
+    ) {
+        $this->setSession($options);
+        $this->setInput($input);
+        $model = $this->model;
+        $obj = new $model();
+        $ret = $obj->periodTotal($id, $start, $end, $paid);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 

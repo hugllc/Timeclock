@@ -207,7 +207,6 @@ class ModelTestBase extends \com_timeclock\TestCaseDatabase
     {
         $this->setSession($options);
         $this->setInput($input);
-        $this->setSession($options);
         $model = $this->model;
         $obj = new $model();
         $reg = $obj->getState($name, $default);

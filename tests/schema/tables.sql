@@ -19,6 +19,23 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_timesheet` (
   CONSTRAINT `project_id` UNIQUE (`project_id`,`user_id`,`worked`)
 );
 
+CREATE TABLE IF NOT EXISTS `#__timeclock_pto` (
+  `pto_id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `type` varchar(16) NOT NULL DEFAULT 'ACCRUAL',
+  `user_id` int(11) NOT NULL,
+  `hours` float NOT NULL DEFAULT '0',
+  `link_id` int(11) NOT NULL DEFAULT '0',
+  `valid_from` date NOT NULL,
+  `valid_to` date NOT NULL,
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `notes` text NOT NULL,
+  `checked_out` int(11) NOT NULL DEFAULT '0',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  CONSTRAINT `valid_from` UNIQUE (`user_id`,`valid_from`)
+);
+
 CREATE TABLE IF NOT EXISTS `jos_timeclock_reports` (
   `report_id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `name` varchar(64) NOT NULL DEFAULT '',
@@ -111,7 +128,3 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_projects` (
 CREATE INDEX `customer_id_jos_timeclock_projects` ON `jos_timeclock_projects` (`customer_id`);
 CREATE INDEX `department_id_jos_timeclock_projects` ON `jos_timeclock_projects` (`department_id`);
 CREATE INDEX `manager_id_jos_timeclock_projects` ON `jos_timeclock_projects` (`manager_id`);
-
-REPLACE INTO `jos_timeclock_projects` (`project_id`, `name`, `description`, `created_by`, `created`, `modified`, `manager_id`, `research`, `type`, `parent_id`, `wcCode1`, `wcCode2`, `wcCode3`, `wcCode4`, `wcCode5`, `wcCode6`, `customer_id`, `department_id`, `checked_out`, `checked_out_time`, `published`) VALUES(-3, 'COM_TIMECLOCK_UNPAID', 'COM_TIMECLOCK_UNPAID_DESC', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 'CATEGORY', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 1);
-REPLACE INTO `jos_timeclock_projects` (`project_id`, `name`, `description`, `created_by`, `created`, `modified`, `manager_id`, `research`, `type`, `parent_id`, `wcCode1`, `wcCode2`, `wcCode3`, `wcCode4`, `wcCode5`, `wcCode6`, `customer_id`, `department_id`, `checked_out`, `checked_out_time`, `published`) VALUES(-2, 'COM_TIMECLOCK_SPECIAL', 'COM_TIMECLOCK_SPECIAL_DESC', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 'CATEGORY', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 1);
-REPLACE INTO `jos_timeclock_projects` (`project_id`, `name`, `description`, `created_by`, `created`, `modified`, `manager_id`, `research`, `type`, `parent_id`, `wcCode1`, `wcCode2`, `wcCode3`, `wcCode4`, `wcCode5`, `wcCode6`, `customer_id`, `department_id`, `checked_out`, `checked_out_time`, `published`) VALUES(-1, 'COM_TIMECLOCK_GENERAL', 'COM_TIMECLOCK_GENERAL_DESC', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 'CATEGORY', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 1);
