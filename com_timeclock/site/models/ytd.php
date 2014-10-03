@@ -53,7 +53,7 @@ class TimeclockModelsYtd extends TimeclockModelsReport
     /** This is the type of report */
     protected $type = "ytd";
     /** This is the default date to start this report on */
-    protected $defaultDate = "Y-01-01";
+    protected $defaultStart = "Y-01-01";
 
     /**
     * Build query and where for protected _getList function and return a list
