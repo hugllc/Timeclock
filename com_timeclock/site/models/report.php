@@ -69,7 +69,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     /** This is our context */
     protected $context = null;
     /** This is the default date to start this report on */
-    protected $defaultDate = "Y-m-01";
+    protected $defaultStart = "Y-m-01";
 
     /**
     * The constructor
