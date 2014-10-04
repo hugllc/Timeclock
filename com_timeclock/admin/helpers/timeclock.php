@@ -173,6 +173,46 @@ class TimeclockHelpersTimeclock
         return (array)$ret;
     }
     /**
+     * get an array of PTO accrual rates
+     *
+     * @return array
+     */
+    static public function getPtoAccrualRates()
+    {
+        $enabled = (bool)self::getParam("ptoEnable");
+        if (!$enabled) {
+            return array();
+        }
+        $ret = array();
+
+        $rates = self::getParam("ptoAccrualRates");
+        foreach (explode("\n", $rates) as $line) {
+            $line = trim($line);
+            if (!isset($keys)) {
+                $keys = explode(":", $line);
+            } else {
+                $line = explode(":", $line);
+                foreach ($keys as $k => $name) {
+                    $ret[$name][$line[0]] = $line[$k+1];
+                }
+            }
+        }
+        return (array)$ret;
+    }
+    /**
+     * get an array of PTO accrual rates
+     *
+     * @param object &$user The user to get accrual rates for
+     * 
+     * @return array
+     */
+    static public function getPtoAccrualRate(&$user)
+    {
+        $rates = self::getPtoAccrualRates();
+        var_dump($rates);
+        return (array)$ret;
+    }
+    /**
     * gets a component parameter
     *
     * @param string $param The parameter to get

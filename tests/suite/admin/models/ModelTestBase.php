@@ -171,13 +171,17 @@ class ModelTestBase extends \com_timeclock\TestCaseDatabase
         $model = $this->model;
         $obj = new $model();
         $ret = $obj->getItem();
-        $this->assertInternalType("object", $ret, "Return is not an object");
-        foreach ($expects as $key => $expect) {
-            $this->assertEquals(
-                $expect, 
-                $ret->$key,
-                "Item ($key => $expect) is wrong (".$ret->$key.")"
-            );
+        if (is_array($expects)) {
+            $this->assertInternalType("object", $ret, "Return is not an object");
+            foreach ($expects as $key => $expect) {
+                $this->assertEquals(
+                    $expect, 
+                    $ret->$key,
+                    "Item ($key => $expect) is wrong (".$ret->$key.")"
+                );
+            }
+        } else {
+            $this->assertSame($expects, $ret);
         }
     }
     /**

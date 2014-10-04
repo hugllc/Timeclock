@@ -173,14 +173,18 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     /**
     * Sets an accrual record for the
     * 
-    * @param int $id The id of the item to check in
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
     * 
     * @return  boolean
     */
-    public function accrue($date, $id = null)
+    public function accrue($start, $end, $id = null)
     {
+        $user      = $this->getUser($id);
+        $rates     = TimeclockHelpersTimeclock::getPtoAccrualRates();
         $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
-        
+        $hours     = periodTotal($user->id, $start, $end, true);
         return true;
     }
 

@@ -61,6 +61,7 @@ class TimeclockModelsDefault extends JModelBase
     protected $_defaultSortDir = "asc";
     public $insert_id          = null;
     protected $namefield       = "name";
+    private   $_users          = array();
 
     /**
     * The constructor
@@ -527,5 +528,21 @@ class TimeclockModelsDefault extends JModelBase
     {
         $name  = $this->namefield;
         return JText::_($row->$name);
+    }
+    /**
+    * Gets the user and returns the timeclock params
+    *
+    * @param int $id The id of the user to get
+    * 
+    * @return array An array of results.
+    */
+    public function &getUser($id = null)
+    {
+        $id = empty($id) ? null : (int)$id;
+        if (!isset($this->_user[$id])) {
+            $this->_user[$id] = JFactory::getUser($id);
+            $this->_user[$id]->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user[$id]->id);
+        }
+        return $this->_user[$id];
     }
 }
