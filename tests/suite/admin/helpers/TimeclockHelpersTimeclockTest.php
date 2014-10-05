@@ -80,6 +80,54 @@ class TimeclockHelpersTimeclockTest extends \com_timeclock\TestCase
     *
     * @return array
     */
+    public static function dataGetUserTypes()
+    {
+        return array(
+            "Nothing Set" => array(
+                array(), // $params
+                array(), // $userparams
+                array("EMPLOYEE" => "Employee"),    // $expect
+            ),
+            "No Settings" => array(
+                array("userTypes" => "\n\n\n"), // $params
+                array(), // $userparams
+                array("EMPLOYEE" => "Employee"),    // $expect
+            ),
+            "No Label" => array(
+                array("userTypes" => "  Full time  \n Parttime   \n  Temporary  \n"), // $params
+                array(), // $userparams
+                array('FULLTIME' => 'Full time', 'PARTTIME' => 'Parttime', 'TEMPORARY' => 'Temporary'),    // $expect
+            ),
+            "Normal" => array(
+                array("userTypes" => "FULLTIME:Here\nPARTTIME:There\nTEMPORARY: What are you talking about?\n"), // $params
+                array(), // $userparams
+                array('FULLTIME' => 'Here', 'PARTTIME' => 'There', 'TEMPORARY' => 'What are you talking about?'),    // $expect
+            ),
+        );
+    }
+    /**
+    * Checks to see if we get proper stuff from this function
+    *
+    * @param array $params     The component parameters to use
+    * @param array $userparams The user parameters to use
+    * @param array $expect     The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetUserTypes
+    */
+    public function testGetUserTypes($params, $userparams, $expect)
+    {
+        $this->setComponentConfig($params);
+        $this->setUserConfig($userparams);
+
+        $this->assertSame($expect, \TimeclockHelpersTimeclock::getUserTypes());
+    }
+    /**
+    * data provider for testGet
+    *
+    * @return array
+    */
     public static function dataGetWCompCodes()
     {
         return array(
@@ -113,8 +161,9 @@ class TimeclockHelpersTimeclockTest extends \com_timeclock\TestCase
     /**
     * Checks to see if we get proper stuff from this function
     *
-    * @param string $date   The date to give the function
-    * @param array  $expect The expected return
+    * @param array $params     The component parameters to use
+    * @param array $userparams The user parameters to use
+    * @param array $expect     The expected return
     *
     * @return null
     *
@@ -163,8 +212,9 @@ class TimeclockHelpersTimeclockTest extends \com_timeclock\TestCase
     /**
     * Checks to see if we get proper stuff from this function
     *
-    * @param string $date   The date to give the function
-    * @param array  $expect The expected return
+    * @param array $params     The component parameters to use
+    * @param array $userparams The user parameters to use
+    * @param array $expect     The expected return
     *
     * @return null
     *
@@ -176,6 +226,145 @@ class TimeclockHelpersTimeclockTest extends \com_timeclock\TestCase
         $this->setUserConfig($userparams);
 
         $this->assertSame($expect, \TimeclockHelpersTimeclock::getPtoAccrualRates());
+    }
+    /**
+    * data provider for testGet
+    *
+    * @return array
+    */
+    public static function dataGetPtoAccrualRate()
+    {
+        return array(
+            "Nothing Set" => array(
+                array(), // $params
+                array(), // $userparams
+                42,
+                "2014-09-01",
+                0,    // $expect
+            ),
+            "PTO Off" => array(
+                array("ptoEnable" => false), // $params
+                array(
+                    42 => array(
+                    ),
+                ), // $userparams
+                42,
+                "2014-09-01",
+                0,    // $expect
+            ),
+            "PTO On No Settings" => array(
+                array("ptoEnable" => true, "ptoAccrualRates" => "\n\n\n"), // $params
+                array(
+                    42 => array(
+                    ),
+                ), // $userparams
+                42,
+                "2014-09-01",
+                0,    // $expect
+            ),
+            "PTO On Normal 10+ FT" => array(
+                array("ptoEnable" => true, "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:5:2.5\n5:10:5\n10:20:10\n"), // $params
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                42,
+                "2014-09-01",
+                20.0,    // $expect
+            ),
+            "PTO On Normal <10 FT" => array(
+                array("ptoEnable" => true, "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:5:2.5\n5:10:5\n10:15:7.5\n99:20:10\n"), // $params
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                42,
+                "2010-08-31",
+                15.0,    // $expect
+            ),
+            "PTO On Normal 10+ PT" => array(
+                array("ptoEnable" => true, "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:5:2.5\n5:10:5\n10:20:10\n"), // $params
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'PARTTIME',
+                    ),
+                ), // $userparams
+                42,
+                "2014-09-01",
+                10.0,    // $expect
+            ),
+            "PTO On Normal <10 PT" => array(
+                array("ptoEnable" => true, "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:5:2.5\n5:10:5\n10:15:7.5\n99:20:10\n"), // $params
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'PARTTIME',
+                    ),
+                ), // $userparams
+                42,
+                "2010-08-31",
+                7.5,    // $expect
+            ),
+            "PTO On Normal 10+ TEMP" => array(
+                array("ptoEnable" => true, "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:5:2.5\n5:10:5\n10:20:10\n"), // $params
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'TEMPORARY',
+                    ),
+                ), // $userparams
+                42,
+                "2014-09-01",
+                0,    // $expect
+            ),
+            "PTO On Normal <10 TEMP" => array(
+                array("ptoEnable" => true, "ptoAccrualRates" => "FULLTIME:PARTTIME\n1:5:2.5\n5:10:5\n10:15:7.5\n99:20:10\n"), // $params
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'TEMPORARY',
+                    ),
+                ), // $userparams
+                42,
+                "2010-08-31",
+                0,    // $expect
+            ),
+        );
+    }
+    /**
+    * Checks to see if we get proper stuff from this function
+    *
+    * @param array  $params     The component parameters to use
+    * @param array  $userparams The user parameters to use
+    * @param int    $user_id    The user id to get the rate for
+    * @param string $date       The date to get the rate for
+    * @param array  $expect     The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPtoAccrualRate
+    */
+    public function testGetPtoAccrualRate(
+        $params, $userparams, $user_id, $date, $expect
+    ) {
+        $this->setComponentConfig($params);
+        $this->setUserConfig($userparams);
+
+        $this->assertSame(
+            $expect, 
+            \TimeclockHelpersTimeclock::getPtoAccrualRate($user_id, $date)
+        );
     }
 
 }

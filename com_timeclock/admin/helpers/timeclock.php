@@ -134,6 +134,7 @@ class TimeclockHelpersTimeclock
     static public function getUserTypes()
     {
         $v = explode("\n", self::getParam("userTypes"));
+        $ret = array();
         foreach ($v as $line) {
             $line = strip_tags(trim($line));
             if (empty($line)) {
@@ -149,6 +150,9 @@ class TimeclockHelpersTimeclock
                 $ret[$key] = $line;
             }
         }
+        if (empty($ret)) {
+            $ret = array("EMPLOYEE" => "Employee");
+        }
         return (array)$ret;
     }
     /**
@@ -162,26 +166,31 @@ class TimeclockHelpersTimeclock
         if (!$enabled) {
             return array(0 => "Hours");
         }
-        $ret = array();
-        $v = explode("\n", self::getParam("wCompCodes"));
-        foreach ($v as $line) {
-            if (empty($line)) {
-                continue;
+        $codes = self::getParam("wCompCodes");
+        if (is_string($codes)) {
+            $v = explode("\n", $codes);
+            $codes = array();
+            foreach ($v as $line) {
+                if (empty($line)) {
+                    continue;
+                }
+                $line = trim($line);
+                $line = explode(" ", $line);
+                $key = abs($line[0]);
+                unset($line[0]);
+                $val = implode(" ", $line);
+                if (empty($val)) {
+                    $val = (string)$key;
+                }
+                $codes[(int)$key] = trim($val);
             }
-            $line = trim($line);
-            $line = explode(" ", $line);
-            $key = abs($line[0]);
-            unset($line[0]);
-            $val = implode(" ", $line);
-            if (empty($val)) {
-                $val = (string)$key;
+            if (empty($codes)) {
+                $codes = array(0 => "Hours");
             }
-            $ret[(int)$key] = trim($val);
+            // Cache this in the params
+            self::$params["wCompCodes"] = $codes;
         }
-        if (empty($ret)) {
-            $ret = array(0 => "Hours");
-        }
-        return $ret;
+        return $codes;
     }
     /**
      * get an array of PTO accrual rates
@@ -225,18 +234,21 @@ class TimeclockHelpersTimeclock
      */
     static public function getPtoAccrualRate($user_id, $date)
     {
-        $rates = TimeclockHelper::getPtoAccrualRates();
+        $rates = self::getPtoAccrualRates();
+        if (empty($rates)) {
+            return 0;
+        }
         $service = self::getServiceLength($user_id, $date);
-        $status = TimeclockHelper::getUserParam('status', $user_id);
-        $end    = TimeclockHelper::getUserParam("endDate", $user_id);
-        $start  = TimeclockHelper::getUserParam("startDate", $user_id);
+        $status = self::getUserParam('status', $user_id);
+        $end    = self::getUserParam("endDate", $user_id);
+        $start  = self::getUserParam("startDate", $user_id);
         if ($service == 0) {
             return 0;
         }
-        if (TimeclockHelpersDate::checkEmploymentDates($start, $end, $date)) {
+        if (!TimeclockHelpersDate::checkEmploymentDates($start, $end, $date)) {
             return 0;
         }
-        if (!is_array($rates[$status])) {
+        if (!isset($rates[$status]) || !is_array($rates[$status])) {
             return 0;
         }
         foreach ($rates[$status] as $s => $r) {
@@ -286,7 +298,7 @@ class TimeclockHelpersTimeclock
     */
     static public function getUserParams($id=null)
     {
-        if (!isset(self::$userparams[$id]) || $new) {
+        if (!isset(self::$userparams[$id])) {
             self::$userparams[$id] = plgUserTimeclock::getParams($id);
         }
         return (array)self::$userparams[$id];
