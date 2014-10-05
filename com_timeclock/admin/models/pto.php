@@ -181,31 +181,21 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     public function setAccrual($start, $end, $id = null)
     {
-    }
-    /**
-    * Sets an accrual record for the
-    * 
-    * @param string $start The date to start
-    * @param string $end   The date to end
-    * @param int    $id    The id of the user to accrue for
-    * 
-    * @return  boolean
-    */
-    public function setAccrualWeek($start, $id = null)
-    {
         $start = TimeclockHelpersDate::fixDate($start);
-        $end   = TimeclockHelpersDate::end($start, 7);
+        $end   = TimeclockHelpersDate::fixDate($end);
         $s     = TimeclockHelpersDate::explodeDate($start);
         $e     = TimeclockHelpersDate::explodeDate($end);
         if ($s["y"] == $e["y"]) {
-            $hours = $this->_calcAccrual($start, $end, $id);
-            $this->_setAccrual($end, $hours, $id);
+            $hours = $this->calcAccrual($start, $end, $id);
+            $return = $this->_setAccrual($end, $hours, $id);
         } else {
             $end1   = $s["y"]."-12-31";
-            $hours  = $this->_calcAccrual($start, $end1, $id);
-            $this->_setAccrual($end1, $hours, $id);
-            $hours += $this->_calcAccrual($e["y"]."-01-01", $end, $id);
-            $this->_setAccrual($end, $hours, $id);
+            $hours  = $this->calcAccrual($start, $end1, $id);
+            $return = $this->_setAccrual($end1, $hours, $id);
+            if ($return) {
+                $hours  = $this->calcAccrual($e["y"]."-01-01", $end, $id);
+                $return = $this->_setAccrual($end, $hours, $id);
+            }
         }
         return $return;
     }
@@ -218,33 +208,41 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
+    public function setAccrualWeek($start, $id = null)
+    {
+        $end = TimeclockHelpersDate::end($start, 7);
+        return $this->setAccrual($start, $end, $id);
+    }
+    /**
+    * Sets an accrual record for the
+    * 
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * 
+    * @return  boolean
+    */
     private function _setAccrual($date, $hours, $id = null)
     {
-        $app = JFactory::getApplication();
-        $row = JTable::getInstance('TimeclockPto', 'Table');
         $id  = empty($id) ? $this->getUser()->id : (int)$id;
         
+        $row = new stdClass();
         $d = TimeclockHelpersDate::explodeDate($date);
         if (!is_object($row)) {
             return false;
         }
-        $row->type        = "ACCRUAL";
-        $row->user_id     = $id;
-        $row->hours       = $hours;
-        $row->valid_from  = $date;
-        $row->valid_to    = $d["y"]."-12-31";
-        $row->created_by  = $this->getUser()->id;
-        $row->created     = date("Y-m-d H:i:s");
-        $row->modified    = $row->created;
-        $row->description = "Automatic Accrual";
+        $row->type       = "ACCRUAL";
+        $row->user_id    = $id;
+        $row->hours      = $hours;
+        $row->valid_from = $date;
+        $row->valid_to   = $d["y"]."-12-31";
+        $row->created_by = $this->getUser()->id;
+        $row->created    = date("Y-m-d H:i:s");
+        $row->modified   = $row->created;
+        $row->notes      = "Automatic Accrual";
         
-        if (!$row->check()) {
-            return false;
-        }
-    
-        if (!$row->store()) {
-            return false;
-        }
+        $this->store($row);
+        
         return true;
     }
     /**

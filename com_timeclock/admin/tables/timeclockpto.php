@@ -87,7 +87,7 @@ class TableTimeclockPto extends JTable
             $this->type = "ACCRUAL";
         }
         $places = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
-        $this->$hours = round($this->hours, $places);
+        $this->hours = round($this->hours, $places);
         return true;
     }
     

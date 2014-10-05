@@ -63,7 +63,7 @@ class TestCaseDatabase extends \TestCaseDatabase
     protected function setUp()
     {
         $this->saveFactoryState();
-
+        $this->setUpBeforeClass();
         \JFactory::$application = $this->getMockCmsApp();
         \JFactory::$config      = $this->getConfig();
         \JFactory::$document    = $this->getMockDocument();
@@ -83,6 +83,7 @@ class TestCaseDatabase extends \TestCaseDatabase
     {
         $this->restoreFactoryState();
         parent::tearDown();
+        $this->tearDownAfterClass();
     }
     /**
      * This method is called before the first test of this test class is run.

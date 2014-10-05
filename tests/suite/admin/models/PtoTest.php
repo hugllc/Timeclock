@@ -253,6 +253,149 @@ class PtoTest extends ModelTestBase
         $ret = $obj->CalcAccrual($start, $end, $id);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * data provider for testAccrual
+    *
+    * @return array
+    */
+    public static function dataSetAccrual()
+    {
+        return array(
+            "Normal" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2014-01-06",  // Start
+                "2014-01-12",  // End
+                42,            // id
+                true,            // Expect,
+                array(
+                    array(
+                        'hours' => '3.08',
+                        'created_by' => '44',
+                        'valid_from' => '2014-01-12',
+                        'valid_to' => '2014-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                ),              // ExpectDB
+            ),
+            "Year Boundry" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2013-12-30",  // Start
+                "2014-01-05",  // End
+                42,            // id
+                true,            // Expect,
+                array(
+                    array(
+                        'hours' => '1.23',
+                        'created_by' => '44',
+                        'valid_from' => '2013-12-31',
+                        'valid_to' => '2013-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                    array(
+                        'hours' => '1.85',
+                        'created_by' => '44',
+                        'valid_from' => '2014-01-05',
+                        'valid_to' => '2014-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                ),              // ExpectDB
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $input    The name of the variable to test.
+    * @param mixed  $options  The session information to set up
+    * @param array  $config   The configuration to set up for the component
+    * @param string $start    The date to start
+    * @param string $end      The date to end
+    * @param int    $id       The id of the user to accrue for
+    * @param array  $expect   The expected return
+    * @param array  $expectDB The expected database entry
+    *
+    * @return null
+    *
+    * @dataProvider dataSetAccrual
+    */
+    public function testSetAccrual(
+        $input, $options, $config, $userconfig, $start, $end, $id, $expect, $expectDB
+    ) {
+        $this->setSession($options);
+        $this->setInput($input);
+        $this->setComponentConfig($config);
+        $this->setUserConfig($userconfig);
+        $model = $this->model;
+        $obj = new $model();
+        $ret = $obj->setAccrual($start, $end, $id);
+        $this->assertSame($expect, $ret, "The return is wrong");
+
+        $db = \JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('o.hours as hours, o.created_by as created_by, o.valid_from as valid_from,
+            o.valid_to as valid_to, o.notes as notes, o.user_id as user_id');
+        $query->from('#__timeclock_pto as o');
+        $query->where("o.valid_from >= '$start'");
+        $query->where("o.valid_from <= '$end'");
+        $query->where("o.user_id = '$id'");
+        $db->setQuery($query);
+        $res = $db->loadAssocList();
+        $this->assertEquals($expectDB, $res, "The database is wrong");
+
+    }
 
 }
 
