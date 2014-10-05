@@ -263,6 +263,9 @@ class TimeclockHelpersDate
         for ($i = 0; $i < $days; $i++) {
             $date = self::fixDate(self::dateUnix($first["m"], $day++, $first["y"]));
             $ret[] = $date;
+            if ($date == $end) {
+                break;
+            }
         }
         return $ret;
     }
