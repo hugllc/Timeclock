@@ -184,6 +184,64 @@ class PtoTest extends ModelTestBase
             ),
         );
     }
+    /**
+    * data provider for testAccrual
+    *
+    * @return array
+    */
+    public static function dataAccrual()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                "ptoEnable" => true,
+                "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                        1:10:5
+                                        5:20:10
+                                        10:30:15
+                                        99:40:20',
+                ),
+                "2014-09-01",  // Start
+                "2014-09-05",  // End
+                42,            // id
+                40,            // Expect
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $input   The name of the variable to test.
+    * @param mixed  $options The session information to set up
+    * @param array  $config  The configuration to set up for the component
+    * @param string $start   The date to start
+    * @param string $end     The date to end
+    * @param int    $id      The id of the user to accrue for
+    * @param array  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataAccrual
+    */
+    public function testAccrual($input, $options, $config, $start, $end, $id, $expect)
+    {
+        $this->setSession($options);
+        $this->setInput($input);
+        $this->setComponentConfig($config);
+        $model = $this->model;
+        $obj = new $model();
+        $ret = $obj->Accrual($start, $end, $id);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 

@@ -49,6 +49,11 @@ require_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
  */
 class TimeclockHelpersTimeclock
 {
+    /** This is where we store the component parameters */
+    public static $params = null;
+    /** This is where we store the user parameters */
+    public static $userparams = array();
+    /** This is our extension name */
     public static $extension = 'com_timeclock';
     /**
     * This returns the actions that we could take.
@@ -160,17 +165,23 @@ class TimeclockHelpersTimeclock
         $ret = array();
         $v = explode("\n", self::getParam("wCompCodes"));
         foreach ($v as $line) {
+            if (empty($line)) {
+                continue;
+            }
             $line = trim($line);
             $line = explode(" ", $line);
             $key = abs($line[0]);
             unset($line[0]);
             $val = implode(" ", $line);
-            $ret[(int)$key] = $val;
+            if (empty($val)) {
+                $val = (string)$key;
+            }
+            $ret[(int)$key] = trim($val);
         }
         if (empty($ret)) {
-            $ret = array(1 => "Hours");
+            $ret = array(0 => "Hours");
         }
-        return (array)$ret;
+        return $ret;
     }
     /**
      * get an array of PTO accrual rates
@@ -188,12 +199,17 @@ class TimeclockHelpersTimeclock
         $rates = self::getParam("ptoAccrualRates");
         foreach (explode("\n", $rates) as $line) {
             $line = trim($line);
+            if (empty($line)) {
+                continue;
+            }
             if (!isset($keys)) {
                 $keys = explode(":", $line);
             } else {
                 $line = explode(":", $line);
                 foreach ($keys as $k => $name) {
-                    $ret[$name][$line[0]] = $line[$k+1];
+                    if (isset($line[$k+1])) {
+                        $ret[$name][(float)$line[0]] = (float)$line[$k+1];
+                    }
                 }
             }
         }
@@ -202,15 +218,33 @@ class TimeclockHelpersTimeclock
     /**
      * get an array of PTO accrual rates
      *
-     * @param object &$user The user to get accrual rates for
+     * @param int    $user_id The user id to get the accrual rate for
+     * @param string $date    The date to check
      * 
      * @return array
      */
-    static public function getPtoAccrualRate(&$user)
+    static public function getPtoAccrualRate($user_id, $date)
     {
-        $rates = self::getPtoAccrualRates();
-        var_dump($rates);
-        return (array)$ret;
+        $rates = TimeclockHelper::getPtoAccrualRates();
+        $service = self::getServiceLength($user_id, $date);
+        $status = TimeclockHelper::getUserParam('status', $user_id);
+        $end    = TimeclockHelper::getUserParam("endDate", $user_id);
+        $start  = TimeclockHelper::getUserParam("startDate", $user_id);
+        if ($service == 0) {
+            return 0;
+        }
+        if (TimeclockHelpersDate::checkEmploymentDates($start, $end, $date)) {
+            return 0;
+        }
+        if (!is_array($rates[$status])) {
+            return 0;
+        }
+        foreach ($rates[$status] as $s => $r) {
+            if ($service < $s) {
+                return $r;
+            }
+        }
+        return $r;
     }
     /**
     * gets a component parameter
@@ -221,25 +255,27 @@ class TimeclockHelpersTimeclock
     */
     static public function getParam($param)
     {
-        static $component;
-        if (!is_object($component)) {
+        if (is_null(self::$params)) {
             $component = JComponentHelper::getComponent('com_timeclock');
+            self::$params = $component->params;
         }
-        $ret = $component->params->get($param);
-        return $ret;
+        return self::$params->get($param);
     }
     /**
     * gets a component parameter
     *
     * @param string $param The parameter to get
     * @param int    $id    The user id to get values about
-    * @param string $date  The date to get the param for
     *
     * @return array
     */
-    static public function getUserParam($param, $id=null, $date=null)
+    static public function getUserParam($param, $id=null)
     {
-        return plgUserTimeclock::getParamValue($param, $id, $date);
+        $params = self::getUserParams($id);
+        if (isset($params[$param])) {
+            return $params[$param];
+        }
+        return null;
     }
     /**
     * gets a component parameter
@@ -250,7 +286,11 @@ class TimeclockHelpersTimeclock
     */
     static public function getUserParams($id=null)
     {
-        return plgUserTimeclock::getParams($id);
+        if (!isset(self::$userparams[$id]) || $new) {
+            self::$userparams[$id] = plgUserTimeclock::getParams($id);
+        }
+        return (array)self::$userparams[$id];
+        
     }
     /**
     * gets a component parameter
@@ -263,7 +303,33 @@ class TimeclockHelpersTimeclock
     */
     static public function setUserParam($param, $value, $id=null)
     {
-        return plgUserTimeclock::setParamValue($param, $value, $id);
+        $ret = plgUserTimeclock::setParamValue($param, $value, $id);
+        // Update the cached params
+        self::$userparams[$id] = plgUserTimeclock::getParams($id);
+        return $ret;
+    }
+    /**
+     * Gets select options for parent projects
+     *
+     * @param int    $oid  The user to get the PTO for.
+     * @param string $date The date to check
+     *
+     * @return float value in years
+     */
+    function getServiceLength($oid, $date=null)
+    {
+        if (empty($date)) {
+            $date = time();
+        } else if (!is_numeric($date)) {
+            $date = strtotime($date);
+        }
+        $start = self::getUserParam("startDate", $oid);
+        $start = strtotime($start);
+        if ($date < $start) {
+            return 0;
+        }
+        $length = $date - $start;
+        return $length / (60*60*24*365.25);
     }
 
 }

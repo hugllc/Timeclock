@@ -179,13 +179,16 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    public function accrue($start, $end, $id = null)
+    public function accrual($start, $end, $id = null)
     {
-        $user      = $this->getUser($id);
-        $rates     = TimeclockHelpersTimeclock::getPtoAccrualRates();
-        $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
-        $hours     = periodTotal($user->id, $start, $end, true);
-        return true;
+        $user  = $this->getUser($id);
+        $rate  = TimeclockHelpersTimeclock::getPtoAccrualRate($user);
+        $hours = 0;
+        if ($rate > 0) {
+            $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
+            $hours     = periodTotal($user->id, $start, $end, true);
+        }
+        return $hours;
     }
 
 }

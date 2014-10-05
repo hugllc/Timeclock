@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_timesheet` (
   CONSTRAINT `project_id` UNIQUE (`project_id`,`user_id`,`worked`)
 );
 
-CREATE TABLE IF NOT EXISTS `#__timeclock_pto` (
+CREATE TABLE IF NOT EXISTS `jos_timeclock_pto` (
   `pto_id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `type` varchar(16) NOT NULL DEFAULT 'ACCRUAL',
   `user_id` int(11) NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `jos_timeclock_customers` (
 CREATE INDEX `created_by_timeclock_customers` ON `jos_timeclock_customers` (`created_by`);
 CREATE INDEX `published_timeclock_customers` ON `jos_timeclock_customers` (`published`);
 
-CREATE TABLE IF NOT EXISTS `#__timeclock_departments` (
+CREATE TABLE IF NOT EXISTS `jos_timeclock_departments` (
   `department_id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `name` varchar(64) NOT NULL DEFAULT '',
   `description` text NOT NULL,

@@ -50,7 +50,7 @@ require_once SRC_PATH."/com_timeclock/admin/models/customer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:JoomlaMock
  */
-class TestCaseDatabase extends \TestCaseDatabase
+class TestCase extends \TestCase
 {
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -94,33 +94,7 @@ class TestCaseDatabase extends \TestCaseDatabase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $db = \JFactory::getDBO();
-        self::insertFileDB(TEST_PATH."/schema/tables.sql");
-        self::insertFileDB(TEST_PATH."/stubs/extensions.sql");
         
-    }
-    /**
-     * Gets the data set to be loaded into the database during setup
-     *
-     * @return  PHPUnit_Extensions_Database_DataSet_CsvDataSet
-     *
-     * @since   3.2
-     */
-    protected function getDataSet()
-    {
-        $dataSet = new \PHPUnit_Extensions_Database_DataSet_CsvDataSet(',', "'", '\\');
-
-        $dataSet->addTable('jos_extensions', JPATH_TEST_DATABASE . '/jos_extensions.csv');
-        $dataSet->addTable('jos_modules', JPATH_TEST_DATABASE . '/jos_modules.csv');
-        $dataSet->addTable('jos_modules_menu', JPATH_TEST_DATABASE . '/jos_modules_menu.csv');
-        $dataSet->addTable('jos_users', JPATH_TEST_DATABASE . '/jos_users.csv');
-
-        $dataSet->addTable('jos_timeclock_customers', TEST_PATH . '/stubs/jos_timeclock_customers.csv');
-        $dataSet->addTable('jos_timeclock_departments', TEST_PATH . '/stubs/jos_timeclock_departments.csv');
-        $dataSet->addTable('jos_timeclock_projects', TEST_PATH . '/stubs/jos_timeclock_projects.csv');
-        $dataSet->addTable('jos_timeclock_users', TEST_PATH . '/stubs/jos_timeclock_users.csv');
-        $dataSet->addTable('jos_timeclock_timesheet', TEST_PATH . '/stubs/jos_timeclock_timesheet.csv');
-        return $dataSet;
     }
     /**
      * Loads a file into the database
@@ -161,24 +135,6 @@ class TestCaseDatabase extends \TestCaseDatabase
     protected function setUserConfig($config)
     {
         \TimeclockHelpersTimeclock::$userparams = (array)$config;
-    }
-    /**
-     * Loads a file into the database
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected static function insertFileDB($file)
-    {
-        $db = \JFactory::getDBO();
-        $queries = file_get_contents($file);
-        foreach (explode(";", $queries) as $query) {
-            if (!empty(trim($query))) {
-                $db->setQuery($query);
-                $db->execute();
-            }
-        }
     }
     /**
     * This function sets the input data to the given array

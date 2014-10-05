@@ -5,6 +5,7 @@ define('SRC_PATH',realpath(dirname(__DIR__)));
 define('TEST_PATH',realpath(__DIR__));
 
 require_once __DIR__."/core/TestCaseDatabase.php";
+require_once __DIR__."/core/TestCase.php";
 
 // load table paths
 JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_timeclock/tables');
