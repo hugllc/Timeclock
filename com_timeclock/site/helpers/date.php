@@ -258,13 +258,11 @@ class TimeclockHelpersDate
         $start = self::fixDate($start);
         $end   = self::fixDate($end);
         $first = self::explodeDate($start);
-        $day = $first["d"];
-        for ($i = 0; $i < 50; $i++) {
+        $day   = $first["d"];
+        $days  = self::days($start, $end);
+        for ($i = 0; $i < $days; $i++) {
             $date = self::fixDate(self::dateUnix($first["m"], $day++, $first["y"]));
             $ret[] = $date;
-            if ($date == $end) {
-                break;
-            }
         }
         return $ret;
     }
@@ -297,6 +295,21 @@ class TimeclockHelpersDate
             return false;
         }
         return self::compareDates($date, $end) > 0;
+    }
+    /**
+    * Calculates the number of days between the two dates, including those two days
+    *
+    * @param string $start The first day
+    * @param string $end   The last day
+    *
+    * @return array
+    */
+    static public function days($start, $end)
+    {
+        $ret = array();
+        $start = self::dateUnixSql(self::fixDate($start));
+        $end   = self::dateUnixSql(self::fixDate($end));
+        return (int)(round(abs($end - $start) / 86400) + 1);
     }
 
 }
