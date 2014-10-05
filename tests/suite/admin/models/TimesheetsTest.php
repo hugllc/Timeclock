@@ -50,7 +50,7 @@ require_once SRC_PATH."/com_timeclock/admin/models/timesheets.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:JoomlaMock
  */
-class TimesheetTest extends ModelTestBase
+class TimesheetsTest extends ModelTestBase
 {
     /** This is the model we are testing */
     protected $model = '\TimeclockModelsTimesheets';
@@ -122,6 +122,15 @@ class TimesheetTest extends ModelTestBase
                     array(
                         "timesheet_id" => 4,
                     ),
+                    array(
+                        "timesheet_id" => 28,
+                    ),
+                    array(
+                        "timesheet_id" => 27,
+                    ),
+                    array(
+                        "timesheet_id" => 26,
+                    ),
                 ) // Expected Return
             ),
         );
@@ -138,12 +147,12 @@ class TimesheetTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),  // Input array (Mocks $_REQUEST)
-                7   // Expected Return
+                24   // Expected Return
             ),
             "Nominal" => array(
                 array(
                 ), // Input array (Mocks $_REQUEST)
-                7  // Expected Return
+                24  // Expected Return
             ),
         );
     }

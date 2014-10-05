@@ -290,31 +290,6 @@ require_once SRC_PATH."/com_timeclock/site/models/timesheet.php";
     *
     * @return array
     */
-    public static function dataGetTotal()
-    {
-        return array(
-            "ID Given" => array(
-                array(
-                    "id" => 2,
-                ),  // Input array (Mocks $_REQUEST)
-                array(
-                ),  // The session information
-                7   // Expected Return
-            ),
-            "Nominal" => array(
-                array(
-                ), // Input array (Mocks $_REQUEST)
-                array(
-                ),  // The session information
-                7  // Expected Return
-            ),
-        );
-    }
-    /**
-    * data provider for testGetTotal
-    *
-    * @return array
-    */
     public static function dataCheckSortFields()
     {
         return array(

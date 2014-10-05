@@ -189,7 +189,7 @@ class PtoTest extends ModelTestBase
     *
     * @return array
     */
-    public static function dataAccrual()
+    public static function dataCalcAccrual()
     {
         return array(
             array(
@@ -239,9 +239,9 @@ class PtoTest extends ModelTestBase
     *
     * @return null
     *
-    * @dataProvider dataAccrual
+    * @dataProvider dataCalcAccrual
     */
-    public function testAccrual(
+    public function testCalcAccrual(
         $input, $options, $config, $userconfig, $start, $end, $id, $expect
     ) {
         $this->setSession($options);
@@ -250,7 +250,7 @@ class PtoTest extends ModelTestBase
         $this->setUserConfig($userconfig);
         $model = $this->model;
         $obj = new $model();
-        $ret = $obj->Accrual($start, $end, $id);
+        $ret = $obj->CalcAccrual($start, $end, $id);
         $this->assertSame($expect, $ret);
     }
 

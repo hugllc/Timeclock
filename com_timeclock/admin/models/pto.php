@@ -179,7 +179,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    public function accrual($start, $end, $id = null)
+    public function calcAccrual($start, $end, $id = null)
     {
         $user  = $this->getUser($id);
         $rate  = TimeclockHelpersTimeclock::getPtoAccrualRate($user->id, $end);
