@@ -6,7 +6,7 @@
  *
  * <pre>
  * Timeclock is a Joomla application to keep track of employee time
- * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * Copyright (C) 2014 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

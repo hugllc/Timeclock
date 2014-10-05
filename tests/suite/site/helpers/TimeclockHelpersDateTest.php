@@ -503,5 +503,55 @@ class TimeclockHelpersDateTest extends \PHPUnit_Framework_TestCase
             )
         );
     }
+    /**
+    * data provider for testGet
+    *
+    * @return array
+    */
+    public static function dataEnd()
+    {
+        return array(
+            "Normal period" => array(
+                "2014-09-01", // Start
+                14,           // Days
+                "2014-09-14", // Expect
+            ),
+            "End of September" => array(
+                "2014-09-29", // Start
+                14,             // Days
+                "2014-10-12", // Expect
+            ),
+            "Same Day" => array(
+                "2014-09-29", // Start
+                1,             // Days
+                "2014-09-29", // Expect
+            ),
+            "Negative" => array(
+                "2014-10-12", // Start
+                -14,          // Days
+                "2014-09-29", // Expect
+            ),
+        );
+    }
+    /**
+    * Checks to see if we get proper stuff from this function
+    *
+    * @param string $start  The first day of the payperiod
+    * @param string $days   The number of days
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataEnd
+    */
+    public function testEnd($start, $days, $expect)
+    {
+        $this->assertSame(
+            $expect, 
+            \TimeclockHelpersDate::end(
+                $start, $days
+            )
+        );
+    }
 
 }

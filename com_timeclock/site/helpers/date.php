@@ -226,18 +226,10 @@ class TimeclockHelpersDate
         $return["days"] = $len;
         $return["start"] = $start;
         $s = TimeclockHelpersDate::explodeDate($start);
-        $end = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len-1, $s["y"]
-        );
-        $return["end"] = date("Y-m-d", $end);
-        $next = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]+$len, $s["y"]
-        );
-        $return["next"] = date("Y-m-d", $next);
-        $prev = TimeclockHelpersDate::dateUnix(
-            $s["m"], $s["d"]-$len, $s["y"]
-        );
-        $return["prev"] = date("Y-m-d", $prev);
+        $return["end"] = self::end($start, $len);
+        
+        $return["next"] = self::end($start, $len + 1);
+        $return["prev"] = self::end($start, -1 * ($len + 1));
         $return["dates"] = TimeclockHelpersDate::payPeriodDates(
             $return["start"], $return["end"]
         );
@@ -313,6 +305,22 @@ class TimeclockHelpersDate
         $start = self::dateUnixSql(self::fixDate($start));
         $end   = self::dateUnixSql(self::fixDate($end));
         return (int)(round(abs($end - $start) / 86400) + 1);
+    }
+    /**
+    * Calculates the number of days between the two dates, including those two days
+    *
+    * @param string $start The first day
+    * @param int    $days  The number of days
+    *
+    * @return array
+    */
+    static public function end($start, $days)
+    {
+        // $days must be 1 closer to 0.
+        $days = ($days <= 0) ? (int)$days + 1 : (int)$days - 1;
+        $s = TimeclockHelpersDate::explodeDate($start);
+        $end = TimeclockHelpersDate::dateUnix($s["m"], $s["d"]+$days, $s["y"]);
+        return date("Y-m-d", $end);
     }
 
 }
