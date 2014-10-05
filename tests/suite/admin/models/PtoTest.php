@@ -203,17 +203,26 @@ class PtoTest extends ModelTestBase
                     "get.user.guest"    => 0,
                 ),  // The session information
                 array(
-                "ptoEnable" => true,
-                "ptoAccrualRates" => 'FULLTIME:PARTTIME
-                                        1:10:5
-                                        5:20:10
-                                        10:30:15
-                                        99:40:20',
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
                 ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
                 "2014-09-01",  // Start
-                "2014-09-05",  // End
+                "2014-09-07",  // End
                 42,            // id
-                40,            // Expect
+                1.85,            // Expect
             ),
         );
     }
@@ -232,11 +241,13 @@ class PtoTest extends ModelTestBase
     *
     * @dataProvider dataAccrual
     */
-    public function testAccrual($input, $options, $config, $start, $end, $id, $expect)
-    {
+    public function testAccrual(
+        $input, $options, $config, $userconfig, $start, $end, $id, $expect
+    ) {
         $this->setSession($options);
         $this->setInput($input);
         $this->setComponentConfig($config);
+        $this->setUserConfig($userconfig);
         $model = $this->model;
         $obj = new $model();
         $ret = $obj->Accrual($start, $end, $id);
