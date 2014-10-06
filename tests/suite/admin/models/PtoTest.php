@@ -261,7 +261,7 @@ class PtoTest extends ModelTestBase
     public static function dataSetAccrual()
     {
         return array(
-            "Normal" => array(
+            "Normal 1 period" => array(
                 array(
                     "id" => 42,
                 ), // Input array (Mocks $_REQUEST)
@@ -280,6 +280,7 @@ class PtoTest extends ModelTestBase
                                             99:25:12.5',
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
+                    "ptoAccrualPeriod" => "week",
                 ),
                 array(
                     42 => array(
@@ -322,6 +323,7 @@ class PtoTest extends ModelTestBase
                                             99:25:12.5',
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
+                    "ptoAccrualPeriod" => "week",
                 ),
                 array(
                     42 => array(
@@ -348,6 +350,108 @@ class PtoTest extends ModelTestBase
                         'created_by' => '44',
                         'valid_from' => '2014-01-05',
                         'valid_to' => '2014-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                ),              // ExpectDB
+            ),
+            "Normal 2 periods + extra" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "ptoAccrualPeriod" => "week",
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2013-12-16",  // Start
+                "2013-12-31",  // End
+                42,            // id
+                true,            // Expect,
+                array(
+                    array(
+                        'hours' => '3.08',
+                        'created_by' => '44',
+                        'valid_from' => '2013-12-22',
+                        'valid_to' => '2013-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                    array(
+                        'hours' => '3.08',
+                        'created_by' => '44',
+                        'valid_from' => '2013-12-29',
+                        'valid_to' => '2013-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                ),              // ExpectDB
+            ),
+            "Normal 2 periods" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "ptoAccrualPeriod" => "week",
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2013-12-16",  // Start
+                "2013-12-29",  // End
+                42,            // id
+                true,            // Expect,
+                array(
+                    array(
+                        'hours' => '3.08',
+                        'created_by' => '44',
+                        'valid_from' => '2013-12-22',
+                        'valid_to' => '2013-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                    array(
+                        'hours' => '3.08',
+                        'created_by' => '44',
+                        'valid_from' => '2013-12-29',
+                        'valid_to' => '2013-12-31',
                         'notes' => 'Automatic Accrual',
                         'user_id' => '42',
                     ),

@@ -181,20 +181,54 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     public function setAccrual($start, $end, $id = null)
     {
+        $period = trim(TimeclockHelpersTimeclock::getParam("ptoAccrualPeriod"));
+        $days   = TimeclockHelpersDate::days($start, $end);
+        $ret    = true;
+        for ($d = 0; $d < $days;) {
+            if (strtolower($period) == "month") {
+                $d += $days;
+            } else if (strtolower($period) == "year") {
+                $d += $days;
+            } else if (strtolower($period) == "payperiod") {
+                $d += $days;
+            } else {
+                $ret = $ret && $this->_setAccrualWeek($start, $id);
+                // The 8th day is the first day of the next week.
+                $start = TimeclockHelpersDate::end($start, 8);
+                // Increment the days by 7.
+                $d += 7;
+                if ($days < $d + 7) {
+                    break;
+                }
+            }
+        }
+        return $ret;
+    }
+    /**
+    * Sets an accrual record for the
+    * 
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * 
+    * @return  boolean
+    */
+    private function _setAccrual($start, $end, $id = null)
+    {
         $start = TimeclockHelpersDate::fixDate($start);
         $end   = TimeclockHelpersDate::fixDate($end);
         $s     = TimeclockHelpersDate::explodeDate($start);
         $e     = TimeclockHelpersDate::explodeDate($end);
         if ($s["y"] == $e["y"]) {
             $hours = $this->calcAccrual($start, $end, $id);
-            $return = $this->_setAccrual($end, $hours, $id);
+            $return = $this->_storeAccrual($end, $hours, $id);
         } else {
             $end1   = $s["y"]."-12-31";
             $hours  = $this->calcAccrual($start, $end1, $id);
-            $return = $this->_setAccrual($end1, $hours, $id);
+            $return = $this->_storeAccrual($end1, $hours, $id);
             if ($return) {
                 $hours  = $this->calcAccrual($e["y"]."-01-01", $end, $id);
-                $return = $this->_setAccrual($end, $hours, $id);
+                $return = $this->_storeAccrual($end, $hours, $id);
             }
         }
         return $return;
@@ -208,10 +242,10 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    public function setAccrualWeek($start, $id = null)
+    private function _setAccrualWeek($start, $id = null)
     {
         $end = TimeclockHelpersDate::end($start, 7);
-        return $this->setAccrual($start, $end, $id);
+        return $this->_setAccrual($start, $end, $id);
     }
     /**
     * Sets an accrual record for the
@@ -222,8 +256,12 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    private function _setAccrual($date, $hours, $id = null)
+    private function _storeAccrual($date, $hours, $id = null)
     {
+        if ($hours == 0) {
+            // Don'e need to store this one.
+            return true;
+        }
         $id  = empty($id) ? $this->getUser()->id : (int)$id;
         
         $row = new stdClass();
