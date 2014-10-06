@@ -84,6 +84,26 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         return $query;
     }
     /**
+    * Builds the query to be used by the model
+    *
+    * @param int    $user_id    The user ID to check
+    * @param string $valid_from The date the PTO was logged
+    * 
+    * @return object Query object
+    */
+    protected function find($user_id, $valid_from)
+    {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('pto_id');
+        $query->from('#__timeclock_pto');
+        $query->where($db->quoteName('user_id')." = ".$db->quote($user_id));
+        $query->where($db->quoteName('valid_from')." = ".$db->quote($valid_from));
+        $db->setQuery($query);
+        $res = $db->loadResult();
+        return $res;
+    }
+    /**
     * Builds the query to be used to count the number of rows
     *
     * @return object Query object
@@ -269,6 +289,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         if (!is_object($row)) {
             return false;
         }
+        $row->pto_id     = $this->find($id, $date);
         $row->type       = "ACCRUAL";
         $row->user_id    = $id;
         $row->hours      = $hours;

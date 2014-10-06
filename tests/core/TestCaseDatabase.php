@@ -121,6 +121,7 @@ class TestCaseDatabase extends \TestCaseDatabase
         $dataSet->addTable('jos_timeclock_projects', TEST_PATH . '/stubs/jos_timeclock_projects.csv');
         $dataSet->addTable('jos_timeclock_users', TEST_PATH . '/stubs/jos_timeclock_users.csv');
         $dataSet->addTable('jos_timeclock_timesheet', TEST_PATH . '/stubs/jos_timeclock_timesheet.csv');
+        $dataSet->addTable('jos_timeclock_pto', TEST_PATH . '/stubs/jos_timeclock_pto.csv');
         return $dataSet;
     }
     /**

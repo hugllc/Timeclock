@@ -66,12 +66,16 @@ class PtoTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),  // Input array (Mocks $_REQUEST)
-                null // Expected Return
+                array(
+                    "pto_id" => 2,
+                ) // Expected Return
             ),
             "No id given" => array(
                 array(
                 ), // Input array (Mocks $_REQUEST)
-                null // Expected Return
+                array(
+                    "pto_id" => 1,
+                ) // Expected Return
             ),
         );
     }
@@ -88,40 +92,24 @@ class PtoTest extends ModelTestBase
                     "id" => 2,
                 ), // Input array (Mocks $_REQUEST)
                 array(
-                    /*
                     array(
-                        "timesheet_id" => 2,
+                        "pto_id" => 2,
                     ),
-                    */
                 ) // Expected Return
             ),
             "Get All" => array(
                 array(
                 ), // Input array (Mocks $_REQUEST)
                 array(
-                    /*
                     array(
-                        "timesheet_id" => 5,
+                        "pto_id" => 3,
                     ),
                     array(
-                        "timesheet_id" => 8,
+                        "pto_id" => 2,
                     ),
                     array(
-                        "timesheet_id" => 1,
+                        "pto_id" => 1,
                     ),
-                    array(
-                        "timesheet_id" => 6,
-                    ),
-                    array(
-                        "timesheet_id" => 2,
-                    ),
-                    array(
-                        "timesheet_id" => 7,
-                    ),
-                    array(
-                        "timesheet_id" => 4,
-                    ),
-                    */
                 ) // Expected Return
             ),
         );
@@ -138,12 +126,12 @@ class PtoTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),  // Input array (Mocks $_REQUEST)
-                0   // Expected Return
+                3   // Expected Return
             ),
             "Nominal" => array(
                 array(
                 ), // Input array (Mocks $_REQUEST)
-                0  // Expected Return
+                3  // Expected Return
             ),
         );
     }
@@ -452,6 +440,49 @@ class PtoTest extends ModelTestBase
                         'created_by' => '44',
                         'valid_from' => '2013-12-29',
                         'valid_to' => '2013-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                ),              // ExpectDB
+            ),
+            "Already Accrued" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "ptoAccrualPeriod" => "week",
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2014-09-01",  // Start
+                "2014-09-07",  // End
+                42,            // id
+                true,            // Expect,
+                array(
+                    array(
+                        'hours' => '1.85',
+                        'created_by' => '44',
+                        'valid_from' => '2014-09-07',
+                        'valid_to' => '2014-12-31',
                         'notes' => 'Automatic Accrual',
                         'user_id' => '42',
                     ),
