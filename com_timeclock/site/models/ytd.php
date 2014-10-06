@@ -66,6 +66,9 @@ class TimeclockModelsYtd extends TimeclockModelsReport
         $query = $this->_buildWhere($query);
         $list  = $this->_getList($query);
         $users = $this->listUsers();
+        $start = $this->getState("start");
+        $end   = $this->getState("end");
+        $pto   = TimeclockHelpersTimeclock::getModel("pto");
         $this->listProjects();
         $return = array(
             "totals" => array("total" => 0),
@@ -85,12 +88,17 @@ class TimeclockModelsYtd extends TimeclockModelsReport
             $return["totals"][$type]    = isset($return["totals"][$type]) ? $return["totals"][$type] : 0;
             $return["totals"][$type]   += $row->hours;
             $return["totals"]["total"] += $row->hours;
+            if (!isset($return[$user_id]["PTO_ACCRUAL"])) {
+                $return[$user_id]["PTO_ACCRUAL"] = (float)$pto->getAccrual($start, $end, $user_id);
+                $return["totals"]["PTO_ACCRUAL"] += $return[$user_id]["PTO_ACCRUAL"];
+            }
         }
         $return["cols"] = array(
             "PROJECT" => "COM_TIMECLOCK_WORKED", 
             "HOLIDAY" => "COM_TIMECLOCK_HOLIDAY", 
             "UNPAID" => "COM_TIMECLOCK_VOLUNTEER", 
-            "PTO" => "COM_TIMECLOCK_PTO_TAKEN"
+            "PTO" => "COM_TIMECLOCK_PTO_TAKEN",
+            "PTO_ACCRUAL" => "COM_TIMECLOCK_PTO_ACCRUED"
         );
         return $return;
     }

@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-if (!$displayData->hide) :   
+if (!$displayData->hide) :
     $user_id = $displayData->user_id;
     $total   = isset($displayData->data["total"]) ? $displayData->data["total"] : "0";
     $places  = $displayData->genparams->get("decimalPlaces");

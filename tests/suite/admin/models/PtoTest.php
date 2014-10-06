@@ -177,6 +177,109 @@ class PtoTest extends ModelTestBase
     *
     * @return array
     */
+    public static function dataGetAccrual()
+    {
+        return array(
+            "Whole Year" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "fulltimeHours" => 40,
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2014-01-01",  // Start
+                "2014-12-31",  // End
+                42,            // id
+                19.5,            // Expect
+            ),
+            "None" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "fulltimeHours" => 40,
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2014-01-01",  // Start
+                "2014-01-31",  // End
+                42,            // id
+                0.0,            // Expect
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $input   The name of the variable to test.
+    * @param mixed  $options The session information to set up
+    * @param array  $config  The configuration to set up for the component
+    * @param string $start   The date to start
+    * @param string $end     The date to end
+    * @param int    $id      The id of the user to accrue for
+    * @param array  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAccrual
+    */
+    public function testGetAccrual(
+        $input, $options, $config, $userconfig, $start, $end, $id, $expect
+    ) {
+        $this->setSession($options);
+        $this->setInput($input);
+        $this->setComponentConfig($config);
+        $this->setUserConfig($userconfig);
+        $model = $this->model;
+        $obj = new $model();
+        $ret = $obj->getAccrual($start, $end, $id);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testAccrual
+    *
+    * @return array
+    */
     public static function dataCalcAccrual()
     {
         return array(
@@ -199,6 +302,7 @@ class PtoTest extends ModelTestBase
                                             99:25:12.5',
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
+                    "fulltimeHours" => 40,
                 ),
                 array(
                     42 => array(
@@ -269,6 +373,7 @@ class PtoTest extends ModelTestBase
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
                     "ptoAccrualPeriod" => "week",
+                    "fulltimeHours" => 40,
                 ),
                 array(
                     42 => array(
@@ -312,6 +417,7 @@ class PtoTest extends ModelTestBase
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
                     "ptoAccrualPeriod" => "week",
+                    "fulltimeHours" => 40,
                 ),
                 array(
                     42 => array(
@@ -363,6 +469,7 @@ class PtoTest extends ModelTestBase
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
                     "ptoAccrualPeriod" => "week",
+                    "fulltimeHours" => 40,
                 ),
                 array(
                     42 => array(
@@ -414,6 +521,7 @@ class PtoTest extends ModelTestBase
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
                     "ptoAccrualPeriod" => "week",
+                    "fulltimeHours" => 40,
                 ),
                 array(
                     42 => array(
@@ -465,6 +573,7 @@ class PtoTest extends ModelTestBase
                     "ptoHoursPerDay" => 8,
                     "decimalPlaces" => 2,
                     "ptoAccrualPeriod" => "week",
+                    "fulltimeHours" => 40,
                 ),
                 array(
                     42 => array(

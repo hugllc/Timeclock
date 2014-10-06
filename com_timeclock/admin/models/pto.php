@@ -84,6 +84,47 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         return $query;
     }
     /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * 
+    * @return array An array of results.
+    */
+    public function getAccrual($start, $end, $id = null)
+    {
+        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        return $this->_getPTO($start, $end, $id, "ACCRUAL");
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * @param string $type  The type to get
+    * 
+    * @return array An array of results.
+    */
+    private function _getPTO($start, $end, $id, $type)
+    {
+        $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
+        $db    = JFactory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->select('SUM(hours) as hours');
+        $query->from('#__timeclock_pto');
+        $query->where($db->quoteName("user_id")." = ".$db->quote($id));
+        $query->where($db->quoteName("valid_from")." >= ".$db->quote($start));
+        $query->where($db->quoteName("valid_from")." <= ".$db->quote($end));
+        $query->where($db->quoteName("type")." = ".$db->quote($type));
+        $db->setQuery($query);
+
+        $item = $db->loadObject();
+        $hours     = sprintf("%4.".$decimals."f", $item->hours);
+        return (float)$hours;
+    }
+    /**
     * Builds the query to be used by the model
     *
     * @param int    $user_id    The user ID to check
@@ -139,8 +180,8 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         }
         
         if (is_numeric($filter->year)) {
-            $query->where($db->quoteName("t.worked")." >= " . $db->quote((int) $filter->year."-01-01"));
-            $query->where($db->quoteName("t.worked")." <= " . $db->quote((int) $filter->year."-12-31"));
+            $query->where($db->quoteName("t.valid_from")." >= " . $db->quote((int) $filter->year."-01-01"));
+            $query->where($db->quoteName("t.valid_from")." <= " . $db->quote((int) $filter->year."-12-31"));
         }
         
         if (is_numeric($filter->user_id)) {
@@ -201,6 +242,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     public function setAccrual($start, $end, $id = null)
     {
+        $id     = empty($id) ? $this->getUser()->id : (int)$id;
         $period = trim(TimeclockHelpersTimeclock::getParam("ptoAccrualPeriod"));
         $days   = TimeclockHelpersDate::days($start, $end);
         $ret    = true;
@@ -233,7 +275,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    private function _setAccrual($start, $end, $id = null)
+    private function _setAccrual($start, $end, $id)
     {
         $start = TimeclockHelpersDate::fixDate($start);
         $end   = TimeclockHelpersDate::fixDate($end);
@@ -262,7 +304,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    private function _setAccrualWeek($start, $id = null)
+    private function _setAccrualWeek($start, $id)
     {
         $end = TimeclockHelpersDate::end($start, 7);
         return $this->_setAccrual($start, $end, $id);
@@ -276,13 +318,12 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    private function _storeAccrual($date, $hours, $id = null)
+    private function _storeAccrual($date, $hours, $id)
     {
         if ($hours == 0) {
             // Don'e need to store this one.
             return true;
         }
-        $id  = empty($id) ? $this->getUser()->id : (int)$id;
         
         $row = new stdClass();
         $d = TimeclockHelpersDate::explodeDate($date);
@@ -323,9 +364,26 @@ class TimeclockModelsPto extends TimeclockModelsDefault
             $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
             $worked    = (float)$timesheet->periodTotal($user->id, $start, $end, true);
             $hpd       = (float)TimeclockHelpersTimeclock::getParam("ptoHoursPerDay");
+            $max       = $this->_maxHours($start, $end);
+            $worked    = ($worked > $max) ? $max : $worked;
             $hours     = sprintf("%4.".$decimals."f", ($rate / 2080) * $worked * $hpd);
         }
         return (float)$hours;
     }
-
+    /**
+    * Sets an accrual record for the
+    * 
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * 
+    * @return  boolean
+    */
+    private function _maxHours($start, $end)
+    {
+        $days = (int)TimeclockHelpersDate::days($start, $end);
+        $fth  = (float)TimeclockHelpersTimeclock::getParam("fulltimeHours");
+        $max  = (($days % 7) == 0) ? ($days / 7) * $fth : $fth;
+        return $max;
+    }
 }

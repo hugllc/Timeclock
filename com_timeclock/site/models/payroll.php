@@ -139,8 +139,14 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     public function lock()
     {
-        $next = $this->getState("payperiod.next");
-        return $this->setParam("payperiodCutoff", $next);
+        $payperiod = $this->getState("payperiod");
+        $pto       = TimeclockHelpersTimeclock::getModel("pto");
+        $start     = $this->getState("payperiod.prev");
+        $users     = $this->listUsers();
+        foreach ($users as $user) {
+            $pto->setAccrual($payperiod->prev, $payperiod->end, $user->id);
+        }
+        return $this->setParam("payperiodCutoff", $payperiod->next);
     }
     /**
     * Build query and where for protected _getList function and return a list

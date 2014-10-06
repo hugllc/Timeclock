@@ -264,8 +264,8 @@ class TimeclockModelsSiteDefault extends JModelBase
     */
     public function listUsers()
     {
-        if (is_null($this->_users)) {
-            $this->_users = TimeclockHelpersTimeclock::getUsers(0);
+        if (empty($this->_users)) {
+            $this->_users = TimeclockHelpersTimeclock::getUsers();
             foreach ($this->_users as &$user) {
                 $user->timeclock = TimeclockHelpersTimeclock::getUserParams($user->id);
                 $user->error     = "";

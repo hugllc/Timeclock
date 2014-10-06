@@ -106,7 +106,7 @@ class TimeclockHelpersTimeclock
     * 
     * @return array of user objects
     */
-    public static function getUsers($blocked = null)
+    public static function getUsers($blocked = 0)
     {
         $ret   = array();
         $db    = JFactory::getDBO();
