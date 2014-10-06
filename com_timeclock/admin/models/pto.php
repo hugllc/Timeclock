@@ -383,7 +383,11 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     {
         $days = (int)TimeclockHelpersDate::days($start, $end);
         $fth  = (float)TimeclockHelpersTimeclock::getParam("fulltimeHours");
-        $max  = (($days % 7) == 0) ? ($days / 7) * $fth : $fth;
+        $hpd  = (float)TimeclockHelpersTimeclock::getParam("ptoHoursPerDay");
+        // This gets the hours for the weeks
+        $max  = ((int)($days / 7)) * $fth;
+        // This gets the hours for any extr days
+        $max += ($days % 7) * $hpd;
         return $max;
     }
 }
