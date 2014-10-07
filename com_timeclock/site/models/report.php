@@ -91,7 +91,6 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (is_null($this->_myusers)) {
             $this->_myusers = parent::listUsers();
             foreach ($this->_myusers as $key => &$user) {
-            print $user->id;
                 $this->checkUser($user);
             }
             $this->_myusers[0] = (object)array(
