@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_pto` (
   `checked_out` int(11) NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`pto_id`),
-  UNIQUE KEY `valid_from` (`user_id`,`valid_from`)
+  UNIQUE KEY `valid_from` (`user_id`,`valid_from`, `type`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
