@@ -7,7 +7,7 @@
     <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
     <copyright>2014 Hunt Utilities Group, LLC</copyright>
     <license>GNU Public License V3</license>
-    <version>0.9.0~rc1</version>
+    <version>0.9.0~rc3</version>
     <description>COM_TIMECLOCK_DESCRIPTION</description>
     <scriptfile>install.script.php</scriptfile>
     <install>
@@ -15,6 +15,7 @@
             <file driver="mysql" charset="utf8">sql/timeclock_departments.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_customers.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_projects.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/timeclock_pto.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_timesheet.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_users.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_reports.mysql.utf8.sql</file>
