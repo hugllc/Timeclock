@@ -13,5 +13,5 @@
                     </span>
                 </td>
                 <th>&nbsp;</th>
-                <td class="total cost"><?php print number_format($cost, 2); ?></td>
+                <td class="total cost"><?php print $displayData->view->currency($cost); ?></td>
             </tr>

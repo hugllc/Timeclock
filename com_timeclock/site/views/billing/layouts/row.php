@@ -18,8 +18,8 @@ if (!$displayData->hide) :
                     <?php print $displayData->name ?>
                 </td>
                 <td class="hours"><?php print $displayData->data["hours"]; ?></td>
-                <td class="cost"><?php print $displayData->data["rate"]; ?></td>
-                <td class="total cost"><?php print number_format($cost, 2); ?></span>
+                <td class="cost"><?php print $displayData->view->currency($displayData->data["rate"]); ?></td>
+                <td class="total cost"><?php print $displayData->view->currency($cost); ?></span>
                 </td>
             </tr>
 <?php endif; ?>

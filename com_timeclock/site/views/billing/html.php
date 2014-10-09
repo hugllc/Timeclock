@@ -110,5 +110,16 @@ class TimeclockViewsBillingHtml extends JViewHtml
 
         return parent::render();
     }
+    /**
+    * This routine formats currency
+    *
+    * @param float $amount The number to format as currency
+    *
+    * @return string The number, formatted as currency
+    */
+    public function currency($amount)
+    {
+        return "$".number_format($amount, 2);
+    }
 }
 ?>

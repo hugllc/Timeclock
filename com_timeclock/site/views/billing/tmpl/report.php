@@ -53,6 +53,7 @@
         (object)array(
             "data" => $this->data["totals"], 
             "params" => $this->params,
+            "view" => $this
         )
     ); 
 ?>
@@ -63,6 +64,7 @@
         $user_id = (int)$user->id;
         $user->data      = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
         $user->genparams = $this->params;
+        $user->view      = $this;
         print $this->_row->render($user);
     }
 ?>
