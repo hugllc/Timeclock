@@ -143,7 +143,7 @@ class TimeclockHelpersView
     static function getYearOptions()
     {
         if (is_null(self::$yearstart)) {
-            $start = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
+            $start = TimeclockHelpersTimeclock::getParam("firstPayPeriodStart");
             $start = explode("-", $start);
             self::$yearstart = ((int) $start[0]) - 1;
             self::$yearend   = ((int)date("Y"))+1;
