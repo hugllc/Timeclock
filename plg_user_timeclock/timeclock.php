@@ -472,6 +472,11 @@ class plgUserTimeclock extends JPlugin
             // Now save the new stuff
             $tuples = array();
             $order    = 1;
+            
+            
+            $rate = $data['timeclock']['billableRate'];
+            $rate = str_replace('$', '', $rate);
+            $data['timeclock']['billableRate'] = (float)$rate;
 
             foreach ($data['timeclock'] as $k => $v)
             {

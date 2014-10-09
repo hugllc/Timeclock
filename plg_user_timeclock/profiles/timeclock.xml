@@ -86,6 +86,15 @@
                 required="true"
                     />
             <field
+                name="billableRate"
+                type="text"
+                class="inputbox"
+                label="PLG_USER_TIMECLOCK_BILLABLE_RATE"
+                description="PLG_USER_TIMECLOCK_BILLABLE_RATE_DESC"
+                default=""
+                required="false"
+                    />
+            <field
                 name="holidayperc"
                 type="list"
                 class="inputbox"
