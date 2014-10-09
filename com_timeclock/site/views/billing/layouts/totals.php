@@ -13,9 +13,5 @@
                     </span>
                 </td>
                 <th>&nbsp;</th>
-                <td class="total">
-                    <span id="total">
-                        $<?php print number_format($cost, 2); ?>
-                    </span>
-                </td>
+                <td class="total cost"><?php print number_format($cost, 2); ?></td>
             </tr>

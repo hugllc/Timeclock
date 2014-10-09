@@ -106,7 +106,7 @@ table.timesheet tr.category th {
 table.timesheet td {
     padding: 0px;
 }
-table.timesheet td.hours, table.report td.hours, table.report td.percent{
+table.timesheet td.hours, table.report td.hours, table.report td.percent, table.report td.cost {
     text-align: center;
 }
 table.report td.overtime {
@@ -193,7 +193,9 @@ input.date {
 div.input-append {
     width: 100%;
 }
-
+.cost:before { 
+    content:'$'; 
+}
 .reportcontrol .controls button {
     width: 100%;
     max-width: 10em;
