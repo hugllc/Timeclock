@@ -258,8 +258,8 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $registry->set('date', $date);
         
         // Get the pay period Dates
-        $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
-        $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
+        $startTime = TimeclockHelpersTimeclock::getParam("firstPayPeriodStart");
+        $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
         $period = TimeclockHelpersDate::fixedPayPeriod($startTime, $date, $len);
 
         $registry->set("payperiod.days", $period["days"]);

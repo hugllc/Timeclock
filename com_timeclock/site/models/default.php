@@ -251,7 +251,7 @@ class TimeclockModelsSiteDefault extends JModelBase
         if (!isset($this->_user[$id])) {
             $this->_user[$id] = JFactory::getUser($id);
             $this->_user[$id]->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user[$id]->id);
-            $this->_user[$id]->me = is_null($id);
+            $this->_user[$id]->me = is_null($id) || ($id == $this->_user[$id]->id);
         }
         return $this->_user[$id];
     }
@@ -266,9 +266,11 @@ class TimeclockModelsSiteDefault extends JModelBase
     {
         if (empty($this->_users)) {
             $this->_users = TimeclockHelpersTimeclock::getUsers();
+            $me = JFactory::getUser()->id;
             foreach ($this->_users as &$user) {
                 $user->timeclock = TimeclockHelpersTimeclock::getUserParams($user->id);
                 $user->error     = "";
+                $user->me = ($user->id == $me);
             }
         }
         return $this->_users;

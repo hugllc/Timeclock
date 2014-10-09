@@ -335,8 +335,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         }
         
         // Get the pay period Dates
-        $startTime = TimeclockHelpersTimeclock::getParam("firstViewPeriodStart");
-        $len = TimeclockHelpersTimeclock::getParam("viewPeriodLength");
+        $startTime = TimeclockHelpersTimeclock::getParam("firstPayPeriodStart");
+        $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
         $start = TimeclockHelpersDate::fixedPayPeriodStart($startTime, $date, $len);
         $registry->set("payperiod.days", $len);
         $registry->set("payperiod.start", $start);
