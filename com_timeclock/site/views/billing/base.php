@@ -88,14 +88,13 @@ class TimeclockViewsBillingBase extends JViewBase
             $this->data     = $report->timesheets;
             $this->projects = $report->projects;
             $this->users    = $report->users;
-            $file   = str_replace(" ", "_", $report->name);
+            $file           = str_replace(" ", "_", $report->name)."-billing-";
         } else {
             $this->data     = $this->model->listItems();
             $this->users    = $this->model->listUsers();
             $this->projects = $this->model->listProjects();
-            $file           = "report-live-";
+            $file           = "billing-report-live-";
         }
-        $this->codes = $this->data["codes"];
         $file .= $this->start."to".$this->end;
         $this->setup($file);
         $this->export();
@@ -133,12 +132,12 @@ class TimeclockViewsBillingBase extends JViewBase
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $report = JText::sprintf("COM_TIMECLOCK_WCOMP_REPORT_TITLE", $this->start, $this->end);
+        $report = JText::sprintf("COM_TIMECLOCK_BILLING_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_WCOMP_REPORT"));
+            ->setKeywords(JText::_("COM_TIMECLOCK_BILLING_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -152,7 +151,7 @@ class TimeclockViewsBillingBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_WCOMP_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_BILLING_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -181,16 +180,25 @@ class TimeclockViewsBillingBase extends JViewBase
         $places = $this->params->get("decimalPlaces");
         $total  = array();
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
-        foreach ($this->codes as $code) {
-            $value = isset($data->data[$code]) ? $data->data[$code] : 0;
-            $col = $this->nextCol($col);
-            $dat = $col.$this->line;
-            $total[] = $dat;
-            $this->phpexcel->getActiveSheet()->setCellValue($dat, $value);
-        }
+        $col   = $this->nextCol($col);
+        $hours = $col.$this->line;
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->data["hours"]);
+        $col  = $this->nextCol($col);
+        $rate = $col.$this->line;
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->data["rate"]);
+        $this->phpexcel->getActiveSheet()->getStyle($rate)->getNumberFormat()->applyFromArray( 
+            array( 
+                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
+            )
+        );  
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=$hours*$rate");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
+        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->applyFromArray( 
+            array( 
+                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
+            )
+        );  
         $this->line++;
     }
     /**
@@ -206,9 +214,13 @@ class TimeclockViewsBillingBase extends JViewBase
         $this->phpexcel->getActiveSheet()->setCellValue("A".$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
         $end = $this->line - 1;
-        foreach (range("B", $this->maxCol) as $col) {
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
-        }
+        $this->phpexcel->getActiveSheet()->setCellValue("B".$this->line, "=SUM(B2:B".$end.")");
+        $this->phpexcel->getActiveSheet()->setCellValue($this->maxCol.$this->line, "=SUM(".$this->maxCol."2:".$this->maxCol.$end.")");
+        $this->phpexcel->getActiveSheet()->getStyle($this->maxCol.$this->line)->getNumberFormat()->applyFromArray( 
+            array( 
+                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
+            )
+        );  
         $this->line++;
     }
     /**
@@ -220,12 +232,12 @@ class TimeclockViewsBillingBase extends JViewBase
     {
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_USER"));
-        foreach ($this->codes as $code) {
-            $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $code);
-        }
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_HOURS"));
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_BILLABLE_RATE"));
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL_COST"));
         foreach(range('A',$col) as $columnID) {
             $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         }
