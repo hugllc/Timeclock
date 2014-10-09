@@ -102,6 +102,9 @@ class PtoTest extends ModelTestBase
                 ), // Input array (Mocks $_REQUEST)
                 array(
                     array(
+                        "pto_id" => 4,
+                    ),
+                    array(
                         "pto_id" => 3,
                     ),
                     array(
@@ -126,12 +129,12 @@ class PtoTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),  // Input array (Mocks $_REQUEST)
-                3   // Expected Return
+                4   // Expected Return
             ),
             "Nominal" => array(
                 array(
                 ), // Input array (Mocks $_REQUEST)
-                3  // Expected Return
+                4  // Expected Return
             ),
         );
     }
@@ -353,7 +356,7 @@ class PtoTest extends ModelTestBase
     public static function dataSetAccrual()
     {
         return array(
-            "Normal 1 period" => array(
+            "Normal Week 1 period" => array(
                 array(
                     "id" => 42,
                 ), // Input array (Mocks $_REQUEST)
@@ -397,7 +400,7 @@ class PtoTest extends ModelTestBase
                     ),
                 ),              // ExpectDB
             ),
-            "Year Boundry" => array(
+            "Normal Week 1 period parttime" => array(
                 array(
                     "id" => 42,
                 ), // Input array (Mocks $_REQUEST)
@@ -423,26 +426,18 @@ class PtoTest extends ModelTestBase
                     42 => array(
                         'startDate' => "2000-09-01",
                         'endDate'   => '',
-                        'status'    => 'FULLTIME',
+                        'status'    => 'PARTTIME',
                     ),
                 ), // $userparams
-                "2013-12-30",  // Start
-                "2014-01-05",  // End
+                "2014-01-06",  // Start
+                "2014-01-12",  // End
                 42,            // id
                 true,            // Expect,
                 array(
                     array(
-                        'hours' => '1.23',
+                        'hours' => '3.08',
                         'created_by' => '44',
-                        'valid_from' => '2013-12-31',
-                        'valid_to' => '2013-12-31',
-                        'notes' => 'Automatic Accrual',
-                        'user_id' => '42',
-                    ),
-                    array(
-                        'hours' => '1.85',
-                        'created_by' => '44',
-                        'valid_from' => '2014-01-05',
+                        'valid_from' => '2014-01-12',
                         'valid_to' => '2014-12-31',
                         'notes' => 'Automatic Accrual',
                         'user_id' => '42',
@@ -484,7 +479,7 @@ class PtoTest extends ModelTestBase
                 true,            // Expect,
                 array(
                     array(
-                        'hours' => '3.08',
+                        'hours' => '3.15',
                         'created_by' => '44',
                         'valid_from' => '2013-12-22',
                         'valid_to' => '2013-12-31',
@@ -492,7 +487,7 @@ class PtoTest extends ModelTestBase
                         'user_id' => '42',
                     ),
                     array(
-                        'hours' => '3.08',
+                        'hours' => '0.35',  // User hit max for the year
                         'created_by' => '44',
                         'valid_from' => '2013-12-29',
                         'valid_to' => '2013-12-31',
@@ -536,7 +531,7 @@ class PtoTest extends ModelTestBase
                 true,            // Expect,
                 array(
                     array(
-                        'hours' => '3.08',
+                        'hours' => '3.15',
                         'created_by' => '44',
                         'valid_from' => '2013-12-22',
                         'valid_to' => '2013-12-31',
@@ -544,7 +539,7 @@ class PtoTest extends ModelTestBase
                         'user_id' => '42',
                     ),
                     array(
-                        'hours' => '3.08',
+                        'hours' => '0.35',  // User hit max for the year
                         'created_by' => '44',
                         'valid_from' => '2013-12-29',
                         'valid_to' => '2013-12-31',
@@ -591,6 +586,53 @@ class PtoTest extends ModelTestBase
                         'hours' => '1.85',
                         'created_by' => '44',
                         'valid_from' => '2014-09-07',
+                        'valid_to' => '2014-12-31',
+                        'notes' => 'Automatic Accrual',
+                        'user_id' => '42',
+                    ),
+                ),              // ExpectDB
+            ),
+            "Normal Payperiod 1 period" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "ptoAccrualPeriod" => "payperiod",
+                    "fulltimeHours" => 40,
+                    "firstPayPeriodStart" => "2000-12-11",
+                    "payPeriodType" => "FIXED",
+                    "payPeriodLengthFixed" => 14,
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2013-12-23",  // Start
+                "2014-01-06",  // End
+                42,            // id
+                true,            // Expect,
+                array(
+                    array(
+                        'hours' => '6.15',
+                        'created_by' => '44',
+                        'valid_from' => '2014-01-06',
                         'valid_to' => '2014-12-31',
                         'notes' => 'Automatic Accrual',
                         'user_id' => '42',

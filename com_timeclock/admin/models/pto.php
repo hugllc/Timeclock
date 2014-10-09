@@ -248,20 +248,22 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         $ret    = true;
         for ($d = 0; $d < $days;) {
             if (strtolower($period) == "month") {
-                $d += $days;
+                $len = $days;
             } else if (strtolower($period) == "year") {
-                $d += $days;
-            } else if (strtolower($period) == "payperiod") {
-                $d += $days;
-            } else {
+                $len = $days;
+            } else if (strtolower($period) == "week") {
                 $ret = $ret && $this->_setAccrualWeek($start, $id);
-                // The 8th day is the first day of the next week.
-                $start = TimeclockHelpersDate::end($start, 8);
-                // Increment the days by 7.
-                $d += 7;
-                if ($days < $d + 7) {
-                    break;
-                }
+                $len = 7;
+            } else {
+                $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
+                $ret = $ret && $this->_setAccrualPayperiod($start, $id);
+            }
+            // The 8th day is the first day of the next week.
+            $start = TimeclockHelpersDate::end($start, $len + 1);
+            // Increment the days by $len.
+            $d += $len;
+            if (($days < $d + $len) || ($len <= 0)) {
+                break;
             }
         }
         return $ret;
@@ -275,24 +277,11 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    private function _setAccrual($start, $end, $id)
+    private function _setAccrualWeek($start, $id)
     {
-        $start = TimeclockHelpersDate::fixDate($start);
-        $end   = TimeclockHelpersDate::fixDate($end);
-        $s     = TimeclockHelpersDate::explodeDate($start);
-        $e     = TimeclockHelpersDate::explodeDate($end);
-        if ($s["y"] == $e["y"]) {
-            $hours = $this->calcAccrual($start, $end, $id);
-            $return = $this->_storeAccrual($end, $hours, $id);
-        } else {
-            $end1   = $s["y"]."-12-31";
-            $hours  = $this->calcAccrual($start, $end1, $id);
-            $return = $this->_storeAccrual($end1, $hours, $id);
-            if ($return) {
-                $hours  = $this->calcAccrual($e["y"]."-01-01", $end, $id);
-                $return = $this->_storeAccrual($end, $hours, $id);
-            }
-        }
+        $end = TimeclockHelpersDate::end($start, 7);
+        $hours  = $this->calcAccrual($start, $end, $id);
+        $return = $this->_storeAccrual($end, $hours, $id);
         return $return;
     }
     /**
@@ -304,10 +293,14 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    private function _setAccrualWeek($start, $id)
+    private function _setAccrualPayperiod($start, $id)
     {
-        $end = TimeclockHelpersDate::end($start, 7);
-        return $this->_setAccrual($start, $end, $id);
+        $startTime = TimeclockHelpersTimeclock::getParam("firstPayPeriodStart");
+        $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
+        $period = TimeclockHelpersDate::fixedPayPeriod($startTime, $start, $len);
+        $hours  = $this->calcAccrual($period["start"], $period["end"], $id);
+        $return = $this->_storeAccrual($period["next"], $hours, $id);
+        return $return;
     }
     /**
     * Sets an accrual record for the
@@ -341,9 +334,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         $row->modified   = $row->created;
         $row->notes      = "Automatic Accrual";
         
-        $this->store($row);
-        
-        return true;
+        return $this->store($row);
     }
     /**
     * Sets an accrual record for the
@@ -356,38 +347,26 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     public function calcAccrual($start, $end, $id = null)
     {
-        $user  = $this->getUser($id);
-        $rate  = TimeclockHelpersTimeclock::getPtoAccrualRate($user->id, $end);
-        $hours = 0;
+        $user   = $this->getUser($id);
+        $rate   = TimeclockHelpersTimeclock::getPtoAccrualRate($user->id, $end);
+        $hours  = 0;
         if ($rate > 0) {
+            $rate  *= (float)TimeclockHelpersTimeclock::getParam("ptoHoursPerDay");
+            $d = TimeclockHelpersDate::explodeDate($end);
+            $year   = (int)$d["y"];
+            $ytd    = $this->getAccrual("$year-01-01", "$year-12-31", $id);
+            $status = TimeclockHelpersTimeclock::getUserParam('status', $id);
+            $hpy    = ($status == "FULLTIME") ? 2080 : 1040;
             $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
             $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
             $worked    = (float)$timesheet->periodTotal($user->id, $start, $end, true);
-            $hpd       = (float)TimeclockHelpersTimeclock::getParam("ptoHoursPerDay");
-            $max       = $this->_maxHours($start, $end);
-            $worked    = ($worked > $max) ? $max : $worked;
-            $hours     = sprintf("%4.".$decimals."f", ($rate / 2080) * $worked * $hpd);
+            $hours     = ($rate / $hpy) * $worked;
+            if (($hours + $ytd) > $rate) {
+                $hours = $rate - $ytd;
+                $hours = ($hours < 0) ? 0 : $hours;
+            }
+            $hours     = sprintf("%4.".$decimals."f", $hours);
         }
         return (float)$hours;
-    }
-    /**
-    * Sets an accrual record for the
-    * 
-    * @param string $start The date to start
-    * @param string $end   The date to end
-    * @param int    $id    The id of the user to accrue for
-    * 
-    * @return  boolean
-    */
-    private function _maxHours($start, $end)
-    {
-        $days = (int)TimeclockHelpersDate::days($start, $end);
-        $fth  = (float)TimeclockHelpersTimeclock::getParam("fulltimeHours");
-        $hpd  = (float)TimeclockHelpersTimeclock::getParam("ptoHoursPerDay");
-        // This gets the hours for the weeks
-        $max  = ((int)($days / 7)) * $fth;
-        // This gets the hours for any extr days
-        $max += ($days % 7) * $hpd;
-        return $max;
     }
 }
