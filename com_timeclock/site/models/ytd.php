@@ -113,7 +113,7 @@ class TimeclockModelsYtd extends TimeclockModelsReport
             "HOLIDAY" => "COM_TIMECLOCK_HOLIDAY", 
             "UNPAID" => "COM_TIMECLOCK_VOLUNTEER", 
             "PTO" => "COM_TIMECLOCK_PTO_TAKEN",
-            "total"  => "COM_TIMECLOCK_TOTAL",
+            "total"  => "COM_TIMECLOCK_TOTAL_WORKED",
             "PTO_ACCRUAL" => "COM_TIMECLOCK_PTO_ACCRUED",
             "PTO_CARRYOVER" => "COM_TIMECLOCK_PTO_CARRYOVER",
             "PTO_MANUAL" => "COM_TIMECLOCK_PTO_MANUAL",
