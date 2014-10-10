@@ -42,11 +42,6 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$path = JPATH_ROOT."/components/com_timeclock";
-$adminPath = JPATH_ROOT."/administrator/components/com_timeclock";
-
-require_once $adminPath."/helpers/timeclock.php";
-require_once $path."/models/timeclock.php";
 
 /**
 * This class is the 'model' for the module.
@@ -69,46 +64,30 @@ class ModTimeclockInfoHelper
     *
     * @return array A list to display
     */
-    public function getDisplay($params)
+    static public function getDisplay($params)
     {
         $list = array();
 
-        $decimalPlaces = TimeclockHelper::getParam("decimalPlaces");
+        $decimals  = TimeclockHelpersTimeclock::getParam("decimalPlaces");
+        $timesheet = TimeclockHelpersTimeclock::getModel("timesheet");
+        $pto       = TimeclockHelpersTimeclock::getModel("pto");
+        $year      = date("Y");
+        $start     = "$year-01-01";
+        $end       = date("Y-m-d");
+        $user      = $timesheet->getUser();
+        $ytd       = $timesheet->periodTotal($user->id, $start, $end, false);
 
-        $user = JFactory::getUser();
-        $timeclockModel = JModelLegacy::getInstance("Timeclock", "TimeclockModel");
-        $userModel = JModelLegacy::getInstance("Users", "TimeclockAdminModel");
-        $ytdWhere = " `t`.`worked` >= '".date("Y")."-1-1'";
-        $ytdhours = round($timeclockModel->getTotal($ytdWhere), $decimalPlaces);
         if ($params->get("showYTDHours") == 1) {
-            $list["MOD_TIMECLOCKINFO_YTD"] = $ytdhours." ".JText::_("MOD_TIMECLOCKINFO_HOURS");
+            $list["MOD_TIMECLOCKINFO_YTD"] = round($ytd, $decimals);
         }
-        $days = $timeclockModel->daysSinceStart();
-        if ($days > date("z")) {
-            $days = date("z");
-        }
+        $days = date("z");
         $week = $days/7;
         if ($params->get("showHoursPerWeek") == 1) {
-            $list["MOD_TIMECLOCKINFO_HOURS_PER_WEEK"] = round($ytdhours / $week, $decimalPlaces);
+            $list["MOD_TIMECLOCKINFO_HOURS_PER_WEEK"] = round($ytd / $week, $decimals);
         }
-        $nextHoliday = $timeclockModel->getNextHoliday(
-            "t.worked > '".date("Y-m-d")."'"
-        );
-        if ($nextHoliday == false) {
-            $nextHoliday = "JNONE";
-        }
-        if ($params->get("showNextHoliday") == 1) {
-            $list["MOD_TIMECLOCKINFO_NEXT_HOLIDAY"] = JHTML::_(
-                'date', $nextHoliday,
-                JText::_("DATE_FORMAT_LC")
-            );
-        }
-
-        $ptoWhere = " `p`.`type` = 'PTO' AND `t`.`worked` >= '".date("Y-01-01")."'";
-        $pto = round($timeclockModel->getTotal($ptoWhere), $decimalPlaces);
-        $ptoYTD = round($userModel->getPTO($user->get("id")), $decimalPlaces);
+        $pto = round($pto->getPTO($year), $decimals);
         if ($params->get("showPTO") == 1) {
-            $list["MOD_TIMECLOCKINFO_PTO"] = $pto."/".$ptoYTD." ".JText::_("MOD_TIMECLOCKINFO_HOURS");
+            $list["MOD_TIMECLOCKINFO_PTO_BALANCE"] = $pto." ".JText::_("MOD_TIMECLOCKINFO_HOURS");
         }
 
         // Do stuff here
