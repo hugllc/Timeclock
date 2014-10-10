@@ -26,7 +26,7 @@ if (!$displayData->hide) :
 ?>
                 <td class="<?php print $class; ?>"><?php print $hours; ?></td>
 <?php endforeach; ?>
-                <td class="total">
+                <td class="total hasTooltip" title="<?php print JText::_("COM_TIMECLOCK_PTO_CURRENT_DESC"); ?>">
                     <?php print isset($displayData->data["PTO_CURRENT"]) ? $displayData->data["PTO_CURRENT"] : "0"; ?>
                 </td>
             </tr>

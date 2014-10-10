@@ -7,5 +7,7 @@ $cnt = 0;
 <?php foreach ($displayData as $col) : ?>
             <th><?php print JText::_($col); ?></th>
 <?php endforeach; ?>
-            <th><?php print JText::_("COM_TIMECLOCK_PTO_CURRENT"); ?></th>
+            <th class="hasTooltip" title="<?php print JText::_("COM_TIMECLOCK_PTO_CURRENT_DESC"); ?>">
+                <?php print JText::_("COM_TIMECLOCK_PTO_CURRENT"); ?>
+            </th>
         </tr>
