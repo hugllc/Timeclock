@@ -216,6 +216,11 @@ class TimeclockHelpersView
             $cName == 'reports'
         );
         JHtmlSidebar::addEntry(
+            JText::_("COM_TIMECLOCK_PTO"),
+            'index.php?option=com_timeclock&controller=pto',
+            $cName == 'pto'
+        );
+        JHtmlSidebar::addEntry(
             JText::_("COM_TIMECLOCK_MISC_TOOLS"),
             'index.php?option=com_timeclock&controller=tools',
             $cName == 'tools'

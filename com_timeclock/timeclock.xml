@@ -57,6 +57,7 @@
             <menu controller="holiday" task="list">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
             <menu controller="timesheet" task="list">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
             <menu controller="reports" task="list">COM_TIMECLOCK_SUBMENU_REPORTS</menu>
+            <menu controller="pto" task="list">COM_TIMECLOCK_SUBMENU_PTO</menu>
             <menu controller="tools" task="display">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
             <menu controller="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
         </submenu>

@@ -176,16 +176,16 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         }
         $filter = $this->getState("filter");
         if(!empty($filter->search) && is_string($filter->search)) {
-            $query->where($db->quoteName("t.notes")." LIKE ".$db->quote("%".$filter->search."%"));
+            $query->where($db->quoteName("o.notes")." LIKE ".$db->quote("%".$filter->search."%"));
         }
         
         if (is_numeric($filter->year)) {
-            $query->where($db->quoteName("t.valid_from")." >= " . $db->quote((int) $filter->year."-01-01"));
-            $query->where($db->quoteName("t.valid_from")." <= " . $db->quote((int) $filter->year."-12-31"));
+            $query->where($db->quoteName("o.valid_from")." >= " . $db->quote((int) $filter->year."-01-01"));
+            $query->where($db->quoteName("o.valid_from")." <= " . $db->quote((int) $filter->year."-12-31"));
         }
         
         if (is_numeric($filter->user_id)) {
-            $query->where($db->quoteName("t.user_id")." = " . $db->quote((int) $filter->user_id));
+            $query->where($db->quoteName("o.user_id")." = " . $db->quote((int) $filter->user_id));
         }
 
         return $query;
