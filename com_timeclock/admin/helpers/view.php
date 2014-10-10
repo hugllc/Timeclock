@@ -206,6 +206,11 @@ class TimeclockHelpersView
             $cName == 'holiday'
         );
         JHtmlSidebar::addEntry(
+            JText::_("COM_TIMECLOCK_PTO"),
+            'index.php?option=com_timeclock&controller=pto',
+            $cName == 'pto'
+        );
+        JHtmlSidebar::addEntry(
             JText::_("COM_TIMECLOCK_TIMESHEETS"),
             'index.php?option=com_timeclock&controller=timesheet',
             $cName == 'timesheet'
@@ -214,11 +219,6 @@ class TimeclockHelpersView
             JText::_("COM_TIMECLOCK_REPORTS"),
             'index.php?option=com_timeclock&controller=reports',
             $cName == 'reports'
-        );
-        JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_PTO"),
-            'index.php?option=com_timeclock&controller=pto',
-            $cName == 'pto'
         );
         JHtmlSidebar::addEntry(
             JText::_("COM_TIMECLOCK_MISC_TOOLS"),

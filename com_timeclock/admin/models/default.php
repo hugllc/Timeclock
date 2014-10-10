@@ -289,6 +289,7 @@ class TimeclockModelsDefault extends JModelBase
     {
         if (empty($this->_total)) {
             $query = $this->_buildCountQuery();
+            $query = $this->_buildWhere($query);
             $this->_total = $this->_getListCount($query);
         }
         return $this->_total;

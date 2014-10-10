@@ -67,6 +67,28 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         $this->_pto_id = !empty($this->id) ? (int) reset($this->id) : null;
     }
     /**
+    * Stores the data given, or request data.
+    *
+    * @param array $data The data to store.  If not given, get the post data
+    *
+    * @return JTable instance with data in it.
+    */
+    public function store($data=null)
+    {
+        $data = $data ? $data : JRequest::get('post');
+        $data["valid_from"] = TimeclockHelpersDate::fixDate($data["valid_from"]);
+        $to = TimeclockHelpersDate::explodeDate($data["valid_from"]);
+        if ($data["type"] == "CARRYOVER") {
+            $cutoff = TimeclockHelpersTimeclock::getParam("ptoCarryOverDefExpire");
+            $data["valid_from"] = $to["y"]."-01-01";
+            $data["valid_to"] = $to["y"]."-".$cutoff;
+        } else {
+            $data["valid_to"] = $to["y"]."-12-31";
+        }
+        return parent::store($data);
+
+    }
+    /**
     * Builds the query to be used by the model
     *
     * @return object Query object
@@ -77,7 +99,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         $query = $db->getQuery(TRUE);
         $query->select('*');
         $query->from('#__timeclock_pto as o');
-        $query->select('u.name as user');
+        $query->select('u.name as name');
         $query->leftjoin('#__users as u on o.user_id = u.id');
         $query->select('v.name as author');
         $query->leftjoin('#__users as v on o.created_by = v.id');
@@ -95,7 +117,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     public function getAccrual($start, $end, $id = null)
     {
         $id    = empty($id) ? $this->getUser()->id : (int)$id;
-        return $this->_getPTO($start, $end, $id, "ACCRUAL");
+        return $this->_getPTO($start, $end, $id, "ACCRUAL", false);
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -103,11 +125,75 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * @param string $start The date to start
     * @param string $end   The date to end
     * @param int    $id    The id of the user to accrue for
-    * @param string $type  The type to get
     * 
     * @return array An array of results.
     */
-    private function _getPTO($start, $end, $id, $type)
+    public function getManual($start, $end, $id = null)
+    {
+        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        return $this->_getPTO($start, $end, $id, "MANUAL", false);
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * 
+    * @return array An array of results.
+    */
+    public function getDonation($start, $end, $id = null)
+    {
+        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        return $this->_getPTO($start, $end, $id, "DONATION", false);
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * 
+    * @return array An array of results.
+    */
+    public function getCarryover($start, $end, $id = null)
+    {
+        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        return $this->_getPTO($start, $end, $id, "CARRYOVER", false);
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param string $start The date to start
+    * @param string $end   The date to end
+    * @param int    $id    The id of the user to accrue for
+    * 
+    * @return array An array of results.
+    */
+    public function getPTO($start, $end, $id = null)
+    {
+        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
+        $regular = $this->_getPTO($start, $end, $id, "CARRYOVER", true);
+        $carry   = $this->getCarryover($start, $end);
+        $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
+        $worked    = (float)$timesheet->ptoTotal($id, $start, $end, true);
+        $hours     = $regular - $worked;
+        $hours     = sprintf("%4.".$decimals."f", $hours);
+        return (float)$hours;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param string $start   The date to start
+    * @param string $end     The date to end
+    * @param int    $id      The id of the user to accrue for
+    * @param string $type    The type to get
+    * @param bool   $nottype Invert the type to get everything but that
+    * 
+    * @return array An array of results.
+    */
+    private function _getPTO($start, $end, $id, $type, $nottype = false)
     {
         $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
         $db    = JFactory::getDBO();
@@ -117,7 +203,11 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         $query->where($db->quoteName("user_id")." = ".$db->quote($id));
         $query->where($db->quoteName("valid_from")." >= ".$db->quote($start));
         $query->where($db->quoteName("valid_from")." <= ".$db->quote($end));
-        $query->where($db->quoteName("type")." = ".$db->quote($type));
+        if ($nottype) {
+            $query->where($db->quoteName("type")." <> ".$db->quote($type));
+        } else {
+            $query->where($db->quoteName("type")." = ".$db->quote($type));
+        }
         $db->setQuery($query);
 
         $item = $db->loadObject();
@@ -334,7 +424,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         $row->modified   = $row->created;
         $row->notes      = "Automatic Accrual";
         
-        return $this->store($row);
+        return parent::store($row);
     }
     /**
     * Sets an accrual record for the

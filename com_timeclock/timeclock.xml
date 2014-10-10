@@ -55,9 +55,9 @@
             <menu controller="department" task="list">COM_TIMECLOCK_SUBMENU_DEPARTMENTS</menu>
             <menu controller="project" task="list">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
             <menu controller="holiday" task="list">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
+            <menu controller="pto" task="list">COM_TIMECLOCK_SUBMENU_PTO</menu>
             <menu controller="timesheet" task="list">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
             <menu controller="reports" task="list">COM_TIMECLOCK_SUBMENU_REPORTS</menu>
-            <menu controller="pto" task="list">COM_TIMECLOCK_SUBMENU_PTO</menu>
             <menu controller="tools" task="display">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
             <menu controller="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
         </submenu>

@@ -7,5 +7,4 @@ $cnt = 0;
 <?php foreach ($displayData as $col) : ?>
             <th><?php print JText::_($col); ?></th>
 <?php endforeach; ?>
-            <th><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></th>
         </tr>

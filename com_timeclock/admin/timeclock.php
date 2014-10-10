@@ -36,6 +36,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // load table paths
+JLoader::register('TimeclockHelpersDate', JPATH_COMPONENT_SITE.'/helpers/date.php');
 JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_timeclock/tables');
 JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
 //load classes

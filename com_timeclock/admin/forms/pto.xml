@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="main" label="COM_TIMECLOCK_EDIT_PTO">
+        <field
+            name="user_id"
+            type="timeclockuser"
+            label="COM_TIMECLOCK_USER"
+            description="COM_TIMECLOCK_USER_PTO_DESC"
+            class="span4"
+            size="40"
+            required="true"/>
+        <field
+            name="valid_from"
+            type="calendar"
+            label="COM_TIMECLOCK_VALID_FROM"
+            description="COM_TIMECLOCK_VALID_FROM_PTO_DESC"
+            class="span4"
+            default="0000-00-00"
+            format="%Y-%m-%d"
+            size="40"
+            required="true"/>
+        <field
+            name="hours"
+            type="text"
+            class="span2"
+            label="COM_TIMECLOCK_HOURS"
+            description="COM_TIMECLOCK_HOURS_PTO_DESC"
+            size="8"
+            required="true" />
+        <field
+            name="notes"
+            type="textarea"
+            label="COM_TIMECLOCK_NOTES"
+            description="COM_TIMECLOCK_NOTES_PTO_DESC"
+            rows="3"
+            required="true"
+            cols="40"/>
+
+    </fieldset>
+    <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_PTO">
+        <field
+            name="type"
+            type="list"
+            class="chzn-color-state span10"
+            default="1"
+            size="1"
+            label="COM_TIMECLOCK_TYPE"
+            required="true"
+            description="COM_TIMECLOCK_TYPE_PTO_DESC">
+            <option value="MANUAL">COM_TIMECLOCK_MANUAL</option>
+            <option value="CARRYOVER">COM_TIMECLOCK_CARRYOVER</option>
+            <option value="DONATION">COM_TIMECLOCK_DONATION</option>
+        </field>
+    </fieldset>
+</form>

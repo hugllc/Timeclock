@@ -71,7 +71,14 @@ class TimeclockModelsYtd extends TimeclockModelsReport
         $pto   = TimeclockHelpersTimeclock::getModel("pto");
         $this->listProjects();
         $return = array(
-            "totals" => array("total" => 0),
+            "totals" => array(
+                "total" => 0,
+                "PTO_ACCRUAL" => 0,
+                "PTO_CARRYOVER" => 0,
+                "PTO_MANUAL" => 0,
+                "PTO_DONATION" => 0,
+                "PTO_CURRENT" => 0,
+            ),
         );
         foreach ($list as $row) {
             $this->checkTimesheet($row);
@@ -89,8 +96,16 @@ class TimeclockModelsYtd extends TimeclockModelsReport
             $return["totals"][$type]   += $row->hours;
             $return["totals"]["total"] += $row->hours;
             if (!isset($return[$user_id]["PTO_ACCRUAL"])) {
-                $return[$user_id]["PTO_ACCRUAL"] = (float)$pto->getAccrual($start, $end, $user_id);
-                $return["totals"]["PTO_ACCRUAL"] += $return[$user_id]["PTO_ACCRUAL"];
+                $return[$user_id]["PTO_ACCRUAL"]    = (float)$pto->getAccrual($start, $end, $user_id);
+                $return["totals"]["PTO_ACCRUAL"]   += $return[$user_id]["PTO_ACCRUAL"];
+                $return[$user_id]["PTO_MANUAL"]     = (float)$pto->getManual($start, $end, $user_id);
+                $return["totals"]["PTO_MANUAL"]   += $return[$user_id]["PTO_MANUAL"];
+                $return[$user_id]["PTO_DONATION"]   = (float)$pto->getDonation($start, $end, $user_id);
+                $return["totals"]["PTO_DONATION"]   += $return[$user_id]["PTO_DONATION"];
+                $return[$user_id]["PTO_CURRENT"]    = (float)$pto->getPTO($start, $end, $user_id);
+                $return["totals"]["PTO_CURRENT"]   += $return[$user_id]["PTO_CURRENT"];
+                $return[$user_id]["PTO_CARRYOVER"]  = (float)$pto->getCarryover($start, $end, $user_id);
+                $return["totals"]["PTO_CARRYOVER"]   += $return[$user_id]["PTO_CARRYOVER"];
             }
         }
         $return["cols"] = array(
@@ -98,7 +113,12 @@ class TimeclockModelsYtd extends TimeclockModelsReport
             "HOLIDAY" => "COM_TIMECLOCK_HOLIDAY", 
             "UNPAID" => "COM_TIMECLOCK_VOLUNTEER", 
             "PTO" => "COM_TIMECLOCK_PTO_TAKEN",
-            "PTO_ACCRUAL" => "COM_TIMECLOCK_PTO_ACCRUED"
+            "total"  => "COM_TIMECLOCK_TOTAL",
+            "PTO_ACCRUAL" => "COM_TIMECLOCK_PTO_ACCRUED",
+            "PTO_CARRYOVER" => "COM_TIMECLOCK_PTO_CARRYOVER",
+            "PTO_MANUAL" => "COM_TIMECLOCK_PTO_MANUAL",
+            "PTO_DONATION" => "COM_TIMECLOCK_PTO_DONATION",
+            "PTO_CURRENT" => "COM_TIMECLOCK_PTO_CURRENT",
         );
         return $return;
     }

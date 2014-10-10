@@ -13,18 +13,18 @@ if (!$displayData->hide) :
                
 <?php 
     foreach (array_keys($displayData->cols) as $col) :
-        if (isset($displayData->data[$col]) && ($displayData->data[$col] > 0)) :
+        if (isset($displayData->data[$col])) :
             $hours = (float)$displayData->data[$col];
         else :
             $hours = $zero;
         endif;
+        if ($col == "total") :
+            $class = "total";
+        else :
+            $class = "hours";
+        endif;
 ?>
-                <td class="hours"><?php print $hours; ?></td>
+                <td class="<?php print $class; ?>"><?php print $hours; ?></td>
 <?php endforeach; ?>
-                <td class="total">
-                    <span id="total-<?php print $user_id?>">
-                        <?php print $total; ?>
-                    </span>
-                </td>
             </tr>
 <?php endif; ?>

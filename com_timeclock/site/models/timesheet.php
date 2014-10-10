@@ -338,8 +338,37 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
             if ($paid && ($row->project_type == "UNPAID")) {
                 continue;
             }
-            $proj_id = (int)$row->project_id;
-            $cat_id  = (int)$row->cat_id;
+            $this->checkTimesheet($row);
+            $return += $row->hours;
+        }
+        return (float)$return;
+    }
+    /**
+    * This function gets the dates of the period, and says wheter or not time can 
+    * be added to it
+    *
+    * @param int    $id    The user id of the timesheet to get
+    * @param string $start The first day of employment
+    * @param string $end   The last day of employment
+    *
+    * @return The total hours for this time period
+    */
+    public function ptoTotal(
+        $id = null, $start = null, $end = null
+    ) {
+        $id    = empty($id) ? $this->_user_id : $id;
+        $start = empty($start) ? $this->getState('start') : $start;
+        $end   = empty($end) ? $this->getState('end') : $end;
+        $query = $this->_buildQuery($id);
+        $this->_periodWhere($query, $start, $end);
+        $this->_userWhere($query, $id);
+        $db = JFactory::getDBO();
+        $query->where($db->quoteName("p.type")." = ".$db->quote("PTO"));
+        
+        $list = $this->_getList($query);
+        $this->listProjects();
+        $return = 0.0;
+        foreach ($list as $row) {
             $this->checkTimesheet($row);
             $return += $row->hours;
         }

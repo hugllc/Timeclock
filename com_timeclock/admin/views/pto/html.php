@@ -131,11 +131,6 @@ class TimeclockViewsPtoHtml extends JViewHtml
         }
         JHtmlSidebar::setAction('index.php?option=com_timeclock');
 
-        JHtmlSidebar::addFilter(
-            JText::_('JOPTION_SELECT_PUBLISHED'),
-            'filter_published',
-            JHtml::_('select.options', array(0 => JText::_("JUNPUBLISHED"), 1 => JText::_("JPUBLISHED")), 'value', 'text', $this->state->get('filter.published'), true)
-        );
         $options = TimeclockHelpersView::getUsersOptions();
         JHtmlSidebar::addFilter(
             JText::_('COM_TIMECLOCK_SELECT_USER'),
@@ -152,6 +147,12 @@ class TimeclockViewsPtoHtml extends JViewHtml
             JText::_('COM_TIMECLOCK_SELECT_TYPE'),
             'filter_type',
             JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.type'), true)
+        );
+        $options = TimeclockHelpersView::getYearOptions();
+        JHtmlSidebar::addFilter(
+            JText::_('COM_TIMECLOCK_SELECT_YEAR'),
+            'filter_year',
+            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.year'), true)
         );
     }
     /**
@@ -199,7 +200,7 @@ class TimeclockViewsPtoHtml extends JViewHtml
         if (!is_object($this->form)) {
             $this->form = JForm::getInstance(
                 'report', 
-                JPATH_COMPONENT_ADMINISTRATOR."/forms/report.xml"
+                JPATH_COMPONENT_ADMINISTRATOR."/forms/pto.xml"
             );
         }
         return $this->form;
