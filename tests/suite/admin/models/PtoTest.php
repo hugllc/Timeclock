@@ -129,7 +129,7 @@ class PtoTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),  // Input array (Mocks $_REQUEST)
-                4   // Expected Return
+                1   // Expected Return
             ),
             "Nominal" => array(
                 array(
@@ -276,6 +276,106 @@ class PtoTest extends ModelTestBase
         $model = $this->model;
         $obj = new $model();
         $ret = $obj->getAccrual($start, $end, $id);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testAccrual
+    *
+    * @return array
+    */
+    public static function dataGetPTO()
+    {
+        return array(
+            "Whole Year" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "fulltimeHours" => 40,
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2014",  // year
+                42,            // id
+                19.5,            // Expect
+            ),
+            "None" => array(
+                array(
+                    "id" => 42,
+                ), // Input array (Mocks $_REQUEST)
+                array(
+                    "get.user.id"       => 44,
+                    "get.user.name"     => "Manager",
+                    "get.user.username" => "manager",
+                    "get.user.guest"    => 0,
+                ),  // The session information
+                array(
+                    "ptoEnable" => true,
+                    "ptoAccrualRates" => 'FULLTIME:PARTTIME
+                                            1:10:5
+                                            6:15:7.5
+                                            21:20:10
+                                            99:25:12.5',
+                    "ptoHoursPerDay" => 8,
+                    "decimalPlaces" => 2,
+                    "fulltimeHours" => 40,
+                ),
+                array(
+                    42 => array(
+                        'startDate' => "2000-09-01",
+                        'endDate'   => '',
+                        'status'    => 'FULLTIME',
+                    ),
+                ), // $userparams
+                "2013",  // year
+                42,            // id
+                156.5,            // Expect
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $input   The name of the variable to test.
+    * @param mixed  $options The session information to set up
+    * @param array  $config  The configuration to set up for the component
+    * @param string $year    The year to get PTO for
+    * @param int    $id      The id of the user to accrue for
+    * @param array  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPTO
+    */
+    public function testGetPTO(
+        $input, $options, $config, $userconfig, $year, $id, $expect
+    ) {
+        $this->setSession($options);
+        $this->setInput($input);
+        $this->setComponentConfig($config);
+        $this->setUserConfig($userconfig);
+        $model = $this->model;
+        $obj = new $model();
+        $ret = $obj->getPTO($year, $id);
         $this->assertSame($expect, $ret);
     }
     /**

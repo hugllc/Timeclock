@@ -135,7 +135,7 @@ class ProjectTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),   // Input array (Mocks $_REQUEST)
-                6 // Expected return
+                1 // Expected return
             ),
             "Nominal" => array(
                 array(

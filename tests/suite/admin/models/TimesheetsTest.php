@@ -147,7 +147,7 @@ class TimesheetsTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),  // Input array (Mocks $_REQUEST)
-                24   // Expected Return
+                1   // Expected Return
             ),
             "Nominal" => array(
                 array(

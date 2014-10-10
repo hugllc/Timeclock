@@ -123,7 +123,7 @@ class CustomerTest extends ModelTestBase
                 array(
                     "id" => 2,
                 ),  // Input array (Mocks $_REQUEST)
-                2   // Expected Return
+                1   // Expected Return
             ),
             "Nominal" => array(
                 array(
