@@ -20,6 +20,16 @@
             size="40"
             required="true"/>
         <field
+            name="valid_to"
+            type="calendar"
+            label="COM_TIMECLOCK_VALID_TO"
+            description="COM_TIMECLOCK_VALID_TO_PTO_DESC"
+            class="span4"
+            default="0000-00-00"
+            format="%Y-%m-%d"
+            size="40"
+            required="false"/>
+        <field
             name="hours"
             type="text"
             class="span2"

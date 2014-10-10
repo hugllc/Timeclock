@@ -77,11 +77,17 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     {
         $data = $data ? $data : JRequest::get('post');
         $data["valid_from"] = TimeclockHelpersDate::fixDate($data["valid_from"]);
-        $to = TimeclockHelpersDate::explodeDate($data["valid_from"]);
+        $to                 = TimeclockHelpersDate::explodeDate($data["valid_from"]);
         if ($data["type"] == "CARRYOVER") {
-            $cutoff = TimeclockHelpersTimeclock::getParam("ptoCarryOverDefExpire");
             $data["valid_from"] = $to["y"]."-01-01";
-            $data["valid_to"] = $to["y"]."-".$cutoff;
+            if (!empty($data["valid_to"])) {
+                $valid_to = TimeclockHelpersDate::fixDate($data["valid_to"]);
+                $valid_to = TimeclockHelpersDate::explodeDate($valid_to);
+                $data["valid_to"] = $to["y"]."-".$valid_to["m"]."-".$valid_to["d"];
+            } else {
+                $cutoff           = TimeclockHelpersTimeclock::getParam("ptoCarryOverDefExpire");
+                $data["valid_to"] = $to["y"]."-".$cutoff;
+            }
         } else {
             $data["valid_to"] = $to["y"]."-12-31";
         }
@@ -164,23 +170,51 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     /**
     * Build query and where for protected _getList function and return a list
     *
-    * @param string $start The date to start
-    * @param string $end   The date to end
-    * @param int    $id    The id of the user to accrue for
+    * @param int $year The year to get the PTO balance for
+    * @param int $id   The id of the user to accrue for
     * 
     * @return array An array of results.
     */
-    public function getPTO($start, $end, $id = null)
+    public function getPTO($year, $id = null)
     {
-        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        $year      = (int)$year;
+        $start     = "$year-01-01";
+        $end       = "$year-12-31";
+        $id        = empty($id) ? $this->getUser()->id : (int)$id;
         $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
-        $regular = $this->_getPTO($start, $end, $id, "CARRYOVER", true);
-        $carry   = $this->getCarryover($start, $end);
+        $regular   = $this->_getPTO($start, $end, $id, "CARRYOVER", true);
         $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
         $worked    = (float)$timesheet->ptoTotal($id, $start, $end, true);
-        $hours     = $regular - $worked;
+        $hours     = $regular - $worked + $this->_getCarryoverOffset($year, $id);
         $hours     = sprintf("%4.".$decimals."f", $hours);
         return (float)$hours;
+    }
+    /**
+    * Gets the offset based on carryover
+    *
+    * @param int $year The year to get the PTO balance for
+    * @param int $id   The id of the user to accrue for
+    * 
+    * @return array An array of results.
+    */
+    private function _getCarryoverOffset($year, $id)
+    {
+        $start = "$year-01-01";
+        $pto_id = $this->find($id, $start, "CARRYOVER");
+        if (is_null($pto_id)) {
+            // No carryover
+            return 0;
+        }
+        $carry = $this->getItem($pto_id);
+        $end   = $carry->valid_to;
+        $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
+        $taken = (float)$timesheet->ptoTotal($id, $start, $end, true);
+        $hours = $taken - $carry->hours;
+        if ($hours >= 0) {
+            return $carry->hours;
+        } else {
+            return $taken;
+        }
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -219,10 +253,11 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     *
     * @param int    $user_id    The user ID to check
     * @param string $valid_from The date the PTO was logged
+    * @param string $type       The type to look for
     * 
     * @return object Query object
     */
-    protected function find($user_id, $valid_from)
+    protected function find($user_id, $valid_from, $type = null)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
@@ -230,6 +265,9 @@ class TimeclockModelsPto extends TimeclockModelsDefault
         $query->from('#__timeclock_pto');
         $query->where($db->quoteName('user_id')." = ".$db->quote($user_id));
         $query->where($db->quoteName('valid_from')." = ".$db->quote($valid_from));
+        if (!empty($type)) {
+            $query->where($db->quoteName('type')." = ".$db->quote($type));
+        }
         $db->setQuery($query);
         $res = $db->loadResult();
         return $res;

@@ -69,6 +69,7 @@ class TimeclockModelsYtd extends TimeclockModelsReport
         $start = $this->getState("start");
         $end   = $this->getState("end");
         $pto   = TimeclockHelpersTimeclock::getModel("pto");
+        $s     = TimeclockHelpersDate::explodeDate($start);
         $this->listProjects();
         $return = array(
             "totals" => array(
@@ -102,7 +103,7 @@ class TimeclockModelsYtd extends TimeclockModelsReport
                 $return["totals"]["PTO_MANUAL"]   += $return[$user_id]["PTO_MANUAL"];
                 $return[$user_id]["PTO_DONATION"]   = (float)$pto->getDonation($start, $end, $user_id);
                 $return["totals"]["PTO_DONATION"]   += $return[$user_id]["PTO_DONATION"];
-                $return[$user_id]["PTO_CURRENT"]    = (float)$pto->getPTO($start, $end, $user_id);
+                $return[$user_id]["PTO_CURRENT"]    = (float)$pto->getPTO($s["y"], $user_id);
                 $return["totals"]["PTO_CURRENT"]   += $return[$user_id]["PTO_CURRENT"];
                 $return[$user_id]["PTO_CARRYOVER"]  = (float)$pto->getCarryover($start, $end, $user_id);
                 $return["totals"]["PTO_CARRYOVER"]   += $return[$user_id]["PTO_CARRYOVER"];
@@ -118,7 +119,6 @@ class TimeclockModelsYtd extends TimeclockModelsReport
             "PTO_CARRYOVER" => "COM_TIMECLOCK_PTO_CARRYOVER",
             "PTO_MANUAL" => "COM_TIMECLOCK_PTO_MANUAL",
             "PTO_DONATION" => "COM_TIMECLOCK_PTO_DONATION",
-            "PTO_CURRENT" => "COM_TIMECLOCK_PTO_CURRENT",
         );
         return $return;
     }

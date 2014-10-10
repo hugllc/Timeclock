@@ -13,7 +13,7 @@ if (!$displayData->hide) :
                
 <?php 
     foreach (array_keys($displayData->cols) as $col) :
-        if (isset($displayData->data[$col])) :
+        if (isset($displayData->data[$col]) && ($displayData->data[$col] != 0)) :
             $hours = (float)$displayData->data[$col];
         else :
             $hours = $zero;
@@ -26,5 +26,8 @@ if (!$displayData->hide) :
 ?>
                 <td class="<?php print $class; ?>"><?php print $hours; ?></td>
 <?php endforeach; ?>
+                <td class="total">
+                    <?php print isset($displayData->data["PTO_CURRENT"]) ? $displayData->data["PTO_CURRENT"] : "0"; ?>
+                </td>
             </tr>
 <?php endif; ?>

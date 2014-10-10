@@ -12,4 +12,9 @@
                     <?php print $hours; ?>
                 </td>
 <?php endforeach; ?>
+                <td class="total">
+                    <span id="total">
+                        <?php print isset($displayData->data["PTO_CURRENT"]) ? $displayData->data["PTO_CURRENT"] : "0"; ?>
+                    </span>
+                </td>
             </tr>
