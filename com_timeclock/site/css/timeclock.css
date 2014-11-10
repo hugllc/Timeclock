@@ -60,7 +60,7 @@ table.timesheet tr.header th.today {
 }
 
 table.timesheet th {
-    background-color: #CCC;
+    background-color: #CCC !important;
 }
 table.timesheet tr.name th {
     font-size: 1.5em;
