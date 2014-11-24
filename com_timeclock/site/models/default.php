@@ -251,7 +251,7 @@ class TimeclockModelsSiteDefault extends JModelBase
         if (!isset($this->_user[$id])) {
             $this->_user[$id] = JFactory::getUser($id);
             $this->_user[$id]->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user[$id]->id);
-            $this->_user[$id]->me = is_null($id) || ($id == $this->_user[$id]->id);
+            $this->_user[$id]->me = is_null($id) || ($id == JFactory::getUser()->id);
         }
         return $this->_user[$id];
     }

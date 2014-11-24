@@ -69,6 +69,18 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         parent::__construct(); 
     }
     /**
+    * Gets the user and returns the timeclock params
+    *
+    * @param int $id The id of the user to get
+    * 
+    * @return array An array of results.
+    */
+    public function &getUser($id = null)
+    {
+        $id = is_null($id) ? $this->_user_id : $id;
+        return parent::getUser($id);
+    }
+    /**
     * Build query and where for protected _getList function and return a list
     *
     * @return array An array of results.
@@ -453,7 +465,6 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     private function _userWhere($query, $id = null)
     {
         $db = JFactory::getDBO();
-        $id = empty($id) ? $this->_user_id : $id;
         $user = $this->getUser($id);
         $query->where(
             "((".$db->quoteName("t.user_id")."=".$db->quote($user->id)." AND "
