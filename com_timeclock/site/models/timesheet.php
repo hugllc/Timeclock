@@ -76,8 +76,8 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     public function complete()
     {
         $start = $this->getState("payperiod.start");
-        TimeclockHelpersTimeclock::setUserParam("timesheetDone", $start);
-        $set = TimeclockHelpersTimeclock::getUserParam("timesheetDone");
+        TimeclockHelpersTimeclock::setUserParam("timesheetDone", $start, $this->_user_id);
+        $set = TimeclockHelpersTimeclock::getUserParam("timesheetDone", $this->_user_id);
         if ($start == $set) {
             return $set;
         }
