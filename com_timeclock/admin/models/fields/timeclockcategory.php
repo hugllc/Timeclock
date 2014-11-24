@@ -64,7 +64,9 @@ class JFormFieldTimeclockCategory extends JFormField
             array("p.published=1", "p.type = 'CATEGORY'"),
             "p.name ASC"
         );
-        $options = array();
+        $options = array(
+            JHTML::_('select.option', 0, JText::_("JNone"))
+        );
         foreach ($list as $value) {
             $options[] = JHTML::_(
                 'select.option', 

@@ -489,6 +489,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');
         $query->where('q.user_id = '.$db->quote($this->_user_id));
         $query->where('q.project_id > 0');
+        $query->where('p.published = 1');
         $query->order("p.name asc");
         return $query;
     }

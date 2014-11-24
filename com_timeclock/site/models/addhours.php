@@ -223,6 +223,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
         $query->where('q.project_id > 0');
         $query->where($db->quoteName("p.type")."<> 'HOLIDAY'");
         $query->where($db->quoteName("p.type")."<> 'CATEGORY'");
+        $query->where($db->quoteName('p.published').' = 1');
         $project_id = $this->getState("project_id");
         if (!empty($project_id)) {
             $query->where($db->quoteName("p.project_id")."=".$db->quote($project_id));

@@ -4,6 +4,9 @@
     $cols = $this->payperiod->days + 2 + $subtotalcols;
     $this->payperiod->cols = $cols;
     $this->payperiod->subtotalcols = $subtotalcols;
+    if (count($this->projects) > 1) {
+        unset($this->projects[0]);
+    }
 ?>
 <div id="timeclock">
 <form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">
