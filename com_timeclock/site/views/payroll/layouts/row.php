@@ -19,7 +19,7 @@
         }
     }
     $total = $subtotal + $overtime;
-    $timesheeturl = JRoute::_('index.php?&option=com_timeclock&controller=timesheet&id='.$user_id);
+    $timesheeturl = JRoute::_('index.php?&option=com_timeclock&controller=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
     if (!empty($displayData->error)) {
         $errorClass   = "error hasTooltip";
         $errorTooltip = ' title="'.$displayData->error.'"';
