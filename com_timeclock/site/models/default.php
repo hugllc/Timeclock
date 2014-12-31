@@ -258,14 +258,15 @@ class TimeclockModelsSiteDefault extends JModelBase
     /**
     * Build query and where for protected _getList function and return a list
     *
-    * @param int $user_id The user to get the projects for
+    * @param int $blocked null gets all users, 1 gets blocked users, 0 gets unblocked
+    *                     users
     * 
     * @return array An array of results.
     */
-    public function listUsers()
+    public function listUsers($blocked = 0)
     {
         if (empty($this->_users)) {
-            $this->_users = TimeclockHelpersTimeclock::getUsers();
+            $this->_users = TimeclockHelpersTimeclock::getUsers($blocked);
             $me = JFactory::getUser()->id;
             foreach ($this->_users as &$user) {
                 $user->timeclock = TimeclockHelpersTimeclock::getUserParams($user->id);

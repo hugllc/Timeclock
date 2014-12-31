@@ -72,6 +72,7 @@ class TimeclockModelsWcomp extends TimeclockModelsReport
             $this->checkTimesheet($row);
             $proj_id                     = (int)$row->project_id;
             $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
+            $this->checkUserRow($users[$user_id], $row);
             if ($users[$user_id]->hide) {
                 continue;
             }

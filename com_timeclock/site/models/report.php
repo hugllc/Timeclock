@@ -89,7 +89,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function listUsers()
     {
         if (is_null($this->_myusers)) {
-            $this->_myusers = parent::listUsers();
+            $this->_myusers = parent::listUsers(null);
             foreach ($this->_myusers as $key => &$user) {
                 $this->checkUser($user);
             }
@@ -112,16 +112,22 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function checkUser(&$user)
     {
         $user->hide = false;
+        $user->pruned = false;
         $filter = $this->getState("filter");
         if (is_numeric($filter->user_manager_id)) {
             if ($user->timeclock["manager"] != $filter->user_manager_id) {
                 $user->hide = true;
+                $user->pruned = true;
             }
         }
         if (is_numeric($filter->user_id)) {
             if ($user->id != $filter->user_id) {
                 $user->hide = true;
+                $user->pruned = true;
             }
+        }
+        if ($user->block) {
+            $user->hide = true;
         }
     }
     /**
@@ -143,6 +149,10 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $this->checkTimesheet($row);
             $proj_id                     = (int)$row->project_id;
             $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
+            if ($row->hours == 0) {
+                continue;
+            }
+            $this->checkUserRow($users[$user_id], $row);
             if ($users[$user_id]->hide) {
                 continue;
             }
@@ -381,6 +391,23 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $params = $this->getState("params");
         $decimals = empty($params->decimalPlaces) ? 2 : $params->decimalPlaces;
         $entry->hours = round($entry->hours, $decimals);
+    }
+    /**
+    * Checks a user for this project
+    *
+    * @param object &$user The user array to use
+    * @param object $row   The row to check on
+    * 
+    * @return array An array of results.
+    */
+    protected function checkUserRow(&$user, &$row)
+    {
+        if ($row->hours > 0) {
+            if (!$user->pruned && $user->hide) {
+                $user->hide = false;
+            }
+        }
+
     }
     /**
     * Build query and where for protected _getList function and return a list
