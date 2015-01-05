@@ -94,6 +94,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         if (($eend != 0) && !$valid) {
             return false;
         }
+        if (($user->block) && ($eend == 0)) {
+            $user->error .= JText::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
+        }
 
         return true;
     }
