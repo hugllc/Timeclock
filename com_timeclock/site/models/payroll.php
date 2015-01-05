@@ -77,6 +77,10 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $start = $this->getState("payperiod.start");
         $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
         $user->done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
+        if ($user->block) {
+            return false;
+        }
+
         return true;
     }
     /**
@@ -190,6 +194,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                 continue;
             }
             foreach ($worked[$date] as $row) {
+                if ($row->hours == 0) {
+                    continue;
+                }
                 $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
                 $row->user_id = $user_id;
                 $return[$user_id] = isset($return[$user_id]) ? $return[$user_id] : array();
@@ -204,6 +211,10 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                 }
                 $this->checkTimesheet($row);
                 $this->checkTimesheetUser($row);
+                // Hours could get modified by the above two calls, so this is here.
+                if ($row->hours == 0) {
+                    continue;
+                }
                 switch ($row->project_type) {
                 case "HOLIDAY":
                     $return[$user_id][$period]->holiday += $row->hours;

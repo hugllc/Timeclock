@@ -91,7 +91,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (is_null($this->_myusers)) {
             $this->_myusers = parent::listUsers(null);
             foreach ($this->_myusers as $key => &$user) {
-                $this->checkUser($user);
+                if ($this->checkUser($user) === false) {
+                    unset($this->_myusers[$key]);
+                }
             }
             $this->_myusers[0] = (object)array(
                 "name"    => JText::_("JNONE"),
