@@ -131,6 +131,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if ($user->block) {
             $user->hide = true;
         }
+        return true;
     }
     /**
     * Build query and where for protected _getList function and return a list
