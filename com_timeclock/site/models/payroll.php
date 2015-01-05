@@ -66,6 +66,17 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         parent::__construct(); 
     }
     /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
+    public function listUsers()
+    {
+        $users = parent::listUsers();
+        unset($users[0]);
+        return $users;
+    }
+    /**
     * Checks the user record, and adds anything extra needed
     *
     * @param object &$user The user object to check
