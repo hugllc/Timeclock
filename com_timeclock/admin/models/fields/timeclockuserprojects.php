@@ -63,7 +63,7 @@ class JFormFieldTimeclockUserProjects extends JFormField
         $displayData["outOptions"] = array();
         $displayData["inOptions"] = array();
         $model = TimeclockHelpersTimeclock::getModel("project");
-        $projects = $model->listItems(array("p.published=1", "p.type <> 'CATEGORY'"));
+        $projects = $model->listItems(array("p.published=1", "p.type <> 'CATEGORY'"), null, false);
         foreach ($projects as $row) {
             $displayData["outOptions"][$row->project_id] = JHTML::_(
                 'select.option', 
