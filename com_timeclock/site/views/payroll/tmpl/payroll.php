@@ -1,4 +1,5 @@
 <?php
+    JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
     JHTML::script(Juri::base()."components/com_timeclock/views/payroll/tmpl/payroll.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHTML::_('behavior.modal'); 
@@ -97,6 +98,10 @@
     jQuery( document ).ready(function() {
         Payroll.setup();
     });
+    Report.filter    = {};
+    Report.projects  = <?php print json_encode($this->projects); ?>;
+    Report.data      = <?php print json_encode($this->data); ?>;
+    Report.doreports = <?php print (int)$doreports; ?>;
     Payroll.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
     Payroll.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
     Payroll.projects     = <?php print json_encode($this->projects); ?>;
