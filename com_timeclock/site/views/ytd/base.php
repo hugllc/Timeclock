@@ -243,6 +243,10 @@ class TimeclockViewsYtdBase extends JViewBase
     protected function nextCol($col)
     {
         $col = substr($col, -1);
+        if ($col == "Z") {
+            // This starts over with "A"
+            $col = chr(ord("A") - 1);
+        }
         $next = $this->colBase.chr(ord($col) + 1);
         if (substr($next, -1) == "Z") {
             if ($this->colBase == "") {
