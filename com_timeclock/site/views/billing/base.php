@@ -238,7 +238,10 @@ class TimeclockViewsBillingBase extends JViewBase
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_BILLABLE_RATE"));
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL_COST"));
-        foreach(range('A',$col) as $columnID) {
+        $columnID = "A";
+        $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        while ($col != $columnID) {
+            $columnID = $this->nextCol($columnID);
             $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         }
         $this->maxCol = $col;
@@ -254,6 +257,10 @@ class TimeclockViewsBillingBase extends JViewBase
     */
     protected function nextCol($col)
     {
+        if ($col == "A") {
+            // This is a new row
+            $this->colBase = "";
+        }
         $col = substr($col, -1);
         if ($col == "Z") {
             // This starts over with "A"

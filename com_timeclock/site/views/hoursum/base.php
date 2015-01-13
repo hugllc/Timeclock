@@ -416,6 +416,10 @@ class TimeclockViewsHoursumBase extends JViewBase
     */
     protected function nextCol($col)
     {
+        if ($col == "A") {
+            // This is a new row
+            $this->colBase = "";
+        }
         $col = substr($col, -1);
         if ($col == "Z") {
             // This starts over with "A"

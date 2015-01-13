@@ -206,7 +206,10 @@ class TimeclockViewsYtdBase extends JViewBase
         $this->phpexcel->getActiveSheet()->setCellValue("A".$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
         $end = $this->line - 1;
-        foreach (range("B", $this->maxCol) as $col) {
+        $columnID = "A";
+        $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        while ($col != $this->maxCol) {
+            $col = $this->nextCol($col);
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
         }
         $this->line++;
@@ -226,7 +229,8 @@ class TimeclockViewsYtdBase extends JViewBase
         }
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
-        foreach(range('A',$col) as $columnID) {
+        while ($col != $columnID) {
+            $columnID = $this->nextCol($columnID);
             $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         }
         $this->maxCol = $col;
@@ -242,6 +246,10 @@ class TimeclockViewsYtdBase extends JViewBase
     */
     protected function nextCol($col)
     {
+        if ($col == "A") {
+            // This is a new row
+            $this->colBase = "";
+        }
         $col = substr($col, -1);
         if ($col == "Z") {
             // This starts over with "A"

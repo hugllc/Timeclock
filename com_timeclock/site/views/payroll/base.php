@@ -217,7 +217,8 @@ class TimeclockViewsPayrollBase extends JViewBase
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
         $end = $this->line - 1;
-        foreach (range("B", $this->maxCol) as $col) {
+        while ($col != $this->maxCol) {
+            $col = $this->nextCol($col);
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
         }
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
@@ -245,7 +246,10 @@ class TimeclockViewsPayrollBase extends JViewBase
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_OVERTIME"));
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
-        foreach(range('A',$col) as $columnID) {
+        $columnID = "A";
+        $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        while ($col != $columnID) {
+            $columnID = $this->nextCol($columnID);
             $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         }
         $this->maxCol = $col;
