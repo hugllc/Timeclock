@@ -56,7 +56,7 @@
     vertical-align: top;
 }
 table.timesheet tr.header th.today {
-    background: #00FF00;
+    background: #00FF00 !important;
 }
 
 table.timesheet th {
