@@ -70,7 +70,7 @@ class TimeclockModelsWcomp extends TimeclockModelsReport
         );
         foreach ($list as $row) {
             $this->checkTimesheet($row);
-            $proj_id                     = (int)$row->project_id;
+            $proj_id = (int)$row->project_id;
             $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
             $this->checkUserRow($users[$user_id], $row);
             if ($users[$user_id]->hide) {
@@ -92,5 +92,26 @@ class TimeclockModelsWcomp extends TimeclockModelsReport
             }
         }
         return $return;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @param int $user_id The user to get the projects for
+    * 
+    * @return array An array of results.
+    */
+    protected function checkTimesheet(&$entry)
+    {
+        parent::checkTimesheet($entry);
+        if ($entry->hours == 0) {
+            for ($i = 1; $i <= 6; $i++) {
+                $entry->{"hours".$i} = 0;
+            }
+        } else if ($entry->project_type == "HOLIDAY") {
+            $perc = $this->getHolidayPerc($entry->user_id);
+            for ($i = 1; $i <= 6; $i++) {
+                $entry->{"hours".$i} = $entry->{"hours".$i} * $perc;
+            }
+        }
     }
 }
