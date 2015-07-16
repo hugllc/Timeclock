@@ -302,6 +302,7 @@ class TimeclockModelsDefault extends JModelBase
     */
     public function getPagination() 
     {
+        $app = JFactory::getApplication();
         // Lets load the content if it doesn't already exist
         if (empty($this->_pagination)) {
             $this->_pagination = new JPagination(
@@ -309,7 +310,7 @@ class TimeclockModelsDefault extends JModelBase
                 $this->getState("limitstart"),
                 $this->getState("limit"),
                 null,
-                JRoute::_('index.php?view='.$this->_view.'&layout='.$this->_layout)
+                $app
             );
         }
         return $this->_pagination;
