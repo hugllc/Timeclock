@@ -62,7 +62,8 @@ class JFormFieldTimeclockCategory extends JFormField
         $model = TimeclockHelpersTimeclock::getModel("project");
         $list = $model->listItems(
             array("p.published=1", "p.type = 'CATEGORY'"),
-            "p.name ASC"
+            "p.name ASC",
+            false
         );
         $options = array(
             JHTML::_('select.option', 0, JText::_("JNone"))
