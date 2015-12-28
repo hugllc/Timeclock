@@ -50,8 +50,6 @@ require_once __DIR__."/report.php";
  */
 class TimeclockModelsPayroll extends TimeclockModelsReport
 {    
-    /** This is our percentage of holiday pay */
-    private $_holiday_perc = 1;
     /** This is where we store our totals */
     private $_totals = array(
         "total" => 0,
@@ -415,8 +413,6 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             );
             $registry->set("report.id", $report_id);
         }
-        $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
-        $registry->set("holiday.perc", $this->_holiday_perc);
 
         $split = 7;
         $registry->set("payperiod.splitdays", $split);

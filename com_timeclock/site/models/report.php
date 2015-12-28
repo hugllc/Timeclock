@@ -58,8 +58,6 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     private $_departments = null;
     /** This is where we cache our customers */
     private $_customers = null;
-    /** This is our percentage of holiday pay */
-    private $_holiday_perc = array();
     /** This is our saved report */
     private $_report = array();
     /** This is our percentage of holiday pay */
@@ -382,7 +380,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     protected function checkTimesheet(&$entry)
     {
         if ($entry->project_type == "HOLIDAY") {
-            $entry->hours = $entry->hours * $this->getHolidayPerc($entry->user_id);
+            $entry->hours = $entry->hours * $this->getHolidayPerc($entry->user_id, $entry->worked);
         }
         if (TimeclockHelpersDate::beforeStartDate($entry->worked, $entry->user_id)) {
             $entry->hours = 0;
@@ -415,16 +413,15 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     /**
     * Build query and where for protected _getList function and return a list
     *
-    * @param int $user_id The user to get the projects for
+    * @param int    $user_id The user to get the projects for
+    * @param string $date    The date to get the holiday percentage for.
     * 
     * @return array An array of results.
     */
-    protected function getHolidayPerc($id)
+    protected function getHolidayPerc($id, $date)
     {
-        if (!isset($this->_holiday_perc[$id])) {
-            $this->_holiday_perc[$id] = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $id)) / 100;
-        }
-        return $this->_holiday_perc[$id];
+        return TimeclockHelpersTimeclock::getHolidayPerc($id, $date);
+
     }
 
     /**

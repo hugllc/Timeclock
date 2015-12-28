@@ -261,6 +261,18 @@ class TimeclockHelpersTimeclock
         return $r;
     }
     /**
+    * get the holiday percentage for a particular day
+    *
+    * @param int    $user_id The user id to get the holiday percentage for
+    * @param string $date    The date to check
+    * 
+    * @return float The percentage of holiday pay as a decimal between 0.0 and 1.0
+    */
+    static public function getHolidayPerc($user_id, $date)
+    {
+        return ((int)plgUserTimeclock::getParamValue("holidayperc", $user_id, $date))/100;
+    }
+   /**
     * gets a component parameter
     *
     * @param string $param The parameter to get

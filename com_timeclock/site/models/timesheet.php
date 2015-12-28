@@ -53,8 +53,6 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     /** This is where we cache our projects */
     private $_projects = null;
     /** This is our percentage of holiday pay */
-    private $_holiday_perc = 1;
-    /** This is our percentage of holiday pay */
     private $_user_id = null;
     
     /**
@@ -128,7 +126,9 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     protected function checkTimesheet(&$entry)
     {
         if ($entry->project_type == "HOLIDAY") {
-            $entry->hours = $entry->hours * $this->_holiday_perc;
+            $user = $this->getUser();
+            $holiday_perc = TimeclockHelpersTimeclock::getHolidayPerc($user->id, $entry->worked);
+            $entry->hours = $entry->hours * $holiday_perc;
         }
         $entry->cat_name = JText::_($entry->cat_name);
         $entry->cat_description = JText::_($entry->cat_description);
@@ -306,10 +306,6 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         }
         $registry->set("payperiod.dates", $dates);
         
-        
-        $this->_holiday_perc = ((int)TimeclockHelpersTimeclock::getUserParam("holidayperc", $user->id, $date)) / 100;
-        $registry->set("holiday.perc", $this->_holiday_perc);
-
         $split = 7;
         $registry->set("payperiod.splitdays", $split);
 

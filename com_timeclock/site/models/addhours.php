@@ -52,9 +52,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
 {    
     /** This is where we cache our projects */
     private $_projects = null;
-    /** This is our percentage of holiday pay */
-    private $_holiday_perc = 1;
-    
+
     /**
     * The constructor
     */
