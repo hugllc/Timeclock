@@ -116,21 +116,6 @@
                         <option value="100">100%</option>
             </field>
         </fieldset>
-        <fieldset name="timeclockPTO"
-            label="PLG_USER_TIMECLOCK_PTO_CARRYOVER_SLIDER"
-        >
-            <field
-                name="ptoCarryOver"
-                type="TimeclockPTOCarryOver"
-                class="inputbox"
-                label="PLG_USER_TIMECLOCK_PTO_CARRYOVER"
-                description="PLG_USER_TIMECLOCK_PTO_CARRYOVER_DESC"
-                labelExpires="PLG_USER_TIMECLOCK_PTO_CARRYOVER_EXPIRES"
-                descriptionExpires="PLG_USER_TIMECLOCK_PTO_CARRYOVER_EXPIRES_DESC"
-                default=""
-                required="false"
-                    />
-        </fieldset>
         <fieldset name="timeclockProjects"
             label="PLG_USER_TIMECLOCK_REMOVE_PROJECTS_SLIDER"
         >
