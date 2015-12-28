@@ -10,9 +10,6 @@ $today = date("Y-m-d");
 $d = 0;
 foreach ($displayData->dates as $date => $timeentry) :
     $class = "";
-    if ($date == $today) {
-        $class .= " today";
-    }
     if ($timeentry) {
         $url = JRoute::_('index.php?&option=com_timeclock&controller=timesheet&task=addhours&date='.urlencode($date));
         $tipTitle = JText::_("COM_TIMECLOCK_ADD_HOURS");
@@ -25,7 +22,7 @@ foreach ($displayData->dates as $date => $timeentry) :
     };
     $jdate = JFactory::getDate($date);
     ?>
-        <th class="timeclockheader <?php print $class; ?>">
+        <th class="timeclockheader timeclockheader-<?php print $date; ?> <?php print $class; ?>">
             <?php 
                 print '<span class="hasTooltip" title="';
                 print '<strong>'.$tipTitle.'</strong><br />'.$tip.'">';

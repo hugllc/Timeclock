@@ -148,6 +148,14 @@ var Timesheet = {
                 jQuery("table.timesheet #hours-"+proj+"-"+date).text(self.round(hours));
             });
         });
+        var d = new Date();
+
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        var date = d.getFullYear()+'-'+(month<10 ? '0' : '')+month+'-'+(day<10 ? '0' : '')+day;
+
+        jQuery("th.timeclockheader:not(th.timeclockheader-"+date+")").removeClass("today");
+        jQuery("th.timeclockheader-"+date).addClass("today");
         this.total("paid");
         this.total("volunteer");
     },
