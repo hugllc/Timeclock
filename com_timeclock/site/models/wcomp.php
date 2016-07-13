@@ -108,7 +108,7 @@ class TimeclockModelsWcomp extends TimeclockModelsReport
                 $entry->{"hours".$i} = 0;
             }
         } else if ($entry->project_type == "HOLIDAY") {
-            $perc = $this->getHolidayPerc($entry->user_id);
+            $perc = $this->getHolidayPerc($entry->user_id, $entry->worked);
             for ($i = 1; $i <= 6; $i++) {
                 $entry->{"hours".$i} = $entry->{"hours".$i} * $perc;
             }
