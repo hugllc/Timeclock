@@ -5,13 +5,13 @@
 	<author>Scott Price</author>
 	<creationDate>2011 06 23</creationDate>
 	<copyright>
-        (C) 2014 Hunt Utilities Group, LLC
+        (C) 2016 Hunt Utilities Group, LLC
         (C) 2005 - 2011 Open Source Matters. All rights reserved.
     </copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>prices@hugllc.com</authorEmail>
 	<authorUrl>www.hugllc.com</authorUrl>
-    <version>0.9.0~rc9</version>
+    <version>0.9.0</version>
 	<description>PLG_USER_TIMECLOCK_DESC</description>
 
 	<files>
