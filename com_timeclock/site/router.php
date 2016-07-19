@@ -31,10 +31,53 @@
  * @copyright  2014 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT: $Id: cdb4770e02e52b5ccd9776bd0df9bb650838e5f6 $
- * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+
+/**
+ * Timeclock Router
+ *
+ * @category   Timeclock
+ * @package    Timeclock
+ * @subpackage com_timeclock
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2016 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+class TimeclockRouter extends JComponentRouterBase
+{
+    /**
+    * This function transforms an array of URL parameters into an
+    * array of segments that will form the SEF URL
+    *
+    * @see http://docs.joomla.org/Supporting_SEF_URLs_in_your_component
+    *
+    * @param array &$query The url parameters to convert
+    *
+    * @access public
+    * @return array of segments
+    */
+    public function build(&$query)
+    {
+        $segments = array();
+        return $segments;
+    }
+
+    /**
+    * This function transforms an array of segments back into an array of URL parameters
+    *
+    * @see http://docs.joomla.org/Supporting_SEF_URLs_in_your_component
+    *
+    * @param array $segments The segments to transform
+    *
+    * @access public
+    * @return array of segments
+    */
+    public function parse(&$segments)
+    {
+    }
+}
 
 /**
 * This function transforms an array of URL parameters into an
@@ -47,10 +90,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * @access public
 * @return array of segments
 */
-function com_timeclockBuildRoute(&$query)
+function TimeclockBuildRoute(&$query)
 {
-    $segments = array();
-    return $segments;
+    $router = new TimeclockRouter;
+    return $router->build($query);
+
 }
 /**
 * This function transforms an array of segments back into an array of URL parameters
@@ -62,6 +106,8 @@ function com_timeclockBuildRoute(&$query)
 * @access public
 * @return array of segments
 */
-function com_timeclockParseRoute($segments)
+function TimeclockParseRoute($segments)
 {
+        $router = new TimeclockRouter;
+        return $router->parse($segments);
 }
