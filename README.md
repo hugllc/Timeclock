@@ -50,8 +50,7 @@ Changes can be contributed by either:
 2. Creating another github repository to make your changes to and submitting pull requests.
 
 ## Filing Bug Reports
-The bug tracker for this project is at http://dev.hugllc.com/bugs/ .  If you want an
-account on that site, please email prices@hugllc.com.
+Please file bugs here on github.
 
 ## License
 This is released under the GNU GPL V3.  You can find the complete text in the
