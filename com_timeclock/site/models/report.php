@@ -146,6 +146,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $return = array(
             "totals" => array("total" => 0),
         );
+        $datatype = $this->getState("datatype");
         foreach ($list as $row) {
             $this->checkTimesheet($row);
             $proj_id                     = (int)$row->project_id;
@@ -156,6 +157,10 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $this->checkUserRow($users[$user_id], $row);
             if ($users[$user_id]->hide) {
                 continue;
+            }
+            if ($datatype == "money") {
+                $rate = isset($users[$user_id]->timeclock["billableRate"]) ? (float)$users[$user_id]->timeclock["billableRate"] : 0.0;
+                $row->hours *= $rate;
             }
             $return[$proj_id]            = isset($return[$proj_id]) ? $return[$proj_id] : array("total" => 0);
             $return[$proj_id][$user_id]  = isset($return[$proj_id][$user_id]) ? $return[$proj_id][$user_id] : 0;
@@ -438,10 +443,11 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (!is_object($row)) {
             return false;
         }
-        $date  = date("Y-m-d H:i:s");
-        $type  = $this->getState("report.type");
-        $start = $this->getState("start");
-        $end   = $this->getState("end");
+        $date     = date("Y-m-d H:i:s");
+        $type     = $this->getState("report.type");
+        $start    = $this->getState("start");
+        $end      = $this->getState("end");
+        $datatype = $this->getState("datatype");
 
         $name = $app->input->get("report_name", "", "raw");
         if (empty($name)) {
@@ -458,6 +464,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $row->startDate   = $start;
         $row->endDate     = $end;
         $row->type        = $type;
+        $row->datatype        = $datatype;
         $row->filter      = json_encode($this->getState("filter"));
         $row->users       = json_encode($this->listUsers());
         $row->timesheets  = json_encode($this->listItems());
@@ -526,6 +533,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         );
         $end = empty($end) ?  date("Y-m-d") : $end;
         $registry->set('end', $end);
+
+        $datatype = $app->getUserStateFromRequest($context.'.datatype', 'datatype', 'hours');
+        $registry->set("datatype", $datatype);
         
         $user = JFactory::getUser();
 

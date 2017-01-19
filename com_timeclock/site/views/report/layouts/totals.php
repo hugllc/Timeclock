@@ -8,12 +8,24 @@
 <?php foreach ($displayData->users as $user) : ?>
     <?php if ($user->hide) continue; ?>
                 <td class="total">
-                    <?php print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : "0"; ?>
+                    <?php
+                        if ($displayData->money) {
+                            print isset($displayData->data[$user->id]) ? $displayData->view->currency($displayData->data[$user->id]) : '<span class="zero">'.$displayData->view->currency(0).'</span>';
+                        } else {
+                            print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : '<span class="zero">0</span>'; 
+                        }
+                    ?>
                 </td>
 <?php endforeach; ?>
                 <td class="total">
                     <span id="total">
-                        <?php print isset($displayData->data["total"]) ? $displayData->data["total"] : "0"; ?>
+                        <?php
+                            if ($displayData->money) {
+                                print isset($displayData->data["total"]) ? $displayData->view->currency($displayData->data["total"]) : '<span class="zero">'.$displayData->view->currency(0).'</span>';
+                            } else {
+                                print isset($displayData->data["total"]) ? $displayData->data["total"] : '<span class="zero">0</span>'; 
+                            }
+                        ?>
                     </span>
                 </td>
             </tr>

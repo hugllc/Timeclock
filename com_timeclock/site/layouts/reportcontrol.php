@@ -61,6 +61,11 @@
             'filter_user_id',
             JHtml::_('select.options', $options, 'value', 'text', $displayData->user_id, true)
         );
+        $typeoptions = array(
+            JHTML::_('select.option', "hours", JText::_("COM_TIMECLOCK_HOURS")),
+            JHTML::_('select.option', "money", JText::_("COM_TIMECLOCK_MONEY")),
+        );
+
     }
     $model = empty($displayData->type) ? "report" : $displayData->type;
     $model = TimeclockHelpersTimeclock::getModel($model);
@@ -70,7 +75,6 @@
         'report_id',
         JHtml::_('select.options', $options, 'value', 'text', $displayData->report_id, true)
     );
-
 ?>
 <div class="reportcontrol row">
     <div class="row-fluid">
@@ -82,6 +86,10 @@
             <h5><?php echo JText::_('COM_TIMECLOCK_to');?></h5>
             <?php print JHtml::_("calendar", $displayData->end, "end", "endDate", '%Y-%m-%d', array("class" => "")); ?>
             <hr class="hr-condensed" />
+            <?php if ($displayData->datatype) { ?>
+            Show: <?php print JHTML::_('select.genericlist', $typeoptions, 'datatype', 'class="inputbox"', 'value', 'text', $displayData->datatype); ?>
+            <hr class="hr-condensed" />
+            <?php } ?>
             <button type="submit" class="hidden-phone">Submit</button>
             <?php endif; ?>
         </div>

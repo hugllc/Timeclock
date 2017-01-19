@@ -10,12 +10,25 @@
 <?php foreach ($displayData->users as $user) : ?>
     <?php if ($user->hide) continue; ?>
                 <td class="hours">
-                    <?php print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : '<span class="zero">0</span>'; ?>
+                    <?php
+                        if ($displayData->money) {
+                            print isset($displayData->data[$user->id]) ? $displayData->view->currency($displayData->data[$user->id]) : '<span class="zero">'.$displayData->view->currency(0).'</span>';
+                        } else {
+                            print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : '<span class="zero">0</span>'; 
+                        }
+                    ?>
+                            
                 </td>
 <?php endforeach; ?>
                 <td class="total">
                     <span id="total-<?php print $proj_id?>">
-                        <?php print $total; ?>
+                        <?php
+                            if ($displayData->money) {
+                                print $displayData->view->currency($total);
+                            } else {
+                                print $total; 
+                            }
+                        ?>
                     </span>
                 </td>
             </tr>

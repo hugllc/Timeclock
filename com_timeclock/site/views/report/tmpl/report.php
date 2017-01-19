@@ -53,7 +53,9 @@
         (object)array(
             "users" => $this->users, 
             "data" => $this->data["totals"], 
-            "rowClass" => "livedata"
+            "rowClass" => "livedata",
+            "money" => ($this->datatype == "money"),
+            "view" => $this
         )
     ); 
 ?>
@@ -70,6 +72,9 @@
             $allproj[$proj_id] = $proj;
             $proj->data     = isset($this->data[$proj_id]) ? $this->data[$proj_id] : array();
             $proj->users    = $this->users;
+            $proj->money    = ($this->datatype == "money");
+            $proj->view     = $this;
+
             $render .= $this->_row->render($proj);
         }
         if ($cnt > 0) {

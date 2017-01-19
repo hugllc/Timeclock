@@ -65,6 +65,7 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->params    = JComponentHelper::getParams('com_timeclock');
         $this->start     = $this->model->getState('start');
         $this->end       = $this->model->getState('end');
+        $this->datatype  = $this->model->getState('datatype');
         $this->report_id = $this->model->getState("report.id");
         
         JHTML::stylesheet(
@@ -88,6 +89,7 @@ class TimeclockViewsReportHtml extends JViewHtml
             $this->filter            = $this->model->getState("filter");
             $this->filter->start     = $this->start;
             $this->filter->end       = $this->end;
+            $this->filter->datatype  = $this->datatype;
             $this->filter->report_id = $this->report_id;
         } else {
             $this->report   = $this->model->getReport();
@@ -110,5 +112,17 @@ class TimeclockViewsReportHtml extends JViewHtml
 
         return parent::render();
     }
+    /**
+    * This routine formats currency
+    *
+    * @param float $amount The number to format as currency
+    *
+    * @return string The number, formatted as currency
+    */
+    public function currency($amount)
+    {
+        return "$".number_format($amount, 2);
+    }
+    
 }
 ?>
