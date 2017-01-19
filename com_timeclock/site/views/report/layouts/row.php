@@ -12,7 +12,7 @@
                 <td class="hours">
                     <?php
                         if ($displayData->money) {
-                            print isset($displayData->data[$user->id]) ? $displayData->view->currency($displayData->data[$user->id]) : '<span class="zero">'.$displayData->view->currency(0).'</span>';
+                            print isset($displayData->data[$user->id]) ? $displayData->currency.number_format($displayData->data[$user->id], 2) : '<span class="zero">'.$displayData->currency.'0.00</span>';
                         } else {
                             print isset($displayData->data[$user->id]) ? $displayData->data[$user->id] : '<span class="zero">0</span>'; 
                         }
@@ -24,7 +24,7 @@
                     <span id="total-<?php print $proj_id?>">
                         <?php
                             if ($displayData->money) {
-                                print $displayData->view->currency($total);
+                                print $displayData->currency.number_format($total, 2);
                             } else {
                                 print $total; 
                             }

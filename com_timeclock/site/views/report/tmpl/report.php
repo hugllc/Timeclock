@@ -55,7 +55,7 @@
             "data" => $this->data["totals"], 
             "rowClass" => "livedata",
             "money" => ($this->datatype == "money"),
-            "view" => $this
+            "currency" => $this->currency
         )
     ); 
 ?>
@@ -73,7 +73,7 @@
             $proj->data     = isset($this->data[$proj_id]) ? $this->data[$proj_id] : array();
             $proj->users    = $this->users;
             $proj->money    = ($this->datatype == "money");
-            $proj->view     = $this;
+            $proj->currency = $this->currency;
 
             $render .= $this->_row->render($proj);
         }

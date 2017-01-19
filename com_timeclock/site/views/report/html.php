@@ -67,6 +67,7 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->end       = $this->model->getState('end');
         $this->datatype  = $this->model->getState('datatype');
         $this->report_id = $this->model->getState("report.id");
+        $this->currency  = "$";
         
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
