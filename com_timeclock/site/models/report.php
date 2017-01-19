@@ -84,10 +84,10 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     *
     * @return array An array of results.
     */
-    public function listUsers()
+    public function listUsers($blocked = 0)
     {
         if (is_null($this->_myusers)) {
-            $this->_myusers = parent::listUsers(null);
+            $this->_myusers = parent::listUsers($blocked);
             foreach ($this->_myusers as $key => &$user) {
                 if ($this->checkUser($user) === false) {
                     unset($this->_myusers[$key]);

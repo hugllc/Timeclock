@@ -68,9 +68,9 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     *
     * @return array An array of results.
     */
-    public function listUsers()
+    public function listUsers($blocked = 0)
     {
-        $users = parent::listUsers();
+        $users = parent::listUsers($blocked);
         unset($users[0]);
         return $users;
     }
