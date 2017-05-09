@@ -2,6 +2,10 @@
 
 This is a time tracking component for Joomla 3.1+.
 
+## Version Notes
+ - Version 0.9.1rc4 is the first version that works correctly with Joomla 3.7.0.
+   If you upgrade to version 3.7.0, you will need to update the timeclock also.
+
 ## Project Setup
 
 ### Directory Structure
