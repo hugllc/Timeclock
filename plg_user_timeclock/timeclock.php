@@ -73,7 +73,7 @@ class plgUserTimeclock extends JPlugin
     public function onContentPrepareData($context, $data)
     {
         // Check we are manipulating a valid form.
-        if (!in_array($context, array('com_users.timeclock','com_users.user', 'com_users.registration', 'com_admin.timeclock'))) {
+        if (!in_array($context, array('com_users.timeclock','com_users.user', 'com_users.profile', 'com_users.registration', 'com_admin.timeclock'))) {
             return true;
         }
 
