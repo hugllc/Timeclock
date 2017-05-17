@@ -103,6 +103,26 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         return $this->_myusers;
     }
     /**
+    * Adds another user to _users
+    *
+    * @param int $id The id of the user to add
+    * 
+    * @return none
+    */
+    public function extraUser($id)
+    {
+        $id = (int)$id;
+        if (($id > 0) && !isset($this->_myusers[$id])) {
+            $this->_myusers[$id] = $this->getUser($id);
+            uasort(
+                $this->_myusers,
+                function ($user1, $user2) {
+                    return strcmp($user1->name, $user2->name);
+                }
+            );
+        }
+    }
+    /**
     * Checks the user record, and adds anything extra needed
     *
     * @param object &$user The user object to check
@@ -411,6 +431,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if ($row->hours > 0) {
             if (!$user->pruned && $user->hide) {
                 $user->hide = false;
+            }
+            if ($row) {
+                $this->extraUser($row->user_id);
             }
         }
 
