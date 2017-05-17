@@ -1,4 +1,4 @@
-<?php
+PRN DPLY RICOH Aficio SP C242SF<?php
 /**
  * This component is the user interface for the endpoints
  *
@@ -51,7 +51,7 @@ require_once __DIR__."/base.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsBillingEhtml extends TimeclockViewsBillingBase
+class TimeclockViewsNotesEhtml extends TimeclockViewsNotesBase
 {
     /** This is our mime type */
     protected $mimetype = "text/html";

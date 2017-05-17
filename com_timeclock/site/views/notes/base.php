@@ -50,7 +50,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsBillingBase extends JViewBase
+class TimeclockViewsNotesBase extends JViewBase
 {
     /** This is our mime type */
     protected $mimetype = "text/html";
@@ -88,12 +88,12 @@ class TimeclockViewsBillingBase extends JViewBase
             $this->data     = $report->timesheets;
             $this->projects = $report->projects;
             $this->users    = $report->users;
-            $file           = str_replace(" ", "_", $report->name)."-billing-";
+            $file           = str_replace(" ", "_", $report->name)."-notes-";
         } else {
             $this->data     = $this->model->listItems();
             $this->users    = $this->model->listUsers();
             $this->projects = $this->model->listProjects();
-            $file           = "billing-report-live-";
+            $file           = "notes-report-live-";
         }
         $file .= $this->start."to".$this->end;
         $this->setup($file);
@@ -114,10 +114,16 @@ class TimeclockViewsBillingBase extends JViewBase
                 continue;
             }
             $user = (object)$user;
-            $user->data   = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
-            $this->row($user);
+            foreach ($this->data["notes"][$user_id] as $proj_id => $proj) {
+                foreach ($proj["worked"] as $date => $row) {
+                    $user->proj  = $proj["project_name"];
+                    $user->worked = $date;
+                    $user->notes = $row->notes;
+                    $user->hours = $row->hours;
+                    $this->row($user);
+                }
+            }
         }
-        $this->totals($this->data["totals"]);
     }
     /**
     * This prints out a row in the file
@@ -132,12 +138,12 @@ class TimeclockViewsBillingBase extends JViewBase
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $report = JText::sprintf("COM_TIMECLOCK_BILLING_REPORT_TITLE", $this->start, $this->end);
+        $report = JText::sprintf("COM_TIMECLOCK_NOTES_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_BILLING_REPORT"));
+            ->setKeywords(JText::_("COM_TIMECLOCK_NOTES_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -151,7 +157,7 @@ class TimeclockViewsBillingBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_BILLING_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_NOTES_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -181,46 +187,14 @@ class TimeclockViewsBillingBase extends JViewBase
         $total  = array();
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
         $col   = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->proj);
+        $col   = $this->nextCol($col);
         $hours = $col.$this->line;
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->data["hours"]);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->hours);
         $col  = $this->nextCol($col);
-        $rate = $col.$this->line;
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->data["rate"]);
-        $this->phpexcel->getActiveSheet()->getStyle($rate)->getNumberFormat()->applyFromArray( 
-            array( 
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
-            )
-        );  
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->worked);
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=$hours*$rate");
-        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
-        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->applyFromArray( 
-            array( 
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
-            )
-        );  
-        $this->line++;
-    }
-    /**
-    * This prints out a row in the file
-    *
-    * @param array $data The data for this row
-    *
-    * @return string The row created
-    */
-    protected function totals($data)
-    {
-        $places = $this->params->get("decimalPlaces");
-        $this->phpexcel->getActiveSheet()->setCellValue("A".$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
-        $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
-        $end = $this->line - 1;
-        $this->phpexcel->getActiveSheet()->setCellValue("B".$this->line, "=SUM(B2:B".$end.")");
-        $this->phpexcel->getActiveSheet()->setCellValue($this->maxCol.$this->line, "=SUM(".$this->maxCol."2:".$this->maxCol.$end.")");
-        $this->phpexcel->getActiveSheet()->getStyle($this->maxCol.$this->line)->getNumberFormat()->applyFromArray( 
-            array( 
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
-            )
-        );  
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->notes);
         $this->line++;
     }
     /**
@@ -233,11 +207,13 @@ class TimeclockViewsBillingBase extends JViewBase
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_USER"));
         $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PROJECT"));
+        $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_HOURS"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_BILLABLE_RATE"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WORKED"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL_COST"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_NOTES"));
         $columnID = "A";
         $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         while ($col != $columnID) {

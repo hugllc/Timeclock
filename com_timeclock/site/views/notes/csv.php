@@ -51,7 +51,7 @@ require_once __DIR__."/base.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsBillingCsv extends TimeclockViewsBillingBase
+class TimeclockViewsNotesCsv extends TimeclockViewsNotesBase
 {
     /** This is our mime type */
     protected $mimetype = "text/csv";

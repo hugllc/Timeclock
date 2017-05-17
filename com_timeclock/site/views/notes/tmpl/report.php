@@ -20,7 +20,7 @@
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
-            <?php print JText::_("COM_TIMECLOCK_BILLING_REPORT"); ?>
+            <?php print JText::_("COM_TIMECLOCK_NOTES_REPORT"); ?>
             <?php print ($doreports) ? " - ".JText::_("COM_TIMECLOCK_SAVED_DATA").":  ".$this->report->name : ""; ?>
         </h2>
     </div>
@@ -45,9 +45,11 @@
     <div>
         <?php 
             foreach ($this->users as $user_id => $user) {
-                $user->payperiod = $this->payperiod;
-                $user->data = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
-                print $this->_notes->render($user);
+                if ($user_id > 0) {
+                    $user->payperiod = $this->payperiod;
+                    $user->data = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
+                    print $this->_notes->render($user);
+                }
             }
         ?>
     </div>

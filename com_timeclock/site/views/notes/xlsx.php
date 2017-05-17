@@ -51,7 +51,7 @@ require_once __DIR__."/base.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsBillingXlsx extends TimeclockViewsBillingBase
+class TimeclockViewsNotesXlsx extends TimeclockViewsNotesBase
 {
     /** This is our mime type */
     protected $mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
