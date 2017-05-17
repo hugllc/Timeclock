@@ -114,8 +114,8 @@ class TimeclockViewsNotesBase extends JViewBase
                 continue;
             }
             $user = (object)$user;
-            foreach ($this->data["notes"][$user_id] as $proj_id => $proj) {
-                foreach ($proj["worked"] as $date => $row) {
+            foreach ((array)$this->data["notes"][$user_id] as $proj_id => $proj) {
+                foreach ((array)$proj["worked"] as $date => $row) {
                     $user->proj  = $proj["project_name"];
                     $user->worked = $date;
                     $user->notes = $row->notes;

@@ -45,9 +45,9 @@
     <div>
         <?php 
             foreach ($this->users as $user_id => $user) {
-                if ($user_id > 0) {
+                if (($user_id > 0) && isset($this->data["notes"][$user_id])) {
                     $user->payperiod = $this->payperiod;
-                    $user->data = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
+                    $user->data = $this->data["notes"][$user_id];
                     print $this->_notes->render($user);
                 }
             }
