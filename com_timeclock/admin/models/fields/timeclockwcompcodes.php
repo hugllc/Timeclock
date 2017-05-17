@@ -74,7 +74,6 @@ class JFormFieldTimeclockWCompCodes extends JFormField
             $line = trim($line);
             $line = explode(" ", $line);
             $key = abs($line[0]);
-            unset($line[0]);
             $val = implode(" ", $line);
 
             $options[] = JHTML::_(
