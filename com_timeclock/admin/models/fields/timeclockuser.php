@@ -67,13 +67,20 @@ class JFormFieldTimeclockUser extends JFormField
                 JText::_($item->name)
             );
         }
+        $attrib = array();
+        if (isset($this->class)) {
+            $attrib['class'] = $this->class;
+        }
+        if (isset($this->onchange)) {
+            $attrib['onchange'] = $this->onchange;
+        }
         return JHTML::_(
-            'select.genericlist', 
-            $options, 
-            $this->name, 
-            array('class' => $this->class), 
-            'value', 
-            'text', 
+            'select.genericlist',
+            $options,
+            $this->name,
+            $attrib,
+            'value',
+            'text',
             $this->value,
             $this->id
         );
