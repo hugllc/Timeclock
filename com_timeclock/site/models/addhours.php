@@ -164,7 +164,8 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
             t.worked, t.project_id, t.notes,
             t.hours1 as hours1, t.hours2 as hours2, t.hours3 as hours3,
             t.hours4 as hours4, t.hours5 as hours5, t.hours6 as hours6,
-            t.user_id as user_id, t.created_by as created_by');
+            t.user_id as user_id, t.created_by as created_by, 
+            t.created as created');
         $query->from('#__timeclock_timesheet as t');
         $query->select('p.name as project, p.type as project_type, 
             p.wcCode1, p.wcCode2, p.wcCode3, p.wcCode4, p.wcCode5, p.wcCode6,

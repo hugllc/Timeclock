@@ -41,8 +41,8 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
 ?>
         <button type="button" name="apply" onClick="Addhours.submitform('apply');">Save</button>
         <button type="button" name="save" onClick="Addhours.submitform('save');">Save &amp; Close</button>
-        <input type="hidden" name="created" value="<?php print isset($displayData->created) ? $displayData->created : 0; ?>" />
-        <input type="hidden" name="created_by" value="<?php print isset($displayData->created_by) ? $displayData->created_by : 0; ?>" />
+        <input type="hidden" name="created" value="<?php print isset($displayData->data->created) ? $displayData->data->created : 0; ?>" />
+        <input type="hidden" name="created_by" value="<?php print isset($displayData->data->created_by) ? $displayData->data->created_by : -1; ?>" />
         <input type="hidden" name="project_id" value="<?php print $displayData->project_id; ?>" />
         <input type="hidden" name="timesheet_id" value="<?php print isset($displayData->data->timesheet_id) ? $displayData->data->timesheet_id : ""; ?>" />
     </fieldset>
