@@ -5,7 +5,7 @@
             name="name"
             type="text"
             label="COM_TIMECLOCK_NAME"
-            description="COM_TIMECLOCK_NAME_DEPARTMENT_DESC"
+            description="COM_TIMECLOCK_NAME_PROJECT_DESC"
             class="span4"
             size="40"
             required="true"/>
@@ -14,7 +14,7 @@
             type="user"
             class="inputbox"
             label="COM_TIMECLOCK_MANAGER"
-            description="COM_TIMECLOCK_MANAGER_DESC"
+            description="COM_TIMECLOCK_MANAGER_PROJECT_DESC"
             default="0"
             required="true"
                 />
@@ -22,12 +22,36 @@
             name="description"
             type="textarea"
             label="COM_TIMECLOCK_DESCRIPTION"
-            description="COM_TIMECLOCK_NOTES_DEPARTMENT_DESC"
+            description="COM_TIMECLOCK_DESCRIPTION_PROJECT_DESC"
             rows="3"
             cols="40"/>
-
+        <field
+            name="max_daily_hours"
+            type="text"
+            label="COM_TIMECLOCK_MAX_DAILY_HOURS"
+            description="COM_TIMECLOCK_MAX_DAILY_HOURS_PROJECT_DESC"
+            class="span4"
+            size="10"
+            required="true"/>
+        <field
+            name="max_yearly_hours"
+            type="text"
+            label="COM_TIMECLOCK_MAX_YEARLY_HOURS"
+            description="COM_TIMECLOCK_MAX_YEARLY_HOURS_PROJECT_DESC"
+            class="span4"
+            size="10"
+            required="true"/>
+        <field
+            name="min_hour_increment"
+            type="text"
+            label="COM_TIMECLOCK_MIN_HOUR_INCREMENT"
+            description="COM_TIMECLOCK_MIN_HOUR_INCREMENT_PROJECT_DESC"
+            class="span4"
+            size="10"
+            required="true"/>
+        
     </fieldset>
-    <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_DEPARTMENT">
+    <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_PROJECT">
         <field
             name="published"
             type="list"
@@ -36,7 +60,7 @@
             size="1"
             label="COM_TIMECLOCK_ACTIVE"
             required="true"
-            description="COM_TIMECLOCK_ACTIVE_DEPARTMENT_DESC">
+            description="COM_TIMECLOCK_ACTIVE_PROJECT_DESC">
             <option value="1">JYES</option>
             <option value="0">JNO</option>
         </field>
