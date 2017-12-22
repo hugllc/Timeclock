@@ -206,7 +206,6 @@ var Addhours = {
         if (max < this.getHours()) {
             ret = false;
         }
-        
         fieldset.find("input.hours").each(function(ind, elem) {
             var res = self._validateHours(elem);
             ret = ret && res;
@@ -433,7 +432,7 @@ var Addhours = {
             var group = jQuery("form.addhours");
         }
         var hours = 0;
-        group.find("input.hours").each(function(ind, elem) {
+        group.find("input.hours,select.hours").each(function(ind, elem) {
             var hrs = parseFloat(jQuery(elem).val());
             if (!isNaN(hrs)) {
                 hours += hrs;

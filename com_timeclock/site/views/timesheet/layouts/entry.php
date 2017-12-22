@@ -1,15 +1,17 @@
 <?php
 defined('_JEXEC') or die;
 $displayData->data = isset($displayData->data) ? (object)$displayData->data : new stdClass();
+$max = $displayData->max_daily_hours;
+$min = $displayData->min_daily_hours;
 ?>
     <h2><?php print $displayData->name; ?></h2>
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
     <div style="display: none;" class="alert"></div>
     <div class="controls"><?php
-        if ($displayData->min_daily_hours > 0) {
+        if ($min > 0) {
             print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_daily_hours.' ';
         }
-        if ($displayData->max_daily_hours > 0) {
+        if ($max > 0) {
             print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$displayData->max_daily_hours.' ';
         }
     ?></div>
@@ -36,8 +38,16 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
         $label = '<label id="'.$fname.'-lbl" for="'.$fname.'" class="required">';
         $star  = '<span class="star">&#160;*</span>';
         $field->label = $label.$name.$star."</label>";
-        $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';
-        $field->input .= 'name="hours'.$i.'" value="'.$hours.'" onblur="Addhours.validateHours(this);"/>';
+        if (($min == $max) && ($min != 0)) {
+            $field->input  = '<select class="span2 hours" ';
+            $field->input .= 'name="hours'.$i.'" onchange="Addhours.validateHours(this);">';
+            $field->input .= '<option value="0"'.(($hours == 0) ? ' selected="selected"' : '').'>0</option>';
+            $field->input .= '<option value="'.$min.'"'.(($hours != 0) ? ' selected="selected"' : '').'>'.$min.'</option>';
+            $field->input .= '</select>';
+        } else {
+            $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';
+            $field->input .= 'name="hours'.$i.'" value="'.$hours.'" onblur="Addhours.validateHours(this);"/>';
+        }
         print TimeclockHelpersView::getFormField($field);
     }
     $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
