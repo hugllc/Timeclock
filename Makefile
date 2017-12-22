@@ -33,7 +33,7 @@ check:
 	fi;
 	@./fixini.php
 	
-package: rel/pkg_timeclock.zip clean
+archive package: rel/pkg_timeclock.zip clean
 
 	
 rel/pkg_timeclock.zip: build/pkg_timeclock/pkg_timeclock.xml build/pkg_timeclock/packages/com_timeclock.zip build/pkg_timeclock/packages/plg_user_timeclock.zip build/pkg_timeclock/packages/mod_timeclockinfo.zip 
