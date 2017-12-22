@@ -1,3 +1,4 @@
+SHELL = /bin/bash
 PHPUNIT=`which phpunit`
 PHPDOC=`which phpdoc`
 DOXYGEN=`which doxygen`
@@ -87,8 +88,8 @@ build/phpgraph/master.zip:
 	mkdir -p build/phpgraph/phpgraph
 	wget https://github.com/elliottb/phpgraphlib/archive/master.zip -O build/phpgraph/master.zip
 	
-test: check bin/phpunit all
-	@./bin/phpunit
+test: check all
+	@phpunit
 
 phpexcel: rel/phpexcel.zip
 

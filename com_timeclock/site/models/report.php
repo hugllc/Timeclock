@@ -404,7 +404,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function checkTimesheet(&$entry)
     {
-        if ($entry->project_type == "HOLIDAY") {
+        if (($entry->project_type == "HOLIDAY") || ($entry->project_type == "FLOATING_HOLIDAY")) {
             $entry->hours = $entry->hours * $this->getHolidayPerc($entry->user_id, $entry->worked);
         }
         if (TimeclockHelpersDate::beforeStartDate($entry->worked, $entry->user_id)) {

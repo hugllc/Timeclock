@@ -42,10 +42,10 @@
             size="10"
             required="true"/>
         <field
-            name="min_hour_increment"
+            name="min_daily_hours"
             type="text"
-            label="COM_TIMECLOCK_MIN_HOUR_INCREMENT"
-            description="COM_TIMECLOCK_MIN_HOUR_INCREMENT_PROJECT_DESC"
+            label="COM_TIMECLOCK_MIN_DAILY_HOURS"
+            description="COM_TIMECLOCK_MIN_DAILY_HOURS_PROJECT_DESC"
             class="span4"
             size="10"
             required="true"/>
@@ -89,6 +89,7 @@
             <option value="CATEGORY">JCATEGORY</option>
             <option value="PTO">COM_TIMECLOCK_PTO</option>
             <option value="HOLIDAY">COM_TIMECLOCK_HOLIDAY</option>
+            <option value="FLOATING_HOLIDAY">COM_TIMECLOCK_FLOATING_HOLIDAY</option>
             <option value="UNPAID">COM_TIMECLOCK_UNPAID</option>
         </field>
         <field

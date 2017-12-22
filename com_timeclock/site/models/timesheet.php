@@ -125,7 +125,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     */
     protected function checkTimesheet(&$entry)
     {
-        if ($entry->project_type == "HOLIDAY") {
+        if (($entry->project_type == "HOLIDAY") || ($entry->project_type == "FLOATING_HOLIDAY")) {
             $user = $this->getUser();
             $holiday_perc = TimeclockHelpersTimeclock::getHolidayPerc($user->id, $entry->worked);
             $entry->hours = $entry->hours * $holiday_perc;
@@ -213,7 +213,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     private function _checkProject(&$entry)
     {
         $entry->nohours = 1;
-        if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID")) {
+        if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID" || ($entry->type == "FLOATING_HOLIDAY") )) {
             $entry->nohours = 0;
         }
     }
