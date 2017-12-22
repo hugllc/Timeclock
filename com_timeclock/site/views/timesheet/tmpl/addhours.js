@@ -240,13 +240,33 @@ var Addhours = {
      * 
      * @return null
      */
-    maxHoursMessage: function(fieldset)
+    maxHoursMessage: function(fieldset, max)
     {
+        if (max == undefined) {
+            max = Timeclock.params.maxDailyHours;
+        }
         this.message(
             fieldset.find('[name="project_id"]').val(), 
-            'Only '+Timeclock.params.maxDailyHours+' are allowed',
+            'Must have at most '+max+' hours',
             "error"
         );
+    },
+    /**
+     * Prints out a message for max number of hours
+     * 
+     * @param fieldset The fieldset to print message for
+     * 
+     * @return null
+     */
+    minHoursMessage: function(fieldset, min)
+    {
+        if (min != undefined) {
+            this.message(
+                fieldset.find('[name="project_id"]').val(), 
+                        'Must have at least '+min+' hours',
+                        "error"
+            );
+        }
     },
     /**
      * Validates the number of hours
@@ -260,7 +280,9 @@ var Addhours = {
         var ret = true;
         var fieldset = jQuery(obj).closest("fieldset");
         var parent   = jQuery(obj).closest(".control-group");
-        
+
+        var proj = parseInt(fieldset.find('[name="project_id"]').val());
+
         // Get the hours
         var hours = parseFloat(obj.value);
         if (isNaN(hours)) {
@@ -276,18 +298,17 @@ var Addhours = {
         if (isNaN(oldHours)) {
             oldHours = 0.0;
         }
-        var max = Timeclock.params.maxDailyHours;
+        var max = parseInt(Timeclock.params.maxDailyHours);
         if (max < 0) {
             max = 0;
         }
-
         total = this.getHours();
 
         // Check the max
         var div = jQuery('#hoursTotal')
         if (total > max) {
             this.setValid(false, parent);
-            this.maxHoursMessage(fieldset);
+            this.maxHoursMessage(fieldset, max);
             div.addClass('invalid');
             ret = false;
         } else {
@@ -295,9 +316,29 @@ var Addhours = {
             fieldset.find("div.alert").hide();
             div.removeClass('invalid');
         }
+        // Set the min and max
+        var pmin = parseInt(fieldset.find('[name="pmin"]').val());
+        var pmax = parseInt(fieldset.find('[name="pmax"]').val());
         // Round the hours
         hours = Addhours.round(hours);
         // Show/hide the star
+        if (ret != false) {
+            if ((pmax != 0) && (hours > pmax)) {
+                this.setValid(false, parent);
+                this.maxHoursMessage(fieldset, pmax);
+                div.addClass('invalid');
+                ret = false;
+            } else if ((hours != 0) && (hours < pmin)) {
+                this.setValid(false, parent);
+                this.minHoursMessage(fieldset, pmin);
+                div.addClass('invalid');
+                ret = false;
+            } else {
+                this.setValid(true, parent);
+                fieldset.find("div.alert").hide();
+                div.removeClass('invalid');
+            }
+        }
         if (hours > 0) {
             var star = fieldset.find("#notes-lbl span.star");
             if (star[0] == undefined) {

@@ -30,6 +30,12 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
         $field->label = $label.$name.$star."</label>";
         $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';
         $field->input .= 'name="hours'.$i.'" value="'.$hours.'" onblur="Addhours.validateHours(this);"/>';
+        if ($displayData->min_hour_increment > 0) {
+            $field->input .= ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_hour_increment.' ';
+        }
+        if ($displayData->max_daily_hours > 0) {
+            $field->input .= ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$displayData->max_daily_hours.' ';
+        }
         print TimeclockHelpersView::getFormField($field);
     }
     $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
@@ -44,5 +50,7 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
         <input type="hidden" name="created" value="<?php print isset($displayData->data->created) ? $displayData->data->created : 0; ?>" />
         <input type="hidden" name="created_by" value="<?php print isset($displayData->data->created_by) ? $displayData->data->created_by : -1; ?>" />
         <input type="hidden" name="project_id" value="<?php print $displayData->project_id; ?>" />
+        <input type="hidden" name="pmin" value="<?php print $displayData->min_hour_increment; ?>" />
+        <input type="hidden" name="pmax" value="<?php print $displayData->max_daily_hours; ?>" />
         <input type="hidden" name="timesheet_id" value="<?php print isset($displayData->data->timesheet_id) ? $displayData->data->timesheet_id : ""; ?>" />
     </fieldset>

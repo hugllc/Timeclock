@@ -197,3 +197,7 @@ div.input-append {
     width: 100%;
     max-width: 10em;
 }
+
+.bold {
+    font-weight: bold;
+}

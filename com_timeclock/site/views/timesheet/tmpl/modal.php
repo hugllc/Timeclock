@@ -7,6 +7,7 @@
     if (count($this->projects) > 1) {
         unset($this->projects[0]);
     }
+    $allproj = array();
 ?>
 <div id="timeclock">
 <form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">
@@ -35,4 +36,7 @@
         </fieldset>
     </div>
 </form>
+<script type="text/JavaScript">
+</script>
+
 </div>

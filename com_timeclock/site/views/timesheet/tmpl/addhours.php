@@ -28,10 +28,12 @@
             <input type="hidden" name="worked" value="<?php print $this->date; ?>" />
 <?php 
     $allproj = array();
+    $projlist = array();
     foreach ($this->projects as $cat => $projects) {
         print "<h2>".JText::_("JCATEGORY").": ".JText::_($projects["name"])."</h2>";
         foreach ($projects["proj"] as $proj) {
             $allproj[$proj->project_id] = $proj->project_id;
+            $projlist[$proj->project_id] = $proj;
             $proj->payperiod = &$this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
             $proj->form      = &$this->form;
@@ -55,7 +57,7 @@
         Addhours.setup();
     });
     Addhours.payperiod    = <?php print json_encode($this->payperiod); ?>;
-    Timeclock.params   = <?php print json_encode($this->params->toArray()); ?>
-
+    Timeclock.params   = <?php print json_encode($this->params->toArray()); ?>;
+    Timeclock.projects = <?php print json_encode($projlist); ?>;
 </script>
 </div>
