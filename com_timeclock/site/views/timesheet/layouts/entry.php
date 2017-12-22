@@ -8,12 +8,20 @@ $min = $displayData->min_daily_hours;
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
     <div style="display: none;" class="alert"></div>
     <div class="controls"><?php
-        if ($min > 0) {
-            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_daily_hours.' ';
+        if ($displayData->type == "FLOATING_HOLIDAY") {
+            print ' <div class="alert alert-warning">'.JText::_("COM_TIMECLOCK_FLOATING_HOLIDAY_WARNING").'</div> ';
         }
-        if ($max > 0) {
-            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$displayData->max_daily_hours.' ';
+        if (($min == $max) && ($min > 0)) {
+            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_VALID_VALUES").':</span> 0, '.$max.' ';
+        } else {
+            if ($min > 0) {
+                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_daily_hours.' ';
+            }
+            if ($max > 0) {
+                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$displayData->max_daily_hours.' ';
+            }
         }
+        
     ?></div>
 <?php
     $wcomp = (bool)$displayData->params->get("wCompEnable");
