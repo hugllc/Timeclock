@@ -5,6 +5,14 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
     <h2><?php print $displayData->name; ?></h2>
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
     <div style="display: none;" class="alert"></div>
+    <div class="controls"><?php
+        if ($displayData->min_hour_increment > 0) {
+            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_hour_increment.' ';
+        }
+        if ($displayData->max_daily_hours > 0) {
+            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$displayData->max_daily_hours.' ';
+        }
+    ?></div>
 <?php
     $wcomp = (bool)$displayData->params->get("wCompEnable");
     if ($wcomp) {
@@ -30,12 +38,6 @@ $displayData->data = isset($displayData->data) ? (object)$displayData->data : ne
         $field->label = $label.$name.$star."</label>";
         $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';
         $field->input .= 'name="hours'.$i.'" value="'.$hours.'" onblur="Addhours.validateHours(this);"/>';
-        if ($displayData->min_hour_increment > 0) {
-            $field->input .= ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_hour_increment.' ';
-        }
-        if ($displayData->max_daily_hours > 0) {
-            $field->input .= ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$displayData->max_daily_hours.' ';
-        }
         print TimeclockHelpersView::getFormField($field);
     }
     $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
