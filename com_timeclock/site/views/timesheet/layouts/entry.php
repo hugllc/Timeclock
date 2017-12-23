@@ -7,13 +7,13 @@ $min = $displayData->min_daily_hours;
     <h2><?php print $displayData->name; ?></h2>
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
     <div style="display: none;" class="alert"></div>
-    <div class="controls"><?php
+    <?php
         if ($displayData->type == "FLOATING_HOLIDAY") {
             print ' <div class="alert alert-warning">'.JText::_("COM_TIMECLOCK_FLOATING_HOLIDAY_WARNING").'</div> ';
         }
-        if (($min == $max) && ($min > 0)) {
-            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_VALID_VALUES").':</span> 0, '.$max.' ';
-        } else {
+    ?>
+    <div class="controls"><?php
+        if ($min != $max) {
             if ($min > 0) {
                 print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_daily_hours.' ';
             }
@@ -60,7 +60,7 @@ $min = $displayData->min_daily_hours;
     }
     $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
     $notes = array(
-        "input" => '<textarea name="notes" id="notes" cols="80" rows="8" onblur="Addhours.validateNotes(this);">'.$displayData->data->notes.'</textarea><br />'.$minimum,
+        "input" => '<textarea name="notes" id="notes" cols="80" rows="7" onblur="Addhours.validateNotes(this);">'.$displayData->data->notes.'</textarea><br />'.$minimum,
         "label" => '<label id="notes-lbl" for="notes" class="hasTooltip" title="<strong>'.JText::_('COM_TIMECLOCK_NOTES').'</strong><br />'.JText::_('COM_TIMECLOCK_WORK_NOTES_HELP').'">'.JText::_('COM_TIMECLOCK_NOTES').'</label>'
     );
     print TimeclockHelpersView::getFormField((object)$notes);
