@@ -232,6 +232,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                 }
                 switch ($row->project_type) {
                 case "HOLIDAY":
+                case "FLOATING_HOLIDAY":
                     $return[$user_id][$period]->holiday += $row->hours;
                     break;
                 case "PTO":
