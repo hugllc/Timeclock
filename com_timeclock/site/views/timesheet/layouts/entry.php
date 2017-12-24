@@ -1,8 +1,10 @@
 <?php
 defined('_JEXEC') or die;
 $displayData->data = isset($displayData->data) ? (object)$displayData->data : new stdClass();
-$max = $displayData->max_daily_hours;
-$min = $displayData->min_daily_hours;
+$max = (int)(isset($displayData->max_daily_hours) ? $displayData->max_daily_hours : 0);
+$min = (int)(isset($displayData->min_daily_hours) ? $displayData->min_daily_hours : 0);
+$ytdmax = (int)(isset($displayData->max_yearly_hours) ? $displayData->max_yearly_hours : 0);
+$ytdhours = (int)(isset($displayData->hours_ytd) ? $displayData->hours_ytd : 0);
 ?>
     <h2><?php print $displayData->name; ?></h2>
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
@@ -15,11 +17,14 @@ $min = $displayData->min_daily_hours;
     <div class="controls"><?php
         if ($min != $max) {
             if ($min > 0) {
-                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$displayData->min_daily_hours.' ';
+                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$max.' ';
             }
             if ($max > 0) {
-                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$displayData->max_daily_hours.' ';
+                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$min.' ';
             }
+        }
+        if ($ytdmax > 0) {
+            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_YTD_LEFT").':</span> '.($ytdmax - $ytdhours).' ';
         }
         
     ?></div>
@@ -60,7 +65,7 @@ $min = $displayData->min_daily_hours;
     }
     $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
     $notes = array(
-        "input" => '<textarea name="notes" id="notes" cols="80" rows="7" onblur="Addhours.validateNotes(this);">'.$displayData->data->notes.'</textarea><br />'.$minimum,
+        "input" => '<textarea name="notes" id="notes" cols="80" rows="7" onblur="Addhours.validateNotes(this);">'.(isset($displayData->data->notes) ? $displayData->data->notes : "").'</textarea><br />'.$minimum,
         "label" => '<label id="notes-lbl" for="notes" class="hasTooltip" title="<strong>'.JText::_('COM_TIMECLOCK_NOTES').'</strong><br />'.JText::_('COM_TIMECLOCK_WORK_NOTES_HELP').'">'.JText::_('COM_TIMECLOCK_NOTES').'</label>'
     );
     print TimeclockHelpersView::getFormField((object)$notes);
@@ -70,7 +75,9 @@ $min = $displayData->min_daily_hours;
         <input type="hidden" name="created" value="<?php print isset($displayData->data->created) ? $displayData->data->created : 0; ?>" />
         <input type="hidden" name="created_by" value="<?php print isset($displayData->data->created_by) ? $displayData->data->created_by : -1; ?>" />
         <input type="hidden" name="project_id" value="<?php print $displayData->project_id; ?>" />
-        <input type="hidden" name="pmin" value="<?php print $displayData->min_daily_hours; ?>" />
-        <input type="hidden" name="pmax" value="<?php print $displayData->max_daily_hours; ?>" />
+        <input type="hidden" name="pmin" value="<?php print $max; ?>" />
+        <input type="hidden" name="pmax" value="<?php print $min; ?>" />
+        <input type="hidden" name="ytdhours" value="<?php print $ytdhours; ?>" />
+        <input type="hidden" name="ytdmax" value="<?php print $ytdmax; ?>" />
         <input type="hidden" name="timesheet_id" value="<?php print isset($displayData->data->timesheet_id) ? $displayData->data->timesheet_id : ""; ?>" />
     </fieldset>
