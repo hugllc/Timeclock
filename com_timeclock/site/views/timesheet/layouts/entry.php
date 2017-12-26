@@ -12,7 +12,7 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
     <div style="display: none;" class="alert"></div>
     <?php
         if ($displayData->type == "FLOATING_HOLIDAY") {
-            print ' <div class="alert alert-warning">'.JText::_("COM_TIMECLOCK_FLOATING_HOLIDAY_WARNING").'</div> ';
+            print ' <div class="alert-info">'.JText::_("COM_TIMECLOCK_FLOATING_HOLIDAY_WARNING").'</div> ';
         }
     ?>
     <div class="controls"><?php
