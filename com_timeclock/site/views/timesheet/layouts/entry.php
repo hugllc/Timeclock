@@ -5,6 +5,7 @@ $max = (int)(isset($displayData->max_daily_hours) ? $displayData->max_daily_hour
 $min = (int)(isset($displayData->min_daily_hours) ? $displayData->min_daily_hours : 0);
 $ytdmax = (int)(isset($displayData->max_yearly_hours) ? $displayData->max_yearly_hours : 0);
 $ytdhours = (int)(isset($displayData->hours_ytd) ? $displayData->hours_ytd : 0);
+$left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
 ?>
     <h2><?php print $displayData->name; ?></h2>
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
@@ -55,7 +56,9 @@ $ytdhours = (int)(isset($displayData->hours_ytd) ? $displayData->hours_ytd : 0);
             $field->input  = '<select class="span2 hours" ';
             $field->input .= 'name="hours'.$i.'" onchange="Addhours.validateHours(this);">';
             $field->input .= '<option value="0"'.(($hours == 0) ? ' selected="selected"' : '').'>0</option>';
-            $field->input .= '<option value="'.$min.'"'.(($hours != 0) ? ' selected="selected"' : '').'>'.$min.'</option>';
+            if ($left) {
+                $field->input .= '<option value="'.$min.'"'.(($hours != 0) ? ' selected="selected"' : '').'>'.$min.'</option>';
+            }
             $field->input .= '</select>';
         } else {
             $field->input  = '<input type="text" size="6" maxsize="6" class="span2 hours" ';

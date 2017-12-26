@@ -213,8 +213,16 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     private function _checkProject(&$entry)
     {
         $entry->nohours = 1;
-        if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID" || ($entry->type == "FLOATING_HOLIDAY") )) {
-            $entry->nohours = 0;
+        $entry->nonewhours = 1;
+        $max       = (int)$entry->max_yearly_hours;
+        $hours_ytd = (int)$entry->hours_ytd;
+        if (($max != 0) && ($max <= $hours_ytd)) {
+            $entry->nonewhours = 0;
+        } else {
+            if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID" || ($entry->type == "FLOATING_HOLIDAY") )) {
+                $entry->nohours = 0;
+                $entry->nonewhours = 0;
+            }
         }
     }
     /**
@@ -487,10 +495,11 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('q.project_id as project_id, q.user_id as user_id');
+        $query->select('(SELECT SUM(hours1 + hours2 + hours3 + hours4 + hours5 + hours6) from #__timeclock_timesheet where project_id = q.project_id and user_id='.$db->quote($this->_user_id).') as hours_ytd');
         $query->from('#__timeclock_users as q');
         $query->select('p.project_id as project_id, 1 as mine, 
             p.name as name, p.parent_id as parent_id, p.description as description,
-            p.type as type');
+            p.type as type, p.max_yearly_hours as max_yearly_hours');
         $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');
         $query->select('r.name as parent_name, r.description as parent_description');
         $query->leftjoin('#__timeclock_projects as r on p.parent_id = r.project_id');

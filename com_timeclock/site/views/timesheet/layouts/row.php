@@ -10,7 +10,8 @@
     $split = empty($displayData->payperiod->splitdays) ? 31 : $displayData->payperiod->splitdays;
     foreach ($displayData->payperiod->dates as $date => $employed):
         $hours = isset($displayData->data[$date]) ? $displayData->data[$date]->hours : 0;
-        $timeentry = $employed && !$displayData->nohours && $displayData->mine;
+        $timeentry = $employed && $displayData->mine && (!$displayData->nohours || (!$displayData->nonewhours && ($hours > 0)));
+        
         if ($timeentry) {
             $tipTitle           = JText::_("COM_TIMECLOCK_ADD_HOURS");
             $tip                = "for ".$displayData->name." on ".JHTML::_('date', $date, JText::_("DATE_FORMAT_LC1"));
