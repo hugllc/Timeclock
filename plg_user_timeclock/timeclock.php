@@ -448,7 +448,7 @@ class plgUserTimeclock extends JPlugin
         {
             //Sanitize the date
             foreach (array("startDate", "endDate") as $date) {
-                if (!empty($data['timeclock'][$date])) {
+                if (!empty($data['timeclock'][$date]) && ($data['timeclock'][$date] != "0000-00-00 00:00:00")) {
                     $jdate = new JDate($data['timeclock'][$date]);
                     $data['timeclock'][$date] = $jdate->format('Y-m-d');
                 }
