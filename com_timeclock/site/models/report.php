@@ -434,6 +434,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             }
             if ($row) {
                 $this->extraUser($row->user_id);
+                $user = $this->_myusers[$row->user_id];
             }
         }
 
