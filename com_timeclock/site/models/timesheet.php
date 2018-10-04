@@ -479,7 +479,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $start = isset($user->timeclock["startDate"]) ? $user->timeclock["startDate"] : 0;
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $end = isset($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
-        if (!empty($end)) {
+        if (!empty($end) && ($end != "0000-00-00 00:00:00")) {
             $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
         }
 
