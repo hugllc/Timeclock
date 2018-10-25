@@ -66,12 +66,12 @@ class JFormFieldTimeclockHistory extends JFormField
     {
         $index = 0;
         $ret[] = "<div>";
-        if (isset($this->value["timestamps"])) {
-            $this->value["timestamps"] = (array)$this->value["timestamps"];
-        } else {
-            $this->value["timestamps"] = array();
+        if (!isset($this->value) || !is_array($this->value)) {
+            $this->value = array("timestamps" => array());
         }
-        krsort($this->value["timestamps"]);
+        $ts = $this->value["timestamps"];
+        krsort($ts);
+        $this->value["timestamps"] = $ts;
         foreach ($this->value["timestamps"] as $date => $user) {
             if (empty($date)) {
                 continue;
