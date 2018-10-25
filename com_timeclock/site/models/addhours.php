@@ -213,6 +213,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('q.project_id as project_id, q.user_id as user_id');
+        $query->select('(SELECT SUM(hours1 + hours2 + hours3 + hours4 + hours5 + hours6) from #__timeclock_timesheet where project_id = q.project_id and user_id='.$db->quote($this->getUser()->id).') as hours_ytd');
         $query->from('#__timeclock_users as q');
         $query->select('p.*, 1 as mine');
         $query->leftjoin('#__timeclock_projects as p on q.project_id = p.project_id');

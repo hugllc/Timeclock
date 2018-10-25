@@ -206,7 +206,6 @@ var Addhours = {
         if (max < this.getHours()) {
             ret = false;
         }
-        
         fieldset.find("input.hours").each(function(ind, elem) {
             var res = self._validateHours(elem);
             ret = ret && res;
@@ -249,6 +248,21 @@ var Addhours = {
             fieldset.find('[name="project_id"]').val(), 
             'Must have at most '+max+' hours',
             "error"
+        );
+    },
+    /**
+     * Prints out a message for max number of hours
+     * 
+     * @param fieldset The fieldset to print message for
+     * 
+     * @return null
+     */
+    maxYearlyHoursMessage: function(fieldset, hours, max)
+    {
+        this.message(
+            fieldset.find('[name="project_id"]').val(), 
+                    hours + 'is too many hours.  Must have at most '+max+' hours for the year.',
+                    "error"
         );
     },
     /**
@@ -317,8 +331,10 @@ var Addhours = {
             div.removeClass('invalid');
         }
         // Set the min and max
-        var pmin = parseInt(fieldset.find('[name="pmin"]').val());
-        var pmax = parseInt(fieldset.find('[name="pmax"]').val());
+        var pmin     = parseInt(fieldset.find('[name="pmin"]').val());
+        var pmax     = parseInt(fieldset.find('[name="pmax"]').val());
+        var ytd      = parseInt(fieldset.find('[name="hours_ytd"]').val());
+        var pmax_ytd = parseInt(fieldset.find('[name="pmax_ytd"]').val());
         // Round the hours
         hours = Addhours.round(hours);
         // Show/hide the star
@@ -331,6 +347,11 @@ var Addhours = {
             } else if ((hours != 0) && (hours < pmin)) {
                 this.setValid(false, parent);
                 this.minHoursMessage(fieldset, pmin);
+                div.addClass('invalid');
+                ret = false;
+            } else if ((hours != 0) && (pmax_ytd != 0) && ((ytd + hours ) > pmax_ytd)) {
+                this.setValid(false, parent);
+                this.maxYearlyHoursMessage(fieldset, ytd + hours, pmax_ytd);
                 div.addClass('invalid');
                 ret = false;
             } else {
@@ -433,7 +454,7 @@ var Addhours = {
             var group = jQuery("form.addhours");
         }
         var hours = 0;
-        group.find("input.hours").each(function(ind, elem) {
+        group.find("input.hours,select.hours").each(function(ind, elem) {
             var hrs = parseFloat(jQuery(elem).val());
             if (!isNaN(hrs)) {
                 hours += hrs;
