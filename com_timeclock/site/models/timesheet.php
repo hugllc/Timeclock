@@ -453,6 +453,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $db = JFactory::getDBO();
         $start = empty($start) ? $this->getState("payperiod.start") : $start;
         $end   = empty($end)   ? $this->getState("payperiod.end")   : $end;
+
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
 
@@ -494,8 +495,12 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
+
+        $y     = (int)explode("-", $this->getState("date"))[0];
+        $year  = "(".$db->quoteName("worked")." >= ".$db->quote($y."-01-01")." AND ".$db->quoteName("worked")." < ".$db->quote(($y + 1)."-01-01").")";
+
         $query->select('q.project_id as project_id, q.user_id as user_id');
-        $query->select('(SELECT SUM(hours1 + hours2 + hours3 + hours4 + hours5 + hours6) from #__timeclock_timesheet where project_id = q.project_id and user_id='.$db->quote($this->_user_id).') as hours_ytd');
+        $query->select('(SELECT SUM(hours1 + hours2 + hours3 + hours4 + hours5 + hours6) from #__timeclock_timesheet where project_id = q.project_id and user_id='.$db->quote($this->_user_id).' AND '.$year.') as hours_ytd');
         $query->from('#__timeclock_users as q');
         $query->select('p.project_id as project_id, 1 as mine, 
             p.name as name, p.parent_id as parent_id, p.description as description,
