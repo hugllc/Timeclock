@@ -286,7 +286,7 @@ class TimeclockHelpersDate
     static public function afterEndDate($date, $id=null)
     {
         $end = TimeclockHelpersTimeclock::getUserParam("endDate", $id, $date);
-        if ($end == 0) {
+        if (empty($end)) {
             return false;
         }
         return self::compareDates($date, $end) > 0;

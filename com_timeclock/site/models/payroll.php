@@ -86,7 +86,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $start = $this->getState("payperiod.start");
         $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
         $user->done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
-        $eend = isset($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
+        $eend = empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
 
         $valid = (TimeclockHelpersDate::compareDates($eend, $this->getState('payperiod.start'))  >= 0);
         if (($eend != 0) && !$valid) {
