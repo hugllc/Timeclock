@@ -154,7 +154,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     *
     * @return object Query object
     */
-    protected function _buildQuery()
+    protected function _buildQuery($id = null)
     {
         $db = JFactory::getDBO();
         $query = $db->getQuery(TRUE);
