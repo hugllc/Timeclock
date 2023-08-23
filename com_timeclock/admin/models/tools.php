@@ -35,6 +35,9 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
  
 /**
  * Description Here
@@ -57,12 +60,12 @@ class TimeclockModelsTools extends JModelBase
     public function __construct()
     {
         parent::__construct();
-        $this->_customers = JTable::getInstance("TimeclockCustomers", "Table");
-        $this->_prefs = JTable::getInstance("TimeclockDepartments", "Table");
-        $this->_projects = JTable::getInstance("TimeclockProjects", "Table");
-        $this->_users = JTable::getInstance("TimeclockUsers", "Table");
-        $this->_timesheet = JTable::getInstance("TimeclockTimesheet", "Table");
-        $this->_db = JFactory::getDBO();
+        $this->_customers = Table::getInstance("TimeclockCustomers", "Table");
+        $this->_prefs = Table::getInstance("TimeclockDepartments", "Table");
+        $this->_projects = Table::getInstance("TimeclockProjects", "Table");
+        $this->_users = Table::getInstance("TimeclockUsers", "Table");
+        $this->_timesheet = Table::getInstance("TimeclockTimesheet", "Table");
+        $this->_db = Factory::getDBO();
 
     }
 
@@ -73,7 +76,7 @@ class TimeclockModelsTools extends JModelBase
     */
     public function setup()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $package = $app->input->get("package", null);
         return $this->_setupDownload($package);
     }

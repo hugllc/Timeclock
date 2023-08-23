@@ -34,6 +34,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Factory;
 require_once __DIR__."/default.php";
 
 /**
@@ -73,7 +75,7 @@ class TimeclockModelsTimesheets extends TimeclockModelsDefault
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
@@ -109,7 +111,7 @@ class TimeclockModelsTimesheets extends TimeclockModelsDefault
     */
     protected function _buildCountQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('COUNT(t.timesheet_id) as count');
         $query->from('#__timeclock_timesheet as t');
@@ -129,7 +131,7 @@ class TimeclockModelsTimesheets extends TimeclockModelsDefault
     */
     protected function _buildWhere(&$query, $id = null)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $id = is_numeric($id) ? $id : $this->_timesheet_id;
         
         if(is_numeric($id)) {

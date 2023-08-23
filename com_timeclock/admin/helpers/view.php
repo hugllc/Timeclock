@@ -35,6 +35,10 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Form\Form;
+
  
 /**
  * Helpers for viewing stuff
@@ -56,14 +60,14 @@ class TimeclockHelpersView
     /**
     * Gets the HTML for a layout
     *
-    * @param object $form JForm The form to print out
+    * @param object $form Form The form to print out
     * @param object $data stdClass The data for the object we are doing
     * 
     * @return string The HTML rendering of that view
     */
     static function getForm($form, $data)
     {
-        $layout = new JLayoutFile('detailsedit', dirname(__DIR__).'/layouts');
+        $layout = new FileLayout('detailsedit', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("data" => $data, "form" => $form)
@@ -73,14 +77,14 @@ class TimeclockHelpersView
     * Gets the HTML for a layout
     *
     * @param string $name The name of the fieldset to display
-    * @param object $form JForm The form to print out
+    * @param object $form Form The form to print out
     * @param object $data stdClass The data for the object we are doing
     * 
     * @return string The HTML rendering of that view
     */
     static function getFormSet($name, $form, $data)
     {
-        $layout = new JLayoutFile('fieldset', dirname(__DIR__).'/layouts');
+        $layout = new FileLayout('fieldset', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("name" => $name, "data" => $data, "form" => $form)
@@ -90,14 +94,14 @@ class TimeclockHelpersView
     * Gets the HTML for a layout
     *
     * @param string $name The name of the fieldset to display
-    * @param object $form JForm The form to print out
+    * @param object $form Form The form to print out
     * @param object $data stdClass The data for the object we are doing
     * 
     * @return string The HTML rendering of that view
     */
     static function getFormSetH($name, $form, $data)
     {
-        $layout = new JLayoutFile('hfieldset', dirname(__DIR__).'/layouts');
+        $layout = new FileLayout('hfieldset', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("name" => $name, "data" => $data, "form" => $form)
@@ -107,14 +111,14 @@ class TimeclockHelpersView
     * Gets the HTML for a layout
     *
     * @param string $name The name of the fieldset to display
-    * @param object $form JForm The form to print out
+    * @param object $form Form The form to print out
     * @param object $data stdClass The data for the object we are doing
     * 
     * @return string The HTML rendering of that view
     */
     static function getFormSetV($name, $form, $data)
     {
-        $layout = new JLayoutFile('vfieldset', dirname(__DIR__).'/layouts');
+        $layout = new FileLayout('vfieldset', dirname(__DIR__).'/layouts');
 
         return $layout->render(
             array("name" => $name, "data" => $data, "form" => $form)
@@ -124,14 +128,14 @@ class TimeclockHelpersView
     * Gets the HTML for a layout
     *
     * @param string $name The name of the fieldset to display
-    * @param object $form JForm The form to print out
+    * @param object $form Form The form to print out
     * @param object $data stdClass The data for the object we are doing
     * 
     * @return string The HTML rendering of that view
     */
     static function getFormField($data)
     {
-        $layout = new JLayoutFile('field', dirname(__DIR__).'/layouts');
+        $layout = new FileLayout('field', dirname(__DIR__).'/layouts');
 
         return $layout->render($data);
     }
@@ -186,47 +190,47 @@ class TimeclockHelpersView
     public static function addSubmenu($cName)
     {
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_CUSTOMERS"),
+            Text::_("COM_TIMECLOCK_CUSTOMERS"),
             'index.php?option=com_timeclock&controller=customer',
             $cName == 'customer'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_DEPARTMENTS"),
+            Text::_("COM_TIMECLOCK_DEPARTMENTS"),
             'index.php?option=com_timeclock&controller=department',
             $cName == 'department'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_PROJECTS"),
+            Text::_("COM_TIMECLOCK_PROJECTS"),
             'index.php?option=com_timeclock&controller=project',
             $cName == 'project'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_HOLIDAYS"),
+            Text::_("COM_TIMECLOCK_HOLIDAYS"),
             'index.php?option=com_timeclock&controller=holiday',
             $cName == 'holiday'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_PTO"),
+            Text::_("COM_TIMECLOCK_PTO"),
             'index.php?option=com_timeclock&controller=pto',
             $cName == 'pto'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_TIMESHEETS"),
+            Text::_("COM_TIMECLOCK_TIMESHEETS"),
             'index.php?option=com_timeclock&controller=timesheet',
             $cName == 'timesheet'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_REPORTS"),
+            Text::_("COM_TIMECLOCK_REPORTS"),
             'index.php?option=com_timeclock&controller=reports',
             $cName == 'reports'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_MISC_TOOLS"),
+            Text::_("COM_TIMECLOCK_MISC_TOOLS"),
             'index.php?option=com_timeclock&controller=tools',
             $cName == 'tools'
         );
         JHtmlSidebar::addEntry(
-            JText::_("COM_TIMECLOCK_ABOUT"),
+            Text::_("COM_TIMECLOCK_ABOUT"),
             'index.php?option=com_timeclock&controller=about',
             $cName == 'about'
         );

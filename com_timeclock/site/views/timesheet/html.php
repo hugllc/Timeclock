@@ -36,6 +36,10 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -59,10 +63,10 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
     */
     function render()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $layout = $this->getLayout();
         
-        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->model->getState('payperiod');
         $this->payperiod->controller = "timesheet";
 
@@ -85,16 +89,16 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
     function renderTimesheet()
     {
 
-        $this->_header     = new JLayoutFile('header', __DIR__.'/layouts');
-        $this->_row        = new JLayoutFile('row', __DIR__.'/layouts');
-        $this->_totals     = new JLayoutFile('totals', __DIR__.'/layouts');
-        $this->_nextprev   = new JLayoutFile('payperiodnextprev', dirname(__DIR__).'/layouts');
-        $this->_category   = new JLayoutFile('category', __DIR__.'/layouts');
-        $this->_subtotals  = new JLayoutFile('subtotals', __DIR__.'/layouts');
-        $this->_psubtotals = new JLayoutFile('psubtotals', __DIR__.'/layouts');
-        $this->_toolbar    = new JLayoutFile('toolbar', __DIR__.'/layouts');
-        $this->_name       = new JLayoutFile('name', __DIR__.'/layouts');
-        $this->_notes      = new JLayoutFile('notes', dirname(__DIR__).'/layouts');
+        $this->_header     = new FileLayout('header', __DIR__.'/layouts');
+        $this->_row        = new FileLayout('row', __DIR__.'/layouts');
+        $this->_totals     = new FileLayout('totals', __DIR__.'/layouts');
+        $this->_nextprev   = new FileLayout('payperiodnextprev', dirname(__DIR__).'/layouts');
+        $this->_category   = new FileLayout('category', __DIR__.'/layouts');
+        $this->_subtotals  = new FileLayout('subtotals', __DIR__.'/layouts');
+        $this->_psubtotals = new FileLayout('psubtotals', __DIR__.'/layouts');
+        $this->_toolbar    = new FileLayout('toolbar', __DIR__.'/layouts');
+        $this->_name       = new FileLayout('name', __DIR__.'/layouts');
+        $this->_notes      = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
         $this->data      = $this->model->listItems();
         $this->projects  = $this->model->listProjects();
@@ -110,7 +114,7 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
     */
     function renderAddhours()
     {
-        $this->_entry    = new JLayoutFile('entry', __DIR__.'/layouts');
+        $this->_entry    = new FileLayout('entry', __DIR__.'/layouts');
 
         $this->data      = $this->model->listItems();
         $this->projects  = $this->model->listProjects();

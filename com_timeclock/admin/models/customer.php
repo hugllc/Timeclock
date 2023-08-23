@@ -35,6 +35,8 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/default.php";
 
 /**
@@ -74,7 +76,7 @@ class TimeclockModelsCustomer extends TimeclockModelsDefault
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('c.customer_id, c.company, c.name, c.address1, c.address2,
                         c.city, c.state, c.zip, c.country, c.notes, c.checked_out,
@@ -94,7 +96,7 @@ class TimeclockModelsCustomer extends TimeclockModelsDefault
     */
     protected function _buildCountQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('COUNT(c.customer_id) as count');
         $query->from('#__timeclock_customers as c');
@@ -113,7 +115,7 @@ class TimeclockModelsCustomer extends TimeclockModelsDefault
     */
     protected function _buildWhere(&$query, $id = null)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $id = is_numeric($id) ? $id : $this->_customer_id;
         
         if(is_numeric($id)) {

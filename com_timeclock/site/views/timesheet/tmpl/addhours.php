@@ -1,18 +1,23 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
     JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHtmlBehavior::core();
 
-    $user = JFactory::getUser();
+    $user = Factory::getUser();
     $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
     $cols = $this->payperiod->days + 2 + $subtotalcols;
     $this->payperiod->cols = $cols;
     $this->payperiod->subtotalcols = $subtotalcols;
-    JFactory::getDocument()->setTitle(
-        JText::sprintf(
+    Factory::getDocument()->setTitle(
+        Text::sprintf(
             "COM_TIMECLOCK_ADD_HOURS_TITLE",
             $user->name,
-            JHTML::_('date', $this->date, JText::_("DATE_FORMAT_LC3"))
+            JHTML::_('date', $this->date, Text::_("DATE_FORMAT_LC3"))
         )
     );
 ?>
@@ -20,7 +25,7 @@
 <form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">
     <div class="page-header">
         <h3 itemprop="name">
-            <?php printf(JText::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, JHtml::_("date", $this->date)); ?>
+            <?php printf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, HTMLHelper::_("date", $this->date)); ?>
         </h3>
     </div>
     <div class="">
@@ -30,7 +35,7 @@
     $allproj = array();
     $projlist = array();
     foreach ($this->projects as $cat => $projects) {
-        print "<h2>".JText::_("JCATEGORY").": ".JText::_($projects["name"])."</h2>";
+        print "<h2>".Text::_("JCATEGORY").": ".Text::_($projects["name"])."</h2>";
         foreach ($projects["proj"] as $proj) {
             $allproj[$proj->project_id] = $proj->project_id;
             $projlist[$proj->project_id] = $proj;
@@ -49,8 +54,8 @@
     </div>
 </form>
 <div id="addHoursTotal">
-    <?php print JText::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal">-</span>
-    (<?php print JText::_("COM_TIMECLOCK_MAX").":  ".$this->params->get("maxDailyHours"); ?>)
+    <?php print Text::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal">-</span>
+    (<?php print Text::_("COM_TIMECLOCK_MAX").":  ".$this->params->get("maxDailyHours"); ?>)
 </div>
 <script type="text/JavaScript">
     jQuery( document ).ready(function() {

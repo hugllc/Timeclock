@@ -36,6 +36,9 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Response\JsonResponse;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -59,13 +62,13 @@ class TimeclockViewsTimesheetJson extends JViewHtml
     */
     function render()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $payperiod = $this->model->getState('payperiod');
         $data      = $this->model->listItems();
         $projects  = $this->model->listProjects();
         
-        $json = new JResponseJson(
+        $json = new JsonResponse(
             $data,
             "",     // Message
             false,  // Error
@@ -73,7 +76,7 @@ class TimeclockViewsTimesheetJson extends JViewHtml
         );
 
         
-        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        Factory::getDocument()->setMimeEncoding( 'application/json' );
         JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();

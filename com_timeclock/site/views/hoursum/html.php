@@ -36,6 +36,11 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -66,10 +71,10 @@ class TimeclockViewsHoursumHtml extends JViewHtml
     */
     function render()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $layout = $this->getLayout();
         
-        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->start     = $this->model->getState('start');
         $this->end       = $this->model->getState('end');
         $this->report_id = $this->model->getState("report.id");
@@ -80,9 +85,9 @@ class TimeclockViewsHoursumHtml extends JViewHtml
             true
         );
 
-        $this->_dataset = new JLayoutFile('dataset', __DIR__.'/layouts');
-        $this->_export  = new JLayoutFile('export', dirname(__DIR__).'/layouts');
-        $this->_control = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
+        $this->_dataset = new FileLayout('dataset', __DIR__.'/layouts');
+        $this->_export  = new FileLayout('export', dirname(__DIR__).'/layouts');
+        $this->_control = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
         if (empty($this->report_id)) {
             $this->data              = $this->model->listItems();
@@ -155,9 +160,9 @@ class TimeclockViewsHoursumHtml extends JViewHtml
     protected function getProjType($type)
     {
         if (isset($this->_projType[$type])) {
-            return JText::_($this->_projType[$type]);
+            return Text::_($this->_projType[$type]);
         }
-        return JText::_("COM_TIMECLOCK_UNKNOWN");
+        return Text::_("COM_TIMECLOCK_UNKNOWN");
     }
 }
 ?>

@@ -35,6 +35,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Form\FormField;
 jimport('joomla.form.formfield');
 /**
  * This creates a select box with the user types in it.
@@ -48,7 +52,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class JFormFieldTimeclockProjectUsers extends JFormField
+class FormFieldTimeclockProjectUsers extends FormField
 {
     protected $type = 'TimeclockProjectUsers';
 
@@ -68,7 +72,7 @@ class JFormFieldTimeclockProjectUsers extends JFormField
             $displayData["outOptions"][$row->id] = JHTML::_(
                 'select.option', 
                 (int)$row->id, 
-                JText::_($row->name)
+                Text::_($row->name)
             );
         }
         $model = TimeclockHelpersTimeclock::getModel("project");
@@ -81,7 +85,7 @@ class JFormFieldTimeclockProjectUsers extends JFormField
         }
         $displayData["label_in"]  = "COM_TIMECLOCK_IN";
         $displayData["label_out"] = "COM_TIMECLOCK_OUT";
-        $layout = new JLayoutFile('dualselect', JPATH_ROOT.'/components/com_timeclock/layouts');
+        $layout = new FileLayout('dualselect', JPATH_ROOT.'/components/com_timeclock/layouts');
 
         return $layout->render($displayData);
     }

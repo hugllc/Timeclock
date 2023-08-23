@@ -44,6 +44,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Helper\ModuleHelper;
+
 // Include the helper function
 require_once dirname(__FILE__).'/helper.php';
 JLoader::register('TimeclockHelpersTimeclock', JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php');
@@ -55,6 +57,6 @@ $params->def('showNextHoliday', 1);
 
 $stuff = modTimeclockInfoHelper::getDisplay($params);
 
-require JModuleHelper::getLayoutPath('mod_timeclockinfo');
+require ModuleHelper::getLayoutPath('mod_timeclockinfo');
 
 ?>

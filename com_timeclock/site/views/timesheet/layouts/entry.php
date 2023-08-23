@@ -1,5 +1,7 @@
 <?php
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
 $displayData->data = isset($displayData->data) ? (object)$displayData->data : new stdClass();
 $max = (int)(isset($displayData->max_daily_hours) ? $displayData->max_daily_hours : 0);
 $min = (int)(isset($displayData->min_daily_hours) ? $displayData->min_daily_hours : 0);
@@ -12,20 +14,20 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
     <div style="display: none;" class="alert"></div>
     <?php
         if ($displayData->type == "FLOATING_HOLIDAY") {
-            print ' <div class="alert-info">'.JText::_("COM_TIMECLOCK_FLOATING_HOLIDAY_WARNING").'</div> ';
+            print ' <div class="alert-info">'.Text::_("COM_TIMECLOCK_FLOATING_HOLIDAY_WARNING").'</div> ';
         }
     ?>
     <div class="controls"><?php
         if ($min != $max) {
             if ($min > 0) {
-                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MIN").':</span> '.$max.' ';
+                print ' <span class="bold">'.Text::_("COM_TIMECLOCK_MIN").':</span> '.$max.' ';
             }
             if ($max > 0) {
-                print ' <span class="bold">'.JText::_("COM_TIMECLOCK_MAX").':</span> '.$min.' ';
+                print ' <span class="bold">'.Text::_("COM_TIMECLOCK_MAX").':</span> '.$min.' ';
             }
         }
         if ($ytdmax > 0) {
-            print ' <span class="bold">'.JText::_("COM_TIMECLOCK_YTD_LEFT").':</span> '.($ytdmax - $ytdhours).' ';
+            print ' <span class="bold">'.Text::_("COM_TIMECLOCK_YTD_LEFT").':</span> '.($ytdmax - $ytdhours).' ';
         }
         
     ?></div>
@@ -48,7 +50,7 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
         $hours = isset($displayData->data->$fname) ? $displayData->data->$fname : 0;
 
         $field = new stdClass();
-        $name  = (empty($codes[$code])) ? JText::_("COM_TIMECLOCK_HOURS") : $codes[$code];
+        $name  = (empty($codes[$code])) ? Text::_("COM_TIMECLOCK_HOURS") : $codes[$code];
         $label = '<label id="'.$fname.'-lbl" for="'.$fname.'" class="required">';
         $star  = '<span class="star">&#160;*</span>';
         $field->label = $label.$name.$star."</label>";
@@ -66,10 +68,10 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
         }
         print TimeclockHelpersView::getFormField($field);
     }
-    $minimum = '<span class="minchars">'.sprintf(" ".JText::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
+    $minimum = '<span class="minchars">'.sprintf(" ".Text::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
     $notes = array(
         "input" => '<textarea name="notes" id="notes" cols="80" rows="7" onblur="Addhours.validateNotes(this);">'.(isset($displayData->data->notes) ? $displayData->data->notes : "").'</textarea><br />'.$minimum,
-        "label" => '<label id="notes-lbl" for="notes" class="hasTooltip" title="<strong>'.JText::_('COM_TIMECLOCK_NOTES').'</strong><br />'.JText::_('COM_TIMECLOCK_WORK_NOTES_HELP').'">'.JText::_('COM_TIMECLOCK_NOTES').'</label>'
+        "label" => '<label id="notes-lbl" for="notes" class="hasTooltip" title="<strong>'.Text::_('COM_TIMECLOCK_NOTES').'</strong><br />'.Text::_('COM_TIMECLOCK_WORK_NOTES_HELP').'">'.Text::_('COM_TIMECLOCK_NOTES').'</label>'
     );
     print TimeclockHelpersView::getFormField((object)$notes);
 ?>

@@ -36,6 +36,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 /**
  * Preferences table
  *
@@ -47,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class TableTimeclockUsers extends JTable
+class TableTimeclockUsers extends Table
 {
     public $project_id      = null;
     public $user_id         = null;
@@ -83,7 +86,7 @@ class TableTimeclockUsers extends JTable
      */
     public function delete($id = NULL)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(TRUE);
         
         $query->delete($db->quoteName('#__timeclock_users'));

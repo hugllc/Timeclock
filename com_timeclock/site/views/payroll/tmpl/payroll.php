@@ -1,4 +1,10 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
     JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
     JHTML::script(Juri::base()."components/com_timeclock/views/payroll/tmpl/payroll.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
@@ -7,11 +13,11 @@
     $cols = ($this->payperiod->subtotals * 4) + 3;
     $this->payperiod->cols = $cols;
 
-    JFactory::getDocument()->setTitle(
-        JText::sprintf(
+    Factory::getDocument()->setTitle(
+        Text::sprintf(
             "COM_TIMECLOCK_PAYROLL_TITLE",
-            JHTML::_('date', $this->payperiod->start, JText::_("DATE_FORMAT_LC3")),
-            JHTML::_('date', $this->payperiod->end, JText::_("DATE_FORMAT_LC3"))
+            JHTML::_('date', $this->payperiod->start, Text::_("DATE_FORMAT_LC3")),
+            JHTML::_('date', $this->payperiod->end, Text::_("DATE_FORMAT_LC3"))
         )
     );
     $doreports = ($this->report->report_id != 0);
@@ -20,17 +26,17 @@
     <div class="page-header">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
-            <?php print JText::_("COM_TIMECLOCK_PAYROLL"); ?>
-            <span class="locked hasTooltip" title="<?php print JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>"><?php print JHtml::_('image', 'system/checked_out.png', null, null, true); ?></span>
-            <span class="livedata noreport">(<?php print JText::_("COM_TIMECLOCK_LIVE_DATA"); ?>)</span>
-            <span class="reportdata noreport">(<?php print JText::_("COM_TIMECLOCK_SAVED_DATA"); ?>)</span>
+            <?php print Text::_("COM_TIMECLOCK_PAYROLL"); ?>
+            <span class="locked hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>"><?php print HTMLHelper::_('image', 'system/checked_out.png', null, null, true); ?></span>
+            <span class="livedata noreport">(<?php print Text::_("COM_TIMECLOCK_LIVE_DATA"); ?>)</span>
+            <span class="reportdata noreport">(<?php print Text::_("COM_TIMECLOCK_SAVED_DATA"); ?>)</span>
         </h2>
     </div>
     <?php print $this->_toolbar->render($this->payperiod); ?>
     <?php print $this->_nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
-            <?php print JText::sprintf(
+            <?php print Text::sprintf(
                 "COM_TIMECLOCK_DATE_TO_DATE",
                 JHTML::_('date', $this->payperiod->start),
                 JHTML::_('date', $this->payperiod->end)
@@ -40,7 +46,7 @@
     <?php 
         print $this->_export->render(
             (object)array(
-                "url" => JRoute::_('&option=com_timeclock&controller=payroll&date='.$this->payperiod->start),
+                "url" => Route::_('&option=com_timeclock&controller=payroll&date='.$this->payperiod->start),
                 "export" => $this->export,
             )
         ); 

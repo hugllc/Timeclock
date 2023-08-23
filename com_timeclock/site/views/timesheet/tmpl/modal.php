@@ -1,5 +1,10 @@
 <?php
-    $user = JFactory::getUser();
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+    $user = Factory::getUser();
     $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
     $cols = $this->payperiod->days + 2 + $subtotalcols;
     $this->payperiod->cols = $cols;
@@ -14,10 +19,10 @@
     <div class="">
         <fieldset class="form-horizontal">
             <input type="hidden" name="worked" value="<?php print $this->date; ?>" />
-            <h3><?php printf(JText::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, JHtml::_("date", $this->date)); ?></h3>
+            <h3><?php printf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, HTMLHelper::_("date", $this->date)); ?></h3>
             <div>
-                <?php print JText::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal">-</span>
-                (<?php print JText::_("COM_TIMECLOCK_MAX").":  ".$this->params->get("maxDailyHours"); ?>)
+                <?php print Text::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal">-</span>
+                (<?php print Text::_("COM_TIMECLOCK_MAX").":  ".$this->params->get("maxDailyHours"); ?>)
             </div>
 
 <?php 

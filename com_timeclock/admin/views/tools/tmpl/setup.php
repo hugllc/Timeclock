@@ -36,6 +36,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 $baseUrl = "index.php?option=com_timeclock&controller=tools&task=setup";
 $installed = '<span class="alert alert-success">Installed</span>';
 ?>
@@ -44,9 +46,9 @@ $installed = '<span class="alert alert-success">Installed</span>';
     <?php echo $this->sidebar; ?>
 </div>
 <div id="j-main-container" class="span10">
-    <h2><?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_SETUP"); ?></h2>
-    <h3><?php print JText::_("COM_TIMECLOCK_EXTRA_PACKAGES"); ?></h2>
-    <p><?php print JText::_("COM_TIMECLOCK_EXTRA_PACKAGES_DESC"); ?></h2>
+    <h2><?php print Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_SETUP"); ?></h2>
+    <h3><?php print Text::_("COM_TIMECLOCK_EXTRA_PACKAGES"); ?></h2>
+    <p><?php print Text::_("COM_TIMECLOCK_EXTRA_PACKAGES_DESC"); ?></h2>
 <dl>
     <dt>PHPExcel</dt>
     <dd>

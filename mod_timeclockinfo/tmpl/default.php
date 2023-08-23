@@ -43,8 +43,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 foreach ($stuff as $item => $value) {
-    print "<strong>".JText::_($item).":</strong> ".$value."<br />\n";
+    print "<strong>".Text::_($item).":</strong> ".$value."<br />\n";
 }
 
 ?>

@@ -35,6 +35,10 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Factory;
+
 //sessions
 jimport( 'joomla.session.session' );
 // require helper file
@@ -42,15 +46,15 @@ JLoader::register('TimeclockHelpersTimeclock', JPATH_COMPONENT_ADMINISTRATOR.'/h
 JLoader::register('TimeclockHelpersView', JPATH_COMPONENT_ADMINISTRATOR.'/helpers/view.php');
 JLoader::register('TimeclockHelpersDate', JPATH_COMPONENT_SITE.'/helpers/date.php');
 //load tables
-JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/tables');
+Table::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/tables');
 //load classes
 JLoader::registerPrefix('Timeclock', JPATH_COMPONENT);
 //Load plugins
-//JPluginHelper::importPlugin('lendr');
+//PluginHelper::importPlugin('lendr');
 //Load styles and javascripts
 //LendrHelpersStyle::load();
 //application
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // Require specific controller if requested
 $controller = $app->input->get('controller', null);
 if (is_null($controller)) {

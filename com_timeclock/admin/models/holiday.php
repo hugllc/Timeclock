@@ -34,6 +34,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Factory;
 require_once __DIR__."/timesheets.php";
 
 /**
@@ -56,7 +58,7 @@ class TimeclockModelsHoliday extends TimeclockModelsTimesheets
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
@@ -92,7 +94,7 @@ class TimeclockModelsHoliday extends TimeclockModelsTimesheets
     */
     protected function _buildCountQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('COUNT(t.timesheet_id) as count');
         $query->from('#__timeclock_timesheet as t');

@@ -35,6 +35,10 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
  
 /**
  * Description Here
@@ -106,7 +110,7 @@ class TimeclockModelsSiteDefault extends JModelBase
     */
     public function getItem($id = null)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
 
         $query = $this->_buildQuery();
         $this->_buildWhere($query, $id);
@@ -128,7 +132,7 @@ class TimeclockModelsSiteDefault extends JModelBase
     */
     protected function _getList($query, $limitstart = 0, $limit = 0)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $db->setQuery($query, $limitstart, $limit);
         $result = $db->loadObjectList();
     
@@ -144,7 +148,7 @@ class TimeclockModelsSiteDefault extends JModelBase
     */
     protected function _getListCount($query)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $db->setQuery($query);
         // Take the first one and go
         return (int)$db->loadResult();
@@ -186,7 +190,7 @@ class TimeclockModelsSiteDefault extends JModelBase
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $registry = $this->loadState();
         
         // Load state from the request.
@@ -194,7 +198,7 @@ class TimeclockModelsSiteDefault extends JModelBase
         $registry->set('id', $pk);
 
         // Load the parameters.
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
 
         $this->setState($registry);
@@ -202,11 +206,11 @@ class TimeclockModelsSiteDefault extends JModelBase
     /**
     * This returns the table for this model
     * 
-    * @return  JTable object
+    * @return  Table object
     */
     protected function getTable()
     {
-        return JTable::getInstance($this->table, 'Table');
+        return Table::getInstance($this->table, 'Table');
     }
     /**
     * This sets a parameter of com_timeclock.
@@ -219,11 +223,11 @@ class TimeclockModelsSiteDefault extends JModelBase
     public function setParam($name, $value)
     {
         // Get the params and set the new values
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         $params->set($name, $value);
 
         // Get a new database query instance
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(true);
 
         // Build the query
@@ -249,9 +253,9 @@ class TimeclockModelsSiteDefault extends JModelBase
     {
         $id = empty($id) ? null : (int)$id;
         if (!isset($this->_user[$id])) {
-            $this->_user[$id] = JFactory::getUser($id);
+            $this->_user[$id] = Factory::getUser($id);
             $this->_user[$id]->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user[$id]->id);
-            $this->_user[$id]->me = is_null($id) || ($id == JFactory::getUser()->id);
+            $this->_user[$id]->me = is_null($id) || ($id == Factory::getUser()->id);
         }
         return $this->_user[$id];
     }
@@ -267,7 +271,7 @@ class TimeclockModelsSiteDefault extends JModelBase
     {
         if (empty($this->_users)) {
             $this->_users = TimeclockHelpersTimeclock::getUsers($blocked);
-            $me = JFactory::getUser()->id;
+            $me = Factory::getUser()->id;
             foreach ($this->_users as &$user) {
                 $user->timeclock = TimeclockHelpersTimeclock::getUserParams($user->id);
                 $user->error     = "";

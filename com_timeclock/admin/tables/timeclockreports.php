@@ -36,6 +36,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Table\Table;
+
 /**
  * Preferences table
  *
@@ -47,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class TableTimeclockReports extends JTable
+class TableTimeclockReports extends Table
 {
     public $report_id      = null;
     public $name             = '';

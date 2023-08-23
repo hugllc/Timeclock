@@ -36,6 +36,10 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -72,11 +76,11 @@ class TimeclockViewsPayrollBase extends JViewBase
         if (!TimeclockHelpersContrib::phpexcel()) {
             return false;
         }
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");
         $report_id = $this->model->getState("report.id");
-        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->model->getState('payperiod');
 
         if (!empty($report_id) && $doReport) {
@@ -121,16 +125,16 @@ class TimeclockViewsPayrollBase extends JViewBase
     */
     protected function setup($file)
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $payroll = JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $this->payperiod->start, $this->payperiod->end);
+        $payroll = Text::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $this->payperiod->start, $this->payperiod->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($payroll)
             ->setSubject($payroll)
-            ->setKeywords(JText::_("COM_TIMECLOCK_PAYROLL"));
+            ->setKeywords(Text::_("COM_TIMECLOCK_PAYROLL"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -215,7 +219,7 @@ class TimeclockViewsPayrollBase extends JViewBase
     protected function totals($data)
     {
         $col = "A";
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_TOTAL"));
         $end = $this->line - 1;
         while ($col != $this->maxCol) {
             $col = $this->nextCol($col);
@@ -232,20 +236,20 @@ class TimeclockViewsPayrollBase extends JViewBase
     protected function header()
     {
         $col = "A";
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_EMPLOYEE"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_EMPLOYEE"));
         
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WORKED"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_WORKED"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PTO"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_PTO"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_HOLIDAY"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_HOLIDAY"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_SUBTOTAL"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_SUBTOTAL"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_OVERTIME"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_OVERTIME"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_TOTAL"));
         $columnID = "A";
         $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         while ($col != $columnID) {

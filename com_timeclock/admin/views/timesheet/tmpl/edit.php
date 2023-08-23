@@ -2,8 +2,11 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', 'select:not(.plain)');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
 JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
 ?>
 
@@ -27,9 +30,9 @@ JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
             $field = new stdClass();
             $code = isset($this->data->{"wcCode".$i}) ? (int)$this->data->{"wcCode".$i} : 0;
             if ($code == 0) {
-                $field->label = JText::_("COM_TIMECLOCK_CODE_NOT_ENABLED");
+                $field->label = Text::_("COM_TIMECLOCK_CODE_NOT_ENABLED");
             } else if (!isset($codes[$code]) || empty($codes[$code])) {
-                $field->label = JText::_("COM_TIMECLOCK_CODE_NOT_DEFINED");
+                $field->label = Text::_("COM_TIMECLOCK_CODE_NOT_DEFINED");
             } else {
                 $field->label = $codes[$code];
             }

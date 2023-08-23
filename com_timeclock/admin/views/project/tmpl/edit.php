@@ -2,8 +2,11 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', 'select:not(.plain)');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
 JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
 
 ?>
@@ -17,28 +20,28 @@ JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
 <form action="index.php?option=com_timeclock&controller=project" method="post" id="adminForm" name="adminForm">
 <div class="row-fluid">
 <?php 
-    print JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
+    print HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 
-    print JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('JDETAILS'));
+    print HTMLHelper::_('bootstrap.addTab', 'myTab', 'details', Text::_('JDETAILS'));
     print TimeclockHelpersView::getForm($this->form, $this->data); 
-    print JHtml::_('bootstrap.endTab');
+    print HTMLHelper::_('bootstrap.endTab');
     if ($this->params->get("wCompEnable")) {
-        print JHtml::_('bootstrap.addTab', 'myTab', 'wcomp', JText::_('COM_TIMECLOCK_WORKERS_COMP'));
-        print "<div>".JText::_("COM_TIMECLOCK_WORKERS_COMP_CODES")."</div>\n";
+        print HTMLHelper::_('bootstrap.addTab', 'myTab', 'wcomp', Text::_('COM_TIMECLOCK_WORKERS_COMP'));
+        print "<div>".Text::_("COM_TIMECLOCK_WORKERS_COMP_CODES")."</div>\n";
         print '<div class="span10">'."\n";
         print TimeclockHelpersView::getFormSetH("wcomp", $this->form, $this->data);
         print "</div>\n";
-        print JHtml::_('bootstrap.endTab');
+        print HTMLHelper::_('bootstrap.endTab');
     }
-    print JHtml::_('bootstrap.addTab', 'myTab', 'users', JText::_('COM_TIMECLOCK_USERS'));
+    print HTMLHelper::_('bootstrap.addTab', 'myTab', 'users', Text::_('COM_TIMECLOCK_USERS'));
     print '<div class="span10 users">'."\n";
     print TimeclockHelpersView::getFormSetV("users", $this->form, $this->data);
     print "</div>\n";
     print '<div class="span10 nousers">'."\n";
-    print JText::_("COM_TIMECLOCK_CATEGORY_NO_USERS");
+    print Text::_("COM_TIMECLOCK_CATEGORY_NO_USERS");
     print "</div>\n";
-    print JHtml::_('bootstrap.endTab');
-    print JHtml::_('bootstrap.endTabSet');
+    print HTMLHelper::_('bootstrap.endTab');
+    print HTMLHelper::_('bootstrap.endTabSet');
 ?>
     <input type="hidden" name="project_id" value="<?php print $this->data->project_id; ?>" />
     <input type="hidden" name="id" value="<?php print $this->data->project_id; ?>" />

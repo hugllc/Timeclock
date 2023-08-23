@@ -1,5 +1,9 @@
 <?php
-    JHtml::_('behavior.multiselect');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+    HTMLHelper::_('behavior.multiselect');
     $name     = $displayData["name"];
     $nameIsArray = (strpos($name, "][]") !== false);
 
@@ -43,7 +47,7 @@
             </script>
             <div class="row-fluid">
                 <div class="span3 center">
-                    <div class="center"><?php print JText::_($displayData["label_in"]); ?></div>
+                    <div class="center"><?php print Text::_($displayData["label_in"]); ?></div>
 <?php print JHTML::_(
             'select.genericlist', 
             $displayData["inOptions"], 
@@ -60,7 +64,7 @@
                     <input type="button" id="<?php print $btnOutID; ?>" value="&gt;&gt;" />
                 </div>
                 <div class="span3 center">
-                    <div class="center"><?php print JText::_($displayData["label_out"]); ?></div>
+                    <div class="center"><?php print Text::_($displayData["label_out"]); ?></div>
 <?php print JHTML::_(
             'select.genericlist', 
             $displayData["outOptions"], 

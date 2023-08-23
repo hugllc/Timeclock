@@ -35,6 +35,8 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Language\Text;
+
 require_once __DIR__."/report.php";
 
 /**
@@ -82,7 +84,7 @@ class TimeclockModelsNotes extends TimeclockModelsReport
                 "rate" => $rate,
                 "hours" => 0,
                 "cost"  => 0,
-                "error" => ($rate == 0) ? JText::_("COM_TIMECLOCK_BILLABLE_RATE_ZERO") : "",
+                "error" => ($rate == 0) ? Text::_("COM_TIMECLOCK_BILLABLE_RATE_ZERO") : "",
             );
             $cost = $row->hours * $rate;
             $return[$user_id]["hours"] += $row->hours;

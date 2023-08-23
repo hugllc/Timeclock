@@ -36,6 +36,10 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -59,10 +63,10 @@ class TimeclockViewsPayrollHtml extends JViewHtml
     */
     function render()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $layout = $this->getLayout();
         
-        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->model->getState('payperiod');
         $this->payperiod->controller = "payroll";
 
@@ -72,13 +76,13 @@ class TimeclockViewsPayrollHtml extends JViewHtml
             true
         );
 
-        $this->_header   = new JLayoutFile('header', __DIR__.'/layouts');
-        $this->_row      = new JLayoutFile('row', __DIR__.'/layouts');
-        $this->_totals   = new JLayoutFile('totals', __DIR__.'/layouts');
-        $this->_nextprev = new JLayoutFile('payperiodnextprev', dirname(__DIR__).'/layouts');
-        $this->_toolbar  = new JLayoutFile('toolbar', __DIR__.'/layouts');
-        $this->_export   = new JLayoutFile('export', dirname(__DIR__).'/layouts');
-        $this->_notes    = new JLayoutFile('notes', dirname(__DIR__).'/layouts');
+        $this->_header   = new FileLayout('header', __DIR__.'/layouts');
+        $this->_row      = new FileLayout('row', __DIR__.'/layouts');
+        $this->_totals   = new FileLayout('totals', __DIR__.'/layouts');
+        $this->_nextprev = new FileLayout('payperiodnextprev', dirname(__DIR__).'/layouts');
+        $this->_toolbar  = new FileLayout('toolbar', __DIR__.'/layouts');
+        $this->_export   = new FileLayout('export', dirname(__DIR__).'/layouts');
+        $this->_notes    = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
         $this->data     = $this->model->listItems();
         $this->users    = $this->model->listUsers();

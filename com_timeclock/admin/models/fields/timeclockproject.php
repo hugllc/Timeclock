@@ -35,6 +35,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 jimport('joomla.form.formfield');
 /**
  * This creates a select box with the user types in it.
@@ -48,7 +51,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class JFormFieldTimeclockProject extends JFormField
+class FormFieldTimeclockProject extends FormField
 {
     protected $type = 'TimeclockProject';
 
@@ -68,7 +71,7 @@ class JFormFieldTimeclockProject extends JFormField
             $options[] = JHTML::_(
                 'select.option', 
                 (int)$item->project_id, 
-                JText::_($item->name)
+                Text::_($item->name)
             );
         }
         $attrib = array();

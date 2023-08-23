@@ -36,6 +36,9 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -59,7 +62,7 @@ class TimeclockViewsToolsHtml extends JViewHtml
     */
     function render()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $layout = $this->getLayout();
 
         JHTML::stylesheet(
@@ -67,7 +70,7 @@ class TimeclockViewsToolsHtml extends JViewHtml
             array(), 
             true
         );
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $fct = "view".ucfirst($layout);
         if (method_exists($this, $fct)) {
@@ -92,7 +95,7 @@ class TimeclockViewsToolsHtml extends JViewHtml
         // Get the toolbar object instance
         $bar = JToolBar::getInstance('toolbar');
         JToolbarHelper::title(
-            JText::_($title), "clock"
+            Text::_($title), "clock"
         );
         if ($actions->get('core.admin'))
         {
@@ -108,8 +111,8 @@ class TimeclockViewsToolsHtml extends JViewHtml
      */
     public function viewCheck($tpl = null)
     {
-        $this->noResults = JText::_("COM_TIMECLOCK_NO_TESTS");
-        $this->pageheader = JText::_("COM_TIMECLOCK_CHECKING_DATABASE");
+        $this->noResults = Text::_("COM_TIMECLOCK_NO_TESTS");
+        $this->pageheader = Text::_("COM_TIMECLOCK_CHECKING_DATABASE");
         $this->results = $this->model->dbCheck();
         $this->setLayout("check");
         

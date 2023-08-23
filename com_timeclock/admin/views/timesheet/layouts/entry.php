@@ -1,5 +1,10 @@
 <?php
-$user       = JFactory::getUser();
+
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
+$user       = Factory::getUser();
 $canCreate  = $user->authorise('core.create',     'com_timeclock');
 $canEdit    = $user->authorise('core.edit',       'com_timeclock');
 $canEditOwn = $user->authorise('core.edit.own',   'com_timeclock') && $displayData["data"]->created_by == $user->id;
@@ -8,12 +13,12 @@ $name       = empty($displayData["data"]->user) ? $displayData["data"]->user_id 
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->timesheet_id?>">
                     <td class="center">
-                        <?php echo JHtml::_('grid.id', $displayData["index"], $displayData["data"]->timesheet_id, 0, "id"); ?>
+                        <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->timesheet_id, 0, "id"); ?>
                     </td>
                     <td class="nowrap has-context">
                         <div class="pull-left hasTooltip" title="<?php print $displayData["data"]->notes; ?>">
                             <?php if ($canEdit || $canEditOwn) : ?>
-                                <a href="<?php echo JRoute::_('index.php?option=com_timeclock&controller=timesheet&task=edit&id='.(int) $displayData["data"]->timesheet_id); ?>">
+                                <a href="<?php echo Route::_('index.php?option=com_timeclock&controller=timesheet&task=edit&id='.(int) $displayData["data"]->timesheet_id); ?>">
                                 <?php echo $name; ?></a>
                             <?php else : ?>
                                 <?php echo $name; ?>

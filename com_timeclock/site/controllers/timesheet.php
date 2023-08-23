@@ -34,6 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Response\JsonResponse;
+use Joomla\CMS\Factory;
 require_once __DIR__."/default.php";
 /**
  * Description Here
@@ -79,9 +84,9 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     {
         // Get the application
         $app = $this->getApplication();
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $viewName = "timesheet";
         $viewFormat = $document->getType();
         $layoutName = 'timesheet';
@@ -113,21 +118,21 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         $this->checkMe($model);
 
         if ($index = $model->complete()) {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 $index, 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_COMPLETE"),
+                Text::_("COM_TIMECLOCK_PAYPERIOD_COMPLETE"),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 array(), 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_COMPLETE_FAILED"),
+                Text::_("COM_TIMECLOCK_PAYPERIOD_COMPLETE_FAILED"),
                 true,    // Error
                 false     // Ignore Message Queue
             );
         }
-        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        Factory::getDocument()->setMimeEncoding( 'application/json' );
         JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
@@ -142,9 +147,9 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     {
         // Get the application
         $app = $this->getApplication();
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $viewName = "timesheet";
         $viewFormat = $document->getType();
         $layoutName = $app->input->getWord('layout', 'addhours');
@@ -178,21 +183,21 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         $this->checkMe($model);
 
         if ($index = $model->store()) {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 get_object_vars($index), 
-                JText::_("COM_TIMECLOCK_HOURS_SAVED"),
+                Text::_("COM_TIMECLOCK_HOURS_SAVED"),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 array(), 
-                JText::_("COM_TIMECLOCK_HOURS_FAILED"),
+                Text::_("COM_TIMECLOCK_HOURS_FAILED"),
                 true,    // Error
                 false     // Ignore Message Queue
             );
         }
-        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        Factory::getDocument()->setMimeEncoding( 'application/json' );
         JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
@@ -201,7 +206,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     protected function checkMe($model)
     {
         if (!$model->getUser()->me) {
-            $this->getApplication()->redirect('index.php',JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+            $this->getApplication()->redirect('index.php',Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
 
     }
@@ -216,7 +221,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
             // Get the application
             $app = $this->getApplication();
             // Get the document object.
-            $document = JFactory::getDocument();
+            $document = Factory::getDocument();
             $task = $app->input->get('task', 'list');
             $task = empty($task) ? 'list' : $task;
             $task = ($task == "display") ? 'list' : $task;
@@ -234,7 +239,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     */
     public function authorize()
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         if ($user->get('guest')) {
             return false;
         }

@@ -35,6 +35,9 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/timesheet.php";
 
 /**
@@ -59,7 +62,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     public function __construct()
     {
         // Set the user
-        $app  = JFactory::getApplication();
+        $app  = Factory::getApplication();
         $pk = $app->input->get('id', null, "int");
         $user = $this->getUser($pk);
         parent::__construct(); 
@@ -69,12 +72,12 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     *
     * @param array $data The data to store.  If not given, get the post data
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     public function store($data=null)
     {
         $data = $data ? $data : JRequest::get('post');
-        $row = JTable::getInstance('TimeclockTimesheet', 'Table');
+        $row = Table::getInstance('TimeclockTimesheet', 'Table');
 
         if (!is_object($row)) {
             return false;
@@ -88,10 +91,10 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
 
         $row->modified = $date;
         if ($row->created_by <= 0) {
-            $row->created_by = JFactory::getUser()->id;
+            $row->created_by = Factory::getUser()->id;
             $row->created    = $date;
         }
-        $row->user_id = JFactory::getUser()->id;
+        $row->user_id = Factory::getUser()->id;
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -156,7 +159,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     */
     protected function _buildQuery($id = null)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
@@ -190,7 +193,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     */
     protected function _buildWhere(&$query)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         
         $query->where($db->quoteName("t.user_id")."=".$db->quote($this->getUser()->id));
         $date = $this->getState("date");
@@ -210,7 +213,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     */
     protected function _buildProjQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
 
         $date = $this->getState("date");

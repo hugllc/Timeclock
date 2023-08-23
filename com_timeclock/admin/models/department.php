@@ -35,6 +35,8 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/default.php";
 
 /**
@@ -70,7 +72,7 @@ class TimeclockModelsDepartment extends TimeclockModelsDefault
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('d.department_id, d.name, d.checked_out, d.manager_id,
                         d.description, d.checked_out_time, d.published, 
@@ -89,7 +91,7 @@ class TimeclockModelsDepartment extends TimeclockModelsDefault
     */
     protected function _buildCountQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('COUNT(d.department_id) as count');
         $query->from('#__timeclock_departments as d');
@@ -108,7 +110,7 @@ class TimeclockModelsDepartment extends TimeclockModelsDefault
     */
     protected function _buildWhere(&$query, $id = null)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $id = is_numeric($id) ? $id : $this->_department_id;
         
         if(is_numeric($id)) {

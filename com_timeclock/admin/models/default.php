@@ -35,6 +35,12 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Factory;
+
  
 /**
  * Description Here
@@ -68,7 +74,7 @@ class TimeclockModelsDefault extends JModelBase
     */
     public function __construct()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $this->id = $app->input->get('id', array(), "array");
         parent::__construct(); 
     }
@@ -78,7 +84,7 @@ class TimeclockModelsDefault extends JModelBase
     *
     * @param array $data The data to store.  If not given, get the post data
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     public function store($data=null)
     {
@@ -97,7 +103,7 @@ class TimeclockModelsDefault extends JModelBase
 
         $row->modified = $date;
         if (!$row->created) {
-            $row->created_by = JFactory::getUser()->id;
+            $row->created_by = Factory::getUser()->id;
             $row->created    = $date;
         }
 
@@ -156,7 +162,7 @@ class TimeclockModelsDefault extends JModelBase
     */
     public function getItem($id = null)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
 
         $query = $this->_buildQuery();
         $this->_buildWhere($query, $id);
@@ -239,7 +245,7 @@ class TimeclockModelsDefault extends JModelBase
     */
     protected function _getList($query, $limitstart = 0, $limit = 0)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $db->setQuery($query, $limitstart, $limit);
         $result = $db->loadObjectList();
     
@@ -255,7 +261,7 @@ class TimeclockModelsDefault extends JModelBase
     */
     protected function _getListCount($query)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $db->setQuery($query);
         // Take the first one and go
         return (int)$db->loadResult();
@@ -298,14 +304,14 @@ class TimeclockModelsDefault extends JModelBase
     /**
     * Generate pagination
     *
-    * @return object JPagination object
+    * @return object Pagination object
     */
     public function getPagination() 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Lets load the content if it doesn't already exist
         if (empty($this->_pagination)) {
-            $this->_pagination = new JPagination(
+            $this->_pagination = new Pagination(
                 $this->getTotal(), 
                 $this->getState("limitstart"),
                 $this->getState("limit"),
@@ -331,7 +337,7 @@ class TimeclockModelsDefault extends JModelBase
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $registry = $this->loadState();
         
         // Load state from the request.
@@ -339,10 +345,10 @@ class TimeclockModelsDefault extends JModelBase
         $registry->set('id', $pk);
 
         // Load the parameters.
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
 
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
 
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
@@ -429,7 +435,7 @@ class TimeclockModelsDefault extends JModelBase
             if (!empty($ret)) {
                 return $ret;
             } else {
-                return array($this->_defaultSort => JText::_('JDEFAULT'));
+                return array($this->_defaultSort => Text::_('JDEFAULT'));
             }
         }
         return $this->_defaultSort;
@@ -437,11 +443,11 @@ class TimeclockModelsDefault extends JModelBase
     /**
     * This returns the table for this model
     * 
-    * @return  JTable object
+    * @return  Table object
     */
     protected function getTable()
     {
-        return JTable::getInstance($this->table, 'Table');
+        return Table::getInstance($this->table, 'Table');
     }
     /**
     * Checks out this record
@@ -529,7 +535,7 @@ class TimeclockModelsDefault extends JModelBase
     public function name($row)
     {
         $name  = $this->namefield;
-        return JText::_($row->$name);
+        return Text::_($row->$name);
     }
     /**
     * Gets the user and returns the timeclock params
@@ -542,7 +548,7 @@ class TimeclockModelsDefault extends JModelBase
     {
         $id = empty($id) ? null : (int)$id;
         if (!isset($this->_user[$id])) {
-            $this->_user[$id] = JFactory::getUser($id);
+            $this->_user[$id] = Factory::getUser($id);
             $this->_user[$id]->timeclock = TimeclockHelpersTimeclock::getUserParams($this->_user[$id]->id);
         }
         return $this->_user[$id];

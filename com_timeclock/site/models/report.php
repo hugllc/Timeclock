@@ -35,6 +35,11 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/default.php";
 
 /**
@@ -74,8 +79,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     public function __construct()
     {
-        $app = JFactory::getApplication();
-        $this->_user = JFactory::getUser();
+        $app = Factory::getApplication();
+        $this->_user = Factory::getUser();
         $this->context = $this->type;
         parent::__construct(); 
     }
@@ -94,7 +99,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
                 }
             }
             $this->_myusers[0] = (object)array(
-                "name"    => JText::_("JNONE"),
+                "name"    => Text::_("JNONE"),
                 "user_id" => 0,
                 "id"      => 0,
                 "hide"    => true,
@@ -199,7 +204,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     public function listReports()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $start = $this->getState("start");
         $end   = $this->getState("end");
         $type   = $this->getState("report.type");
@@ -280,7 +285,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $id = $this->getState("report.id");
         }
         if (!isset($this->_report[$id])) {
-            $this->_report[$id] = JTable::getInstance('TimeclockReports', 'Table');
+            $this->_report[$id] = Table::getInstance('TimeclockReports', 'Table');
             $report = &$this->_report[$id];
             $report->load($id);
             $this->fixReport($report);
@@ -303,7 +308,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $this->_projects = array(
                 0 => array(
                     "id"          => 0,
-                    "name"        => JText::_("JNONE"),
+                    "name"        => Text::_("JNONE"),
                     "description" => "",
                     "proj"        => array(),
                 )
@@ -337,7 +342,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $this->_departments = array(
                 0 => (object)array(
                     "id"          => 0,
-                    "name"        => JText::_("JNONE"),
+                    "name"        => Text::_("JNONE"),
                     "description" => "",
                 )
             );
@@ -364,8 +369,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $this->_customers = array(
                 0 => (object)array(
                     "id"          => 0,
-                    "name"        => JText::_("JNONE"),
-                    "company"     => JText::_("JNONE"),
+                    "name"        => Text::_("JNONE"),
+                    "company"     => Text::_("JNONE"),
                     "description" => "",
                 )
             );
@@ -392,8 +397,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID")) {
             $entry->nohours = 0;
         }
-        $entry->name = JText::_($entry->name);
-        $entry->description = JText::_($entry->description);
+        $entry->name = Text::_($entry->name);
+        $entry->description = Text::_($entry->description);
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -457,12 +462,12 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     * This creates data for the store.  It should be overwritten by child classes
     * if they want to store a different set.
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     protected function buildStore()
     {
-        $app = JFactory::getApplication();
-        $row = JTable::getInstance('TimeclockReports', 'Table');
+        $app = Factory::getApplication();
+        $row = Table::getInstance('TimeclockReports', 'Table');
         
         if (!is_object($row)) {
             return false;
@@ -478,7 +483,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             return false;
         }
         $row->name        = $name;
-        $row->created_by  = JFactory::getUser()->id;
+        $row->created_by  = Factory::getUser()->id;
         $row->created     = $date;
         $desc             = $app->input->get("report_description", "", "raw");
         if (!empty($desc)) {
@@ -500,7 +505,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     /**
     * Stores the data given, or request data.
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     public function store()
     {
@@ -542,7 +547,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $registry = $this->loadState();
 
         $start = TimeclockHelpersDate::fixDate(
@@ -561,7 +566,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $datatype = $app->getUserStateFromRequest($context.'.datatype', 'datatype', 'hours');
         $registry->set("datatype", $datatype);
         
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
 
         $date = TimeclockHelpersDate::fixDate(
             $app->input->get('date', date("Y-m-d"), "raw")
@@ -587,7 +592,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function _populateFilter($registry = null)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $category = $app->getUserStateFromRequest($context.'.filter.category', 'filter_category', '');
@@ -634,7 +639,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if (!is_object($registry)) {
             $registry = $this->loadState();
         }
@@ -643,10 +648,10 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $registry->set('id', $pk);
 
         // Load the parameters.
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
 
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
 
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
@@ -664,7 +669,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id, t.user_id as worked_by,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
@@ -699,7 +704,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function _buildWhere(&$query)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $start = $this->getState("start");
         $end   = $this->getState("end");
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
@@ -737,7 +742,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function _buildProjQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('p.project_id as project_id, 
             p.name as name, p.parent_id as parent_id, p.description as description,
@@ -756,7 +761,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function _buildDeptQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('*');
         $query->from('#__timeclock_departments as d');
@@ -770,7 +775,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function _buildCustQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('*');
         $query->from('#__timeclock_customers as c');

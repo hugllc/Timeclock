@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use Joomla\CMS\Language\Text;
+ 
     defined('_JEXEC') or die('Restricted access'); 
     $worked   = 0;
     $pto      = 0;
@@ -20,7 +23,7 @@
 ?>
             <tr class="header <?php print $displayData->rowClass; ?>">
                 <th colspan="2">
-                    <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
+                    <?php print Text::_("COM_TIMECLOCK_TOTAL"); ?>
                 </th>
                 <td id="subtotal-worked" class="subtotal-worked subtotal"><?php print $worked; ?></td>
                 <td id="subtotal-pto" class="subtotal-pto subtotal"><?php print $pto; ?></td>

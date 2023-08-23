@@ -35,8 +35,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 /**
  * This creates a select box with the user types in it.
@@ -61,7 +65,7 @@ class JFormFieldTimeclockUserTypes extends JFormFieldList
     */
     protected function getOptions()
     {
-        $lang = JFactory::getLanguage();
+        $lang = Factory::getLanguage();
         $lang->load("com_timeclock");
         $options = array();
         $status = TimeclockHelpersTimeclock::getUserTypes();
@@ -69,7 +73,7 @@ class JFormFieldTimeclockUserTypes extends JFormFieldList
             $options[] = JHTML::_(
                 'select.option',
                 htmlspecialchars((string)$value, ENT_COMPAT, 'UTF-8'),
-                htmlspecialchars(JText::_($name), ENT_COMPAT, 'UTF-8')
+                htmlspecialchars(Text::_($name), ENT_COMPAT, 'UTF-8')
             );
         }
         reset($options);

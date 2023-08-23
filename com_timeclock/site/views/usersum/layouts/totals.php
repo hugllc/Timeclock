@@ -1,10 +1,13 @@
-<?php 
+<?php
+
+use Joomla\CMS\Language\Text;
+ 
     defined('_JEXEC') or die('Restricted access'); 
     $places = $displayData->params->get("decimalPlaces");
 ?>
             <tr class="header">
                 <th>
-                    <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
+                    <?php print Text::_("COM_TIMECLOCK_TOTAL"); ?>
                 </th>
 <?php foreach ($displayData->projects as $projects) : ?>
     <?php foreach ($projects["proj"] as $proj) : ?>

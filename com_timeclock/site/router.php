@@ -34,6 +34,8 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Component\Router\RouterBase;
+
 
 /**
  * Timeclock Router
@@ -45,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @copyright  2016 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  */
-class TimeclockRouter extends JComponentRouterBase
+class TimeclockRouter extends RouterBase
 {
     /**
     * This function transforms an array of URL parameters into an

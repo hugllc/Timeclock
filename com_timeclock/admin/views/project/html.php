@@ -35,6 +35,13 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
  
 /**
  * HTML view class for projects
@@ -60,7 +67,7 @@ class TimeclockViewsProjectHtml extends JViewHtml
     */
     function render()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $layout = $this->getLayout();
         if ($layout == "add") {
             $this->add = true;
@@ -68,7 +75,7 @@ class TimeclockViewsProjectHtml extends JViewHtml
             $this->setLayout($layout);
         }
 
-        $this->params = JComponentHelper::getParams('com_timeclock');
+        $this->params = ComponentHelper::getParams('com_timeclock');
         $this->state  = $this->model->getState();
         if ($layout == 'edit') {
             if ($this->add) {
@@ -81,7 +88,7 @@ class TimeclockViewsProjectHtml extends JViewHtml
         } else {
             //retrieve task list from model
             $this->data = $this->model->listItems();
-            $this->_projectListView = new JLayoutFile('entry', __DIR__.'/layouts');
+            $this->_projectListView = new FileLayout('entry', __DIR__.'/layouts');
             $this->sortFields = $this->model->checkSortFields($this->getSortFields());
             TimeclockHelpersView::addSubmenu("project");
             $this->listToolbar();
@@ -103,7 +110,7 @@ class TimeclockViewsProjectHtml extends JViewHtml
         // Get the toolbar object instance
         $bar = JToolBar::getInstance('toolbar');
         JToolbarHelper::title(
-            JText::_("COM_TIMECLOCK_TIMECLOCK_PROJECTS"), "clock"
+            Text::_("COM_TIMECLOCK_TIMECLOCK_PROJECTS"), "clock"
         );
         if ($actions->get('core.admin'))
         {
@@ -126,9 +133,9 @@ class TimeclockViewsProjectHtml extends JViewHtml
         JHtmlSidebar::setAction('index.php?option=com_timeclock');
 
         JHtmlSidebar::addFilter(
-            JText::_('JOPTION_SELECT_PUBLISHED'),
+            Text::_('JOPTION_SELECT_PUBLISHED'),
             'filter_published',
-            JHtml::_('select.options', array(0 => JText::_("JUNPUBLISHED"), 1 => JText::_("JPUBLISHED")), 'value', 'text', $this->state->get('filter.published'), true)
+            HTMLHelper::_('select.options', array(0 => Text::_("JUNPUBLISHED"), 1 => Text::_("JPUBLISHED")), 'value', 'text', $this->state->get('filter.published'), true)
         );
 
         $model = TimeclockHelpersTimeclock::getModel("project");
@@ -137,9 +144,9 @@ class TimeclockViewsProjectHtml extends JViewHtml
             "p.name ASC"
         );
         JHtmlSidebar::addFilter(
-            JText::_('COM_TIMECLOCK_SELECT_CATEGORY'),
+            Text::_('COM_TIMECLOCK_SELECT_CATEGORY'),
             'filter_category',
-            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.category'), true)
+            HTMLHelper::_('select.options', $options, 'value', 'text', $this->state->get('filter.category'), true)
         );
 
         $model = TimeclockHelpersTimeclock::getModel("department");
@@ -148,9 +155,9 @@ class TimeclockViewsProjectHtml extends JViewHtml
             "d.name ASC"
         );
         JHtmlSidebar::addFilter(
-            JText::_('COM_TIMECLOCK_SELECT_DEPARTMENT'),
+            Text::_('COM_TIMECLOCK_SELECT_DEPARTMENT'),
             'filter_department',
-            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.department'), true)
+            HTMLHelper::_('select.options', $options, 'value', 'text', $this->state->get('filter.department'), true)
         );
 
         $model = TimeclockHelpersTimeclock::getModel("customer");
@@ -159,15 +166,15 @@ class TimeclockViewsProjectHtml extends JViewHtml
             "c.company ASC"
         );
         JHtmlSidebar::addFilter(
-            JText::_('COM_TIMECLOCK_SELECT_CUSTOMER'),
+            Text::_('COM_TIMECLOCK_SELECT_CUSTOMER'),
             'filter_customer',
-            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.customer'), true)
+            HTMLHelper::_('select.options', $options, 'value', 'text', $this->state->get('filter.customer'), true)
         );
         $options = TimeclockHelpersView::getUsersOptions();
         JHtmlSidebar::addFilter(
-            JText::_('COM_TIMECLOCK_SELECT_MANAGER'),
+            Text::_('COM_TIMECLOCK_SELECT_MANAGER'),
             'filter_user_id',
-            JHtml::_('select.options', $options, 'value', 'text', $this->state->get('filter.user_id'), true)
+            HTMLHelper::_('select.options', $options, 'value', 'text', $this->state->get('filter.user_id'), true)
         );
 
     }
@@ -179,10 +186,10 @@ class TimeclockViewsProjectHtml extends JViewHtml
     protected function editToolbar()
     {
         $add = empty($this->data->project_id);
-        $title = ($add) ? JText::_("COM_TIMECLOCK_ADD") : JText::_("COM_TIMECLOCK_EDIT");
+        $title = ($add) ? Text::_("COM_TIMECLOCK_ADD") : Text::_("COM_TIMECLOCK_EDIT");
 
         JToolbarHelper::title(
-            JText::sprintf("COM_TIMECLOCK_PROJECT_EDIT_TITLE", $title), "clock"
+            Text::sprintf("COM_TIMECLOCK_PROJECT_EDIT_TITLE", $title), "clock"
         );
         JToolBarHelper::apply("apply");
         JToolBarHelper::save("save");
@@ -198,23 +205,23 @@ class TimeclockViewsProjectHtml extends JViewHtml
     protected function getSortFields()
     {
         return array(
-            'd.name' => JText::_('COM_TIMECLOCK_NAME'),
-            'manager' => JText::_('COM_TIMECLOCK_CONTACT_NAME'),
-            'c.project_id' => JText::_('JGRID_HEADING_ID'),
-            'c.published' => JText::_('JSTATUS'),
+            'd.name' => Text::_('COM_TIMECLOCK_NAME'),
+            'manager' => Text::_('COM_TIMECLOCK_CONTACT_NAME'),
+            'c.project_id' => Text::_('JGRID_HEADING_ID'),
+            'c.published' => Text::_('JSTATUS'),
         );
     }
     /**
-     * Returns an JForm object
+     * Returns an Form object
      *
-     * @return  object JForm object for this form
+     * @return  object Form object for this form
      *
      * @since   3.0
      */
     public function getForm()
     {
         if (!is_object($this->form)) {
-            $this->form = JForm::getInstance(
+            $this->form = Form::getInstance(
                 'project', 
                 JPATH_COMPONENT_ADMINISTRATOR."/forms/project.xml"
             );
@@ -222,9 +229,9 @@ class TimeclockViewsProjectHtml extends JViewHtml
         return $this->form;
     }
     /**
-     * Returns an JForm object
+     * Returns an Form object
      *
-     * @return  object JForm object for this form
+     * @return  object Form object for this form
      *
      * @since   3.0
      */

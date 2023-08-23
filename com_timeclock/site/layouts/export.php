@@ -1,4 +1,7 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+
     defined( '_JEXEC' ) or die( 'Restricted access' );
     $sep = "";
     if (TimeclockHelpersContrib::phpexcel()):
@@ -20,7 +23,7 @@
             jQuery("#timeclock .export iframe").attr("src", url);
         }
     </script>
-    <?php print JText::_("COM_TIMECLOCK_EXPORT_TO"); ?>:
+    <?php print Text::_("COM_TIMECLOCK_EXPORT_TO"); ?>:
     <?php foreach ($displayData->export as $name => $format) : ?>
         <span>
             <?php print $sep; $sep = " | "; ?>

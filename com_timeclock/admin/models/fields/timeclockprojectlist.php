@@ -35,6 +35,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
 jimport('joomla.form.field');
 require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 
@@ -50,7 +54,7 @@ require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclo
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class JFormFieldTimeclockProjectList extends JFormField
+class FormFieldTimeclockProjectList extends FormField
 {
     protected $type = 'TimeclockProjectList';
 
@@ -64,7 +68,7 @@ class JFormFieldTimeclockProjectList extends JFormField
     }
     public function getInput()
     {
-        $lang = JFactory::getLanguage();
+        $lang = Factory::getLanguage();
         $lang->load("com_timeclock");
         $idName = empty($this->elements["userid"])?"id":$this->elements["userid"];
         $id = JRequest::getInt($idName);
@@ -82,8 +86,8 @@ class JFormFieldTimeclockProjectList extends JFormField
                 $ret[] = '<div style="white-space: nowrap;">';
                 $id = $this->id.'_'.$proj->id;
                 $name = $this->name.'['.$proj->id.']';
-                $labeltext = sprintf("%04d", $proj->id).": ".JText::_($proj->name);
-                $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($proj->description), ENT_COMPAT, 'UTF-8');
+                $labeltext = sprintf("%04d", $proj->id).": ".Text::_($proj->name);
+                $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".Text::_($proj->description), ENT_COMPAT, 'UTF-8');
                 $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">';
                 if ($this->element["remove"] == 'true') {
                     $ret[] = '<input type="checkbox" name="'.$name.'" id="'.$id.'" value="'.(int)$proj->id.'" />';
@@ -94,7 +98,7 @@ class JFormFieldTimeclockProjectList extends JFormField
         }
         if (count($ret) === 1) {
             // No projects assigned to this user
-            $ret[] = JText::_($this->element['emptyMessage']);
+            $ret[] = Text::_($this->element['emptyMessage']);
         }
         $ret[] = "</div>";
         return implode("\n", $ret);

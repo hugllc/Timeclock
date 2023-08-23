@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * This component is the user interface for the endpoints
  *
@@ -114,7 +118,7 @@ class com_timeclockInstallerScript
     */
     public function saveDefConfig()
     {
-        $component = &JComponentHelper::getComponent('com_timeclock');
+        $component = &ComponentHelper::getComponent('com_timeclock');
         $xml = simplexml_load_file(dirname(__FILE__).'/admin/config.xml');
         $defaults = array();
         foreach($xml as $element) {
@@ -127,7 +131,7 @@ class com_timeclockInstallerScript
                 }
             }
         }
-        $row = JTable::getInstance('extension');
+        $row = Table::getInstance('extension');
         if ($row->load($component->id)) {
             $params = $row->get("params");
             if (empty($params) || (trim($params) === "{}")) {

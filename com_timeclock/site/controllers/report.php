@@ -34,6 +34,12 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Response\JsonResponse;
+use Joomla\CMS\Factory;
 require_once __DIR__."/default.php";
 /**
  * Description Here
@@ -84,7 +90,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     */
     protected function checkReportID()
     {
-        $viewFormat = strtolower(JFactory::getDocument()->getType());
+        $viewFormat = strtolower(Factory::getDocument()->getType());
         if ($viewFormat == "html") {
             return;
         }
@@ -93,7 +99,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         if (empty($report_id)) {
             return;
         }
-        $report = JTable::getInstance('TimeclockReports', 'Table');
+        $report = Table::getInstance('TimeclockReports', 'Table');
         $report->load($report_id);
         if (!empty($report->type) && ($report->type != "report")) {
             $inline = $app->input->get("inline", 0, int);
@@ -113,9 +119,9 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     {
         // Get the application
         $app = $this->getApplication();
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $viewFormat = $document->getType();
         $layoutName = $app->input->get("layout", "report");
         if ($layoutName != "modalsave") {
@@ -147,21 +153,21 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         $app   = $this->getApplication();
 
         if ($index = $this->model->store()) {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 get_object_vars($index), 
-                JText::_("COM_TIMECLOCK_REPORT_SAVED"),
+                Text::_("COM_TIMECLOCK_REPORT_SAVED"),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 array(), 
-                JText::_("COM_TIMECLOCK_REPORT_SAVE_FAILED"),
+                Text::_("COM_TIMECLOCK_REPORT_SAVE_FAILED"),
                 true,    // Error
                 false     // Ignore Message Queue
             );
         }
-        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        Factory::getDocument()->setMimeEncoding( 'application/json' );
         JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
@@ -174,7 +180,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     */
     public function authorize()
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         if ($user->get('guest')) {
             return false;
         }

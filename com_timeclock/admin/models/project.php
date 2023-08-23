@@ -35,6 +35,8 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/default.php";
 
 /**
@@ -70,7 +72,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('p.*');
         $query->from('#__timeclock_projects as p');
@@ -89,7 +91,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
     */
     protected function _buildCountQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('COUNT(p.project_id) as count');
         $query->from('#__timeclock_projects as p');
@@ -108,7 +110,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
     */
     protected function _buildWhere(&$query, $id = null)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $id = is_numeric($id) ? $id : $this->_project_id;
         
         if(is_numeric($id)) {
@@ -172,7 +174,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         if (empty($project_id)) {
             return array();
         }
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('p.project_id as project_id, p.user_id as user_id');
         $query->from('#__timeclock_users as p');
@@ -197,12 +199,12 @@ class TimeclockModelsProject extends TimeclockModelsDefault
     */
     public function listUserProjects($user_id = null)
     {
-        $user_id = is_null($user_id) ? JFactory::getUser()->id : $user_id;
+        $user_id = is_null($user_id) ? Factory::getUser()->id : $user_id;
         if (empty($user_id)) {
             return array();
         }
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('q.project_id as project_id, q.user_id as user_id');
         $query->from('#__timeclock_users as q');
@@ -228,7 +230,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
     */
     public function addUsers($users, $project_id = null)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $project_id = is_null($project_id) ? $this->_project_id : $project_id;
         if(!is_numeric($project_id)) {
             return false;
@@ -257,7 +259,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
         if (count($values) < 1) {
             return true;
         }
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->insert($db->quoteName('#__timeclock_users'));
         $query->columns($db->quoteName(array("project_id", "user_id")));
@@ -300,7 +302,7 @@ class TimeclockModelsProject extends TimeclockModelsDefault
     */
     private function _removeUser($user_id, $project_id)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->delete($db->quoteName('#__timeclock_users'));
         $query->where(

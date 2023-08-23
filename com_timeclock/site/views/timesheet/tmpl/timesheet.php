@@ -1,4 +1,9 @@
 <?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
     JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/timesheet.js");
     JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
@@ -7,12 +12,12 @@
     $cols = $this->payperiod->days + 2 + $this->payperiod->subtotals;
     $this->payperiod->cols = $cols;
 
-    JFactory::getDocument()->setTitle(
-        JText::sprintf(
+    Factory::getDocument()->setTitle(
+        Text::sprintf(
             "COM_TIMECLOCK_TIMESHEET_TITLE",
             $this->user->name,
-            JHTML::_('date', $this->payperiod->start, JText::_("DATE_FORMAT_LC3")),
-            JHTML::_('date', $this->payperiod->end, JText::_("DATE_FORMAT_LC3"))
+            JHTML::_('date', $this->payperiod->start, Text::_("DATE_FORMAT_LC3")),
+            JHTML::_('date', $this->payperiod->end, Text::_("DATE_FORMAT_LC3"))
         )
     );
     
@@ -21,16 +26,16 @@
     <div class="page-header">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
-            <?php print JText::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->name);?>
-            <span class="locked hasTooltip" title="<?php print JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>"><?php print JHtml::_('image', 'system/checked_out.png', null, null, true); ?></span>
-            <span class="complete">(<?php print JText::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
+            <?php print Text::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->name);?>
+            <span class="locked hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>"><?php print HTMLHelper::_('image', 'system/checked_out.png', null, null, true); ?></span>
+            <span class="complete">(<?php print Text::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
         </h2>
     </div>
     <?php print $this->_toolbar->render($this->user); ?>
     <?php print $this->_nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
-            <?php print JText::sprintf(
+            <?php print Text::sprintf(
                 "COM_TIMECLOCK_DATE_TO_DATE",
                 JHTML::_('date', $this->payperiod->start),
                 JHTML::_('date', $this->payperiod->end)

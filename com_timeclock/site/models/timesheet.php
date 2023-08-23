@@ -35,6 +35,10 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/default.php";
 
 /**
@@ -61,7 +65,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     public function __construct()
     {
         // Set the user
-        $app      = JFactory::getApplication();
+        $app      = Factory::getApplication();
         $pk = $app->input->get('id', null, "int");
         $this->_user_id = empty($pk) ? $this->getUser()->id : $pk;
         parent::__construct(); 
@@ -130,8 +134,8 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
             $holiday_perc = TimeclockHelpersTimeclock::getHolidayPerc($user->id, $entry->worked);
             $entry->hours = $entry->hours * $holiday_perc;
         }
-        $entry->cat_name = JText::_($entry->cat_name);
-        $entry->cat_description = JText::_($entry->cat_description);
+        $entry->cat_name = Text::_($entry->cat_name);
+        $entry->cat_description = Text::_($entry->cat_description);
     }
     /**
     * Checks to make sure this project exists
@@ -182,7 +186,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
             $this->_projects = array(
                 0 => array(
                     "id"          => 0,
-                    "name"        => JText::_("JNONE"),
+                    "name"        => Text::_("JNONE"),
                     "description" => "",
                     "proj"        => array(),
                 )
@@ -241,7 +245,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $registry = $this->loadState();
 
         // Load state from the request.
@@ -254,7 +258,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $registry->set('project_id', $project_id);
 
         // Load the parameters.
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         $registry->set('params', $params);
         $user = $this->getUser();
         
@@ -378,7 +382,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $query = $this->_buildQuery($id);
         $this->_periodWhere($query, $start, $end);
         $this->_userWhere($query, $id);
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query->where($db->quoteName("p.type")." = ".$db->quote("PTO"));
         
         $list = $this->_getList($query);
@@ -400,7 +404,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     protected function _buildQuery($id = null)
     {
         $id = empty($id) ? $this->_user_id : $id;
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('DISTINCT t.timesheet_id,
             (t.hours1 + t.hours2 + t.hours3 + t.hours4 + t.hours5 + t.hours6)
@@ -431,7 +435,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     */
     protected function _buildWhere(&$query)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
 
         $this->_periodWhere($query);
         $this->_userWhere($query);
@@ -450,7 +454,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     */
     private function _periodWhere($query, $start = null, $end = null)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $start = empty($start) ? $this->getState("payperiod.start") : $start;
         $end   = empty($end)   ? $this->getState("payperiod.end")   : $end;
 
@@ -469,7 +473,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     */
     private function _userWhere($query, $id = null)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $user = $this->getUser($id);
         $query->where(
             "((".$db->quoteName("t.user_id")."=".$db->quote($user->id)." AND "
@@ -493,7 +497,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     */
     protected function _buildProjQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
 
         $y     = (int)explode("-", $this->getState("date"))[0];

@@ -36,6 +36,10 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -74,11 +78,11 @@ class TimeclockViewsNotesBase extends JViewBase
         if (!TimeclockHelpersContrib::phpexcel()) {
             return false;
         }
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");
         $report_id = $this->model->getState("report.id");
-        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->start  = $this->model->getState('start');
         $this->end    = $this->model->getState('end');
 
@@ -134,16 +138,16 @@ class TimeclockViewsNotesBase extends JViewBase
     */
     protected function setup($file)
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $report = JText::sprintf("COM_TIMECLOCK_NOTES_REPORT_TITLE", $this->start, $this->end);
+        $report = Text::sprintf("COM_TIMECLOCK_NOTES_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_NOTES_REPORT"));
+            ->setKeywords(Text::_("COM_TIMECLOCK_NOTES_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -157,7 +161,7 @@ class TimeclockViewsNotesBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_NOTES_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(Text::_("COM_TIMECLOCK_NOTES_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -205,15 +209,15 @@ class TimeclockViewsNotesBase extends JViewBase
     protected function header()
     {
         $col = "A";
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_USER"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_USER"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_PROJECT"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_PROJECT"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_HOURS"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_HOURS"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_WORKED"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_WORKED"));
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, JText::_("COM_TIMECLOCK_NOTES"));
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_NOTES"));
         $columnID = "A";
         $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         while ($col != $columnID) {

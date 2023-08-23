@@ -34,6 +34,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
 require_once __DIR__."/default.php";
 
 /**
@@ -71,7 +74,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     *
     * @param array $data The data to store.  If not given, get the post data
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     public function store($data=null)
     {
@@ -101,7 +104,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('*');
         $query->from('#__timeclock_pto as o');
@@ -230,7 +233,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     private function _getPTO($start, $end, $id, $type, $nottype = false)
     {
         $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
-        $db    = JFactory::getDBO();
+        $db    = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('SUM(hours) as hours');
         $query->from('#__timeclock_pto');
@@ -259,7 +262,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     protected function find($user_id, $valid_from, $type = null)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('pto_id');
         $query->from('#__timeclock_pto');
@@ -279,7 +282,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     protected function _buildCountQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('COUNT(o.pto_id) as count');
         $query->from('#__timeclock_pto as o');
@@ -296,7 +299,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     protected function _buildWhere(&$query, $id = null)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $id = is_numeric($id) ? $id : $this->_pto_id;
         
         if(is_numeric($id)) {

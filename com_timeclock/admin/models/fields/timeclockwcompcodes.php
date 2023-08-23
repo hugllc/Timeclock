@@ -35,6 +35,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Form\FormField;
 jimport('joomla.form.formfield');
 /**
  * This creates a select box with the user types in it.
@@ -48,7 +52,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class JFormFieldTimeclockWCompCodes extends JFormField
+class FormFieldTimeclockWCompCodes extends FormField
 {
     protected $type = 'TimeclockWCompCodes';
 
@@ -59,7 +63,7 @@ class JFormFieldTimeclockWCompCodes extends JFormField
     */
     public function getInput()
     {
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         
         $options = array();
         $codes = isset($params["wCompCodes"]) ? $params["wCompCodes"] : "";
@@ -67,7 +71,7 @@ class JFormFieldTimeclockWCompCodes extends JFormField
             $options[] = JHTML::_(
                 'select.option', 
                 0,
-                JText::_("JDISABLED")
+                Text::_("JDISABLED")
             );
         }
         foreach (explode("\n", $codes) as $line) {
@@ -79,7 +83,7 @@ class JFormFieldTimeclockWCompCodes extends JFormField
             $options[] = JHTML::_(
                 'select.option', 
                 (int)$key, 
-                JText::_($val)
+                Text::_($val)
             );
         }
         return JHTML::_(

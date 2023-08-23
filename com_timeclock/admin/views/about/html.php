@@ -36,6 +36,9 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -64,7 +67,7 @@ class TimeclockViewsAboutHtml extends JViewHtml
             array(), 
             true
         );
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $this->addToolbar();
         TimeclockHelpersView::addSubmenu("about");
         
@@ -84,7 +87,7 @@ class TimeclockViewsAboutHtml extends JViewHtml
         // Get the toolbar object instance
         $bar = JToolBar::getInstance('toolbar');
         JToolbarHelper::title(
-            JText::_("COM_TIMECLOCK_ABOUT_TIMECLOCK"), "clock"
+            Text::_("COM_TIMECLOCK_ABOUT_TIMECLOCK"), "clock"
         );
         if ($actions->get('core.admin'))
         {

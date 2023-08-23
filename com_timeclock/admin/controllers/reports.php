@@ -34,6 +34,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Language\Text;
  
 /**
  * Description Here
@@ -73,11 +75,11 @@ class TimeclockControllersReports extends TimeclockControllersDefault
         $model = $this->getModel();
         if ($index = $model->delete()) {
             $app->enqueueMessage(
-                JText::_("COM_TIMECLOCK_REPORT_DELETED"), 'message'
+                Text::_("COM_TIMECLOCK_REPORT_DELETED"), 'message'
             );
         } else {
             $app->enqueueMessage(
-                JText::_("COM_TIMECLOCK_REPORT_DELETE_FAILED"), 'warning'
+                Text::_("COM_TIMECLOCK_REPORT_DELETE_FAILED"), 'warning'
             );
         }
         $app->redirect($this->baselink);

@@ -1,9 +1,12 @@
-<?php 
+<?php
+
+use Joomla\CMS\Language\Text;
+ 
     defined('_JEXEC') or die('Restricted access'); 
 ?>
             <tr class="header">
                 <th>
-                    <?php print JText::_("COM_TIMECLOCK_TOTAL"); ?>
+                    <?php print Text::_("COM_TIMECLOCK_TOTAL"); ?>
                 </th>
 <?php foreach ($displayData->users as $user) : ?>
     <?php if ($user->hide) continue; ?>

@@ -36,6 +36,10 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -59,10 +63,10 @@ class TimeclockViewsReportHtml extends JViewHtml
     */
     function render()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $layout = $this->getLayout();
         
-        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->start     = $this->model->getState('start');
         $this->end       = $this->model->getState('end');
         $this->datatype  = $this->model->getState('datatype');
@@ -75,13 +79,13 @@ class TimeclockViewsReportHtml extends JViewHtml
             true
         );
 
-        $this->_header   = new JLayoutFile('header', __DIR__.'/layouts');
-        $this->_row      = new JLayoutFile('row', __DIR__.'/layouts');
-        $this->_totals   = new JLayoutFile('totals', __DIR__.'/layouts');
-        $this->_category = new JLayoutFile('category', __DIR__.'/layouts');
-        $this->_toolbar  = new JLayoutFile('toolbar', __DIR__.'/layouts');
-        $this->_export   = new JLayoutFile('export', dirname(__DIR__).'/layouts');
-        $this->_control  = new JLayoutFile('reportcontrol', dirname(__DIR__).'/layouts');
+        $this->_header   = new FileLayout('header', __DIR__.'/layouts');
+        $this->_row      = new FileLayout('row', __DIR__.'/layouts');
+        $this->_totals   = new FileLayout('totals', __DIR__.'/layouts');
+        $this->_category = new FileLayout('category', __DIR__.'/layouts');
+        $this->_toolbar  = new FileLayout('toolbar', __DIR__.'/layouts');
+        $this->_export   = new FileLayout('export', dirname(__DIR__).'/layouts');
+        $this->_control  = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
         if (empty($this->report_id)) {
             $this->data              = $this->model->listItems();

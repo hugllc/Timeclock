@@ -34,6 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 require_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 
 /**
@@ -58,15 +63,15 @@ class TimeclockHelpersTimeclock
     /**
     * This returns the actions that we could take.
     * 
-    * @return JObject
+    * @return CMSObject
     */
     public static function getActions()
     {
-        $user   = JFactory::getUser();
-        $result = new JObject;
+        $user   = Factory::getUser();
+        $result = new CMSObject;
         $assetName = 'com_timeclock';
         $level = 'component';
-        $actions = JAccess::getActions('com_timeclock', $level);
+        $actions = Access::getActions('com_timeclock', $level);
         foreach ($actions as $action) {
             $result->set($action->name, $user->authorise($action->name, $assetName));
         }
@@ -109,7 +114,7 @@ class TimeclockHelpersTimeclock
     public static function getUsers($blocked = 0)
     {
         $ret   = array();
-        $db    = JFactory::getDBO();
+        $db    = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('id, id as user_id, name, username, email, block, 
             registerDate, lastvisitDate, params');
@@ -282,7 +287,7 @@ class TimeclockHelpersTimeclock
     static public function getParam($param)
     {
         if (is_null(self::$params)) {
-            $component = JComponentHelper::getComponent('com_timeclock');
+            $component = ComponentHelper::getComponent('com_timeclock');
             self::$params = $component->params;
         }
         return self::$params->get($param);

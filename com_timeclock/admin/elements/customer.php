@@ -35,6 +35,8 @@
  */
 
 defined('_JEXEC') or die();
+
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport( 'joomla.html.parameter.element' );
 /** get the model we need */
 require_once realpath(
@@ -75,7 +77,7 @@ class JElementCustomer extends JElement
 
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        $model = JModelLegacy::getInstance("Customers", "TimeclockAdminModel");
+        $model = BaseDatabaseModel::getInstance("Customers", "TimeclockAdminModel");
         $options = $model->getOptions("", "All");
         return JHTML::_(
             "select.genericList",

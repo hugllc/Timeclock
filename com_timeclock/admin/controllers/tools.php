@@ -34,6 +34,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Factory;
  
 /**
  * Description Here
@@ -76,7 +78,7 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         // Get the application
         $app = $this->getApplication();
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $viewName = $app->input->getWord('view', 'tools');
         $viewFormat = $document->getType();
         $layoutName = $app->input->getWord('layout', 'default');
@@ -104,7 +106,7 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         // Get the application
         $app = $this->getApplication();
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $viewName = 'tools';
         $viewFormat = $document->getType();
         $layoutName = 'check';
@@ -133,7 +135,7 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         // Get the application
         $app = $this->getApplication();
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $viewName = 'tools';
         $viewFormat = $document->getType();
         $layoutName = 'setup';

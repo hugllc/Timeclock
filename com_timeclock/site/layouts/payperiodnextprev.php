@@ -1,23 +1,26 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-$baseurl = '&option=com_timeclock&controller='.$displayData->controller;
-$url = JRoute::_($baseurl.'&date=now');
-$today = '<a href="'.$url.'">'.JText::_("COM_TIMECLOCK_TODAY").'</a>';
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
-$tip = JText::_("COM_TIMECLOCK_GO_TO_NEXT_PAYPERIOD");
+$baseurl = '&option=com_timeclock&controller='.$displayData->controller;
+$url = Route::_($baseurl.'&date=now');
+$today = '<a href="'.$url.'">'.Text::_("COM_TIMECLOCK_TODAY").'</a>';
+
+$tip = Text::_("COM_TIMECLOCK_GO_TO_NEXT_PAYPERIOD");
 $img = "components/com_timeclock/images/1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-$url = JRoute::_($baseurl.'&date='.$displayData->next);
+$url = Route::_($baseurl.'&date='.$displayData->next);
 $nextImg = '<a href="'.$url.'">'.$text.'</a>';
-$next = '<a href="'.$url.'">'.JText::_("JNEXT").'</a>';
+$next = '<a href="'.$url.'">'.Text::_("JNEXT").'</a>';
 
-$tip = JText::_("COM_TIMECLOCK_GO_TO_PREV_PAYPERIOD");
+$tip = Text::_("COM_TIMECLOCK_GO_TO_PREV_PAYPERIOD");
 $img = "components/com_timeclock/images/1leftarrow.png";
 $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-$url = JRoute::_($baseurl.'&date='.$displayData->prev);
+$url = Route::_($baseurl.'&date='.$displayData->prev);
 $prevImg = '<a href="'.$url.'">'.$text.'</a>';
-$prev = '<a href="'.$url.'">'.JText::_("JPREVIOUS").'</a>';
+$prev = '<a href="'.$url.'">'.Text::_("JPREVIOUS").'</a>';
 
 ?>
 <div class="row-fluid" style="clear: both;">

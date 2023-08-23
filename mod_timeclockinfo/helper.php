@@ -43,6 +43,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+
 /**
 * This class is the 'model' for the module.
 *
@@ -87,7 +89,7 @@ class ModTimeclockInfoHelper
         }
         $pto = round($pto->getPTO($year), $decimals);
         if ($params->get("showPTO") == 1) {
-            $list["MOD_TIMECLOCKINFO_PTO_BALANCE"] = $pto." ".JText::_("MOD_TIMECLOCKINFO_HOURS");
+            $list["MOD_TIMECLOCKINFO_PTO_BALANCE"] = $pto." ".Text::_("MOD_TIMECLOCKINFO_HOURS");
         }
 
         // Do stuff here

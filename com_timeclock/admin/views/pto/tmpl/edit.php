@@ -2,8 +2,12 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.formvalidation');
-JHtml::_('formbehavior.chosen', 'select:not(.plain)');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
 JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
 
 ?>
@@ -14,7 +18,7 @@ JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
         Joomla.Timeclock.submitbutton(task);
     }
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_timeclock&controller=pto'); ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_timeclock&controller=pto'); ?>" method="post" id="adminForm" name="adminForm">
 <?php print TimeclockHelpersView::getForm($this->form, $this->data); ?>
     <input type="hidden" name="pto_id" value="<?php print $this->data->pto_id; ?>" />
     <input type="hidden" name="id" value="<?php print $this->data->pto_id; ?>" />
@@ -24,5 +28,5 @@ JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
     <?php print JHTML::_("form.token"); ?>
 </form>
 <div class="note span6">
-    <?php print JText::_("COM_TIMECLOCK_PTO_EDIT_DESC"); ?>
+    <?php print Text::_("COM_TIMECLOCK_PTO_EDIT_DESC"); ?>
 </div>

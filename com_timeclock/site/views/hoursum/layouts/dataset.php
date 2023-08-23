@@ -1,5 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
 $total = $displayData->total;
 ?>
         <h3><?php print $displayData->title; ?></h3>
@@ -10,13 +12,13 @@ $total = $displayData->total;
                     <thead>
                         <tr class="header">
                             <th><?php print $displayData->group; ?></th>
-                            <th><?php print JText::_("COM_TIMECLOCK_HOURS"); ?></th>
+                            <th><?php print Text::_("COM_TIMECLOCK_HOURS"); ?></th>
                             <th>%</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr class="header">
-                            <th><?php print JText::_("COM_TIMECLOCK_TOTAL"); ?></th>
+                            <th><?php print Text::_("COM_TIMECLOCK_TOTAL"); ?></th>
                             <td class="total"><?php print $total; ?></td>
                             <th>&nbsp;</th>
                         </tr>

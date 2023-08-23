@@ -35,6 +35,10 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/report.php";
 
 /**
@@ -59,8 +63,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     public function __construct()
     {
-        $app = JFactory::getApplication();
-        $this->_user = JFactory::getUser();
+        $app = Factory::getApplication();
+        $this->_user = Factory::getUser();
         parent::__construct(); 
     }
     /**
@@ -93,7 +97,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
             return false;
         }
         if (($user->block) && ($eend == 0)) {
-            $user->error .= JText::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
+            $user->error .= Text::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
         }
 
         return true;
@@ -108,7 +112,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     private function _getReportID($type = null, $name = nulll)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('*');
         $query->from('#__timeclock_reports');
@@ -122,12 +126,12 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     * This creates data for the store.  It should be overwritten by child classes
     * if they want to store a different set.
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     protected function buildStore()
     {
-        $app = JFactory::getApplication();
-        $row = JTable::getInstance('TimeclockReports', 'Table');
+        $app = Factory::getApplication();
+        $row = Table::getInstance('TimeclockReports', 'Table');
         
         if (!is_object($row)) {
             return false;
@@ -138,7 +142,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         $end   = $this->getState("end");
 
         $row->name        = $this->getState("report.name");
-        $row->created_by  = JFactory::getUser()->id;
+        $row->created_by  = Factory::getUser()->id;
         $row->created     = $date;
         $row->description = $this->getState("report.description");
         $row->modified    = $date;
@@ -288,7 +292,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
                     $wk->worked = $fulltime;
                     $wk->subtotal = $wk->worked + $wk->holiday + $wk->pto;
                     if (($wk->pto > 0) && ($wk->overtime > 0)) {
-                        $user->error .= JText::_("COM_TIMECLOCK_ERROR_PTO_AND_OVERTIME");
+                        $user->error .= Text::_("COM_TIMECLOCK_ERROR_PTO_AND_OVERTIME");
                     }
                 } else {
                     $wk->overtime = 0;
@@ -341,10 +345,10 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $registry = $this->loadState();
 
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
 
         
         $report_id = $app->input->get("report_id", 0, "int");
@@ -406,7 +410,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         if (empty($report_id)) {
             $registry->set('report.name', "payroll $start $end");
             $registry->set('report.type', "payroll");
-            $registry->set('report.description', JText::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
+            $registry->set('report.description', Text::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
 
             $report_id = $this->_getReportID(
                 $registry->get("report.type"), 
@@ -439,7 +443,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     protected function _buildWhere(&$query)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $start = $this->getState("payperiod.start");
         $end   = $this->getState("payperiod.end");
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));

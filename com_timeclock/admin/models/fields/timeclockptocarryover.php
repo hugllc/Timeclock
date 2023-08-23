@@ -35,6 +35,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Form\FormField;
 jimport('joomla.form.field');
 require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 
@@ -50,7 +54,7 @@ require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclo
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class JFormFieldTimeclockPTOCarryOver extends JFormField
+class FormFieldTimeclockPTOCarryOver extends FormField
 {
     protected $type = 'TimeclockPTOCarryOver';
 
@@ -71,7 +75,7 @@ class JFormFieldTimeclockPTOCarryOver extends JFormField
             'title' => $this->element["title"],
         );
         $ret = array();
-        $startDate = new JDate(TimeclockHelpersTimeclock::getUserParam("startDate", $id), "UTC");
+        $startDate = new Date(TimeclockHelpersTimeclock::getUserParam("startDate", $id), "UTC");
         $end = (int)$startDate->year;
         if (empty($end)) {
             $end = (int)date("Y");
@@ -82,8 +86,8 @@ class JFormFieldTimeclockPTOCarryOver extends JFormField
             $value = &$this->value[$year];
             $labelclass = 'hasTip';
             $labelclass = $this->required == true ? $labelclass.' required' : $labelclass;
-            $labeltext = JText::sprintf($this->element['label'], $year);
-            $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($this->description), ENT_COMPAT, 'UTF-8');
+            $labeltext = Text::sprintf($this->element['label'], $year);
+            $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".Text::_($this->description), ENT_COMPAT, 'UTF-8');
             if (empty($value["expires"])) {
                 $expire = TimeclockHelpersTimeclock::getParam("ptoCarryOverDefExpire");
                 $value["expires"] = (empty($expire)) ? $year."-3-31" : $year."-".$expire;
@@ -94,8 +98,8 @@ class JFormFieldTimeclockPTOCarryOver extends JFormField
             $ret[] = '<input type="text" class="'.$this->element["class"].'" name="';
             $ret[] = $name.'[amount]" size="7" maxlength="5" value="'.$value["amount"].'" id="'.$id.'_amount" />';
 
-            $labeltext = JText::sprintf($this->element['labelExpires'], $year);
-            $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".JText::_($this->element['descriptionExpires']), ENT_COMPAT, 'UTF-8');
+            $labeltext = Text::sprintf($this->element['labelExpires'], $year);
+            $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".Text::_($this->element['descriptionExpires']), ENT_COMPAT, 'UTF-8');
             $ret[] = '<label class="'.$labelclass.'" title="'.$labeltitle.'" for="'.$id.'_expires">'.$labeltext.'<span class="star">&#160;*</span></label>';
             $ret[] = JHTML::_("calendar", $value["expires"], $name."[expires]", $id."_expires", "%Y-%m-%d", $calAttrib);
             $ret[] = "</fieldset>\n";

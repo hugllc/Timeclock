@@ -35,16 +35,21 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+
 // load table paths
 JLoader::register('TimeclockHelpersDate', JPATH_COMPONENT_SITE.'/helpers/date.php');
-JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_timeclock/tables');
-JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
+Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_timeclock/tables');
+Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
 //load classes
 JLoader::registerPrefix('Timeclock', JPATH_COMPONENT_ADMINISTRATOR);
 //Load plugins
-JPluginHelper::importPlugin('timeclock');
+PluginHelper::importPlugin('timeclock');
 //application
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // Require specific controller if requested
 $task = $app->input->get('task', null);
 if (strpos($task, ".")) {

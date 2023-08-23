@@ -34,6 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Response\JsonResponse;
+use Joomla\CMS\Factory;
 require_once __DIR__."/report.php";
 /**
  * Description Here
@@ -78,9 +83,9 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     {
         // Get the application
         $app = $this->getApplication();
-        $params = JComponentHelper::getParams('com_timeclock');
+        $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $viewName = "payroll";
         $viewFormat = $document->getType();
         $layoutName = 'payroll';
@@ -111,21 +116,21 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
         $app   = $this->getApplication();
 
         if ($index = $this->model->lock()) {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 $index, 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"),
+                Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 array(), 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_LOCK_FAILED"),
+                Text::_("COM_TIMECLOCK_PAYPERIOD_LOCK_FAILED"),
                 true,    // Error
                 false     // Ignore Message Queue
             );
         }
-        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        Factory::getDocument()->setMimeEncoding( 'application/json' );
         JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
@@ -143,21 +148,21 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
         $app   = $this->getApplication();
 
         if ($index = $this->model->unlock()) {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 $index, 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_UNLOCKED"),
+                Text::_("COM_TIMECLOCK_PAYPERIOD_UNLOCKED"),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 array(), 
-                JText::_("COM_TIMECLOCK_PAYPERIOD_UNLOCK_FAILED"),
+                Text::_("COM_TIMECLOCK_PAYPERIOD_UNLOCK_FAILED"),
                 true,    // Error
                 false     // Ignore Message Queue
             );
         }
-        JFactory::getDocument()->setMimeEncoding( 'application/json' );
+        Factory::getDocument()->setMimeEncoding( 'application/json' );
         JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();

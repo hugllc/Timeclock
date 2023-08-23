@@ -1,4 +1,11 @@
 <?php
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
+
 /**
 /**
  * This component is the user interface for the endpoints
@@ -47,7 +54,7 @@
 jimport('joomla.utilities.date');
 jimport('joomla.form.form');
 require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
-JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
+Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
 /**
 * This is a plugin to display timeclock user information in the user screen
 *
@@ -60,7 +67,7 @@ JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
 */
-class plgUserTimeclock extends JPlugin
+class plgUserTimeclock extends CMSPlugin
 {
     /**
     * This happens when we are preparing the form
@@ -116,7 +123,7 @@ class plgUserTimeclock extends JPlugin
     static protected function getAllParams($userId)
     {
         // Load the timeclock data from the database.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $db->setQuery(
             'SELECT profile_key, profile_value FROM #__user_profiles' .
             ' WHERE user_id = '.(int) $userId." AND profile_key LIKE 'timeclock.%'" .
@@ -317,10 +324,10 @@ class plgUserTimeclock extends JPlugin
     static public function getParamValue($param, $userId=null, $date=null)
     {
         if (empty($userId)) {
-            $userId = JFactory::getUser()->id;
+            $userId = Factory::getUser()->id;
         }
         // Load the timeclock data from the database.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $db->setQuery(
             'SELECT profile_value, profile_key FROM #__user_profiles' .
             ' WHERE user_id = '.(int) $userId." AND (".
@@ -345,9 +352,9 @@ class plgUserTimeclock extends JPlugin
         self::decodeArrays($history);
         $history = isset($history['history'][$param]) ? (array)$history['history'][$param] : array();
         ksort($history);
-        $date = new JDate($date);
+        $date = new Date($date);
         foreach ((array)$history as $change => $value) {
-            $chDate = new JDate($change);
+            $chDate = new Date($change);
             if ($chDate->toUnix() > $date->toUnix()) {
                 return $value;
             }
@@ -368,14 +375,14 @@ class plgUserTimeclock extends JPlugin
         $param, $value, $userId=null, $order=-1
     ) {
         if (empty($userId)) {
-            $userId = JFactory::getUser()->id;
+            $userId = Factory::getUser()->id;
         }
         // Load the timeclock data from the database.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         try
         {
             $userId = (int)$userId;
-            $db = JFactory::getDbo();
+            $db = Factory::getDbo();
             $db->transactionStart();
             // Delete all the possible old values.  This will slowly remove them
             // from the database.
@@ -411,7 +418,7 @@ class plgUserTimeclock extends JPlugin
     /**
     * This prepares the form
     *
-    * @param JForm $form The form to be altered.
+    * @param Form $form The form to be altered.
     * @param array $data The associated data for the form.
     *
     * @return boolean
@@ -419,10 +426,10 @@ class plgUserTimeclock extends JPlugin
     public function onContentPrepareForm($form, $data)
     {
         // Load user_timeclock plugin language
-        $lang = JFactory::getLanguage();
+        $lang = Factory::getLanguage();
         $lang->load('plg_user_timeclock', JPATH_ADMINISTRATOR);
 
-        if (!($form instanceof JForm))
+        if (!($form instanceof Form))
         {
             $this->_subject->setError('JERROR_NOT_A_FORM');
             return false;
@@ -434,7 +441,7 @@ class plgUserTimeclock extends JPlugin
         }
 
         // Add the registration fields to the form.
-        JForm::addFormPath(dirname(__FILE__).'/profiles');
+        Form::addFormPath(dirname(__FILE__).'/profiles');
         $form->loadFile('timeclock', false);
 
         return true;
@@ -442,14 +449,14 @@ class plgUserTimeclock extends JPlugin
 
     public function onUserAfterSave($data, $isNew, $result, $error)
     {
-        $userId    = JArrayHelper::getValue($data, 'id', 0, 'int');
+        $userId    = ArrayHelper::getValue($data, 'id', 0, 'int');
 
         if ($userId && $result && isset($data['timeclock']) && (count($data['timeclock'])))
         {
             //Sanitize the date
             foreach (array("startDate", "endDate") as $date) {
                 if (!empty($data['timeclock'][$date]) && ($data['timeclock'][$date] != "0000-00-00 00:00:00")) {
-                    $jdate = new JDate($data['timeclock'][$date]);
+                    $jdate = new Date($data['timeclock'][$date]);
                     $data['timeclock'][$date] = $jdate->format('Y-m-d');
                 }
             }
@@ -503,13 +510,13 @@ class plgUserTimeclock extends JPlugin
             return false;
         }
 
-        $userId    = JArrayHelper::getValue($user, 'id', 0, 'int');
+        $userId    = ArrayHelper::getValue($user, 'id', 0, 'int');
 
         if ($userId)
         {
             try
             {
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $db->setQuery(
                     'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
                     " AND profile_key LIKE 'timeclock.%'"
@@ -540,8 +547,8 @@ class plgUserTimeclock extends JPlugin
     private function _setHistory($userId, &$data, $history)
     {
         // Load the new data
-        $id = JFactory::getUser()->get("name");
-        $date = new JDate();
+        $id = Factory::getUser()->get("name");
+        $date = new Date();
         $old = $this->getAllParams($userId);
         $changeDates = array();
         if (!isset($history['effectiveDateSet'])) {

@@ -34,6 +34,10 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Response\JsonResponse;
+use Joomla\CMS\Factory;
  
 /**
  * Description Here
@@ -92,7 +96,7 @@ class TimeclockControllersDefault extends JControllerBase
         // Get the application
         $app = $this->getApplication();
         // Get the document object.
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         // Get the task
         $task = $this->getTask();
         if (($task != "edit") && ($task != "list") && ($task != "add")) {
@@ -133,7 +137,7 @@ class TimeclockControllersDefault extends JControllerBase
             // Get the application
             $app = $this->getApplication();
             // Get the document object.
-            $document = JFactory::getDocument();
+            $document = Factory::getDocument();
             $task = $app->input->get('task', 'list');
             $task = empty($task) ? 'list' : $task;
             $task = ($task == "display") ? 'list' : $task;
@@ -228,14 +232,14 @@ class TimeclockControllersDefault extends JControllerBase
         $model = $this->getModel();
 
         if ($index = $model->store()) {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 get_object_vars($index), 
                 $this->savedMsg(),
                 false,  // Error
                 false    // Ignore Message Queue
             );
         } else {
-            $json = new JResponseJson(
+            $json = new JsonResponse(
                 array(), 
                 $this->saveFailedMsg(), 
                 true,    // Error
@@ -271,7 +275,7 @@ class TimeclockControllersDefault extends JControllerBase
     */
     protected function savedMsg()
     {
-        return JText::_($this->msgs["saved"]);
+        return Text::_($this->msgs["saved"]);
     }
     /**
     * This function returns the message to show when a controller is saved
@@ -280,7 +284,7 @@ class TimeclockControllersDefault extends JControllerBase
     */
     protected function saveFailedMsg()
     {
-        return JText::_($this->msgs["saveFailed"]);
+        return Text::_($this->msgs["saveFailed"]);
     }
     /**
     * This function returns the message to show when a controller is saved
@@ -303,7 +307,7 @@ class TimeclockControllersDefault extends JControllerBase
     */
     protected function getDocument()
     {
-        return JFactory::getDocument();
+        return Factory::getDocument();
     }
     /**
     * Sets a header

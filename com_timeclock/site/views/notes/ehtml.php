@@ -36,6 +36,8 @@ PRN DPLY RICOH Aficio SP C242SF<?php
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -77,7 +79,7 @@ class TimeclockViewsNotesEhtml extends TimeclockViewsNotesBase
 
         $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'HTML');
         $objWriter->setPreCalculateFormulas(true);
-        $inline = JFactory::getApplication()->input->get("inline", 0, "int");
+        $inline = Factory::getApplication()->input->get("inline", 0, "int");
 
         if ($inline) {
             header('Content-Disposition: inline');

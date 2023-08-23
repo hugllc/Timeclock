@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+ 
     defined('_JEXEC') or die('Restricted access'); 
     $user_id = $displayData->id;
     $name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
@@ -19,7 +23,7 @@
         }
     }
     $total = $subtotal + $overtime;
-    $timesheeturl = JRoute::_('index.php?&option=com_timeclock&controller=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
+    $timesheeturl = Route::_('index.php?&option=com_timeclock&controller=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
     if (!empty($displayData->error)) {
         $errorClass   = "error hasTooltip";
         $errorTooltip = ' title="'.$displayData->error.'"';
@@ -33,8 +37,8 @@
                     <a class="modal" href="#notes-<?php print $user_id; ?>" rel="{onOpen : function(){ jQuery('#sbox-content div').show(); }}"><?php print $name ?></a>
                 </td>
                 <td class="complete <?php print $displayData->done ? "yes" : "no"; ?>">
-                    <a href="<?php print $timesheeturl; ?>" class="hasTooltip" title="<?php print JText::_("COM_TIMECLOCK_CLICK_TO_VIEW_TIMESHEET"); ?>">
-                    <?php print $displayData->done ? JText::_("JYES") : Jtext::_("JNO"); ?>
+                    <a href="<?php print $timesheeturl; ?>" class="hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_CLICK_TO_VIEW_TIMESHEET"); ?>">
+                    <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
                     </a>
                 </td>
                 <td class="hours">

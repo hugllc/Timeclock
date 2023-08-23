@@ -36,6 +36,10 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
 /** Import the views */
 jimport('joomla.application.component.view');
 
@@ -82,11 +86,11 @@ class TimeclockViewsHoursumBase extends JViewBase
         if (!TimeclockHelpersContrib::phpexcel()) {
             return false;
         }
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");
         $report_id = $this->model->getState("report.id");
-        $this->params    = JComponentHelper::getParams('com_timeclock');
+        $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->start  = $this->model->getState('start');
         $this->end    = $this->model->getState('end');
 
@@ -140,8 +144,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_PROJ_MANAGER"),
-            JText::_("COM_TIMECLOCK_PROJECT_MANAGER"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_PROJ_MANAGER"),
+            Text::_("COM_TIMECLOCK_PROJECT_MANAGER"),
             $data
         );
         /******************** HOURS BY USER MANAGER ************************/
@@ -154,8 +158,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_USER_MANAGER"),
-            JText::_("COM_TIMECLOCK_USER_MANAGER"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_USER_MANAGER"),
+            Text::_("COM_TIMECLOCK_USER_MANAGER"),
             $data
         );
         /******************** HOURS BY PROJECT TYPE ************************/
@@ -165,8 +169,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_PROJECT_TYPE"),
-            JText::_("COM_TIMECLOCK_PROJECT_TYPE"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_PROJECT_TYPE"),
+            Text::_("COM_TIMECLOCK_PROJECT_TYPE"),
             $data
         );
         /******************** HOURS BY CATEGORY ************************/
@@ -179,8 +183,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_CATEGORY"),
-            JText::_("COM_TIMECLOCK_CATEGORY"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_CATEGORY"),
+            Text::_("COM_TIMECLOCK_CATEGORY"),
             $data
         );
         /******************** HOURS BY CUSTOMER ************************/
@@ -193,8 +197,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_CUSTOMER"),
-            JText::_("COM_TIMECLOCK_CUSTOMER"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_CUSTOMER"),
+            Text::_("COM_TIMECLOCK_CUSTOMER"),
             $data
         );
         /******************** HOURS BY DEPARTMENT ************************/
@@ -207,8 +211,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_DEPARTMENT"),
-            JText::_("COM_TIMECLOCK_DEPARTMENT"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_DEPARTMENT"),
+            Text::_("COM_TIMECLOCK_DEPARTMENT"),
             $data
         );
         /******************** HOURS BY WCOMP CODE ************************/
@@ -218,8 +222,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_WCOMP_CODE"),
-            JText::_("COM_TIMECLOCK_WCOMP_CODE"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_WCOMP_CODE"),
+            Text::_("COM_TIMECLOCK_WCOMP_CODE"),
             $data
         );
         
@@ -233,8 +237,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_PROJECT"),
-            JText::_("COM_TIMECLOCK_PROJECT"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_PROJECT"),
+            Text::_("COM_TIMECLOCK_PROJECT"),
             $data
         );
         /******************** HOURS BY USER ************************/
@@ -247,8 +251,8 @@ class TimeclockViewsHoursumBase extends JViewBase
             $data[$name] = $hours;
         }
         $this->dataset(
-            JText::_("COM_TIMECLOCK_HOURS_BY_USER"),
-            JText::_("COM_TIMECLOCK_USER"),
+            Text::_("COM_TIMECLOCK_HOURS_BY_USER"),
+            Text::_("COM_TIMECLOCK_USER"),
             $data
         );
 
@@ -262,16 +266,16 @@ class TimeclockViewsHoursumBase extends JViewBase
     */
     protected function setup($file)
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         // Create new PHPExcel object
         $this->phpexcel = new PHPExcel();
         // Set document properties
-        $report = JText::sprintf("COM_TIMECLOCK_USERSUM_REPORT_TITLE", $this->start, $this->end);
+        $report = Text::sprintf("COM_TIMECLOCK_USERSUM_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
             ->setLastModifiedBy($user->name)
             ->setTitle($report)
             ->setSubject($report)
-            ->setKeywords(JText::_("COM_TIMECLOCK_HOURSUM_REPORT"));
+            ->setKeywords(Text::_("COM_TIMECLOCK_HOURSUM_REPORT"));
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: '.$this->mimetype);
         header('Content-Disposition: attachment;filename="'.$file.'.'.$this->fileext.'"');
@@ -285,7 +289,7 @@ class TimeclockViewsHoursumBase extends JViewBase
         header ('Pragma: public'); // HTTP/1.0
         
         // Rename worksheet
-        $this->phpexcel->getActiveSheet()->setTitle(JText::_("COM_TIMECLOCK_HOURSUM_REPORT"));
+        $this->phpexcel->getActiveSheet()->setTitle(Text::_("COM_TIMECLOCK_HOURSUM_REPORT"));
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $this->phpexcel->setActiveSheetIndex(0);
 
@@ -319,7 +323,7 @@ class TimeclockViewsHoursumBase extends JViewBase
         $sheet->setCellValue("A".$this->line, $header);
         $this->line++;
         $sheet->setCellValue("A".$this->line, $group);
-        $sheet->setCellValue("B".$this->line, JText::_("COM_TIMECLOCK_HOURS"));
+        $sheet->setCellValue("B".$this->line, Text::_("COM_TIMECLOCK_HOURS"));
         $sheet->setCellValue("C".$this->line, "%");
         $sheet->getStyle("A".$this->line.":C".$this->line)->getFont()->setBold(true);
         $this->line++;
@@ -338,7 +342,7 @@ class TimeclockViewsHoursumBase extends JViewBase
             );  
             $this->line++;
         }
-        $sheet->setCellValue("A".$this->line, JText::_("COM_TIMECLOCK_TOTAL"));
+        $sheet->setCellValue("A".$this->line, Text::_("COM_TIMECLOCK_TOTAL"));
         $sheet->setCellValue("B".$this->line, "=SUM(".implode(",", $total).")");
         $sheet->getStyle("A".$this->line.":A".$this->line)->getFont()->setBold(true);
 
@@ -445,9 +449,9 @@ class TimeclockViewsHoursumBase extends JViewBase
     protected function getProjType($type)
     {
         if (isset($this->_projType[$type])) {
-            return JText::_($this->_projType[$type]);
+            return Text::_($this->_projType[$type]);
         }
-        return JText::_("COM_TIMECLOCK_UNKNOWN");
+        return Text::_("COM_TIMECLOCK_UNKNOWN");
     }
 }
 ?>

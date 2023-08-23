@@ -35,6 +35,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
 jimport('joomla.form.field');
 require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 
@@ -50,7 +53,7 @@ require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclo
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class JFormFieldTimeclockHistory extends JFormField
+class FormFieldTimeclockHistory extends FormField
 {
     protected $type = 'TimeclockHistory';
 
@@ -81,7 +84,7 @@ class JFormFieldTimeclockHistory extends JFormField
             $labeltext = $user;
             $labeltitle = htmlspecialchars(trim($user, ":"), ENT_COMPAT, 'UTF-8');
             $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">'.$labeltext.'</label>'.$date;
-            $ret[] = '<a href="#" onClick="document.getElementById(\''.$id.'\').style.display=\'\';document.getElementById(\'effectiveDate'.$index.'Set\').value=\'1\';">['.JText::_("COM_TIMECLOCK_EDIT").']</a>';
+            $ret[] = '<a href="#" onClick="document.getElementById(\''.$id.'\').style.display=\'\';document.getElementById(\'effectiveDate'.$index.'Set\').value=\'1\';">['.Text::_("COM_TIMECLOCK_EDIT").']</a>';
             $ret[] = '<div id="'.$id.'" style="display: none;">';
             $ret[] = JHTML::_("calendar", $date, $this->name."[effectiveDate][$date]", $id, "%Y-%m-%d %H:%M:%S", array());
             $ret[] = '<input type="hidden" name="'.$this->name.'[effectiveDateSet]['.$date.']" id="effectiveDate'.$index.'Set" value="0" />';
@@ -101,7 +104,7 @@ class JFormFieldTimeclockHistory extends JFormField
         }
         if (count($ret) === 1) {
             // No projects assigned to this user
-            $ret[] = JText::_($this->element['emptyMessage']);
+            $ret[] = Text::_($this->element['emptyMessage']);
         }
         $ret[] = "</div>";
         return implode("\n", $ret);

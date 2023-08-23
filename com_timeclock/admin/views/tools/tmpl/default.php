@@ -36,6 +36,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 $baseUrl = "index.php?option=com_timeclock&controller=tools";
 ?>
 <form id="adminForm">
@@ -44,17 +47,17 @@ $baseUrl = "index.php?option=com_timeclock&controller=tools";
 </div>
 <div id="j-main-container" class="span10">
     <p>
-    <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC"); ?>
+    <?php print Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC"); ?>
     </p>
     <ol>
         <li>
-            <a href="<?php print JRoute::_($baseUrl."&task=setup"); ?>">
-                <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_SETUP"); ?>
+            <a href="<?php print Route::_($baseUrl."&task=setup"); ?>">
+                <?php print Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_SETUP"); ?>
             </a>
         </li>
         <li>
-            <a href="<?php print JRoute::_($baseUrl."&task=dbcheck"); ?>">
-                <?php print JText::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"); ?>
+            <a href="<?php print Route::_($baseUrl."&task=dbcheck"); ?>">
+                <?php print Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"); ?>
             </a>
         </li>
     </ol>

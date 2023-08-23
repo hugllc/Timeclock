@@ -35,6 +35,9 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * Description Here
  *
@@ -71,7 +74,7 @@ class TimeclockControllersDefault extends JControllerBase
     */
     public function authorize()
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         if ($user->get('guest')) {
             return false;
         }
@@ -87,7 +90,7 @@ class TimeclockControllersDefault extends JControllerBase
     {
         $app = $this->getApplication();
         if (!$this->authorize()) {
-            $app->redirect('index.php',JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+            $app->redirect('index.php',Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
         return true;
     }
@@ -102,7 +105,7 @@ class TimeclockControllersDefault extends JControllerBase
             // Get the application
             $app = $this->getApplication();
             // Get the document object.
-            $document = JFactory::getDocument();
+            $document = Factory::getDocument();
             $task = $app->input->get('task', 'list');
             $task = empty($task) ? 'list' : $task;
             $task = ($task == "display") ? 'list' : $task;

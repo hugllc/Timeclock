@@ -35,6 +35,9 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+
 require_once __DIR__."/default.php";
 
 /**
@@ -68,7 +71,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     *
     * @param array $data The data to store.  If not given, get the post data
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     public function store($data=null)
     {
@@ -118,7 +121,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     *
     * @param array $data The data to store.  If not given, get the post data
     *
-    * @return JTable instance with data in it.
+    * @return Table instance with data in it.
     */
     public function delete($data=null)
     {
@@ -146,7 +149,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     */
     protected function _buildQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('r.report_id, r.name, r.type, r.description, r.published, 
                         r.created_by, r.created, r.modified, r.startDate, r.endDate');
@@ -162,7 +165,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     */
     protected function _buildCountQuery()
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('COUNT(r.report_id) as count');
         $query->from('#__timeclock_reports as r');
@@ -180,7 +183,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     */
     protected function _buildWhere(&$query, $id = null)
     { 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         $id = is_numeric($id) ? $id : $this->_report_id;
         
         if(is_numeric($id)) {
