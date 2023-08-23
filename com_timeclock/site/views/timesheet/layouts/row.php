@@ -3,7 +3,7 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
  
-    defined('_JEXEC') or die('Restricted access'); 
+    defined('_JEXEC') or die(); 
 ?>
             <tr class="<?php print strtolower($displayData->type);?><?php print ($displayData->mine == 0) ? " alert alert-info" : ""; ?>">
                 <td class="project hasTooltip" title="<?php print Text::_($displayData->description); ?>">

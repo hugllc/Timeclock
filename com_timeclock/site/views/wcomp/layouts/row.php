@@ -1,5 +1,5 @@
 <?php 
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 if (!$displayData->hide) :   
     $user_id = $displayData->user_id;
     $total   = isset($displayData->data["total"]) ? $displayData->data["total"] : "0";

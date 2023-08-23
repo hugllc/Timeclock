@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 /** Check to make sure we are under Joomla */
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 /** Import the views */
 jimport('joomla.application.component.view');

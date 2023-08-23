@@ -2,7 +2,7 @@
 
 use Joomla\CMS\Language\Text;
  
-    defined('_JEXEC') or die('Restricted access'); 
+    defined('_JEXEC') or die(); 
     $places = $displayData->params->get("decimalPlaces");
 ?>
             <tr class="header">

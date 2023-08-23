@@ -1,7 +1,7 @@
 <?php
 
 use Joomla\CMS\Language\Text;
- defined('_JEXEC') or die('Restricted access'); ?>
+ defined('_JEXEC') or die(); ?>
             <tr class="subtotal">
                 <th>
                     <?php print Text::_("COM_TIMECLOCK_SUBTOTALS"); ?>

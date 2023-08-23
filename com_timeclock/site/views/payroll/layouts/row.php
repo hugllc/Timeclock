@@ -3,7 +3,7 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
  
-    defined('_JEXEC') or die('Restricted access'); 
+    defined('_JEXEC') or die(); 
     $user_id = $displayData->id;
     $name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
     $class    = "user-".$user_id;

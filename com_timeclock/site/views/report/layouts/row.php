@@ -1,5 +1,5 @@
 <?php 
-    defined('_JEXEC') or die('Restricted access'); 
+    defined('_JEXEC') or die(); 
     $proj_id = $displayData->project_id;
     $total = isset($displayData->data["total"]) ? $displayData->data["total"] : "0";
 ?>

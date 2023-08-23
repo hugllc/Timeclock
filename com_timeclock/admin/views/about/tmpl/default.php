@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 ?>
 <form id="adminForm">
 <div id="j-sidebar-container" class="span2">

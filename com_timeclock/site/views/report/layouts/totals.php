@@ -2,7 +2,7 @@
 
 use Joomla\CMS\Language\Text;
  
-    defined('_JEXEC') or die('Restricted access'); 
+    defined('_JEXEC') or die(); 
 ?>
             <tr class="header">
                 <th>
