@@ -66,9 +66,9 @@ class TimeclockViewsPtoHtml extends HtmlView
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $layout = $this->getLayout();
         if ($layout == "add") {
             $this->add = true;
@@ -78,10 +78,10 @@ class TimeclockViewsPtoHtml extends HtmlView
 
         JHTML::stylesheet(
             JURI::base().'/components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
+            array()
         );
 
+        $this->model = $this->getModel();
         $this->params = ComponentHelper::getParams('com_timeclock');
         $this->state  = $this->model->getState();
         if ($layout == 'edit') {
@@ -97,14 +97,13 @@ class TimeclockViewsPtoHtml extends HtmlView
             $this->data = $this->model->listItems();
             $this->_reportListView = new FileLayout('entry', __DIR__.'/layouts');
             $this->sortFields = $this->model->checkSortFields($this->getSortFields());
-            TimeclockHelpersView::addSubmenu("pto");
             $this->listToolbar();
             $this->sidebar = JHtmlSidebar::render();
 
         }
         $this->pagination = $this->model->getPagination();
         //display
-        return parent::render();
+        return parent::display($tpl);
     } 
     /**
     * Adds the toolbar for this view.

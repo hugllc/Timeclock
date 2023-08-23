@@ -64,6 +64,7 @@ class TimeclockViewsToolsHtml extends HtmlView
     */
     function display($tpl = null)
     {
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $layout = $this->getLayout();
 
         HTMLHelper::stylesheet(
@@ -76,7 +77,6 @@ class TimeclockViewsToolsHtml extends HtmlView
             return $this->$fct();
         }
         $this->addToolbar("COM_TIMECLOCK_TIMECLOCK_TOOLS");
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
 
         $this->sidebar = JHtmlSidebar::render();
         return parent::display($tpl);
@@ -110,16 +110,16 @@ class TimeclockViewsToolsHtml extends HtmlView
      */
     public function viewCheck($tpl = null)
     {
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $this->noResults = Text::_("COM_TIMECLOCK_NO_TESTS");
         $this->pageheader = Text::_("COM_TIMECLOCK_CHECKING_DATABASE");
-        $this->results = $this->model->dbCheck();
+        $this->results = $this->getModel()->dbCheck();
         $this->setLayout("check");
         
         $this->addToolbar("COM_TIMECLOCK_CHECK_DATABASE");
-        TimeclockHelpersView::addSubmenu("tools");
         
         $this->sidebar = JHtmlSidebar::render();
-        return parent::render();
+        return parent::display($tpl);
     }
     /**
      * The display function
@@ -130,17 +130,16 @@ class TimeclockViewsToolsHtml extends HtmlView
      */
     public function viewSetup($tpl = null)
     {
-
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $this->setLayout("setup");
         
         $this->phpgraph = file_exists(JPATH_ROOT."/components/com_timeclock/contrib/phpgraph/phpgraphlib.php");
         $this->phpexcel = file_exists(JPATH_ROOT."/components/com_timeclock/contrib/phpexcel/PHPExcel.php");
 
         $this->addToolbar("COM_TIMECLOCK_CHECK_DATABASE");
-        TimeclockHelpersView::addSubmenu("tools");
         
         $this->sidebar = JHtmlSidebar::render();
-        return parent::render();
+        return parent::display($tpl);
     }
 }
 ?>

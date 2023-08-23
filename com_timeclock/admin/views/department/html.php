@@ -66,16 +66,16 @@ class TimeclockViewsDepartmentHtml extends HtmlView
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $layout = $this->getLayout();
         if ($layout == "add") {
             $this->add = true;
             $layout = "edit";
             $this->setLayout($layout);
         }
-
+        $this->model = $this->getModel();
         $this->params = ComponentHelper::getParams('com_timeclock');
         $this->state  = $this->model->getState();
         if ($layout == 'edit') {
@@ -91,14 +91,13 @@ class TimeclockViewsDepartmentHtml extends HtmlView
             $this->data = $this->model->listItems();
             $this->_departmentListView = new FileLayout('entry', __DIR__.'/layouts');
             $this->sortFields = $this->model->checkSortFields($this->getSortFields());
-            TimeclockHelpersView::addSubmenu("department");
             $this->listToolbar();
             $this->sidebar = JHtmlSidebar::render();
 
         }
         $this->pagination = $this->model->getPagination();
         //display
-        return parent::render();
+        return parent::display($tpl);
     } 
     /**
     * Adds the toolbar for this view.

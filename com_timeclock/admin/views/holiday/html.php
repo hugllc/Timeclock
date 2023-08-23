@@ -66,9 +66,9 @@ class TimeclockViewsHolidayHtml extends HtmlView
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $layout = $this->getLayout();
         if ($layout == "add") {
             $this->add = true;
@@ -76,6 +76,7 @@ class TimeclockViewsHolidayHtml extends HtmlView
             $this->setLayout($layout);
         }
 
+        $this->model = $this->getModel();
         $this->params = ComponentHelper::getParams('com_timeclock');
         $this->state  = $this->model->getState();
         if ($layout == 'edit') {
@@ -91,14 +92,13 @@ class TimeclockViewsHolidayHtml extends HtmlView
             $this->data = $this->model->listItems();
             $this->_holidayListView = new FileLayout('entry', __DIR__.'/layouts');
             $this->sortFields = $this->model->checkSortFields($this->getSortFields());
-            TimeclockHelpersView::addSubmenu("holiday");
             $this->listToolbar();
             $this->sidebar = JHtmlSidebar::render();
 
         }
         $this->pagination = $this->model->getPagination();
         //display
-        return parent::render();
+        return parent::display($tpl);
     } 
     /**
     * Adds the toolbar for this view.

@@ -116,10 +116,12 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsTools';
-        $view = new $viewClass(new $modelClass, $paths);
+        $model = new $modelClass;
+        $view = new $viewClass();
         $view->setLayout($layoutName);
+        $view->setModel($model, true);
         // Render our view.
-        echo $view->render();
+        echo $view->display();
         return true;
     }
     /**
@@ -146,9 +148,9 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsTools';
         $model = new $modelClass;
-        $view = new $viewClass(new $modelClass, $paths);
+        $view = new $viewClass();
         $view->setLayout($layoutName);
-
+        $view->setModel($model);
         $ret = $model->setup();
         if ($ret === false) {
             $app->enqueueMessage(
@@ -157,7 +159,7 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         }
 
         // Render our view.
-        echo $view->render();
+        echo $view->display();
         return true;
     }
 }

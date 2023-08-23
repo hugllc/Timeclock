@@ -131,9 +131,9 @@ class plgUserTimeclock extends CMSPlugin
         );
         $results = $db->loadRowList();
        // Check for a database error.
-        if ($db->getErrorNum())
+        if ($db->errorNum)
         {
-            $this->_subject->setError($db->getErrorMsg());
+            $this->_subject->setError($db->errorMsg);
             return false;
         }
         return $results;

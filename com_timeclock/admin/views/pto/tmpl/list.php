@@ -6,7 +6,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
-JHTML::_('behavior.modal');
 HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));

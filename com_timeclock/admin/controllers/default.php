@@ -114,17 +114,13 @@ class TimeclockControllersDefault extends AdminController
         $app->input->set('view', $task);
 
 
-        // Register the layout paths for the view
-        $paths = new SplPriorityQueue;
-        $paths->insert(
-            JPATH_COMPONENT.'/views/'.$this->controller.'/tmpl', 'normal'
-        );
         $viewClass = 'TimeclockViews'.ucfirst($this->controller) . "Html";
         
-        $view = new $viewClass($model, $paths);
+        $view = new $viewClass();
         $view->setLayout($task);
+        $view->setModel($model, true);
         // Render our view.
-        echo $view->render();
+        $view->display();
         return true;
     }
     /**

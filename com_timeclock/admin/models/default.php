@@ -339,23 +339,23 @@ class TimeclockModelsDefault extends AdminModel
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = Factory::getApplication();
-        $registry = $this->loadState();
+        // $registry = $this->loadState();
         
         // Load state from the request.
         $pk = $app->input->get('id', array(), "array");
-        $registry->set('id', $pk);
+        $this->setState('id', $pk);
 
         // Load the parameters.
         $params = ComponentHelper::getParams('com_timeclock');
-        $registry->set('params', $params);
+        $this->setState('params', $params);
 
         $user = Factory::getUser();
 
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
         ) {
-                $registry->set('filter.published', 1);
-                $registry->set('filter.archived', 2);
+                $this->setState('filter.published', 1);
+                $this->setState('filter.archived', 2);
         }
 
         $limitstart = $app->getUserStateFromRequest(
@@ -364,53 +364,53 @@ class TimeclockModelsDefault extends AdminModel
             0,
             "int"
         );
-        $registry->set("limitstart", $limitstart);
+        $this->setState("limitstart", $limitstart);
         $limit = $app->getUserStateFromRequest(
             $context.'_limit',
             "limit",
             10,
             "int"
         );
-        $registry->set("limit", $limit);
+        $this->setState("limit", $limit);
         $ordering = $app->getUserStateFromRequest(
             $context.'_list.ordering',
             "filter_order",
             $this->_defaultSort
         );
         $ordering = $this->checkSortFields($ordering);
-        $registry->set("list.ordering", $ordering);
+        $this->setState("list.ordering", $ordering);
         $direction = $app->getUserStateFromRequest(
             $context.'_list.direction',
             "filter_order_Dir",
             $this->_defaultSortDir
         );
-        $registry->set(
+        $this->setState(
             "list.direction", 
             (trim(strtolower($direction)) == "desc") ? "DESC" : "ASC"
         );
         $search = $app->getUserStateFromRequest($context.'.filter.search', 'filter_search');
-        $registry->set('filter.search', $search);
+        $this->setState('filter.search', $search);
         
         $published = $app->getUserStateFromRequest($context.'.filter.published', 'filter_published', '');
-        $registry->set('filter.published', $published);
+        $this->setState('filter.published', $published);
 
         $category = $app->getUserStateFromRequest($context.'.filter.category', 'filter_category', '');
-        $registry->set('filter.category', $category);
+        $this->setState('filter.category', $category);
 
         $department = $app->getUserStateFromRequest($context.'.filter.department', 'filter_department', '');
-        $registry->set('filter.department', $department);
+        $this->setState('filter.department', $department);
 
         $customer = $app->getUserStateFromRequest($context.'.filter.customer', 'filter_customer', '');
-        $registry->set('filter.customer', $customer);
+        $this->setState('filter.customer', $customer);
 
         $year = $app->getUserStateFromRequest($context.'.filter.year', 'filter_year', '');
-        $registry->set('filter.year', $year);
+        $this->setState('filter.year', $year);
 
         $user_id = $app->getUserStateFromRequest($context.'.filter.user_id', 'filter_user_id', '');
-        $registry->set('filter.user_id', $user_id);
+        $this->setState('filter.user_id', $user_id);
 
         $type = $app->getUserStateFromRequest($context.'.filter.type', 'filter_type', '');
-        $registry->set('filter.type', $type);
+        $this->setState('filter.type', $type);
 
         $this->setState($registry);
     }
