@@ -57,10 +57,10 @@ class TimeclockControllersAbout extends TimeclockControllersDefault
     * @access public
     * @return boolean
     */
-    public function execute()
+    public function execute($task = NULL)
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         // Get the document object.
         $document = Factory::getDocument();
         $viewName = $app->input->getWord('view', 'about');
@@ -68,14 +68,11 @@ class TimeclockControllersAbout extends TimeclockControllersDefault
         $layoutName = $app->input->getWord('layout', 'default');
         $app->input->set('view', $viewName);
         // Register the layout paths for the view
-        $paths = new SplPriorityQueue;
-        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsDefault';
-        $view = new $viewClass(new $modelClass, $paths);
-        $view->setLayout($layoutName);
+        $view = new $viewClass();
         // Render our view.
-        echo $view->render();
+        echo $view->display($layout);
         return true;
     }
 }

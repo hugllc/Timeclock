@@ -35,6 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\FileLayout;
@@ -54,7 +55,7 @@ use Joomla\CMS\HTML\HTMLHelper;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsReportsHtml extends JViewHtml
+class TimeclockViewsReportsHtml extends HtmlView
 {
     /** Whether we are adding or editing */
     protected $add = false;
@@ -208,7 +209,7 @@ class TimeclockViewsReportsHtml extends JViewHtml
      *
      * @since   3.0
      */
-    public function get()
+    public function get($property, $default = null)
     {
         var_dump(func_get_args());
     }

@@ -347,7 +347,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     * 
     * @return  boolean
     */
-    public function publish($id = null)
+    public function publish(&$pks, $value = 1)
     {
         return true;
     }

@@ -39,6 +39,7 @@ use Joomla\CMS\Access\Access;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Helper\ContentHelper;
 require_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 
 /**
@@ -71,7 +72,7 @@ class TimeclockHelpersTimeclock
         $result = new CMSObject;
         $assetName = 'com_timeclock';
         $level = 'component';
-        $actions = Access::getActions('com_timeclock', $level);
+        $actions = ContentHelper::getActions('com_timeclock', $level);
         foreach ($actions as $action) {
             $result->set($action->name, $user->authorise($action->name, $assetName));
         }

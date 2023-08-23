@@ -57,9 +57,9 @@ class TimeclockControllersTools extends TimeclockControllersDefault
     * @access public
     * @return boolean
     */
-    public function execute()
+    public function execute($task = null)
     {
-        $task = $this->getTask();
+        $task = $task ? $task : $this->getTask();
         $fct  = "tools".ucfirst($task);
         if (method_exists($this, $fct)) {
             return $this->$fct();
@@ -73,10 +73,10 @@ class TimeclockControllersTools extends TimeclockControllersDefault
     * @access public
     * @return boolean
     */
-    protected function display()
+    public function display($cachable = false, $urlparams = [])
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         // Get the document object.
         $document = Factory::getDocument();
         $viewName = $app->input->getWord('view', 'tools');
@@ -88,10 +88,10 @@ class TimeclockControllersTools extends TimeclockControllersDefault
         $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsTools';
-        $view = new $viewClass(new $modelClass, $paths);
+        $view = new $viewClass(); // new $modelClass, $paths);
         $view->setLayout($layoutName);
         // Render our view.
-        echo $view->render();
+        echo $view->display();
         return true;
     }
     /**
@@ -104,7 +104,7 @@ class TimeclockControllersTools extends TimeclockControllersDefault
     protected function toolsDbcheck()
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         // Get the document object.
         $document = Factory::getDocument();
         $viewName = 'tools';
@@ -133,7 +133,7 @@ class TimeclockControllersTools extends TimeclockControllersDefault
     {
 
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         // Get the document object.
         $document = Factory::getDocument();
         $viewName = 'tools';

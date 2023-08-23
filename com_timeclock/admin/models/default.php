@@ -35,6 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -53,7 +54,7 @@ use Joomla\CMS\Factory;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsDefault extends JModelBase
+class TimeclockModelsDefault extends AdminModel
 {
     protected $__state_set     = null;
     protected $_total          = null;
@@ -445,7 +446,17 @@ class TimeclockModelsDefault extends JModelBase
     * 
     * @return  Table object
     */
-    protected function getTable()
+    public function getForm($name = '', $prefix = '', $options = [])
+    {
+        // return Form::getInstance($this->table, 'Form');
+    }
+
+    /**
+    * This returns the table for this model
+    * 
+    * @return  Table object
+    */
+    public function getTable($name = '', $prefix = '', $options = [])
     {
         return Table::getInstance($this->table, 'Table');
     }
@@ -483,11 +494,10 @@ class TimeclockModelsDefault extends JModelBase
     * 
     * @return  boolean
     */
-    public function publish($id = null)
+    public function publish(&$pks, $value = 1)
     {
         $table = $this->getTable();
-        $id = is_null($id) ? $this->id : $id;
-        return $table->publish($id, 1);
+        return $table->publish($pks, 1);
     }
     /**
     * Checks out this record

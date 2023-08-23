@@ -35,6 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Factory;
@@ -50,7 +51,7 @@ use Joomla\CMS\Factory;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockControllersDefault extends JControllerBase
+class TimeclockControllersDefault extends AdminController
 {
     /** This is our basic link */
     protected $baselink = "index.php?option=com_timeclock";
@@ -75,9 +76,9 @@ class TimeclockControllersDefault extends JControllerBase
     * @access public
     * @return boolean
     */
-    public function execute()
+    public function execute($task = NULL)
     {
-        $task = $this->getTask();
+        $task = $task ? $task : $this->getTask();
         $fct  = "task".ucfirst($task);
         if (method_exists($this, $fct)) {
             return $this->$fct();
@@ -94,7 +95,7 @@ class TimeclockControllersDefault extends JControllerBase
     public function editlist()
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         // Get the document object.
         $document = Factory::getDocument();
         // Get the task
@@ -131,11 +132,11 @@ class TimeclockControllersDefault extends JControllerBase
     * 
     * @return null
     */
-    protected function getTask()
+    public function getTask()
     {
         if (is_null($this->_task)) {
             // Get the application
-            $app = $this->getApplication();
+            $app = Factory::getApplication();
             // Get the document object.
             $document = Factory::getDocument();
             $task = $app->input->get('task', 'list');
@@ -155,7 +156,7 @@ class TimeclockControllersDefault extends JControllerBase
     */
     protected function taskCancel()
     {
-        $this->getApplication()->redirect($this->baselink);
+        Factory::getApplication()->redirect($this->baselink);
         return true;
     }
     /**
@@ -168,7 +169,7 @@ class TimeclockControllersDefault extends JControllerBase
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         
         // Get the application
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
         $model = $this->getModel();
         if ($index = $model->store()) {
             $app->enqueueMessage(
@@ -194,7 +195,7 @@ class TimeclockControllersDefault extends JControllerBase
     protected function taskPublish()
     {
         $this->getModel()->publish();
-        $this->getApplication()->redirect($this->baselink);
+        Factory::getApplication()->redirect($this->baselink);
         return true;
     }
     /**
@@ -205,7 +206,7 @@ class TimeclockControllersDefault extends JControllerBase
     protected function taskUnpublish()
     {
         $this->getModel()->unpublish();
-        $this->getApplication()->redirect($this->baselink);
+        Factory::getApplication()->redirect($this->baselink);
         return true;
     }
     /**
@@ -216,7 +217,7 @@ class TimeclockControllersDefault extends JControllerBase
     protected function taskCheckin()
     {
         $this->getModel()->checkin();
-        $this->getApplication()->redirect($this->baselink);
+        Factory::getApplication()->redirect($this->baselink);
         return true;
     }
     /**
@@ -228,7 +229,7 @@ class TimeclockControllersDefault extends JControllerBase
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
         $model = $this->getModel();
 
         if ($index = $model->store()) {
@@ -260,10 +261,10 @@ class TimeclockControllersDefault extends JControllerBase
     *
     * @return null
     */
-    protected function getModel($model = null)
+    public function getModel($name = '', $prefix = '', $config = [])
     {
         if (is_null($this->_model)) {
-            $model = empty($model) ? $this->model : $model;
+            $model = empty($model) ? $this->model : $name;
             $this->_model = TimeclockHelpersTimeclock::getModel($this->model);
         }
         return $this->_model;
@@ -298,7 +299,7 @@ class TimeclockControllersDefault extends JControllerBase
         $this->getDocument()->setMimeEncoding( 'application/json' );
         $this->setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $data;
-        $this->getApplication()->close();
+        Factory::getApplication()->close();
     }
     /**
     * Returns the document

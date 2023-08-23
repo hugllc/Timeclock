@@ -35,6 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 
@@ -50,7 +51,7 @@ use Joomla\CMS\Factory;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsTools extends JModelBase
+class TimeclockModelsTools extends AdminModel
 {
     /**
     * Constructor that retrieves the ID from the request
@@ -140,6 +141,15 @@ class TimeclockModelsTools extends JModelBase
         return $ret;
     }
 
+    /**
+    * This returns the table for this model
+    * 
+    * @return  Table object
+    */
+    public function getForm($name = '', $prefix = '', $options = [])
+    {
+        // return Form::getInstance($this->table, 'Form');
+    }
 
 
     /**

@@ -123,8 +123,9 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     *
     * @return Table instance with data in it.
     */
-    public function delete($data=null)
+    public function delete(&$pks)
     {
+        /*
         $data = $data ? $data : JRequest::get('post');
         $row = $this->getTable();
 
@@ -140,6 +141,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
             }
             $row->delete();
         }
+        */
         return true;
     }
     /**

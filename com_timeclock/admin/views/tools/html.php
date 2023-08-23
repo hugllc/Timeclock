@@ -36,8 +36,10 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /** Import the views */
 jimport('joomla.application.component.view');
@@ -53,34 +55,31 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsToolsHtml extends JViewHtml
+class TimeclockViewsToolsHtml extends HtmlView
 {
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = null)
     {
-        $app = Factory::getApplication();
         $layout = $this->getLayout();
 
-        JHTML::stylesheet(
+        HTMLHelper::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
+            array()
         );
-        $app = Factory::getApplication();
 
         $fct = "view".ucfirst($layout);
         if (method_exists($this, $fct)) {
             return $this->$fct();
         }
         $this->addToolbar("COM_TIMECLOCK_TIMECLOCK_TOOLS");
-        TimeclockHelpersView::addSubmenu("tools");
-        
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
+
         $this->sidebar = JHtmlSidebar::render();
-        return parent::render();
+        return parent::display($tpl);
     }
     /**
     * Adds the toolbar for this view.
