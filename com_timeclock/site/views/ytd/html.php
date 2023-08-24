@@ -72,13 +72,7 @@ class TimeclockViewsYtdHtml extends HtmlView
         $this->start     = $this->getModel()->getState('start');
         $this->end       = $this->getModel()->getState('end');
         $this->report_id = $this->getModel()->getState("report.id");
-        
-        JHTML::stylesheet(
-            JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
-        );
-
+    
         $this->_header   = new FileLayout('header', __DIR__.'/layouts');
         $this->_row      = new FileLayout('row', __DIR__.'/layouts');
         $this->_totals   = new FileLayout('totals', __DIR__.'/layouts');

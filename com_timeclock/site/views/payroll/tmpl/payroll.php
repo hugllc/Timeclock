@@ -8,8 +8,6 @@ use Joomla\CMS\HTML\HTMLHelper;
     JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
     JHTML::script(Juri::base()."components/com_timeclock/views/payroll/tmpl/payroll.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
-    JHTML::_('behavior.modal'); 
-    JHTML::_('behavior.calendar');
     $cols = ($this->payperiod->subtotals * 4) + 3;
     $this->payperiod->cols = $cols;
 
