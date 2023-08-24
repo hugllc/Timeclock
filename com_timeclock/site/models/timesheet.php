@@ -89,7 +89,7 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     */
     public function complete()
     {
-        $start = $this->getState("payperiod.start");
+        $start = $this->getState("payperiod")->start;
         TimeclockHelpersTimeclock::setUserParam("timesheetDone", $start, $this->_user_id);
         $set = TimeclockHelpersTimeclock::getUserParam("timesheetDone", $this->_user_id);
         if ($start == $set) {
@@ -246,63 +246,65 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = Factory::getApplication();
-        $registry = $this->loadState();
 
         // Load state from the request.
         $pk = $app->input->get('id', null, "int");
-        $registry->set('id', $pk);
+        $this->setState('id', $pk);
 
         
         // Load state from the request.
         $project_id = $app->input->get('project_id', null, "int");
-        $registry->set('project_id', $project_id);
+        $this->setState('project_id', $project_id);
 
         // Load the parameters.
         $params = ComponentHelper::getParams('com_timeclock');
-        $registry->set('params', $params);
+        $this->setState('params', $params);
         $user = $this->getUser();
         
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
         ) {
-                $registry->set('filter.published', 1);
-                $registry->set('filter.archived', 2);
+                $this->setState('filter.published', 1);
+                $this->setState('filter.archived', 2);
         }
 
         $estart = isset($user->timeclock["startDate"]) ? $user->timeclock["startDate"] : 0;
         $estart = empty($estart) ? 0 : TimeclockHelpersDate::fixDate($estart);
-        $registry->set('employment.start', $estart);
+        $this->setState('employment.start', $estart);
         $eend = isset($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
         $eend = empty($eend) ? 0 : TimeclockHelpersDate::fixDate($eend);
-        $registry->set('employment.end', $eend);
+        $this->setState('employment.end', $eend);
         $date = TimeclockHelpersDate::fixDate(
             $app->input->get('date', date("Y-m-d"), "raw")
         );
         $date = empty($date) ?  date("Y-m-d") : $date;
-        $registry->set('date', $date);
+        $this->setState('date', $date);
         
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstPayPeriodStart");
         $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
         $period = TimeclockHelpersDate::fixedPayPeriod($startTime, $date, $len);
 
-        $registry->set("payperiod.days", $period["days"]);
-        $registry->set("payperiod.start", $period["start"]);
-        $registry->set("payperiod.end", $period["end"]);
-        $registry->set("payperiod.next", $period["next"]);
-        $registry->set("payperiod.prev", $period["prev"]);
+        $payperiod = new stdClass();
+
+
+        $payperiod->days = $period["days"];
+        $payperiod->start = $period["start"];
+        $payperiod->end = $period["end"];
+        $payperiod->next = $period["next"];
+        $payperiod->prev = $period["prev"];
         
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
-        $registry->set("payperiod.cutoff", $cutoff);
+        $payperiod->cutoff = $cutoff;
 
         $locked = TimeclockHelpersDate::compareDates($cutoff, $period["next"]) >= 0;
-        $registry->set("payperiod.locked", $locked);
+        $payperiod->locked = $locked;
 
         $fulltimeHours = TimeclockHelpersTimeclock::getParam("fulltimeHours");
-        $registry->set("payperiod.fulltimeHours", $fulltimeHours);
+        $payperiod->fulltimeHours = $fulltimeHours;
 
         $usercutoff = isset($user->timeclock["noTimeBefore"]) ? $user->timeclock["noTimeBefore"] : 0;
-        $registry->set("payperiod.usercutoff", $usercutoff);
+        $payperiod->usercutoff = $usercutoff;
 
         $dates = array_flip($period["dates"]);
         foreach ($dates as $date => &$value) {
@@ -316,19 +318,18 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
                 $value = false;
             }
         }
-        $registry->set("payperiod.dates", $dates);
+        $payperiod->dates = $dates;
         
         $split = 7;
-        $registry->set("payperiod.splitdays", $split);
+        $payperiod->splitdays = $split;
 
         $subtotals = (int)($len / $split);
-        $registry->set("payperiod.subtotals", $subtotals);
+        $payperiod->subtotals = $subtotals;
 
         $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
         $done = TimeclockHelpersDate::compareDates($timesheetDone, $period["start"]) >= 0;
-        $registry->set("payperiod.done", $done);
-        
-        $this->setState($registry);
+        $payperiod->done = $done;
+        $this->setState("payperiod", $payperiod);
     }
     /**
     * This function gets the dates of the period, and says wheter or not time can 
@@ -455,8 +456,8 @@ class TimeclockModelsTimesheet extends TimeclockModelsSiteDefault
     private function _periodWhere($query, $start = null, $end = null)
     {
         $db = Factory::getDBO();
-        $start = empty($start) ? $this->getState("payperiod.start") : $start;
-        $end   = empty($end)   ? $this->getState("payperiod.end")   : $end;
+        $start = empty($start) ? $this->getState("payperiod")->start : $start;
+        $end   = empty($end)   ? $this->getState("payperiod")->end   : $end;
 
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));

@@ -36,6 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
@@ -54,29 +55,29 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsReportHtml extends JViewHtml
+class TimeclockViewsReportHtml extends HtmlView
 {
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = NULL)
     {
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $app = Factory::getApplication();
         $layout = $this->getLayout();
         
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->start     = $this->model->getState('start');
-        $this->end       = $this->model->getState('end');
-        $this->datatype  = $this->model->getState('datatype');
-        $this->report_id = $this->model->getState("report.id");
+        $this->start     = $this->getModel()->getState('start');
+        $this->end       = $this->getModel()->getState('end');
+        $this->datatype  = $this->getModel()->getState('datatype');
+        $this->report_id = $this->getModel()->getState("report")->id;
         $this->currency  = "$";
         
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
+            array()
         );
 
         $this->_header   = new FileLayout('header', __DIR__.'/layouts');
@@ -88,16 +89,16 @@ class TimeclockViewsReportHtml extends JViewHtml
         $this->_control  = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
         if (empty($this->report_id)) {
-            $this->data              = $this->model->listItems();
-            $this->users             = $this->model->listUsers();
-            $this->projects          = $this->model->listProjects();
-            $this->filter            = $this->model->getState("filter");
+            $this->data              = $this->getModel()->listItems();
+            $this->users             = $this->getModel()->listUsers();
+            $this->projects          = $this->getModel()->listProjects();
+            $this->filter            = $this->getModel()->getState("filter");
             $this->filter->start     = $this->start;
             $this->filter->end       = $this->end;
             $this->filter->datatype  = $this->datatype;
             $this->filter->report_id = $this->report_id;
         } else {
-            $this->report   = $this->model->getReport();
+            $this->report   = $this->getModel()->getReport();
             $this->data     = $this->report->timesheets;
             $this->users    = $this->report->users;
             $this->projects = $this->report->projects;
@@ -111,11 +112,10 @@ class TimeclockViewsReportHtml extends JViewHtml
         );
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
+            array()
         );
 
-        return parent::render();
+        return parent::display($tpl);
     }
     /**
     * This routine formats currency

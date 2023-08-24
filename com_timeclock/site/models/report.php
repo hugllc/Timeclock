@@ -207,7 +207,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $db = Factory::getDBO();
         $start = $this->getState("start");
         $end   = $this->getState("end");
-        $type   = $this->getState("report.type");
+        $type   = $this->getState("report")->type;
         $query = $db->getQuery(TRUE);
         $query->select('*');
         $query->from('#__timeclock_reports');
@@ -282,7 +282,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function getReport($id = null)
     {
         if (is_null($id)) {
-            $id = $this->getState("report.id");
+            $id = $this->getState("report")->id;
         }
         if (!isset($this->_report[$id])) {
             $this->_report[$id] = Table::getInstance('TimeclockReports', 'Table');
@@ -473,7 +473,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             return false;
         }
         $date     = date("Y-m-d H:i:s");
-        $type     = $this->getState("report.type");
+        $type     = $this->getState("report")->type;
         $start    = $this->getState("start");
         $end      = $this->getState("end");
         $datatype = $this->getState("datatype");
@@ -510,7 +510,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function store()
     {
         $row = $this->buildStore();
-        $report_id = $this->getState("report.id");
+        $report_id = $this->getState("report")->id;
         if (!empty($report_id) || !is_object($row)) {
             return false;
         }
@@ -548,23 +548,22 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = Factory::getApplication();
-        $registry = $this->loadState();
 
         $start = TimeclockHelpersDate::fixDate(
             $app->getUserStateFromRequest($context.'.start', 'start', '')
         );
         // If this is the first day of the month, we want to see last month.
         $start = empty($start) ?  date($this->defaultStart, time() - 86400) : $start;
-        $registry->set('start', $start);
+        $this->setState('start', $start);
 
         $end = TimeclockHelpersDate::fixDate(
             $app->getUserStateFromRequest($context.'.end', 'end', '')
         );
         $end = empty($end) ?  date("Y-m-d") : $end;
-        $registry->set('end', $end);
+        $this->setState('end', $end);
 
         $datatype = $app->getUserStateFromRequest($context.'.datatype', 'datatype', 'hours');
-        $registry->set("datatype", $datatype);
+        $this->setState("datatype", $datatype);
         
         $user = Factory::getUser();
 
@@ -572,12 +571,16 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             $app->input->get('date', date("Y-m-d"), "raw")
         );
         $date = empty($date) ?  date("Y-m-d") : $date;
-        $registry->set('date', $date);
+        $this->setState('date', $date);
         
-        $registry->set('report.type', $this->type);
+        $report = new stdClass();
+        $report->type = $this->type;
+        $report_id = $app->input->get("report_id", 0, "int");
+        $report->id = $report_id;
+        $this->setState('report', $report);
         
-        $this->_populateFilter($registry);
-        $this->_populateState($registry);
+        $this->_populateFilter();
+        $this->_populateState();
     }
     /**
     * This populates the filter used for narrowing down reports.
@@ -590,36 +593,43 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     * 
     * @return  void
     */
-    protected function _populateFilter($registry = null)
+    protected function _populateFilter()
     {
+        $filter = new stdClass();
         $app = Factory::getApplication();
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $category = $app->getUserStateFromRequest($context.'.filter.category', 'filter_category', '');
-        $registry->set('filter.category', $category);
+        $filter->category = $category;
 
         $department = $app->getUserStateFromRequest($context.'.filter.department', 'filter_department', '');
-        $registry->set('filter.department', $department);
+        $filter->department = $department;
 
         $customer = $app->getUserStateFromRequest($context.'.filter.customer', 'filter_customer', '');
-        $registry->set('filter.customer', $customer);
+        $filter->customer = $customer;
 
         $user_manager_id = $app->getUserStateFromRequest($context.'.filter.user_manager_id', 'filter_user_manager_id', '');
-        $registry->set('filter.user_manager_id', $user_manager_id);
+        $filter->user_manager_id = $user_manager_id;
 
         $user_id = $app->getUserStateFromRequest($context.'.filter.user_id', 'filter_user_id', '');
-        $registry->set('filter.user_id', $user_id);
+        $filter->user_id = $user_id;
 
         $proj_manager_id = $app->getUserStateFromRequest($context.'.filter.proj_manager_id', 'filter_proj_manager_id', '');
-        $registry->set('filter.proj_manager_id', $proj_manager_id);
+        $filter->proj_manager_id = $proj_manager_id;
 
         $proj_type = $app->getUserStateFromRequest($context.'.filter.project_type', 'filter_project_type', '');
-        $registry->set('filter.project_type', $proj_type);
+        $filter->project_type = $proj_type;
 
-        $report_id = $app->input->get("report_id", 0, "int");
-        $registry->set("report.id", $report_id);
+        $user = Factory::getUser();
+        if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
+            &&  (!$user->authorise('core.edit', 'com_timeclock'))
+        ) {
+                $filter->published = 1;
+                $filter->archived = 2;
+        }
 
-        $registry->set("filter.type", $this->type);
+        $filter->type = $this->type;
+        $this->setState("filter", $filter);
     }
     /**
     * Method to auto-populate the model state.
@@ -635,32 +645,18 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     * @note    Calling getState in this method will result in recursion.
     * @since   12.2
     */
-    protected function _populateState($registry = null)
+    protected function _populateState()
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = Factory::getApplication();
-        if (!is_object($registry)) {
-            $registry = $this->loadState();
-        }
         // Load state from the request.
         $pk = $app->input->get('id', array(), "array");
-        $registry->set('id', $pk);
+        $this->setState('id', $pk);
 
         // Load the parameters.
         $params = ComponentHelper::getParams('com_timeclock');
-        $registry->set('params', $params);
-
-        $user = Factory::getUser();
-
-        if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
-            &&  (!$user->authorise('core.edit', 'com_timeclock'))
-        ) {
-                $registry->set('filter.published', 1);
-                $registry->set('filter.archived', 2);
-        }
-
-        $this->setState($registry);
+        $this->setState('params', $params);
     }
     /**
     * Builds the query to be used by the model

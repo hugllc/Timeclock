@@ -36,6 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
@@ -54,26 +55,25 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsPayrollHtml extends JViewHtml
+class TimeclockViewsPayrollHtml extends HtmlView
 {
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = NULL)
     {
-        $app = Factory::getApplication();
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $layout = $this->getLayout();
         
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->model->getState('payperiod');
+        $this->payperiod = $this->getModel()->getState('payperiod');
         $this->payperiod->controller = "payroll";
 
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
+            array()
         );
 
         $this->_header   = new FileLayout('header', __DIR__.'/layouts');
@@ -84,21 +84,20 @@ class TimeclockViewsPayrollHtml extends JViewHtml
         $this->_export   = new FileLayout('export', dirname(__DIR__).'/layouts');
         $this->_notes    = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
-        $this->data     = $this->model->listItems();
-        $this->users    = $this->model->listUsers();
-        $this->projects = $this->model->listProjects();
-        $this->report   = $this->model->getReport();
+        $this->data     = $this->getModel()->listItems();
+        $this->users    = $this->getModel()->listUsers();
+        $this->projects = $this->getModel()->listProjects();
+        $this->report   = $this->getModel()->getReport();
         $this->export   = array(
             "CSV" => "csv",
             "Excel 2007" => "xlsx",
         );
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
+            array()
         );
 
-        return parent::render();
+        return parent::display($tpl);
     }
 }
 ?>

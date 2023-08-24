@@ -87,7 +87,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     public function checkUser(&$user)
     {
-        $start = $this->getState("payperiod.start");
+        $start = $this->getState("payperiod")->start;
         $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
         $user->done = TimeclockHelpersDate::compareDates($timesheetDone, $start) >= 0;
         $eend = empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
@@ -164,7 +164,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     {
         $payperiod = $this->getState("payperiod");
         $pto       = TimeclockHelpersTimeclock::getModel("pto");
-        $start     = $this->getState("payperiod.prev");
+        $start     = $payperiod->prev;
         $users     = $this->listUsers();
         foreach ($users as $user) {
             $pto->setAccrual($payperiod->prev, $payperiod->end, $user->id);
@@ -178,7 +178,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     public function unlock()
     {
-        $start = $this->getState("payperiod.start");
+        $start = $this->getState("payperiod")->start;
         return $this->setParam("payperiodCutoff", $start);
     }
     /**
@@ -197,7 +197,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
         foreach ($list as $row) {
             $worked[$row->worked][] = $row;
         }
-        $dates = $this->getState("payperiod.dates");
+        $dates = $this->getState("payperiod")->dates;
         $split = 7;
         $period = -1;
         $days   = 0;
@@ -271,7 +271,7 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     */
     private function _checkOvertime(&$data)
     {
-        $fulltime = $this->getState("payperiod.fulltimeHours");
+        $fulltime = $this->getState("payperiod")->fulltimeHours;
         $users = $this->listUsers();
         foreach ($users as $user_id => &$user) {
             if (!isset($data[$user_id])) {
@@ -341,96 +341,98 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     * @note    Calling getState in this method will result in recursion.
     * @since   12.2
     */
-    protected function populateState($registry = null)
+    protected function populateState()
     {
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = Factory::getApplication();
-        $registry = $this->loadState();
 
         $user = Factory::getUser();
 
-        
+        $report = new stdClass();
+
         $report_id = $app->input->get("report_id", 0, "int");
         if (empty($report_id)) {
             $date = TimeclockHelpersDate::fixDate(
                 $app->input->get('date', date("Y-m-d"), "raw")
             );
             $date = empty($date) ?  date("Y-m-d") : $date;
-            $registry->set('date', $date);
+            $this->setState('date', $date);
         } else {
-            $registry->set("report.id", $report_id);
-            $report = $this->getReport($report_id);
-            $date   = $report->startDate;
-            $registry->set('date', $date);
+            $report->id = $report_id;
+            $rep = $this->getReport($report_id);
+            $date   = $rep->startDate;
+            $this->setState('date', $date);
         }
         
+        $payperiod = new stdClass();
+
         // Get the pay period Dates
         $startTime = TimeclockHelpersTimeclock::getParam("firstPayPeriodStart");
         $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
         $start = TimeclockHelpersDate::fixedPayPeriodStart($startTime, $date, $len);
-        $registry->set("payperiod.days", $len);
-        $registry->set("payperiod.start", $start);
-        $registry->set("start", $start);
+        $payperiod->days = $len;
+        $payperiod->start = $start;
+        $this->setState("start", $start);
         $s = TimeclockHelpersDate::explodeDate($start);
         $end = date(
             "Y-m-d", 
             TimeclockHelpersDate::dateUnix($s["m"], $s["d"]+$len-1, $s["y"])
         );
-        $registry->set("payperiod.end", $end);
-        $registry->set("end", $end);
+        $payperiod->end = $end;
+        $this->setState("end", $end);
         
         $next = TimeclockHelpersDate::dateUnix(
             $s["m"], $s["d"]+$len, $s["y"]
         );
-        $registry->set("payperiod.next", date("Y-m-d", $next));
+        $payperiod->next = date("Y-m-d", $next);
         $prev = TimeclockHelpersDate::dateUnix(
             $s["m"], $s["d"]-$len, $s["y"]
         );
-        $registry->set("payperiod.prev", date("Y-m-d", $prev));
+        $payperiod->prev = date("Y-m-d", $prev);
         
         $cutoff = TimeclockHelpersTimeclock::getParam("payperiodCutoff");
-        $registry->set("payperiod.cutoff", $cutoff);
+        $payperiod->cutoff = $cutoff;
 
         $fulltimeHours = TimeclockHelpersTimeclock::getParam("fulltimeHours");
-        $registry->set("payperiod.fulltimeHours", $fulltimeHours);
+        $payperiod->fulltimeHours = $fulltimeHours;
 
         $locked = TimeclockHelpersDate::compareDates($cutoff, $next) >= 0;
-        $registry->set("payperiod.locked", $locked);
+        $payperiod->locked = $locked;
 
         $unlock = TimeclockHelpersDate::compareDates($cutoff, $next) == 0;
-        $registry->set("payperiod.unlock", $unlock);
+        $payperiod->unlock = $unlock;
 
         $dates = array_flip(TimeclockHelpersDate::payPeriodDates($start, $end));
         foreach ($dates as $date => &$value) {
             $value = true;
         }
-        $registry->set("payperiod.dates", $dates);
+        $payperiod->dates = $dates;
 
         if (empty($report_id)) {
-            $registry->set('report.name', "payroll $start $end");
-            $registry->set('report.type', "payroll");
-            $registry->set('report.description', Text::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
+            $report->name = "payroll $start $end";
+            $report->type = "payroll";
+            $report->description = Text::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end);
 
             $report_id = $this->_getReportID(
-                $registry->get("report.type"), 
-                $registry->get("report.name")
+                $report->type, 
+                $report->name
             );
-            $registry->set("report.id", $report_id);
+            $report->id = $report_id;
         }
 
         $split = 7;
-        $registry->set("payperiod.splitdays", $split);
+        $payperiod->splitdays = $split;
         $split = 7;
-        $registry->set("payperiod.splitdays", $split);
+        $payperiod->splitdays = $split;
 
         $subtotals = (int)($len / $split);
-        $registry->set("payperiod.subtotals", $subtotals);
+        $payperiod->subtotals = $subtotals;
 
+        $this->setState('report', $report);
+        $this->setState('payperiod', $payperiod);
         // This saves the payperiod information into the report
-        $registry->set('filter', $registry->get('payperiod'));
-        //$this->setState($registry);
-        $this->_populateState($registry);
+        $this->setState('filter', $payperiod);
     }
     /**
     * Builds the filter for the query
@@ -444,8 +446,8 @@ class TimeclockModelsPayroll extends TimeclockModelsReport
     protected function _buildWhere(&$query)
     { 
         $db = Factory::getDBO();
-        $start = $this->getState("payperiod.start");
-        $end   = $this->getState("payperiod.end");
+        $start = $this->getState("payperiod")->start;
+        $end   = $this->getState("payperiod")->end;
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
         $query->where($db->quoteName("p.type")." <> 'UNPAID'");

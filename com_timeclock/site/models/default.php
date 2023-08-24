@@ -35,6 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -51,7 +52,7 @@ use Joomla\CMS\Factory;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsSiteDefault extends JModelBase
+class TimeclockModelsSiteDefault extends BaseDatabaseModel
 {
     protected $__state_set     = null;
     protected $_total          = null;
@@ -191,26 +192,24 @@ class TimeclockModelsSiteDefault extends JModelBase
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = Factory::getApplication();
-        $registry = $this->loadState();
         
         // Load state from the request.
         $pk = $app->input->get('id', array(), "array");
-        $registry->set('id', $pk);
+        $this->setState('id', $pk);
 
         // Load the parameters.
         $params = ComponentHelper::getParams('com_timeclock');
-        $registry->set('params', $params);
+        $this->setState('params', $params);
 
-        $this->setState($registry);
     }
     /**
     * This returns the table for this model
     * 
     * @return  Table object
     */
-    protected function getTable()
+    public function getTable($name = '', $prefix = 'Table', $options = [])
     {
-        return Table::getInstance($this->table, 'Table');
+        return Table::getInstance($this->table, $prefix);
     }
     /**
     * This sets a parameter of com_timeclock.

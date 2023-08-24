@@ -36,6 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
@@ -54,39 +55,39 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsTimesheetHtml extends JViewHtml
+class TimeclockViewsTimesheetHtml extends HtmlView
 {
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = NULL)
     {
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $app = Factory::getApplication();
         $layout = $this->getLayout();
-        
+
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->model->getState('payperiod');
+        $this->payperiod = $this->getModel()->getState('payperiod');
         $this->payperiod->controller = "timesheet";
 
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
-            array(), 
-            true
+            array()
         );
 
         if (($layout == "addhours") || ($layout == "modal")) {
-            return $this->renderAddhours();
+            return $this->renderAddhours($tpl);
         }
-        return $this->renderTimesheet();
+        return $this->renderTimesheet($tpl);
     }
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function renderTimesheet()
+    function renderTimesheet($tpl)
     {
 
         $this->_header     = new FileLayout('header', __DIR__.'/layouts');
@@ -97,30 +98,29 @@ class TimeclockViewsTimesheetHtml extends JViewHtml
         $this->_subtotals  = new FileLayout('subtotals', __DIR__.'/layouts');
         $this->_psubtotals = new FileLayout('psubtotals', __DIR__.'/layouts');
         $this->_toolbar    = new FileLayout('toolbar', __DIR__.'/layouts');
-        $this->_name       = new FileLayout('name', __DIR__.'/layouts');
+        $this->_uname      = new FileLayout('name', __DIR__.'/layouts');
         $this->_notes      = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
-        $this->data      = $this->model->listItems();
-        $this->projects  = $this->model->listProjects();
-        $this->user      = $this->model->getUser();
-        
+        $this->data      = $this->getModel()->listItems();
+        $this->projects  = $this->getModel()->listProjects();
+        $this->user      = $this->getModel()->getUser();
 
-        return parent::render();
+        return parent::display($tpl);
     }
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function renderAddhours()
+    function renderAddhours($tpl)
     {
         $this->_entry    = new FileLayout('entry', __DIR__.'/layouts');
 
-        $this->data      = $this->model->listItems();
-        $this->projects  = $this->model->listProjects();
-        $this->date      = $this->model->getState('date');
+        $this->data      = $this->getModel()->listItems();
+        $this->projects  = $this->getModel()->listProjects();
+        $this->date      = $this->getModel()->getState('date');
         
-        return parent::render();
+        return parent::display();
     }
 }
 ?>

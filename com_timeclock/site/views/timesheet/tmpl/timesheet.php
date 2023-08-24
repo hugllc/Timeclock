@@ -46,7 +46,7 @@ use Joomla\CMS\HTML\HTMLHelper;
         <table class="paid timesheet table table-striped table-bordered table-hover table-condensed">
             <thead>
 <?php 
-    print $this->_name->render(
+    print $this->_uname->render(
         (object)array(
             "cols" => $this->payperiod->cols,
             "name" => "COM_TIMECLOCK_PAID_TIME",
@@ -100,7 +100,7 @@ use Joomla\CMS\HTML\HTMLHelper;
         <table class="volunteer timesheet">
             <thead>
 <?php 
-    print $this->_name->render(
+    print $this->_uname->render(
         (object)array(
             "cols" => $this->payperiod->cols,
             "name" => "COM_TIMECLOCK_VOLUNTEER_TIME",

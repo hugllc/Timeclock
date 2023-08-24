@@ -67,7 +67,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     * @access public
     * @return boolean
     */
-    public function execute()
+    public function execute($task = null)
     {
         $this->checkAuth();
         $this->model = TimeclockHelpersTimeclock::getModel($this->modelName);
@@ -115,7 +115,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     * @access public
     * @return boolean
     */
-    protected function display()
+    public function display($cachable = false, $urlparams = [])
     {
         // Get the application
         $app = Factory::getApplication();
@@ -128,17 +128,15 @@ class TimeclockControllersReport extends TimeclockControllersDefault
             $layoutName = 'report';
         }
         $app->input->set('view', $this->viewName);
-        // Register the layout paths for the view
-        $paths = new SplPriorityQueue;
-        $paths->insert(JPATH_COMPONENT . '/views/' . $this->viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($this->viewName) . ucfirst($viewFormat);
-        $view = new $viewClass($this->model, $paths);
+        $view = new $viewClass();
 
         if (method_exists($view, "setLayout")) {
             $view->setLayout($layoutName);
         }
+        $view->setModel($this->model, true);
         // Render our view.
-        echo $view->render();
+        $view->display();
         return true;
     }
     /**

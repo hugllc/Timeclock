@@ -60,7 +60,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     * @access public
     * @return boolean
     */
-    public function execute()
+    public function execute($task = null)
     {
         $this->checkAuth();
         $this->model = TimeclockHelpersTimeclock::getModel("payroll");
@@ -79,7 +79,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     * @access public
     * @return boolean
     */
-    protected function display()
+    public function display($cachable = false, $urlparams = [])
     {
         // Get the application
         $app = Factory::getApplication();
@@ -91,17 +91,16 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
         $layoutName = 'payroll';
         
         $app->input->set('view', $viewName);
-        // Register the layout paths for the view
-        $paths = new SplPriorityQueue;
-        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsPayroll';
-        $view = new $viewClass(new $modelClass, $paths);
+        $model = new $modelClass();
+        $view = new $viewClass();
         if (method_exists($view, "setLayout")) {
             $view->setLayout($layoutName);
         }
+        $view->setModel($model, true);
         // Render our view.
-        echo $view->render();
+        $view->display();
         return true;
     }
     /**

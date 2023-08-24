@@ -92,15 +92,14 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         $layoutName = 'timesheet';
         
         $app->input->set('view', $viewName);
-        // Register the layout paths for the view
-        $paths = new SplPriorityQueue;
-        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $modelClass = 'TimeclockModelsTimesheet';
-        $view = new $viewClass(new $modelClass, $paths);
+        $model = new $modelClass();
+        $view = new $viewClass();
         $view->setLayout($layoutName);
+        $view->setModel($model, true);
         // Render our view.
-        echo $view->render();
+        $view->display();
         return true;
     }
     /**
@@ -157,16 +156,14 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
             $layoutName = "addhours";
         }
         $app->input->set('view', $viewName);
-        // Register the layout paths for the view
-        $paths = new SplPriorityQueue;
-        $paths->insert(JPATH_COMPONENT . '/views/' . $viewName . '/tmpl', 'normal');
         $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
         $model = TimeclockHelpersTimeclock::getModel("addhours");
         $this->checkMe($model);
-        $view = new $viewClass($model, $paths);
+        $view = new $viewClass();
         $view->setLayout($layoutName);
+        $view->setModel($model, true);
         // Render our view.
-        echo $view->render();
+        $view->display();
         return true;
     }
     /**
