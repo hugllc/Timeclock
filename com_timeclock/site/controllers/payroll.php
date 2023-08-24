@@ -82,7 +82,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     protected function display()
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
         $document = Factory::getDocument();
@@ -113,7 +113,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
 
         if ($index = $this->model->lock()) {
             $json = new JsonResponse(
@@ -145,7 +145,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
 
         if ($index = $this->model->unlock()) {
             $json = new JsonResponse(

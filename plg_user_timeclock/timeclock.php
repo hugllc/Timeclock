@@ -50,11 +50,17 @@ use Joomla\Utilities\ArrayHelper;
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  *
  */
- defined('_JEXEC') or die('Restricted access');
+ defined('_JEXEC') or die();
 jimport('joomla.utilities.date');
 jimport('joomla.form.form');
+
+
 require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
 Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
+
+use Joomla\Event\Event;
+use Joomla\Event\SubscriberInterface;
+
 /**
 * This is a plugin to display timeclock user information in the user screen
 *
@@ -67,8 +73,17 @@ Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields'
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
 */
-class plgUserTimeclock extends CMSPlugin
+class plgUserTimeclock extends CMSPlugin implements SubscriberInterface
 {
+
+    /**
+     * This gets the subscriber events
+     */
+    static public function getSubscribedEvents(): array
+    {
+        return [
+		];
+    }
     /**
     * This happens when we are preparing the form
     *
@@ -131,11 +146,13 @@ class plgUserTimeclock extends CMSPlugin
         );
         $results = $db->loadRowList();
        // Check for a database error.
+       /*
         if ($db->errorNum)
         {
             $this->_subject->setError($db->errorMsg);
             return false;
         }
+        */
         return $results;
 
     }

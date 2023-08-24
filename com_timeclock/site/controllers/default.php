@@ -35,6 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
+use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -49,7 +50,7 @@ use Joomla\CMS\Factory;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockControllersDefault extends JControllerBase
+class TimeclockControllersDefault extends BaseController
 {
     /** This is where we store our task */
     private $_task = null;
@@ -58,10 +59,10 @@ class TimeclockControllersDefault extends JControllerBase
     *
     * @return bool
     */
-    public function execute()
+    public function execute($task = NULL)
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         // Redirect to the correct controller
         $app->redirect('index.php?option=com_timeclock&controller=timeclock');
         // Return
@@ -88,7 +89,7 @@ class TimeclockControllersDefault extends JControllerBase
     */
     public function checkAuth()
     {
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         if (!$this->authorize()) {
             $app->redirect('index.php',Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
@@ -99,11 +100,11 @@ class TimeclockControllersDefault extends JControllerBase
     * 
     * @return null
     */
-    protected function getTask()
+    public function getTask()
     {
         if (is_null($this->_task)) {
             // Get the application
-            $app = $this->getApplication();
+            $app = Factory::getApplication();
             // Get the document object.
             $document = Factory::getDocument();
             $task = $app->input->get('task', 'list');

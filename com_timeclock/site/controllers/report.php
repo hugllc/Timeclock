@@ -94,7 +94,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
         if ($viewFormat == "html") {
             return;
         }
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $report_id = $app->input->get("report_id", null, "int");
         if (empty($report_id)) {
             return;
@@ -118,7 +118,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     protected function display()
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
         $document = Factory::getDocument();
@@ -150,7 +150,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
 
         if ($index = $this->model->store()) {
             $json = new JsonResponse(

@@ -62,7 +62,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     * @access public
     * @return boolean
     */
-    public function execute()
+    public function execute($task = NULL)
     {
         $this->checkAuth();
 
@@ -80,10 +80,10 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     * @access public
     * @return boolean
     */
-    protected function display()
+    public function display($cachable = false, $urlparams = [])
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
         $document = Factory::getDocument();
@@ -112,7 +112,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
 
         $model = TimeclockHelpersTimeclock::getModel("timesheet");
         $this->checkMe($model);
@@ -146,7 +146,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     protected function taskAddhours()
     {
         // Get the application
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $params = ComponentHelper::getParams('com_timeclock');
         // Get the document object.
         $document = Factory::getDocument();
@@ -178,7 +178,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     {
         JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
         $model = TimeclockHelpersTimeclock::getModel("addhours");
         $this->checkMe($model);
 
@@ -206,7 +206,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     protected function checkMe($model)
     {
         if (!$model->getUser()->me) {
-            $this->getApplication()->redirect('index.php',Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+            Factory::getApplication()->redirect('index.php',Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
 
     }
@@ -215,11 +215,11 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     * 
     * @return null
     */
-    protected function getTask()
+    public function getTask()
     {
         if (is_null($this->_task)) {
             // Get the application
-            $app = $this->getApplication();
+            $app = Factory::getApplication();
             // Get the document object.
             $document = Factory::getDocument();
             $task = $app->input->get('task', 'list');
@@ -245,7 +245,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
         }
         $active = TimeclockHelpersTimeclock::getUserParam("active", $user->id);
         if ($active) {
-            $app = $this->getApplication();
+            $app = Factory::getApplication();
             if (is_null($app->input->get("id", null, "int"))) {
                 return true;
             }
