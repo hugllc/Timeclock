@@ -36,8 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
-/** Import the views */
-jimport('joomla.application.component.view');
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 require_once __DIR__."/base.php";
 /**
@@ -64,7 +63,7 @@ class TimeclockViewsWcompXlsx extends TimeclockViewsWcompBase
     */
     protected function finalize()
     {
-        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter = new Xlsx($this->phpexcel);
         $objWriter->setPreCalculateFormulas(true);
         $objWriter->save('php://output');
     }

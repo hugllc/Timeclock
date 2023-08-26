@@ -90,7 +90,7 @@ class TimeclockModelsYtd extends TimeclockModelsReport
                 continue;
             }
             $type = $row->project_type;
-            $return[$user_id]            = isset($return[$user_id]) ? $return[$user_id] : array("total" => 0);
+            $return[$user_id]           = isset($return[$user_id]) ? $return[$user_id] : array("total" => 0);
             $return[$user_id][$type]    = isset($return[$user_id][$type]) ? $return[$user_id][$type] : 0;
             $return[$user_id][$type]   += $row->hours;
             $return[$user_id]["total"] += $row->hours;

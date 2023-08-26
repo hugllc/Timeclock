@@ -39,6 +39,8 @@ defined('_JEXEC') or die();
 /** Import the views */
 jimport('joomla.application.component.view');
 
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 require __DIR__."/base.php";
 /**
  * HTML View class for the ComTimeclockWorld Component
@@ -64,7 +66,7 @@ class TimeclockViewsPayrollXlsx extends TimeclockViewsPayrollBase
     */
     protected function finalize()
     {
-        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter = new Xlsx($this->phpexcel);
         $objWriter->setPreCalculateFormulas(true);
         $objWriter->save('php://output');
     }

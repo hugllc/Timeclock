@@ -36,6 +36,9 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -55,7 +58,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsHoursumBase extends JViewBase
+class TimeclockViewsHoursumBase extends HtmlView
 {
     private $_projType = array(
         "PROJECT"  => "COM_TIMECLOCK_PROJECT",
@@ -81,22 +84,22 @@ class TimeclockViewsHoursumBase extends JViewBase
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = NULL)
     {
-        if (!TimeclockHelpersContrib::phpexcel()) {
+        if (!TimeclockHelpersContrib::phpspreadsheet()) {
             return false;
         }
         $app = Factory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");
-        $report_id = $this->model->getState("report.id");
+        $report_id = $this->getModel()->getState("report.id");
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->start  = $this->model->getState('start');
-        $this->end    = $this->model->getState('end');
+        $this->start  = $this->getModel()->getState('start');
+        $this->end    = $this->getModel()->getState('end');
 
 
         if (!empty($report_id) && $doReport) {
-            $report            = $this->model->getReport();
+            $report            = $this->getModel()->getReport();
             $this->data        = $report->timesheets;
             $this->projects    = $report->projects;
             $this->users       = $report->users;
@@ -104,11 +107,11 @@ class TimeclockViewsHoursumBase extends JViewBase
             $this->departments = $this->report->departments;
             $file   = str_replace(" ", "_", $report->name);
         } else {
-            $this->data        = $this->model->listItems();
-            $this->users       = $this->model->listUsers();
-            $this->projects    = $this->model->listProjects();
-            $this->customers   = $this->model->listCustomers();
-            $this->departments = $this->model->listDepartments();
+            $this->data        = $this->getModel()->listItems();
+            $this->users       = $this->getModel()->listUsers();
+            $this->projects    = $this->getModel()->listProjects();
+            $this->customers   = $this->getModel()->listCustomers();
+            $this->departments = $this->getModel()->listDepartments();
             $file              = "report-live-";
         }
         $file .= $this->start."to".$this->end;
@@ -268,7 +271,7 @@ class TimeclockViewsHoursumBase extends JViewBase
     {
         $user = Factory::getUser();
         // Create new PHPExcel object
-        $this->phpexcel = new PHPExcel();
+        $this->phpexcel = new Spreadsheet();
         // Set document properties
         $report = Text::sprintf("COM_TIMECLOCK_USERSUM_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
@@ -301,7 +304,7 @@ class TimeclockViewsHoursumBase extends JViewBase
     */
     protected function finalize()
     {
-        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter = new Xlsx($this->phpexcel);
         $objWriter->setPreCalculateFormulas(true);
         $objWriter->save('php://output');
     }

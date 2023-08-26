@@ -36,8 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
-/** Import the views */
-jimport('joomla.application.component.view');
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
 require_once __DIR__."/base.php";
 /**
@@ -64,11 +63,11 @@ class TimeclockViewsReportCsv extends TimeclockViewsReportBase
     */
     protected function finalize()
     {
-        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'CSV')
-                                                    ->setDelimiter(',')
-                                                    ->setEnclosure('"')
-                                                    ->setLineEnding("\r\n")
-                                                    ->setSheetIndex(0);
+        $objWriter = new Csv($this->phpexcel, 'CSV');
+        $objWriter->setDelimiter(',');
+        $objWriter->setEnclosure('"');
+        $objWriter->setLineEnding("\r\n");
+        $objWriter->setSheetIndex(0);
         $objWriter->setPreCalculateFormulas(true);
         $objWriter->save('php://output');
     }

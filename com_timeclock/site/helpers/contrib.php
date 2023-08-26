@@ -33,7 +33,7 @@
  * @version    GIT: $Id: 1704fec720b1e135e464969c032dd8cf90adeb1d $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die();
 
  
 /**
@@ -55,10 +55,10 @@ class TimeclockHelpersContrib
      * @access public
      * @return bool True if it exists, false otherwise
      */
-    static public function phpexcel()
+    static public function phpspreadsheet()
     {
-        if (file_exists(JPATH_COMPONENT.'/contrib/phpexcel/PHPExcel.php')) {
-            include_once JPATH_COMPONENT.'/contrib/phpexcel/PHPExcel.php';
+        if (file_exists(JPATH_COMPONENT.'/contrib/vendor/phpoffice/phpspreadsheet/README.md')) {
+            include_once JPATH_COMPONENT.'/contrib/vendor/autoload.php';
             return true;
         }
         return false;

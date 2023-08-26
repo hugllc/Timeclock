@@ -36,12 +36,12 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-
-/** Import the views */
-jimport('joomla.application.component.view');
 
 /**
  * HTML View class for the ComTimeclockWorld Component
@@ -54,7 +54,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsPayrollBase extends JViewBase
+class TimeclockViewsPayrollBase extends HtmlView
 {
     /** This is our mime type */
     protected $mimetype = "text/html";
@@ -71,26 +71,26 @@ class TimeclockViewsPayrollBase extends JViewBase
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = NULL)
     {
-        if (!TimeclockHelpersContrib::phpexcel()) {
+        if (!TimeclockHelpersContrib::phpspreadsheet()) {
             return false;
         }
         $app = Factory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");
-        $report_id = $this->model->getState("report.id");
+        $report_id = $this->getModel()->getState("report.id");
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->model->getState('payperiod');
+        $this->payperiod = $this->getModel()->getState('payperiod');
 
         if (!empty($report_id) && $doReport) {
-            $report = $this->model->getReport();
+            $report = $this->getModel()->getReport();
             $data   = $report->timesheets;
             $users  = $report->users;
             $file   = str_replace(" ", "_", $report->name);
         } else {
-            $data  = $this->model->listItems();
-            $users = $this->model->listUsers();
+            $data  = $this->getModel()->listItems();
+            $users = $this->getModel()->listUsers();
             $file   = "payroll-live-".$this->payperiod->start;
         }
         $this->setup($file);
@@ -127,7 +127,7 @@ class TimeclockViewsPayrollBase extends JViewBase
     {
         $user = Factory::getUser();
         // Create new PHPExcel object
-        $this->phpexcel = new PHPExcel();
+        $this->phpexcel = new Spreadsheet();
         // Set document properties
         $payroll = Text::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $this->payperiod->start, $this->payperiod->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
@@ -159,7 +159,7 @@ class TimeclockViewsPayrollBase extends JViewBase
     */
     protected function finalize()
     {
-        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter = new Xlsx($this->phpexcel);
         $objWriter->setPreCalculateFormulas(true);
         $objWriter->save('php://output');
     }

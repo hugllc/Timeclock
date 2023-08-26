@@ -4,7 +4,8 @@ use Joomla\CMS\Language\Text;
 
     defined( '_JEXEC' ) or die( 'Restricted access' );
     $sep = "";
-    if (TimeclockHelpersContrib::phpexcel()):
+    if (TimeclockHelpersContrib::phpspreadsheet()):
+        $url = $displayData->url;
 ?>
 <div class="export">
     <iframe src="about:blank" style="display: none;"></iframe>
@@ -20,6 +21,7 @@ use Joomla\CMS\Language\Text;
             // Add in the report value
             data.report=Timeclock.report;
             url = url + "&" + jQuery.param(data);
+            console.log(url);
             jQuery("#timeclock .export iframe").attr("src", url);
         }
     </script>

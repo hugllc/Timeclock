@@ -36,6 +36,9 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -54,7 +57,7 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsReportBase extends JViewBase
+class TimeclockViewsReportBase extends HtmlView
 {
     /** This is our mime type */
     protected $mimetype = "text/html";
@@ -73,31 +76,31 @@ class TimeclockViewsReportBase extends JViewBase
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = NULL)
     {
-        if (!TimeclockHelpersContrib::phpexcel()) {
+        if (!TimeclockHelpersContrib::phpspreadsheet()) {
             return false;
         }
         $app = Factory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");
-        $report_id = $this->model->getState("report.id");
+        $report_id = $this->getModel()->getState("report.id");
         $this->params   = ComponentHelper::getParams('com_timeclock');
-        $this->start    = $this->model->getState('start');
-        $this->end      = $this->model->getState('end');
-        $this->datatype = $this->model->getState('datatype');
+        $this->start    = $this->getModel()->getState('start');
+        $this->end      = $this->getModel()->getState('end');
+        $this->datatype = $this->getModel()->getState('datatype');
 
 
         if (!empty($report_id) && $doReport) {
-            $report       = $this->model->getReport();
+            $report       = $this->getModel()->getReport();
             $data         = $report->timesheets;
             $projects     = $report->projects;
             $this->users  = $report->users;
             $file   = str_replace(" ", "_", $report->name);
         } else {
-            $data        = $this->model->listItems();
-            $this->users = $this->model->listUsers();
-            $projects    = $this->model->listProjects();
+            $data        = $this->getModel()->listItems();
+            $this->users = $this->getModel()->listUsers();
+            $projects    = $this->getModel()->listProjects();
             $file        = "report-live-";
         }
         $projs = array();
@@ -141,7 +144,7 @@ class TimeclockViewsReportBase extends JViewBase
     {
         $user = Factory::getUser();
         // Create new PHPExcel object
-        $this->phpexcel = new PHPExcel();
+        $this->phpexcel = new Spreadsheet();
         // Set document properties
         $report = Text::sprintf("COM_TIMECLOCK_REPORT_TITLE", $this->start, $this->end);
         $this->phpexcel->getProperties()->setCreator($user->name)
@@ -174,7 +177,7 @@ class TimeclockViewsReportBase extends JViewBase
     */
     protected function finalize()
     {
-        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel2007');
+        $objWriter = new Xlsx($this->phpexcel);
         $objWriter->setPreCalculateFormulas(true);
         $objWriter->save('php://output');
     }

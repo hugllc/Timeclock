@@ -434,7 +434,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     protected function checkUserRow(&$user, &$row)
     {
         if ($row->hours > 0) {
-            if (!$user->pruned && $user->hide) {
+            if ($user && !$user->pruned && $user->hide) {
                 $user->hide = false;
             }
             if ($row) {
