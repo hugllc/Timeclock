@@ -100,7 +100,7 @@ class TimeclockViewsYtdHtml extends HtmlView
         }
         $this->export   = array(
             "CSV" => "csv",
-            "Excel 2007" => "xlsx",
+            "Excel" => "xlsx",
         );
 
         JHTML::stylesheet(

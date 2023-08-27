@@ -90,7 +90,7 @@ class TimeclockViewsPayrollHtml extends HtmlView
         $this->report   = $this->getModel()->getReport();
         $this->export   = array(
             "CSV" => "csv",
-            "Excel 2007" => "xlsx",
+            "Excel" => "xlsx",
         );
         JHTML::stylesheet(
             JURI::base().'components/com_timeclock/css/timeclock.css', 
