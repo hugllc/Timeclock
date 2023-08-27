@@ -73,7 +73,7 @@ use Joomla\Event\SubscriberInterface;
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
 */
-class plgUserTimeclock extends CMSPlugin implements SubscriberInterface
+class plgUserTimeclock extends CMSPlugin
 {
 
     /**
