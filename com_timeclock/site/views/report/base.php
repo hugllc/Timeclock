@@ -36,6 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -200,7 +201,7 @@ class TimeclockViewsReportBase extends HtmlView
             $value = isset($data->data[$user->id]) ? $data->data[$user->id] : 0;
             $col = $this->nextCol($col);
             if ($this->datatype == "money") {
-                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
             }
 
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
@@ -208,7 +209,7 @@ class TimeclockViewsReportBase extends HtmlView
         $total = "B".$this->line.":".$col.$this->line;
         $col = $this->nextCol($col);
         if ($this->datatype == "money") {
-            $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+            $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
         }
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$total.")");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
@@ -230,7 +231,7 @@ class TimeclockViewsReportBase extends HtmlView
             $col = $this->nextCol($col);
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
             if ($this->datatype == "money") {
-                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
             }
         }
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
