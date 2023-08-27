@@ -36,6 +36,7 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -193,19 +194,11 @@ class TimeclockViewsBillingBase extends HtmlView
         $col  = $this->nextCol($col);
         $rate = $col.$this->line;
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $data->data["rate"]);
-        $this->phpexcel->getActiveSheet()->getStyle($rate)->getNumberFormat()->applyFromArray( 
-            array( 
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
-            )
-        );  
+        $this->phpexcel->getActiveSheet()->getStyle($rate)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=$hours*$rate");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
-        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->applyFromArray( 
-            array( 
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
-            )
-        );  
+        $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
         $this->line++;
     }
     /**
@@ -223,11 +216,7 @@ class TimeclockViewsBillingBase extends HtmlView
         $end = $this->line - 1;
         $this->phpexcel->getActiveSheet()->setCellValue("B".$this->line, "=SUM(B2:B".$end.")");
         $this->phpexcel->getActiveSheet()->setCellValue($this->maxCol.$this->line, "=SUM(".$this->maxCol."2:".$this->maxCol.$end.")");
-        $this->phpexcel->getActiveSheet()->getStyle($this->maxCol.$this->line)->getNumberFormat()->applyFromArray( 
-            array( 
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
-            )
-        );  
+        $this->phpexcel->getActiveSheet()->getStyle($this->maxCol.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
         $this->line++;
     }
     /**
