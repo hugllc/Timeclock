@@ -75,34 +75,11 @@ tests/unit:
 	svn co https://github.com/joomla/joomla-cms/trunk/tests/unit
 
 phpgraph: rel/phpgraph.zip
-
-rel/phpgraph.zip: build/phpgraph/master.zip
-	rm -Rf build/phpgraph/phpgraphlib-master
-	cd build/phpgraph; unzip master.zip
-	cp -f build/phpgraph/phpgraphlib-master/*.php build/phpgraph/phpgraph/
-	cp -f build/phpgraph/phpgraphlib-master/LICENSE* build/phpgraph/phpgraph/
-	cp -f build/phpgraph/phpgraphlib-master/README* build/phpgraph/phpgraph/
-	cd build/phpgraph && zip -r ../../rel/phpgraph.zip phpgraph/
 	
-build/phpgraph/master.zip:
-	mkdir -p build/phpgraph/phpgraph
-	wget https://github.com/elliottb/phpgraphlib/archive/master.zip -O build/phpgraph/master.zip
 	
 test: check all
 	@phpunit
 
 phpexcel: rel/phpexcel.zip
-
-rel/phpexcel.zip: build/phpexcel/master.zip
-	rm -Rf build/phpexcel/PHPExcel-master
-	cd build/phpexcel; unzip master.zip
-	cp -Rf build/phpexcel/PHPExcel-master/Classes/* build/phpexcel/phpexcel/
-	cp -f build/phpexcel/PHPExcel-master/license* build/phpexcel/phpexcel/
-	cp -f build/phpexcel/PHPExcel-master/changelog* build/phpexcel/phpexcel/
-	cd build/phpexcel && zip -r ../../rel/phpexcel.zip phpexcel/
 	
-build/phpexcel/master.zip:
-	mkdir -p build/phpexcel/phpexcel
-	wget https://github.com/PHPOffice/PHPExcel/archive/master.zip -O build/phpexcel/master.zip
-	
-.PHONY: all check package style clean copy_from_dev bin phpgraph phpexcel
+.PHONY: all check package style clean copy_from_dev bin
