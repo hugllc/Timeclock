@@ -186,17 +186,16 @@ class TimeclockViewsWcompBase extends HtmlView
     {
         $col = "A";
         $places = $this->params->get("decimalPlaces");
-        $total  = array();
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
         foreach ($this->codes as $code) {
             $value = isset($data->data[$code]) ? $data->data[$code] : 0;
             $col = $this->nextCol($col);
             $dat = $col.$this->line;
-            $total[] = $dat;
             $this->phpexcel->getActiveSheet()->setCellValue($dat, $value);
         }
+        $last = $col;
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
+        $this->phpexcel->getActiveSheet()->getCell($col.$this->line)->setValue("=SUM(B".$this->line.":".$last.$this->line.")");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
         $this->line++;
     }
@@ -213,6 +212,7 @@ class TimeclockViewsWcompBase extends HtmlView
         $this->phpexcel->getActiveSheet()->setCellValue("A".$this->line, Text::_("COM_TIMECLOCK_TOTAL"));
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
         $end = $this->line - 1;
+        $col = "A";
         while ($col != $this->maxCol) {
             $col = $this->nextCol($col);
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
