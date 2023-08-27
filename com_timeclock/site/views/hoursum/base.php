@@ -36,6 +36,14 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use PhpOffice\PhpSpreadsheet\Chart;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
+use PhpOffice\PhpSpreadsheet\Chart\Layout;
+use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
+use PhpOffice\PhpSpreadsheet\Chart\Legend;
+use PhpOffice\PhpSpreadsheet\Chart\Title;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -338,11 +346,7 @@ class TimeclockViewsHoursumBase extends HtmlView
             $sheet->setCellValue("B".$this->line, $hours);
             $perc = "=IF($tot>0,(B".$this->line."/$tot),0)";
             $sheet->setCellValue("C".$this->line, $perc);
-            $sheet->getStyle("C".$this->line)->getNumberFormat()->applyFromArray( 
-                array( 
-                    'code' => PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00
-                )
-            );  
+            $sheet->getStyle("C".$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_PERCENTAGE_00);
             $this->line++;
         }
         $sheet->setCellValue("A".$this->line, Text::_("COM_TIMECLOCK_TOTAL"));
@@ -352,7 +356,7 @@ class TimeclockViewsHoursumBase extends HtmlView
         while (($this->line - $start) < 15) {
             $this->line++;
         }
-        $this->dataGraph($header, $start, count($data));
+        // $this->dataGraph($header, $start, count($data));
     }
     /**
     * Creates a graph
@@ -367,20 +371,20 @@ class TimeclockViewsHoursumBase extends HtmlView
     {
         $row = $start;
         $dataSeriesLabels1 = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$A$'.$row, null, 1),
+            new DataSeriesValues('String', 'Worksheet!$A$'.$row, null, 1),
         );
         $row += 2;
         $end = $count + $row - 1;
 
         $xAxisTickValues1 = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$A$'.$row.':$A$'.$end, NULL, $count),
+            new DataSeriesValues('String', 'Worksheet!$A$'.$row.':$A$'.$end, NULL, $count),
         );
         $dataSeriesValues1 = array(
-            new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$B$'.$row.':$B$'.$end, NULL, $count),
+            new DataSeriesValues('String', 'Worksheet!$B$'.$row.':$B$'.$end, NULL, $count),
         );
         // Build the dataseries
-        $series1 = new PHPExcel_Chart_DataSeries(
-            PHPExcel_Chart_DataSeries::TYPE_PIECHART,   // plotType
+        $series1 = new DataSeries(
+            DataSeries::TYPE_PIECHART,   // plotType
             NULL,   // plotGrouping
             range(0, count($dataSeriesValues1)-1),  // plotOrder
             $dataSeriesLabels1, // plotLabel
@@ -388,16 +392,16 @@ class TimeclockViewsHoursumBase extends HtmlView
             $dataSeriesValues1  // plotValues
             );
         // Set up a layout object for the Pie chart
-        $layout1 = new PHPExcel_Chart_Layout();
+        $layout1 = new Layout();
         $layout1->setShowVal(false);
         $layout1->setShowPercent(true);
         // Set the series in the plot area
-        $plotArea1 = new PHPExcel_Chart_PlotArea($layout1, array($series1));
+        $plotArea1 = new PlotArea($layout1, array($series1));
         // Set the chart legend
-        $legend1 = new PHPExcel_Chart_Legend(PHPExcel_Chart_Legend::POSITION_RIGHT, null, false);
-        $title1 = new PHPExcel_Chart_Title($title);
+        $legend1 = new Legend(Legend::POSITION_RIGHT, null, false);
+        $title1 = new Title($title);
         // Create the chart
-        $chart1 = new PHPExcel_Chart(
+        $chart1 = new Chart(
             'chart1',   // name
             $title1,    // title
             $legend1,   // legend

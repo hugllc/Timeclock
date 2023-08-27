@@ -183,17 +183,16 @@ class TimeclockViewsYtdBase extends HtmlView
     {
         $col = "A";
         $places = $this->params->get("decimalPlaces");
-        $total  = array();
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
+        $this->phpexcel->getActiveSheet()->getCell($col.$this->line)->setValue(empty($data->name) ? "User ".$data->user_id : $data->name);
         foreach (array_keys($this->data["cols"]) as $column) {
             $value = isset($data->data[$column]) ? $data->data[$column] : 0;
             $col = $this->nextCol($col);
             $dat = $col.$this->line;
-            $total[] = $dat;
             $this->phpexcel->getActiveSheet()->setCellValue($dat, $value);
         }
+        $last = $col;
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".implode(",", $total).")");
+        $this->phpexcel->getActiveSheet()->getCell($col.$this->line)->setValue("=SUM(B".$this->line.":".$last.$this->line.")");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
         $this->line++;
     }
@@ -210,12 +209,11 @@ class TimeclockViewsYtdBase extends HtmlView
         $this->phpexcel->getActiveSheet()->setCellValue("A".$this->line, Text::_("COM_TIMECLOCK_TOTAL"));
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
         $end = $this->line - 1;
-        $columnID = "A";
-        $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
-        $col = NULL;
+        $col = "A";
+        $this->phpexcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         while ($col != $this->maxCol) {
             $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
+            $this->phpexcel->getActiveSheet()->getCell($col.$this->line)->setValue("=SUM(".$col."2:".$col.$end.")");
         }
         $this->line++;
     }
@@ -227,17 +225,14 @@ class TimeclockViewsYtdBase extends HtmlView
     protected function header()
     {
         $col = "A";
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_USER"));
+        $this->phpexcel->getActiveSheet()->getCell($col.$this->line)->setValue(Text::_("COM_TIMECLOCK_USER"));
         foreach ($this->data["cols"] as $column) {
             $col = $this->nextCol($col);
-            $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_($column));
+            $this->phpexcel->getActiveSheet()->getCell($col.$this->line)->setValue(Text::_($column));
+            $this->phpexcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         $col = $this->nextCol($col);
-        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_TOTAL"));
-        while ($col != $columnID) {
-            $columnID = $this->nextCol($columnID);
-            $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
-        }
+        $this->phpexcel->getActiveSheet()->getCell($col.$this->line)->setValue(Text::_("COM_TIMECLOCK_TOTAL"));
         $this->maxCol = $col;
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
         $this->line++;
