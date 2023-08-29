@@ -137,18 +137,20 @@ class TimeclockModelsTimesheets extends TimeclockModelsDefault
         if(is_numeric($id)) {
             $query->where($db->quoteName('t.timesheet_id').' = ' . $db->quote((int) $id));
         }
-        $filter = $this->getState("filter");
-        if(!empty($filter->search) && is_string($filter->search)) {
-            $query->where($db->quoteName("t.notes")." LIKE ".$db->quote("%".$filter->search."%"));
+        $search = $this->getState("filter.search");
+        if(!empty($search) && is_string($search)) {
+            $query->where($db->quoteName("t.notes")." LIKE ".$db->quote("%".$search."%"));
         }
         
-        if (is_numeric($filter->year)) {
-            $query->where($db->quoteName("t.worked")." >= " . $db->quote((int) $filter->year."-01-01"));
-            $query->where($db->quoteName("t.worked")." <= " . $db->quote((int) $filter->year."-12-31"));
+        $year = $this->getState("filter.year");
+        if (is_numeric($year)) {
+            $query->where($db->quoteName("t.worked")." >= " . $db->quote((int) $year."-01-01"));
+            $query->where($db->quoteName("t.worked")." <= " . $db->quote((int) $year."-12-31"));
         }
         
-        if (is_numeric($filter->user_id)) {
-            $query->where($db->quoteName("t.user_id")." = " . $db->quote((int) $filter->user_id));
+        $user_id = $this->getState("filter.user_id");
+        if (is_numeric($user_id)) {
+            $query->where($db->quoteName("t.user_id")." = " . $db->quote((int) $user_id));
         }
 
         return $query;

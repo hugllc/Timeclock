@@ -35,7 +35,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
@@ -54,7 +54,7 @@ use Joomla\CMS\Factory;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockModelsDefault extends AdminModel
+class TimeclockModelsDefault extends ListModel
 {
     protected $__state_set     = null;
     protected $_total          = null;
@@ -334,12 +334,12 @@ class TimeclockModelsDefault extends AdminModel
     * @note    Calling getState in this method will result in recursion.
     * @since   12.2
     */
-    protected function populateState()
+    protected function populateState($ordering = null, $direction = null)
     {
+        $this->popstate = true;
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $app = Factory::getApplication();
-        // $registry = $this->loadState();
         
         // Load state from the request.
         $pk = $app->input->get('id', array(), "array");
@@ -377,17 +377,21 @@ class TimeclockModelsDefault extends AdminModel
             "filter_order",
             $this->_defaultSort
         );
+
         $ordering = $this->checkSortFields($ordering);
-        $this->setState("list.ordering", $ordering);
+        // $this->setState("list.ordering", $ordering);
+
         $direction = $app->getUserStateFromRequest(
             $context.'_list.direction',
             "filter_order_Dir",
             $this->_defaultSortDir
         );
+        /*
         $this->setState(
             "list.direction", 
             (trim(strtolower($direction)) == "desc") ? "DESC" : "ASC"
-        );
+        );*/
+
         $search = $app->getUserStateFromRequest($context.'.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
         
@@ -412,7 +416,9 @@ class TimeclockModelsDefault extends AdminModel
         $type = $app->getUserStateFromRequest($context.'.filter.type', 'filter_type', '');
         $this->setState('filter.type', $type);
 
-        $this->setState($registry);
+        // List state information.
+        parent::populateState($ordering, $direction);
+
     }
     /**
     * This returns the values given for the sort fields are viable

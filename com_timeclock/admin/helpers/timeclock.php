@@ -73,8 +73,8 @@ class TimeclockHelpersTimeclock
         $assetName = 'com_timeclock';
         $level = 'component';
         $actions = ContentHelper::getActions('com_timeclock', $level);
-        foreach ($actions as $action) {
-            $result->set($action->name, $user->authorise($action->name, $assetName));
+        foreach ($actions as $key => $action) {
+            $result->set($key, $user->authorise($key, $assetName));
         }
         return $result;
     }

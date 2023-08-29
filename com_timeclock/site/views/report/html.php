@@ -92,7 +92,7 @@ class TimeclockViewsReportHtml extends HtmlView
             $this->data              = $this->getModel()->listItems();
             $this->users             = $this->getModel()->listUsers();
             $this->projects          = $this->getModel()->listProjects();
-            $this->filter            = $this->getModel()->getState("filter");
+            $this->filter            = $this->getModel()->getFilter();
             $this->filter->start     = $this->start;
             $this->filter->end       = $this->end;
             $this->filter->datatype  = $this->datatype;

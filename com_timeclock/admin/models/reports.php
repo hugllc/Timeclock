@@ -192,21 +192,24 @@ class TimeclockModelsReports extends TimeclockModelsDefault
             $query->where('r.report_id = ' . (int) $id);
         }
 
-        $filter = $this->getState("filter");
-        if(!empty($filter->search) && is_string($filter->search)) {
-            $query->where($db->quoteName("r.name")." LIKE ".$db->quote("%".$filter->search."%"));
+        $search = $this->getState("filter.search");
+        if(!empty($search) && is_string($search)) {
+            $query->where($db->quoteName("r.name")." LIKE ".$db->quote("%".$search."%"));
         }
         
-        if (is_numeric($filter->published)) {
-            $query->where($db->quoteName('r.published').' = ' . $db->quote((int) $filter->published));
+        $published = $this->getState("filter.published");
+        if (is_numeric($published)) {
+            $query->where($db->quoteName('r.published').' = ' . $db->quote((int) $published));
         }
         
-        if (is_numeric($filter->user_id)) {
-            $query->where($db->quoteName("r.created_by")." = " . $db->quote((int) $filter->user_id));
+        $user_id = $this->getState("filter.user_id");
+        if (is_numeric($user_id)) {
+            $query->where($db->quoteName("r.created_by")." = " . $db->quote((int) $user_id));
         }
 
-        if (!empty($filter->type)) {
-            $query->where($db->quoteName("r.type")." = ".$db->quote($filter->type));
+        $type = $this->getState("filter.type");
+        if (!empty($type)) {
+            $query->where($db->quoteName("r.type")." = ".$db->quote($type));
         }
         return $query;
     }

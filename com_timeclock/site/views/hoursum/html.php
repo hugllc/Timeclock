@@ -96,7 +96,7 @@ class TimeclockViewsHoursumHtml extends HtmlView
             $this->projects          = $this->getModel()->listProjects();
             $this->customers         = $this->getModel()->listCustomers();
             $this->departments       = $this->getModel()->listDepartments();
-            $this->filter            = $this->getModel()->getState("filter");
+            $this->filter            = $this->getModel()->getFilter();
             $this->filter->start     = $this->start;
             $this->filter->end       = $this->end;
             $this->filter->report_id = $this->report_id;

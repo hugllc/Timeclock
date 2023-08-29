@@ -55,7 +55,6 @@ jimport('joomla.utilities.date');
 jimport('joomla.form.form');
 
 
-require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
 Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
 
 use Joomla\Event\Event;

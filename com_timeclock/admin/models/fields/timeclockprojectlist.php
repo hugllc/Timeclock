@@ -39,8 +39,6 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
-jimport('joomla.form.field');
-require_once JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php';
 
 /**
  * This creates a select box with the user types in it.

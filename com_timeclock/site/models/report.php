@@ -138,15 +138,16 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     {
         $user->hide = false;
         $user->pruned = false;
-        $filter = $this->getState("filter");
-        if (is_numeric($filter->user_manager_id)) {
-            if ($user->timeclock["manager"] != $filter->user_manager_id) {
+        $user_manager_id = $this->getState("filter.user_manager_id");
+        if (is_numeric($user_manager_id)) {
+            if ($user->timeclock["manager"] != $user_manager_id) {
                 $user->hide = true;
                 $user->pruned = true;
             }
         }
-        if (is_numeric($filter->user_id)) {
-            if ($user->id != $filter->user_id) {
+        $user_id = $this->getState("filter.user_id");
+        if (is_numeric($user_id)) {
+            if ($user->id != $user_id) {
                 $user->hide = true;
                 $user->pruned = true;
             }
@@ -573,11 +574,9 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $date = empty($date) ?  date("Y-m-d") : $date;
         $this->setState('date', $date);
         
-        $report = new stdClass();
-        $report->type = $this->type;
+        $this->setState("report.type", $this->type);
         $report_id = $app->input->get("report_id", 0, "int");
-        $report->id = $report_id;
-        $this->setState('report', $report);
+        $this->setState("report.report_id", $report_id);
         
         $this->_populateFilter();
         $this->_populateState();
@@ -595,41 +594,39 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     */
     protected function _populateFilter()
     {
-        $filter = new stdClass();
         $app = Factory::getApplication();
         $context = is_null($this->context) ? $this->table : $this->context;
 
         $category = $app->getUserStateFromRequest($context.'.filter.category', 'filter_category', '');
-        $filter->category = $category;
+        $this->setState("filter.category", $category);
 
         $department = $app->getUserStateFromRequest($context.'.filter.department', 'filter_department', '');
-        $filter->department = $department;
+        $this->setState("filter.department", $department);
 
         $customer = $app->getUserStateFromRequest($context.'.filter.customer', 'filter_customer', '');
-        $filter->customer = $customer;
+        $this->setState("filter.customer", $customer);
 
         $user_manager_id = $app->getUserStateFromRequest($context.'.filter.user_manager_id', 'filter_user_manager_id', '');
-        $filter->user_manager_id = $user_manager_id;
+        $this->setState("filter.user_manager_id", $user_manager_id);
 
         $user_id = $app->getUserStateFromRequest($context.'.filter.user_id', 'filter_user_id', '');
-        $filter->user_id = $user_id;
+        $this->setState("filter.user_id", $user_id);
 
         $proj_manager_id = $app->getUserStateFromRequest($context.'.filter.proj_manager_id', 'filter_proj_manager_id', '');
-        $filter->proj_manager_id = $proj_manager_id;
+        $this->setState("filter.proj_manager_id", $proj_manager_id);
 
         $proj_type = $app->getUserStateFromRequest($context.'.filter.project_type', 'filter_project_type', '');
-        $filter->project_type = $proj_type;
+        $this->setState("filter.proj_type", $proj_type);
 
         $user = Factory::getUser();
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
         ) {
-                $filter->published = 1;
-                $filter->archived = 2;
+                $this->setState("filter.published", 1);
+                $this->setState("filter.archived", 2);
         }
 
-        $filter->type = $this->type;
-        $this->setState("filter", $filter);
+        $this->setState("filter.type", $this->type);
     }
     /**
     * Method to auto-populate the model state.
@@ -707,27 +704,33 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
         $query->order("t.worked asc");
 
-        $filter = $this->getState("filter");
-        if (!empty($filter->project_type)) {
-            $query->where($db->quoteName("p.type")." = ".$db->quote($filter->project_type));
+        $project_type = $this->getState("filter.project_type");
+        if (!empty($project_type)) {
+            $query->where($db->quoteName("p.type")." = ".$db->quote($project_type));
         }
-        if (is_numeric($filter->category)) {
-            $query->where($db->quoteName("p.parent_id")." = ".$db->quote((int)$filter->category));
+        $category = $this->getState("filter.category");
+        if (is_numeric($category)) {
+            $query->where($db->quoteName("p.parent_id")." = ".$db->quote((int)$category));
         }
-        if (is_numeric($filter->proj_manager_id)) {
-            $query->where($db->quoteName("p.manager_id")." = ".$db->quote((int)$filter->proj_manager_id));
+        $proj_manager_id = $this->getState("filter.proj_manager_id");
+        if (is_numeric($proj_manager_id)) {
+            $query->where($db->quoteName("p.manager_id")." = ".$db->quote((int)$proj_manager_id));
         }
-        if (is_numeric($filter->customer)) {
-            $query->where($db->quoteName("p.customer_id")." = ".$db->quote((int)$filter->customer));
+        $customer = $this->getState("filter.customer");
+        if (is_numeric($customer)) {
+            $query->where($db->quoteName("p.customer_id")." = ".$db->quote((int)$customer));
         }
-        if (is_numeric($filter->department)) {
-            $query->where($db->quoteName("p.department_id")." = ".$db->quote((int)$filter->department));
+        $department = $this->getState("filter.department");
+        if (is_numeric($department)) {
+            $query->where($db->quoteName("p.department_id")." = ".$db->quote((int)$department));
         }
-        if (is_numeric($filter->user_id)) {
-            $query->where($db->quoteName("z.user_id")." = ".$db->quote((int)$filter->user_id));
+        $user_id = $this->getState("filter.user_id");
+        if (is_numeric($user_id)) {
+            $query->where($db->quoteName("z.user_id")." = ".$db->quote((int)$user_id));
         }
-        if (is_numeric($filter->category)) {
-            $query->where($db->quoteName("p.parent_id")." = ".$db->quote((int)$filter->category));
+        $category = $this->getState("filter.category");
+        if (is_numeric($category)) {
+            $query->where($db->quoteName("p.parent_id")." = ".$db->quote((int)$category));
         }
         return $query;
     }

@@ -117,29 +117,33 @@ class TimeclockModelsProject extends TimeclockModelsDefault
             $query->where('p.project_id = ' . (int) $id);
         }
 
-        $filter = $this->getState("filter");
-
-        if(!empty($filter->search) && is_string($filter->search)) {
-            $query->where($db->quoteName("p.name")." LIKE ".$db->quote("%".$filter->search."%"));
-        }
-        
-        if (is_numeric($filter->published)) {
-            $query->where($db->quoteName('p.published').' = ' . $db->quote((int) $filter->published));
+        $search = $this->getState("filter.search");
+        if(!empty($search) && is_string($search)) {
+            $query->where($db->quoteName("p.name")." LIKE ".$db->quote("%".$search."%"));
         }
 
-        if (is_numeric($filter->category)) {
-            $query->where($db->quoteName('p.parent_id').' = ' . $db->quote((int) $filter->category));
+        $published = $this->getState("filter.published");
+        if (is_numeric($published)) {
+            $query->where($db->quoteName('p.published').' = ' . $db->quote((int) $published));
+        }
+
+        $category = $this->getState("filter.category");
+        if (is_numeric($category)) {
+            $query->where($db->quoteName('p.parent_id').' = ' . $db->quote((int) $category));
         }
         
-        if (is_numeric($filter->department)) {
-            $query->where($db->quoteName('p.department_id').' = ' . $db->quote((int) $filter->department));
+        $department = $this->getState("filter.department");
+        if (is_numeric($department)) {
+            $query->where($db->quoteName('p.department_id').' = ' . $db->quote((int) $department));
         }
         
-        if (is_numeric($filter->customer)) {
-            $query->where($db->quoteName('p.customer_id').' = ' . $db->quote((int) $filter->customer));
+        $customer = $this->getState("filter.customer");
+        if (is_numeric($customer)) {
+            $query->where($db->quoteName('p.customer_id').' = ' . $db->quote((int) $customer));
         }
-        if (is_numeric($filter->user_id)) {
-            $query->where($db->quoteName("p.manager_id")." = " . $db->quote((int) $filter->user_id));
+        $user_id = $this->getState("filter.user_id");
+        if (is_numeric($user_id)) {
+            $query->where($db->quoteName("p.manager_id")." = " . $db->quote((int) $user_id));
         }
         return $query;
     }

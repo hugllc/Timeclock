@@ -174,7 +174,25 @@ class TimeclockModelsSiteDefault extends BaseDatabaseModel
 
         return $property === null ? $this->state : $this->state->get($property, $default);
     }
-    
+
+    /** 
+    * Method to get the filter object
+    *
+    * @return object The property where specified, the state object where omitted
+    */
+    public function getFilter()
+    {
+        $filter = new stdClass();
+        foreach ($this->getState() as $key => $value) {
+            if (str_contains($key, "filter.")) {
+                $k = explode(".", $key)[1];
+                $filter->$k = $value;
+            }
+        }
+
+        return $filter;
+    }
+
     /**
     * Method to auto-populate the model state.
     *
