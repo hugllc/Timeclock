@@ -38,7 +38,8 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
-jimport('joomla.form.formfield');
+require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
+
 /**
  * This creates a select box with the user types in it.
  *
@@ -51,7 +52,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class FormFieldTimeclockDepartment extends FormField
+class JFormFieldTimeclockDepartment extends FormField
 {
     protected $type = 'TimeclockDepartment';
 

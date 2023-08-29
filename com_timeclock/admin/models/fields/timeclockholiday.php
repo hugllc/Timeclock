@@ -51,7 +51,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class FormFieldTimeclockHoliday extends FormField
+class JFormFieldTimeclockHoliday extends FormField
 {
     protected $type = 'TimeclockHoliday';
 

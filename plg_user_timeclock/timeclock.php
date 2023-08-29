@@ -51,11 +51,9 @@ use Joomla\Utilities\ArrayHelper;
  *
  */
  defined('_JEXEC') or die();
-jimport('joomla.utilities.date');
-jimport('joomla.form.form');
 
-
-Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
+ require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
+ Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
 
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;

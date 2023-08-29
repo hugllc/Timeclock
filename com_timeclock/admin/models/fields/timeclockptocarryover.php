@@ -52,7 +52,7 @@ use Joomla\CMS\Form\FormField;
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class FormFieldTimeclockPTOCarryOver extends FormField
+class JFormFieldTimeclockPTOCarryOver extends FormField
 {
     protected $type = 'TimeclockPTOCarryOver';
 

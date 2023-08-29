@@ -52,7 +52,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class FormFieldTimeclockProjectUsers extends FormField
+class JFormFieldTimeclockProjectUsers extends FormField
 {
     protected $type = 'TimeclockProjectUsers';
 

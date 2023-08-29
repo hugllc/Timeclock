@@ -51,7 +51,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class FormFieldTimeclockCategory extends FormField
+class JFormFieldTimeclockCategory extends FormField
 {
     protected $type = 'TimeclockCategory';
 

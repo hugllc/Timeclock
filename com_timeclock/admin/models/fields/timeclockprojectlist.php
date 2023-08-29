@@ -52,7 +52,7 @@ use Joomla\CMS\Factory;
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class FormFieldTimeclockProjectList extends FormField
+class JFormFieldTimeclockProjectList extends FormField
 {
     protected $type = 'TimeclockProjectList';
 

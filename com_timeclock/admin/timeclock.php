@@ -40,6 +40,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
+
 // load table paths
 JLoader::register('TimeclockHelpersDate', JPATH_COMPONENT_SITE.'/helpers/date.php');
 Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_timeclock/tables');

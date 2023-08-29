@@ -52,7 +52,7 @@ jimport('joomla.form.formfield');
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
 
-class FormFieldTimeclockWCompCodes extends FormField
+class JFormFieldTimeclockWCompCodes extends FormField
 {
     protected $type = 'TimeclockWCompCodes';
 
