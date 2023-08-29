@@ -41,9 +41,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
 
-/** Import the views */
-jimport('joomla.application.component.view');
-
 /**
  * HTML View class for the ComTimeclockWorld Component
  *

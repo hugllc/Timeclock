@@ -4,8 +4,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-    JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
-    JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
+    HTMLHelper::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
+    HTMLHelper::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHtmlBehavior::core();
 
     $user = Factory::getUser();
@@ -46,7 +46,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             print $this->_entry->render($proj);
         }
     }
-?>
+    ?>
         </fieldset>
         <fieldset id="extra">
             <?php print JHTML::_("form.token"); ?>

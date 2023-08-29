@@ -36,11 +36,9 @@
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Factory;
-
-/** Import the views */
-jimport('joomla.application.component.view');
 
 /**
  * HTML View class for the ComTimeclockWorld Component
@@ -53,20 +51,21 @@ jimport('joomla.application.component.view');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockViewsTimesheetJson extends JViewHtml
+class TimeclockViewsTimesheetJson extends HtmlView
 {
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function render()
+    function display($tpl = NULL)
     {
+        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $app = Factory::getApplication();
 
-        $payperiod = $this->model->getState('payperiod');
-        $data      = $this->model->listItems();
-        $projects  = $this->model->listProjects();
+        $payperiod = $this->getModel()->getState('payperiod');
+        $data      = $this->getModel()->listItems();
+        $projects  = $this->getModel()->listProjects();
         
         $json = new JsonResponse(
             $data,
