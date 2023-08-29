@@ -9,7 +9,7 @@
  *
  * <pre>
  * mod_timeclockinfo is a Joomla! 1.5 module
- * Copyright (C) 2014 Hunt Utilities Group, LLC
+ * Copyright (C) 2023 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  * Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
  *
@@ -33,7 +33,7 @@
  * @package    Comtimeclock
  * @subpackage Com_timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2014 Hunt Utilities Group, LLC
+ * @copyright  2023 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT: $Id: ab14c64a4bbbd5b66d267d0a2bc77a2ce20ec9cf $

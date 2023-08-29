@@ -10,7 +10,7 @@ use Joomla\CMS\Component\ComponentHelper;
  *
  * <pre>
  * com_ComTimeclock is a Joomla! 1.6 component
- * Copyright (C) 2014 Hunt Utilities Group, LLC
+ * Copyright (C) 2023 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * @package    Timeclock
  * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2014 Hunt Utilities Group, LLC
+ * @copyright  2023 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    GIT: $Id: a9f8da33aebe613777d9e1b213741dd5d69c73ab $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
@@ -47,7 +47,7 @@ jimport('joomla.installer.helper');
  * @package    Timeclock
  * @subpackage com_timeclock
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2014 Hunt Utilities Group, LLC
+ * @copyright  2023 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
