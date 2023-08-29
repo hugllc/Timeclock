@@ -14,3 +14,4 @@ composer/
 bin/
 tests/config.php
 contrib/
+com_timeclock/admin/timeclock.xml

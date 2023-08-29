@@ -51,15 +51,9 @@ PluginHelper::importPlugin('timeclock');
 //application
 $app = Factory::getApplication();
 // Require specific controller if requested
-$task = $app->input->get('task', null);
-if (strpos($task, ".")) {
-    list($controller) = explode(".", $task);
-}
-$controller = empty($controller) ? "about" : trim($controller);
-$controller = $app->input->get('controller', $controller);
 
-// Create the controller
-$classname = 'TimeclockControllers'.ucwords($controller);
+$classname = "TimeclockControllers".ucfirst($app->input->get('controller', "About"));
+
 if (!class_exists($classname)) {
     $classname = "TimeclockControllersAbout";
 }
