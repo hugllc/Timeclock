@@ -68,7 +68,7 @@ class TimeclockViewsPayrollHtml extends HtmlView
         $layout = $this->getLayout();
         
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->getModel()->getState('payperiod');
+        $this->payperiod = $this->getModel()->getPayperiod();
         $this->payperiod->controller = "payroll";
 
         JHTML::stylesheet(

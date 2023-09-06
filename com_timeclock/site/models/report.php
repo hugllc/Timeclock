@@ -208,7 +208,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $db = Factory::getDBO();
         $start = $this->getState("start");
         $end   = $this->getState("end");
-        $type   = $this->getState("report")->type;
+        $type   = $this->getState("report.type");
         $query = $db->getQuery(TRUE);
         $query->select('*');
         $query->from('#__timeclock_reports');
@@ -283,7 +283,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function getReport($id = null)
     {
         if (is_null($id)) {
-            $id = $this->getState("report")->id;
+            $id = $this->getState("report.id");
         }
         if (!isset($this->_report[$id])) {
             $this->_report[$id] = Table::getInstance('TimeclockReports', 'Table');
@@ -474,7 +474,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
             return false;
         }
         $date     = date("Y-m-d H:i:s");
-        $type     = $this->getState("report")->type;
+        $type     = $this->getState("report.type");
         $start    = $this->getState("start");
         $end      = $this->getState("end");
         $datatype = $this->getState("datatype");
@@ -494,8 +494,8 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
         $row->startDate   = $start;
         $row->endDate     = $end;
         $row->type        = $type;
-        $row->datatype        = $datatype;
-        $row->filter      = json_encode($this->getState("filter"));
+        $row->datatype    = $datatype;
+        $row->filter      = json_encode($this->getFilter());
         $row->users       = json_encode($this->listUsers());
         $row->timesheets  = json_encode($this->listItems());
         $row->projects    = json_encode($this->listProjects());
@@ -511,7 +511,7 @@ class TimeclockModelsReport extends TimeclockModelsSiteDefault
     public function store()
     {
         $row = $this->buildStore();
-        $report_id = $this->getState("report")->id;
+        $report_id = $this->getState("report.id");
         if (!empty($report_id) || !is_object($row)) {
             return false;
         }

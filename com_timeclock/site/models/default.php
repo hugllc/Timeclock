@@ -242,7 +242,7 @@ class TimeclockModelsSiteDefault extends BaseDatabaseModel
         // Get the params and set the new values
         $params = ComponentHelper::getParams('com_timeclock');
         $params->set($name, $value);
-
+    die("HERE");
         // Get a new database query instance
         $db = Factory::getDBO();
         $query = $db->getQuery(true);

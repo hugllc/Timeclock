@@ -348,7 +348,7 @@ class TimeclockHelpersTimeclock
      *
      * @return float value in years
      */
-    function getServiceLength($oid, $date=null)
+    static public function getServiceLength($oid, $date=null)
     {
         if (empty($date)) {
             $date = time();

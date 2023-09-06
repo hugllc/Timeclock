@@ -96,7 +96,7 @@ use Joomla\CMS\HTML\HTMLHelper;
         </table>
     </div>
 <form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" class="payroll">
-    <?php print JHTML::_("form.token"); ?>
+    <?php print HTMLHelper::_("form.token"); ?>
 </form>
 <script type="text/JavaScript">
     jQuery( document ).ready(function() {

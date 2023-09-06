@@ -92,6 +92,7 @@ var Payroll = {
             },
             error: function(ret)
             {
+                console.log(ret);
                 Joomla.renderMessages({'error': ['Locking failed']});
             }
         });
