@@ -133,6 +133,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
         JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
+        $this->model->setAccrual();
         return true;
     }
     /**
