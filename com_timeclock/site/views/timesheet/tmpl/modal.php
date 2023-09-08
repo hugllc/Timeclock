@@ -19,7 +19,6 @@ use Joomla\CMS\HTML\HTMLHelper;
     <div class="">
         <fieldset class="form-horizontal">
             <input type="hidden" name="worked" value="<?php print $this->date; ?>" />
-            <h3><?php printf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, HTMLHelper::_("date", $this->date)); ?></h3>
             <div>
                 <?php print Text::_("COM_TIMECLOCK_TOTAL_HOURS"); ?>: <span id="hoursTotal">-</span>
                 (<?php print Text::_("COM_TIMECLOCK_MAX").":  ".$this->params->get("maxDailyHours"); ?>)

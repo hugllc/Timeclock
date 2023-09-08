@@ -8,7 +8,8 @@ use Joomla\CMS\HTML\HTMLHelper;
     JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHtmlBehavior::core();
-    JHTML::_("behavior.modal");
+    JHTML::_("bootstrap.tooltip", ".hasTooltip", []);
+
     $cols = $this->payperiod->days + 2 + $this->payperiod->subtotals;
     $this->payperiod->cols = $cols;
 
@@ -77,6 +78,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             $allproj[$proj->project_id] = $proj;
             $proj->payperiod = $this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
+            $proj->user      = $this->user;
             $render .= $this->_row->render($proj);
         }
         if ($cnt > 0) {
@@ -129,6 +131,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             $allproj[$proj->project_id] = $proj;
             $proj->payperiod = $this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
+            $proj->user      = $this->user;
             $render .= $this->_row->render($proj);
         }
         if ($cnt > 0) {

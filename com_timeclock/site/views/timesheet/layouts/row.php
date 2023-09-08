@@ -2,7 +2,8 @@
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
- 
+use Joomla\CMS\HTML\HTMLHelper;
+
     defined('_JEXEC') or die(); 
 ?>
             <tr class="<?php print strtolower($displayData->type);?><?php print ($displayData->mine == 0) ? " alert alert-info" : ""; ?>">
@@ -35,14 +36,24 @@ use Joomla\CMS\Router\Route;
         $tooltip = "<strong>".$tipTitle."</strong><br />".$tip;
         $sub = (int)(($d - 1) / $split) + 1;
         $class = "date-$date proj-".$sub."-".$displayData->project_id." proj-".$displayData->project_id;
+        $modalId = 'modal-'.str_replace(" ", "-", $date."-".$displayData->project_id."-".$sub);
+        $modalParams = array();
+        $modalParams['title']      = sprintf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $displayData->user->name, HTMLHelper::_("date", $this->date));
+        $modalParams['url']        = $link;
+        $modalParams['height']     = '100%';
+        $modalParams['width']      = '100%';
+        $modalParams['bodyHeight'] = 80;
+        $modalParams['modalWidth'] = 60;
+        $modalParams['closeButton'] = false;
 ?>
                 <td class="hours hasTooltip" title="<?php print $tooltip; ?>">
                     <?php if ($timeentry) : ?>
-                    <a href="<?php print $link; ?>" class="modal" rel="{onOpen : function(){ Addhours.reset(<?php print $displayData->project_id; ?>, '<?php print $date; ?>'); }}">
+                    <?php echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams); ?>
+                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>" onclick="Addhours.reset(<?php print $displayData->project_id; ?>, '<?php print $date; ?>');">
                     <?php endif; ?>
                     <span id="hours-<?php print $displayData->project_id."-".$date; ?>" class="<?php print $class;?> ">-</span>
                     <?php if ($timeentry) : ?>
-                    </a>
+                    </button>
                     <?php endif; ?>
                 </td>
     <?php 
