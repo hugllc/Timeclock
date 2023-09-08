@@ -46,15 +46,17 @@ use Joomla\CMS\HTML\HTMLHelper;
         $modalParams['modalWidth'] = 60;
         $modalParams['closeButton'] = false;
 ?>
-                <td class="hours hasTooltip" title="<?php print $tooltip; ?>">
+                <td class="hours">
+                    <?php if ($timeentry) echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams); ?>
+                    <div class="hasTooltip" title="<?php print $tooltip; ?>">
                     <?php if ($timeentry) : ?>
-                    <?php echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams); ?>
                     <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>" onclick="Addhours.reset(<?php print $displayData->project_id; ?>, '<?php print $date; ?>');">
                     <?php endif; ?>
                     <span id="hours-<?php print $displayData->project_id."-".$date; ?>" class="<?php print $class;?> ">-</span>
                     <?php if ($timeentry) : ?>
                     </button>
                     <?php endif; ?>
+                    </div>
                 </td>
     <?php 
         if (($displayData->payperiod->splitdays != 0) && (($d++ % $displayData->payperiod->splitdays) == 0)) : 
