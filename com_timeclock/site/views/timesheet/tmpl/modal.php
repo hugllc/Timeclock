@@ -3,6 +3,7 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+    JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
 
     $user = Factory::getUser();
     $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
@@ -15,8 +16,12 @@ use Joomla\CMS\HTML\HTMLHelper;
     $allproj = array();
 ?>
 <script type="text/JavaScript">
-    var Timesheet = parent.Timesheet;
-    var Addhours = parent.Addhours;
+    var Timesheet = Timesheet || parent.Timesheet;
+    var Timeclock = Timeclock || parent.Timeclock;
+    jQuery( document ).ready(function() {
+        Addhours.setup();
+    });
+
 </script>
 <div id="timeclock">
 <form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">

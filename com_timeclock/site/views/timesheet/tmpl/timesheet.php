@@ -5,7 +5,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
     JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/timesheet.js");
-    JHTML::script(Juri::base()."components/com_timeclock/views/timesheet/tmpl/addhours.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
     JHtmlBehavior::core();
     JHTML::_("bootstrap.tooltip", ".hasTooltip", []);
@@ -176,7 +175,6 @@ use Joomla\CMS\HTML\HTMLHelper;
     <script type="text/JavaScript">
         jQuery( document ).ready(function() {
             Timesheet.setup();
-            Addhours.setup();
         });
         Timesheet.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
         Timesheet.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
