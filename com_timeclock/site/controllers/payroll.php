@@ -110,9 +110,9 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     */
     protected function taskLock()
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
 
         if ($index = $this->model->lock()) {
             $json = new JsonResponse(
@@ -130,7 +130,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
             );
         }
         Factory::getDocument()->setMimeEncoding( 'application/json' );
-        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
         $this->model->setAccrual();
@@ -143,9 +143,9 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
     */
     protected function taskUnlock()
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
 
         if ($index = $this->model->unlock()) {
             $json = new JsonResponse(
@@ -163,7 +163,7 @@ class TimeclockControllersPayroll extends TimeclockControllersReport
             );
         }
         Factory::getDocument()->setMimeEncoding( 'application/json' );
-        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
         return true;

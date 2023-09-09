@@ -76,7 +76,8 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
     */
     public function store($data=null)
     {
-        $data = $data ? $data : JRequest::get('post');
+        $app  = Factory::getApplication();
+        $data = $data ? $data : $app->getInput()->getArray();
         $row = Table::getInstance('TimeclockTimesheet', 'Table');
 
         if (!is_object($row)) {

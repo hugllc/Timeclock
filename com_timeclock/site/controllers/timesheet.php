@@ -109,9 +109,9 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     */
     protected function taskComplete()
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
 
         $model = TimeclockHelpersTimeclock::getModel("timesheet");
         $this->checkMe($model);
@@ -132,7 +132,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
             );
         }
         Factory::getDocument()->setMimeEncoding( 'application/json' );
-        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
         return true;
@@ -173,9 +173,9 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
     */
     protected function taskApply()
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
         $model = TimeclockHelpersTimeclock::getModel("addhours");
         $this->checkMe($model);
 
@@ -195,7 +195,7 @@ class TimeclockControllersTimesheet extends TimeclockControllersDefault
             );
         }
         Factory::getDocument()->setMimeEncoding( 'application/json' );
-        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
         return true;

@@ -76,7 +76,7 @@ class TimeclockViewsTimesheetJson extends HtmlView
 
         
         Factory::getDocument()->setMimeEncoding( 'application/json' );
-        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
     }

@@ -316,6 +316,6 @@ class TimeclockControllersDefault extends AdminController
     */
     protected function setHeader($header, $value)
     {
-        return JResponse::setHeader($header, $value);
+        return Factory::getApplication()->setHeader($header, $value);
     }
 }

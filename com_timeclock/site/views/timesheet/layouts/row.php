@@ -45,12 +45,16 @@ use Joomla\CMS\HTML\HTMLHelper;
         $modalParams['bodyHeight'] = 80;
         $modalParams['modalWidth'] = 60;
         $modalParams['closeButton'] = false;
+        $modalParams['footer']      = '<button type="button" name="apply" onClick="Addhours.submitform(\'apply\');">Save</button>
+        <button type="button" name="save" data-dismiss="modal" onClick="Addhours.submitform(\'save\');">Save &amp; Close</button>
+        <button type="button" name="close" onClick="window.document.getElementById("'.$modalId.'").close();">Close</button>
+';
 ?>
                 <td class="hours">
                     <?php if ($timeentry) echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams); ?>
                     <div class="hasTooltip" title="<?php print $tooltip; ?>">
                     <?php if ($timeentry) : ?>
-                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>" onclick="Addhours.reset(<?php print $displayData->project_id; ?>, '<?php print $date; ?>');">
+                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
                     <?php endif; ?>
                     <span id="hours-<?php print $displayData->project_id."-".$date; ?>" class="<?php print $class;?> ">-</span>
                     <?php if ($timeentry) : ?>

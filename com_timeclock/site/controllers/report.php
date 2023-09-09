@@ -146,9 +146,9 @@ class TimeclockControllersReport extends TimeclockControllersDefault
     */
     protected function taskSave()
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
 
         if ($index = $this->model->store()) {
             $json = new JsonResponse(
@@ -166,7 +166,7 @@ class TimeclockControllersReport extends TimeclockControllersDefault
             );
         }
         Factory::getDocument()->setMimeEncoding( 'application/json' );
-        JResponse::setHeader('Content-Disposition','inline;filename="apply.json"');
+        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
         echo $json;
         $app->close();
         return true;
