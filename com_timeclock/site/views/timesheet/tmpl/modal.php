@@ -14,6 +14,10 @@ use Joomla\CMS\HTML\HTMLHelper;
     }
     $allproj = array();
 ?>
+<script type="text/JavaScript">
+    var Timesheet = parent.Timesheet;
+    var Addhours = parent.Addhours;
+</script>
 <div id="timeclock">
 <form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">
     <div class="">
