@@ -44,7 +44,7 @@ var Addhours = {
      * 
      * @return null
      */
-    submitform: function (task)
+    submitform: function (task, modal)
     {
         // Hide all of the alerts
         var div = jQuery("form.addhours div.alert").hide();
@@ -145,9 +145,11 @@ var Addhours = {
                         }
                         if (task == 'save') {
                             if (typeof Timesheet === 'undefined') {
+                                // Full page
                                 window.location.href = "index.php?option=com_timeclock&controller=timesheet&date="+self.payperiod.start;
                             } else {
-                                SqueezeBox.close();
+                                // Modal
+                                parent.jQuery('.modal').modal('hide');
                             }
                         }
                     }

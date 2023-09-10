@@ -42,6 +42,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
     $proj->form      = &$this->form;
     $proj->params    = &$this->params;
+    $proj->noButtons = true;
     print $this->_entry->render($proj);
 ?>
         </fieldset>

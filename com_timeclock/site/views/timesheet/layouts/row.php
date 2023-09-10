@@ -44,10 +44,9 @@ use Joomla\CMS\HTML\HTMLHelper;
         $modalParams['width']      = '100%';
         $modalParams['bodyHeight'] = 80;
         $modalParams['modalWidth'] = 60;
-        $modalParams['closeButton'] = true;
+        $modalParams['closeButton'] = false;
         $modalParams['footer']      = '<button type="button" name="apply" onclick="Addhours.submitform(\'apply\');">Save</button>
         <button type="button" name="save" data-dismiss="modal" onclick="Addhours.submitform(\'save\');">Save &amp; Close</button>
-        <button type="button" name="close" data-bs-dismiss="modal" aria-label="Close">Close</button>
 ';
 ?>
                 <td class="hours">

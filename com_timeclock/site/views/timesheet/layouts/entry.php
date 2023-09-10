@@ -75,8 +75,10 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
     );
     print TimeclockHelpersView::getFormField((object)$notes);
 ?>
+        <?php if (!$displayData->noButtons): ?>
         <button type="button" name="apply" onClick="Addhours.submitform('apply');">Save</button>
         <button type="button" name="save" data-dismiss="modal" onClick="Addhours.submitform('save');">Save &amp; Close</button>
+        <?php endif ?>
         <input type="hidden" name="created" value="<?php print isset($displayData->data->created) ? $displayData->data->created : 0; ?>" />
         <input type="hidden" name="created_by" value="<?php print isset($displayData->data->created_by) ? $displayData->data->created_by : -1; ?>" />
         <input type="hidden" name="project_id" value="<?php print $displayData->project_id; ?>" />
