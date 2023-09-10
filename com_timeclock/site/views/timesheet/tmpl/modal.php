@@ -18,6 +18,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 <script type="text/JavaScript">
     var Timesheet = Timesheet || parent.Timesheet;
     var Timeclock = Timeclock || parent.Timeclock;
+    parent.Addhours = Addhours;
     jQuery( document ).ready(function() {
         Addhours.setup();
     });

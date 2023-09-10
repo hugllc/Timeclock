@@ -37,6 +37,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+
 
 require_once __DIR__."/timesheet.php";
 
@@ -96,6 +98,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
             $row->created    = $date;
         }
         $row->user_id = Factory::getUser()->id;
+        $row->checked_out_time = !empty($row->checked_out_time) ? $row->checked_out_time : '0000-00-00 00:00:00';
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -103,6 +106,7 @@ class TimeclockModelsAddhours extends TimeclockModelsTimesheet
         }
     
         if (!$row->store()) {
+            // Log::add($row->getError(), Log::ERROR, 'my-error-category');
             return false;
         }
         // Set our id for things after this.

@@ -89,7 +89,7 @@ class TimeclockModelsDefault extends ListModel
     */
     public function store($data=null)
     {
-        $data = $data ? $data : JRequest::get('post');
+        $data = $data ? $data : Factory::getApplication()->getInput()->getArray();
         $row = $this->getTable();
 
         if (!is_object($row)) {

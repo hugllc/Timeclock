@@ -39,6 +39,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Factory;
+
 require_once __DIR__."/default.php";
 /**
  * Description Here

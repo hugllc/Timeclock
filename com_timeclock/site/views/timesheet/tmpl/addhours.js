@@ -152,13 +152,11 @@ var Addhours = {
                         }
                     }
                 } else {
-                    console.log({data});
                     self.message(elem.project_id, data.message, "error");
                 }
             },
             error: function(data)
             {
-                console.log({data});
                 self.message(elem.project_id, "Save Failed", "error");
             }
         });

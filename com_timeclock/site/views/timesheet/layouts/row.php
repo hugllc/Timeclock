@@ -38,16 +38,16 @@ use Joomla\CMS\HTML\HTMLHelper;
         $class = "date-$date proj-".$sub."-".$displayData->project_id." proj-".$displayData->project_id;
         $modalId = 'modal-'.str_replace(" ", "-", $date."-".$displayData->project_id."-".$sub);
         $modalParams = array();
-        $modalParams['title']      = sprintf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $displayData->user->name, HTMLHelper::_("date", $this->date));
+        $modalParams['title']      = sprintf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $displayData->user->name, HTMLHelper::_("date", $date));
         $modalParams['url']        = $link;
         $modalParams['height']     = '100%';
         $modalParams['width']      = '100%';
         $modalParams['bodyHeight'] = 80;
         $modalParams['modalWidth'] = 60;
-        $modalParams['closeButton'] = false;
-        $modalParams['footer']      = '<button type="button" name="apply" onClick="Addhours.submitform(\'apply\');">Save</button>
-        <button type="button" name="save" data-dismiss="modal" onClick="Addhours.submitform(\'save\');">Save &amp; Close</button>
-        <button type="button" name="close" onClick="window.document.getElementById("'.$modalId.'").close();">Close</button>
+        $modalParams['closeButton'] = true;
+        $modalParams['footer']      = '<button type="button" name="apply" onclick="Addhours.submitform(\'apply\');">Save</button>
+        <button type="button" name="save" data-dismiss="modal" onclick="Addhours.submitform(\'save\');">Save &amp; Close</button>
+        <button type="button" name="close" data-bs-dismiss="modal" aria-label="Close">Close</button>
 ';
 ?>
                 <td class="hours">
