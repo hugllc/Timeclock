@@ -36,10 +36,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 use Joomla\CMS\MVC\Controller\AdminController;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Factory;
- 
+use Joomla\CMS\Language\Text;
+
 /**
  * Description Here
  *

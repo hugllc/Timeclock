@@ -33,8 +33,9 @@
  * @version    GIT: $Id: 940014f34eae3587635fe6da296176d9dd2b389a $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+defined( '_JEXEC' ) or die();
+use Joomla\CMS\Language\Text;
+
 /**
  * Description Here
  *

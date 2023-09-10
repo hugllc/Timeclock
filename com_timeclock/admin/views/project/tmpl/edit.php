@@ -5,7 +5,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
 JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
 

@@ -41,6 +41,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
  
 /**
@@ -107,6 +108,7 @@ class TimeclockModelsDefault extends ListModel
             $row->created_by = Factory::getUser()->id;
             $row->created    = $date;
         }
+        $row->checked_out_time = !empty($row->checked_out_time) ? $row->checked_out_time : '0000-00-00 00:00:00';
 
         // Make sure the record is valid
         if (!$row->check()) {
@@ -114,6 +116,7 @@ class TimeclockModelsDefault extends ListModel
         }
     
         if (!$row->store()) {
+            Log::add($row->getError(), Log::ERROR, 'my-error-category');
             return false;
         }
         // Set our id for things after this.
@@ -476,8 +479,9 @@ class TimeclockModelsDefault extends ListModel
     */
     public function checkout($user_id = null, $id = null)
     {
-        $table = $this->getTable();
-        $id    = is_null($id) ? (int) reset($this->id) : (int)$id;
+        $table   = $this->getTable();
+        $id      = is_null($id) ? (int) reset($this->id) : (int)$id;
+        $user_id = is_null($user_id) ? (int)Factory::getUser()->id : (int)$user_id;
         return $table->checkout($user_id, $id);
     }
     /**
@@ -491,7 +495,7 @@ class TimeclockModelsDefault extends ListModel
     {
         $table = $this->getTable();
         $id    = is_null($id) ? (int) reset($this->id) : (int)$id;
-        return $table->checkin($id);
+        return $table->checkin((int)$id);
     }
     /**
     * Checks out this record

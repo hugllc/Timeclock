@@ -33,8 +33,9 @@
  * @version    GIT: $Id: 91f88619a0067d378d0ae6dec8304ac31c63fb2c $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-defined( '_JEXEC' ) or die( 'Restricted access' );
- 
+defined( '_JEXEC' ) or die();
+use Joomla\CMS\Factory;
+
 /**
  * Description Here
  *
@@ -90,7 +91,7 @@ class TimeclockControllersProject extends TimeclockControllersDefault
     */
     protected function applyUsers()
     {
-        $app   = $this->getApplication();
+        $app   = Factory::getApplication();
         $model = $this->getModel();
         $users_in = $app->input->get("users_in", array(), "array");
         $model->addUsers($users_in, $model->insert_id);
