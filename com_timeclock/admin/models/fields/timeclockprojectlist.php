@@ -69,7 +69,7 @@ class JFormFieldTimeclockProjectList extends FormField
         $lang = Factory::getLanguage();
         $lang->load("com_timeclock");
         $idName = empty($this->elements["userid"])?"id":$this->elements["userid"];
-        $id = JRequest::getInt($idName);
+        $id = Factory::getApplication()->getInput()->getInt($idName);
         if (empty($id)) {
             return "";
         }

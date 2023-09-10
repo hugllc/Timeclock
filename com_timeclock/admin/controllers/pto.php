@@ -68,10 +68,9 @@ class TimeclockControllersPto extends TimeclockControllersDefault
     */
     protected function taskDelete()
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
-        
         // Get the application
         $app   = $this->getApplication();
+        $app->getInput() or die("Invalid Token");
         $model = $this->getModel();
         if ($index = $model->delete()) {
             $app->enqueueMessage(

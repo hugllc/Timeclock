@@ -75,7 +75,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     */
     public function store($data=null)
     {
-        $data = $data ? $data : JRequest::get('post');
+        $data = $data ? $data : Factory::getApplication()->getInput()->getArray();
         $row = $this->getTable();
 
         if (!is_object($row)) {
@@ -126,7 +126,7 @@ class TimeclockModelsReports extends TimeclockModelsDefault
     public function delete(&$pks)
     {
         /*
-        $data = $data ? $data : JRequest::get('post');
+        $data = $data ? $data : Factory::getApplication()->getInput()->getArray();
         $row = $this->getTable();
 
         if (!is_object($row)) {

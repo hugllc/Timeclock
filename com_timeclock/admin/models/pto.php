@@ -78,7 +78,7 @@ class TimeclockModelsPto extends TimeclockModelsDefault
     */
     public function store($data=null)
     {
-        $data = $data ? $data : JRequest::get('post');
+        $data = $data ? $data : Factory::getApplication()->getInput()->getArray();
         $data["valid_from"] = TimeclockHelpersDate::fixDate($data["valid_from"]);
         $to                 = TimeclockHelpersDate::explodeDate($data["valid_from"]);
         if ($data["type"] == "CARRYOVER") {

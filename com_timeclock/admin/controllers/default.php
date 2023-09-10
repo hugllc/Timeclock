@@ -162,10 +162,9 @@ class TimeclockControllersDefault extends AdminController
     */
     protected function taskSave()
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
-        
         // Get the application
         $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
         $model = $this->getModel();
         if ($index = $model->store()) {
             $app->enqueueMessage(
@@ -223,9 +222,9 @@ class TimeclockControllersDefault extends AdminController
     */
     protected function taskApply($output = true)
     {
-        JRequest::checkToken('request') or jexit("JINVALID_TOKEN");
         // Get the application
         $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
         $model = $this->getModel();
 
         if ($index = $model->store()) {

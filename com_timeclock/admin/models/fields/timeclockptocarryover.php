@@ -63,7 +63,7 @@ class JFormFieldTimeclockPTOCarryOver extends FormField
     public function getInput()
     {
         $idName = empty($this->elements["userid"])?"id":$this->elements["userid"];
-        $id = JRequest::getInt($idName);
+        $id = Factory::getApplication()->getInput()->getInt($idName);
         if (empty($id)) {
             return "";
         }
