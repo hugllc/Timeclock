@@ -494,8 +494,8 @@ class TimeclockModelsDefault extends ListModel
     public function checkin($id = null)
     {
         $table = $this->getTable();
-        $id    = is_null($id) ? (int) reset($this->id) : (int)$id;
-        return $table->checkin((int)$id);
+        $id    = is_null($id) ? reset($this->id) : $id;
+        return empty($id) ? true : $table->checkin((int)$id);
     }
     /**
     * Checks out this record

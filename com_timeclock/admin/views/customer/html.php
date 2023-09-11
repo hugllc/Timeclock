@@ -131,7 +131,7 @@ class TimeclockViewsCustomerHtml extends HtmlView
             JToolbarHelper::unpublish('customer.unpublish', 'JTOOLBAR_UNPUBLISH', true);
             JToolbarHelper::checkin('customer.checkin');
         }
-        JHtmlSidebar::setAction('index.php?option=com_timeclock');
+        JHtmlSidebar::setAction('index.php?option=com_timeclock&controller=customer');
 
         JHtmlSidebar::addFilter(
             Text::_('JOPTION_SELECT_PUBLISHED'),
@@ -152,6 +152,7 @@ class TimeclockViewsCustomerHtml extends HtmlView
     */
     protected function editToolbar()
     {
+        // Factory::getApplication()->getInput()->set('hidemainmenu', true);
         $add = empty($this->data->customer_id);
         $title = ($add) ? Text::_("COM_TIMECLOCK_ADD") : Text::_("COM_TIMECLOCK_EDIT");
 

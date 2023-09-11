@@ -152,8 +152,7 @@ class TimeclockControllersDefault extends AdminController
     */
     protected function taskCancel()
     {
-        Factory::getApplication()->redirect($this->baselink);
-        return true;
+        return $this->taskCheckin();
     }
     /**
     * This function saves our stuff.
