@@ -8,7 +8,14 @@ SVN_SERVER=https://svn.hugllc.com
 SRC=`pwd`
 DEST="${SRC}/Joomla/"
 
+include Version.mk
+
+PKG_WITH_VERSION := pkg_timeclock-${PACKAGE_VERSION}.zip
+
 all: check copy_from_dev
+
+asdf:
+	echo ${PKG_WITH_VERSION}
 
 copy_from_dev: check copy-com_timeclock copy-mod_timeclockinfo copy-plg_user_timeclock
 
@@ -33,12 +40,15 @@ check:
 	fi;
 	@./fixini.php
 	
-archive package: rel/pkg_timeclock.zip clean
+archive package: rel/pkg_timeclock.zip rel/${PKG_WITH_VERSION} clean
 
 	
 rel/pkg_timeclock.zip: build/pkg_timeclock/pkg_timeclock.xml build/pkg_timeclock/packages/com_timeclock.zip build/pkg_timeclock/packages/plg_user_timeclock.zip build/pkg_timeclock/packages/mod_timeclockinfo.zip 
 	mkdir -p rel
 	cd build; zip -r ../rel/pkg_timeclock.zip pkg_timeclock
+
+rel/${PKG_WITH_VERSION}: rel/pkg_timeclock.zip
+	cp $< $@
 
 build/pkg_timeclock/packages/com_timeclock.zip:
 	mkdir -p build/pkg_timeclock/packages
