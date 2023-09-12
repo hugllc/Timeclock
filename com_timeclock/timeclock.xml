@@ -87,6 +87,6 @@
         </languages>
     </administration>
     <updateservers>
-        <server type="extension" priority="1" name="ComTimeclock Update Site">http://downloads.hugllc.com/Joomla/Timeclock/ComTimeclock-update.xml</server>
+        <server type="extension" priority="1" name="Timeclock Update Site">https://github.com/hugllc/Timeclock/raw/master/update.xml</server>
     </updateservers>
 </extension>

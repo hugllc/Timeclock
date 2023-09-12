@@ -39,6 +39,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Form\FormFactoryInterface;
+use HUGLLC\Component\Timeclock\Administrator\Trait\CustomerDBTrait;
 
 
 defined( '_JEXEC' ) or die();
@@ -56,6 +57,7 @@ defined( '_JEXEC' ) or die();
  */
 class CustomerModel extends AdminModel
 {
+    use CustomerDBTrait;
     /**
      * The prefix to use with controller messages.
      *
@@ -97,26 +99,6 @@ class CustomerModel extends AdminModel
         $item = $db->loadObject();
 
         return $item;
-    }
-    /**
-    * Builds the query to be used by the model
-    *
-    * @return object Query object
-    */
-    protected function _buildQuery()
-    {
-        $db = Factory::getDBO();
-        $query = $db->getQuery(TRUE);
-        $query->select('c.customer_id, c.company, c.name, c.address1, c.address2,
-                        c.city, c.state, c.zip, c.country, c.notes, c.checked_out,
-                        c.checked_out_time, c.published, c.created_by, c.created,
-                        c.modified, c.bill_pto');
-        $query->from('#__timeclock_customers as c');
-        $query->select('u.name as author');
-        $query->leftjoin('#__users as u on c.created_by = u.id');
-        $query->select('v.name as contact');
-        $query->leftjoin('#__users as v on c.contact_id = v.id');
-        return $query;
     }
 
     /**
