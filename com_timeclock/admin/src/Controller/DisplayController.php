@@ -37,6 +37,7 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\Router\Route;
 
 \defined( '_JEXEC' ) or die;
 
@@ -76,9 +77,11 @@ class DisplayController extends AdminController
      */
     public function display($cachable = false, $urlparams = [])
     {
-        var_dump([
-            'view' => $this->input->get('view', 'about'),
-        ]);
+        $view = $this->input->get('view', NULL);
+        if (is_null($view)) {
+            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=about', false));
+            return false;
+        }
         return parent::display($cachable, $urlparams);
     }
 
