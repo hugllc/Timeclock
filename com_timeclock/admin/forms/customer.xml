@@ -6,73 +6,75 @@
             type="text"
             label="COM_TIMECLOCK_CONTACT_NAME"
             description="COM_TIMECLOCK_CONTACT_NAME_CUSTOMER_DESC"
-            class="span4"
             size="40"
-            required="true"/>
+            required="true"
+        />
         <field
             name="company"
             type="text"
             label="COM_TIMECLOCK_COMPANY"
             description="COM_TIMECLOCK_COMPANY_CUSTOMER_DESC"
-            class="span4"
             size="40"
-            required="true"/>
+            required="true"
+        />
         <field
             name="address1"
             type="text"
             label="COM_TIMECLOCK_ADDRESS1"
-            class="span8"
             description="COM_TIMECLOCK_ADDRESS1_CUSTOMER_DESC"
-            size="64"/>
+            size="64"
+        />
         <field
             name="address2"
             type="text"
             label="COM_TIMECLOCK_ADDRESS2"
-            class="span8"
             description="COM_TIMECLOCK_ADDRESS2_CUSTOMER_DESC"
-            size="64"/>
+            size="64"
+        />
         <field
             name="city"
             type="text"
             label="COM_TIMECLOCK_CITY"
-            class="span8"
             description="COM_TIMECLOCK_CITY_CUSTOMER_DESC"
-            size="40"/>
+            size="40"
+        />
         <field
             name="state"
             type="text"
             label="COM_TIMECLOCK_STATE"
-            class="span4"
             description="COM_TIMECLOCK_STATE_CUSTOMER_DESC"
-            size="20"/>
+            size="20"
+        />
         <field
             name="zip"
             type="text"
             label="COM_TIMECLOCK_ZIP"
             class="span2"
             description="COM_TIMECLOCK_ZIP_CUSTOMER_DESC"
-            size="10"/>
+            size="10"
+        />
         <field
             name="country"
             type="text"
             label="COM_TIMECLOCK_COUNTRY"
             class="span4"
             description="COM_TIMECLOCK_COUNTRY_CUSTOMER_DESC"
-            size="40"/>
+            size="40"
+        />
         <field
             name="notes"
             type="textarea"
             label="COM_TIMECLOCK_NOTES"
             description="COM_TIMECLOCK_NOTES_CUSTOMER_DESC"
             rows="3"
-            cols="40"/>
-
+            cols="40"
+        />
     </fieldset>
     <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_CUSTOMER">
         <field
             name="published"
             type="list"
-            class="chzn-color-state span10"
+            class="form-select-color-state"
             default="1"
             size="1"
             label="JSTATUS"
@@ -84,7 +86,7 @@
         <field
             name="bill_pto"
             type="list"
-            class="chzn-color-state span10"
+            class="advancedSelect"
             default="0"
             size="1"
             label="COM_TIMECLOCK_BILL_FOR_PTO"
@@ -93,5 +95,7 @@
             <option value="1">JYES</option>
             <option value="0">JNO</option>
         </field>
+    </fieldset>
+    <fieldset name="hidden">
     </fieldset>
 </form>

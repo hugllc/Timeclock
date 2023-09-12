@@ -61,10 +61,12 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class HtmlView extends BaseHtmlView
 {
-    /** Whether we are adding or editing */
-    protected $add = false;
+    /** This is our item */
+    protected $item;
+    /** This is the state */
+    protected $state;
     /** This is the form we might have */
-    protected $form = null;
+    protected $form;
     /**
     * Renders this view
     *
@@ -73,26 +75,16 @@ class HtmlView extends BaseHtmlView
     function display($tpl = null)
     {
         $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
-        $layout = $this->getLayout();
-        if ($layout == "add") {
-            $this->add = true;
-            $layout = "edit";
-            $this->setLayout($layout);
-        }
-        $this->model = $this->getModel();
+        $model = $this->getModel();
 
         $this->params = ComponentHelper::getParams('com_timeclock');
-        $this->state  = $this->model->getState();
-        if ($this->add) {
-            $this->data = $this->model->getNew();
-        } else {
-            $this->data = $this->model->getItem();
-        }
-        $this->getForm();
+        $this->state  = $model->getState();
+        $this->item = $model->getItem();
+        $this->form = $model->getForm();
         $this->addToolbar();
 
         //display
-        return parent::display($tpl);
+        return parent::display();
     } 
     /**
     * Adds the toolbar for this view.
@@ -102,15 +94,17 @@ class HtmlView extends BaseHtmlView
     protected function addToolbar()
     {
         // Factory::getApplication()->getInput()->set('hidemainmenu', true);
-        $add = empty($this->data->customer_id);
+        $add = empty($this->item->customer_id);
         $title = ($add) ? Text::_("COM_TIMECLOCK_ADD") : Text::_("COM_TIMECLOCK_EDIT");
+
+        $toolbar    = Toolbar::getInstance();
 
         ToolbarHelper::title(
             Text::sprintf("COM_TIMECLOCK_CUSTOMER_EDIT_TITLE", $title), "clock"
         );
-        ToolBarHelper::apply("apply");
-        ToolBarHelper::save("save");
-        ToolBarHelper::cancel("cancel");
+        $toolbar->apply('customer.apply');
+        $toolbar->save('customer.save');
+        $toolbar->cancel('customer.cancel', 'JTOOLBAR_CANCEL');
     }
     /**
      * Returns an Form object

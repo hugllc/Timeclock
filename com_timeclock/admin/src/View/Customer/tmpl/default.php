@@ -1,25 +1,22 @@
 <?php
 
 defined('_JEXEC') or die;
-use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockView;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Layout\LayoutHelper;
 
-HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
-JHTML::script(Juri::base()."components/com_timeclock/js/edit.js");
 ?>
-
-<script type="text/javascript">
-    Joomla.submitbutton = function (task)
-    {
-        Joomla.Timeclock.submitbutton(task);
-    }
-</script>
-<form action="index.php?option=com_timeclock&controller=customer" method="post" id="adminForm" name="adminForm">
-<?php print TimeclockView::getForm($this->form, $this->data); ?>
+<form action="<?php echo Route::_("index.php?option=com_timeclock&controller=customer"); ?>" method="post" id="adminForm" name="adminForm">
+    <div class="row">
+        <div class="col-lg-9">
+            <?php echo $this->form->renderFieldset('main'); ?>
+        </div>
+        <div class="col-lg-3">
+            <?php echo $this->form->renderFieldset('sidebar'); ?>
+        </div>
+    </div>
     <input type="hidden" name="customer_id" value="<?php print $this->data->customer_id; ?>" />
     <input type="hidden" name="id" value="<?php print $this->data->customer_id; ?>" />
-    <input type="hidden" name="created" value="<?php print $this->data->created; ?>" />
-    <input type="hidden" name="created_by" value="<?php print $this->data->created_by; ?>" />
     <input type="hidden" name="task" value="" />
-    <?php print JHTML::_("form.token"); ?>
+    <?php print HTMLHelper::_("form.token"); ?>
 </form>

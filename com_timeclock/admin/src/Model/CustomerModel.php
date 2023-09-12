@@ -113,10 +113,31 @@ class CustomerModel extends AdminModel
     {
         // Get the form.
         $form = $this->loadForm('com_timeclock.customer', 'customer', ['control' => 'jform', 'load_data' => $loadData]);
-
         if (empty($form)) {
             return false;
         }
+        return $form;
+    }
+    /**
+     * Method to get the data that should be injected in the form.
+     *
+     * @return  mixed  The data for the form.
+     *
+     * @since   1.6
+     */
+    protected function loadFormData()
+    {
+        // Check the session for previously entered form data.
+        $app  = Factory::getApplication();
+        $data = $app->getUserState('com_timeclock.edit.customer.data', []);
+
+        if (empty($data)) {
+            $data = $this->getItem();
+        }
+
+        $this->preprocessData('com_timeclock.customer', $data);
+
+        return $data;
     }
 
 }
