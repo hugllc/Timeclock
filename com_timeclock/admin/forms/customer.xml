@@ -97,5 +97,30 @@
         </field>
     </fieldset>
     <fieldset name="hidden">
+        <field
+            type="hidden"
+            name="checked_out"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="checked_out_time"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="created_by"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="created"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="customer_id"
+            default="0"
+        />
     </fieldset>
 </form>

@@ -92,6 +92,7 @@ class CustomerModel extends AdminModel
         $db = Factory::getDBO();
 
         $id = $id ? $id : Factory::getApplication()->getInput()->getInt("id");
+        $id = $id ? $id : Factory::getApplication()->getInput()->getInt("customer_id");
         $query = $this->_buildQuery();
         $query->where('c.customer_id = ' . (int) $id);
         $db->setQuery($query);
@@ -138,6 +139,30 @@ class CustomerModel extends AdminModel
         $this->preprocessData('com_timeclock.customer', $data);
 
         return $data;
+    }
+    /**
+    * Stores the data given, or request data.
+    *
+    * @param array $data The data to store.  If not given, get the post data
+    *
+    * @return Table instance with data in it.
+    */
+    public function save($data)
+    {
+        $form = Factory::getApplication()->getInput()->get("jform");
+
+        if (empty($data['customer_id'])) {
+            $data['customer_id'] = $form['customer_id'] or Factory::getApplication()->getInput()->getInt("customer_id");
+        }
+
+        if (empty($data['checked_out_time']) || empty($data['checked_out'])) {
+            $data['checked_out_time'] = '0000-00-00 00:00:00';
+            $data['checked_out'] = 0;
+        }
+
+        $date        = Factory::getDate();
+        $data['modified'] = $date->toSql();
+        return parent::save($data);
     }
 
 }

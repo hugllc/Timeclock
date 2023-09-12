@@ -15,8 +15,7 @@ use Joomla\CMS\Layout\LayoutHelper;
             <?php echo $this->form->renderFieldset('sidebar'); ?>
         </div>
     </div>
-    <input type="hidden" name="customer_id" value="<?php print $this->data->customer_id; ?>" />
-    <input type="hidden" name="id" value="<?php print $this->data->customer_id; ?>" />
+    <?php echo $this->form->renderFieldset('hidden'); ?>
     <input type="hidden" name="task" value="" />
     <?php print HTMLHelper::_("form.token"); ?>
 </form>
