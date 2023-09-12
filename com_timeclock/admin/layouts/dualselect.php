@@ -48,7 +48,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             <div class="row-fluid">
                 <div class="span3 center">
                     <div class="center"><?php print Text::_($displayData["label_in"]); ?></div>
-<?php print JHTML::_(
+<?php print HTMLHelper::_(
             'select.genericlist', 
             $displayData["inOptions"], 
             $selInID, 
@@ -65,7 +65,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 </div>
                 <div class="span3 center">
                     <div class="center"><?php print Text::_($displayData["label_out"]); ?></div>
-<?php print JHTML::_(
+<?php print HTMLHelper::_(
             'select.genericlist', 
             $displayData["outOptions"], 
             $selOutID, 

@@ -39,6 +39,7 @@
         <folder>views</folder>
         <folder>images</folder>
         <folder>css</folder>
+        <folder>src</folder>
         <filename>index.html</filename>
         <filename>timeclock.php</filename>
         <filename>router.php</filename>
@@ -52,34 +53,32 @@
     <administration>
         <menu>COM_TIMECLOCK_MENU</menu>
         <submenu>
-            <menu controller="customer" task="list" view="customer">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
-            <menu controller="department" task="list" view="department">COM_TIMECLOCK_SUBMENU_DEPARTMENTS</menu>
-            <menu controller="project" task="list" view="project">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
-            <menu controller="holiday" task="list" view="holiday">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
-            <menu controller="pto" task="list" view="pto">COM_TIMECLOCK_SUBMENU_PTO</menu>
-            <menu controller="timesheet" task="list" view="timesheet">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
-            <menu controller="reports" task="list" view="reports">COM_TIMECLOCK_SUBMENU_REPORTS</menu>
-            <menu controller="tools" task="display" view="tools">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
-            <menu controller="about" view="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
+            <menu controller="customers">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
+            <menu controller="departments">COM_TIMECLOCK_SUBMENU_DEPARTMENTS</menu>
+            <menu controller="projects">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
+            <menu controller="holidays">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
+            <menu controller="ptos">COM_TIMECLOCK_SUBMENU_PTO</menu>
+            <menu controller="timesheets">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
+            <menu controller="reports">COM_TIMECLOCK_SUBMENU_REPORTS</menu>
+            <menu controller="tools">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
+            <menu controller="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
         </submenu>
 
         <files folder="admin">
-            <folder>controllers</folder>
             <folder>elements</folder>
             <folder>forms</folder>
             <folder>helpers</folder>
             <folder>languages</folder>
             <folder>layouts</folder>
-            <folder>models</folder>
             <folder>js</folder>
-            <folder>views</folder>
             <folder>sql</folder>
             <folder>images</folder>
             <folder>tables</folder>
             <folder>css</folder>
+            <folder>services</folder>
+            <folder>src</folder>
             <filename>access.xml</filename>
             <filename>config.xml</filename>
-            <filename>timeclock.php</filename>
             <filename>index.html</filename>
         </files>
         <languages folder="admin">

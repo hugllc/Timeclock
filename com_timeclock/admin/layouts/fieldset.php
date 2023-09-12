@@ -1,5 +1,7 @@
 <?php
-                $fieldset = $displayData["form"]->getFieldset($displayData["name"]);
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockView;
+
+            $fieldset = $displayData["form"]->getFieldset($displayData["name"]);
                 // Iterate through the fields and display them.
                 foreach($fieldset as $field):
                     $name = $field->name;
@@ -10,7 +12,7 @@
                     if ($field->hidden):
                         echo $field->input;
                     else:
-                        print TimeclockHelpersView::getFormField($field);
+                        print TimeclockView::getFormField($field);
                     endif;
                 endforeach;
                 ?>

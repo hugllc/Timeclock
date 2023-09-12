@@ -1,5 +1,7 @@
-            <fieldset class="form-horizontal">
+<?php use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockView; ?>
+
+        <fieldset class="form-horizontal">
 <?php  
-print TimeclockHelpersView::getFormSet($displayData["name"], $displayData["form"], $displayData["data"]);
+print TimeclockView::getFormSet($displayData["name"], $displayData["form"], $displayData["data"]);
 ?>
             </fieldset>
