@@ -53,15 +53,15 @@
     <administration>
         <menu>COM_TIMECLOCK_MENU</menu>
         <submenu>
-            <menu controller="customers">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
-            <menu controller="departments">COM_TIMECLOCK_SUBMENU_DEPARTMENTS</menu>
-            <menu controller="projects">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
-            <menu controller="holidays">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
-            <menu controller="ptos">COM_TIMECLOCK_SUBMENU_PTO</menu>
-            <menu controller="timesheets">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
-            <menu controller="reports">COM_TIMECLOCK_SUBMENU_REPORTS</menu>
-            <menu controller="tools">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
-            <menu controller="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
+            <menu view="customers">COM_TIMECLOCK_SUBMENU_CUSTOMERS</menu>
+            <menu view="departments">COM_TIMECLOCK_SUBMENU_DEPARTMENTS</menu>
+            <menu view="projects">COM_TIMECLOCK_SUBMENU_PROJECTS</menu>
+            <menu view="holidays">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
+            <menu view="ptos">COM_TIMECLOCK_SUBMENU_PTO</menu>
+            <menu view="timesheets">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
+            <menu view="reports">COM_TIMECLOCK_SUBMENU_REPORTS</menu>
+            <menu view="tools">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
+            <menu view="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
         </submenu>
 
         <files folder="admin">
