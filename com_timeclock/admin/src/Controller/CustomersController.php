@@ -35,8 +35,8 @@ namespace HUGLLC\Component\Timeclock\Administrator\Controller;
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use HUGLLC\Component\Timeclock\Administrator\Controller\DisplayController;
 
 \defined( '_JEXEC' ) or die;
 
@@ -44,7 +44,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
  * 
  *
  */
-class CustomersController extends AdminController
+class CustomersController extends DisplayController
 {
     /**
      * Constructor.

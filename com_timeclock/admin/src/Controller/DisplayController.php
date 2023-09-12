@@ -78,7 +78,8 @@ class DisplayController extends AdminController
     public function display($cachable = false, $urlparams = [])
     {
         $view = $this->input->get('view', NULL);
-        if (is_null($view)) {
+        $controller = $this->input->get('controller', NULL);
+        if (is_null($view) && is_null($controller)) {
             $this->setRedirect(Route::_('index.php?option=com_timeclock&view=about', false));
             return false;
         }

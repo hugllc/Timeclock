@@ -77,6 +77,8 @@ class CustomerModel extends AdminModel
     public function __construct($config = [], MVCFactoryInterface $factory = null, FormFactoryInterface $formFactory = null)
     {
         parent::__construct($config, $factory, $formFactory);
+
+        // $this->register()
     }
     /**
     * Build a query, where clause and return an object

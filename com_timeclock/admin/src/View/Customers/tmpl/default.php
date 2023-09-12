@@ -44,10 +44,7 @@ Joomla.orderTable = function()
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_COMPANY', 'c.company', $listDirn, $listOrder); ?>
                     </th>
                     <th class="center hidden-phone">
-                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_NAME', 'c.name', $listDirn, $listOrder); ?>
-                    </th>
-                    <th class="center hidden-phone">
-                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_CONTACT_NAME', 'contact', $listDirn, $listOrder); ?>
+                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_CONTACT_NAME', 'c.name', $listDirn, $listOrder); ?>
                     </th>
                     <th class="center hidden-phone">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_BILL_PTO', 'c.bill_pto', $listDirn, $listOrder); ?>

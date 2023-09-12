@@ -37,9 +37,6 @@ $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canChecki
                         <?php echo $displayData["data"]->name; ?>
                     </td>
                     <td class="center hidden-phone">
-                        <?php echo $displayData["data"]->contact; ?>
-                    </td>
-                    <td class="center hidden-phone">
                         <?php echo ($displayData["data"]->bill_pto) ? "Yes" : "No"; ?>
                     </td>
                     <td class="center hidden-phone">

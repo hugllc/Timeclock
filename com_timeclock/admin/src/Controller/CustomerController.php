@@ -37,8 +37,9 @@ namespace HUGLLC\Component\Timeclock\Administrator\Controller;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\Utilities\ArrayHelper;
 
-defined( '_JEXEC' ) or die();
+\defined( '_JEXEC' ) or die();
 
 /**
  * Description Here
