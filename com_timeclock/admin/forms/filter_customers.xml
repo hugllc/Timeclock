@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form addfieldprefix="Joomla\Component\Banners\Administrator\Field">
+<form addfieldprefix="HUGLLC\Component\Timeclock\Administrator\Field">
 	<fields name="filter">
 		<field
 			name="search"
 			type="text"
 			inputmode="search"
-			label="COM_BANNERS_BANNERS_FILTER_SEARCH_LABEL"
-			description="COM_BANNERS_BANNERS_FILTER_SEARCH_DESC"
+			label="JSEARCH_FILTER"
+			description="COM_TIMECLOCK_FILTER_SEARCH_DESC"
 			hint="JSEARCH_FILTER"
 		/>
 

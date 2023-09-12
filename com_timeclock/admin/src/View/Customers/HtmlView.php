@@ -139,51 +139,15 @@ class HtmlView extends BaseHtmlView
         if ($actions->get('core.create')) {
             ToolbarHelper::addNew('customer.add');
         }
-        /*
-        if (($actions->get('core.edit')) || ($actions->get('core.edit.own')))
-        {
-            ToolbarHelper::editList('customer.edit');
-        }
-        */
         if ($actions->get('core.edit.state'))
         {
             ToolbarHelper::publish('customers.publish', 'JTOOLBAR_PUBLISH', true);
             ToolbarHelper::unpublish('customers.unpublish', 'JTOOLBAR_UNPUBLISH', true);
             ToolbarHelper::checkin('customers.checkin');
         }
-        /*
-        Sidebar::setAction('index.php?option=com_timeclock&controller=customer');
-
-        Sidebar::addFilter(
-            Text::_('JOPTION_SELECT_PUBLISHED'),
-            'filter_published',
-            HTMLHelper::_('select.options', array(0 => Text::_("JUNPUBLISHED"), 1 => Text::_("JPUBLISHED")), 'value', 'text', $this->state->get('filter.published'), true)
-        );
-        $options = TimeclockView::getUsersOptions();
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_CONTACT'),
-            'filter_user_id',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $this->state->get('filter.user_id'), true)
-        );
-        */
         if ($actions->get('core.admin'))
         {
             ToolbarHelper::preferences('com_timeclock');
         }
-    }
-    /**
-     * Returns an array of fields the table can be sorted by
-     *
-     * @return  array  Array containing the field name to sort by as the key and display text as value
-     */
-    protected function getSortFields()
-    {
-        return array(
-            'c.company' => Text::_('COM_TIMECLOCK_COMPANY'),
-            'c.name' => Text::_('COM_TIMECLOCK_NAME'),
-            'contact' => Text::_('COM_TIMECLOCK_CONTACT_NAME'),
-            'c.customer_id' => Text::_('JGRID_HEADING_ID'),
-            'c.published' => Text::_('JSTATUS'),
-        );
     }
 }

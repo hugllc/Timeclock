@@ -44,7 +44,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
  * 
  *
  */
-class DisplayController extends AdminController
+class CustomersController extends AdminController
 {
     /**
      * Constructor.
@@ -63,23 +63,6 @@ class DisplayController extends AdminController
         parent::__construct($config, $factory, $app, $input);
 
         // $this->registerTask('unpublish', 'publish');
-    }
-    /**
-     * Method to display a view.
-     *
-     * @param   boolean  $cachable   If true, the view output will be cached
-     * @param   array    $urlparams  An array of safe URL parameters and their variable types, for valid values see {@link \JFilterInput::clean()}.
-     *
-     * @return  BaseController|boolean  This object to support chaining.
-     *
-     * @since   1.5
-     */
-    public function display($cachable = false, $urlparams = [])
-    {
-        var_dump([
-            'view' => $this->input->get('view', 'about'),
-        ]);
-        return parent::display($cachable, $urlparams);
     }
 
 }
