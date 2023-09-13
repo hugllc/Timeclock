@@ -100,7 +100,7 @@ class DepartmentModel extends AdminModel
 
         $id = $id ? $id : Factory::getApplication()->getInput()->getInt("department_id");
         $query = $this->_buildQuery();
-        $query->where('c.department_id = ' . (int) $id);
+        $query->where('d.department_id = ' . (int) $id);
         $db->setQuery($query);
 
         $item = $db->loadObject();

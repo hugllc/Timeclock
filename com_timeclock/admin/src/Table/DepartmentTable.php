@@ -30,13 +30,15 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2023 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    GIT: $Id: 51c1eda1b710154b4d5d5e001ecd4e395b81a19b $    
+ * @version    GIT: $Id: 1c44074ad153f94ca235220ed62f23129b8b335f $    
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-
-defined('_JEXEC') or die();
+namespace HUGLLC\Component\Timeclock\Administrator\Table;
 
 use Joomla\CMS\Table\Table;
+ 
+\defined('_JEXEC') or die();
+
 
 /**
  * Preferences table
@@ -49,23 +51,18 @@ use Joomla\CMS\Table\Table;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock:JoomlaUI
  */
-class TableTimeclockTimesheet extends Table
+class DepartmentTable extends Table
 {
-    public $timesheet_id     = null;
-    public $project_id       = 0;
+    public $department_id    = null;
+    public $name             = '';
+    public $description      = '';
     public $created_by       = 0;
-    public $hours1           = 0;
-    public $hours2           = 0;
-    public $hours3           = 0;
-    public $hours4           = 0;
-    public $hours5           = 0;
-    public $hours6           = 0;
-    public $worked           = '';
     public $created          = '';
     public $modified         = '';
-    public $notes            = '';
+    public $manager_id       = 0;
     public $checked_out      = 0;
     public $checked_out_time = '';
+    public $published        = 1;
 
     /**
      * Constructor
@@ -74,25 +71,7 @@ class TableTimeclockTimesheet extends Table
      */
     public function __construct(&$db)
     {
-        parent::__construct('#__timeclock_timesheet', "timesheet_id", $db);
-    }
-    /**
-     * Checks the row
-     *
-     * @return array
-     */
-    public function check()
-    {
-
-        if (empty($this->project_id) || empty($this->worked)) {
-            return false;
-        }
-        $places = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
-        for ($i = 1; $i <= 6; $i++) {
-            $hours = "hours".$i;
-            $this->$hours = round($this->$hours, $places);
-        }
-        return true;
+        parent::__construct('#__timeclock_departments', "department_id", $db);
     }
     
 }

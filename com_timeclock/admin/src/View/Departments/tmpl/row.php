@@ -26,7 +26,7 @@ $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canChecki
                                 <?php echo HTMLHelper::_('jgrid.checkedout', $displayData["index"], $displayData["data"]->checked_out, $displayData["data"]->checked_out_time, 'department.', $canCheckin); ?>
                             <?php endif; ?>
                             <?php if (($canEdit || $canEditOwn) && !($displayData["data"]->checked_out)): ?>
-                                <a href="<?php echo Route::_('index.php?option=com_timeclock&controller=department&task=edit&id='.(int) $displayData["data"]->department_id); ?>">
+                                <a href="<?php echo Route::_('index.php?option=com_timeclock&controller=department&task=edit&department_id='.(int) $displayData["data"]->department_id); ?>">
                                 <?php echo $displayData["data"]->name; ?></a>
                             <?php else : ?>
                                 <?php echo $displayData["data"]->name; ?>

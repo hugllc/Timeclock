@@ -93,7 +93,7 @@ class HtmlView extends BaseHtmlView
     */
     protected function addToolbar()
     {
-        // Factory::getApplication()->getInput()->set('hidemainmenu', true);
+        Factory::getApplication()->getInput()->set('hidemainmenu', true);
         $add = empty($this->item->customer_id);
         $title = ($add) ? Text::_("COM_TIMECLOCK_ADD") : Text::_("COM_TIMECLOCK_EDIT");
 
