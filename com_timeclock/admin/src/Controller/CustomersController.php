@@ -72,26 +72,24 @@ class CustomersController extends DisplayController
     public function publish() {
         $this->checkToken();
         $input = Factory::getApplication()->getInput();
-        $cid = $input->get("cid");
+        $cid = $input->get("customer_id");
         $task = $input->get("task");
         $this->getModel("Customer")->publish($cid, ($task == "publish") ? 1 : 0);
         $this->setRedirect("index.php?option=com_timeclock&view=customers");
     }
-
     /**
      * Checkin entries
      */
     public function checkin() {
         $this->checkToken();
         $input = Factory::getApplication()->getInput();
-        $cid = $input->get("cid");
+        $cid = $input->get("customer_id");
         $model = $this->getModel("Customer");
         foreach ($cid as $id) {
             $model->checkin($id);
         }
         $this->setRedirect("index.php?option=com_timeclock&view=customers");
     }
-
 }
 
 ?>

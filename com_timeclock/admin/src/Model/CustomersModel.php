@@ -69,7 +69,11 @@ class CustomersModel extends ListModel
         }
         parent::__construct($config); 
     }
-
+    /**
+    * Build an SQL query to load the list data.
+    *
+    * @return  \Joomla\Database\DatabaseQuery
+    */
     public function getListQuery()
     {
         $query = $this->_buildQuery();
@@ -88,6 +92,20 @@ class CustomersModel extends ListModel
         return $query;
     }
     /**
+     * Returns a reference to the a Table object, always creating it.
+     *
+     * @param   string  $type    The table type to instantiate
+     * @param   string  $prefix  A prefix for the table class name. Optional.
+     * @param   array   $config  Configuration array for model. Optional.
+     *
+     * @return  Table  A Table object
+     */
+    public function getTable($type = 'Customer', $prefix = 'Administrator', $config = [])
+    {
+        return parent::getTable($type, $prefix, $config);
+    }
+
+    /**
     * Method to auto-populate the model state.
     *
     * This method should only be called once per instantiation and is designed
@@ -97,7 +115,6 @@ class CustomersModel extends ListModel
     * @return  void
     *
     * @note    Calling getState in this method will result in recursion.
-    * @since   12.2
     */
     protected function populateState($ordering = "c.customer_id", $direction = "asc")
     {

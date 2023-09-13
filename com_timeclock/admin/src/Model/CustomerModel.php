@@ -65,6 +65,13 @@ class CustomerModel extends AdminModel
      * @since  1.6
      */
     protected $text_prefix = 'COM_TIMECLOCK';
+    /**
+     * The type alias for this content type.
+     *
+     * @var    string
+     * @since  3.2
+     */
+    public $typeAlias = 'com_timeclock.customer';
 
     /**
      * Constructor.
@@ -91,7 +98,6 @@ class CustomerModel extends AdminModel
     {
         $db = Factory::getDBO();
 
-        $id = $id ? $id : Factory::getApplication()->getInput()->getInt("id");
         $id = $id ? $id : Factory::getApplication()->getInput()->getInt("customer_id");
         $query = $this->_buildQuery();
         $query->where('c.customer_id = ' . (int) $id);
@@ -153,11 +159,6 @@ class CustomerModel extends AdminModel
 
         if (empty($data['customer_id'])) {
             $data['customer_id'] = $form['customer_id'] or Factory::getApplication()->getInput()->getInt("customer_id") or 0;
-        }
-
-        if (empty($data['checked_out_time']) || empty($data['checked_out'])) {
-            $data['checked_out_time'] = '0000-00-00 00:00:00';
-            $data['checked_out'] = 0;
         }
 
         $date        = Factory::getDate();
