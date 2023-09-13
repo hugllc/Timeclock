@@ -64,17 +64,6 @@ class CustomerController extends FormController
     protected $text_prefix = 'COM_TIMECLOCK';
 
     /**
-    * This function performs everything for this controller.  It is the goto 
-    * function.
-    *
-    * @access public
-    * @return boolean
-    */
-    public function execute($task = NULL)
-    {
-        return parent::execute($task);
-    }
-    /**
      * Method override to check if you can add a new record.
      *
      * @param   array  $data  An array of input data.
@@ -123,28 +112,6 @@ class CustomerController extends FormController
 
         // Since there is no asset tracking, revert to the component permissions.
         return parent::allowEdit($data, $key);
-    }
-
-    /**
-     * Method to run batch operations.
-     *
-     * @param   string  $model  The model
-     *
-     * @return  boolean  True on success.
-     *
-     * @since   2.5
-     */
-    public function batch($model = null)
-    {
-        $this->checkToken();
-
-        // Set the model
-        $model = $this->getModel('Customer', '', []);
-
-        // Preset the redirect
-        $this->setRedirect(Route::_('index.php?option=com_timeclock&view=customers' . $this->getRedirectToListAppend(), false));
-
-        return parent::batch($model);
     }
 
 }

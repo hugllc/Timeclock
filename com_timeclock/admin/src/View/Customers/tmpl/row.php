@@ -13,7 +13,7 @@ $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canChecki
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->customer_id?>">
                     <td class="center">
-                        <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->customer_id, $displayData["data"]->checked_out, "id"); ?>
+                        <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->customer_id, $displayData["data"]->checked_out, "cid"); ?>
                     </td>
                     <td class="center">
                         <div class="btn-group">

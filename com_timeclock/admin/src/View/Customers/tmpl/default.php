@@ -25,10 +25,7 @@ Joomla.orderTable = function()
         form.submit();
 }
 </script>
-<form action="<?php echo Route::_('index.php?option=com_timeclock'); ?>" method="post" name="adminForm" id="adminForm">
-    <div id="j-sidebar-container" class="span2">
-        <?php echo $this->sidebar; ?>
-    </div>
+<form action="<?php echo Route::_('index.php?option=com_timeclock&controller=customers'); ?>" method="post" name="adminForm" id="adminForm">
     <div id="j-main-container" class="j-main-container">
         <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
         <table id="adminTable" cellpadding="0" cellspacing="0" width="100%" class="table table-striped">
@@ -71,7 +68,6 @@ Joomla.orderTable = function()
             </tfoot>
         </table>
         <?php echo $this->pagination->getListFooter(); ?>
-        <input type="hidden" name="controller" value="customers" />
         <input type="hidden" name="task" value="" />
         <input type="hidden" name="boxchecked" value="0" />
         <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />

@@ -37,6 +37,7 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use HUGLLC\Component\Timeclock\Administrator\Controller\DisplayController;
+use Joomla\CMS\Factory;
 
 \defined( '_JEXEC' ) or die;
 
@@ -63,6 +64,32 @@ class CustomersController extends DisplayController
         parent::__construct($config, $factory, $app, $input);
 
         // $this->registerTask('unpublish', 'publish');
+    }
+
+    /**
+     * Publish entries
+     */
+    public function publish() {
+        $this->checkToken();
+        $input = Factory::getApplication()->getInput();
+        $cid = $input->get("cid");
+        $task = $input->get("task");
+        $this->getModel("Customer")->publish($cid, ($task == "publish") ? 1 : 0);
+        $this->setRedirect("index.php?option=com_timeclock&view=customers");
+    }
+
+    /**
+     * Checkin entries
+     */
+    public function checkin() {
+        $this->checkToken();
+        $input = Factory::getApplication()->getInput();
+        $cid = $input->get("cid");
+        $model = $this->getModel("Customer");
+        foreach ($cid as $id) {
+            $model->checkin($id);
+        }
+        $this->setRedirect("index.php?option=com_timeclock&view=customers");
     }
 
 }

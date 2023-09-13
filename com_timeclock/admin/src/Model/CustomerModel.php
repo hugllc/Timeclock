@@ -152,7 +152,7 @@ class CustomerModel extends AdminModel
         $form = Factory::getApplication()->getInput()->get("jform");
 
         if (empty($data['customer_id'])) {
-            $data['customer_id'] = $form['customer_id'] or Factory::getApplication()->getInput()->getInt("customer_id");
+            $data['customer_id'] = $form['customer_id'] or Factory::getApplication()->getInput()->getInt("customer_id") or 0;
         }
 
         if (empty($data['checked_out_time']) || empty($data['checked_out'])) {

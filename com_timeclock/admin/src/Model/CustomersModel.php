@@ -59,13 +59,6 @@ class CustomersModel extends ListModel
 {
     use CustomerDBTrait;
 
-    /** Where Fields */
-    protected $_customer_id = null;
-    protected $_published   = 1;
-    protected $_total       = null;
-    protected $_pagination  = null;
-    protected $namefield    = "company";
-
     /**
     * This is the constructor
     */
