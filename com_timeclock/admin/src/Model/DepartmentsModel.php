@@ -39,7 +39,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
-use HUGLLC\Component\Timeclock\Administrator\Trait\CustomerDBTrait;
+use HUGLLC\Component\Timeclock\Administrator\Trait\DepartmentDBTrait;
 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -55,9 +55,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class CustomersModel extends ListModel
+class DepartmentsModel extends ListModel
 {
-    use CustomerDBTrait;
+    use DepartmentDBTrait;
 
     /**
     * This is the constructor
@@ -100,7 +100,7 @@ class CustomersModel extends ListModel
      *
      * @return  Table  A Table object
      */
-    public function getTable($type = 'Customer', $prefix = 'Administrator', $config = [])
+    public function getTable($type = 'Department', $prefix = 'Administrator', $config = [])
     {
         return parent::getTable($type, $prefix, $config);
     }
@@ -116,7 +116,7 @@ class CustomersModel extends ListModel
     *
     * @note    Calling getState in this method will result in recursion.
     */
-    protected function populateState($ordering = "c.customer_id", $direction = "asc")
+    protected function populateState($ordering = "d.department_id", $direction = "asc")
     {
         // Load the parameters.
         $params = ComponentHelper::getParams('com_timeclock');

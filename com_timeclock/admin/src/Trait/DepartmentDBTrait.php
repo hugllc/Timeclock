@@ -40,7 +40,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die();
 
 /**
  * Description Here
@@ -53,7 +53,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-trait CustomerDBTrait
+trait DepartmentDBTrait
 {
     /**
     * Builds the query to be used by the model
@@ -64,15 +64,14 @@ trait CustomerDBTrait
     {
         $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
-        $query->select('c.customer_id, c.company, c.name, c.address1, c.address2,
-                        c.city, c.state, c.zip, c.country, c.notes, c.checked_out,
-                        c.checked_out_time, c.published, c.created_by, c.created,
-                        c.modified, c.bill_pto');
-        $query->from('#__timeclock_customers as c');
-        $query->select('u.name as author');
-        $query->leftjoin('#__users as u on c.created_by = u.id');
-        $query->select('v.name as contact');
-        $query->leftjoin('#__users as v on c.contact_id = v.id');
+        $query->select('d.department_id, d.name, d.checked_out, d.manager_id,
+                        d.description, d.checked_out_time, d.published, 
+                        d.created_by, d.created, d.modified');
+        $query->from('#__timeclock_departments as d');
+        $query->select('u.name as manager');
+        $query->leftjoin('#__users as u on d.manager_id = u.id');
+        $query->select('v.name as author');
+        $query->leftjoin('#__users as v on d.created_by = v.id');
         return $query;
     }
     /**
@@ -84,10 +83,10 @@ trait CustomerDBTrait
     {
         $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
-        $query->select('COUNT(c.customer_id) as count');
-        $query->from('#__timeclock_customers as c');
-        $query->leftjoin('#__users as u on c.created_by = u.id');
-        $query->leftjoin('#__users as v on c.contact_id = v.id');
+        $query->select('COUNT(d.department_id) as count');
+        $query->from('#__timeclock_departments as d');
+        $query->leftjoin('#__users as u on d.created_by = u.id');
+        $query->leftjoin('#__users as v on d.manager_id = v.id');
         return $query;
     }
     /**
@@ -102,22 +101,23 @@ trait CustomerDBTrait
     protected function _buildWhere(&$query, $id = null)
     { 
         $db = Factory::getDBO();
-        $id = is_numeric($id) ? $id : $this->_customer_id;
+        $id = is_numeric($id) ? $id : $this->_department_id;
         
         if(is_numeric($id)) {
-            $query->where('c.customer_id = ' . (int) $id);
+            $query->where('d.department_id = ' . (int) $id);
         }
+
         $search = $this->getState("filter.search");
         if(!empty($search) && is_string($search)) {
-            $query->where($db->quoteName("c.company")." LIKE ".$db->quote("%".$search."%"));
+            $query->where($db->quoteName("d.name")." LIKE ".$db->quote("%".$search."%"));
         }
         $published = $this->getState("filter.published");
         if (is_numeric($published)) {
-            $query->where($db->quoteName('c.published').' = ' . $db->quote((int) $published));
+            $query->where($db->quoteName('d.published').' = ' . $db->quote((int) $published));
         }
         $user_id = $this->getState("filter.user_id");
         if (is_numeric($user_id)) {
-            $query->where($db->quoteName("c.contact_id")." = " . $db->quote((int) $user_id));
+            $query->where($db->quoteName("d.manager_id")." = " . $db->quote((int) $user_id));
         }
         return $query;
     }
@@ -129,7 +129,8 @@ trait CustomerDBTrait
     */
     protected function _setSort(&$query)
     {
-        $order = $this->getState('list.ordering', 'd.customer_id');
+
+        $order = $this->getState('list.ordering', 'd.department_id');
         $dir = $this->getState('list.direction', 'ASC');
         $query->order($order.' '.$dir);
     }
@@ -144,14 +145,12 @@ trait CustomerDBTrait
     protected function getSortFields()
     {
         return array(
-            'c.published',
-            'c.name',
-            'c.company',
+            'd.published',
+            'd.name',
             'manager',
-            'c.customer_id',
-            'c.notes',
-            'c.bill_pto',
-            'c.published',
+            'd.manager_id',
+            'd.department_id',
+            'd.description',
         );
     }
 

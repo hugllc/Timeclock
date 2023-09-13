@@ -79,7 +79,6 @@
             <folder>src</folder>
             <filename>access.xml</filename>
             <filename>config.xml</filename>
-            <filename>index.html</filename>
         </files>
         <languages folder="admin">
             <language tag="en-GB">languages/en-GB/en-GB.com_timeclock.ini</language>
