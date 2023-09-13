@@ -7,7 +7,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 $user       = Factory::getUser();
 $canCreate  = $user->authorise('core.create',     'com_timeclock');
 $canEdit    = $user->authorise('core.edit',       'com_timeclock');
-$canCheckin = true; //$user->authorise('core.manage',     'com_checkin') || $displayData["data"]->checked_out == $user->id || $displayData["data"]->checked_out == 0;
+$canCheckin = $user->authorise('core.manage',     'com_checkin') || $displayData["data"]->checked_out == $user->id || $displayData["data"]->checked_out == 0;
 $canEditOwn = $user->authorise('core.edit.own',   'com_timeclock') && $displayData["data"]->created_by == $user->id;
 $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canCheckin;
 ?>
