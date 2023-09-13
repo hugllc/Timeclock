@@ -55,6 +55,15 @@ defined( '_JEXEC' ) or die();
  */
 trait DepartmentDBTrait
 {
+    /** Fields filter/sort works on */
+    protected $filterFields = array(
+        'd.published',
+        'd.name',
+        'manager',
+        'd.manager_id',
+        'd.department_id',
+        'd.description',
+    );
     /**
     * Builds the query to be used by the model
     *
@@ -133,25 +142,6 @@ trait DepartmentDBTrait
         $order = $this->getState('list.ordering', 'd.department_id');
         $dir = $this->getState('list.direction', 'ASC');
         $query->order($order.' '.$dir);
-    }
-
-    /**
-     * Returns an array of fields the table can be sorted by
-     *
-     * @return  array  Array containing the field name to sort by as the key and display text as value
-     *
-     * @since   3.0
-     */
-    protected function getSortFields()
-    {
-        return array(
-            'd.published',
-            'd.name',
-            'manager',
-            'd.manager_id',
-            'd.department_id',
-            'd.description',
-        );
     }
 
 }

@@ -55,6 +55,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 trait CustomerDBTrait
 {
+    /** Fields filter/sort works on */
+    protected $filterFields = array(
+        'c.published',
+        'c.name',
+        'c.company',
+        'manager',
+        'c.customer_id',
+        'c.notes',
+        'c.bill_pto',
+        'c.published',
+    );
+
     /**
     * Builds the query to be used by the model
     *
@@ -134,25 +146,5 @@ trait CustomerDBTrait
         $query->order($order.' '.$dir);
     }
 
-    /**
-     * Returns an array of fields the table can be sorted by
-     *
-     * @return  array  Array containing the field name to sort by as the key and display text as value
-     *
-     * @since   3.0
-     */
-    protected function getSortFields()
-    {
-        return array(
-            'c.published',
-            'c.name',
-            'c.company',
-            'manager',
-            'c.customer_id',
-            'c.notes',
-            'c.bill_pto',
-            'c.published',
-        );
-    }
 
 }

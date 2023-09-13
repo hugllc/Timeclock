@@ -65,7 +65,7 @@ class CustomersModel extends ListModel
     public function __construct($config = [])
     {
         if (empty($config['filter_fields'])) {
-            $config['filter_fields'] = $this->getSortFields();
+            $config['filter_fields'] = $this->filterFields;
         }
         parent::__construct($config); 
     }
