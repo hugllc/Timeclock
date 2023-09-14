@@ -14,10 +14,10 @@ $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canChecki
 $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checked_out != $user->id);
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->project_id?>">
-                    <td class="center">
+                    <td class="text-center">
                         <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->project_id, false, "project_id", 'cb', $displayData["data"]->name); ?>
                     </td>
-                    <td class="center">
+                    <td class="text-center">
                         <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'projects.', $canChange, 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
@@ -33,16 +33,16 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                             <?php endif; ?>
                         </div>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="hidden-phone">
                         <?php echo $displayData["data"]->manager; ?>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="text-center hidden-phone">
                         <?php echo $displayData["data"]->type; ?>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="text-center hidden-phone">
                         <?php echo ($displayData["data"]->type == "CATEGORY") ? '-' : Text::_($displayData["data"]->category); ?>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="text-center hidden-phone">
                         <?php echo $displayData["data"]->project_id; ?>
                     </td>
                 </tr>

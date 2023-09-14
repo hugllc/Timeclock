@@ -24,13 +24,13 @@ $sortFields = $this->sortFields;
                     <th width="1%" class="">
                         <?php echo HTMLHelper::_('grid.checkall'); ?>
                     </th>
-                    <th width="1%" style="min-width:55px" class="nowrap center">
+                    <th width="1%" style="min-width:55px" class="nowrap text-center">
                         <?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'd.published', $listDirn, $listOrder); ?>
                     </th>
                     <th>
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_NAME', 'd.name', $listDirn, $listOrder); ?>
                     </th>
-                    <th class="center hidden-phone">
+                    <th class="text-center hidden-phone">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_MANAGER', 'manager', $listDirn, $listOrder); ?>
                     </th>
                     <th width="1%" class="nowrap center hidden-phone">

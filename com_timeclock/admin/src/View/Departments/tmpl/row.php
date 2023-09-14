@@ -14,10 +14,10 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
 
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->department_id?>">
-                    <td class="center">
+                    <td class="text-center">
                         <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->department_id, false, "department_id", 'cb', $displayData["data"]->name); ?>
                     </td>
-                    <td class="center">
+                    <td class="text-center">
                         <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'departments.', $canChange, 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
@@ -33,10 +33,10 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                             <?php endif; ?>
                         </div>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="text-center hidden-phone">
                         <?php echo $displayData["data"]->manager; ?>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="text-center hidden-phone">
                         <?php echo $displayData["data"]->department_id; ?>
                     </td>
                 </tr>

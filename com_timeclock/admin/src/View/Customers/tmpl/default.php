@@ -21,19 +21,19 @@ $sortFields = $this->sortFields;
                     <th width="1%" class="">
                         <?php echo HTMLHelper::_('grid.checkall'); ?>
                     </th>
-                    <th width="1%" style="min-width:55px" class="nowrap center">
+                    <th width="1%" style="min-width:55px" class="nowrap text-center">
                         <?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'c.published', $listDirn, $listOrder); ?>
                     </th>
                     <th>
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_COMPANY', 'c.company', $listDirn, $listOrder); ?>
                     </th>
-                    <th class="center hidden-phone">
+                    <th class="text-center hidden-phone">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_CONTACT_NAME', 'c.name', $listDirn, $listOrder); ?>
                     </th>
-                    <th class="center hidden-phone">
+                    <th class="text-center hidden-phone">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_BILL_PTO', 'c.bill_pto', $listDirn, $listOrder); ?>
                     </th>
-                    <th class="center hidden-phone">
+                    <th class="text-center hidden-phone">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_NOTES', 'c.notes', $listDirn, $listOrder); ?>
                     </th>
                     <th width="1%" class="nowrap center hidden-phone">

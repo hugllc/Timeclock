@@ -13,10 +13,10 @@ $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canChecki
 $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checked_out != $user->id);
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->customer_id?>">
-                    <td class="center">
+                    <td class="text-center">
                         <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->customer_id, false, "customer_id", 'cb', $displayData["data"]->name); ?>
                     </td>
-                    <td class="center">
+                    <td class="text-center">
                         <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'customers.', $canChange, 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
@@ -32,16 +32,16 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                             <?php endif; ?>
                         </div>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="hidden-phone">
                         <?php echo $displayData["data"]->name; ?>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="text-center hidden-phone">
                         <?php echo ($displayData["data"]->bill_pto) ? "Yes" : "No"; ?>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="hidden-phone">
                         <?php echo $displayData["data"]->notes; ?>
                     </td>
-                    <td class="center hidden-phone">
+                    <td class="text-center hidden-phone">
                         <?php echo $displayData["data"]->customer_id; ?>
                     </td>
                 </tr>
