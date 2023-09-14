@@ -63,6 +63,7 @@ trait ProjectDBTrait
         'p.manager_id',
         'p.project_id',
         'p.description',
+        'p.type'
 );
     /**
     * Builds the query to be used by the model
@@ -107,14 +108,9 @@ trait ProjectDBTrait
     * @return object Query object
     *
     */
-    protected function _buildWhere(&$query, $id = null)
+    protected function _buildWhere(&$query)
     { 
         $db = Factory::getDBO();
-        $id = is_numeric($id) ? $id : $this->_project_id;
-        
-        if(is_numeric($id)) {
-            $query->where('p.project_id = ' . (int) $id);
-        }
 
         $search = $this->getState("filter.search");
         if(!empty($search) && is_string($search)) {
@@ -144,7 +140,23 @@ trait ProjectDBTrait
         if (is_numeric($user_id)) {
             $query->where($db->quoteName("p.manager_id")." = " . $db->quote((int) $user_id));
         }
+        $type = $this->getState("filter.type");
+        if (!empty($type)) {
+            $query->where($db->quoteName("p.type")." = " . $db->quote($type));
+        }
         return $query;
+    }
+    /**
+    * Builds the filter for the query
+    * @param object Query object
+    * @return object Query object
+    *
+    */
+    protected function _setSort(&$query)
+    {
+        $order = $this->getState('list.ordering', 'd.department_id');
+        $dir = $this->getState('list.direction', 'ASC');
+        $query->order($order.' '.$dir);
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -204,18 +216,5 @@ trait ProjectDBTrait
             $ret[$entry->project_id] = $entry;
         }
         return $ret;
-    }
-    /**
-    * Builds the filter for the query
-    * @param object Query object
-    * @return object Query object
-    *
-    */
-    protected function _setSort(&$query)
-    {
-
-        $order = $this->getState('list.ordering', 'd.department_id');
-        $dir = $this->getState('list.direction', 'ASC');
-        $query->order($order.' '.$dir);
     }
 }

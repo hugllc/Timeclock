@@ -37,6 +37,7 @@ namespace HUGLLC\Component\Timeclock\Administrator\Field;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die();
 
@@ -99,7 +100,7 @@ class TimeclockPTOCarryOverField extends FormField
             $labeltext = Text::sprintf($this->element['labelExpires'], $year);
             $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".Text::_($this->element['descriptionExpires']), ENT_COMPAT, 'UTF-8');
             $ret[] = '<label class="'.$labelclass.'" title="'.$labeltitle.'" for="'.$id.'_expires">'.$labeltext.'<span class="star">&#160;*</span></label>';
-            $ret[] = JHTML::_("calendar", $value["expires"], $name."[expires]", $id."_expires", "%Y-%m-%d", $calAttrib);
+            $ret[] = HtmlHelper::_("calendar", $value["expires"], $name."[expires]", $id."_expires", "%Y-%m-%d", $calAttrib);
             $ret[] = "</fieldset>\n";
         }
         return implode($ret);

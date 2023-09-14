@@ -63,15 +63,6 @@ class CustomerController extends FormController
      * @since  1.6
      */
     protected $text_prefix = 'COM_TIMECLOCK';
-
-    /*
-    public function cancel($str = null) {
-        print "<pre>";
-        var_dump(Factory::getApplication()->getInput()->getArray());
-        print "</pre>";
-        die();
-    }
-    */
     /**
      * Method override to check if you can add a new record.
      *

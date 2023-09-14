@@ -37,6 +37,8 @@ namespace HUGLLC\Component\Timeclock\Administrator\Field;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 defined('_JEXEC') or die();
 
@@ -66,9 +68,9 @@ class TimeclockUserTypesField extends ListField
         $lang = Factory::getLanguage();
         $lang->load("com_timeclock");
         $options = array();
-        $status = TimeclockHelpersTimeclock::getUserTypes();
+        $status = TimeclockHelper::getUserTypes();
         foreach ((array)$status as $value => $name) {
-            $options[] = JHTML::_(
+            $options[] = HtmlHelper::_(
                 'select.option',
                 htmlspecialchars((string)$value, ENT_COMPAT, 'UTF-8'),
                 htmlspecialchars(Text::_($name), ENT_COMPAT, 'UTF-8')

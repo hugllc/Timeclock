@@ -38,6 +38,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use HUGLLC\Component\Timeclock\Administrator\Model\ProjectsModel;
 
 defined('_JEXEC') or die();
 
@@ -67,10 +69,10 @@ class TimeclockUserProjectsField extends FormField
         $displayData = get_object_vars($this);
         $displayData["outOptions"] = array();
         $displayData["inOptions"] = array();
-        $model = TimeclockHelpersTimeclock::getModel("project");
-        $projects = $model->listItems(array("p.published=1", "p.type <> 'CATEGORY'"), null, false);
+        $model = new ProjectsModel();
+        $projects = $model->getItems(array("p.published=1", "p.type <> 'CATEGORY'"), null, false);
         foreach ($projects as $row) {
-            $displayData["outOptions"][$row->project_id] = JHTML::_(
+            $displayData["outOptions"][$row->project_id] = HtmlHelper::_(
                 'select.option', 
                 (int)$row->project_id, 
                 Text::_($row->name)

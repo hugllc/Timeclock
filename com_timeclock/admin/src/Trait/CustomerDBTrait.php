@@ -111,14 +111,9 @@ trait CustomerDBTrait
     * @return object Query object
     *
     */
-    protected function _buildWhere(&$query, $id = null)
+    protected function _buildWhere(&$query)
     { 
         $db = Factory::getDBO();
-        $id = is_numeric($id) ? $id : $this->_customer_id;
-        
-        if(is_numeric($id)) {
-            $query->where('c.customer_id = ' . (int) $id);
-        }
         $search = $this->getState("filter.search");
         if(!empty($search) && is_string($search)) {
             $query->where($db->quoteName("c.company")." LIKE ".$db->quote("%".$search."%"));
@@ -127,9 +122,9 @@ trait CustomerDBTrait
         if (is_numeric($published)) {
             $query->where($db->quoteName('c.published').' = ' . $db->quote((int) $published));
         }
-        $user_id = $this->getState("filter.user_id");
+        $user_id = $this->getState("filter.contact_id");
         if (is_numeric($user_id)) {
-            $query->where($db->quoteName("c.contact_id")." = " . $db->quote((int) $user_id));
+            $query->where($db->quoteName("c.contact_id")." = " . $db->quote((int) $contact_id));
         }
         return $query;
     }

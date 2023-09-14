@@ -36,6 +36,7 @@
 namespace HUGLLC\Component\Timeclock\Administrator\Field;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die();
 
@@ -84,7 +85,7 @@ class TimeclockHistoryField extends FormField
             $ret[] = '<label class="hasTip" title="'.$labeltitle.'" for="'.$id.'">'.$labeltext.'</label>'.$date;
             $ret[] = '<a href="#" onClick="document.getElementById(\''.$id.'\').style.display=\'\';document.getElementById(\'effectiveDate'.$index.'Set\').value=\'1\';">['.Text::_("COM_TIMECLOCK_EDIT").']</a>';
             $ret[] = '<div id="'.$id.'" style="display: none;">';
-            $ret[] = JHTML::_("calendar", $date, $this->name."[effectiveDate][$date]", $id, "%Y-%m-%d %H:%M:%S", array());
+            $ret[] = HtmlHelper::_("calendar", $date, $this->name."[effectiveDate][$date]", $id, "%Y-%m-%d %H:%M:%S", array());
             $ret[] = '<input type="hidden" name="'.$this->name.'[effectiveDateSet]['.$date.']" id="effectiveDate'.$index.'Set" value="0" />';
             $ret[] = '</div>';
             $ret[] = '<div style="clear:both; padding-bottom: 2em;">';

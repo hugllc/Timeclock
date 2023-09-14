@@ -36,6 +36,8 @@
 namespace HUGLLC\Component\Timeclock\Administrator\Field;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use HUGLLC\Component\Timeclock\Administrator\Model\ProjectsModel;
 
 defined('_JEXEC') or die();
 /**
@@ -61,19 +63,21 @@ class TimeclockHolidayField extends FormField
     */
     public function getInput()
     {
-        $model = TimeclockHelpersTimeclock::getModel("project");
-        $list = $model->listItems(
-            array("p.published=1", "p.type = 'HOLIDAY'"),
-            "p.name ASC"
-        );
+        $model = new ProjectsModel();
+        $model->getState("filter.published");  // This populates the state
+        $model->setState("filter.published", 1);
+        $model->setState("filter.type", 'HOLIDAY');
+        $model->setState("list.ordering", "p.name");
+        $model->setState("list.direction", "ASC");
+        $list = $model->getItems();
         foreach ($list as $item) {
-            $options[] = JHTML::_(
+            $options[] = HtmlHelper::_(
                 'select.option', 
                 (int)$item->project_id, 
                 Text::_($item->name)
             );
         }
-        return JHTML::_(
+        return HtmlHelper::_(
             'select.genericlist', 
             $options, 
             $this->name, 

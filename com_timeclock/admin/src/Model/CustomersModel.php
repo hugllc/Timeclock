@@ -77,18 +77,8 @@ class CustomersModel extends ListModel
     public function getListQuery()
     {
         $query = $this->_buildQuery();
-        if (empty($where) || !is_array($where)) {
-            $query = $this->_buildWhere($query);
-        } else {
-            foreach ($where as $clause) {
-                $query->where($clause);
-            }
-        }
-        if (is_null($sort) || empty($sort)) {
-            $this->_setSort($query);
-        } else {
-            $query->order($sort);
-        }
+        $this->_buildWhere($query);
+        $this->_setSort($query);
         return $query;
     }
     /**

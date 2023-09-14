@@ -66,11 +66,12 @@ class TimeclockCategoryField extends FormField
     public function getInput()
     {
         $model = new ProjectsModel;
-        $list = $model->getItems(
-            array("p.published=1", "p.type = 'CATEGORY'"),
-            "p.name ASC",
-            false
-        );
+        $model->getState("filter.published");  // This populates the state
+        $model->setState("filter.type", "CATEGORY");
+        $model->setState("filter.published", 1);
+        $model->setState("list.ordering", "p.name");
+        $model->setState("list.direction", "ASC");
+        $list = $model->getItems();
         $options = array(
             HTMLHelper::_('select.option', 0, Text::_("JNone"))
         );

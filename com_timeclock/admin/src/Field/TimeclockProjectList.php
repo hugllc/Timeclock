@@ -37,6 +37,7 @@ namespace HUGLLC\Component\Timeclock\Administrator\Field;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
+use HUGLLC\Component\Timeclock\Administrator\Model\ProjectsModel;
 
 defined('_JEXEC') or die();
 
@@ -77,8 +78,8 @@ class TimeclockProjectListField extends FormField
             '<h2>Check box to remove the project</h2>',
             '<div class="'.$this->class.'" style="clear:both;">'
         );
-        $model = TimeclockHelpersTimeclock::getModel("project");
-        $projects = array(); //$model->getUserProjectsBare($id, null, null);
+        $model = new ProjectsModel();
+        $projects = array(); 
         foreach ((array)$projects as $proj) {
             if (($proj->id > 0)) {
                 $ret[] = '<div style="white-space: nowrap;">';
