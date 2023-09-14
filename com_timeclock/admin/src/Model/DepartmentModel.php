@@ -155,14 +155,7 @@ class DepartmentModel extends AdminModel
     */
     public function save($data)
     {
-        $form = Factory::getApplication()->getInput()->get("jform");
-
-        if (empty($data['department_id'])) {
-            $data['department_id'] = $form['department_id'] or Factory::getApplication()->getInput()->getInt("department_id") or 0;
-        }
-
-        $date        = Factory::getDate();
-        $data['modified'] = $date->toSql();
+        $data['modified'] = Factory::getDate()->toSql();
         return parent::save($data);
     }
 

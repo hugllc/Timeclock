@@ -155,14 +155,7 @@ class CustomerModel extends AdminModel
     */
     public function save($data)
     {
-        $form = Factory::getApplication()->getInput()->get("jform");
-
-        if (empty($data['customer_id'])) {
-            $data['customer_id'] = $form['customer_id'] or Factory::getApplication()->getInput()->getInt("customer_id") or 0;
-        }
-
-        $date        = Factory::getDate();
-        $data['modified'] = $date->toSql();
+        $data['modified'] = Factory::getDate()->toSql();
         return parent::save($data);
     }
 

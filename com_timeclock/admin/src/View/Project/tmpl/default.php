@@ -38,5 +38,6 @@ use Joomla\CMS\Language\Text;
 
     <?php echo $this->form->renderFieldset('hidden'); ?>
     <input type="hidden" name="task" value="" />
+    <input type="hidden" name="project_id" value="<?php echo $this->item->project_id ?>" />
     <?php echo HTMLHelper::_("form.token"); ?>
 </form>

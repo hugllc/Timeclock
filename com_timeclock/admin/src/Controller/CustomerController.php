@@ -38,6 +38,7 @@ namespace HUGLLC\Component\Timeclock\Administrator\Controller;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
 
 \defined( '_JEXEC' ) or die();
 
@@ -63,6 +64,14 @@ class CustomerController extends FormController
      */
     protected $text_prefix = 'COM_TIMECLOCK';
 
+    /*
+    public function cancel($str = null) {
+        print "<pre>";
+        var_dump(Factory::getApplication()->getInput()->getArray());
+        print "</pre>";
+        die();
+    }
+    */
     /**
      * Method override to check if you can add a new record.
      *

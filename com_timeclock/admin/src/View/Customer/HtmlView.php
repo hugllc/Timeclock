@@ -104,7 +104,7 @@ class HtmlView extends BaseHtmlView
         );
         $toolbar->apply('customer.apply');
         $toolbar->save('customer.save');
-        $toolbar->cancel('customer.cancel', 'JTOOLBAR_CANCEL');
+        $toolbar->cancel('customer.cancel', 'JTOOLBAR_CANCEL', "customer_id");
     }
     /**
      * Returns an Form object
