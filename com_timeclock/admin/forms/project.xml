@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form>
+<form addfieldprefix="HUGLLC\Component\Timeclock\Administrator\Field">
     <fieldset name="main" label="COM_TIMECLOCK_EDIT_DEPARTMENT">
         <field
             name="name"
             type="text"
             label="COM_TIMECLOCK_NAME"
             description="COM_TIMECLOCK_NAME_PROJECT_DESC"
-            class="span4"
+            class=""
             size="40"
             required="true"/>
         <field
@@ -30,7 +30,7 @@
             type="text"
             label="COM_TIMECLOCK_MAX_DAILY_HOURS"
             description="COM_TIMECLOCK_MAX_DAILY_HOURS_PROJECT_DESC"
-            class="span4"
+            class=""
             size="10"
             required="true"/>
         <field
@@ -38,7 +38,7 @@
             type="text"
             label="COM_TIMECLOCK_MAX_YEARLY_HOURS"
             description="COM_TIMECLOCK_MAX_YEARLY_HOURS_PROJECT_DESC"
-            class="span4"
+            class=""
             size="10"
             required="true"/>
         <field
@@ -46,7 +46,7 @@
             type="text"
             label="COM_TIMECLOCK_MIN_DAILY_HOURS"
             description="COM_TIMECLOCK_MIN_DAILY_HOURS_PROJECT_DESC"
-            class="span4"
+            class=""
             size="10"
             required="true"/>
         
@@ -55,7 +55,7 @@
         <field
             name="published"
             type="list"
-            class="chzn-color-state span10"
+            class="chzn-color-state "
             default="1"
             size="1"
             label="COM_TIMECLOCK_ACTIVE"
@@ -67,7 +67,7 @@
         <field
             name="research"
             type="list"
-            class="chzn-color-state span10"
+            class="chzn-color-state "
             default="0"
             size="1"
             label="COM_TIMECLOCK_RESEARCH"
@@ -79,7 +79,7 @@
         <field
             name="type"
             type="list"
-            class="span10"
+            class=""
             default="PROJECT"
             size="1"
             label="COM_TIMECLOCK_TYPE"
@@ -95,7 +95,7 @@
         <field
             name="parent_id"
             type="TimeclockCategory"
-            class="span10"
+            class="form-select"
             default="-1"
             size="1"
             label="JCATEGORY"
@@ -104,7 +104,7 @@
         <field
             name="department_id"
             type="TimeclockDepartment"
-            class="span10"
+            class="form-select"
             default=""
             size="1"
             label="COM_TIMECLOCK_DEPARTMENT"
@@ -113,7 +113,7 @@
         <field
             name="customer_id"
             type="TimeclockCustomer"
-            class="span10"
+            class="form-select"
             default=""
             size="1"
             label="COM_TIMECLOCK_CUSTOMER"
@@ -124,7 +124,7 @@
         <field
             name="wcCode1"
             type="TimeclockWCompCodes"
-            class="span10"
+            class="form-select"
             default="0"
             size="1"
             label="COM_TIMECLOCK_CODE_1"
@@ -133,7 +133,7 @@
         <field
             name="wcCode2"
             type="TimeclockWCompCodes"
-            class="span10"
+            class="form-select"
             default="0"
             size="1"
             label="COM_TIMECLOCK_CODE_2"
@@ -142,7 +142,7 @@
         <field
             name="wcCode3"
             type="TimeclockWCompCodes"
-            class="span10"
+            class="form-select"
             default="0"
             size="1"
             label="COM_TIMECLOCK_CODE_3"
@@ -151,7 +151,7 @@
         <field
             name="wcCode4"
             type="TimeclockWCompCodes"
-            class="span10"
+            class="form-select"
             default="0"
             size="1"
             label="COM_TIMECLOCK_CODE_4"
@@ -160,7 +160,7 @@
         <field
             name="wcCode5"
             type="TimeclockWCompCodes"
-            class="span10"
+            class="form-select"
             default="0"
             size="1"
             label="COM_TIMECLOCK_CODE_5"
@@ -169,22 +169,80 @@
         <field
             name="wcCode6"
             type="TimeclockWCompCodes"
-            class="span10"
+            class="form-select"
             default="0"
             size="1"
             label="COM_TIMECLOCK_CODE_6"
             required="false"
             description="COM_TIMECLOCK_WORKERS_COMP_CODES_PROJECT_DESC"/>
     </fieldset>
+    <fieldset name="wcomphidden" label="COM_TIMECLOCK_WORKERS_COMP_CODES">
+        <field
+            type="hidden"
+            name="wcCode1"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="wcCode2"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="wcCode3"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="wcCode4"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="wcCode5"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="wcCode6"
+            default="0"
+        />
+    </fieldset>
     <fieldset name="users" label="COM_TIMECLOCK_USERS">
         <field
             name="users"
             type="TimeclockProjectUsers"
-            class="span10"
+            class=""
             default="0"
             size="1"
             label="COM_TIMECLOCK_USERS"
             description="COM_TIMECLOCK_USERS_PROJECT_DESC"/>
-        
+    </fieldset>
+    <fieldset name="hidden">
+        <field
+            type="hidden"
+            name="checked_out"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="checked_out_time"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="created_by"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="created"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="project_id"
+            default="0"
+        />
     </fieldset>
 </form>

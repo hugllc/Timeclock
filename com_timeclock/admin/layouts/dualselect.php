@@ -45,8 +45,8 @@ use Joomla\CMS\HTML\HTMLHelper;
                     });
                 });
             </script>
-            <div class="row-fluid">
-                <div class="span3 center">
+            <div class="row">
+                <div class="col-lg-3 center">
                     <div class="center"><?php print Text::_($displayData["label_in"]); ?></div>
 <?php print HTMLHelper::_(
             'select.genericlist', 
@@ -59,11 +59,11 @@ use Joomla\CMS\HTML\HTMLHelper;
             $selInID
         ); ?>
                 </div>
-                <div class="span2 btn-group center" style="vertical-align: middle;">
+                <div class="col-lg-2 btn-group center" style="vertical-align: middle;">
                     <input type="button" id="<?php print $btnInID; ?>" value="&lt;&lt;" />
                     <input type="button" id="<?php print $btnOutID; ?>" value="&gt;&gt;" />
                 </div>
-                <div class="span3 center">
+                <div class="col-lg-3 center">
                     <div class="center"><?php print Text::_($displayData["label_out"]); ?></div>
 <?php print HTMLHelper::_(
             'select.genericlist', 

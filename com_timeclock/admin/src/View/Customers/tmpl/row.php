@@ -17,9 +17,7 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                         <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->customer_id, false, "customer_id", 'cb', $displayData["data"]->name); ?>
                     </td>
                     <td class="center">
-                        <div class="btn-group">
-                            <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'customer.', $canChange, 'cb'); ?>
-                        </div>
+                        <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'customers.', $canChange, 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
                         <div class="pull-left hasTooltip" title="<?php print $displayData["data"]->notes; ?>">
