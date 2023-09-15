@@ -155,6 +155,10 @@ class ProjectModel extends AdminModel
     */
     public function save($data)
     {
+        $users = $data['users'];
+        if (is_array($users['in'])) {
+            $this->setUsers($users['in'], $data['project_id']);
+        }
         $data['modified'] = Factory::getDate()->toSql();
         return parent::save($data);
     }

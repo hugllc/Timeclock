@@ -5,8 +5,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
     HTMLHelper::_('behavior.multiselect');
     $name     = $displayData["name"];
-    $nameIsArray = (strpos($name, "][]") !== false);
-
     $btnInID  = 'btn_'.$displayData["id"].'_in';
     $btnOutID = 'btn_'.$displayData["id"].'_out';
     $selInID  = 'sel_'.$displayData["id"].'_in';
@@ -15,8 +13,8 @@ use Joomla\CMS\HTML\HTMLHelper;
     $hidID    = 'hid_'.$displayData["id"];
     $inID     = $displayData["id"].'_in';
     $outID    = $displayData["id"].'_out';
-    $inName   = ($nameIsArray) ? str_replace("[]", "[in]", $name) : $name."_in";
-    $outName  = ($nameIsArray) ? str_replace("[]", "[out]", $name) : $name."_out";
+    $inName   = $name."[in]";
+    $outName  = $name."[out]";
 ?>
             <script type="text/javascript">
                 jQuery(document).ready(function() {

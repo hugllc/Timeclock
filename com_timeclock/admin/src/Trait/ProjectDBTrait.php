@@ -218,4 +218,72 @@ trait ProjectDBTrait
         }
         return $ret;
     }
+        /**
+    * Adds users to this project
+    *
+    * @param mixed $users      The users to add
+    * @param int   $project_id The project ID to use.
+    * 
+    * @return bool
+    */
+    public function setUsers($users, $project_id)
+    {
+        $db = Factory::getDBO();
+        if(!is_numeric($project_id)) {
+            return false;
+        }
+        if (!is_array($users)) {
+            $users = array($users);
+        }
+        $this->_removeUsers($project_id);
+        $values = array();
+        foreach ($users as $user) {
+            $values[] = $db->quote((int)$project_id).", ".$db->quote((int)$user);
+        }
+        return $this->_addUser($values);
+    }
+    /**
+    * Adds users to this project
+    *
+    * @param array $values array of strings of data
+    * 
+    * @return bool
+    */
+    private function _addUser($values)
+    {
+        if (count($values) < 1) {
+            return true;
+        }
+        $db = Factory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->insert($db->quoteName('#__timeclock_users'));
+        $query->columns($db->quoteName(array("project_id", "user_id")));
+        foreach ($values as $val) {
+            $query->values($val);
+        }
+        $db->setQuery($query);
+        return $db->execute();
+    }
+    /**
+    * Removes users from this project
+    *
+    * @param int $user_id    The user ID to remove
+    * @param int $project_id The project ID to use.
+    * 
+    * @return bool
+    */
+    private function _removeUsers($project_id)
+    {
+        $db = Factory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->delete($db->quoteName('#__timeclock_users'));
+        $query->where(
+            array(
+                $db->quoteName("project_id")." = ".$db->quote((int)$project_id), 
+            )
+        );
+        $db->setQuery($query);
+        return $db->execute();
+    }
+
 }
