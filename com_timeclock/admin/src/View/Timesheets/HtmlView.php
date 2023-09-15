@@ -8,7 +8,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace HUGLLC\Component\Timeclock\Administrator\View\Holidays;
+namespace HUGLLC\Component\Timeclock\Administrator\View\Timesheets;
 
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -96,7 +96,7 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null)
     {
         $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
-        $model               = $this->getModel("holidays");
+        $model               = $this->getModel("timesheets");
         $this->items         = $model->getItems();
         $this->pagination    = $model->getPagination();
         $this->state         = $model->getState();
@@ -136,11 +136,11 @@ class HtmlView extends BaseHtmlView
             Text::_("COM_TIMECLOCK_TIMECLOCK_HOLIDAYS"), "clock"
         );
         if ($actions->get('core.create')) {
-            ToolbarHelper::addNew('holiday.add');
+            ToolbarHelper::addNew('timesheet.add');
         }
         if ($actions->get('core.edit.state'))
         {
-            ToolbarHelper::checkin('holidays.checkin');
+            ToolbarHelper::checkin('timesheets.checkin');
         }
         if ($actions->get('core.admin'))
         {

@@ -6,7 +6,7 @@
             type="calendar"
             label="COM_TIMECLOCK_WORK_DATE"
             description="COM_TIMECLOCK_WORK_DATE_NAME_TIMESHEET_DESC"
-            class="span4"
+            class=""
             default="0000-00-00"
             format="%Y-%m-%d"
             size="40"
@@ -24,7 +24,7 @@
         <field
             name="hours1"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -32,7 +32,7 @@
         <field
             name="hours2"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -40,7 +40,7 @@
         <field
             name="hours3"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -48,7 +48,7 @@
         <field
             name="hours4"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -56,7 +56,7 @@
         <field
             name="hours5"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -64,7 +64,7 @@
         <field
             name="hours6"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -75,7 +75,7 @@
         <field
             name="hours1"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
@@ -85,7 +85,7 @@
         <field
             name="project_id"
             type="TimeclockProject"
-            class="span10"
+            class="form-select"
             default="1"
             onchange="Joomla.submitbutton('update');"
             size="1"
@@ -95,11 +95,38 @@
         <field
             name="user_id"
             type="TimeclockUser"
-            class="span10"
+            class="form-select"
             default="1"
             size="1"
             label="COM_TIMECLOCK_USER"
             required="true"
             description="COM_TIMECLOCK_USER_TIMESHEET_DESC"/>
-        </fieldset>
+    </fieldset>
+    <fieldset name="hidden">
+        <field
+            type="hidden"
+            name="checked_out"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="checked_out_time"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="created_by"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="created"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="timesheet_id"
+            default="0"
+        />
+    </fieldset>
 </form>

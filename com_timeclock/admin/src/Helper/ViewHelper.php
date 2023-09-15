@@ -55,7 +55,7 @@ defined( '_JEXEC' ) or die();
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class TimeclockView
+class ViewHelper
 {
     /** This holds the start year for the drop down */
     static protected $yearstart = null;

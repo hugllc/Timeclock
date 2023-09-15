@@ -1,14 +1,14 @@
-<?php use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockView; ?>
+<?php use HUGLLC\Component\Timeclock\Administrator\Helper\ViewHelper; ?>
 
     <div class="row-fluid">
         <div class="span9">
 <?php  
-print TimeclockView::getFormSetH("main", $displayData["form"], $displayData["data"]);
+print ViewHelper::getFormSetH("main", $displayData["form"], $displayData["data"]);
 ?>
         </div>
         <div class="span3">
 <?php  
-print TimeclockView::getFormSetV("sidebar", $displayData["form"], $displayData["data"]);
+print ViewHelper::getFormSetV("sidebar", $displayData["form"], $displayData["data"]);
 ?>
         </div>
     </div>

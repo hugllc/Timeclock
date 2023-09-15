@@ -65,7 +65,7 @@ class TimeclockProjectField extends FormField
     public function getInput()
     {
         $model = new ProjectsModel();
-        $list = $model->getItems(
+        $list = $model->getItemsWhere(
             array("p.published=1", "p.type <> 'HOLIDAY'", "p.type <> 'CATEGORY'"),
             "p.name ASC", null, false
         );

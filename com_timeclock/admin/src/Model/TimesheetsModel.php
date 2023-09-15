@@ -39,11 +39,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
-use HUGLLC\Component\Timeclock\Administrator\Trait\ProjectDBTrait;
-use HUGLLC\Component\Timeclock\Administrator\Trait\DefaultDBTrait;
+use HUGLLC\Component\Timeclock\Administrator\Trait\TimesheetDBTrait;
 
 
-defined( '_JEXEC' ) or die();
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /**
  * Description Here
@@ -56,10 +55,9 @@ defined( '_JEXEC' ) or die();
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-class ProjectsModel extends ListModel
+class TimesheetsModel extends ListModel
 {
-    use ProjectDBTrait;
-    use DefaultDBTrait;
+    use TimesheetDBTrait;
 
     /**
     * This is the constructor
@@ -83,19 +81,6 @@ class ProjectsModel extends ListModel
         $this->_setSort($query);
         return $query;
     }
-    /**
-     * Returns a reference to the a Table object, always creating it.
-     *
-     * @param   string  $type    The table type to instantiate
-     * @param   string  $prefix  A prefix for the table class name. Optional.
-     * @param   array   $config  Configuration array for model. Optional.
-     *
-     * @return  Table  A Table object
-     */
-    public function getTable($type = 'Project', $prefix = 'Administrator', $config = [])
-    {
-        return parent::getTable($type, $prefix, $config);
-    }
 
     /**
     * Method to auto-populate the model state.
@@ -108,7 +93,7 @@ class ProjectsModel extends ListModel
     *
     * @note    Calling getState in this method will result in recursion.
     */
-    protected function populateState($ordering = "p.project_id", $direction = "asc")
+    protected function populateState($ordering = "t.worked", $direction = "DESC")
     {
         // Load the parameters.
         $params = ComponentHelper::getParams('com_timeclock');

@@ -45,7 +45,7 @@ use Joomla\CMS\Factory;
  * 
  *
  */
-class HolidaysController extends DisplayController
+class TimesheetsController extends DisplayController
 {
     /**
      * Constructor.
@@ -67,28 +67,17 @@ class HolidaysController extends DisplayController
     }
 
     /**
-     * Publish entries
-     */
-    public function publish() {
-        $this->checkToken();
-        $input = Factory::getApplication()->getInput();
-        $cid = $input->get("timesheet_id");
-        $task = $input->get("task");
-        $this->getModel("holiday")->publish($cid, ($task == "publish") ? 1 : 0);
-        $this->setRedirect("index.php?option=com_timeclock&view=holidays");
-    }
-    /**
      * Checkin entries
      */
     public function checkin() {
         $this->checkToken();
         $input = Factory::getApplication()->getInput();
         $cid = $input->get("timesheet_id");
-        $model = $this->getModel("holiday");
+        $model = $this->getModel("timesheet");
         foreach ($cid as $id) {
             $model->checkin($id);
         }
-        $this->setRedirect("index.php?option=com_timeclock&view=holidays");
+        $this->setRedirect("index.php?option=com_timeclock&view=timesheets");
     }
 }
 

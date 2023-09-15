@@ -11,7 +11,6 @@
 namespace HUGLLC\Component\Timeclock\Administrator\View\Projects;
 
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
-use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;

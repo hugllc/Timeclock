@@ -64,7 +64,7 @@ trait ProjectDBTrait
         'p.project_id',
         'p.description',
         'p.type'
-);
+    );
     /**
     * Builds the query to be used by the model
     *

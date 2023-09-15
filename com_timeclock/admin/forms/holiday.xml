@@ -62,11 +62,6 @@
         />
         <field
             type="hidden"
-            name="project_id"
-            default="0"
-        />
-        <field
-            type="hidden"
             name="timesheet_id"
             default="0"
         />
