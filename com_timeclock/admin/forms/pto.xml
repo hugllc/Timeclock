@@ -3,10 +3,10 @@
     <fieldset name="main" label="COM_TIMECLOCK_EDIT_PTO">
         <field
             name="user_id"
-            type="timeclockuser"
+            type="TimeclockUser"
             label="COM_TIMECLOCK_USER"
             description="COM_TIMECLOCK_USER_PTO_DESC"
-            class="span4"
+            class="form-select"
             size="40"
             required="true"/>
         <field
@@ -14,7 +14,7 @@
             type="calendar"
             label="COM_TIMECLOCK_VALID_FROM"
             description="COM_TIMECLOCK_VALID_FROM_PTO_DESC"
-            class="span4"
+            class=""
             default="0000-00-00"
             format="%Y-%m-%d"
             size="40"
@@ -24,7 +24,7 @@
             type="calendar"
             label="COM_TIMECLOCK_VALID_TO"
             description="COM_TIMECLOCK_VALID_TO_PTO_DESC"
-            class="span4"
+            class=""
             default="0000-00-00"
             format="%Y-%m-%d"
             size="40"
@@ -32,7 +32,7 @@
         <field
             name="hours"
             type="text"
-            class="span2"
+            class=""
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_PTO_DESC"
             size="8"
@@ -51,7 +51,7 @@
         <field
             name="type"
             type="list"
-            class="chzn-color-state span10"
+            class="form-select"
             default="1"
             size="1"
             label="COM_TIMECLOCK_TYPE"
@@ -62,4 +62,32 @@
             <option value="DONATION">COM_TIMECLOCK_DONATION</option>
         </field>
     </fieldset>
+        <fieldset name="hidden">
+        <field
+            type="hidden"
+            name="checked_out"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="checked_out_time"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="created_by"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="created"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="pto_id"
+            default="0"
+        />
+    </fieldset>
+
 </form>
