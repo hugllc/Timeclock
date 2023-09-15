@@ -104,7 +104,6 @@ class CustomerModel extends AdminModel
         $db->setQuery($query);
 
         $item = $db->loadObject();
-
         return $item;
     }
 

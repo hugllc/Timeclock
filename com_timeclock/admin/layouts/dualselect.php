@@ -46,8 +46,8 @@ use Joomla\CMS\HTML\HTMLHelper;
                 });
             </script>
             <div class="row">
-                <div class="col-lg-3 center">
-                    <div class="center"><?php print Text::_($displayData["label_in"]); ?></div>
+                <div class="col-lg-3 text-center">
+                    <div class="text-center"><?php print Text::_($displayData["label_in"]); ?></div>
 <?php print HTMLHelper::_(
             'select.genericlist', 
             $displayData["inOptions"], 
@@ -59,12 +59,12 @@ use Joomla\CMS\HTML\HTMLHelper;
             $selInID
         ); ?>
                 </div>
-                <div class="col-lg-2 btn-group center" style="vertical-align: middle;">
-                    <input type="button" id="<?php print $btnInID; ?>" value="&lt;&lt;" />
-                    <input type="button" id="<?php print $btnOutID; ?>" value="&gt;&gt;" />
+                <div class="col-lg-1 text-center" style="display: flex; align-items: center">
+                    <input type="button" style="height: 2em;" id="<?php print $btnInID; ?>" value="&lt;&lt;" />
+                    <input type="button" style="height: 2em;" id="<?php print $btnOutID; ?>" value="&gt;&gt;" />
                 </div>
-                <div class="col-lg-3 center">
-                    <div class="center"><?php print Text::_($displayData["label_out"]); ?></div>
+                <div class="col-lg-3 text-center">
+                    <div class="text-center"><?php print Text::_($displayData["label_out"]); ?></div>
 <?php print HTMLHelper::_(
             'select.genericlist', 
             $displayData["outOptions"], 

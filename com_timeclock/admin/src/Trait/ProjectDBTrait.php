@@ -167,10 +167,11 @@ trait ProjectDBTrait
     */
     public function listProjectUsers($project_id = null)
     {
-        $project_id = is_null($project_id) ? $this->_project_id : $project_id;
+        $project_id = $project_id ? $project_id : Factory::getApplication()->getInput()->get("project_id");
         if (empty($project_id)) {
             return array();
         }
+
         $db = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('p.project_id as project_id, p.user_id as user_id');
@@ -196,7 +197,7 @@ trait ProjectDBTrait
     */
     public function listUserProjects($user_id = null)
     {
-        $user_id = is_null($user_id) ? Factory::getUser()->id : $user_id;
+        $user_id = $user_id or Factory::getUser()->id;
         if (empty($user_id)) {
             return array();
         }
