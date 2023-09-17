@@ -104,7 +104,6 @@ class HtmlView extends BaseHtmlView
             Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"),
             Route::_("index.php?option=com_timeclock&view=tools&action=dbcheck")
         );
-        // $toolbar->customButton('checkdb', Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"), 'tools.dbcheck');
     }
     /**
     * Adds the toolbar for this view.
@@ -122,7 +121,6 @@ class HtmlView extends BaseHtmlView
             Text::_("JTOOLBAR_BACK"),
             Route::_("index.php?option=com_timeclock&view=tools")
         );
-        // $toolbar->customButton('checkdb', Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"), 'tools.dbcheck');
     }
 }
 ?>

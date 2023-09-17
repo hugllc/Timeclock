@@ -65,15 +65,12 @@
         </submenu>
 
         <files folder="admin">
-            <folder>elements</folder>
             <folder>forms</folder>
-            <folder>helpers</folder>
             <folder>languages</folder>
             <folder>layouts</folder>
             <folder>js</folder>
             <folder>sql</folder>
             <folder>images</folder>
-            <folder>tables</folder>
             <folder>css</folder>
             <folder>services</folder>
             <folder>src</folder>

@@ -1,12 +1,4 @@
 <?php
-
-use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Date\Date;
-use Joomla\CMS\Form\Form;
-use Joomla\CMS\Factory;
-use Joomla\Utilities\ArrayHelper;
-
-/**
 /**
  * This component is the user interface for the endpoints
  *
@@ -50,14 +42,18 @@ use Joomla\Utilities\ArrayHelper;
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  *
  */
- defined('_JEXEC') or die();
-
- require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
- Form::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_timeclock/models/fields');
 
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Date\Date;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Form\FormHelper;
 
+defined('_JEXEC') or die();
 /**
 * This is a plugin to display timeclock user information in the user screen
 *
@@ -72,15 +68,19 @@ use Joomla\Event\SubscriberInterface;
 */
 class plgUserTimeclock extends CMSPlugin
 {
-
     /**
-     * This gets the subscriber events
-     */
-    static public function getSubscribedEvents(): array
-    {
-        return [
-		];
-    }
+	 * Constructor.
+	 *
+	 * @param   string  $name       The event name.
+	 * @param   array   $arguments  The event arguments.
+	 *
+	 * @throws  BadMethodCallException
+	 */
+	public function __construct($name, array $arguments = array())
+	{
+		parent::__construct($name, $arguments);
+	}
+
     /**
     * This happens when we are preparing the form
     *
@@ -91,11 +91,12 @@ class plgUserTimeclock extends CMSPlugin
     */
     public function onContentPrepareData($context, $data)
     {
+        FormHelper::addFieldPrefix('HUGLLC\\Component\\Timeclock\\Administrator\\Field');
+
         // Check we are manipulating a valid form.
-        if (!in_array($context, array('com_users.timeclock','com_users.user', 'com_users.profile', 'com_users.registration', 'com_admin.timeclock'))) {
+        if (!in_array($context, array('com_users.timeclock','com_users.user', 'com_users.profile'))) {
             return true;
         }
-
         if (is_object($data))
         {
             $userId = isset($data->id) ? $data->id : 0;
@@ -105,7 +106,6 @@ class plgUserTimeclock extends CMSPlugin
                 return false;
             }
             $data->timeclock = self::stripKeys($results);
-
             self::decodeArrays($data->timeclock);
         }
 
@@ -257,7 +257,7 @@ class plgUserTimeclock extends CMSPlugin
     */
     protected function removeProjects($id, &$data)
     {
-        $model = TimeclockHelpersTimeclock::getModel('project');
+        $model = TimeclockHelper::getModel('project');
         if (isset($data['addProject']) && isset($data['addProject']['out'])) {
             foreach ((array)$data['addProject']['out'] as $proj) {
                 $model->removeUsers((int)$id, (int)$proj);
@@ -275,7 +275,7 @@ class plgUserTimeclock extends CMSPlugin
     */
     protected function addProjects($id, &$data)
     {
-        $model = TimeclockHelpersTimeclock::getModel('project');
+        $model = TimeclockHelper::getModel('project');
         if (isset($data['addProject']) && isset($data['addProject']['in'])) {
             foreach ((array)$data['addProject']['in'] as $proj) {
                 $model->addUsers((int)$id, (int)$proj);
@@ -294,7 +294,7 @@ class plgUserTimeclock extends CMSPlugin
     protected function addUserProjects($id, &$data)
     {
         if (isset($data['addProjFromUser']) && !empty($data['addProjFromUser'])) {
-            $model = TimeclockHelpersTimeclock::getModel('project');
+            $model = TimeclockHelper::getModel('project');
             $projects = $model->listUserProjects($data['addProjFromUser']);
             foreach (array_keys((array)$projects) as $proj) {
                 $model->addUsers((int)$id, (int)$proj);

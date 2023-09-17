@@ -67,7 +67,7 @@ build/pkg_timeclock/pkg_timeclock.xml:
 	cp pkg_timeclock.xml build/pkg_timeclock/
 
 clean:
-	rm -Rf build/*
+	rm -Rf build/* rel
 
 dist-clean: clean
 	rm -Rf rel/*.zip 
