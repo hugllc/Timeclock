@@ -25,9 +25,11 @@ use HUGLLC\Component\Timeclock\Administrator\Helper\ViewHelper;
                     } else {
                         $field->label = $codes[$code];
                     }
-                    $field->label = "$i. ".$field->label;
-                    $field->input  = '<input type="text" size="6" maxsize="6" class="" ';
-                    $field->input .= 'name="jform[hours'.$i.']" value="'.$this->item->{"hours".$i}.'" />';
+                    $id = '"jform_hours'.$i.'"';
+                    $field->label = '<label id="'.$id.'-lbl" for="'.$id.'">'.$i.". ".$field->label.'</label>';
+                    $field->input  = '<input id="'.$id.'" type="text" size="6" maxsize="6" class="" ';
+                    $field->input .= 'name="jform[hours'.$i.']" value="'.(int)$this->item->{"hours".$i}.'" />';
+                    $field->description = '<div id="'.$id.'-desc" ><small class="form-text">'.Text::_("COM_TIMECLOCK_HOURS_TIMESHEET_DESC").'</small></div>';
                     print ViewHelper::getFormField($field);
                 }
                 ?>

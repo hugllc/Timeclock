@@ -65,6 +65,13 @@ class TimeclockUserField extends FormField
     public function getInput()
     {
         $list = TimeclockHelper::getUsers(0);
+        $options = array(
+            HTMLHelper::_(
+                'select.option', 
+                "", 
+                Text::_("COM_TIMECLOCK_CHOOSE_USER")
+            )
+        );
         foreach ($list as $item) {
             $options[] = HtmlHelper::_(
                 'select.option', 

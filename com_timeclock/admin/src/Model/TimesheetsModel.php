@@ -40,6 +40,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
 use HUGLLC\Component\Timeclock\Administrator\Trait\TimesheetDBTrait;
+use HUGLLC\Component\Timeclock\Administrator\Trait\DefaultDBTrait;
 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -58,6 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class TimesheetsModel extends ListModel
 {
     use TimesheetDBTrait;
+    use DefaultDBTrait;
 
     /**
     * This is the constructor

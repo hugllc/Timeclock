@@ -69,6 +69,13 @@ class TimeclockProjectField extends FormField
             array("p.published=1", "p.type <> 'HOLIDAY'", "p.type <> 'CATEGORY'"),
             "p.name ASC", null, false
         );
+        $options = array(
+            HTMLHelper::_(
+                'select.option', 
+                "", 
+                Text::_("COM_TIMECLOCK_CHOOSE_PROJECT")
+            )
+        );
         foreach ($list as $item) {
             $options[] = HtmlHelper::_(
                 'select.option', 
