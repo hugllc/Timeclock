@@ -22,7 +22,7 @@
         <field
             name="published"
             type="list"
-            class="chzn-color-state span10"
+            class="form-select-color-state"
             default="1"
             size="1"
             label="JSTATUS"
@@ -31,5 +31,72 @@
             <option value="1">JPUBLISHED</option>
             <option value="0">JUNPUBLISHED</option>
         </field>
+    </fieldset>
+    <fieldset name="hidden">
+        <field
+            type="hidden"
+            name="created_by"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="created"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="report_id"
+            default="0"
+        />
+        <field
+            type="hidden"
+            name="created"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="startDate"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="endDate"
+            default="0000-00-00 00:00:00"
+        />
+        <field
+            type="hidden"
+            name="type"
+            default="payroll"
+        />
+        <field
+            type="hidden"
+            name="filter"
+            default=""
+        />
+        <field
+            type="hidden"
+            name="users"
+            default=""
+        />
+        <field
+            type="hidden"
+            name="timesheets"
+            default=""
+        />
+        <field
+            type="hidden"
+            name="projects"
+            default=""
+        />
+        <field
+            type="hidden"
+            name="customers"
+            default=""
+        />
+        <field
+            type="hidden"
+            name="departments"
+            default=""
+        />
     </fieldset>
 </form>

@@ -62,7 +62,7 @@
             <option value="DONATION">COM_TIMECLOCK_DONATION</option>
         </field>
     </fieldset>
-        <fieldset name="hidden">
+    <fieldset name="hidden">
         <field
             type="hidden"
             name="checked_out"

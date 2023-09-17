@@ -55,7 +55,7 @@
         <field
             name="published"
             type="list"
-            class="chzn-color-state "
+            class="form-select-color-state"
             default="1"
             size="1"
             label="COM_TIMECLOCK_ACTIVE"
@@ -67,7 +67,7 @@
         <field
             name="research"
             type="list"
-            class="chzn-color-state "
+            class=""
             default="0"
             size="1"
             label="COM_TIMECLOCK_RESEARCH"
