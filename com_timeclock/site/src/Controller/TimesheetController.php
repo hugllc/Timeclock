@@ -78,6 +78,10 @@ class TimesheetController extends DisplayController
     public function __construct($config = [], MVCFactoryInterface $factory = null, $app = null, $input = null)
     {
         parent::__construct($config, $factory, $app, $input);
+        // These don't work for some reason
+        // $this->registerTask('addhours', 'addhours');
+        // $this->registerTask('apply', 'apply');
+        // $this->registerTask('complete', 'complete');
     }
 
     /**
@@ -87,6 +91,8 @@ class TimesheetController extends DisplayController
     */
     public function execute($task = NULL)
     {
+        // This is only needed because the 'registerTask' function calls in the constructor don't seem to do anything.
+        $this->checkAuth();
         if ($task == "apply") {
             return $this->apply();
         } else if ($task == "complete") {
@@ -96,7 +102,6 @@ class TimesheetController extends DisplayController
         }
         return true;
     }
-
     /**
     * This function saves our stuff and returns a json response
     * 

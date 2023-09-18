@@ -407,7 +407,7 @@ class plgUserTimeclock extends CMSPlugin
                 " OR profile_key = 'timeclock.set.$param'".
                 " OR profile_key = 'timeclock.user.$param')"
             );
-            if (!$db->query()) {
+            if (!$db->execute()) {
                 throw new Exception($db->getErrorMsg());
             }
             $db->setQuery(
@@ -415,7 +415,7 @@ class plgUserTimeclock extends CMSPlugin
                 '('.(int)$userId.", 'timeclock.$param', ".$db->quote($value).', '.$db->quote((int)$order).')'
             );
 
-            if (!$db->query()) {
+            if (!$db->execute()) {
                 throw new Exception($db->getErrorMsg());
             }
             $db->transactionCommit();
@@ -536,7 +536,7 @@ class plgUserTimeclock extends CMSPlugin
                     " AND profile_key LIKE 'timeclock.%'"
                 );
 
-                if (!$db->query()) {
+                if (!$db->execute()) {
                     throw new Exception($db->getErrorMsg());
                 }
             }
