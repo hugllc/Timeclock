@@ -114,7 +114,7 @@ var Addhours = {
      */
     post: function (elem, task) 
     {
-        var url = jQuery("form.addhours").attr('action')+'&format=json&task=apply'
+        var url = jQuery("form.addhours").attr('action')+'&format=json&task=timesheet.apply'
         var method = jQuery("form.addhours").attr('method');
         var self = this;
         jQuery.ajax({
@@ -146,7 +146,7 @@ var Addhours = {
                         if (task == 'save') {
                             if (typeof Timesheet === 'undefined') {
                                 // Full page
-                                window.location.href = "index.php?option=com_timeclock&controller=timesheet&date="+self.payperiod.start;
+                                window.location.href = "index.php?option=com_timeclock&view=timesheet&date="+self.payperiod.start;
                             } else {
                                 // Modal
                                 parent.jQuery('.modal').modal('hide');

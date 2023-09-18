@@ -5,7 +5,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/timesheet.js");
+HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/addhours.js");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
 
     $user = Factory::getUser();
@@ -61,8 +61,8 @@ HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
     jQuery( document ).ready(function() {
         Addhours.setup();
     });
-    Addhours.payperiod    = <?php print json_encode($this->payperiod); ?>;
-    Timeclock.params   = <?php print json_encode($this->params->toArray()); ?>;
-    Timeclock.projects = <?php print json_encode($projlist); ?>;
+    Addhours.payperiod  = <?php print json_encode($this->payperiod); ?>;
+    Timeclock.params    = <?php print json_encode($this->params->toArray()); ?>;
+    Timeclock.projects  = <?php print json_encode($projlist); ?>;
 </script>
 </div>

@@ -78,72 +78,37 @@ class TimesheetController extends DisplayController
     public function __construct($config = [], MVCFactoryInterface $factory = null, $app = null, $input = null)
     {
         parent::__construct($config, $factory, $app, $input);
-        $this->registerTask('addhours', 'addhours');
     }
 
     /**
-    * This function performs everything for this controller.  It is the goto 
-    * function.
+    * This is the main function that executes everything.
     *
-    * @access public
-    * @return boolean
+    * @return bool
     */
-    /*
     public function execute($task = NULL)
     {
-        $this->checkAuth();
-
-        $task = $this->getTask();
-        $fct  = "task".ucfirst($task);
-        if (method_exists($this, $fct)) {
-            return $this->$fct();
+        if ($task == "apply") {
+            return $this->apply();
+        } else if ($task == "complete") {
+            return $this->complete();
+        } else if ($task == "addhours") {
+            return $this->addhours();
         }
-        return $this->display();
-    }
-    */
-    /**
-    * This function performs everything for this controller.  It is the goto 
-    * function.
-    *
-    * @access public
-    * @return boolean
-    */
-    /*
-    public function display($cachable = false, $urlparams = [])
-    {
-        // Get the application
-        $app = Factory::getApplication();
-        $params = ComponentHelper::getParams('com_timeclock');
-        // Get the document object.
-        $document = Factory::getDocument();
-        $viewName = "timesheet";
-        $viewFormat = $document->getType();
-        $layoutName = 'timesheet';
-        
-        $app->input->set('view', $viewName);
-        $viewClass = 'TimeclockViews' . ucfirst($viewName) . ucfirst($viewFormat);
-        $modelClass = 'TimeclockModelsTimesheet';
-        $model = new $modelClass();
-        $view = new $viewClass();
-        $view->setLayout($layoutName);
-        $view->setModel($model, true);
-        // Render our view.
-        $view->display();
         return true;
     }
-    */
+
     /**
     * This function saves our stuff and returns a json response
     * 
     * @return null
     */
-    protected function taskComplete()
+    protected function complete()
     {
         // Get the application
         $app   = Factory::getApplication();
         $app->getInput() or die("Invalid Token");
 
-        $model = new TimesheetModel(); // TimeclockHelper::getModel("timesheet");
+        $model = new TimesheetModel();
         $this->checkMe($model);
 
         if ($index = $model->complete()) {
@@ -166,6 +131,7 @@ class TimesheetController extends DisplayController
         echo $json;
         $app->close();
         return true;
+        return true;
     }
     /**
     * This displays our forms
@@ -180,7 +146,6 @@ class TimesheetController extends DisplayController
         // Get the document object.
         $document = Factory::getDocument();
         $viewName = "timesheet";
-        $viewFormat = $document->getType();
         $layoutName = $app->input->getWord('layout', 'addhours');
         if (($layoutName !== "addhours") && ($layoutName !== "modal")) {
             $layoutName = "addhours";
@@ -199,12 +164,12 @@ class TimesheetController extends DisplayController
     * 
     * @return null
     */
-    protected function taskApply()
+    protected function apply()
     {
         // Get the application
         $app   = Factory::getApplication();
         $app->getInput() or die("Invalid Token");
-        $model = TimeclockHelper::getModel("addhours");
+        $model = new AddhoursModel();
         $this->checkMe($model);
 
         if ($index = $model->store()) {
@@ -228,34 +193,13 @@ class TimesheetController extends DisplayController
         $app->close();
         return true;
     }
+
     protected function checkMe($model)
     {
         if (!$model->getUser()->me) {
             Factory::getApplication()->redirect('index.php',Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
 
-    }
-    /**
-    * This function get the task for us
-    * 
-    * @return null
-    */
-    public function getTask()
-    {
-        if (is_null($this->_task)) {
-            // Get the application
-            $app = Factory::getApplication();
-            // Get the document object.
-            $document = Factory::getDocument();
-            $task = $app->input->get('task', 'list');
-            $task = empty($task) ? 'list' : $task;
-            $task = ($task == "display") ? 'list' : $task;
-            if (strpos($task, ".")) {
-                list($controller, $task) = explode(".", $task);
-            }
-            $this->_task = $task;
-        }
-        return $this->_task;
     }
     /**
     * This is the main function that executes everything.

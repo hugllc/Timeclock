@@ -33,12 +33,14 @@
  * @version    GIT: $Id: af297190be388d3d384a4f69943e39bfe07e5d9f $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-/** Check to make sure we are under Joomla */
-defined('_JEXEC') or die();
+namespace HUGLLC\Component\Timeclock\Site\View\Timesheet;
 
 use Joomla\CMS\MVC\View\JsonView as BaseJsonView;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Factory;
+
+ /** Check to make sure we are under Joomla */
+defined('_JEXEC') or die();
 
 /**
  * HTML View class for the ComTimeclockWorld Component
@@ -60,7 +62,6 @@ class JsonView extends BaseJsonView
     */
     function display($tpl = NULL)
     {
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $app = Factory::getApplication();
 
         $payperiod = $this->getModel()->getState('payperiod');
@@ -73,12 +74,6 @@ class JsonView extends BaseJsonView
             false,  // Error
             false    // Ignore Message Queue
         );
-
-        
-        // Factory::getDocument()->setMimeEncoding( 'application/json' );
-        // $app->setHeader('Content-Disposition','inline;filename="apply.json"');
-        // echo $json;
-        // $app->close();
     }
 }
 ?>

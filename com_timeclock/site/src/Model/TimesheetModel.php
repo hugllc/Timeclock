@@ -74,6 +74,7 @@ class TimesheetModel extends DefaultModel
         $this->_user_id = empty($pk) ? $this->getUser()->id : $pk;
         parent::__construct(); 
     }
+
     /**
     * Gets the user and returns the timeclock params
     *

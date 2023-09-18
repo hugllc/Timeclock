@@ -39,6 +39,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use HUGLLC\Component\Timeclock\Site\Model\TimesheetModel;
+use HUGLLC\Component\Timeclock\Administrator\Table\TimesheetTable;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -80,7 +81,8 @@ class AddhoursModel extends TimesheetModel
     {
         $app  = Factory::getApplication();
         $data = $data ? $data : $app->getInput()->getArray();
-        $row = Table::getInstance('TimeclockTimesheet', 'Table');
+        $db = $this->getDbo();
+        $row = new TimesheetTable($db);
 
         if (!is_object($row)) {
             return false;
@@ -91,7 +93,6 @@ class AddhoursModel extends TimesheetModel
         if (!$row->bind($data)) {
             return false;
         }
-
         $row->modified = $date;
         if ($row->created_by <= 0) {
             $row->created_by = Factory::getUser()->id;

@@ -162,9 +162,10 @@ var Timesheet = {
     refresh: function ()
     {
         var self = this;
+        var url = 'index.php?option=com_timeclock&view=timesheet&format=json&date='+self.payperiod.start;
         jQuery.ajax({
-            url: 'index.php?option=com_timeclock&controller=timesheet&format=json&date='+self.payperiod.start,
-            type: 'POST',
+            url,
+            type: 'GET',
             data: {},
             dataType: 'JSON',
             success: function(ret)

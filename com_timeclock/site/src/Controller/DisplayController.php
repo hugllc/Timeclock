@@ -63,7 +63,6 @@ class DisplayController extends AdminController
     public function __construct($config = [], MVCFactoryInterface $factory = null, $app = null, $input = null)
     {
         parent::__construct($config, $factory, $app, $input);
-
         // $this->registerTask('unpublish', 'publish');
     }
     /**
