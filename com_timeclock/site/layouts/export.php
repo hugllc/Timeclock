@@ -1,10 +1,11 @@
 <?php
 
 use Joomla\CMS\Language\Text;
+use HUGLLC\Component\Timeclock\Site\Helper\ContribHelper;
 
     defined( '_JEXEC' ) or die( 'Restricted access' );
     $sep = "";
-    if (TimeclockHelpersContrib::phpspreadsheet()):
+    if (ContribHelper::phpspreadsheet()):
         $url = $displayData->url;
 ?>
 <div class="export">
@@ -14,12 +15,11 @@ use Joomla\CMS\Language\Text;
         {
             var url = '<?php print $displayData->url; ?>';
             // This gets all of our filter variables.
-            var data = Report.formData();
-            
-            // Add in the format
-            data.format=format;
+            var data = {
+                format,
+                report: Timeclock.report,
+            };
             // Add in the report value
-            data.report=Timeclock.report;
             url = url + "&" + jQuery.param(data);
             console.log(url);
             jQuery("#timeclock .export iframe").attr("src", url);

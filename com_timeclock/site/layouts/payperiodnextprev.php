@@ -4,7 +4,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-$baseurl = '&option=com_timeclock&controller='.$displayData->controller;
+$baseurl = 'index.php?option=com_timeclock&view='.$displayData->view;
 $url = Route::_($baseurl.'&date=now');
 $today = '<a href="'.$url.'">'.Text::_("COM_TIMECLOCK_TODAY").'</a>';
 
@@ -23,12 +23,12 @@ $prevImg = '<a href="'.$url.'">'.$text.'</a>';
 $prev = '<a href="'.$url.'">'.Text::_("JPREVIOUS").'</a>';
 
 ?>
-<div class="row-fluid" style="clear: both;">
-    <div align="left" class="pull-left nextprev span3">
+<div class="row" style="clear: both;">
+    <div style="text-align: left;" class="pull-left nextprev col-lg-3">
         <?php print $prevImg; ?><span><?php print $prev; ?></span>
     </div>
-    <div class="pull-center nextprev span6 center"><?php print $today; ?></div>
-    <div align="right" class="pull-right nextprev span3">
+    <div class="pull-center nextprev col-lg-6 text-center"><?php print $today; ?></div>
+    <div style="text-align: right;" class="pull-right nextprev col-lg-3">
         <span><?php print $next; ?></span><?php print $nextImg; ?>
     </div>
 </div>

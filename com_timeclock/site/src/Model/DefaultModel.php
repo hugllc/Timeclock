@@ -257,7 +257,7 @@ class DefaultModel extends BaseDatabaseModel
 
         // Execute the query
         $db->setQuery($query);
-        $db->query();
+        $db->execute();
         
         $set = TimeclockHelper::getParam($name);
         return $set == $value ? $set : false;

@@ -35,8 +35,9 @@
  */
 namespace HUGLLC\Component\Timeclock\Site\Helper;
 
-defined( '_JEXEC' ) or die();
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
+defined( '_JEXEC' ) or die();
  
 /**
  * Helpers for viewing stuff
@@ -273,7 +274,7 @@ class DateHelper
     */
     static public function beforeStartDate($date, $id=null)
     {
-        $start = TimeclockHelpersTimeclock::getUserParam("startDate", $id, $date);
+        $start = TimeclockHelper::getUserParam("startDate", $id, $date);
         $ret   = self::compareDates($date, $start) < 0;
         return $ret;
     }
@@ -287,7 +288,7 @@ class DateHelper
     */
     static public function afterEndDate($date, $id=null)
     {
-        $end = TimeclockHelpersTimeclock::getUserParam("endDate", $id, $date);
+        $end = TimeclockHelper::getUserParam("endDate", $id, $date);
         if (empty($end)) {
             return false;
         }

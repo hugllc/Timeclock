@@ -1,8 +1,8 @@
-<div id="notes-<?php
-
+<?php
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
- print $displayData->user_id; ?>" class="notes">
+?>
+<div id="notes-<?php print $displayData->user_id; ?>" class="notes">
     <h2 class="name"><?php print $displayData->name; ?></h2>
 <?php if (empty($displayData->data)) : ?>
         <div class="nonotes">
