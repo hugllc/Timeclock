@@ -4,10 +4,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
-    HtmlHelper::script(Juri::base()."components/com_timeclock/js/report.js");
-    HtmlHelper::script(Juri::base()."components/com_timeclock/src/View/Payroll/tmpl/payroll.js");
-    HtmlHelper::script(Juri::base()."components/com_timeclock/js/timeclock.js");
+    HtmlHelper::script(Uri::base()."components/com_timeclock/js/report.js");
+    HtmlHelper::script(Uri::base()."components/com_timeclock/src/View/Payroll/tmpl/payroll.js");
+    HtmlHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
     $cols = ($this->payperiod->subtotals * 4) + 3;
     $this->payperiod->cols = $cols;
 
@@ -44,7 +45,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     <?php 
         print $this->_export->render(
             (object)array(
-                "url" => Route::_('&option=com_timeclock'),
+                "url" => 'index.php?option=com_timeclock',
                 "export" => $this->export,
             )
         ); 
@@ -96,17 +97,16 @@ use Joomla\CMS\HTML\HTMLHelper;
             </tbody>
         </table>
     </div>
-<form action="<?php JROUTE::_("index.php"); ?>" method="post" name="userform" class="report export">
+<form action="<?php Route::_("index.php"); ?>" method="post" name="userform" class="timeclock_report">
     <input type="hidden" name="controller" value="payroll" />
     <input type="hidden" name="view" value="payroll" />
-    <input type="hidden" name="date" value="<?php print $this->payperiod->start; ?>" />
     <?php print HTMLHelper::_("form.token"); ?>
 </form>
 <script type="text/JavaScript">
     jQuery( document ).ready(function() {
         Payroll.setup();
     });
-    Report.filter    = {};
+    Report.filter    = { start: "<?php print $this->payperiod->start; ?>" };
     Report.projects  = <?php print json_encode($this->projects); ?>;
     Report.data      = <?php print json_encode($this->data); ?>;
     Report.doreports = <?php print (int)$doreports; ?>;

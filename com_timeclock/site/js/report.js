@@ -113,11 +113,11 @@ var Report = {
         div.addClass('alert-'+type);
         div.show();
     },
-    formData: function (cl)
+    formData: function ()
     {
         // Collect the base information from the form
         var base = {};
-        jQuery("form.report"+cl?"."+cl:"").find(":input").each(function(ind,elem) {
+        jQuery("form.timeclock_report").find(":input").each(function(ind,elem) {
             var name = jQuery(elem).attr('name');
             var value = jQuery(elem).val();
             base[name] = value;

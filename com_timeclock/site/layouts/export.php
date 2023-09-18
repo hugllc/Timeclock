@@ -15,11 +15,11 @@ use HUGLLC\Component\Timeclock\Site\Helper\ContribHelper;
         {
             var url = '<?php print $displayData->url; ?>';
             // This gets all of our filter variables.
-            var data = {
-                format,
-                report: Timeclock.report,
-            };
+            var data = Report.formData();
+            // Add in the format
+            data.format=format;
             // Add in the report value
+            data.report=Timeclock.report;
             url = url + "&" + jQuery.param(data);
             console.log(url);
             jQuery("#timeclock .export iframe").attr("src", url);

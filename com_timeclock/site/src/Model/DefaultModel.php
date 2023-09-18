@@ -185,7 +185,7 @@ class DefaultModel extends BaseDatabaseModel
     */
     public function getFilter()
     {
-        $filter = new stdClass();
+        $filter = new \stdClass();
         foreach ($this->getState() as $key => $value) {
             if (str_contains($key, "filter.")) {
                 $k = explode(".", $key)[1];

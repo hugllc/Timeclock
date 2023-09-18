@@ -39,6 +39,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 defined( '_JEXEC' ) or die();
 
@@ -91,5 +93,39 @@ trait DefaultDBTrait
         }
         return $db->loadObjectList();
     }
-
+    /**
+    * Gets an array of options
+    * 
+    * @param array  $where The where clauses to use (defaults to stuff from input)
+    * @param string $sort  The sort clause to uses (defaults to stuff from input)
+    * 
+    * @return  array
+    */
+    public function getOptions($where = null, $sort = null)
+    {
+        $table = $this->getTable();
+        $id    = $table->getKeyName();
+        $list  = $this->getItemsWhere($where, $sort, false);
+        $options = array();
+        foreach ($list as $value) {
+            $options[] = HTMLHelper::_(
+                'select.option', 
+                $value->$id, 
+                $this->name($value)
+            );
+        }
+        return $options;
+    }
+    /**
+    * Returns the name associated with this record
+    * 
+    * @param object $row The row to get the name of
+    * 
+    * @return string
+    */
+    public function name($row)
+    {
+        $name  = property_exists($this, "namefield") ? $this->namefield : "name";
+        return Text::_($row->$name);
+    }
 }

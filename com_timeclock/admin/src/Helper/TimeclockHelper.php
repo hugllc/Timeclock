@@ -40,6 +40,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Helper\ContentHelper;
+use HUGLLC\Component\Timeclock\Administrator\Model\ToolsModel;
 
 require_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 
@@ -90,25 +91,22 @@ class TimeclockHelper
     * 
     * @return JModel object
     */
-    public static function getModel($model)
+    public static function getModel($model, $admin = true)
     {
-        $modelClass = 'TimeclockModels'.ucfirst($model);
-        if (!class_exists($modelClass)) {
-            $file     = strtolower($model);
-            $fullfile = dirname(__DIR__)."/models/".$file.".php";
+        $modelClass = ucfirst($model)."Model";
+        if ($admin) {
+            $fullfile = dirname(__DIR__)."/Model/".$modelClass.".php";
+            $path = 'HUGLLC\\Component\\Timeclock\\Administrator\\Model\\'.$modelClass;
             if (file_exists($fullfile)) {
-                include_once($fullfile);
-            }
-            $fullfile = JPATH_ROOT."/components/com_timeclock/models/".$file.".php";
-            if (file_exists($fullfile)) {
-                include_once $fullfile;
+                return new $path();
             }
         }
-        if (!class_exists($modelClass)) {
-            include_once dirname(__DIR__)."/models/default.php";
-            $modelClass = "TimeclockModelsDefault";
+        $fullfile = JPATH_ROOT."/components/com_timeclock/src/Model/".$modelClass.".php";
+        $path = 'HUGLLC\\Component\\Timeclock\\Site\\Model\\'.$modelClass;
+        if (file_exists($fullfile)) {
+            return new $path();
         }
-        return new $modelClass();
+        return new ToolsModel();
     }
     /**
     * This returns all of the users that are active in timeclock

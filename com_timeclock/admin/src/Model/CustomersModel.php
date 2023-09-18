@@ -61,6 +61,9 @@ class CustomersModel extends ListModel
     use CustomerDBTrait;
     use DefaultDBTrait;
 
+    /** This is our name field */
+    protected $namefield       = "company";
+
     /**
     * This is the constructor
     */

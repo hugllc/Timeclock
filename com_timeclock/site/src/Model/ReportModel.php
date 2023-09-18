@@ -97,7 +97,7 @@ class ReportModel extends DefaultModel
         if (is_null($this->_myusers)) {
             $this->_myusers = parent::listUsers($blocked);
             foreach ($this->_myusers as $key => &$user) {
-                if ($this->checkUser($user) === false) {
+                if ($this->checkUser($this->_myusers[$key]) === false) {
                     unset($this->_myusers[$key]);
                 }
             }
@@ -439,10 +439,13 @@ class ReportModel extends DefaultModel
     protected function checkUserRow(&$user, &$row)
     {
         if ($row->hours > 0) {
-            if ($user && !$user->pruned && $user->hide) {
-                $user->hide = false;
+            if ($user) {
+                $this->checkUser($user);
+                if (!$user->pruned && $user->hide) {
+                    $user->hide = false;
+                }
             }
-            if ($row) {
+            if ($row && $row->user_id) {
                 $this->extraUser($row->user_id);
                 $user = $this->_myusers[$row->user_id];
             }
@@ -620,7 +623,7 @@ class ReportModel extends DefaultModel
         $this->setState("filter.proj_manager_id", $proj_manager_id);
 
         $proj_type = $app->getUserStateFromRequest($context.'.filter.project_type', 'filter_project_type', '');
-        $this->setState("filter.proj_type", $proj_type);
+        $this->setState("filter.project_type", $proj_type);
 
         $user = Factory::getUser();
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 

@@ -2,11 +2,16 @@
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
+use HUGLLC\Component\Timeclock\Administrator\Helper\ViewHelper;
+use HUGLLC\Component\Timeclock\Administrator\Model\ProjectsModel;
+use HUGLLC\Component\Timeclock\Administrator\Model\DepartmentsModel;
+use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
 
     defined( '_JEXEC' ) or die( 'Restricted access' );
     $live    = empty($displayData->report_id);
     if ($live) {
-        $model = TimeclockHelpersTimeclock::getModel("project");
+        $model = new ProjectsModel();
         $options = $model->getOptions(
             array("p.published=1", "p.type = 'CATEGORY'"),
             "p.name ASC"
@@ -28,7 +33,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->project_type, true)
         );
 
-        $model = TimeclockHelpersTimeclock::getModel("department");
+        $model = new DepartmentsModel();
         $options = $model->getOptions(
             array("d.published=1"),
             "d.name ASC"
@@ -39,7 +44,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->department, true)
         );
 
-        $model = TimeclockHelpersTimeclock::getModel("customer");
+        $model = new CustomersModel();
         $options = $model->getOptions(
             array("c.published=1"),
             "c.company ASC"
@@ -49,7 +54,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             'filter_customer',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->customer, true)
         );
-        $options = TimeclockHelpersView::getUsersOptions();
+        $options = ViewHelper::getUsersOptions();
         JHtmlSidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_USER_MANAGER'),
             'filter_user_manager_id',
@@ -72,7 +77,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
     }
     $model = empty($displayData->type) ? "report" : $displayData->type;
-    $model = TimeclockHelpersTimeclock::getModel($model);
+    $model = TimeclockHelper::getModel($model, false);
     $options = $model->getReportOptions();
     JHtmlSidebar::addFilter(
         Text::_('COM_TIMECLOCK_SELECT_SAVED_REPORT'),
