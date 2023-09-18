@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<metadata>
-    <layout title="User Summary">
-        <message>
-            A summary, by user, of hours worked.
-        </message>
-    </layout>
-</metadata>

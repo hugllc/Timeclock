@@ -28,21 +28,14 @@
     </upgrade>
     <files folder="site">
         <folder>assets</folder>
-        <folder>controllers</folder>
+        <folder>contrib</folder>
         <folder>forms</folder>
-        <folder>helpers</folder>
         <folder>js</folder>
         <folder>languages</folder>
         <folder>layouts</folder>
-        <folder>models</folder>
-        <folder>tables</folder>
-        <folder>views</folder>
         <folder>images</folder>
         <folder>css</folder>
         <folder>src</folder>
-        <filename>index.html</filename>
-        <filename>timeclock.php</filename>
-        <filename>router.php</filename>
         <filename>LICENSE.TXT</filename>
     </files>
     <scriptfile>install.php</scriptfile>
