@@ -54,7 +54,7 @@
         </downloads>
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="4.0"/>
+        <targetplatform name="joomla" version="((4\.[01234])|(5\.0))"/>
     </update>
     <update>
         <name>Timeclock</name>
@@ -68,7 +68,7 @@
         </downloads>
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="4.0"/>
+        <targetplatform name="joomla" version="((4\.[01234])|(5\.0))"/>
     </update>
     <update>
         <name>Timeclock</name>
@@ -82,6 +82,6 @@
         </downloads>
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="4.0"/>
+        <targetplatform name="joomla" version="((4\.[01234])|(5\.0))"/>
     </update>
 </updates>
