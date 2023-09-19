@@ -13,6 +13,7 @@
         <downloads>
             <downloadurl type="full" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.9/pkg_timeclock-0.9.9.zip</downloadurl>
         </downloads>
+        <sha512>09aa52659fe23f1d649cdd96e2b0de132c51d352229f83316d35690821748378d674f229d81d73939c5133c3d8c66525f7b6b2ecb323ea6f01c8061d42884892</sha512>
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
         <targetplatform name="joomla" version="4.*"/>
