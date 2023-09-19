@@ -10,7 +10,7 @@
 	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
 	<authorEmail>prices@hugllc.com</authorEmail>
 	<authorUrl>Scott Price</authorUrl>
-    <version>0.9.8</version>
+    <version>0.9.9</version>
 	<description>MOD_TIMECLOCKINFO_DESC</description>
 	<files>
 		<filename module="mod_timeclockinfo">mod_timeclockinfo.php</filename>
