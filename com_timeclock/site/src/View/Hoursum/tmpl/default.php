@@ -8,7 +8,7 @@ use Joomla\CMS\Uri\Uri;
 
     HTMLHelper::script(Uri::base()."components/com_timeclock/js/report.js");
     HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
-    HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
+
     $cols = count($this->users) + 2;
 
     Factory::getDocument()->setTitle(
