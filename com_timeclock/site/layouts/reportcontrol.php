@@ -117,7 +117,6 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
         </div>
         <div class="span2 controls">
             <h4 class="page-header"><?php echo Text::_('COM_TIMECLOCK_CONTROLS');?></h4>
-            <button class="livedata" type="button" onclick="Report.save();"><?php print Text::_("COM_TIMECLOCK_SAVE_REPORT"); ?></button>
             <button class="reportdata noreport" type="button" onclick="Report.livedata();"><?php print Text::_("COM_TIMECLOCK_LIVE_DATA"); ?></button>
             <button class="nonzero" type="button" onclick="Report.toggleZero();"><?php print Text::_("COM_TIMECLOCK_SHOW_ZERO"); ?></button>
             <button class="zero" type="button" onclick="Report.toggleZero();"><?php print Text::_("COM_TIMECLOCK_HIDE_ZERO"); ?></button>
