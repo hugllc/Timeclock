@@ -7,7 +7,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
     JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
     JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
-    HTMLHelper::_('formbehavior.chosen', 'select:not(.plain)');
+
     $cols = count($this->users) + 2;
 
     Factory::getDocument()->setTitle(
