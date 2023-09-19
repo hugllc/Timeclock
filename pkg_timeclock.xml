@@ -10,10 +10,12 @@
     <packager>Scott Price</packager>
     <packagerurl>http://www.hugllc.com/</packagerurl>
     <description>Package to install Timeclock system</description>
-    <update>https://github.com/hugllc/Timeclock/raw/master/update.xml</update>
     <files folder="packages">
         <file type="component" id="timeclock" >com_timeclock.zip</file>
         <file type="module" id="timeclockinfo" >mod_timeclockinfo.zip</file>
         <file type="plugin" id="timeclock" group="user">plg_user_timeclock.zip</file>
     </files>
+    <updateservers>
+        <server type="extension" priority="1" name="Timeclock Update Site">https://github.com/hugllc/Timeclock/raw/master/update.xml</server>
+    </updateservers>
 </extension>

@@ -73,7 +73,4 @@
             <language tag="en-GB">languages/en-GB/en-GB.com_timeclock.sys.ini</language>
         </languages>
     </administration>
-    <updateservers>
-        <server type="extension" priority="1" name="Timeclock Update Site">https://github.com/hugllc/Timeclock/raw/master/update.xml</server>
-    </updateservers>
 </extension>
