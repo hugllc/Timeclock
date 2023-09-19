@@ -5,7 +5,7 @@
         <description>Timetracking software</description>
         <element>pkg_timeclock</element>
         <type>package</type>
-        <version>0.9.4</version>
+    <version>0.9.5</version>
         <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
         <downloads>
             <downloadurl type="upgrade" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.4/pkg_timeclock-0.9.4.zip</downloadurl>
