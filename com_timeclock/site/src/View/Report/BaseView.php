@@ -201,7 +201,7 @@ class BaseView extends HtmlView
             $value = isset($data->data[$user->id]) ? $data->data[$user->id] : 0;
             $col = $this->nextCol($col);
             if ($this->datatype == "money") {
-                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD);
             }
 
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $value);
@@ -209,7 +209,7 @@ class BaseView extends HtmlView
         $total = "B".$this->line.":".$col.$this->line;
         $col = $this->nextCol($col);
         if ($this->datatype == "money") {
-            $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+            $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD);
         }
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$total.")");
         $this->phpexcel->getActiveSheet()->getStyle($col.$this->line.":".$col.$this->line)->getFont()->setBold(true);
@@ -231,7 +231,7 @@ class BaseView extends HtmlView
             $col = $this->nextCol($col);
             $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, "=SUM(".$col."2:".$col.$end.")");
             if ($this->datatype == "money") {
-                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+                $this->phpexcel->getActiveSheet()->getStyle($col.$this->line)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD);
             }
         }
         $this->phpexcel->getActiveSheet()->getStyle("A".$this->line.":".$this->maxCol.$this->line)->getFont()->setBold(true);
