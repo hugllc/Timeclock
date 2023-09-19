@@ -35,8 +35,8 @@
  */
 namespace HUGLLC\Component\Timeclock\Site\Model;
 
-use HUGLLC\Components\Timeclock\Site\Helpers\DateHelper;
-use HUGLLC\Compononts\Timeclock\Administrator\Helpers\TimeclockHelper;
+use HUGLLC\Component\Timeclock\Site\Helper\DateHelper;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 defined( '_JEXEC' ) or die();
 

@@ -39,6 +39,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 defined( '_JEXEC' ) or die();
 
@@ -209,9 +210,9 @@ trait PtoDBTrait
         $start     = "$year-01-01";
         $end       = "$year-12-31";
         $id        = empty($id) ? $this->getUser()->id : (int)$id;
-        $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
+        $decimals  = (int)TimeclockHelper::getParam("decimalPlaces");
         $regular   = $this->_getPTO($start, $end, $id, "CARRYOVER", true);
-        $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
+        $timesheet = TimeclockHelper::getModel("Timesheet", false);
         $worked    = (float)$timesheet->ptoTotal($id, $start, $end, true);
         $hours     = $regular - $worked + $this->_getCarryoverOffset($year, $id);
         $hours     = sprintf("%4.".$decimals."f", $hours);
@@ -235,7 +236,7 @@ trait PtoDBTrait
         }
         $carry = $this->getItem($pto_id);
         $end   = $carry->valid_to;
-        $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
+        $timesheet = TimeclockHelper::getModel("Timesheet", false);
         $taken = (float)$timesheet->ptoTotal($id, $start, $end, true);
         $hours = $taken - $carry->hours;
         if ($hours >= 0) {
@@ -257,7 +258,7 @@ trait PtoDBTrait
     */
     private function _getPTO($start, $end, $id, $type, $nottype = false)
     {
-        $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
+        $decimals  = (int)TimeclockHelper::getParam("decimalPlaces");
         $db    = Factory::getDBO();
         $query = $db->getQuery(TRUE);
         $query->select('SUM(hours) as hours');
@@ -312,7 +313,7 @@ trait PtoDBTrait
     public function setAccrual($start, $end, $id = null)
     {
         $id     = empty($id) ? $this->getUser()->id : (int)$id;
-        $period = trim(TimeclockHelpersTimeclock::getParam("ptoAccrualPeriod"));
+        $period = trim(TimeclockHelper::getParam("ptoAccrualPeriod"));
         $days   = TimeclockHelpersDate::days($start, $end);
         $ret    = true;
         for ($d = 0; $d < $days;) {
@@ -324,7 +325,7 @@ trait PtoDBTrait
                 $ret = $ret && $this->_setAccrualWeek($start, $id);
                 $len = 7;
             } else {
-                $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
+                $len = TimeclockHelper::getParam("payPeriodLengthFixed");
                 $ret = $ret && $this->_setAccrualPayperiod($start, $id);
             }
             // The 8th day is the first day of the next week.
@@ -364,8 +365,8 @@ trait PtoDBTrait
     */
     private function _setAccrualPayperiod($start, $id)
     {
-        $startTime = TimeclockHelpersTimeclock::getParam("firstPayPeriodStart");
-        $len = TimeclockHelpersTimeclock::getParam("payPeriodLengthFixed");
+        $startTime = TimeclockHelper::getParam("firstPayPeriodStart");
+        $len = TimeclockHelper::getParam("payPeriodLengthFixed");
         $period = TimeclockHelpersDate::fixedPayPeriod($startTime, $start, $len);
         $hours  = $this->calcAccrual($period["start"], $period["end"], $id);
         $return = $this->_storeAccrual($period["next"], $hours, $id);
@@ -417,17 +418,17 @@ trait PtoDBTrait
     public function calcAccrual($start, $end, $id = null)
     {
         $user   = $this->getUser($id);
-        $rate   = TimeclockHelpersTimeclock::getPtoAccrualRate($user->id, $end);
+        $rate   = TimeclockHelper::getPtoAccrualRate($user->id, $end);
         $hours  = 0;
         if ($rate > 0) {
-            $rate  *= (float)TimeclockHelpersTimeclock::getParam("ptoHoursPerDay");
+            $rate  *= (float)TimeclockHelper::getParam("ptoHoursPerDay");
             $d = TimeclockHelpersDate::explodeDate($end);
             $year   = (int)$d["y"];
             $ytd    = $this->getAccrual("$year-01-01", "$year-12-31", $id);
-            $status = TimeclockHelpersTimeclock::getUserParam('status', $id);
+            $status = TimeclockHelper::getUserParam('status', $id);
             $hpy    = ($status == "FULLTIME") ? 2080 : 1040;
-            $decimals  = (int)TimeclockHelpersTimeclock::getParam("decimalPlaces");
-            $timesheet = TimeclockHelpersTimeclock::getModel("Timesheet");
+            $decimals  = (int)TimeclockHelper::getParam("decimalPlaces");
+            $timesheet = TimeclockHelper::getModel("Timesheet");
             $worked    = (float)$timesheet->periodTotal($user->id, $start, $end, true);
             $hours     = ($rate / $hpy) * $worked;
             if (($hours + $ytd) > $rate) {
