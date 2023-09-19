@@ -18,7 +18,7 @@ done
 #    ${SED} -i'' "s/@version    [ ]*SVN[ ~a-zA-Z0-9:.$]*/@version    GIT: $Id$/g" ${file}
 #done
 
-for file in `find ./${dir} -iname "*.xml"|grep -v contrib |grep -v Joomla |grep -v "tests/joomla" |grep -v 'bin' |grep -v build |grep -v composer`; do
+for file in `find ./${dir} -iname "*.xml"|grep -v contrib |grep -v Joomla |grep -v "tests/joomla" |grep -v 'bin' |grep -v build |grep -v composer |grep -v update.xml`; do
     ${SED} -i'' "s/^[[:space:]]*<version>[ ~a-zA-Z0-9:.$]*<\/version>/    <version>${1}<\/version>/g" ${file}
 done
 
