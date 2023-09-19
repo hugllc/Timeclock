@@ -71,7 +71,7 @@ class HtmlView extends BaseHtmlView
 
         $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->getModel()->getState('payperiod');
-        $this->payperiod->controller = "timesheet";
+        $this->payperiod->view = "timesheet";
 
         HTMLHelper::stylesheet(
             Uri::base().'components/com_timeclock/css/timeclock.css', 
