@@ -107,6 +107,11 @@ table.timesheet tr.category th {
 table.timesheet td {
     padding: 0px;
 }
+
+table.timesheet td button, table.report td button {
+    padding: 0px;
+}
+
 table.timesheet td.hours, table.report td.hours, table.report td.percent, table.report td.cost {
     text-align: center;
 }
@@ -159,6 +164,11 @@ table.report tfoot tr.header th {
     padding: 1px;
     text-align: center;
     height: 2em;
+}
+
+table.report td, table.report th {
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 #timeclock #addHoursTotal {
