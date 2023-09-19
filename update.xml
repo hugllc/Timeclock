@@ -56,4 +56,18 @@
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
         <targetplatform name="joomla" version="4.0"/>
     </update>
+    <update>
+        <name>Timeclock</name>
+        <description>Timetracking software</description>
+        <element>pkg_timeclock</element>
+        <type>package</type>
+        <version>0.9.8</version>
+        <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
+        <downloads>
+            <downloadurl type="upgrade" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.8/pkg_timeclock-0.9.8.zip</downloadurl>
+        </downloads>
+        <maintainer>Scott Price</maintainer>
+        <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
+        <targetplatform name="joomla" version="4.0"/>
+    </update>
 </updates>
