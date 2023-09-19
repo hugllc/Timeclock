@@ -61,6 +61,7 @@ table.timesheet tr.header th.today {
 
 table.timesheet th {
     background-color: #CCC !important;
+    font-weight: bold;
 }
 table.timesheet tr.name th {
     font-size: 1.5em;
@@ -139,7 +140,9 @@ table.report .employee .complete.no {
 
 table.report th {
     background-color: #CCC !important;
+    font-weight: bold;
 }
+
 table.report thead tr.header th {
     vertical-align: bottom;
     padding: 1px;
