@@ -86,6 +86,6 @@
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
         <sha512>09aa52659fe23f1d649cdd96e2b0de132c51d352229f83316d35690821748378d674f229d81d73939c5133c3d8c66525f7b6b2ecb323ea6f01c8061d42884892</sha512>
-        <targetplatform name="joomla" version="((4\.[01234])|(5\.0))"/>
+        <targetplatform name="joomla" version="4.*"/>
     </update>
 </updates>
