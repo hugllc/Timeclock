@@ -77,6 +77,9 @@
         <type>package</type>
         <version>0.9.9</version>
         <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
+        <tags>
+            <tag>stable</tag>
+        </tags>
         <downloads>
             <downloadurl type="upgrade" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.9/pkg_timeclock-0.9.9.zip</downloadurl>
         </downloads>
