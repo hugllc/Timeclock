@@ -3,78 +3,8 @@
     <update>
         <name>Timeclock</name>
         <description>Timetracking software</description>
-        <element>pkg_timeclock</element>
-        <type>package</type>
-        <version>0.9.4</version>
-        <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
-        <downloads>
-            <downloadurl type="upgrade" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.4/pkg_timeclock-0.9.4.zip</downloadurl>
-        </downloads>
-        <maintainer>Scott Price</maintainer>
-        <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="4.0"/>
-    </update>
-    <update>
-        <name>Timeclock</name>
-        <description>Timetracking software</description>
-        <element>pkg_timeclock</element>
-        <type>package</type>
-        <version>0.9.5</version>
-        <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
-        <downloads>
-            <downloadurl type="upgrade" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.5/pkg_timeclock-0.9.5.zip</downloadurl>
-        </downloads>
-        <maintainer>Scott Price</maintainer>
-        <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="4.0"/>
-    </update>
-    <update>
-        <name>Timeclock</name>
-        <description>Timetracking software</description>
-        <element>pkg_timeclock</element>
-        <type>package</type>
-        <version>0.9.6</version>
-        <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
-        <downloads>
-            <downloadurl type="upgrade" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.6/pkg_timeclock-0.9.6.zip</downloadurl>
-        </downloads>
-        <maintainer>Scott Price</maintainer>
-        <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="4.0"/>
-    </update>
-    <update>
-        <name>Timeclock</name>
-        <description>Timetracking software</description>
-        <element>pkg_timeclock</element>
-        <type>package</type>
-        <version>0.9.7</version>
-        <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
-        <downloads>
-            <downloadurl type="upgrade" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.7/pkg_timeclock-0.9.7.zip</downloadurl>
-        </downloads>
-        <maintainer>Scott Price</maintainer>
-        <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="((4\.[01234])|(5\.0))"/>
-    </update>
-    <update>
-        <name>Timeclock</name>
-        <description>Timetracking software</description>
-        <element>pkg_timeclock</element>
-        <type>package</type>
-        <version>0.9.8</version>
-        <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
-        <downloads>
-            <downloadurl type="full" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.8/pkg_timeclock-0.9.8.zip</downloadurl>
-        </downloads>
-        <maintainer>Scott Price</maintainer>
-        <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="((4\.[01234])|(5\.0))"/>
-    </update>
-    <update>
-        <name>Timeclock</name>
-        <description>Timetracking software</description>
-        <element>pkg_timeclock</element>
-        <type>package</type>
+        <element>com_timeclock</element>
+        <type>component</type>
         <version>0.9.9</version>
         <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
         <tags>
@@ -85,7 +15,6 @@
         </downloads>
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <sha512>09aa52659fe23f1d649cdd96e2b0de132c51d352229f83316d35690821748378d674f229d81d73939c5133c3d8c66525f7b6b2ecb323ea6f01c8061d42884892</sha512>
         <targetplatform name="joomla" version="4.*"/>
     </update>
 </updates>
