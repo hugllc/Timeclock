@@ -2,6 +2,7 @@
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use HUGLLC\Component\Timeclock\Administrator\Helper\ViewHelper;
 use HUGLLC\Component\Timeclock\Administrator\Model\ProjectsModel;
@@ -16,7 +17,7 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
             array("p.published=1", "p.type = 'CATEGORY'"),
             "p.name ASC"
         );
-        JHtmlSidebar::addFilter(
+        Sidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_CATEGORY'),
             'filter_category',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->category, true)
@@ -27,7 +28,7 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
             JHTML::_('select.option', "HOLIDAY", Text::_("COM_TIMECLOCK_HOLIDAY")),
             JHTML::_('select.option', "UNPAID", Text::_("COM_TIMECLOCK_VOLUNTEER")),
         );
-        JHtmlSidebar::addFilter(
+        Sidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_PROJECT_TYPE'),
             'filter_project_type',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->project_type, true)
@@ -38,7 +39,7 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
             array("d.published=1"),
             "d.name ASC"
         );
-        JHtmlSidebar::addFilter(
+        Sidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_DEPARTMENT'),
             'filter_department',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->department, true)
@@ -49,23 +50,23 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
             array("c.published=1"),
             "c.company ASC"
         );
-        JHtmlSidebar::addFilter(
+        Sidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_CUSTOMER'),
             'filter_customer',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->customer, true)
         );
         $options = ViewHelper::getUsersOptions();
-        JHtmlSidebar::addFilter(
+        Sidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_USER_MANAGER'),
             'filter_user_manager_id',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->user_manager_id, true)
         );
-        JHtmlSidebar::addFilter(
+        Sidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_PROJECT_MANAGER'),
             'filter_proj_manager_id',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->proj_manager_id, true)
         );
-        JHtmlSidebar::addFilter(
+        Sidebar::addFilter(
             Text::_('COM_TIMECLOCK_SELECT_USER'),
             'filter_user_id',
             HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->user_id, true)
@@ -79,53 +80,53 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
     $model = empty($displayData->type) ? "report" : $displayData->type;
     $model = TimeclockHelper::getModel($model, false);
     $options = $model->getReportOptions();
-    JHtmlSidebar::addFilter(
+    Sidebar::addFilter(
         Text::_('COM_TIMECLOCK_SELECT_SAVED_REPORT'),
         'report_id',
         HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->report_id, true)
     );
 ?>
 <div class="reportcontrol row">
-    <div class="row-fluid">
-        <div class="span6 dates">
+    <div class="row">
+        <div class="col-md-5 dates">
             <?php if ($live) : ?>
             <h4 class="page-header"><?php echo Text::_('COM_TIMECLOCK_REPORT_DATES');?></h4>
             <h5><?php echo Text::_('COM_TIMECLOCK_FROM');?></h5>
-            <?php print HTMLHelper::_("calendar", $displayData->start, "start", "startDate", '%Y-%m-%d', array("class" => "")); ?>
+            <?php print HTMLHelper::_("calendar", $displayData->start, "start", "startDate", '%Y-%m-%d', array("class" => "small")); ?>
             <h5><?php echo Text::_('COM_TIMECLOCK_to');?></h5>
-            <?php print HTMLHelper::_("calendar", $displayData->end, "end", "endDate", '%Y-%m-%d', array("class" => "")); ?>
-            <hr class="hr-condensed" />
+            <?php print HTMLHelper::_("calendar", $displayData->end, "end", "endDate", '%Y-%m-%d', array("class" => "small")); ?>
             <?php if ($displayData->datatype) { ?>
-            Show: <?php print JHTML::_('select.genericlist', $typeoptions, 'datatype', 'class="inputbox"', 'value', 'text', $displayData->datatype); ?>
             <hr class="hr-condensed" />
+            <h5>Show:</h5><?php print HTMLHelper::_('select.genericlist', $typeoptions, 'datatype', 'class="inputbox form-select small"', 'value', 'text', $displayData->datatype); ?>
             <?php } ?>
-            <button type="submit" class="hidden-phone">Submit</button>
+            <hr class="hr-condensed d-md-none" />
+            <button type="submit" class="d-md-none">Submit</button>
             <?php endif; ?>
         </div>
-        <div class="span4 filters">
+        <div class="col-md-5 filters">
             <h4 class="page-header"><?php echo Text::_('JSEARCH_FILTER_LABEL');?></h4>
-            <?php foreach (JHTMLSidebar::getFilters() as $filter) : ?>
+            <?php foreach (Sidebar::getFilters() as $filter) : ?>
                     <label for="<?php echo $filter['name']; ?>" class="element-invisible"><?php echo $filter['label']; ?></label>
-                    <select name="<?php echo $filter['name']; ?>" id="<?php echo $filter['name']; ?>" class="span12 small" onchange="this.form.submit()">
+                    <select name="<?php echo $filter['name']; ?>" id="<?php echo $filter['name']; ?>" class="small form-select" onchange="this.form.submit()">
                             <?php if (!$filter['noDefault']) : ?>
                                     <option value=""><?php echo $filter['label']; ?></option>
                             <?php endif; ?>
                             <?php echo $filter['options']; ?>
                     </select>
             <?php endforeach; ?>
-            <hr class="hr-condensed hidden-desktop" />
+            <hr class="hr-condensed d-md-none" />
         </div>
-        <div class="span2 controls">
+        <div class="col-md-2 controls">
             <h4 class="page-header"><?php echo Text::_('COM_TIMECLOCK_CONTROLS');?></h4>
             <button class="reportdata noreport" type="button" onclick="Report.livedata();"><?php print Text::_("COM_TIMECLOCK_LIVE_DATA"); ?></button>
             <button class="nonzero" type="button" onclick="Report.toggleZero();"><?php print Text::_("COM_TIMECLOCK_SHOW_ZERO"); ?></button>
             <button class="zero" type="button" onclick="Report.toggleZero();"><?php print Text::_("COM_TIMECLOCK_HIDE_ZERO"); ?></button>
             <button class="nonempty" type="button" onclick="Report.toggleEmpty();"><?php print Text::_("COM_TIMECLOCK_SHOW_EMPTY"); ?></button>
             <button class="empty" type="button" onclick="Report.toggleEmpty();"><?php print Text::_("COM_TIMECLOCK_HIDE_EMPTY"); ?></button>
-            <hr class="hr-condensed hidden-desktop" />
+            <hr class="hr-condensed d-md-none" />
         </div>
     </div>
-    <div class="hidden-desktop">
+    <div class="d-none d-lg-block">
         <button type="submit">Submit</button>
     </div>
 </div>
