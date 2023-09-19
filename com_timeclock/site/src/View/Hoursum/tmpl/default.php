@@ -18,7 +18,6 @@ use Joomla\CMS\Uri\Uri;
             HTMLHelper::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
         )
     );
-    $doreports = ($this->report_id != 0);
     $allproj = array();
     foreach ($this->projects as $cat) {
         foreach ($cat["proj"] as $proj) {
@@ -35,7 +34,6 @@ use Joomla\CMS\Uri\Uri;
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print Text::_("COM_TIMECLOCK_HOURSUM_REPORT"); ?>
-            <?php print ($doreports) ? " - ".Text::_("COM_TIMECLOCK_SAVED_DATA").":  ".$this->report->name : ""; ?>
         </h2>
     </div>
     <?php print $this->_control->render($this->filter); ?>
@@ -253,7 +251,6 @@ use Joomla\CMS\Uri\Uri;
     Report.filter    = <?php print json_encode($this->filter); ?>;
     Report.projects  = <?php print json_encode($this->projects); ?>;
     Report.data      = <?php print json_encode($this->data); ?>;
-    Report.doreports = <?php print (int)$doreports; ?>;
     Timeclock.params = <?php print json_encode($this->params); ?>;
     Timeclock.report = 0;
     

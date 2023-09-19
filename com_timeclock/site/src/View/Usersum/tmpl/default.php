@@ -18,7 +18,6 @@ use Joomla\CMS\Uri\Uri;
             HTMLHelper::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
         )
     );
-    $doreports = ($this->report_id != 0);
 ?>
 <div id="timeclock" class="container-fluid">
 <form action="<?php Route::_("index.php?option=com_timeclock&controller=usersum"); ?>" method="post" name="userform" class="report">
@@ -26,7 +25,6 @@ use Joomla\CMS\Uri\Uri;
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print Text::_("COM_TIMECLOCK_USERSUM_REPORT"); ?>
-            <?php print ($doreports) ? " - ".Text::_("COM_TIMECLOCK_SAVED_DATA").":  ".$this->report->name : ""; ?>
         </h2>
     </div>
     <?php print $this->_control->render($this->filter); ?>
@@ -86,7 +84,6 @@ use Joomla\CMS\Uri\Uri;
     Report.filter    = <?php print json_encode($this->filter); ?>;
     Report.projects  = <?php print json_encode($this->projects); ?>;
     Report.data      = <?php print json_encode($this->data); ?>;
-    Report.doreports = <?php print (int)$doreports; ?>;
     Timeclock.params = <?php print json_encode($this->params); ?>;
     Timeclock.report = 0;
     

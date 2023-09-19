@@ -77,14 +77,6 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
         );
 
     }
-    $model = empty($displayData->type) ? "report" : $displayData->type;
-    $model = TimeclockHelper::getModel($model, false);
-    $options = $model->getReportOptions();
-    Sidebar::addFilter(
-        Text::_('COM_TIMECLOCK_SELECT_SAVED_REPORT'),
-        'report_id',
-        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->report_id, true)
-    );
 ?>
 <div class="reportcontrol row">
     <div class="row">

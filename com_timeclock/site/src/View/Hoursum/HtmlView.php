@@ -81,7 +81,6 @@ class HtmlView extends BaseHtmlView
         $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->start     = $this->getModel()->getState('start');
         $this->end       = $this->getModel()->getState('end');
-        $this->report_id = $this->getModel()->getState("report.id");
         
         HTMLHelper::stylesheet(
             Uri::base().'components/com_timeclock/css/timeclock.css', 
@@ -92,26 +91,14 @@ class HtmlView extends BaseHtmlView
         $this->_export  = new FileLayout('export', dirname(__DIR__).'/layouts');
         $this->_control = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
-        if (empty($this->report_id)) {
-            $this->data              = $this->getModel()->listItems();
-            $this->users             = $this->getModel()->listUsers();
-            $this->projects          = $this->getModel()->listProjects();
-            $this->customers         = $this->getModel()->listCustomers();
-            $this->departments       = $this->getModel()->listDepartments();
-            $this->filter            = $this->getModel()->getFilter();
-            $this->filter->start     = $this->start;
-            $this->filter->end       = $this->end;
-            $this->filter->report_id = $this->report_id;
-        } else {
-            $this->report      = $this->getModel()->getReport();
-            $this->filter      = $this->report->filter;
-            $this->users       = $this->report->users;
-            $this->data        = $this->report->timesheets;
-            $this->projects    = $this->report->projects;
-            $this->customers   = $this->report->customers;
-            $this->departments = $this->report->departments;
-            $this->filter->report_id = $this->report_id;
-        }
+        $this->data              = $this->getModel()->listItems();
+        $this->users             = $this->getModel()->listUsers();
+        $this->projects          = $this->getModel()->listProjects();
+        $this->customers         = $this->getModel()->listCustomers();
+        $this->departments       = $this->getModel()->listDepartments();
+        $this->filter            = $this->getModel()->getFilter();
+        $this->filter->start     = $this->start;
+        $this->filter->end       = $this->end;
         $this->export   = array(
             "CSV" => "csv",
             "Excel" => "xlsx",

@@ -19,7 +19,6 @@
             <file driver="mysql" charset="utf8">sql/timeclock_pto.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_timesheet.mysql.utf8.sql</file>
             <file driver="mysql" charset="utf8">sql/timeclock_users.mysql.utf8.sql</file>
-            <file driver="mysql" charset="utf8">sql/timeclock_reports.mysql.utf8.sql</file>
         </sql>
     </install>
     <uninstall>
@@ -52,7 +51,6 @@
             <menu view="holidays">COM_TIMECLOCK_SUBMENU_HOLIDAYS</menu>
             <menu view="ptos">COM_TIMECLOCK_SUBMENU_PTO</menu>
             <menu view="timesheets">COM_TIMECLOCK_SUBMENU_TIMESHEETS</menu>
-            <menu view="reports">COM_TIMECLOCK_SUBMENU_REPORTS</menu>
             <menu view="tools">COM_TIMECLOCK_SUBMENU_TOOLS</menu>
             <menu view="about">COM_TIMECLOCK_SUBMENU_ABOUT</menu>
         </submenu>

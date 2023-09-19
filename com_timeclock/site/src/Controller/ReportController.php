@@ -117,39 +117,6 @@ class ReportController extends DisplayController
         */
     }
     /**
-    * This function saves our stuff and returns a json response
-    * 
-    * @return null
-    */
-    protected function taskSave()
-    {
-        // Get the application
-        $app   = Factory::getApplication();
-        $app->getInput() or die("Invalid Token");
-
-        $model = new ReportModel();
-        if ($index = $model->store()) {
-            $json = new JsonResponse(
-                get_object_vars($index), 
-                Text::_("COM_TIMECLOCK_REPORT_SAVED"),
-                false,  // Error
-                false    // Ignore Message Queue
-            );
-        } else {
-            $json = new JsonResponse(
-                array(), 
-                Text::_("COM_TIMECLOCK_REPORT_SAVE_FAILED"),
-                true,    // Error
-                false     // Ignore Message Queue
-            );
-        }
-        Factory::getDocument()->setMimeEncoding( 'application/json' );
-        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
-        echo $json;
-        $app->close();
-        return true;
-    }
-    /**
     * This is the main function that executes everything.
     *
     * @return bool

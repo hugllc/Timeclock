@@ -19,7 +19,6 @@ use Joomla\CMS\Uri\Uri;
             HtmlHelper::_('date', $this->payperiod->end, Text::_("DATE_FORMAT_LC3"))
         )
     );
-    $doreports = ($this->report->report_id != 0);
 ?>
 <div id="timeclock">
     <div class="page-header">
@@ -64,15 +63,6 @@ use Joomla\CMS\Uri\Uri;
             "rowClass" => "livedata"
         )
     ); 
-    if ($doreports) {
-        print $this->_totals->render(
-            (object)array(
-                "payperiod" => $this->payperiod, 
-                "totals" => $this->report->timesheets["totals"], 
-                "rowClass" => "reportdata"
-            )
-        );
-    }
 ?>
             </tfoot>
             <tbody>
@@ -83,15 +73,6 @@ use Joomla\CMS\Uri\Uri;
         $user->rowClass = "livedata";
         $user->notes = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
         print $this->_row->render($user);
-    }
-    if ($doreports) {
-        foreach ((array)$this->report->users as $user_id => $user) {
-            $user = (object)$user;
-            $user->payperiod = $this->payperiod;
-            $user->data = isset($this->report->timesheets[$user_id]) ? $this->report->timesheets[$user_id] : array();
-            $user->rowClass = "reportdata noreport";
-            print $this->_row->render($user);
-        }
     }
 ?>
             </tbody>
@@ -115,11 +96,6 @@ use Joomla\CMS\Uri\Uri;
     Payroll.projects     = <?php print json_encode($this->projects); ?>;
     Payroll.payperiod    = <?php print json_encode($this->payperiod); ?>;
     Payroll.data         = <?php print json_encode($this->data); ?>;
-    Payroll.report       = {
-        "projects": <?php print json_encode($this->report->projects); ?>,
-        "users": <?php print json_encode($this->report->users); ?>,
-        "data": <?php print json_encode($this->report->timesheets); ?>,
-    };
     Payroll.doreports = <?php print (int)$doreports; ?>;
     Timeclock.params     = <?php print json_encode($this->params); ?>;
     Timeclock.report     = 0;

@@ -73,7 +73,6 @@ class HtmlView extends BaseHtmlView
         $this->start     = $this->getModel()->getState('start');
         $this->end       = $this->getModel()->getState('end');
         $this->datatype  = $this->getModel()->getState('datatype');
-        $this->report_id = $this->getModel()->getState("report.id");
         $this->currency  = "$";
         
         HTMLHelper::stylesheet(
@@ -89,24 +88,13 @@ class HtmlView extends BaseHtmlView
         $this->_export   = new FileLayout('export', dirname(__DIR__).'/layouts');
         $this->_control  = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
-        if (empty($this->report_id)) {
-            $this->data              = $this->getModel()->listItems();
-            $this->users             = $this->getModel()->listUsers();
-            $this->projects          = $this->getModel()->listProjects();
-            $this->filter            = $this->getModel()->getFilter();
-            $this->filter->start     = $this->start;
-            $this->filter->end       = $this->end;
-            $this->filter->datatype  = $this->datatype;
-            $this->filter->report_id = $this->report_id;
-        } else {
-            $this->report   = $this->getModel()->getReport();
-            $this->data     = $this->report->timesheets;
-            $this->users    = $this->report->users;
-            $this->projects = $this->report->projects;
-            $this->filter   = $this->report->filter;
-            
-            $this->filter->report_id = $this->report_id;
-        }
+        $this->data              = $this->getModel()->listItems();
+        $this->users             = $this->getModel()->listUsers();
+        $this->projects          = $this->getModel()->listProjects();
+        $this->filter            = $this->getModel()->getFilter();
+        $this->filter->start     = $this->start;
+        $this->filter->end       = $this->end;
+        $this->filter->datatype  = $this->datatype;
         $this->export   = array(
             "CSV" => "csv",
             "Excel" => "xlsx",

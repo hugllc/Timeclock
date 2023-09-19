@@ -82,20 +82,12 @@ class BaseView extends HtmlView
         $app = Factory::getApplication();
         
         $doReport = $app->input->get("report", 1, "int");
-        $report_id = $this->getModel()->getState("report.id");
         $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->getModel()->getPayperiod();
 
-        if (!empty($report_id) && $doReport) {
-            $report = $this->getModel()->getReport();
-            $data   = $report->timesheets;
-            $users  = $report->users;
-            $file   = str_replace(" ", "_", $report->name);
-        } else {
-            $data  = $this->getModel()->listItems();
-            $users = $this->getModel()->listUsers();
-            $file   = "payroll-live-".$this->payperiod->start;
-        }
+        $data  = $this->getModel()->listItems();
+        $users = $this->getModel()->listUsers();
+        $file   = "payroll-live-".$this->payperiod->start;
         $this->setup($file);
         $this->export($users, $data);
         $this->finalize();

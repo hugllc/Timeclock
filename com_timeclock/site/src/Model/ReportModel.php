@@ -66,8 +66,6 @@ class ReportModel extends DefaultModel
     private $_departments = null;
     /** This is where we cache our customers */
     private $_customers = null;
-    /** This is our saved report */
-    private $_report = array();
     /** This is our percentage of holiday pay */
     private $_myusers = null;
     /** This is the type of report */
@@ -202,29 +200,6 @@ class ReportModel extends DefaultModel
         return $return;
     }
     /**
-    * Returns a list of compatible saved reports
-    * 
-    * @return array of objects
-    */
-    public function listReports()
-    {
-        $db = Factory::getDBO();
-        $start = $this->getState("start");
-        $end   = $this->getState("end");
-        $type   = $this->getState("report.type");
-        $query = $db->getQuery(TRUE);
-        $query->select('*');
-        $query->from('#__timeclock_reports');
-        $query->where($db->quoteName("type")." = ".$db->quote($type));
-        $query->where($db->quoteName("startDate")." = ".$db->quote($start));
-        $query->where($db->quoteName("endDate")." = ".$db->quote($end));
-        $list = $this->_getList($query, 0, 0);
-        foreach ($list as &$item) {
-            $this->fixReport($item);
-        }
-        return $list;
-    }
-    /**
     * Checks to see if there is a saved report and returns the record
     * 
     * @param mixed $report Either array or object with report information in it
@@ -256,47 +231,6 @@ class ReportModel extends DefaultModel
             }
         }
         
-    }
-    /**
-    * Returns a list of compatible saved reports
-    * 
-    * @return array of objects
-    */
-    public function getReportOptions()
-    {
-        $list = $this->listReports();
-        $options = array();
-        foreach ($list as $value) {
-            $options[] = JHTML::_(
-                'select.option', 
-                $value->report_id, 
-                $value->name
-            );
-        }
-        return $options;
-        
-    }
-    /**
-    * Checks to see if there is a saved report and returns the record
-    * 
-    * @param int $id The ID of the report to get.
-    * 
-    * @return int The ID of the report
-    */
-    public function getReport($id = null)
-    {
-        if (is_null($id)) {
-            $id = $this->getState("report.id");
-        }
-        if (!isset($this->_report[$id])) {
-            $db = $this->getDbo();
-            $this->_report[$id] = new ReportTable($db);
-            $report = &$this->_report[$id];
-            $report->load($id);
-            $this->fixReport($report);
-        }
-        return $this->_report[$id];
-
     }
     /**
     * Build query and where for protected _getList function and return a list
@@ -509,34 +443,6 @@ class ReportModel extends DefaultModel
         $row->customers   = json_encode($this->listCustomers());
         $row->departments = json_encode($this->listDepartments());
         return $row;
-    }
-    /**
-    * Stores the data given, or request data.
-    *
-    * @return Table instance with data in it.
-    */
-    public function store()
-    {
-        $row = $this->buildStore();
-        $report_id = $this->getState("report.id");
-        if (!empty($report_id) || !is_object($row)) {
-            return false;
-        }
-        // Make sure the record is valid
-        if (!$row->check()) {
-            return false;
-        }
-    
-        if (!$row->store()) {
-            return false;
-        }
-        // Set our id for things after this.
-        if (empty($this->id) || (isset($this->id[0]) && empty($this->id[0]))) {
-            $key = $row->getKeyName();
-            $this->id = array($row->$key);
-        }
-        return $row;
-
     }
     
     /**
