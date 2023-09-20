@@ -48,7 +48,6 @@ use Joomla\CMS\Helper\ModuleHelper;
 
 // Include the helper function
 require_once dirname(__FILE__).'/helper.php';
-JLoader::register('TimeclockHelpersTimeclock', JPATH_ROOT.'/administrator/components/com_timeclock/helpers/timeclock.php');
 
 $params->def('showYTDHours', 1);
 $params->def('showHoursPerWeek', 1);
