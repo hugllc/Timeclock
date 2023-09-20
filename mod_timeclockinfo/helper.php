@@ -44,6 +44,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 /**
 * This class is the 'model' for the module.
@@ -70,9 +71,9 @@ class ModTimeclockInfoHelper
     {
         $list = array();
 
-        $decimals  = TimeclockHelpersTimeclock::getParam("decimalPlaces");
-        $timesheet = TimeclockHelpersTimeclock::getModel("timesheet");
-        $pto       = TimeclockHelpersTimeclock::getModel("pto");
+        $decimals  = TimeclockHelper::getParam("decimalPlaces");
+        $timesheet = TimeclockHelper::getModel("timesheet");
+        $pto       = TimeclockHelper::getModel("pto");
         $year      = date("Y");
         $start     = "$year-01-01";
         $end       = date("Y-m-d");
