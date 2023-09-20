@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="3.3">
+<extension type="package" version="3.3" method="upgrade">
     <name>Timeclock Package</name>
     <author>Scott Price</author>
     <authorEmail>prices@hugllc.com</authorEmail>
