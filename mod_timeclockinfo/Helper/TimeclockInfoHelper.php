@@ -39,12 +39,15 @@
  * @version    GIT: $Id: 63be8a20801842e16c4bbf0f8d5747063f81b4df $
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace HUGLLC\Module\TimeclockInfo\Site\Helper;
 
 use Joomla\CMS\Language\Text;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
+use HUGLLC\Component\Timeclock\Site\Model\TimesheetModel;
+use HUGLLC\Component\Timeclock\Administrator\Model\PtoModel;
+
+// no direct access
+defined('_JEXEC') or die('Restricted access');
 
 /**
 * This class is the 'model' for the module.
@@ -58,7 +61,7 @@ use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
 */
-class ModTimeclockInfoHelper
+class TimeclockInfoHelper
 {
     /**
     *  Sets the stuff to display for this module
@@ -72,8 +75,8 @@ class ModTimeclockInfoHelper
         $list = array();
 
         $decimals  = TimeclockHelper::getParam("decimalPlaces");
-        $timesheet = TimeclockHelper::getModel("timesheet");
-        $pto       = TimeclockHelper::getModel("pto");
+        $timesheet = new TimesheetModel();
+        $pto       = new PtoModel();
         $year      = date("Y");
         $start     = "$year-01-01";
         $end       = date("Y-m-d");

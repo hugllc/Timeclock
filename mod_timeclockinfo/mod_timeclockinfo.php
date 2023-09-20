@@ -41,20 +41,19 @@
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
 
+use HUGLLC\Module\TimeclockInfo\Site\Helper\TimeclockInfoHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Helper\ModuleHelper;
-
-// Include the helper function
-require_once dirname(__FILE__).'/helper.php';
 
 $params->def('showYTDHours', 1);
 $params->def('showHoursPerWeek', 1);
 $params->def('showNextHoliday', 1);
 
 
-$stuff = modTimeclockInfoHelper::getDisplay($params);
+$stuff = TimeclockInfoHelper::getDisplay($params);
 
 require ModuleHelper::getLayoutPath('mod_timeclockinfo');
 

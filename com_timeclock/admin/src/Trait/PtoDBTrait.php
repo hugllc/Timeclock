@@ -151,7 +151,7 @@ trait PtoDBTrait
     */
     public function getAccrual($start, $end, $id = null)
     {
-        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        $id    = empty($id) ? Factory::getUser()->id : (int)$id;
         return $this->_getPTO($start, $end, $id, "ACCRUAL", false);
     }
     /**
@@ -165,7 +165,7 @@ trait PtoDBTrait
     */
     public function getManual($start, $end, $id = null)
     {
-        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        $id    = empty($id) ? Factory::getUser()->id : (int)$id;
         return $this->_getPTO($start, $end, $id, "MANUAL", false);
     }
     /**
@@ -179,7 +179,7 @@ trait PtoDBTrait
     */
     public function getDonation($start, $end, $id = null)
     {
-        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        $id    = empty($id) ? Factory::getUser()->id : (int)$id;
         return $this->_getPTO($start, $end, $id, "DONATION", false);
     }
     /**
@@ -193,7 +193,7 @@ trait PtoDBTrait
     */
     public function getCarryover($start, $end, $id = null)
     {
-        $id    = empty($id) ? $this->getUser()->id : (int)$id;
+        $id    = empty($id) ? Factory::getUser()->id : (int)$id;
         return $this->_getPTO($start, $end, $id, "CARRYOVER", false);
     }
     /**
@@ -209,7 +209,7 @@ trait PtoDBTrait
         $year      = (int)$year;
         $start     = "$year-01-01";
         $end       = "$year-12-31";
-        $id        = empty($id) ? $this->getUser()->id : (int)$id;
+        $id        = empty($id) ? Factory::getUser()->id : (int)$id;
         $decimals  = (int)TimeclockHelper::getParam("decimalPlaces");
         $regular   = $this->_getPTO($start, $end, $id, "CARRYOVER", true);
         $timesheet = TimeclockHelper::getModel("Timesheet", false);
@@ -312,7 +312,7 @@ trait PtoDBTrait
     */
     public function setAccrual($start, $end, $id = null)
     {
-        $id     = empty($id) ? $this->getUser()->id : (int)$id;
+        $id     = empty($id) ? Factory::getUser()->id : (int)$id;
         $period = trim(TimeclockHelper::getParam("ptoAccrualPeriod"));
         $days   = TimeclockHelpersDate::days($start, $end);
         $ret    = true;
@@ -399,7 +399,7 @@ trait PtoDBTrait
         $row->hours      = $hours;
         $row->valid_from = $date;
         $row->valid_to   = $d["y"]."-12-31";
-        $row->created_by = $this->getUser()->id;
+        $row->created_by = Factory::getUser()->id;
         $row->created    = date("Y-m-d H:i:s");
         $row->modified   = $row->created;
         $row->notes      = "Automatic Accrual";
@@ -417,7 +417,7 @@ trait PtoDBTrait
     */
     public function calcAccrual($start, $end, $id = null)
     {
-        $user   = $this->getUser($id);
+        $user   = Factory::getUser($id);
         $rate   = TimeclockHelper::getPtoAccrualRate($user->id, $end);
         $hours  = 0;
         if ($rate > 0) {
