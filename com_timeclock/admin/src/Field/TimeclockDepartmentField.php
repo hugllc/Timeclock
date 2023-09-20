@@ -41,8 +41,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die();
 
-require_once JPATH_ADMINISTRATOR.'/components/com_timeclock/helpers/timeclock.php';
-
 /**
  * This creates a select box with the user types in it.
  *
