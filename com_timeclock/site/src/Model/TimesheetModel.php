@@ -368,6 +368,24 @@ class TimesheetModel extends DefaultModel
         $this->setState("payperiod", $payperiod);
     }
     /**
+     * Returns true if this is marked complete
+     * 
+     * @return True if complete, false otherwise
+     */
+    public function isComplete()
+    {
+        return $this->getState("payperiod")->done;
+    }
+    /**
+     * Returns true if this is marked complete
+     * 
+     * @return True if complete, false otherwise
+     */
+    public function isApproved()
+    {
+        return $this->getState("payperiod")->approved;
+    }
+    /**
     * This function gets the dates of the period, and says wheter or not time can 
     * be added to it
     *

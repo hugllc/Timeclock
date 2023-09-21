@@ -95,6 +95,7 @@ class HtmlView extends BaseHtmlView
     */
     protected function addToolbar()
     {
+        $actions = TimeclockHelper::getActions();
         // Get the toolbar object instance
         $toolbar = ToolBar::getInstance();
         ToolbarHelper::title(
@@ -104,6 +105,10 @@ class HtmlView extends BaseHtmlView
             Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_CHECK_DB"),
             Route::_("index.php?option=com_timeclock&view=tools&action=dbcheck")
         );
+        if ($actions->get('core.admin'))
+        {
+            ToolbarHelper::preferences('com_timeclock');
+        }
     }
     /**
     * Adds the toolbar for this view.
@@ -112,6 +117,7 @@ class HtmlView extends BaseHtmlView
     */
     protected function addToolToolbar()
     {
+        $actions = TimeclockHelper::getActions();
         // Get the toolbar object instance
         $toolbar = ToolBar::getInstance();
         ToolbarHelper::title(
@@ -121,6 +127,10 @@ class HtmlView extends BaseHtmlView
             Text::_("JTOOLBAR_BACK"),
             Route::_("index.php?option=com_timeclock&view=tools")
         );
+        if ($actions->get('core.admin'))
+        {
+            ToolbarHelper::preferences('com_timeclock');
+        }
     }
 }
 ?>

@@ -218,6 +218,10 @@ class TimesheetController extends DisplayController
         }
         $model = new AddhoursModel();
         $this->checkMe($model);
+        if ($model->isApproved()) {
+            $date = $app->getInput()->get('date', '');
+            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=timesheet&date='.$date), Text::_('COM_TIMECLOCK_NOT_ALLOWED'), "error");
+        }
         $view = $this->getView("Timesheet", 'html');
         $view->setLayout($layoutName);
         $view->setModel($model, true);
@@ -237,8 +241,14 @@ class TimesheetController extends DisplayController
         $app->getInput() or die("Invalid Token");
         $model = new AddhoursModel();
         $this->checkMe($model);
-
-        if ($index = $model->store()) {
+        if ($model->isApproved()) {
+            $json = new JsonResponse(
+                array(), 
+                Text::_("COM_TIMECLOCK_NOT_ALLOWED"),
+                true,  // Error
+                false    // Ignore Message Queue
+            );
+        } else if ($index = $model->store()) {
             $json = new JsonResponse(
                 get_object_vars($index), 
                 Text::_("COM_TIMECLOCK_HOURS_SAVED"),
