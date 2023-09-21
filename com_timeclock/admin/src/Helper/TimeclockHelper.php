@@ -65,6 +65,8 @@ class TimeclockHelper
     public static $params = null;
     /** This is where we store the user parameters */
     public static $userparams = array();
+    /** This is where we store the user parameters */
+    public static $defaultparams = array();
     /** This is our extension name */
     public static $extension = 'com_timeclock';
     /**
@@ -308,19 +310,21 @@ class TimeclockHelper
      */    
     static public function getParamDefaults()
     {
-        $xml = simplexml_load_file(dirname(dirname(dirname(__FILE__))).'/config.xml');
-        $defaults = array();
-        foreach($xml as $element) {
-            foreach ($element->field as $field) {
-                $att = $field->attributes();
-                $name = trim((string)$att['name']);
-                $value = trim((string)$att['default']);
-                if ((strlen($name) > 0)) {
-                    $defaults[$name] = $value;
+        if (empty(self::$defaultparams)) {
+            $xml = simplexml_load_file(dirname(dirname(dirname(__FILE__))).'/config.xml');
+            self::$defaultparams = array();
+            foreach($xml as $element) {
+                foreach ($element->field as $field) {
+                    $att = $field->attributes();
+                    $name = trim((string)$att['name']);
+                    $value = trim((string)$att['default']);
+                    if ((strlen($name) > 0)) {
+                        self::$defaultparams[$name] = $value;
+                    }
                 }
             }
         }
-        return $defaults;
+        return self::$defaultparams;
     }
     /**
     * gets a component parameter
