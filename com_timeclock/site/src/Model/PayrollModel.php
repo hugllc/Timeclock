@@ -249,16 +249,32 @@ class PayrollModel extends ReportModel
             }
         }
         $return["notes"] = $notes;
+        $return["users"] = $this->_fixUsers($users);
+
+        $this->_checkOvertime($return);
+        return $return;
+    }
+    /**
+     * Fixes the user array so the right number are there, and they are in name order
+     * 
+     * @param object &$users The user array to fix
+     * 
+     * @return void
+     */
+    private function _fixUsers(&$users) 
+    {
+        foreach ($this->listUsers() as $key => $user) {
+            if (!isset($users[(int)$key])) {
+                $users[(int)$key] = $this->getTimesheetUser($key);
+            }
+        }
         uasort(
             $users,
             function ($user1, $user2) {
                 return strcmp($user1->name, $user2->name);
             }
         );
-        $return["users"] = $users;
-
-        $this->_checkOvertime($return);
-        return $return;
+        return $users;
     }
     /**
     * Checks to make sure this project exists
