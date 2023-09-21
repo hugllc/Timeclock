@@ -128,7 +128,7 @@ class TimeclockHelper
         $db->setQuery($query);
         $rows = $db->loadObjectList();
         foreach ($rows as $row) {
-            if ((bool)self::getUserParam("active", $row->id)) {
+            if (Factory::getUser($row->id)->authorise('timeclock', 'com_timeclock')) {
                 $row->params = is_string($row->params) ? json_decode($row->params, true) : $row->params;
                 $ret[$row->id] = $row;
             }
