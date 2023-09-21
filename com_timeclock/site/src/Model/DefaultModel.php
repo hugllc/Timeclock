@@ -289,16 +289,7 @@ class DefaultModel extends BaseDatabaseModel
     */
     public function listUsers($blocked = 0)
     {
-        if (empty($this->_users)) {
-            $this->_users = TimeclockHelper::getUsers($blocked);
-            $me = Factory::getUser()->id;
-            foreach ($this->_users as &$user) {
-                $user->timeclock = TimeclockHelper::getUserParams($user->id);
-                $user->error     = "";
-                $user->me = ($user->id == $me);
-            }
-        }
-        return $this->_users;
+        return TimeclockHelper::getUsers($blocked);
     }
 
 }

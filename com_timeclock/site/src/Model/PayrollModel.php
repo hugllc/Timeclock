@@ -178,7 +178,6 @@ class PayrollModel extends ReportModel
         $query = $this->_buildQuery();
         $query = $this->_buildWhere($query);
         $list = $this->_getList($query);
-        $this->listUsers();
         $worked = array();
         $notes  = array();
         $users  = array();
@@ -291,10 +290,6 @@ class PayrollModel extends ReportModel
         $user->done = DateHelper::compareDates($timesheetDone, $start) >= 0;
         $eend = !empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
 
-        $valid = (DateHelper::compareDates($eend, $this->getState('payperiod.start'))  >= 0);
-        if (($eend != 0) && !$valid) {
-            return false;
-        }
         if (($user->block) && ($eend == 0)) {
             $user->error .= Text::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
         }
