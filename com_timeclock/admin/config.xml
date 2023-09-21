@@ -307,7 +307,7 @@
         description="JCONFIG_PERMISSIONS_DESC"
     >
         <field
-            name="component-rules"
+            name="rules"
             type="rules"
             label="JCONFIG_PERMISSIONS_LABEL"
             class="inputbox"
