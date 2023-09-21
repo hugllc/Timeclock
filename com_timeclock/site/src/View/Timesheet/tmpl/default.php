@@ -28,8 +28,8 @@ use Joomla\CMS\Uri\Uri;
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print Text::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->name);?>
-            <span class="locked hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>"><?php print HTMLHelper::_('image', 'system/checked_out.png', null, null, true); ?></span>
-            <span class="complete">(<?php print Text::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
+            <span class="locked hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>" style="display: none;"><?php print HTMLHelper::_('image', 'system/checked_out.png', null, null, true); ?></span>
+            <span class="complete" style="display: none;">(<?php print Text::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
         </h2>
     </div>
     <?php print $this->_toolbar->render($this->user); ?>
