@@ -1,8 +1,5 @@
 <?php
 
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Component\ComponentHelper;
-
 /**
  * This component is the user interface for the endpoints
  *
@@ -37,9 +34,9 @@ use Joomla\CMS\Component\ComponentHelper;
  * @version    GIT: $Id: a9f8da33aebe613777d9e1b213741dd5d69c73ab $
  * @link       https://dev.hugllc.com/index.php/Project:ComTimeclock
  */
-jimport('joomla.installer.installer');
-jimport('joomla.installer.helper');
-
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 /**
  * Timeclock World Component Controller
  *
@@ -106,39 +103,30 @@ class com_timeclockInstallerScript
     */
     public function postflight($type, $parent)
     {
-        if ($type === "install") {
-            $this->saveDefConfig();
-        }
-    }
+        $defaults = TimeclockHelper::getParamDefaults();
 
-    /**
-    * This saves the default config
-    *
-    * @return null
-    */
-    public function saveDefConfig()
-    {
-        $component = &ComponentHelper::getComponent('com_timeclock');
-        $xml = simplexml_load_file(dirname(__FILE__).'/admin/config.xml');
-        $defaults = array();
-        foreach($xml as $element) {
-            foreach ($element->field as $field) {
-                $att = $field->attributes();
-                $name = trim((string)$att['name']);
-                $value = trim((string)$att['default']);
-                if ((strlen($name) > 0)) {
-                    $defaults[$name] = $value;
-                }
-            }
+        $db = Factory::getDbo();
+        
+        $query = $db->getQuery(true);
+		$query->select('params');
+		$query->from('#__extensions');
+		$query->where('element = "com_timeclock"');
+		$db->setQuery($query);
+		$params_json = $db->loadResult();
+        $params = json_decode($params_json, true) ?? array();
+        
+        if (count($params) < count($defaults))
+        {
+            $newParams = json_encode(array_merge($defaults, $params));
+            
+            $query = $db->getQuery(true);
+            $query->update($db->quoteName('#__extensions'));
+            $query->set($db->quoteName('params') . ' = ' . $db->quote($newParams));
+            $query->where('element = "com_timeclock"'); 
+            $db->setQuery($query);
+            $result = $db->execute();
         }
-        $row = Table::getInstance('extension');
-        if ($row->load($component->id)) {
-            $params = $row->get("params");
-            if (empty($params) || (trim($params) === "{}")) {
-                $row->set('params', json_encode($defaults));
-                $row->store();
-            }
-        }
+
 
     }
 }

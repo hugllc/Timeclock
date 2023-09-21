@@ -294,7 +294,33 @@ class TimeclockHelper
             $component = ComponentHelper::getComponent('com_timeclock');
             self::$params = $component->params;
         }
-        return self::$params->get($param);
+        $ret = self::$params->get($param);
+        if (is_null($ret)) {
+            $def = self::getParamDefaults();
+            $ret = $def[$param];
+        }
+        return $ret;
+    }
+    /**
+     * Gets the default paramters
+     * 
+     * 
+     */    
+    static public function getParamDefaults()
+    {
+        $xml = simplexml_load_file(dirname(dirname(dirname(__FILE__))).'/config.xml');
+        $defaults = array();
+        foreach($xml as $element) {
+            foreach ($element->field as $field) {
+                $att = $field->attributes();
+                $name = trim((string)$att['name']);
+                $value = trim((string)$att['default']);
+                if ((strlen($name) > 0)) {
+                    $defaults[$name] = $value;
+                }
+            }
+        }
+        return $defaults;
     }
     /**
     * gets a component parameter

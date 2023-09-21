@@ -292,7 +292,6 @@ class TimesheetModel extends DefaultModel
 
         $payperiod = new \stdClass();
 
-
         $payperiod->days = $period["days"];
         $payperiod->start = $period["start"];
         $payperiod->end = $period["end"];
