@@ -65,6 +65,9 @@ use Joomla\CMS\Factory;
                     <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
                     </a>
                 </td>
+                <td class="approved <?php print $displayData->approved ? "yes" : "no"; ?>">
+                    <?php print $displayData->approved ? Text::_("JYES") : Jtext::_("JNO"); ?>
+                </td>
                 <td class="hours">
                     <span id="hours-<?php print $user_id; ?>" class="worked <?php print $class;?>"><?php print $worked; ?></span>
                 </td>

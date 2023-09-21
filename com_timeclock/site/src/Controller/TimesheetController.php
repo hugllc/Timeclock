@@ -44,6 +44,7 @@ use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use HUGLLC\Component\Timeclock\Site\Model\TimesheetModel;
 use HUGLLC\Component\Timeclock\Site\Model\AddhoursModel;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\Router\Route;
 
 defined( '_JEXEC' ) or die(); 
 
@@ -92,13 +93,19 @@ class TimesheetController extends DisplayController
     public function execute($task = NULL)
     {
         // This is only needed because the 'registerTask' function calls in the constructor don't seem to do anything.
-        $this->checkAuth();
         if ($task == "apply") {
+            $this->checkAuth();
             return $this->apply();
         } else if ($task == "complete") {
+            $this->checkAuth();
             return $this->complete();
         } else if ($task == "addhours") {
+            $this->checkAuth();
             return $this->addhours();
+        } else if ($task == "approve") {
+            return $this->approve();
+        } else if ($task == "disapprove") {
+            return $this->disapprove();
         }
         return true;
     }
@@ -136,6 +143,60 @@ class TimesheetController extends DisplayController
         echo $json;
         $app->close();
         return true;
+    }
+    /**
+    * This function saves our stuff and returns a json response
+    * 
+    * @return null
+    */
+    protected function approve()
+    {
+        // Get the application
+        $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
+        $this->checkAuth("timeclock.timesheet.approve");
+
+        $date = $app->getInput()->get('date', '');
+        $id = $app->getInput()->get('id', '');
+
+        $model = new TimesheetModel();
+
+        if ($index = $model->approve()) {
+            $model->complete();
+            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVED");
+            $type = "message";
+        } else {
+            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVAL_FAILED");
+            $type = "error";
+        }
+        $this->setRedirect(Route::_('index.php?option=com_timeclock&view=timesheet&date='.$date.'&id='.$id), $msg, $type);
+        return true;
+    }
+    /**
+    * This function saves our stuff and returns a json response
+    * 
+    * @return null
+    */
+    protected function disapprove()
+    {
+        // Get the application
+        $app   = Factory::getApplication();
+        $app->getInput() or die("Invalid Token");
+        $this->checkAuth("timeclock.timesheet.approve");
+
+        $date = $app->getInput()->get('date', '');
+        $id = $app->getInput()->get('id', '');
+
+        $model = new TimesheetModel();
+
+        if ($index = $model->disapprove()) {
+            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_DISAPPROVED");
+            $type = "message";
+        } else {
+            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_DISAPPROVAL_FAILED");
+            $type = "error";
+        }
+        $this->setRedirect(Route::_('index.php?option=com_timeclock&view=timesheet&date='.$date.'&id='.$id), $msg, $type);
         return true;
     }
     /**

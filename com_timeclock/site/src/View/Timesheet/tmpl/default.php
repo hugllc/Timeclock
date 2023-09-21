@@ -29,10 +29,13 @@ use Joomla\CMS\Uri\Uri;
             <a id="timeclocktop"></a>
             <?php print Text::sprintf("COM_TIMECLOCK_TIMESHEET_FOR", $this->user->name);?>
             <span class="locked hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>" style="display: none;"><?php print HTMLHelper::_('image', 'system/checked_out.png', null, null, true); ?></span>
-            <span class="complete" style="display: none;">(<?php print Text::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
+            <span class="complete smaller" style="display: none;">(<?php print Text::_("COM_TIMECLOCK_COMPLETE"); ?>)</span>
+            <?php if ($this->payperiod->approved): ?>
+            <span class="approved smaller">(<?php print Text::_("COM_TIMECLOCK_APPROVED"); ?>)</span>
+            <?php endif; ?>
         </h2>
     </div>
-    <?php print $this->_toolbar->render($this->user); ?>
+    <?php print $this->_toolbar->render((object)array("user" => $this->user, "payperiod" => $this->payperiod)); ?>
     <?php print $this->_nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
@@ -187,6 +190,7 @@ use Joomla\CMS\Uri\Uri;
         Timesheet.volunteer    = <?php print $unpaid; ?>;
         Timeclock.params       = <?php print json_encode($this->params->toArray()); ?>;
         Timeclock.me           = <?php print (int)$this->user->me; ?>;
+        Timeclock.approve      = <?php print (int)(!$this->user->me && Factory::getUser()->authorise("timeclock.timesheet.approve", "com_timeclock")) ?>;
 
     </script>
 </div>

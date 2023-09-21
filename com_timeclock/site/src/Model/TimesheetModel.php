@@ -107,6 +107,36 @@ class TimesheetModel extends DefaultModel
     *
     * @return array An array of results.
     */
+    public function approve()
+    {
+        $start = $this->getState("payperiod")->start;
+        TimeclockHelper::setUserParam("timesheetApproved", $start, $this->_user_id);
+        $set = TimeclockHelper::getUserParam("timesheetApproved", $this->_user_id);
+        if ($start == $set) {
+            return $set;
+        }
+        return false;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
+    public function disapprove()
+    {
+        $prev = $this->getState("payperiod")->prev;
+        TimeclockHelper::setUserParam("timesheetApproved", $prev, $this->_user_id);
+        $set = TimeclockHelper::getUserParam("timesheetApproved", $this->_user_id);
+        if ($prev == $set) {
+            return $set;
+        }
+        return false;
+    }
+    /**
+    * Build query and where for protected _getList function and return a list
+    *
+    * @return array An array of results.
+    */
     public function listItems()
     {
         $query = $this->_buildQuery();
@@ -310,13 +340,18 @@ class TimesheetModel extends DefaultModel
         $usercutoff = isset($user->timeclock["noTimeBefore"]) ? $user->timeclock["noTimeBefore"] : 0;
         $payperiod->usercutoff = $usercutoff;
 
+        $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
+        $payperiod->done = DateHelper::compareDates($timesheetDone, $period["start"]) >= 0;
+        $timesheetApproved = isset($user->timeclock["timesheetApproved"]) ? $user->timeclock["timesheetApproved"] : 0;
+        $payperiod->approved = DateHelper::compareDates($timesheetApproved, $period["start"]) >= 0;
+
         $dates = array_flip($period["dates"]);
         foreach ($dates as $date => &$value) {
             if ($user->me) {
                 $here = DateHelper::checkEmploymentDates($estart, $eend, $date);
                 $valid = (DateHelper::compareDates($date, $cutoff)  >= 0);
                 $uservalid = (DateHelper::compareDates($date, $usercutoff)  >= 0);
-                $value = $here && $valid && $uservalid;
+                $value = $here && $valid && $uservalid && !$payperiod->approved;
             } else {
                 // Reading someone else's timesheet
                 $value = false;
@@ -330,9 +365,6 @@ class TimesheetModel extends DefaultModel
         $subtotals = (int)($len / $split);
         $payperiod->subtotals = $subtotals;
 
-        $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
-        $done = DateHelper::compareDates($timesheetDone, $period["start"]) >= 0;
-        $payperiod->done = $done;
         $this->setState("payperiod", $payperiod);
     }
     /**
