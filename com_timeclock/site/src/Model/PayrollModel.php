@@ -235,6 +235,8 @@ class PayrollModel extends ReportModel
         $start = $this->getState("payperiod.start");
         $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
         $user->done = DateHelper::compareDates($timesheetDone, $start) >= 0;
+        $timesheetApproved = isset($user->timeclock["timesheetApproved"]) ? $user->timeclock["timesheetApproved"] : 0;
+        $user->approved = DateHelper::compareDates($timesheetApproved, $start) >= 0;
         $eend = !empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
 
         if (($user->block) && ($eend == 0)) {

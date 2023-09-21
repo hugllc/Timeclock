@@ -132,14 +132,14 @@ table.timesheet tr.holiday td.holiday {
     background-color: #8defd9;
 }
 
-table.report .employee .complete {
+table.report .employee .complete, table.report .employee .approved {
     text-align: center; 
 }
-table.report .employee .complete.yes {
+table.report .employee .complete.yes, table.report .employee .approved.yes {
     background-color: #bcd996; 
 }
 
-table.report .employee .complete.no {
+table.report .employee .complete.no, table.report .employee .approved.no {
     background-color: #d99696; 
 }
 
@@ -179,6 +179,10 @@ table.report td, table.report th {
     color: black;
     border: 3px solid black;
     padding: .5em;
+}
+
+#timeclock .smaller {
+    font-size: 60%;
 }
 .hidden {
     display: none;

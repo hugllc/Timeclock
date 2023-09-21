@@ -22,7 +22,7 @@ use Joomla\CMS\Language\Text;
     $total = $subtotal + $overtime;
 ?>
             <tr class="header">
-                <th colspan="2">
+                <th colspan="3">
                     <?php print Text::_("COM_TIMECLOCK_TOTAL"); ?>
                 </th>
                 <td id="subtotal-worked" class="subtotal-worked subtotal"><?php print $worked; ?></td>
