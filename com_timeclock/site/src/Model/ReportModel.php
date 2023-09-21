@@ -400,50 +400,6 @@ class ReportModel extends DefaultModel
 
     }
 
-    /**
-    * This creates data for the store.  It should be overwritten by child classes
-    * if they want to store a different set.
-    *
-    * @return Table instance with data in it.
-    */
-    protected function buildStore()
-    {
-        $app = Factory::getApplication();
-        $row = Table::getInstance('TimeclockReports', 'Table');
-        
-        if (!is_object($row)) {
-            return false;
-        }
-        $date     = date("Y-m-d H:i:s");
-        $type     = $this->getState("report.type");
-        $start    = $this->getState("start");
-        $end      = $this->getState("end");
-        $datatype = $this->getState("datatype");
-
-        $name = $app->input->get("report_name", "", "raw");
-        if (empty($name)) {
-            return false;
-        }
-        $row->name        = $name;
-        $row->created_by  = Factory::getUser()->id;
-        $row->created     = $date;
-        $desc             = $app->input->get("report_description", "", "raw");
-        if (!empty($desc)) {
-            $row->description = $desc;
-        }
-        $row->modified    = $date;
-        $row->startDate   = $start;
-        $row->endDate     = $end;
-        $row->type        = $type;
-        $row->datatype    = $datatype;
-        $row->filter      = json_encode($this->getFilter());
-        $row->users       = json_encode($this->listUsers());
-        $row->timesheets  = json_encode($this->listItems());
-        $row->projects    = json_encode($this->listProjects());
-        $row->customers   = json_encode($this->listCustomers());
-        $row->departments = json_encode($this->listDepartments());
-        return $row;
-    }
     
     /**
     * Method to auto-populate the model state.
@@ -486,11 +442,7 @@ class ReportModel extends DefaultModel
         );
         $date = empty($date) ?  date("Y-m-d") : $date;
         $this->setState('date', $date);
-        
-        $this->setState("report.type", $this->type);
-        $report_id = $app->input->get("report_id", 0, "int");
-        $this->setState("report.report_id", $report_id);
-        
+                
         $this->_populateFilter();
         $this->_populateState();
     }

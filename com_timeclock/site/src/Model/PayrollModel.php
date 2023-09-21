@@ -81,59 +81,6 @@ class PayrollModel extends ReportModel
         return $users;
     }
     /**
-    * Checks to see if there is a saved report and returns the ID
-    * 
-    * @param string $type The type of report to look for
-    * @param string $name The name of the report
-    *
-    * @return int The ID of the report
-    */
-    private function _getReportID($type = null, $name = nulll)
-    {
-        $db = Factory::getDBO();
-        $query = $db->getQuery(TRUE);
-        $query->select('*');
-        $query->from('#__timeclock_reports');
-        $query->where($db->quoteName("type")." = ".$db->quote($type));
-        $query->where($db->quoteName("name")." = ".$db->quote($name));
-        $db->setQuery($query);
-        $report = $db->loadObject();
-        return is_object($report) ? (int)$report->report_id : 0;
-    }
-    /**
-    * This creates data for the store.  It should be overwritten by child classes
-    * if they want to store a different set.
-    *
-    * @return Table instance with data in it.
-    */
-    protected function buildStore()
-    {
-        $app = Factory::getApplication();
-        $row = Table::getInstance('TimeclockReports', 'Table');
-        
-        if (!is_object($row)) {
-            return false;
-        }
-        $date  = date("Y-m-d H:i:s");
-        $type  = $this->getState("report.type");
-        $start = $this->getState("start");
-        $end   = $this->getState("end");
-
-        $row->name        = $this->getState("report.name");
-        $row->created_by  = Factory::getUser()->id;
-        $row->created     = $date;
-        $row->description = $this->getState("report.description");
-        $row->modified    = $date;
-        $row->startDate   = $start;
-        $row->endDate     = $end;
-        $row->type        = $type;
-        $row->filter      = json_encode($this->getFilter());
-        $row->users       = json_encode($this->listUsers());
-        $row->projects    = json_encode($this->listProjects());
-        $row->timesheets  = json_encode($this->listItems());
-        return $row;
-    }
-    /**
     * Build query and where for protected _getList function and return a list
     *
     * @return array An array of results.
@@ -362,19 +309,11 @@ class PayrollModel extends ReportModel
 
         $user = Factory::getUser();
 
-        $report_id = $app->input->get("report_id", 0, "int");
-        if (empty($report_id)) {
-            $date = DateHelper::fixDate(
-                $app->input->get('date', date("Y-m-d"), "raw")
-            );
-            $date = empty($date) ?  date("Y-m-d") : $date;
-            $this->setState('date', $date);
-        } else {
-            $this->setState('report.id', $report_id);
-            $rep = $this->getReport($report_id);
-            $date   = $rep->startDate;
-            $this->setState('date', $date);
-        }
+        $date = DateHelper::fixDate(
+            $app->input->get('date', date("Y-m-d"), "raw")
+        );
+        $date = empty($date) ?  date("Y-m-d") : $date;
+        $this->setState('date', $date);
         
         // Get the pay period Dates
         $startTime = TimeclockHelper::getParam("firstPayPeriodStart");
@@ -417,20 +356,6 @@ class PayrollModel extends ReportModel
             $value = true;
         }
         $this->setState('payperiod.dates', $dates);
-
-        if (empty($report_id)) {
-            $type = "payroll";
-            $name = "payroll $start $end";
-            $this->setState('report.name', $name);
-            $this->setState('report.type', $type);
-            $this->setState('report.description', Text::sprintf("COM_TIMECLOCK_PAYROLL_TITLE", $start, $end));
-
-            $report_id = $this->_getReportID(
-                $type, 
-                $name
-            );
-            $this->setState('report.id', $report_id);
-        }
 
         $split = 7;
         $this->setState('payperiod.splitdays', $split);

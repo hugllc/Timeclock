@@ -4,7 +4,6 @@ var Report = {
     empty: true,
     setup: function ()
     {
-        this.setReport(false);
         this.toggleZero();
         this.toggleEmpty();
     },
@@ -31,68 +30,6 @@ var Report = {
             jQuery("#timeclock .nonempty").hide();
             this.empty = true;
         }
-    },
-    setReport: function (live)
-    {
-        if (this.doreports) {
-            if (live) {
-                jQuery("#timeclock .livedata").show();
-                jQuery("#timeclock .reportdata").hide();
-                Timeclock.report = 0;
-            } else {
-                jQuery("#timeclock .livedata").hide();
-                jQuery("#timeclock .reportdata").show();
-                Timeclock.report = 1;
-            }
-        } else {
-            jQuery("#timeclock .noreport").hide();
-            jQuery("#timeclock .reportdata").hide();
-            Timeclock.report = 0;
-        }
-    },
-    livedata: function ()
-    {
-        jQuery('form.report [name="report_id"]').val("");
-        jQuery('form.report').submit();
-    },
-    save: function ()
-    {
-        //SqueezeBox.initialize();
-        var url = "index.php?option=com_timeclock&controller=report&layout=modalsave&tmpl=component";
-        SqueezeBox.open(url, {
-            size: {x: 500, y: 300},
-        });
-        //SqueezeBox.fromElement('div#savereport');
-    },
-    submit: function ()
-    {
-        var self = this;
-        var data = self.formData();
-        data.report_name = jQuery('[name="report_name"]').val();
-        data.report_description = jQuery('[name="report_description"]').val();
-
-        jQuery.ajax({
-            url: 'index.php?option=com_timeclock&task=save&format=json',
-            type: 'POST',
-            data: data,
-            dataType: 'JSON',
-            success: function(ret)
-            {
-                if ( ret.success ){
-                    var report = jQuery('[name="report_id"]');
-                    report.append(jQuery("<option></option>").attr("value", ret.data.report_id).text(ret.data.name));
-                    report.val(ret.data.report_id);
-                    jQuery("form.report").submit();
-                } else {
-                    self.message(ret.message, "error");
-                }
-            },
-            error: function(ret)
-            {
-                self.message("No response from server", "error");
-            }
-        });
-        
     },
     /**
      * This posts a message on the individual project form.

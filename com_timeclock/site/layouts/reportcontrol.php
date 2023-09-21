@@ -10,78 +10,73 @@ use HUGLLC\Component\Timeclock\Administrator\Model\DepartmentsModel;
 use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
 
     defined( '_JEXEC' ) or die( 'Restricted access' );
-    $live    = empty($displayData->report_id);
-    if ($live) {
-        $model = new ProjectsModel();
-        $options = $model->getOptions(
-            array("p.published=1", "p.type = 'CATEGORY'"),
-            "p.name ASC"
-        );
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_CATEGORY'),
-            'filter_category',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->category, true)
-        );
-        $options = array(
-            JHTML::_('select.option', "PROJECT", Text::_("COM_TIMECLOCK_PROJECT")),
-            JHTML::_('select.option', "PTO", Text::_("COM_TIMECLOCK_PTO")),
-            JHTML::_('select.option', "HOLIDAY", Text::_("COM_TIMECLOCK_HOLIDAY")),
-            JHTML::_('select.option', "UNPAID", Text::_("COM_TIMECLOCK_VOLUNTEER")),
-        );
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_PROJECT_TYPE'),
-            'filter_project_type',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->project_type, true)
-        );
+    $model = new ProjectsModel();
+    $options = $model->getOptions(
+        array("p.published=1", "p.type = 'CATEGORY'"),
+        "p.name ASC"
+    );
+    Sidebar::addFilter(
+        Text::_('COM_TIMECLOCK_SELECT_CATEGORY'),
+        'filter_category',
+        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->category, true)
+    );
+    $options = array(
+        JHTML::_('select.option', "PROJECT", Text::_("COM_TIMECLOCK_PROJECT")),
+        JHTML::_('select.option', "PTO", Text::_("COM_TIMECLOCK_PTO")),
+        JHTML::_('select.option', "HOLIDAY", Text::_("COM_TIMECLOCK_HOLIDAY")),
+        JHTML::_('select.option', "UNPAID", Text::_("COM_TIMECLOCK_VOLUNTEER")),
+    );
+    Sidebar::addFilter(
+        Text::_('COM_TIMECLOCK_SELECT_PROJECT_TYPE'),
+        'filter_project_type',
+        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->project_type, true)
+    );
 
-        $model = new DepartmentsModel();
-        $options = $model->getOptions(
-            array("d.published=1"),
-            "d.name ASC"
-        );
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_DEPARTMENT'),
-            'filter_department',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->department, true)
-        );
+    $model = new DepartmentsModel();
+    $options = $model->getOptions(
+        array("d.published=1"),
+        "d.name ASC"
+    );
+    Sidebar::addFilter(
+        Text::_('COM_TIMECLOCK_SELECT_DEPARTMENT'),
+        'filter_department',
+        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->department, true)
+    );
 
-        $model = new CustomersModel();
-        $options = $model->getOptions(
-            array("c.published=1"),
-            "c.company ASC"
-        );
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_CUSTOMER'),
-            'filter_customer',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->customer, true)
-        );
-        $options = ViewHelper::getUsersOptions();
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_USER_MANAGER'),
-            'filter_user_manager_id',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->user_manager_id, true)
-        );
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_PROJECT_MANAGER'),
-            'filter_proj_manager_id',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->proj_manager_id, true)
-        );
-        Sidebar::addFilter(
-            Text::_('COM_TIMECLOCK_SELECT_USER'),
-            'filter_user_id',
-            HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->user_id, true)
-        );
-        $typeoptions = array(
-            JHTML::_('select.option', "hours", Text::_("COM_TIMECLOCK_HOURS")),
-            JHTML::_('select.option', "money", Text::_("COM_TIMECLOCK_MONEY")),
-        );
-
-    }
+    $model = new CustomersModel();
+    $options = $model->getOptions(
+        array("c.published=1"),
+        "c.company ASC"
+    );
+    Sidebar::addFilter(
+        Text::_('COM_TIMECLOCK_SELECT_CUSTOMER'),
+        'filter_customer',
+        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->customer, true)
+    );
+    $options = ViewHelper::getUsersOptions();
+    Sidebar::addFilter(
+        Text::_('COM_TIMECLOCK_SELECT_USER_MANAGER'),
+        'filter_user_manager_id',
+        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->user_manager_id, true)
+    );
+    Sidebar::addFilter(
+        Text::_('COM_TIMECLOCK_SELECT_PROJECT_MANAGER'),
+        'filter_proj_manager_id',
+        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->proj_manager_id, true)
+    );
+    Sidebar::addFilter(
+        Text::_('COM_TIMECLOCK_SELECT_USER'),
+        'filter_user_id',
+        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->user_id, true)
+    );
+    $typeoptions = array(
+        JHTML::_('select.option', "hours", Text::_("COM_TIMECLOCK_HOURS")),
+        JHTML::_('select.option', "money", Text::_("COM_TIMECLOCK_MONEY")),
+    );
 ?>
 <div class="reportcontrol row">
     <div class="row">
         <div class="col-md-5 dates">
-            <?php if ($live) : ?>
             <h4 class="page-header"><?php echo Text::_('COM_TIMECLOCK_REPORT_DATES');?></h4>
             <h5><?php echo Text::_('COM_TIMECLOCK_FROM');?></h5>
             <?php print HTMLHelper::_("calendar", $displayData->start, "start", "startDate", '%Y-%m-%d', array("class" => "small")); ?>
@@ -93,7 +88,6 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
             <?php } ?>
             <hr class="hr-condensed d-md-none" />
             <button type="submit" class="d-md-none">Submit</button>
-            <?php endif; ?>
         </div>
         <div class="col-md-5 filters">
             <h4 class="page-header"><?php echo Text::_('JSEARCH_FILTER_LABEL');?></h4>
@@ -110,11 +104,10 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
         </div>
         <div class="col-md-2 controls">
             <h4 class="page-header"><?php echo Text::_('COM_TIMECLOCK_CONTROLS');?></h4>
-            <button class="reportdata noreport" type="button" onclick="Report.livedata();"><?php print Text::_("COM_TIMECLOCK_LIVE_DATA"); ?></button>
-            <button class="nonzero" type="button" onclick="Report.toggleZero();"><?php print Text::_("COM_TIMECLOCK_SHOW_ZERO"); ?></button>
-            <button class="zero" type="button" onclick="Report.toggleZero();"><?php print Text::_("COM_TIMECLOCK_HIDE_ZERO"); ?></button>
-            <button class="nonempty" type="button" onclick="Report.toggleEmpty();"><?php print Text::_("COM_TIMECLOCK_SHOW_EMPTY"); ?></button>
-            <button class="empty" type="button" onclick="Report.toggleEmpty();"><?php print Text::_("COM_TIMECLOCK_HIDE_EMPTY"); ?></button>
+            <button class="nonzero" type="button" onclick="Report.toggleZero();" style="display: none;"><?php print Text::_("COM_TIMECLOCK_SHOW_ZERO"); ?></button>
+            <button class="zero" type="button" onclick="Report.toggleZero();" style="display: none;"><?php print Text::_("COM_TIMECLOCK_HIDE_ZERO"); ?></button>
+            <button class="nonempty" type="button" onclick="Report.toggleEmpty();" style="display: none;"><?php print Text::_("COM_TIMECLOCK_SHOW_EMPTY"); ?></button>
+            <button class="empty" type="button" onclick="Report.toggleEmpty();" style="display: none;"><?php print Text::_("COM_TIMECLOCK_HIDE_EMPTY"); ?></button>
             <hr class="hr-condensed d-md-none" />
         </div>
     </div>
