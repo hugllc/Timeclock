@@ -38,6 +38,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\HTML\HTMLHelper;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 defined('_JEXEC') or die();
 
@@ -74,7 +75,7 @@ class TimeclockPTOCarryOverField extends FormField
             'title' => $this->element["title"],
         );
         $ret = array();
-        $startDate = new Date(TimeclockHelpersTimeclock::getUserParam("startDate", $id), "UTC");
+        $startDate = new Date(TimeclockHelper::getUserParam("startDate", $id), "UTC");
         $end = (int)$startDate->year;
         if (empty($end)) {
             $end = (int)date("Y");
@@ -88,7 +89,7 @@ class TimeclockPTOCarryOverField extends FormField
             $labeltext = Text::sprintf($this->element['label'], $year);
             $labeltitle = htmlspecialchars(trim($labeltext, ":")."::".Text::_($this->description), ENT_COMPAT, 'UTF-8');
             if (empty($value["expires"])) {
-                $expire = TimeclockHelpersTimeclock::getParam("ptoCarryOverDefExpire");
+                $expire = TimeclockHelper::getParam("ptoCarryOverDefExpire");
                 $value["expires"] = (empty($expire)) ? $year."-3-31" : $year."-".$expire;
             }
             $value["amount"] = isset($value["amount"]) ? $value["amount"] : 0.0;
