@@ -78,7 +78,6 @@ class ReportController extends DisplayController
         $this->checkAuth();
         $task = $this->getTask();
         $fct  = "task".ucfirst($task);
-        $this->checkReportID();
         
         if (method_exists($this, $fct)) {
             return $this->$fct();

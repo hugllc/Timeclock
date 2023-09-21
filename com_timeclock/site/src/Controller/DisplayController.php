@@ -92,11 +92,15 @@ class DisplayController extends BaseController
     *
     * @return null
     */
-    public function checkAuth()
+    public function checkAuth($type = NULL)
     {
-        if (!$this->authorize()) {
+        if ($type) {
+            $auth = (bool)TimeclockHelper::getActions()->get($type);
+        } else {
+            $auth = $this->authorize();
+        } 
+        if (!$auth) {
             throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
-            // $this->setRedirect('index.php', Text::_('JGLOBAL_AUTH_ACCESS_DENIED'), "error");
         }
         return true;
     }

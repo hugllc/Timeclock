@@ -76,7 +76,12 @@ class PayrollController extends ReportController
         } else if ($task == "unlock") {
             return $this->taskUnlock();
         }
-        return parent::execute($task);
+        $date = Factory::getApplication()->getInput()->get('date', '');
+        if ($date) {
+            $date = "&date=".$date;
+        }
+        $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll'.$date));
+        return false;
     }
     /**
     * This is the main function that executes everything.
@@ -97,8 +102,9 @@ class PayrollController extends ReportController
         // Get the application
         $app   = Factory::getApplication();
         $app->getInput() or die("Invalid Token");
+        $this->checkAuth("timeclock.payroll.lock");
 
-        $date = $app->getInput()->get('date');
+        $date = $app->getInput()->get('date', '');
         $model = new PayrollModel();
         $model->setAccrual();
 
@@ -119,7 +125,8 @@ class PayrollController extends ReportController
         // Get the application
         $app   = Factory::getApplication();
         $app->getInput() or die("Invalid Token");
-        $date = $app->getInput()->get('date');
+        $this->checkAuth("timeclock.payroll.lock");
+        $date = $app->getInput()->get('date', '');
 
         $model = new PayrollModel();
 
