@@ -1,2 +1,2 @@
 # This is automatically created.  Do not EDIT.
-PACKAGE_VERSION := 0.9.9
+PACKAGE_VERSION := 0.9.10
