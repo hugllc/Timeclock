@@ -78,6 +78,15 @@ class PayrollController extends ReportController
         return parent::execute($task);
     }
     /**
+    * This is the main function that executes everything.
+    *
+    * @return bool
+    */
+    public function authorize()
+    {
+        return TimeclockHelper::getActions()->get("timeclock.payroll");
+    }
+    /**
     * This function saves our stuff and returns a json response
     * 
     * @return null

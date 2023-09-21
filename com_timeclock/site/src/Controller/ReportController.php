@@ -45,7 +45,7 @@ use HUGLLC\Component\Timeclock\Site\Controller\DisplayController;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use HUGLLC\Component\Timeclock\Administrator\Table\ReportTable;
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die(); 
 
 /**
  * Description Here
@@ -86,53 +86,13 @@ class ReportController extends DisplayController
         return parent::execute($task);
     }
     /**
-    * This function checks to see if we are loading a specific report.  If we are,
-    * it checks to see what controller is involved, and redirects accordingly.
-    * function.
-    *
-    * @access public
-    * @return boolean
-    */
-    protected function checkReportID()
-    {
-        /*
-        $viewFormat = strtolower(Factory::getDocument()->getType());
-        if ($viewFormat == "html") {
-            return;
-        }
-        $app = Factory::getApplication();
-        $report_id = $app->input->get("report_id", null, "int");
-        if (empty($report_id)) {
-            return;
-        }
-
-        $report = Table::getInstance('TimeclockReports', 'Table');
-        $report->load($report_id);
-        if (!empty($report->type) && ($report->type != "report")) {
-            $inline = $app->input->get("inline", 0, int);
-            $app->redirect(
-                Route::_("index.php?option=com_timeclock&controller=".$report->type."&task=display&report_id=".$report_id."&format=".$viewFormat."&inline=".$inline)
-            );
-        }
-        */
-    }
-    /**
     * This is the main function that executes everything.
     *
     * @return bool
     */
     public function authorize()
     {
-        $user = Factory::getUser();
-        if ($user->get('guest')) {
-            return false;
-        }
-        $active = TimeclockHelper::getUserParam("active", $user->id);
-        if ($active) {
-            $reports = TimeclockHelper::getUserParam("reports", $user->id);
-            return (bool)$reports;
-        }
-        return false;
+        return TimeclockHelper::getActions()->get("timeclock.reports");
     }
 
 }

@@ -213,19 +213,6 @@ class TimesheetController extends DisplayController
     */
     public function authorize()
     {
-        $user = Factory::getUser();
-        if ($user->get('guest')) {
-            return false;
-        }
-        $active = TimeclockHelper::getUserParam("active", $user->id);
-        if ($active) {
-            $app = Factory::getApplication();
-            if (is_null($app->input->get("id", null, "int"))) {
-                return true;
-            }
-            $reports = TimeclockHelper::getUserParam("reports", $user->id);
-            return (bool)$reports;
-        }
-        return false;
+        return TimeclockHelper::getActions()->get("timeclock.timesheet");
     }
 }

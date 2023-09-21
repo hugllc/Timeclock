@@ -39,6 +39,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 \defined( '_JEXEC' ) or die;
 
@@ -77,6 +78,7 @@ class DisplayController extends BaseController
      */
     public function display($cachable = false, $urlparams = [])
     {
+        $this->checkAuth();
         $view = $this->input->get('view', NULL);
         $controller = $this->input->get('controller', NULL);
         if (is_null($view) && is_null($controller)) {
@@ -92,11 +94,30 @@ class DisplayController extends BaseController
     */
     public function checkAuth()
     {
-        $app = Factory::getApplication();
         if (!$this->authorize()) {
-            $app->redirect('index.php',Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+            throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+            // $this->setRedirect('index.php', Text::_('JGLOBAL_AUTH_ACCESS_DENIED'), "error");
         }
         return true;
+    }
+    /**
+    * This is the main function that executes everything.
+    *
+    * @return bool
+    */
+    public function authorize()
+    {
+        $actions = TimeclockHelper::getActions();
+        if ($actions->get('timeclock')) {
+            $view = $this->input->get('view', NULL);
+            $act = "timeclock.".$view;
+            $ret = $actions->get($act);
+            if (is_null($ret)) {
+                $ret = $actions->get('timeclock.reports');
+            }
+            return $ret;
+        }
+        return false;
     }
 
 }

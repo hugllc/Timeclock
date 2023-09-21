@@ -41,6 +41,8 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
+use Joomla\CMS\Language\Text;
 
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
@@ -65,6 +67,7 @@ class HtmlView extends BaseHtmlView
     */
     function display($tpl = NULL)
     {
+
         $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $app = Factory::getApplication();
         $layout = $this->getLayout();
@@ -72,6 +75,12 @@ class HtmlView extends BaseHtmlView
         $this->params    = ComponentHelper::getParams('com_timeclock');
         $this->payperiod = $this->getModel()->getState('payperiod');
         $this->payperiod->view = "timesheet";
+        $this->actions   = TimeclockHelper::getActions();
+        $this->user      = $this->getModel()->getUser();
+
+        if (!$this->user->me && !$this->actions->get('timeclock.timesheet.others')) {
+            throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+        }
 
         HTMLHelper::stylesheet(
             Uri::base().'components/com_timeclock/css/timeclock.css', 
@@ -104,7 +113,6 @@ class HtmlView extends BaseHtmlView
 
         $this->data      = $this->getModel()->listItems();
         $this->projects  = $this->getModel()->listProjects();
-        $this->user      = $this->getModel()->getUser();
 
         return parent::display($tpl);
     }
@@ -115,6 +123,9 @@ class HtmlView extends BaseHtmlView
     */
     function renderAddhours($tpl)
     {
+        if (!$this->user->me) {
+            throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+        }
         $this->_entry    = new FileLayout('entry', __DIR__.'/layouts');
 
         $this->data      = $this->getModel()->listItems();

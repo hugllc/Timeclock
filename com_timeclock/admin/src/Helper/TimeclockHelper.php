@@ -67,6 +67,8 @@ class TimeclockHelper
     public static $userparams = array();
     /** This is where we store the user parameters */
     public static $defaultparams = array();
+    /** This is where we store the user parameters */
+    public static $actions = NULL;
     /** This is our extension name */
     public static $extension = 'com_timeclock';
     /**
@@ -76,15 +78,9 @@ class TimeclockHelper
     */
     public static function getActions()
     {
-        $user   = Factory::getUser();
-        $result = new CMSObject;
         $assetName = 'com_timeclock';
         $level = 'component';
-        $actions = ContentHelper::getActions('com_timeclock', $level);
-        foreach ($actions as $key => $action) {
-            $result->set($key, $user->authorise($key, $assetName));
-        }
-        return $result;
+        return ContentHelper::getActions($assetName, $level);
     }
     /**
     * This returns the actions that we could take.
