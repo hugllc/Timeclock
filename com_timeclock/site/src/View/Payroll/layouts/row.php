@@ -28,6 +28,7 @@ use Joomla\CMS\Layout\FileLayout;
             $overtime += $data->overtime;
         }
     }
+    $overtimeclass = ($overtime > 0) ? "highlight" : "";
     $total = $subtotal + $overtime;
     $timesheeturl = Route::_('index.php?&option=com_timeclock&view=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
     if (!empty($displayData->error)) {
@@ -77,7 +78,7 @@ use Joomla\CMS\Layout\FileLayout;
                 <td class="subtotal">
                     <span id="subtotal-<?php print $user_id; ?>" class="subtotal-<?php print $user_id; ?>"><?php print $subtotal; ?></span>
                 </td>
-                <td class="overtime">
+                <td class="overtime <?php print $overtimeclass; ?>">
                     <span id="overtime-<?php print $user_id; ?>" class="overtime overtime-<?php print $user_id; ?>"><?php print $overtime; ?></span>
                 </td>
                 <td class="total">

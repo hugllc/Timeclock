@@ -1,8 +1,18 @@
-<?php use Joomla\CMS\Language\Text; ?>
+<?php 
+use Joomla\CMS\Language\Text; 
+$url = 'index.php?option=com_timeclock&controller=payroll&date='.$displayData->payperiod->start;
+?>
 
 <div class="toolbar" style="clear: both;">
-    <button class="pull-right notlocked" type="button" onclick="Payroll.lock();" style="display: none;"><?php print Text::_("COM_TIMECLOCK_LOCK_PAYPERIOD"); ?></button>
-    <button class="pull-right unlock locked" type="button" onclick="Payroll.unlock();" style="display: none;"><?php print Text::_("COM_TIMECLOCK_UNLOCK_PAYPERIOD"); ?></button>
-    <button class="pull-left livedata noreport" type="button" onclick="Payroll.setReport(false);" style="display: none;"><?php print Text::_("COM_TIMECLOCK_SAVED_DATA"); ?></button>
-    <button class="pull-left reportdata noreport" type="button" onclick="Payroll.setReport(true);" style="display: none;"><?php print Text::_("COM_TIMECLOCK_LIVE_DATA"); ?></button>
+    <?php if ($displayData->actions->get('timeclock.payroll.lock')): ?>
+        <?php if ($displayData->payperiod->locked): ?>
+            <button class="pull-right unlock locked" type="button" onclick="window.location.href='<?php echo $url."&task=unlock" ?>';">
+                <?php print Text::_("COM_TIMECLOCK_UNLOCK_PAYPERIOD"); ?>
+            </button>
+        <?php else: ?>
+            <button class="pull-right notlocked" type="button" onclick="window.location.href='<?php echo $url."&task=lock" ?>';">
+                <?php print Text::_("COM_TIMECLOCK_LOCK_PAYPERIOD"); ?>
+            </button>
+        <?php endif; ?>
+    <?php endif; ?>
 </div>

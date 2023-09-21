@@ -40,6 +40,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Pagination\Pagination;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
+use HUGLLC\Component\Timeclock\Site\Helper\DateHelper;
 
 defined( '_JEXEC' ) or die();
 
@@ -314,7 +315,7 @@ trait PtoDBTrait
     {
         $id     = empty($id) ? Factory::getUser()->id : (int)$id;
         $period = trim(TimeclockHelper::getParam("ptoAccrualPeriod"));
-        $days   = TimeclockHelpersDate::days($start, $end);
+        $days   = DateHelper::days($start, $end);
         $ret    = true;
         for ($d = 0; $d < $days;) {
             if (strtolower($period) == "month") {
@@ -329,7 +330,7 @@ trait PtoDBTrait
                 $ret = $ret && $this->_setAccrualPayperiod($start, $id);
             }
             // The 8th day is the first day of the next week.
-            $start = TimeclockHelpersDate::end($start, $len + 1);
+            $start = DateHelper::end($start, $len + 1);
             // Increment the days by $len.
             $d += $len;
             if (($days < $d + $len) || ($len <= 0)) {
@@ -349,7 +350,7 @@ trait PtoDBTrait
     */
     private function _setAccrualWeek($start, $id)
     {
-        $end = TimeclockHelpersDate::end($start, 7);
+        $end = DateHelper::end($start, 7);
         $hours  = $this->calcAccrual($start, $end, $id);
         $return = $this->_storeAccrual($end, $hours, $id);
         return $return;
@@ -367,7 +368,7 @@ trait PtoDBTrait
     {
         $startTime = TimeclockHelper::getParam("firstPayPeriodStart");
         $len = TimeclockHelper::getParam("payPeriodLengthFixed");
-        $period = TimeclockHelpersDate::fixedPayPeriod($startTime, $start, $len);
+        $period = DateHelper::fixedPayPeriod($startTime, $start, $len);
         $hours  = $this->calcAccrual($period["start"], $period["end"], $id);
         $return = $this->_storeAccrual($period["next"], $hours, $id);
         return $return;
@@ -389,7 +390,7 @@ trait PtoDBTrait
         }
         
         $row = new stdClass();
-        $d = TimeclockHelpersDate::explodeDate($date);
+        $d = DateHelper::explodeDate($date);
         if (!is_object($row)) {
             return false;
         }
@@ -422,7 +423,7 @@ trait PtoDBTrait
         $hours  = 0;
         if ($rate > 0) {
             $rate  *= (float)TimeclockHelper::getParam("ptoHoursPerDay");
-            $d = TimeclockHelpersDate::explodeDate($end);
+            $d = DateHelper::explodeDate($end);
             $year   = (int)$d["y"];
             $ytd    = $this->getAccrual("$year-01-01", "$year-12-31", $id);
             $status = TimeclockHelper::getUserParam('status', $id);

@@ -6,9 +6,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-    HtmlHelper::script(Uri::base()."components/com_timeclock/js/report.js");
-    HtmlHelper::script(Uri::base()."components/com_timeclock/src/View/Payroll/tmpl/payroll.js");
-    HtmlHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
     $cols = ($this->payperiod->subtotals * 4) + 3;
     $this->payperiod->cols = $cols;
 
@@ -25,12 +22,17 @@ use Joomla\CMS\Uri\Uri;
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
             <?php print Text::_("COM_TIMECLOCK_PAYROLL"); ?>
-            <span class="locked hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>" style="display: none;"><?php print HTMLHelper::_('image', 'system/checked_out.png', null, null, true); ?></span>
-            <span class="livedata noreport" style="display: none;">(<?php print Text::_("COM_TIMECLOCK_LIVE_DATA"); ?>)</span>
-            <span class="reportdata noreport" style="display: none;">(<?php print Text::_("COM_TIMECLOCK_SAVED_DATA"); ?>)</span>
+            <?php if ($this->payperiod->locked): ?>
+                <span class="locked hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"); ?>"><?php print HTMLHelper::_('image', 'system/checked_out.png', null, null, true); ?></span>
+            <?php endif; ?>
         </h2>
     </div>
-    <?php print $this->_toolbar->render($this->payperiod); ?>
+    <?php print $this->_toolbar->render((object)array(
+        "payperiod" => $this->payperiod,
+        "actions" => $this->actions,
+
+    )); 
+    ?>
     <?php print $this->_nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
@@ -83,25 +85,6 @@ use Joomla\CMS\Uri\Uri;
     <input type="hidden" name="view" value="payroll" />
     <?php print HTMLHelper::_("form.token"); ?>
 </form>
-<script type="text/JavaScript">
-    jQuery( document ).ready(function() {
-        Payroll.setup();
-    });
-    Report.filter    = { start: "<?php print $this->payperiod->start; ?>" };
-    Report.projects  = <?php print json_encode($this->projects); ?>;
-    Report.data      = <?php print json_encode($this->data); ?>;
-    Report.doreports = <?php print (int)$doreports; ?>;
-    Payroll.subtotalcols = <?php print $this->payperiod->subtotals; ?>;
-    Payroll.dates        = <?php print json_encode(array_keys($this->payperiod->dates)); ?>;
-    Payroll.projects     = <?php print json_encode($this->projects); ?>;
-    Payroll.payperiod    = <?php print json_encode($this->payperiod); ?>;
-    Payroll.data         = <?php print json_encode($this->data); ?>;
-    Payroll.doreports = <?php print (int)$doreports; ?>;
-    Timeclock.params     = <?php print json_encode($this->params); ?>;
-    Timeclock.report     = 0;
-    
-
-</script>
 <?php 
     /*
     foreach ($this->users as $user_id => $user) {

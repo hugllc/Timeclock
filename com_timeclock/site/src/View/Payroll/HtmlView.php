@@ -41,6 +41,7 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 /** Check to make sure we are under Joomla */
 defined('_JEXEC') or die();
@@ -92,6 +93,7 @@ class HtmlView extends BaseHtmlView
             "CSV" => "csv",
             "Excel" => "xlsx",
         );
+        $this->actions   = TimeclockHelper::getActions();
 
         return parent::display($tpl);
     }

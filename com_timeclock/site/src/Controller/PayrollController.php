@@ -43,6 +43,7 @@ use Joomla\CMS\Factory;
 use HUGLLC\Component\Timeclock\Site\Controller\ReportController;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use HUGLLC\Component\Timeclock\Site\Model\PayrollModel;
+use Joomla\CMS\Router\Route;
 
 \defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
@@ -97,28 +98,15 @@ class PayrollController extends ReportController
         $app   = Factory::getApplication();
         $app->getInput() or die("Invalid Token");
 
+        $date = $app->getInput()->get('date');
         $model = new PayrollModel();
+        $model->setAccrual();
 
-        if ($index = $model->lock()) {
-            $json = new JsonResponse(
-                $index, 
-                Text::_("COM_TIMECLOCK_PAYPERIOD_LOCKED"),
-                false,  // Error
-                false    // Ignore Message Queue
-            );
+        if ($model->lock()) {
+            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Lock Succeeded");
         } else {
-            $json = new JsonResponse(
-                array(), 
-                Text::_("COM_TIMECLOCK_PAYPERIOD_LOCK_FAILED"),
-                true,    // Error
-                false     // Ignore Message Queue
-            );
+            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Lock Failed", 'error');
         }
-        Factory::getDocument()->setMimeEncoding( 'application/json' );
-        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
-        echo $json;
-        $app->close();
-        $this->model->setAccrual();
         return true;
     }
     /**
@@ -131,28 +119,15 @@ class PayrollController extends ReportController
         // Get the application
         $app   = Factory::getApplication();
         $app->getInput() or die("Invalid Token");
+        $date = $app->getInput()->get('date');
 
         $model = new PayrollModel();
 
-        if ($index = $model->unlock()) {
-            $json = new JsonResponse(
-                $index, 
-                Text::_("COM_TIMECLOCK_PAYPERIOD_UNLOCKED"),
-                false,  // Error
-                false    // Ignore Message Queue
-            );
+        if ($model->unlock()) {
+            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Unlock Succeeded");
         } else {
-            $json = new JsonResponse(
-                array(), 
-                Text::_("COM_TIMECLOCK_PAYPERIOD_UNLOCK_FAILED"),
-                true,    // Error
-                false     // Ignore Message Queue
-            );
+            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Unlock Failed", 'error');
         }
-        Factory::getDocument()->setMimeEncoding( 'application/json' );
-        $app->setHeader('Content-Disposition','inline;filename="apply.json"');
-        echo $json;
-        $app->close();
         return true;
     }
     /**
