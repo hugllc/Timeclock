@@ -40,6 +40,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use HUGLLC\Component\Timeclock\Site\Model\TimesheetModel;
 use HUGLLC\Component\Timeclock\Administrator\Table\TimesheetTable;
+use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -115,10 +116,10 @@ class AddhoursModel extends TimesheetModel
             $key = $row->getKeyName();
             $this->id = array($row->$key);
         }
-        if ($this->getState("payperiod.done")) {
+        if ($this->getState("payperiod")->done) {
             // This clears the complete flag
-            $prev = $this->getState("payperiod.prev");
-            TimeclockHelpersTimeclock::setUserParam("timesheetDone", $prev);
+            $prev = $this->getState("payperiod")->prev;
+            TimeclockHelper::setUserParam("timesheetDone", $prev);
         }
         return $row;
 
