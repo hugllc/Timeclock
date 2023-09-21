@@ -87,7 +87,8 @@ class HtmlView extends BaseHtmlView
         $this->_notes    = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
         $this->data     = $this->getModel()->listItems();
-        $this->users    = $this->getModel()->listUsers();
+        $this->users    = $this->data["users"];
+
         $this->projects = $this->getModel()->listProjects();
         $this->export   = array(
             "CSV" => "csv",

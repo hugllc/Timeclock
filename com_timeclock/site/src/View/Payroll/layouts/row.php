@@ -4,10 +4,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
-
+use Joomla\CMS\Factory;
 
     $notes    = new FileLayout('notes', dirname(dirname(__DIR__)).'/layouts');
-
 
     defined('_JEXEC') or die(); 
     $user_id = $displayData->id;
@@ -54,7 +53,7 @@ use Joomla\CMS\Layout\FileLayout;
     $modalParams['closeButton'] = true;
 
 ?>
-            <tr class="employee <?php print $displayData->rowClass." ".$errorClass; ?>"<?php print $errorTooltip; ?>>
+            <tr class="employee <?php print $errorClass; ?>"<?php print $errorTooltip; ?>>
                 <td>
                     <?php echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams, $body); ?>
                     <div>

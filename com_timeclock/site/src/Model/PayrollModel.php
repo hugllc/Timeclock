@@ -81,30 +81,6 @@ class PayrollModel extends ReportModel
         return $users;
     }
     /**
-    * Checks the user record, and adds anything extra needed
-    *
-    * @param object &$user The user object to check
-    * 
-    * @return array An array of results.
-    */
-    public function checkUser(&$user)
-    {
-        $start = $this->getState("payperiod.start");
-        $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
-        $user->done = DateHelper::compareDates($timesheetDone, $start) >= 0;
-        $eend = !empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
-
-        $valid = (DateHelper::compareDates($eend, $this->getState('payperiod.start'))  >= 0);
-        if (($eend != 0) && !$valid) {
-            return false;
-        }
-        if (($user->block) && ($eend == 0)) {
-            $user->error .= Text::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
-        }
-
-        return true;
-    }
-    /**
     * Checks to see if there is a saved report and returns the ID
     * 
     * @param string $type The type of report to look for
@@ -205,6 +181,7 @@ class PayrollModel extends ReportModel
         $this->listUsers();
         $worked = array();
         $notes  = array();
+        $users  = array();
         foreach ($list as $row) {
             $worked[$row->worked][] = $row;
         }
@@ -240,7 +217,6 @@ class PayrollModel extends ReportModel
                     );
                 }
                 $this->checkTimesheet($row);
-                $this->checkTimesheetUser($row);
                 // Hours could get modified by the above two calls, so this is here.
                 if ($row->hours == 0) {
                     continue;
@@ -267,12 +243,49 @@ class PayrollModel extends ReportModel
                     "worked" => array(),
                 );
                 $notes[$user_id][$row->project_id]["worked"][$row->worked] = $row;
+                if (!$users[$user_id]) {
+                    $users[$user_id] = $this->getTimesheetUser($user_id);
+                }
             }
         }
         $return["notes"] = $notes;
+        uasort(
+            $users,
+            function ($user1, $user2) {
+                return strcmp($user1->name, $user2->name);
+            }
+        );
+        $return["users"] = $users;
+
         $this->_checkOvertime($return);
         return $return;
     }
+    /**
+    * Checks to make sure this project exists
+    *
+    * @param object &$row The row to check
+    * 
+    * @return array An array of results.
+    */
+    protected function getTimesheetUser($id = NULL)
+    {
+        $user = $this->getUser($id);
+        $start = $this->getState("payperiod.start");
+        $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
+        $user->done = DateHelper::compareDates($timesheetDone, $start) >= 0;
+        $eend = !empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
+
+        $valid = (DateHelper::compareDates($eend, $this->getState('payperiod.start'))  >= 0);
+        if (($eend != 0) && !$valid) {
+            return false;
+        }
+        if (($user->block) && ($eend == 0)) {
+            $user->error .= Text::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
+        }
+        return $user;
+    }
+
+
     /**
     * This checks for overtime and sets the overtime field if there is any
     *
@@ -283,8 +296,7 @@ class PayrollModel extends ReportModel
     private function _checkOvertime(&$data)
     {
         $fulltime = $this->getState("payperiod.fulltimeHours");
-        $users = $this->listUsers();
-        foreach ($users as $user_id => &$user) {
+        foreach ($data["users"] as $user_id => &$user) {
             if (!isset($data[$user_id])) {
                 continue;
             }
@@ -315,27 +327,6 @@ class PayrollModel extends ReportModel
                 $data["totals"][$period]->subtotal += $wk->subtotal;
             }
             $data["totals"]["total"]           += $wk->subtotal;
-        }
-    }
-    /**
-    * Checks to make sure this project exists
-    *
-    * @param object &$row The row to check
-    * 
-    * @return array An array of results.
-    */
-    protected function checkTimesheetUser(&$row)
-    {
-        $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
-        $users = $this->_users;
-        // This adds in projects and categories that the user has time in,
-        // but isn't currently a member.
-        if (($row->hours > 0) && !isset($users[$user_id])) {
-            $users[$user_id] = (object)array(
-                "user_id" => $user_id,
-                "name" => empty($row->user) ? "User $user_id" : $row->user,
-                "done" => false,
-            );
         }
     }
     /**

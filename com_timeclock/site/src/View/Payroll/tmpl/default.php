@@ -62,7 +62,6 @@ use Joomla\CMS\Uri\Uri;
         (object)array(
             "payperiod" => $this->payperiod, 
             "totals" => $this->data["totals"], 
-            "rowClass" => "livedata"
         )
     ); 
 ?>
@@ -72,7 +71,6 @@ use Joomla\CMS\Uri\Uri;
     foreach ($this->users as $user_id => $user) {
         $user->payperiod = $this->payperiod;
         $user->data = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
-        $user->rowClass = "livedata";
         $user->notes = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
         print $this->_row->render($user);
     }
