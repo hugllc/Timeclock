@@ -102,6 +102,7 @@ class TimesheetModel extends DefaultModel
             $this->logComplete();
             return $set;
         }
+        $this->logComplete(false, "Save Failed");
         return false;
     }
     /**
@@ -118,6 +119,7 @@ class TimesheetModel extends DefaultModel
             $this->logApprove();
             return $set;
         }
+        $this->logApprove(false, "Save Failed");
         return false;
     }
     /**
@@ -134,14 +136,17 @@ class TimesheetModel extends DefaultModel
             $this->logDisapprove();
             return $set;
         }
+        $this->logDisapprove(false, "Save Failed");
         return false;
     }
-    protected function logComplete()
+    public function logComplete($success = true, $msg = "")
     {
         $by = Factory::getUser();
         $start = $this->getState('payperiod')->start;
         $message = [
             'action'      => 'complete',
+            'status'      => $success ? 'success' : 'failure',
+            'message'     => $msg,
             'userid'      => $by->id,
             'username'    => $by->username,
             'userlink' => 'index.php?option=com_users&task=user.edit&id=' . $by->id,
@@ -154,7 +159,7 @@ class TimesheetModel extends DefaultModel
 
     }
 
-    protected function logApprove()
+    public function logApprove($success = true, $msg = "")
     {
         $user_id = Factory::getApplication()->getInput()->getInt("id", 0);
         $by = Factory::getUser();
@@ -162,6 +167,8 @@ class TimesheetModel extends DefaultModel
         $start = $this->getState('payperiod')->start;
         $message = [
             'action'      => 'approve',
+            'status'      => $success ? 'success' : 'failure',
+            'message'     => $msg,
             'forid'       => $for->id,
             'forname'     => $for->username,
             'forlink'     => 'index.php?option=com_users&task=user.edit&id=' . $for->id,
@@ -176,7 +183,7 @@ class TimesheetModel extends DefaultModel
         TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_APPROVE', 'approve', $by->id);
 
     }
-    protected function logDisapprove()
+    public function logDisapprove($success = true, $msg = "")
     {
         $user_id = Factory::getApplication()->getInput()->getInt("id", 0);
         $by = Factory::getUser();
@@ -184,6 +191,8 @@ class TimesheetModel extends DefaultModel
         $start = $this->getState('payperiod')->start;
         $message = [
             'action'      => 'disapprove',
+            'status'      => $success ? 'success' : 'failure',
+            'message'     => $msg,
             'forid'       => $for->id,
             'forname'     => $for->username,
             'forlink'     => 'index.php?option=com_users&task=user.edit&id=' . $for->id,
