@@ -165,13 +165,17 @@ class TimesheetController extends DisplayController
             $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVAL_FAILED_LOCKED");
             $type = "error";
             $model->logApprove(false, $msg);
-        } else if ($model->approve()) {
-            $model->complete();
-            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVED");
-            $type = "message";
         } else {
-            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVAL_FAILED");
-            $type = "error";
+            if (!$model->getState("payperiod")->complete) {
+                $model->complete();
+            }
+            if ($model->approve()) {
+                $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVED");
+                $type = "message";
+            } else {
+                $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVAL_FAILED");
+                $type = "error";
+            }
         }
         $this->setRedirect(Route::_('index.php?option=com_timeclock&view=timesheet&date='.$date.'&id='.$id), $msg, $type);
         return true;

@@ -139,58 +139,66 @@ class TimesheetModel extends DefaultModel
         $this->logDisapprove(false, "Save Failed");
         return false;
     }
+    /**
+     * Logs the complete time sheet
+     * 
+     * @param bool   $success True if successful, false otherwise
+     * @param string $msg     A message to attach
+     * 
+     * @return Void
+     */
     public function logComplete($success = true, $msg = "")
     {
-        $by = Factory::getUser();
-        $start = $this->getState('payperiod')->start;
-        $message = [
-            'action'      => 'complete',
-            'status'      => $success ? 'success' : 'failure',
-            'message'     => $msg,
-            'userid'      => $by->id,
-            'username'    => $by->username,
-            'userlink' => 'index.php?option=com_users&task=user.edit&id=' . $by->id,
-            'timesheetlink' => Route::link('site', 'index.php?option=com_timeclock&view=timesheet&date='.$start.'&id=' . $by->id),
-            'payrolllink' => Route::link('site', 'index.php?option=com_timeclock&view=payroll&date='.$start),
-            'payperiodstart' => $start,
-        ];
-
+        $message = $this->logMessage('complete', $success, $msg);
         TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_COMPLETE', 'complete', $by->id);
 
     }
 
+    /**
+     * Logs the complete time sheet
+     * 
+     * @param bool   $success True if successful, false otherwise
+     * @param string $msg     A message to attach
+     * 
+     * @return Void
+     */
     public function logApprove($success = true, $msg = "")
     {
-        $user_id = Factory::getApplication()->getInput()->getInt("id", 0);
-        $by = Factory::getUser();
-        $for = Factory::getUser($user_id);
-        $start = $this->getState('payperiod')->start;
-        $message = [
-            'action'      => 'approve',
-            'status'      => $success ? 'success' : 'failure',
-            'message'     => $msg,
-            'forid'       => $for->id,
-            'forname'     => $for->username,
-            'forlink'     => 'index.php?option=com_users&task=user.edit&id=' . $for->id,
-            'userid'      => $by->id,
-            'username'    => $by->username,
-            'userlink' => 'index.php?option=com_users&task=user.edit&id=' . $by->id,
-            'timesheetlink' => Route::link('site', 'index.php?option=com_timeclock&view=timesheet&date='.$start.'&id=' . $for->id),
-            'payrolllink' => Route::link('site', 'index.php?option=com_timeclock&view=payroll&date='.$start),
-            'payperiodstart' => $start,
-        ];
-
+        $message = $this->logMessage('approve', $success, $msg);
         TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_APPROVE', 'approve', $by->id);
 
     }
+    /**
+     * Logs the complete time sheet
+     * 
+     * @param bool   $success True if successful, false otherwise
+     * @param string $msg     A message to attach
+     * 
+     * @return Void
+     */
     public function logDisapprove($success = true, $msg = "")
     {
-        $user_id = Factory::getApplication()->getInput()->getInt("id", 0);
+        $message = $this->logMessage('disapprove', $success, $msg);
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_DISAPPROVE', 'disapprove', $by->id);
+
+    }
+    /**
+     * Logs the complete time sheet
+     * 
+     * @param string $action  The action we are taking
+     * @param bool   $success True if successful, false otherwise
+     * @param string $msg     A message to attach
+     * 
+     * @return Void
+     */
+    protected function logMessage($action, $success = true, $msg = "")
+    {
+        $user_id = Factory::getApplication()->getInput()->getInt("id", NULL);
         $by = Factory::getUser();
         $for = Factory::getUser($user_id);
         $start = $this->getState('payperiod')->start;
         $message = [
-            'action'      => 'disapprove',
+            'action'      => $action,
             'status'      => $success ? 'success' : 'failure',
             'message'     => $msg,
             'forid'       => $for->id,
@@ -203,9 +211,7 @@ class TimesheetModel extends DefaultModel
             'payrolllink' => Route::link('site', 'index.php?option=com_timeclock&view=payroll&date='.$start),
             'payperiodstart' => $start,
         ];
-
-        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_DISAPPROVE', 'disapprove', $by->id);
-
+        return $message;
     }
     /**
     * Build query and where for protected _getList function and return a list
