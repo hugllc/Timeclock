@@ -4,21 +4,27 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
+if ($displayData->user_id) {
+    $id = "&id=".$displayData->user_id;
+} else {
+    $id = "";
+}
+
 $baseurl = 'index.php?option=com_timeclock&view='.$displayData->view;
-$url = Route::_($baseurl.'&date=now');
+$url = Route::_($baseurl.'&date=now'.$id);
 $today = '<a href="'.$url.'">'.Text::_("COM_TIMECLOCK_TODAY").'</a>';
 
 $tip = Text::_("COM_TIMECLOCK_GO_TO_NEXT_PAYPERIOD");
 $img = "components/com_timeclock/images/1rightarrow.png";
 $text = '<img src="'.$img.'" alt="&gt;" style="border: none;" />';
-$url = Route::_($baseurl.'&date='.$displayData->next);
+$url = Route::_($baseurl.'&date='.$displayData->next.$id);
 $nextImg = '<a href="'.$url.'">'.$text.'</a>';
 $next = '<a href="'.$url.'">'.Text::_("JNEXT").'</a>';
 
 $tip = Text::_("COM_TIMECLOCK_GO_TO_PREV_PAYPERIOD");
 $img = "components/com_timeclock/images/1leftarrow.png";
 $text = '<img src="'.$img.'" alt="&lt;" style="border: none;" />';
-$url = Route::_($baseurl.'&date='.$displayData->prev);
+$url = Route::_($baseurl.'&date='.$displayData->prev.$id);
 $prevImg = '<a href="'.$url.'">'.$text.'</a>';
 $prev = '<a href="'.$url.'">'.Text::_("JPREVIOUS").'</a>';
 

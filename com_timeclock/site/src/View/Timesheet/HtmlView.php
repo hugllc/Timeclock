@@ -77,6 +77,9 @@ class HtmlView extends BaseHtmlView
         $this->payperiod->view = "timesheet";
         $this->actions   = TimeclockHelper::getActions();
         $this->user      = $this->getModel()->getUser();
+        if (!$this->user->me) {
+            $this->payperiod->user_id = $this->user->id;
+        }
 
         if (!$this->user->me && !$this->actions->get('timeclock.timesheet.others')) {
             throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
