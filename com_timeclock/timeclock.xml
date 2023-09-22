@@ -7,7 +7,7 @@
     <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
     <copyright>2016 Hunt Utilities Group, LLC</copyright>
     <license>GNU Public License V3</license>
-    <version>0.9.10</version>
+    <version>0.9.11</version>
     <description>COM_TIMECLOCK_DESCRIPTION</description>
     <namespace path="src">HUGLLC\Component\Timeclock</namespace>
     <scriptfile>install.script.php</scriptfile>
