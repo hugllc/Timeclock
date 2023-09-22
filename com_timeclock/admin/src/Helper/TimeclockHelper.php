@@ -41,6 +41,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Helper\ContentHelper;
 use HUGLLC\Component\Timeclock\Administrator\Model\ToolsModel;
+use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
+use Joomla\CMS\Language\Text;
 
 require_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 
@@ -396,5 +398,20 @@ class TimeclockHelper
         $length = $date - $start;
         return $length / (60*60*24*365.25);
     }
-
+    /**
+     * Function to add logs to the database
+     * This method adds a record to #__action_logs contains (message_language_key, message, date, context, user)
+     *
+     * @param   array    $messages            The contents of the messages to be logged
+     * @param   string   $messageLanguageKey  The language key of the message
+     * @param   string   $context             The context of the content passed to the plugin
+     * @param   integer  $userId              ID of user perform the action, usually ID of current logged in user
+     *
+     * @return  void
+     */
+    static public function addActionLog($messages, $messageLanguageKey, $context, $userId = null)
+    {
+        $model = Factory::getApplication()->bootComponent('com_actionlogs')->getMVCFactory()->createModel('Actionlog', 'Administrator', ['ignore_request' => true]);
+        $model->addLog($messages, Text::_($messageLanguageKey), 'com_timeclock.'.$context, $userId);
+    }
 }

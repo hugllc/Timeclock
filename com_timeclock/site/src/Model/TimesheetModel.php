@@ -41,6 +41,7 @@ use Joomla\CMS\Factory;
 use HUGLLC\Component\Timeclock\Site\Model\DefaultModel;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use HUGLLC\Component\Timeclock\Site\Helper\DateHelper;
+use Joomla\CMS\Router\Route;
 
 \defined( '_JEXEC' ) or die();
 
@@ -98,6 +99,7 @@ class TimesheetModel extends DefaultModel
         TimeclockHelper::setUserParam("timesheetDone", $start, $this->_user_id);
         $set = TimeclockHelper::getUserParam("timesheetDone", $this->_user_id);
         if ($start == $set) {
+            $this->logComplete();
             return $set;
         }
         return false;
@@ -113,6 +115,7 @@ class TimesheetModel extends DefaultModel
         TimeclockHelper::setUserParam("timesheetApproved", $start, $this->_user_id);
         $set = TimeclockHelper::getUserParam("timesheetApproved", $this->_user_id);
         if ($start == $set) {
+            $this->logApprove();
             return $set;
         }
         return false;
@@ -128,9 +131,72 @@ class TimesheetModel extends DefaultModel
         TimeclockHelper::setUserParam("timesheetApproved", $prev, $this->_user_id);
         $set = TimeclockHelper::getUserParam("timesheetApproved", $this->_user_id);
         if ($prev == $set) {
+            $this->logDisapprove();
             return $set;
         }
         return false;
+    }
+    protected function logComplete()
+    {
+        $by = Factory::getUser();
+        $start = $this->getState('payperiod')->start;
+        $message = [
+            'action'      => 'complete',
+            'userid'      => $by->id,
+            'username'    => $by->username,
+            'userlink' => 'index.php?option=com_users&task=user.edit&id=' . $by->id,
+            'timesheetlink' => Route::link('site', 'index.php?option=com_timeclock&view=timesheet&date='.$start.'&id=' . $by->id),
+            'payrolllink' => Route::link('site', 'index.php?option=com_timeclock&view=payroll&date='.$start),
+            'payperiodstart' => $start,
+        ];
+
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_COMPLETE', 'complete', $by->id);
+
+    }
+
+    protected function logApprove()
+    {
+        $user_id = Factory::getApplication()->getInput()->getInt("id", 0);
+        $by = Factory::getUser();
+        $for = Factory::getUser($user_id);
+        $start = $this->getState('payperiod')->start;
+        $message = [
+            'action'      => 'approve',
+            'forid'       => $for->id,
+            'forname'     => $for->username,
+            'forlink'     => 'index.php?option=com_users&task=user.edit&id=' . $for->id,
+            'userid'      => $by->id,
+            'username'    => $by->username,
+            'userlink' => 'index.php?option=com_users&task=user.edit&id=' . $by->id,
+            'timesheetlink' => Route::link('site', 'index.php?option=com_timeclock&view=timesheet&date='.$start.'&id=' . $for->id),
+            'payrolllink' => Route::link('site', 'index.php?option=com_timeclock&view=payroll&date='.$start),
+            'payperiodstart' => $start,
+        ];
+
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_APPROVE', 'approve', $by->id);
+
+    }
+    protected function logDisapprove()
+    {
+        $user_id = Factory::getApplication()->getInput()->getInt("id", 0);
+        $by = Factory::getUser();
+        $for = Factory::getUser($user_id);
+        $start = $this->getState('payperiod')->start;
+        $message = [
+            'action'      => 'disapprove',
+            'forid'       => $for->id,
+            'forname'     => $for->username,
+            'forlink'     => 'index.php?option=com_users&task=user.edit&id=' . $for->id,
+            'userid'      => $by->id,
+            'username'    => $by->username,
+            'userlink' => 'index.php?option=com_users&task=user.edit&id=' . $by->id,
+            'timesheetlink' => Route::link('site', 'index.php?option=com_timeclock&view=timesheet&date='.$start.'&id=' . $for->id),
+            'payrolllink' => Route::link('site', 'index.php?option=com_timeclock&view=payroll&date='.$start),
+            'payperiodstart' => $start,
+        ];
+
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_DISAPPROVE', 'disapprove', $by->id);
+
     }
     /**
     * Build query and where for protected _getList function and return a list
