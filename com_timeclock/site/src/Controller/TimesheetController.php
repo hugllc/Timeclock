@@ -161,7 +161,10 @@ class TimesheetController extends DisplayController
 
         $model = new TimesheetModel();
 
-        if ($index = $model->approve()) {
+        if ($model->getState('payperiod')->locked) {
+            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVAL_FAILED_LOCKED");
+            $type = "error";
+        } else if ($model->approve()) {
             $model->complete();
             $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_APPROVED");
             $type = "message";
@@ -189,7 +192,10 @@ class TimesheetController extends DisplayController
 
         $model = new TimesheetModel();
 
-        if ($index = $model->disapprove()) {
+        if ($model->getState('payperiod')->locked) {
+            $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_DISAPPROVAL_FAILED_LOCKED");
+            $type = "error";
+        } else if ($model->disapprove()) {
             $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_DISAPPROVED");
             $type = "message";
         } else {
