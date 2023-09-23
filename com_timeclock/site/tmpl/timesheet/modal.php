@@ -6,7 +6,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_("jquery.framework");
-HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/addhours.js");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/addhours.js");
 
 $user = Factory::getUser();
 $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);

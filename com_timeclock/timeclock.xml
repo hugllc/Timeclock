@@ -35,6 +35,7 @@
         <folder>images</folder>
         <folder>css</folder>
         <folder>src</folder>
+        <folder>tmpl</folder>
         <filename>LICENSE.TXT</filename>
     </files>
     <scriptfile>install.php</scriptfile>

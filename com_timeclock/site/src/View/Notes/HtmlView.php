@@ -65,7 +65,6 @@ class HtmlView extends BaseHtmlView
     */
     function display($tpl = NULl)
     {
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $app = Factory::getApplication();
         $layout = $this->getLayout();
         

@@ -6,7 +6,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_("jquery.framework");
-HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/addhours.js");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/addhours.js");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
 
 $user = Factory::getUser();

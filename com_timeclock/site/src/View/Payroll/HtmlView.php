@@ -66,7 +66,6 @@ class HtmlView extends BaseHtmlView
     */
     function display($tpl = NULL)
     {
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $layout = $this->getLayout();
         
         $this->params    = ComponentHelper::getParams('com_timeclock');

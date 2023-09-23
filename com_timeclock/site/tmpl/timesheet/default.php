@@ -7,7 +7,7 @@ use Joomla\CMS\Uri\Uri;
 
 
 HTMLHelper::_("jquery.framework");
-HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/timesheet.js");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/timesheet.js");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
 HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
 
