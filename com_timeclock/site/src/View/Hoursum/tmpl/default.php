@@ -6,27 +6,28 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-    HTMLHelper::script(Uri::base()."components/com_timeclock/js/report.js");
-    HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
+HTMLHelper::_("jquery.framework");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/report.js");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
 
-    $cols = count($this->users) + 2;
+$cols = count($this->users) + 2;
 
-    Factory::getDocument()->setTitle(
-        Text::sprintf(
-            "COM_TIMECLOCK_HOURSUM_REPORT_TITLE",
-            HTMLHelper::_('date', $this->start, Text::_("DATE_FORMAT_LC3")),
-            HTMLHelper::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
-        )
-    );
-    $allproj = array();
-    foreach ($this->projects as $cat) {
-        foreach ($cat["proj"] as $proj) {
-            $allproj[$proj->project_id] = array(
-                "name" => $proj->name,
-                "description" => $proj->description,
-            );
-        }
+Factory::getDocument()->setTitle(
+    Text::sprintf(
+        "COM_TIMECLOCK_HOURSUM_REPORT_TITLE",
+        HTMLHelper::_('date', $this->start, Text::_("DATE_FORMAT_LC3")),
+        HTMLHelper::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
+    )
+);
+$allproj = array();
+foreach ($this->projects as $cat) {
+    foreach ($cat["proj"] as $proj) {
+        $allproj[$proj->project_id] = array(
+            "name" => $proj->name,
+            "description" => $proj->description,
+        );
     }
+}
 ?>
 <div id="timeclock" class="container-fluid">
 <form action="<?php Route::_("index.php?option=com_timeclock&controller=hoursum"); ?>" method="post" name="userform" class="report">

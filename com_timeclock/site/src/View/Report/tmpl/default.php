@@ -5,18 +5,19 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-    JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
-    JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
+HTMLHelper::_("jquery.framework");
+JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
+JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
 
-    $cols = count($this->users) + 2;
+$cols = count($this->users) + 2;
 
-    Factory::getDocument()->setTitle(
-        Text::sprintf(
-            "COM_TIMECLOCK_REPORT_TITLE",
-            JHTML::_('date', $this->start, Text::_("DATE_FORMAT_LC3")),
-            JHTML::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
-        )
-    );
+Factory::getDocument()->setTitle(
+    Text::sprintf(
+        "COM_TIMECLOCK_REPORT_TITLE",
+        JHTML::_('date', $this->start, Text::_("DATE_FORMAT_LC3")),
+        JHTML::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
+    )
+);
 ?>
 <div id="timeclock" class="container-fluid">
 <form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=report"); ?>" method="post" name="userform" class="timeclock_report">

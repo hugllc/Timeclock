@@ -5,17 +5,18 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
+HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/addhours.js");
 
-    $user = Factory::getUser();
-    $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
-    $cols = $this->payperiod->days + 2 + $subtotalcols;
-    $this->payperiod->cols = $cols;
-    $this->payperiod->subtotalcols = $subtotalcols;
-    if (count($this->projects) > 1) {
-        unset($this->projects[0]);
-    }
-    $allproj = array();
+$user = Factory::getUser();
+$subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
+$cols = $this->payperiod->days + 2 + $subtotalcols;
+$this->payperiod->cols = $cols;
+$this->payperiod->subtotalcols = $subtotalcols;
+if (count($this->projects) > 1) {
+    unset($this->projects[0]);
+}
+$allproj = array();
 ?>
 <script type="text/JavaScript">
     var Timesheet = Timesheet || parent.Timesheet;

@@ -5,21 +5,22 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
+HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/addhours.js");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
 
-    $user = Factory::getUser();
-    $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
-    $cols = $this->payperiod->days + 2 + $subtotalcols;
-    $this->payperiod->cols = $cols;
-    $this->payperiod->subtotalcols = $subtotalcols;
-    Factory::getDocument()->setTitle(
-        Text::sprintf(
-            "COM_TIMECLOCK_ADD_HOURS_TITLE",
-            $user->name,
-            HTMLHelper::_('date', $this->date, Text::_("DATE_FORMAT_LC3"))
-        )
-    );
+$user = Factory::getUser();
+$subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
+$cols = $this->payperiod->days + 2 + $subtotalcols;
+$this->payperiod->cols = $cols;
+$this->payperiod->subtotalcols = $subtotalcols;
+Factory::getDocument()->setTitle(
+    Text::sprintf(
+        "COM_TIMECLOCK_ADD_HOURS_TITLE",
+        $user->name,
+        HTMLHelper::_('date', $this->date, Text::_("DATE_FORMAT_LC3"))
+    )
+);
 ?>
 <div id="timeclock">
 <form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">

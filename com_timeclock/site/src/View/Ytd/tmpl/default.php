@@ -6,18 +6,19 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-    HTMLHelper::script(Uri::base()."components/com_timeclock/js/report.js");
-    HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
+HTMLHelper::_("jquery.framework");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/report.js");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
 
-    $cols = count($this->users) + 2;
+$cols = count($this->users) + 2;
 
-    Factory::getDocument()->setTitle(
-        Text::sprintf(
-            "COM_TIMECLOCK_YTD_REPORT_TITLE",
-            HTMLHelper::_('date', $this->start, Text::_("DATE_FORMAT_LC3")),
-            HTMLHelper::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
-        )
-    );
+Factory::getDocument()->setTitle(
+    Text::sprintf(
+        "COM_TIMECLOCK_YTD_REPORT_TITLE",
+        HTMLHelper::_('date', $this->start, Text::_("DATE_FORMAT_LC3")),
+        HTMLHelper::_('date', $this->end, Text::_("DATE_FORMAT_LC3"))
+    )
+);
 
 ?>
 <div id="timeclock" class="container-fluid">

@@ -6,21 +6,22 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 
-    HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/timesheet.js");
-    HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
-    HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
+HTMLHelper::_("jquery.framework");
+HTMLHelper::script(Uri::base()."components/com_timeclock/src/View/Timesheet/tmpl/timesheet.js");
+HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
+HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
 
-    $cols = $this->payperiod->days + 2 + $this->payperiod->subtotals;
-    $this->payperiod->cols = $cols;
+$cols = $this->payperiod->days + 2 + $this->payperiod->subtotals;
+$this->payperiod->cols = $cols;
 
-    Factory::getDocument()->setTitle(
-        Text::sprintf(
-            "COM_TIMECLOCK_TIMESHEET_TITLE",
-            $this->user->name,
-            HTMLHelper::_('date', $this->payperiod->start, Text::_("DATE_FORMAT_LC3")),
-            HTMLHelper::_('date', $this->payperiod->end, Text::_("DATE_FORMAT_LC3"))
-        )
-    );
+Factory::getDocument()->setTitle(
+    Text::sprintf(
+        "COM_TIMECLOCK_TIMESHEET_TITLE",
+        $this->user->name,
+        HTMLHelper::_('date', $this->payperiod->start, Text::_("DATE_FORMAT_LC3")),
+        HTMLHelper::_('date', $this->payperiod->end, Text::_("DATE_FORMAT_LC3"))
+    )
+);
     
 ?>
 <div id="timeclock">
