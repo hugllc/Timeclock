@@ -66,6 +66,7 @@
             <folder>css</folder>
             <folder>services</folder>
             <folder>src</folder>
+            <folder>tmpl</folder>
             <filename>access.xml</filename>
             <filename>config.xml</filename>
         </files>

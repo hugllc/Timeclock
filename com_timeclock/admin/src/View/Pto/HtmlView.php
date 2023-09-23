@@ -38,7 +38,6 @@ namespace HUGLLC\Component\Timeclock\Administrator\View\Pto;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -74,7 +73,6 @@ class HtmlView extends BaseHtmlView
     */
     function display($tpl = null)
     {
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $model = $this->getModel();
 
         $this->params = ComponentHelper::getParams('com_timeclock');

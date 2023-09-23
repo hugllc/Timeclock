@@ -21,7 +21,6 @@ use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -95,7 +94,6 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
         $model               = $this->getModel();
         $this->items         = $model->getItems();
         $this->pagination    = $model->getPagination();
@@ -112,8 +110,6 @@ class HtmlView extends BaseHtmlView
         if (\count($errors = $this->get('Errors'))) {
             throw new GenericDataException(implode("\n", $errors), 500);
         }
-
-        $this->_row = new FileLayout('row', __DIR__.'/tmpl');
 
         $this->addToolbar();
 

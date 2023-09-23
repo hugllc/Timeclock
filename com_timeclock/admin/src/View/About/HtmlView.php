@@ -74,7 +74,6 @@ class HtmlView extends BaseHtmlView
             array()
         );
         $this->addToolbar();
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
 
         $this->sidebar = Sidebar::render();
 

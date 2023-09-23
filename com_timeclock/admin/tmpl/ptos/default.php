@@ -4,9 +4,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Layout\FileLayout;
 
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
+
+$row = new FileLayout('row', __DIR__.'/layouts');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
@@ -50,7 +53,7 @@ $sortFields = $this->sortFields;
             </thead>
             <tbody id="report-list">
                 <?php for($i=0, $n = count($this->items);$i<$n;$i++) {
-                    echo $this->_row->render(
+                    echo $row->render(
                         array(
                             "data" => $this->items[$i],
                             "index" => $i,

@@ -74,7 +74,6 @@ class HtmlView extends BaseHtmlView
             Uri::base().'components/com_timeclock/css/timeclock.css', 
             array()
         );
-        $this->addTemplatePath(__DIR__ . '/tmpl', 'normal');
 
         $action = Factory::getApplication()->getInput()->get("action");
         if ($action == "dbcheck") {

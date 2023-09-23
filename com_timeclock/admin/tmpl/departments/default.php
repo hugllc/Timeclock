@@ -4,15 +4,18 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Layout\FileLayout;
 
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
+
+$row = new FileLayout('row', __DIR__.'/layouts');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 $sortFields = $this->sortFields;
 ?>
-<form action="<?php echo Route::_('index.php?option=com_timeclock&view=timesheets'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_timeclock&view=departments'); ?>" method="post" name="adminForm" id="adminForm">
     <div id="j-sidebar-container" class="span2">
         <?php echo $this->sidebar; ?>
     </div>
@@ -24,29 +27,23 @@ $sortFields = $this->sortFields;
                     <th width="1%" class="">
                         <?php echo HTMLHelper::_('grid.checkall'); ?>
                     </th>
+                    <th width="1%" style="min-width:55px" class="nowrap text-center">
+                        <?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'd.published', $listDirn, $listOrder); ?>
+                    </th>
                     <th>
-                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_NOTES', 'notes', $listDirn, $listOrder); ?>
-                    </th>
-                    <th class="text-center">
-                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_WORK_DATE', 't.worked', $listDirn, $listOrder); ?>
-                    </th>
-                    <th class="text-center">
-                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_HOURS', 'hours', $listDirn, $listOrder); ?>
+                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_NAME', 'd.name', $listDirn, $listOrder); ?>
                     </th>
                     <th class="text-center hidden-phone">
-                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_PROJECT', 'project', $listDirn, $listOrder); ?>
-                    </th>
-                    <th class="text-center hidden-phone">
-                        <?php echo HTMLHelper::_('searchtools.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
+                        <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_MANAGER', 'manager', $listDirn, $listOrder); ?>
                     </th>
                     <th width="1%" class="nowrap text-center hidden-phone">
-                        <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 't.timesheet_id', $listDirn, $listOrder); ?>
+                        <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'd.department_id', $listDirn, $listOrder); ?>
                     </th>
                 </tr>
             </thead>
-            <tbody id="timesheet-list">
+            <tbody id="department-list">
                 <?php for($i=0, $n = count($this->items);$i<$n;$i++) {
-                    echo $this->_row->render(
+                    echo $row->render(
                         array(
                             "data" => $this->items[$i],
                             "index" => $i,
@@ -60,7 +57,6 @@ $sortFields = $this->sortFields;
         <?php echo $this->pagination->getListFooter(); ?>
         <input type="hidden" name="task" value="" />
         <input type="hidden" name="boxchecked" value="0" />
-
         <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>
