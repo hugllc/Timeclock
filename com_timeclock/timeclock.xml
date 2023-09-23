@@ -26,7 +26,6 @@
     <upgrade>
     </upgrade>
     <files folder="site">
-        <folder>assets</folder>
         <folder>contrib</folder>
         <folder>forms</folder>
         <folder>js</folder>
@@ -62,7 +61,6 @@
             <folder>layouts</folder>
             <folder>js</folder>
             <folder>sql</folder>
-            <folder>images</folder>
             <folder>css</folder>
             <folder>services</folder>
             <folder>src</folder>
