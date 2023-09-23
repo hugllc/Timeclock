@@ -5,6 +5,11 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Layout\FileLayout;
+
+$dataset = new FileLayout('dataset', __DIR__.'/layouts');
+$export  = new FileLayout('export', dirname(__DIR__).'/layouts');
+$control = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
 HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/report.js");
@@ -37,7 +42,7 @@ foreach ($this->projects as $cat) {
             <?php print Text::_("COM_TIMECLOCK_HOURSUM_REPORT"); ?>
         </h2>
     </div>
-    <?php print $this->_control->render($this->filter); ?>
+    <?php print $control->render($this->filter); ?>
     <div class="dateheader">
         <strong>
             <?php print Text::sprintf(
@@ -48,7 +53,7 @@ foreach ($this->projects as $cat) {
         </strong>
     </div>
     <?php
-        print $this->_export->render(
+        print $export->render(
             (object)array(
                 "url" => Route::_('&option=com_timeclock&controller=hoursum'),
                 "export" => $this->export,
@@ -66,7 +71,7 @@ foreach ($this->projects as $cat) {
             }
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -87,7 +92,7 @@ foreach ($this->projects as $cat) {
             }
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -105,7 +110,7 @@ foreach ($this->projects as $cat) {
             $name = $this->getProjType($type);
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -126,7 +131,7 @@ foreach ($this->projects as $cat) {
             }
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -147,7 +152,7 @@ foreach ($this->projects as $cat) {
             }
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -168,7 +173,7 @@ foreach ($this->projects as $cat) {
             }
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -186,7 +191,7 @@ foreach ($this->projects as $cat) {
             $name = sprintf("%04d", $code);
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -207,7 +212,7 @@ foreach ($this->projects as $cat) {
             }
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],
@@ -228,7 +233,7 @@ foreach ($this->projects as $cat) {
             }
             $data[$name] = $hours;
         }
-        print $this->_dataset->render(
+        print $dataset->render(
             (object)array(
                 "data"     => $data,
                 "total"    => $this->data["total"],

@@ -37,7 +37,6 @@ namespace HUGLLC\Component\Timeclock\Site\View\Timesheet;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -75,6 +74,8 @@ class HtmlView extends BaseHtmlView
         $this->payperiod->view = "timesheet";
         $this->actions   = TimeclockHelper::getActions();
         $this->user      = $this->getModel()->getUser();
+        $this->data      = $this->getModel()->listItems();
+        $this->projects  = $this->getModel()->listProjects();
         if (!$this->user->me) {
             $this->payperiod->user_id = $this->user->id;
         }
@@ -89,51 +90,23 @@ class HtmlView extends BaseHtmlView
         );
 
         if (($layout == "addhours") || ($layout == "modal")) {
-            return $this->renderAddhours($tpl);
+            $this->addhours($tpl);
         }
-        return $this->renderTimesheet($tpl);
+        return parent::display();
     }
     /**
     * Renders this view
     *
     * @return unknown
     */
-    function renderTimesheet($tpl)
-    {
-
-        $this->_header     = new FileLayout('header', __DIR__.'/layouts');
-        $this->_row        = new FileLayout('row', __DIR__.'/layouts');
-        $this->_totals     = new FileLayout('totals', __DIR__.'/layouts');
-        $this->_nextprev   = new FileLayout('payperiodnextprev', dirname(__DIR__).'/layouts');
-        $this->_category   = new FileLayout('category', __DIR__.'/layouts');
-        $this->_subtotals  = new FileLayout('subtotals', __DIR__.'/layouts');
-        $this->_psubtotals = new FileLayout('psubtotals', __DIR__.'/layouts');
-        $this->_toolbar    = new FileLayout('toolbar', __DIR__.'/layouts');
-        $this->_uname      = new FileLayout('name', __DIR__.'/layouts');
-        $this->_notes      = new FileLayout('notes', dirname(__DIR__).'/layouts');
-
-        $this->data      = $this->getModel()->listItems();
-        $this->projects  = $this->getModel()->listProjects();
-
-        return parent::display($tpl);
-    }
-    /**
-    * Renders this view
-    *
-    * @return unknown
-    */
-    function renderAddhours($tpl)
+    function addhours($tpl)
     {
         if (!$this->user->me) {
             throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
-        $this->_entry    = new FileLayout('entry', __DIR__.'/layouts');
 
-        $this->data      = $this->getModel()->listItems();
-        $this->projects  = $this->getModel()->listProjects();
         $this->date      = $this->getModel()->getState('date');
         
-        return parent::display();
     }
 }
 ?>

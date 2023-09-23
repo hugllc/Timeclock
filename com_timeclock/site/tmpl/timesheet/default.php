@@ -4,7 +4,18 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Layout\FileLayout;
 
+$header     = new FileLayout('header', __DIR__.'/layouts');
+$row        = new FileLayout('row', __DIR__.'/layouts');
+$totals     = new FileLayout('totals', __DIR__.'/layouts');
+$nextprev   = new FileLayout('payperiodnextprev', dirname(__DIR__).'/layouts');
+$category   = new FileLayout('category', __DIR__.'/layouts');
+$subtotals  = new FileLayout('subtotals', __DIR__.'/layouts');
+$psubtotals = new FileLayout('psubtotals', __DIR__.'/layouts');
+$toolbar    = new FileLayout('toolbar', __DIR__.'/layouts');
+$uname      = new FileLayout('name', __DIR__.'/layouts');
+$notes      = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
 HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timesheet.js");
@@ -36,8 +47,8 @@ Factory::getDocument()->setTitle(
             <?php endif; ?>
         </h2>
     </div>
-    <?php print $this->_toolbar->render((object)array("user" => $this->user, "payperiod" => $this->payperiod)); ?>
-    <?php print $this->_nextprev->render($this->payperiod); ?>
+    <?php print $toolbar->render((object)array("user" => $this->user, "payperiod" => $this->payperiod)); ?>
+    <?php print $nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
             <?php print Text::sprintf(
@@ -51,20 +62,20 @@ Factory::getDocument()->setTitle(
         <table class="paid timesheet table table-striped table-bordered table-hover table-condensed">
             <thead>
 <?php 
-    print $this->_uname->render(
+    print $uname->render(
         (object)array(
             "cols" => $this->payperiod->cols,
             "name" => "COM_TIMECLOCK_PAID_TIME",
         )
     );
-    print $this->_header->render($this->payperiod); 
+    print $header->render($this->payperiod); 
 ?>
             </thead>
             <tfoot>
-<?php print $this->_header->render($this->payperiod);  ?>
-<?php print $this->_subtotals->render($this->payperiod); ?>
-<?php print $this->_psubtotals->render($this->payperiod); ?>
-<?php print $this->_totals->render($this->payperiod); ?>
+<?php print $header->render($this->payperiod);  ?>
+<?php print $subtotals->render($this->payperiod); ?>
+<?php print $psubtotals->render($this->payperiod); ?>
+<?php print $totals->render($this->payperiod); ?>
             </tfoot>
             <tbody>
 <?php 
@@ -83,10 +94,10 @@ Factory::getDocument()->setTitle(
             $proj->payperiod = $this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
             $proj->user      = $this->user;
-            $render .= $this->_row->render($proj);
+            $render .= $row->render($proj);
         }
         if ($cnt > 0) {
-            print $this->_category->render(
+            print $category->render(
                 array(
                     "cols" => $cols,
                     "id" => $cat,
@@ -106,20 +117,20 @@ Factory::getDocument()->setTitle(
         <table class="volunteer timesheet">
             <thead>
 <?php 
-    print $this->_uname->render(
+    print $uname->render(
         (object)array(
             "cols" => $this->payperiod->cols,
             "name" => "COM_TIMECLOCK_VOLUNTEER_TIME",
         )
     );
-    print $this->_header->render($this->payperiod); 
+    print $header->render($this->payperiod); 
 ?>
             </thead>
             <tfoot>
-<?php print $this->_header->render($this->payperiod);  ?>
-<?php print $this->_subtotals->render($this->payperiod); ?>
-<?php print $this->_psubtotals->render($this->payperiod); ?>
-<?php print $this->_totals->render($this->payperiod); ?>
+<?php print $header->render($this->payperiod);  ?>
+<?php print $subtotals->render($this->payperiod); ?>
+<?php print $psubtotals->render($this->payperiod); ?>
+<?php print $totals->render($this->payperiod); ?>
             </tfoot>
             <tbody>
 <?php 
@@ -136,10 +147,10 @@ Factory::getDocument()->setTitle(
             $proj->payperiod = $this->payperiod;
             $proj->data      = isset($this->data[$proj->project_id]) ? $this->data[$proj->project_id] : array();
             $proj->user      = $this->user;
-            $render .= $this->_row->render($proj);
+            $render .= $row->render($proj);
         }
         if ($cnt > 0) {
-            print $this->_category->render(
+            print $category->render(
                 array(
                     "cols" => $cols,
                     "id" => $cat,
@@ -174,7 +185,7 @@ Factory::getDocument()->setTitle(
                 "worked" => $this->data[$proj_id],
             );
         }
-        print $this->_notes->render($user);
+        print $notes->render($user);
     }
 ?>
     <script type="text/JavaScript">

@@ -5,17 +5,26 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Layout\FileLayout;
 
-    $cols = ($this->payperiod->subtotals * 4) + 3;
-    $this->payperiod->cols = $cols;
+$header   = new FileLayout('header', __DIR__.'/layouts');
+$row      = new FileLayout('row', __DIR__.'/layouts');
+$totals   = new FileLayout('totals', __DIR__.'/layouts');
+$nextprev = new FileLayout('payperiodnextprev', dirname(__DIR__).'/layouts');
+$toolbar  = new FileLayout('toolbar', __DIR__.'/layouts');
+$export   = new FileLayout('export', dirname(__DIR__).'/layouts');
+$notes    = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
-    Factory::getDocument()->setTitle(
-        Text::sprintf(
-            "COM_TIMECLOCK_PAYROLL_TITLE",
-            HtmlHelper::_('date', $this->payperiod->start, Text::_("DATE_FORMAT_LC3")),
-            HtmlHelper::_('date', $this->payperiod->end, Text::_("DATE_FORMAT_LC3"))
-        )
-    );
+$cols = ($this->payperiod->subtotals * 4) + 3;
+$this->payperiod->cols = $cols;
+
+Factory::getDocument()->setTitle(
+    Text::sprintf(
+        "COM_TIMECLOCK_PAYROLL_TITLE",
+        HtmlHelper::_('date', $this->payperiod->start, Text::_("DATE_FORMAT_LC3")),
+        HtmlHelper::_('date', $this->payperiod->end, Text::_("DATE_FORMAT_LC3"))
+    )
+);
 ?>
 <div id="timeclock">
     <div class="page-header">
@@ -27,13 +36,13 @@ use Joomla\CMS\Uri\Uri;
             <?php endif; ?>
         </h2>
     </div>
-    <?php print $this->_toolbar->render((object)array(
+    <?php print $toolbar->render((object)array(
         "payperiod" => $this->payperiod,
         "actions" => $this->actions,
 
     )); 
     ?>
-    <?php print $this->_nextprev->render($this->payperiod); ?>
+    <?php print $nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
             <?php print Text::sprintf(
@@ -44,7 +53,7 @@ use Joomla\CMS\Uri\Uri;
         </strong>
     </div>
     <?php 
-        print $this->_export->render(
+        print $export->render(
             (object)array(
                 "url" => 'index.php?option=com_timeclock',
                 "export" => $this->export,
@@ -54,11 +63,11 @@ use Joomla\CMS\Uri\Uri;
     <div class="table-responsive">
         <table class="report table table-striped table-bordered table-hover table-condensed">
             <thead>
-<?php print $this->_header->render($this->payperiod); ?>
+<?php print $header->render($this->payperiod); ?>
             </thead>
             <tfoot>
 <?php 
-    print $this->_totals->render(
+    print $totals->render(
         (object)array(
             "payperiod" => $this->payperiod, 
             "totals" => $this->data["totals"], 
@@ -72,7 +81,7 @@ use Joomla\CMS\Uri\Uri;
         $user->payperiod = $this->payperiod;
         $user->data = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
         $user->notes = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
-        print $this->_row->render($user);
+        print $row->render($user);
     }
 ?>
             </tbody>
@@ -88,7 +97,7 @@ use Joomla\CMS\Uri\Uri;
     foreach ($this->users as $user_id => $user) {
         $user->payperiod = $this->payperiod;
         $user->data = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
-        print $this->_notes->render($user);
+        print $notes->render($user);
     }
     */
 ?>

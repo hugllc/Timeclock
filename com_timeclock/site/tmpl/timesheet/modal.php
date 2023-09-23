@@ -4,6 +4,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Layout\FileLayout;
+
+$entry = new FileLayout('entry', __DIR__.'/layouts');
 
 HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/addhours.js");
@@ -46,7 +49,7 @@ $allproj = array();
     $proj->form      = &$this->form;
     $proj->params    = &$this->params;
     $proj->noButtons = true;
-    print $this->_entry->render($proj);
+    print $entry->render($proj);
 ?>
         </fieldset>
         <fieldset id="extra">

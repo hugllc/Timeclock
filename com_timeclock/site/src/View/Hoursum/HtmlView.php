@@ -38,7 +38,6 @@ namespace HUGLLC\Component\Timeclock\Site\View\Hoursum;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -85,10 +84,6 @@ class HtmlView extends BaseHtmlView
             Uri::base().'components/com_timeclock/css/timeclock.css', 
             array()
         );
-
-        $this->_dataset = new FileLayout('dataset', __DIR__.'/layouts');
-        $this->_export  = new FileLayout('export', dirname(__DIR__).'/layouts');
-        $this->_control = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
         $this->data              = $this->getModel()->listItems();
         $this->users             = $this->getModel()->listUsers();
