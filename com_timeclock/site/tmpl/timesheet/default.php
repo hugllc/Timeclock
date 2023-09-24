@@ -58,7 +58,8 @@ Factory::getDocument()->setTitle(
                 ); ?>
         </strong>
     </div>
-    <div class="paid">
+    <?php if ($this->counts["paid"] > 0): ?>
+    <div>
         <table class="paid timesheet table table-striped table-bordered table-hover table-condensed">
             <thead>
 <?php 
@@ -79,7 +80,6 @@ Factory::getDocument()->setTitle(
             </tfoot>
             <tbody>
 <?php 
-    $paid    = 0;
     $allproj = array();
     $proj    = array();
     foreach ($this->projects as $cat => $projects) {
@@ -107,13 +107,14 @@ Factory::getDocument()->setTitle(
             );
             print $render;
         }
-        $paid += $cnt;
     }
 ?>
             </tbody>
         </table>
     </div>
-    <div class="volunteer">
+    <?php endif; ?>
+    <?php if ($this->counts["unpaid"] > 0): ?>
+    <div>
         <table class="volunteer timesheet">
             <thead>
 <?php 
@@ -134,7 +135,6 @@ Factory::getDocument()->setTitle(
             </tfoot>
             <tbody>
 <?php 
-    $unpaid = 0;
     foreach ($this->projects as $cat => $projects) {
         $cnt = 0;
         $render = "";
@@ -160,12 +160,12 @@ Factory::getDocument()->setTitle(
             );
             print $render;
         }
-        $unpaid += $cnt;
     }
 ?>
             </tbody>
         </table>
     </div>
+    <?php endif; ?>
     <form action="<?php JROUTE::_("index.php"); ?>" method="post" class="timesheet">
         <?php print HTMLHelper::_("form.token"); ?>
     </form>
@@ -198,8 +198,6 @@ Factory::getDocument()->setTitle(
         Timesheet.projects     = <?php print json_encode($this->projects); ?>;
         Timesheet.payperiod    = <?php print json_encode($this->payperiod); ?>;
         Timesheet.data         = <?php print json_encode($this->data); ?>;
-        Timesheet.paid         = <?php print $paid; ?>;
-        Timesheet.volunteer    = <?php print $unpaid; ?>;
         Timeclock.params       = <?php print json_encode($this->params->toArray()); ?>;
         Timeclock.me           = <?php print (int)$this->user->me; ?>;
         Timeclock.approve      = <?php print (int)(!$this->user->me && Factory::getUser()->authorise("timeclock.timesheet.approve", "com_timeclock")) ?>;

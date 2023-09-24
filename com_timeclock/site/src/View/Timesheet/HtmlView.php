@@ -76,6 +76,8 @@ class HtmlView extends BaseHtmlView
         $this->user      = $this->getModel()->getUser();
         $this->data      = $this->getModel()->listItems();
         $this->projects  = $this->getModel()->listProjects();
+        $this->counts          = $this->getModel()->counts();
+
         if (!$this->user->me) {
             $this->payperiod->user_id = $this->user->id;
         }

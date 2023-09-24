@@ -63,6 +63,11 @@ class TimesheetModel extends DefaultModel
     private $_projects = null;
     /** This is our percentage of holiday pay */
     private $_user_id = null;
+    /** This counts paid and unpaid projects */
+    private $_counts = array(
+        "paid" => 0,
+        "unpaid" => 0
+    );
     
     /**
     * The constructor
@@ -298,14 +303,15 @@ class TimesheetModel extends DefaultModel
         if (is_null($this->_projects)) {
             $query = $this->_buildProjQUery();
             $list = $this->_getList($query, 0, 0);
-
             $this->_projects = array(
+            /*
                 0 => array(
                     "id"          => 0,
                     "name"        => Text::_("JNONE"),
                     "description" => "",
                     "proj"        => array(),
                 )
+            */
             );
             $ret = &$this->_projects;
             foreach ($list as $entry) {
@@ -319,9 +325,24 @@ class TimesheetModel extends DefaultModel
                 );
                 $this->_checkProject($entry);
                 $ret[$cat]["proj"][$proj] = $entry;
+                if ($entry->type == "UNPAID") {
+                    $this->_counts['unpaid']++;
+                } else {
+                    $this->_counts['paid']++;
+                }
+
             }
         }
         return $this->_projects;
+    }
+    /**
+    * Returns the counts
+    *
+    * @return array An array of counts.
+    */
+    public function counts()
+    {
+        return $this->_counts;
     }
     /**
     * Build query and where for protected _getList function and return a list

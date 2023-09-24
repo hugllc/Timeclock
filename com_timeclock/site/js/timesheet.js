@@ -1,4 +1,3 @@
-// Only define the Joomla namespace if not defined.
 var Timesheet = {
     decimals: 2,
     setup: function ()
@@ -7,15 +6,6 @@ var Timesheet = {
         this.update();
         this.setComplete(this.payperiod.done);
         this.setLocked(this.payperiod.locked);
-        if (this.volunteer == 0) {
-            jQuery("table.volunteer").hide();
-        }
-        if (Timeclock.me == 0) {
-            jQuery(".mine").hide();
-        }
-        if (this.paid == 0) {
-            jQuery("table.paid").hide();
-        }
     },
     round: function (value)
     {
