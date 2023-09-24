@@ -73,7 +73,7 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
     }
     $minimum = '<span class="minchars">'.sprintf(" ".Text::_('COM_TIMECLOCK_WORK_NOTES_MIN_CHARS'), $displayData->params->get("minNoteChars"))."</span>";
     $notes = array(
-        "input" => '<textarea name="notes" id="notes" cols="80" rows="7" onblur="Addhours.validateNotes(this);">'.(isset($displayData->data->notes) ? $displayData->data->notes : "").'</textarea><br />'.$minimum,
+        "input" => '<textarea name="notes" id="notes" cols="80" rows="7" onkeydown="Addhours.validateNotes(this);">'.(isset($displayData->data->notes) ? $displayData->data->notes : "").'</textarea><br />'.$minimum,
         "label" => '<label id="notes-lbl" for="notes" class="hasTooltip" title="<strong>'.Text::_('COM_TIMECLOCK_NOTES').'</strong><br />'.Text::_('COM_TIMECLOCK_WORK_NOTES_HELP').'">'.Text::_('COM_TIMECLOCK_NOTES').'</label>'
     );
     print ViewHelper::getFormField((object)$notes);
