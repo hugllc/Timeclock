@@ -97,7 +97,7 @@ var Addhours = {
         jQuery.each(data, function (ind, elem) {
             var fieldset = jQuery('fieldset#addhours-'+elem.project_id);
             if (!self.validateFieldset(fieldset)) {
-                self.message(elem.project_id, "Check the field values", "message");
+                self.message(elem.project_id, "Check the field values", "danger");
                 fieldset.find('[name="notes"]').on("keypress", self.validateNotes);
             } else {
                 self.post(elem, task);
@@ -154,12 +154,12 @@ var Addhours = {
                         }
                     }
                 } else {
-                    self.message(elem.project_id, data.message, "message");
+                    self.message(elem.project_id, data.message, "danger");
                 }
             },
             error: function(data)
             {
-                self.message(elem.project_id, "Save Failed", "message");
+                self.message(elem.project_id, "Save Failed", "danger");
             }
         });
     },
@@ -177,7 +177,7 @@ var Addhours = {
         var div = jQuery("fieldset#addhours-"+project_id+" div.alert");
         div.text(msg);
         div.removeClass('alert-success');
-        div.removeClass('alert-message');
+        div.removeClass('alert-danger');
         div.removeClass('alert-info');
         div.addClass('alert-'+type);
         div.show();
@@ -249,7 +249,7 @@ var Addhours = {
         this.message(
             fieldset.find('[name="project_id"]').val(), 
             'Must have at most '+max+' hours',
-            "message"
+            "danger"
         );
     },
     /**
@@ -264,7 +264,7 @@ var Addhours = {
         this.message(
             fieldset.find('[name="project_id"]').val(), 
                     hours + 'is too many hours.  Must have at most '+max+' hours for the year.',
-                    "message"
+                    "danger"
         );
     },
     /**
@@ -280,7 +280,7 @@ var Addhours = {
             this.message(
                 fieldset.find('[name="project_id"]').val(), 
                         'Must have at least '+min+' hours',
-                        "message"
+                        "danger"
             );
         }
     },
