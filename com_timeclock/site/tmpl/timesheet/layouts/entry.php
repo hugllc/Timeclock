@@ -14,7 +14,7 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
 ?>
     <h2><?php print $displayData->name; ?></h2>
     <fieldset id="addhours-<?php print $displayData->project_id; ?>" class="addhours">
-    <div style="display: none;" class="alert"></div>
+    <div style="display: none;" class="alert alert-danger"></div>
     <?php
         if ($displayData->type == "FLOATING_HOLIDAY") {
             print ' <div class="alert-info">'.Text::_("COM_TIMECLOCK_FLOATING_HOLIDAY_WARNING").'</div> ';
