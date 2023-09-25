@@ -102,7 +102,7 @@ class ProjectController extends FormController
         $categoryId = 0;
 
         if ($recordId) {
-            $categoryId = (int) $this->getModel()->getItem($recordId)->catid;
+            $categoryId = (int) $this->getModel()->getItem($recordId)->parent_id;
         }
 
         if ($categoryId) {
