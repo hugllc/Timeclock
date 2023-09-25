@@ -116,9 +116,9 @@ class AddhoursModel extends TimesheetModel
             $key = $row->getKeyName();
             $this->id = array($row->$key);
         }
-        if ($this->getState("payperiod")->done) {
+        if ($this->getState("payperiod.done")) {
             // This clears the complete flag
-            $prev = $this->getState("payperiod")->prev;
+            $prev = $this->getState("payperiod.prev");
             TimeclockHelper::setUserParam("timesheetDone", $prev);
         }
         return $row;
