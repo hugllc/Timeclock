@@ -193,7 +193,7 @@ class PayrollModel extends ReportModel
                     "worked" => array(),
                 );
                 $notes[$user_id][$row->project_id]["worked"][$row->worked] = $row;
-                if (!$users[$user_id]) {
+                if (!isset($users[$user_id])) {
                     $users[$user_id] = $this->getTimesheetUser($user_id);
                 }
             }

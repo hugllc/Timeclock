@@ -420,7 +420,7 @@ class TimesheetModel extends DefaultModel
         $date = empty($date) ?  date("Y-m-d") : $date;
         $this->setState('date', $date);
         
-        $this->populatePayperiodState($date);
+        $this->populatePayperiodState($date, $estart, $eend);
     }
     /**
      * Returns true if this is marked complete

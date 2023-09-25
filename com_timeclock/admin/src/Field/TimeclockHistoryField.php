@@ -90,7 +90,7 @@ class TimeclockHistoryField extends FormField
             $ret[] = '</div>';
             $ret[] = '<div style="clear:both; padding-bottom: 2em;">';
             foreach ((array)$this->value as $key => $value) {
-                if (!$value[$date] || ($key == "timestamps")) {
+                if (!isset($value[$date]) || ($key == "timestamps")) {
                     continue;
                 }
                 $p = $value[$date];

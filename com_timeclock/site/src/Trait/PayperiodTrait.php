@@ -78,7 +78,7 @@ trait PayperiodTrait
      * Populates the payperiod state
      * 
      */
-    protected function populatePayperiodState($date)
+    protected function populatePayperiodState($date, $estart = NULL, $eend = NULL)
     {
         $user = $this->getUser();
 
@@ -101,7 +101,7 @@ trait PayperiodTrait
         $locked = DateHelper::compareDates($cutoff, $period["next"]) >= 0;
         $this->setState("payperiod.locked", $locked);
 
-        $unlock = DateHelper::compareDates($cutoff, $next) == 0;
+        $unlock = DateHelper::compareDates($cutoff, $period["next"]) == 0;
         $this->setState('payperiod.unlock', $unlock);
 
         $fulltimeHours = TimeclockHelper::getParam("fulltimeHours");
@@ -114,20 +114,26 @@ trait PayperiodTrait
         $this->setState('payperiod.cutoff', $cutoff);
 
         $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
-        $this->setState("payperiod.done", DateHelper::compareDates($timesheetDone, $period["start"]) >= 0);
+        $done = DateHelper::compareDates($timesheetDone, $period["start"]) >= 0;
+        $this->setState("payperiod.done", $done);
         $timesheetApproved = isset($user->timeclock["timesheetApproved"]) ? $user->timeclock["timesheetApproved"] : 0;
-        $this->setState("payperiod.approved", DateHelper::compareDates($timesheetApproved, $period["start"]) >= 0);
+        $approved = DateHelper::compareDates($timesheetApproved, $period["start"]) >= 0;
+        $this->setState("payperiod.approved", $approved);
 
         $dates = array_flip($period["dates"]);
         foreach ($dates as $date => &$value) {
-            if ($user->me) {
-                $here = DateHelper::checkEmploymentDates($estart, $eend, $date);
-                $valid = (DateHelper::compareDates($date, $cutoff)  >= 0);
-                $uservalid = (DateHelper::compareDates($date, $usercutoff)  >= 0);
-                $value = $here && $valid && $uservalid && !$payperiod->approved;
-            } else {
-                // Reading someone else's timesheet
+            if (is_null($eend) || is_null($estart)) {
                 $value = false;
+            } else {
+                if ($user->me) {
+                    $here = DateHelper::checkEmploymentDates($estart, $eend, $date);
+                    $valid = (DateHelper::compareDates($date, $cutoff)  >= 0);
+                    $uservalid = (DateHelper::compareDates($date, $usercutoff)  >= 0);
+                    $value = $here && $valid && $uservalid && !$approved;
+                } else {
+                    // Reading someone else's timesheet
+                    $value = false;
+                }
             }
         }
         $this->setState("payperiod.dates", $dates);

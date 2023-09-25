@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     $split = empty($displayData->payperiod->splitdays) ? 31 : $displayData->payperiod->splitdays;
     foreach ($displayData->payperiod->dates as $date => $employed):
         $hours = isset($displayData->data[$date]) ? $displayData->data[$date]->hours : 0;
-        $timeentry = !$displaydata->payperiod->approved && $employed && $displayData->mine && (!$displayData->nohours || (!$displayData->nonewhours && ($hours > 0)));
+        $timeentry = !$displayData->payperiod->approved && $employed && $displayData->mine && (!$displayData->nohours || (!$displayData->nonewhours && ($hours > 0)));
         
         if ($timeentry) {
             $tipTitle           = Text::_("COM_TIMECLOCK_ADD_HOURS");
@@ -28,6 +28,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             } else {
                 $tip = Text::_("COM_TIMECLOCK_NO_HOURS_LOCKED");
             }
+            $link = "";
         }
         if ($hours > 0) {
             $tipTitle = Text::_("COM_TIMECLOCK_NOTES");
