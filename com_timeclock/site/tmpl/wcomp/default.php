@@ -5,6 +5,15 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Layout\FileLayout;
+
+$header   = new FileLayout('header', __DIR__.'/layouts');
+$row      = new FileLayout('row', __DIR__.'/layouts');
+$totals   = new FileLayout('totals', __DIR__.'/layouts');
+$category = new FileLayout('category', __DIR__.'/layouts');
+$toolbar  = new FileLayout('toolbar', __DIR__.'/layouts');
+$export   = new FileLayout('export', dirname(__DIR__).'/layouts');
+$control  = new FileLayout('reportcontrol', dirname(__DIR__).'/layouts');
 
 HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/report.js");
@@ -28,7 +37,7 @@ Factory::getDocument()->setTitle(
             <?php print Text::_("COM_TIMECLOCK_WCOMP_REPORT"); ?>
         </h2>
     </div>
-    <?php print $this->_control->render($this->filter); ?>
+    <?php print $control->render($this->filter); ?>
     <div class="dateheader">
         <strong>
             <?php print Text::sprintf(
@@ -39,7 +48,7 @@ Factory::getDocument()->setTitle(
         </strong>
     </div>
     <?php 
-        print $this->_export->render(
+        print $export->render(
             (object)array(
                 "url" => Route::_('&option=com_timeclock&controller=wcomp'),
                 "export" => $this->export,
@@ -49,11 +58,11 @@ Factory::getDocument()->setTitle(
     <div class="table-responsive">
         <table class="report table table-striped table-bordered table-hover table-condensed">
             <thead>
-<?php print $this->_header->render($this->data["codes"]); ?>
+<?php print $header->render($this->data["codes"]); ?>
             </thead>
             <tfoot>
 <?php 
-    print $this->_totals->render(
+    print $totals->render(
         (object)array(
             "codes" => $this->data["codes"], 
             "data" => $this->data["totals"], 
@@ -69,7 +78,7 @@ Factory::getDocument()->setTitle(
         $user->data      = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
         $user->genparams = $this->params;
         $user->codes     = $this->data["codes"];
-        print $this->_row->render($user);
+        print $row->render($user);
     }
 ?>
             </tbody>
