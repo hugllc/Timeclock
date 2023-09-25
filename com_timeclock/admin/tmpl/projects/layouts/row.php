@@ -12,6 +12,7 @@ $canCheckin = $user->authorise('core.manage',     'com_checkin') || $displayData
 $canEditOwn = $user->authorise('core.edit.own',   'com_timeclock') && $displayData["data"]->created_by == $user->id;
 $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canCheckin;
 $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checked_out != $user->id);
+$fancyType  = str_replace("COM_TIMECLOCK_", "", Text::_("COM_TIMECLOCK_".$displayData["data"]->type));
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->project_id?>">
                     <td class="text-center">
@@ -37,7 +38,7 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                         <?php echo $displayData["data"]->manager; ?>
                     </td>
                     <td class="text-center hidden-phone">
-                        <?php echo $displayData["data"]->type; ?>
+                        <?php echo $fancyType; ?>
                     </td>
                     <td class="text-center hidden-phone">
                         <?php echo ($displayData["data"]->type == "CATEGORY") ? '-' : Text::_($displayData["data"]->category); ?>
