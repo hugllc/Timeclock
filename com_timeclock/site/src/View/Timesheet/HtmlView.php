@@ -80,6 +80,7 @@ class HtmlView extends BaseHtmlView
 
         if (!$this->user->me) {
             $this->payperiod->user_id = $this->user->id;
+            $this->getModel()->logAccess();
         }
 
         if (!$this->user->me && !$this->actions->get('timeclock.timesheet.others')) {

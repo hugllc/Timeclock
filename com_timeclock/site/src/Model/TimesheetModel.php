@@ -158,7 +158,7 @@ class TimesheetModel extends DefaultModel
     public function logComplete($success = true, $msg = "")
     {
         $message = $this->logMessage('complete', $success, $msg);
-        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_COMPLETE', 'complete', $by->id);
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_COMPLETE', 'complete');
 
     }
 
@@ -173,7 +173,7 @@ class TimesheetModel extends DefaultModel
     public function logApprove($success = true, $msg = "")
     {
         $message = $this->logMessage('approve', $success, $msg);
-        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_APPROVE', 'approve', $by->id);
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_APPROVE', 'approve');
 
     }
     /**
@@ -187,7 +187,21 @@ class TimesheetModel extends DefaultModel
     public function logDisapprove($success = true, $msg = "")
     {
         $message = $this->logMessage('disapprove', $success, $msg);
-        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_DISAPPROVE', 'disapprove', $by->id);
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_DISAPPROVE', 'disapprove');
+
+    }
+    /**
+     * Logs the complete time sheet
+     * 
+     * @param bool   $success True if successful, false otherwise
+     * @param string $msg     A message to attach
+     * 
+     * @return Void
+     */
+    public function logAccess()
+    {
+        $message = $this->logMessage('access');
+        TimeclockHelper::addActionLog([$message], 'COM_TIMECLOCK_ACTION_LOG_ACCESS', 'access');
 
     }
     /**
@@ -204,7 +218,7 @@ class TimesheetModel extends DefaultModel
         $user_id = Factory::getApplication()->getInput()->getInt("id", NULL);
         $by = Factory::getUser();
         $for = Factory::getUser($user_id);
-        $start = $this->getState('payperiod')->start;
+        $start = $this->getState('payperiod.start');
         $message = [
             'action'      => $action,
             'status'      => $success ? 'success' : 'failure',
