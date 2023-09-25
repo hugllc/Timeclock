@@ -11,7 +11,7 @@ $canEdit    = $user->authorise('core.edit',       'com_timeclock');
 $canCheckin = $user->authorise('core.manage',     'com_checkin') || $displayData["data"]->checked_out == $userId || $displayData["data"]->checked_out == 0;
 $canEditOwn = $user->authorise('core.edit.own',   'com_timeclock') && $displayData["data"]->created_by == $user->id;
 $canChange  = $user->authorise('core.edit.state', 'com_timeclock') && $canCheckin;
-$checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checked_out != $user->id);
+$checked_out = $displayData["data"]->checked_out && ($displayData["data"]->checked_out != $user->id);
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->project_id?>">
                     <td class="text-center">
