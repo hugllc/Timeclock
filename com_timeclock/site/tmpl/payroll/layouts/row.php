@@ -5,52 +5,59 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
+defined('_JEXEC') or die(); 
 
-    $notes    = new FileLayout('notes', dirname(dirname(__DIR__)).'/layouts');
+HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
 
-    defined('_JEXEC') or die(); 
-    $user_id = $displayData->id;
-    $name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
-    $class    = "user-".$user_id;
-    $worked   = 0;
-    $pto      = 0;
-    $holiday  = 0;
-    $subtotal = 0;
-    $overtime = 0;
-    for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
-        if (isset($displayData->data[$w])) {
-            $data = (object)$displayData->data[$w];
-            $worked   += $data->worked;
-            $pto      += $data->pto;
-            $holiday  += $data->holiday;
-            $subtotal += $data->subtotal;
-            $overtime += $data->overtime;
-        }
+print "<pre>";
+var_dump($displayData->timeclock["manager"]);
+print "</pre>";
+
+$notes    = new FileLayout('notes', dirname(dirname(__DIR__)).'/layouts');
+
+$manager  = empty($displayData->timeclock["manager"]) ? "Unknown" : Factory::getUser($displayData->timeclock["manager"])->name;
+$user_id = $displayData->id;
+$name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
+$class    = "user-".$user_id;
+$worked   = 0;
+$pto      = 0;
+$holiday  = 0;
+$subtotal = 0;
+$overtime = 0;
+for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
+    if (isset($displayData->data[$w])) {
+        $data = (object)$displayData->data[$w];
+        $worked   += $data->worked;
+        $pto      += $data->pto;
+        $holiday  += $data->holiday;
+        $subtotal += $data->subtotal;
+        $overtime += $data->overtime;
     }
-    $overtimeclass = ($overtime > 0) ? "highlight" : "";
-    $total = $subtotal + $overtime;
-    $timesheeturl = Route::_('index.php?&option=com_timeclock&view=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
-    if (!empty($displayData->error)) {
-        $errorClass   = "error hasTooltip";
-        $errorTooltip = ' title="'.$displayData->error.'"';
-    } else {
-        $errorClass = "";
-        $errorTooltip = "";
-    }
+}
+$overtimeclass = ($overtime > 0) ? "highlight" : "";
+$total = $subtotal + $overtime;
+$timesheeturl = Route::_('index.php?&option=com_timeclock&view=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
+if (!empty($displayData->error)) {
+    $errorClass   = "error hasTooltip";
+    $errorTooltip = ' title="'.$displayData->error.'"';
+} else {
+    $errorClass = "";
+    $errorTooltip = "";
+}
 
-    $body = $notes->render((object)array(
-        "user_id" => $user_id."-modal",
-        "name"    => $name,
-        "data"    => $displayData->notes,
-    ));
+$body = $notes->render((object)array(
+    "user_id" => $user_id."-modal",
+    "name"    => $name,
+    "data"    => $displayData->notes,
+));
 
-    $modalId = 'modal-notes-'.$user_id;
-    $modalParams = array();
-    $modalParams['title']      = "Notes for ".$name;
-    $modalParams['height']     = '100%';
-    $modalParams['width']      = '100%';
-    $modalParams['modalWidth'] = 60;
-    $modalParams['closeButton'] = true;
+$modalId = 'modal-notes-'.$user_id;
+$modalParams = array();
+$modalParams['title']      = "Notes for ".$name;
+$modalParams['height']     = '100%';
+$modalParams['width']      = '100%';
+$modalParams['modalWidth'] = 60;
+$modalParams['closeButton'] = true;
 
 ?>
             <tr class="employee <?php print $errorClass; ?>"<?php print $errorTooltip; ?>>
@@ -65,7 +72,7 @@ use Joomla\CMS\Factory;
                     <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
                     </a>
                 </td>
-                <td class="approved <?php print $displayData->approved ? "yes" : "no"; ?>">
+                <td class="approved <?php print $displayData->approved ? "yes" : "no"; ?> hasToolTip" title="<?php print $manager; ?>">
                     <?php print $displayData->approved ? Text::_("JYES") : Jtext::_("JNO"); ?>
                 </td>
                 <td class="hours">
