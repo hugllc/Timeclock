@@ -4,7 +4,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-if ($displayData->user_id) {
+if (property_exists($displayData, "user_id")) {
     $id = "&id=".$displayData->user_id;
 } else {
     $id = "";
