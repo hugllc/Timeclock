@@ -70,13 +70,13 @@ class HtmlView extends BaseHtmlView
         $layout = $this->getLayout();
 
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->getModel()->getState('payperiod');
+        $this->payperiod = $this->getModel()->getPayperiod();
         $this->payperiod->view = "timesheet";
         $this->actions   = TimeclockHelper::getActions();
         $this->user      = $this->getModel()->getUser();
         $this->data      = $this->getModel()->listItems();
         $this->projects  = $this->getModel()->listProjects();
-        $this->counts          = $this->getModel()->counts();
+        $this->counts    = $this->getModel()->counts();
 
         if (!$this->user->me) {
             $this->payperiod->user_id = $this->user->id;

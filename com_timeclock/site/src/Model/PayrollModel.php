@@ -40,6 +40,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use HUGLLC\Component\Timeclock\Site\Helper\DateHelper;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
+use HUGLLC\Component\Timeclock\Site\Trait\PayperiodTrait;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -56,6 +57,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class PayrollModel extends ReportModel
 {    
+    use PayperiodTrait;
+
     /** This is where we store our totals */
     private $_totals = array(
         "total" => 0,
@@ -317,72 +320,7 @@ class PayrollModel extends ReportModel
         $date = empty($date) ?  date("Y-m-d") : $date;
         $this->setState('date', $date);
         
-        // Get the pay period Dates
-        $startTime = TimeclockHelper::getParam("firstPayPeriodStart");
-        $len = TimeclockHelper::getParam("payPeriodLengthFixed");
-        $start = DateHelper::fixedPayPeriodStart($startTime, $date, $len);
-        $this->setState('payperiod.days', $len);
-        $this->setState('payperiod.start', $start);
-        $this->setState("start", $start); 
-        $s = DateHelper::explodeDate($start);
-        $end = date(
-            "Y-m-d", 
-            DateHelper::dateUnix($s["m"], $s["d"]+$len-1, $s["y"])
-        );
-        $this->setState('payperiod.end', $end);
-        $this->setState("end", $end);
-        
-        $next = DateHelper::dateUnix(
-            $s["m"], $s["d"]+$len, $s["y"]
-        );
-        $this->setState('payperiod.next', date("Y-m-d", $next));
-        $prev = DateHelper::dateUnix(
-            $s["m"], $s["d"]-$len, $s["y"]
-        );
-        $this->setState('payperiod.prev', date("Y-m-d", $prev));
-        
-        $cutoff = TimeclockHelper::getParam("payperiodCutoff");
-        $this->setState('payperiod.cutoff', $cutoff);
-
-        $fulltimeHours = TimeclockHelper::getParam("fulltimeHours");
-        $this->setState('payperiod.fulltimeHours', $fulltimeHours);
-
-        $locked = DateHelper::compareDates($cutoff, $next) >= 0;
-        $this->setState('payperiod.locked', $locked);
-
-        $unlock = DateHelper::compareDates($cutoff, $next) == 0;
-        $this->setState('payperiod.unlock', $unlock);
-
-        $dates = array_flip(DateHelper::payPeriodDates($start, $end));
-        foreach ($dates as $date => &$value) {
-            $value = true;
-        }
-        $this->setState('payperiod.dates', $dates);
-
-        $split = 7;
-        $this->setState('payperiod.splitdays', $split);
-        $split = 7;
-        $this->setState('payperiod.splitdays', $split);
-
-        $subtotals = (int)($len / $split);
-        $this->setState('payperiod.subtotals', $subtotals);
-    }
-    /** 
-    * Method to get the filter object
-    *
-    * @return object The property where specified, the state object where omitted
-    */
-    public function getPayperiod()
-    {
-        $payperiod = new \stdClass();
-        foreach ($this->getState() as $key => $value) {
-            if (str_contains($key, "payperiod.")) {
-                $k = explode(".", $key)[1];
-                $payperiod->$k = $value;
-            }
-        }
-
-        return $payperiod;
+        $this->populatePayperiodState($date);
     }
     /**
     * Builds the filter for the query

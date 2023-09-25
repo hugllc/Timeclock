@@ -41,6 +41,7 @@ use Joomla\CMS\Factory;
 use HUGLLC\Component\Timeclock\Site\Model\DefaultModel;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use HUGLLC\Component\Timeclock\Site\Helper\DateHelper;
+use HUGLLC\Component\Timeclock\Site\Trait\PayperiodTrait;
 use Joomla\CMS\Router\Route;
 
 \defined( '_JEXEC' ) or die();
@@ -59,6 +60,8 @@ use Joomla\CMS\Router\Route;
  */
 class TimesheetModel extends DefaultModel
 {    
+    use PayperiodTrait;
+
     /** This is where we cache our projects */
     private $_projects = null;
     /** This is our percentage of holiday pay */
@@ -100,7 +103,7 @@ class TimesheetModel extends DefaultModel
     */
     public function complete()
     {
-        $start = $this->getState("payperiod")->start;
+        $start = $this->getState("payperiod.start");
         TimeclockHelper::setUserParam("timesheetDone", $start, $this->_user_id);
         $set = TimeclockHelper::getUserParam("timesheetDone", $this->_user_id);
         if ($start == $set) {
@@ -117,7 +120,7 @@ class TimesheetModel extends DefaultModel
     */
     public function approve()
     {
-        $start = $this->getState("payperiod")->start;
+        $start = $this->getState("payperiod.start");
         TimeclockHelper::setUserParam("timesheetApproved", $start, $this->_user_id);
         $set = TimeclockHelper::getUserParam("timesheetApproved", $this->_user_id);
         if ($start == $set) {
@@ -134,7 +137,7 @@ class TimesheetModel extends DefaultModel
     */
     public function disapprove()
     {
-        $prev = $this->getState("payperiod")->prev;
+        $prev = $this->getState("payperiod.prev");
         TimeclockHelper::setUserParam("timesheetApproved", $prev, $this->_user_id);
         $set = TimeclockHelper::getUserParam("timesheetApproved", $this->_user_id);
         if ($prev == $set) {
@@ -417,57 +420,7 @@ class TimesheetModel extends DefaultModel
         $date = empty($date) ?  date("Y-m-d") : $date;
         $this->setState('date', $date);
         
-        // Get the pay period Dates
-        $startTime = TimeclockHelper::getParam("firstPayPeriodStart");
-        $len = TimeclockHelper::getParam("payPeriodLengthFixed");
-        $period = DateHelper::fixedPayPeriod($startTime, $date, $len);
-
-        $payperiod = new \stdClass();
-
-        $payperiod->days = $period["days"];
-        $payperiod->start = $period["start"];
-        $payperiod->end = $period["end"];
-        $payperiod->next = $period["next"];
-        $payperiod->prev = $period["prev"];
-        
-        $cutoff = TimeclockHelper::getParam("payperiodCutoff");
-        $payperiod->cutoff = $cutoff;
-
-        $locked = DateHelper::compareDates($cutoff, $period["next"]) >= 0;
-        $payperiod->locked = $locked;
-
-        $fulltimeHours = TimeclockHelper::getParam("fulltimeHours");
-        $payperiod->fulltimeHours = $fulltimeHours;
-
-        $usercutoff = isset($user->timeclock["noTimeBefore"]) ? $user->timeclock["noTimeBefore"] : 0;
-        $payperiod->usercutoff = $usercutoff;
-
-        $timesheetDone = isset($user->timeclock["timesheetDone"]) ? $user->timeclock["timesheetDone"] : 0;
-        $payperiod->done = DateHelper::compareDates($timesheetDone, $period["start"]) >= 0;
-        $timesheetApproved = isset($user->timeclock["timesheetApproved"]) ? $user->timeclock["timesheetApproved"] : 0;
-        $payperiod->approved = DateHelper::compareDates($timesheetApproved, $period["start"]) >= 0;
-
-        $dates = array_flip($period["dates"]);
-        foreach ($dates as $date => &$value) {
-            if ($user->me) {
-                $here = DateHelper::checkEmploymentDates($estart, $eend, $date);
-                $valid = (DateHelper::compareDates($date, $cutoff)  >= 0);
-                $uservalid = (DateHelper::compareDates($date, $usercutoff)  >= 0);
-                $value = $here && $valid && $uservalid && !$payperiod->approved;
-            } else {
-                // Reading someone else's timesheet
-                $value = false;
-            }
-        }
-        $payperiod->dates = $dates;
-        
-        $split = 7;
-        $payperiod->splitdays = $split;
-
-        $subtotals = (int)($len / $split);
-        $payperiod->subtotals = $subtotals;
-
-        $this->setState("payperiod", $payperiod);
+        $this->populatePayperiodState($date);
     }
     /**
      * Returns true if this is marked complete
@@ -476,7 +429,7 @@ class TimesheetModel extends DefaultModel
      */
     public function isComplete()
     {
-        return $this->getState("payperiod")->done;
+        return $this->getState("payperiod.done");
     }
     /**
      * Returns true if this is marked complete
@@ -485,7 +438,7 @@ class TimesheetModel extends DefaultModel
      */
     public function isApproved()
     {
-        return $this->getState("payperiod")->approved;
+        return $this->getState("payperiod.approved");
     }
     /**
     * This function gets the dates of the period, and says wheter or not time can 
@@ -612,8 +565,8 @@ class TimesheetModel extends DefaultModel
     private function _periodWhere($query, $start = null, $end = null)
     {
         $db = Factory::getDBO();
-        $start = empty($start) ? $this->getState("payperiod")->start : $start;
-        $end   = empty($end)   ? $this->getState("payperiod")->end   : $end;
+        $start = empty($start) ? $this->getState("payperiod.start") : $start;
+        $end   = empty($end)   ? $this->getState("payperiod.end")   : $end;
 
         $query->where($db->quoteName("t.worked").">=".$db->quote($start));
         $query->where($db->quoteName("t.worked")."<=".$db->quote($end));
