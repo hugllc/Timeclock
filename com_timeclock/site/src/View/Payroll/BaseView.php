@@ -170,25 +170,29 @@ class BaseView extends HtmlView
         $col = "A";
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, empty($data->name) ? "User ".$data->user_id : $data->name);
         $total = array();
-        $worked   = 0;
-        $pto      = 0;
-        $holiday  = 0;
-        $subtotal = 0;
-        $overtime = 0;
+        $worked    = 0;
+        $pto       = 0;
+        $holiday   = 0;
+        $subtotal  = 0;
+        $overtime  = 0;
+        $volunteer = 0;
         for ($w = 0; $w < $this->payperiod->subtotals; $w++) {
             if (isset($data->data[$w])) {
-                $d        = (object)$data->data[$w];
-                $worked   += $d->worked;
-                $pto      += $d->pto;
-                $holiday  += $d->holiday;
-                $subtotal += $d->subtotal;
-                $overtime += $d->overtime;
+                $d          = (object)$data->data[$w];
+                $worked    += $d->worked;
+                $pto       += $d->pto;
+                $holiday   += $d->holiday;
+                $subtotal  += $d->subtotal;
+                $overtime  += $d->overtime;
+                $volunteer += $d->volunteer;
             }
         }
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $worked);
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $pto);
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $volunteer);
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, $holiday);
         $col = $this->nextCol($col);
@@ -237,6 +241,8 @@ class BaseView extends HtmlView
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_WORKED"));
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_PTO"));
+        $col = $this->nextCol($col);
+        $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_VOLUNTEER"));
         $col = $this->nextCol($col);
         $this->phpexcel->getActiveSheet()->setCellValue($col.$this->line, Text::_("COM_TIMECLOCK_HOLIDAY"));
         $col = $this->nextCol($col);

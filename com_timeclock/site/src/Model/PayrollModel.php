@@ -165,6 +165,7 @@ class PayrollModel extends ReportModel
                         "volunteer" => 0,
                         "subtotal"  => 0,
                         "overtime"  => 0,
+                        "volunteer" => 0,
                     );
                 }
                 $this->checkTimesheet($row);
@@ -309,11 +310,12 @@ class PayrollModel extends ReportModel
             foreach ($data[$user_id] as $period => &$wk) {
                 if (!isset($data["totals"][$period])) {
                     $data["totals"][$period] = (object)array(
-                        "worked"   => 0,
-                        "pto"      => 0,
-                        "holiday"  => 0,
-                        "subtotal" => 0,
-                        "overtime" => 0,
+                        "worked"    => 0,
+                        "pto"       => 0,
+                        "holiday"   => 0,
+                        "subtotal"  => 0,
+                        "overtime"  => 0,
+                        "volunteer" => 0,
                     );
                 }
                 if ($wk->worked > $fulltime) {
@@ -326,11 +328,12 @@ class PayrollModel extends ReportModel
                 } else {
                     $wk->overtime = 0;
                 }
-                $data["totals"][$period]->worked   += $wk->worked;
-                $data["totals"][$period]->holiday  += $wk->holiday;
-                $data["totals"][$period]->pto      += $wk->pto;
-                $data["totals"][$period]->overtime += $wk->overtime;
-                $data["totals"][$period]->subtotal += $wk->subtotal;
+                $data["totals"][$period]->worked    += $wk->worked;
+                $data["totals"][$period]->holiday   += $wk->holiday;
+                $data["totals"][$period]->pto       += $wk->pto;
+                $data["totals"][$period]->overtime  += $wk->overtime;
+                $data["totals"][$period]->subtotal  += $wk->subtotal;
+                $data["totals"][$period]->volunteer += $wk->volunteer;
             }
             $data["totals"]["total"]           += $wk->subtotal;
         }

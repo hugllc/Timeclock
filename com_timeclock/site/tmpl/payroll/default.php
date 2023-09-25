@@ -143,8 +143,8 @@ Factory::getDocument()->setTitle(
 ?>
 <script type="text/JavaScript">
     Report.filter    = { start: "<?php print $this->payperiod->start; ?>" };
-    Report.projects  = <?php print json_encode($this->projects); ?>;
-    Report.data      = <?php print json_encode($this->data); ?>;
+    Report.projects  = { };
+    Report.data      = { };
     Timeclock.params     = <?php print json_encode($this->params); ?>;
     Timeclock.report     = 0;
     
