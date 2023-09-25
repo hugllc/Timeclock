@@ -65,11 +65,10 @@ class TimeclockDepartmentField extends FormField
     public function getInput()
     {
         $model = new DepartmentsModel();
-        $model->getState("filter.published");  // This populates the state
-        $model->setState("filter.published", 1);
-        $model->setState("list.ordering", "d.name");
-        $model->setState("list.direction", "ASC");
-        $depts = $model->getItems();
+        $depts = $model->getItemsWhere(
+            array("d.published=1"),
+            "d.name ASC"
+        );
         $options = array(
             HTMLHelper::_(
                 'select.option', 

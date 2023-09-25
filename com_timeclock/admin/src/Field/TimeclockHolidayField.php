@@ -64,12 +64,10 @@ class TimeclockHolidayField extends FormField
     public function getInput()
     {
         $model = new ProjectsModel();
-        $model->getState("filter.published");  // This populates the state
-        $model->setState("filter.published", 1);
-        $model->setState("filter.type", 'HOLIDAY');
-        $model->setState("list.ordering", "p.name");
-        $model->setState("list.direction", "ASC");
-        $list = $model->getItems();
+        $list = $model->getItemsWhere(
+            array("p.published=1", "p.type = 'HOLIDAY'"),
+            "p.name ASC"
+        );
         foreach ($list as $item) {
             $options[] = HtmlHelper::_(
                 'select.option', 

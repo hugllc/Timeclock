@@ -65,11 +65,10 @@ class TimeclockCustomerField extends FormField
     public function getInput()
     {
         $model = new CustomersModel();
-        $model->getState("filter.published");  // This populates the state
-        $model->setState("filter.published", 1);
-        $model->setState("list.ordering", "c.company");
-        $model->setState("list.direction", "ASC");
-        $depts = $model->getItems();
+        $depts = $model->getItemsWhere(
+            array("c.published=1"),
+            "c.name ASC"
+        );
         $options = array(
             HTMLHelper::_(
                 'select.option', 
