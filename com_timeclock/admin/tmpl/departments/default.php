@@ -13,12 +13,8 @@ $row = new FileLayout('row', __DIR__.'/layouts');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
-$sortFields = $this->sortFields;
 ?>
 <form action="<?php echo Route::_('index.php?option=com_timeclock&view=departments'); ?>" method="post" name="adminForm" id="adminForm">
-    <div id="j-sidebar-container" class="span2">
-        <?php echo $this->sidebar; ?>
-    </div>
     <div id="j-main-container" class="span10">
         <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
         <table id="adminTable" cellpadding="0" cellspacing="0" width="100%" class="table table-striped">

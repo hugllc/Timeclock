@@ -42,9 +42,6 @@ use Joomla\CMS\Router\Route;
 $baseUrl = Route::_("index.php?option=com_timeclock&view=tools&action=dbcheck");
 ?>
 <form id="adminForm">
-<div id="j-sidebar-container" class="span2">
-    <?php echo $this->sidebar; ?>
-</div>
 <div id="j-main-container" class="span10">
     <p>
     <?php print Text::_("COM_TIMECLOCK_TIMECLOCK_TOOLS_DESC"); ?>

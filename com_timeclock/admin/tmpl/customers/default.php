@@ -13,7 +13,6 @@ $row = new FileLayout('row', __DIR__.'/layouts');
 
 $listOrder  = $this->state->get('list.ordering');
 $listDirn   = strtoupper($this->state->get('list.direction')) or "ASC";
-$sortFields = $this->sortFields;
 ?>
 <form action="<?php echo Route::_('index.php?option=com_timeclock&view=customers'); ?>" method="post" name="adminForm" id="adminForm">
     <div id="j-main-container" class="j-main-container">
