@@ -15,6 +15,10 @@ $toolbar  = new FileLayout('toolbar', __DIR__.'/layouts');
 $export   = new FileLayout('export', dirname(__DIR__).'/layouts');
 $notes    = new FileLayout('notes', dirname(__DIR__).'/layouts');
 
+HTMLHelper::_("jquery.framework");
+JHTML::script(Juri::base()."components/com_timeclock/js/report.js");
+JHTML::script(Juri::base()."components/com_timeclock/js/timeclock.js");
+
 $cols = ($this->payperiod->subtotals * 4) + 3;
 $this->payperiod->cols = $cols;
 
@@ -88,7 +92,6 @@ Factory::getDocument()->setTitle(
         </table>
     </div>
 <form action="<?php Route::_("index.php"); ?>" method="post" name="userform" class="timeclock_report">
-    <input type="hidden" name="controller" value="payroll" />
     <input type="hidden" name="view" value="payroll" />
     <?php print HTMLHelper::_("form.token"); ?>
 </form>
@@ -128,6 +131,7 @@ Factory::getDocument()->setTitle(
         </tr>
     </tfoot>
 </table>
+
 <?php 
     /*
     foreach ($this->users as $user_id => $user) {
@@ -137,4 +141,14 @@ Factory::getDocument()->setTitle(
     }
     */
 ?>
+<script type="text/JavaScript">
+    Report.filter    = { start: "<?php print $this->payperiod->start; ?>" };
+    Report.projects  = <?php print json_encode($this->projects); ?>;
+    Report.data      = <?php print json_encode($this->data); ?>;
+    Timeclock.params     = <?php print json_encode($this->params); ?>;
+    Timeclock.report     = 0;
+    
+
+</script>
+
 </div>
