@@ -59,7 +59,7 @@ Factory::getDocument()->setTitle(
         </strong>
     </div>
     <?php if ($this->counts["paid"] > 0): ?>
-    <div>
+    <div class="paid">
         <table class="paid timesheet table table-striped table-bordered table-hover table-condensed">
             <thead>
 <?php 
@@ -114,7 +114,7 @@ Factory::getDocument()->setTitle(
     </div>
     <?php endif; ?>
     <?php if ($this->counts["unpaid"] > 0): ?>
-    <div>
+    <div class="volunteer">
         <table class="volunteer timesheet">
             <thead>
 <?php 

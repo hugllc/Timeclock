@@ -361,7 +361,7 @@ class TimesheetModel extends DefaultModel
         if (($max != 0) && ($max <= $hours_ytd)) {
             $entry->nonewhours = 0;
         } else {
-            if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID" || ($entry->type == "FLOATING_HOLIDAY") )) {
+            if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID") || ($entry->type == "FLOATING_HOLIDAY") || ($entry->type == "VOLUNTEER")) {
                 $entry->nohours = 0;
                 $entry->nonewhours = 0;
             }
