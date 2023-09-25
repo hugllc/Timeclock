@@ -9,10 +9,6 @@ defined('_JEXEC') or die();
 
 HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
 
-print "<pre>";
-var_dump($displayData->timeclock["manager"]);
-print "</pre>";
-
 $notes    = new FileLayout('notes', dirname(dirname(__DIR__)).'/layouts');
 
 $manager  = empty($displayData->timeclock["manager"]) ? "Unknown" : Factory::getUser($displayData->timeclock["manager"])->name;
