@@ -307,14 +307,12 @@ class TimesheetModel extends DefaultModel
             $query = $this->_buildProjQUery();
             $list = $this->_getList($query, 0, 0);
             $this->_projects = array(
-            /*
                 0 => array(
                     "id"          => 0,
                     "name"        => Text::_("JNONE"),
                     "description" => "",
                     "proj"        => array(),
                 )
-            */
             );
             $ret = &$this->_projects;
             foreach ($list as $entry) {
