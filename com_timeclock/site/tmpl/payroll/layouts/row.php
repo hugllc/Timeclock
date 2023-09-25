@@ -11,7 +11,6 @@ HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
 
 $notes    = new FileLayout('notes', dirname(dirname(__DIR__)).'/layouts');
 
-$manager  = empty($displayData->timeclock["manager"]) ? "Unknown" : Factory::getUser($displayData->timeclock["manager"])->name;
 $user_id = $displayData->id;
 $name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
 $class    = "user-".$user_id;
@@ -68,7 +67,7 @@ $modalParams['closeButton'] = true;
                     <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
                     </a>
                 </td>
-                <td class="approved <?php print $displayData->approved ? "yes" : "no"; ?> hasToolTip" title="<?php print $manager; ?>">
+                <td class="approved <?php print $displayData->approved ? "yes" : "no"; ?> hasToolTip" title="<?php print $displayData->manager->name; ?>">
                     <?php print $displayData->approved ? Text::_("JYES") : Jtext::_("JNO"); ?>
                 </td>
                 <td class="hours">

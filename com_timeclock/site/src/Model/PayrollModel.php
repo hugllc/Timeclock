@@ -140,7 +140,8 @@ class PayrollModel extends ReportModel
         $days   = 0;
         $return = array(
             "totals" => array("total" => 0),
-            "notes"  => $notes
+            "notes"  => $notes,
+            "managers" => array(),
         );
         foreach (array_keys($dates) as $date) {
             if (($days++ % $split) == 0) {
@@ -199,6 +200,7 @@ class PayrollModel extends ReportModel
         }
         $return["notes"] = $notes;
         $return["users"] = $this->_fixUsers($users);
+        $return["managers"] = $this->_getManagers($return["users"]);
 
         $this->_checkOvertime($return);
         return $return;
@@ -226,6 +228,41 @@ class PayrollModel extends ReportModel
         return $users;
     }
     /**
+     * Fixes the user array so the right number are there, and they are in name order
+     * 
+     * @param object &$users The user array to fix
+     * 
+     * @return void
+     */
+    private function _getManagers(&$users) 
+    {
+        $managers = array();
+        foreach ($users as $key => $user) {
+            $key = (int)$user->timeclock["manager"];
+            if (!isset($managers[$key])) {
+                $managers[$key] = Factory::getUser($user->timeclock["manager"]);
+                $managers[$key]->done = 0;
+                $managers[$key]->notdone = 0;
+                $managers[$key]->users = array();
+            }
+            $managers[$key]->users[] = $user->name;
+
+            if ($user->approved) {
+                $managers[$key]->done++;
+            } else {
+                $managers[$key]->notdone++;
+            }
+
+        }
+        uasort(
+            $managers,
+            function ($user1, $user2) {
+                return strcmp($user1->name, $user2->name);
+            }
+        );
+        return $managers;
+    }
+    /**
     * Checks to make sure this project exists
     *
     * @param object &$row The row to check
@@ -241,6 +278,8 @@ class PayrollModel extends ReportModel
         $timesheetApproved = isset($user->timeclock["timesheetApproved"]) ? $user->timeclock["timesheetApproved"] : 0;
         $user->approved = DateHelper::compareDates($timesheetApproved, $start) >= 0;
         $eend = !empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
+
+        $user->manager = Factory::getUser($user->timeclock["manager"]);
 
         if (($user->block) && ($eend == 0)) {
             $user->error .= Text::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");

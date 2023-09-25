@@ -78,6 +78,7 @@ class HtmlView extends BaseHtmlView
 
         $this->data     = $this->getModel()->listItems();
         $this->users    = $this->data["users"];
+        $this->managers = $this->data["managers"];
 
         $this->projects = $this->getModel()->listProjects();
         $this->export   = array(
