@@ -9,6 +9,7 @@ use Joomla\CMS\Language\Text;
             <th><?php print Text::_("COM_TIMECLOCK_APPROVED"); ?></th>
             <th><?php print Text::_("COM_TIMECLOCK_WORKED"); ?> </th>
             <th><?php print Text::_("COM_TIMECLOCK_PTO"); ?> </th>
+            <th><?php print Text::_("COM_TIMECLOCK_VOLUNTEER"); ?> </th>
             <th><?php print Text::_("COM_TIMECLOCK_HOLIDAY"); ?> </th>
             <th><?php print Text::_("COM_TIMECLOCK_SUBTOTAL"); ?> </th>
             <th><?php print Text::_("COM_TIMECLOCK_OVERTIME"); ?> </th>

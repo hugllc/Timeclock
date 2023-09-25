@@ -91,6 +91,7 @@
             <option value="HOLIDAY">COM_TIMECLOCK_HOLIDAY</option>
             <option value="FLOATING_HOLIDAY">COM_TIMECLOCK_FLOATING_HOLIDAY</option>
             <option value="UNPAID">COM_TIMECLOCK_UNPAID</option>
+            <option value="VOLUNTEER">COM_TIMECLOCK_VOLUNTEER</option>
         </field>
         <field
             name="parent_id"

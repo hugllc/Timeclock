@@ -159,11 +159,12 @@ class PayrollModel extends ReportModel
                 $return[$user_id] = isset($return[$user_id]) ? $return[$user_id] : array();
                 if (!isset($return[$user_id][$period])) {
                     $return[$user_id][$period] = (object)array(
-                        "worked"   => 0,
-                        "pto"      => 0,
-                        "holiday"  => 0,
-                        "subtotal" => 0,
-                        "overtime" => 0,
+                        "worked"    => 0,
+                        "pto"       => 0,
+                        "holiday"   => 0,
+                        "volunteer" => 0,
+                        "subtotal"  => 0,
+                        "overtime"  => 0,
                     );
                 }
                 $this->checkTimesheet($row);
@@ -178,6 +179,9 @@ class PayrollModel extends ReportModel
                     break;
                 case "PTO":
                     $return[$user_id][$period]->pto += $row->hours;
+                    break;
+                case "VOLUNTEER":
+                    $return[$user_id][$period]->volunteer += $row->hours;
                     break;
                 default:
                     $return[$user_id][$period]->worked += $row->hours;

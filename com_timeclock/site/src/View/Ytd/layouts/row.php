@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Language\Text;
 if (!$displayData->hide) :
-    $user_id = $displayData->user_id;
+    $user_id = $displayData->id;
     $total   = isset($displayData->data["total"]) ? $displayData->data["total"] : "0";
     $places  = $displayData->genparams->get("decimalPlaces");
     $zero    = '<span class="zero">0</span>';

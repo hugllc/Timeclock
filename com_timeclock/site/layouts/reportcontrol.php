@@ -82,7 +82,7 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
             <?php print HTMLHelper::_("calendar", $displayData->start, "start", "startDate", '%Y-%m-%d', array("class" => "small")); ?>
             <h5><?php echo Text::_('COM_TIMECLOCK_to');?></h5>
             <?php print HTMLHelper::_("calendar", $displayData->end, "end", "endDate", '%Y-%m-%d', array("class" => "small")); ?>
-            <?php if ($displayData->datatype) { ?>
+            <?php if (property_exists($displayData, "datatype")) { ?>
             <hr class="hr-condensed" />
             <h5>Show:</h5><?php print HTMLHelper::_('select.genericlist', $typeoptions, 'datatype', 'class="inputbox form-select small"', 'value', 'text', $displayData->datatype); ?>
             <?php } ?>

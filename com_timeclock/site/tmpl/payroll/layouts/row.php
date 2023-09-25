@@ -11,22 +11,24 @@ HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
 
 $notes    = new FileLayout('notes', dirname(dirname(__DIR__)).'/layouts');
 
-$user_id = $displayData->id;
-$name  = empty($displayData->name) ? "User ".$displayData->user_id : $displayData->name;
-$class    = "user-".$user_id;
-$worked   = 0;
-$pto      = 0;
-$holiday  = 0;
-$subtotal = 0;
-$overtime = 0;
+$user_id   = $displayData->id;
+$name      = empty($displayData->name) ? "User ".$user_id : $displayData->name;
+$class     = "user-".$user_id;
+$worked    = 0;
+$pto       = 0;
+$holiday   = 0;
+$subtotal  = 0;
+$overtime  = 0;
+$volunteer = 0;
 for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
     if (isset($displayData->data[$w])) {
         $data = (object)$displayData->data[$w];
-        $worked   += $data->worked;
-        $pto      += $data->pto;
-        $holiday  += $data->holiday;
-        $subtotal += $data->subtotal;
-        $overtime += $data->overtime;
+        $worked    += $data->worked;
+        $pto       += $data->pto;
+        $holiday   += $data->holiday;
+        $subtotal  += $data->subtotal;
+        $overtime  += $data->overtime;
+        $volunteer += $data->volunteer;
     }
 }
 $overtimeclass = ($overtime > 0) ? "highlight" : "";
@@ -75,6 +77,9 @@ $modalParams['closeButton'] = true;
                 </td>
                 <td class="hours">
                     <span id="pto-<?php print $user_id; ?>" class="pto <?php print $class;?>"><?php print $pto; ?></span>
+                </td>
+                <td class="hours">
+                    <span id="volunteer-<?php print $user_id; ?>" class="volunteer <?php print $class;?>"><?php print $volunteer; ?></span>
                 </td>
                 <td class="hours">
                     <span id="holiday-<?php print $user_id; ?>" class="holiday <?php print $class;?>"><?php print $holiday; ?></span>

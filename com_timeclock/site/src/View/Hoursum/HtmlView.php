@@ -60,11 +60,12 @@ defined('_JEXEC') or die();
 class HtmlView extends BaseHtmlView
 {
     private $_projType = array(
-        "PROJECT"  => "COM_TIMECLOCK_PROJECT",
-        "CATEGORY" => "JCATEGORY",
-        "PTO"      => "COM_TIMECLOCK_PTO",
-        "HOLIDAY"  => "COM_TIMECLOCK_HOLIDAY",
-        "UNPAID"   => "COM_TIMECLOCK_VOLUNTEER",
+        "PROJECT"   => "COM_TIMECLOCK_PROJECT",
+        "CATEGORY"  => "JCATEGORY",
+        "PTO"       => "COM_TIMECLOCK_PTO",
+        "HOLIDAY"   => "COM_TIMECLOCK_HOLIDAY",
+        "UNPAID"    => "COM_TIMECLOCK_UNPAID",
+        "VOLUNTEER" => "COM_TIMECLOCK_VOLUNTEER",
     );
     /**
     * Renders this view

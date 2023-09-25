@@ -37,6 +37,7 @@ namespace HUGLLC\Component\Timeclock\Site\Model;
 
 use HUGLLC\Component\Timeclock\Site\Helper\DateHelper;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
+use Joomla\CMS\Factory;
 
 defined( '_JEXEC' ) or die();
 
@@ -88,6 +89,13 @@ class YtdModel extends ReportModel
             $this->checkTimesheet($row);
             $proj_id                     = (int)$row->project_id;
             $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
+            if (is_null($user_id)) {
+                continue;
+            }
+            if (!isset($users[$user_id])) {
+                $users[$user_id] = Factory::getUser($user_id);
+                $this->checkUser($users[$user_id]);
+            }
             $this->checkUserRow($users[$user_id], $row);
             if ($users[$user_id]->hide) {
                 continue;
@@ -116,7 +124,8 @@ class YtdModel extends ReportModel
         $return["cols"] = array(
             "PROJECT" => "COM_TIMECLOCK_WORKED", 
             "HOLIDAY" => "COM_TIMECLOCK_HOLIDAY", 
-            "UNPAID" => "COM_TIMECLOCK_VOLUNTEER", 
+            "UNPAID" => "COM_TIMECLOCK_UNPAID", 
+            "VOLUNTEER" => "COM_TIMECLOCK_VOLUNTEER", 
             "PTO" => "COM_TIMECLOCK_PTO_TAKEN",
             "total"  => "COM_TIMECLOCK_TOTAL_WORKED",
             "PTO_ACCRUAL" => "COM_TIMECLOCK_PTO_ACCRUED",

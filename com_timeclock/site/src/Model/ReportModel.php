@@ -333,7 +333,7 @@ class ReportModel extends DefaultModel
     private function _checkProject(&$entry)
     {
         $entry->nohours = 1;
-        if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID")) {
+        if (($entry->type == "PTO") || ($entry->type == "PROJECT") || ($entry->type == "UNPAID") || ($entry->type == "VOLUNTEER")) {
             $entry->nohours = 0;
         }
         $entry->name = Text::_($entry->name);
@@ -372,6 +372,14 @@ class ReportModel extends DefaultModel
     */
     protected function checkUserRow(&$user, &$row)
     {
+        if ($user) {
+            if (!property_exists($user, "hide")) {
+                $user->hide = false;
+            }
+            if (!property_exists($user, "pruned")) {
+                $user->pruned = false;
+            }
+        }
         if ($row->hours > 0) {
             if ($user) {
                 $this->checkUser($user);
