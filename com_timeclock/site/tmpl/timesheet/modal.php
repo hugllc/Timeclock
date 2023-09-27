@@ -58,6 +58,9 @@ $allproj = array();
     </div>
 </form>
 <script type="text/JavaScript">
+    jQuery( document ).ready(function() {
+        Addhours.reset(<?php print $proj->project_id ?>, '<?php print $this->date; ?>', window.parent.document.body);
+    });
 </script>
 
 </div>

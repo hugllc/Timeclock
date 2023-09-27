@@ -21,13 +21,13 @@ var Addhours = {
      * 
      * @return null
      */
-    reset: function (proj_id, date)
+    reset: function (proj_id, date, context = document)
     {
         this.proj_id = proj_id;
         this.date = date;
         var total = 0;
         var sel = ".hours .date-"+date+":not(.proj-"+proj_id+")";
-        jQuery(sel).each(function(ind,elem){
+        jQuery(sel, context).each(function(ind,elem){
             var hours = parseFloat(jQuery(elem).text());
             if (!isNaN(hours)) {
                 total += hours;
