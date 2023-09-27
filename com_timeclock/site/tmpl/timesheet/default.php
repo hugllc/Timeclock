@@ -185,6 +185,7 @@ Factory::getDocument()->setTitle(
                 "worked" => $this->data[$proj_id],
             );
         }
+        print "<h2>Notes:</h2>";
         print $notes->render($user);
     }
 ?>

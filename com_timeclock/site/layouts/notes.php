@@ -3,7 +3,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div id="notes-<?php print $displayData->user_id; ?>" class="notes">
-    <h2 class="name"><?php print $displayData->name; ?></h2>
 <?php if (empty($displayData->data)) : ?>
         <div class="nonotes">
             <?php print Text::_("COM_TIMECLOCK_NO_NOTES_FOUND"); ?>
