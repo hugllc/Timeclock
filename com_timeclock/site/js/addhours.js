@@ -431,7 +431,7 @@ var Addhours = {
         var ret      = true;
         
         var hours = this.getHours(fieldset);
-        if ((hours > 0)
+        if (((hours - this.hoursoffset) > 0)
             && (jQuery(obj).val().length < Timeclock.params.minNoteChars)) {
             parent.find("span.minchars").addClass("invalid");
             this.setValid(false, parent);
