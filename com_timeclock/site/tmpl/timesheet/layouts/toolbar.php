@@ -3,7 +3,7 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die(); 
-$url = "index.php?option=com_timeclock&controller=timesheet&id=".$displayData->user->id;
+$url = "index.php?option=com_timeclock&controller=timesheet&id=".$displayData->user->id."&date=".$displayData->payperiod->start;
 ?>
 <div class="toolbar" style="clear: both;">
 <?php if ($displayData->user->me && !$displayData->payperiod->approved): ?>
