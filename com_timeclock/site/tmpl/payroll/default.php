@@ -97,8 +97,10 @@ Factory::getDocument()->setTitle(
 </form>
 <h3><?php print Text::_("COM_TIMECLOCK_USER_MANAGERS_APPROVAL"); ?></h3>
 <?php
-    $done = 0;
-    $notdone = 0;
+    $total = array(
+        "done" => 0,
+        "notdone" => 0,
+    );
 ?>
 <table class="report table table-striped table-bordered table-hover table-condensed" style="width: auto;">
 <thead>
@@ -111,23 +113,24 @@ Factory::getDocument()->setTitle(
     </thead>
     <tbody>
 <?php foreach ($this->managers as $user_id => $user): ?>
-        <?php $counts = $user->counts; ?>
-        <?php if (($counts["done"] + $counts["notdone"]) == 0) continue; ?>
-        <?php $done += $counts["done"]; ?>
-        <?php $notdone += $counts["notdone"]; ?>
+        <?php $done = sizeof($user->counts["done"]); ?>
+        <?php $notdone = sizeof($user->counts["notdone"]); ?>
+        <?php if (($done + $notdone) == 0) continue; ?>
+        <?php $total["done"] += $done; ?>
+        <?php $total["notdone"] += $notdone; ?>
         <tr>
             <td class="hasToolTip" title="<?php print implode("\r\n", $user->users); ?>"><?php print $user->name; ?></td>
-            <td class="text-center"><?php print $counts["done"]; ?></td>
-            <td class="text-center"><?php print $counts["notdone"]; ?></td>
-            <td class="text-center"><?php print round(($counts["done"] / ($counts["notdone"] + $counts["done"])) * 100); ?>%</td>
+            <td class="text-center hasToolTip" title="<?php print implode("\r\n", $user->counts["done"]); ?>"><?php print $done; ?></td>
+            <td class="text-center hasToolTip" title="<?php print implode("\r\n", $user->counts["notdone"]); ?>"><?php print $notdone; ?></td>
+            <td class="text-center"><?php print round(($done / ($notdone + $done)) * 100); ?>%</td>
         </tr>
 <?php endforeach; ?>
     </tbody>
     <tfoot>
     <tr>
             <th><?php print Text::_("COM_TIMECLOCK_TOTAL") ?></th>
-            <td class="text-center"><?php print $done; ?></td>
-            <td class="text-center"><?php print $notdone; ?></td>
+            <td class="text-center"><?php print $total["done"]; ?></td>
+            <td class="text-center"><?php print $total["notdone"]; ?></td>
             <th>&nbsp;</th>
         </tr>
     </tfoot>

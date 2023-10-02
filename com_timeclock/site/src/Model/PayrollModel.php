@@ -246,15 +246,15 @@ class PayrollModel extends ReportModel
             $key = (int)$user->timeclock["manager"];
             if (!isset($managers[$key])) {
                 $managers[$key] = clone Factory::getUser($user->timeclock["manager"]);
-                $managers[$key]->counts = array("done" => 0, "notdone" => 0);
+                $managers[$key]->counts = array("done" => array(), "notdone" => array());
                 $managers[$key]->users = array();
             }
             $managers[$key]->users[] = $user->name;
 
             if ($user->approved) {
-                $managers[$key]->counts["done"]++;
+                $managers[$key]->counts["done"][] = $user->name;
             } else {
-                $managers[$key]->counts["notdone"]++;
+                $managers[$key]->counts["notdone"][] = $user->name;
             }
 
         }
