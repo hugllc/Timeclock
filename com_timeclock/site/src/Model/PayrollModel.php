@@ -245,7 +245,7 @@ class PayrollModel extends ReportModel
         foreach ($users as $key => $user) {
             $key = (int)$user->timeclock["manager"];
             if (!isset($managers[$key])) {
-                $managers[$key] = Factory::getUser($user->timeclock["manager"]);
+                $managers[$key] = clone Factory::getUser($user->timeclock["manager"]);
                 $managers[$key]->done = 0;
                 $managers[$key]->notdone = 0;
                 $managers[$key]->users = array();
