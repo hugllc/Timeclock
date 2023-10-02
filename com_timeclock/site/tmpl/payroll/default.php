@@ -106,19 +106,20 @@ Factory::getDocument()->setTitle(
             <th><?php print Text::_("COM_TIMECLOCK_MANAGER") ?></th>
             <th class="text-center"><?php print Text::_("COM_TIMECLOCK_DONE") ?></th>
             <th class="text-center"><?php print Text::_("COM_TIMECLOCK_NOT_DONE") ?></th>
-            <th class="text-center">%</th>
+            <th class="text-center">&nbsp;</th>
         </tr>
     </thead>
     <tbody>
 <?php foreach ($this->managers as $user_id => $user): ?>
-        <?php if (($user->done + $user->notdone) == 0) continue; ?>
-        <?php $done += $user->done; ?>
-        <?php $notdone += $user->notdone; ?>
+        <?php $counts = $user->counts; ?>
+        <?php if (($counts["done"] + $counts["notdone"]) == 0) continue; ?>
+        <?php $done += $counts["done"]; ?>
+        <?php $notdone += $counts["notdone"]; ?>
         <tr>
             <td class="hasToolTip" title="<?php print implode("\r\n", $user->users); ?>"><?php print $user->name; ?></td>
-            <td class="text-center"><?php print $user->done; ?></td>
-            <td class="text-center"><?php print $user->notdone; ?></td>
-            <td class="text-center"><?php print round(($user->done / ($user->notdone + $user->done)) * 100); ?></td>
+            <td class="text-center"><?php print $counts["done"]; ?></td>
+            <td class="text-center"><?php print $counts["notdone"]; ?></td>
+            <td class="text-center"><?php print round(($counts["done"] / ($counts["notdone"] + $counts["done"])) * 100); ?>%</td>
         </tr>
 <?php endforeach; ?>
     </tbody>
