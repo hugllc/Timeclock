@@ -7,7 +7,7 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Factory;
 defined('_JEXEC') or die(); 
 
-HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
+HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", ["trigger" => "hover"]);
 
 $notes    = new FileLayout('notes', dirname(dirname(__DIR__)).'/layouts');
 

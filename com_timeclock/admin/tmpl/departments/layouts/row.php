@@ -21,7 +21,7 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                         <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'departments.', $canChange, 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
-                        <div class="pull-left hasTooltip" title="<?php print $displayData["data"]->description; ?>">
+                        <div class="pull-left">
                             <?php if ($displayData["data"]->checked_out) : ?>
                                 <?php echo HTMLHelper::_('jgrid.checkedout', $displayData["index"], $displayData["data"]->checked_out, $displayData["data"]->checked_out_time, 'department.', $canCheckin); ?>
                             <?php endif; ?>
@@ -35,6 +35,9 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                     </td>
                     <td class="text-center hidden-phone">
                         <?php echo $displayData["data"]->manager; ?>
+                    </td>
+                    <td class="hidden-phone">
+                        <?php echo $displayData["data"]->description; ?>
                     </td>
                     <td class="text-center hidden-phone">
                         <?php echo $displayData["data"]->department_id; ?>

@@ -98,7 +98,7 @@ var Addhours = {
             var fieldset = jQuery('fieldset#addhours-'+elem.project_id);
             if (!self.validateFieldset(fieldset)) {
                 self.message(elem.project_id, "Check the field values", "danger");
-                fieldset.find('[name="notes"]').on("keypress", self.validateNotes);
+                // fieldset.find('[name="notes"]').on("keypress", self.validateNotes);
             } else {
                 self.post(elem, task);
             }
@@ -205,7 +205,7 @@ var Addhours = {
         var max = Timeclock.params.maxDailyHours;
         var total = this.getHours();
 
-        if (max < this.getHours()) {
+        if (max < total) {
             ret = false;
         }
         fieldset.find("input.hours").each(function(ind, elem) {

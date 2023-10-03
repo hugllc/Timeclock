@@ -22,7 +22,7 @@ $desc       = ($accrual) ? $desc."<br /><strong>".Text::_("COM_TIMECLOCK_AUTOMAT
                         <?php endif; ?>
                     </td>
                     <td class="nowrap has-context">
-                        <div class="pull-left hasTooltip" title="<?php print $desc; ?>">
+                        <div class="pull-left" title="<?php print $desc; ?>">
                             <?php if ($canEdit || $canEditOwn): ?>
                                 <a href="<?php echo Route::_('index.php?option=com_timeclock&task=pto.edit&pto_id='.(int) $displayData["data"]->pto_id); ?>">
                                 <?php echo $displayData["data"]->name; ?></a>

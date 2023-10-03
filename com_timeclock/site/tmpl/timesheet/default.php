@@ -20,7 +20,7 @@ $notes      = new FileLayout('notes', dirname(__DIR__).'/layouts');
 HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timesheet.js");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
-HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", []);
+HTMLHelper::_("bootstrap.tooltip", ".hasTooltip", ["trigger" => "hover"]);
 
 $cols = $this->payperiod->days + 2 + $this->payperiod->subtotals;
 $this->payperiod->cols = $cols;

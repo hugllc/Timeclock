@@ -20,7 +20,7 @@ $checkedOut = $displayData["data"]->checked_out && ($displayData["data"]->checke
                         <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'customers.', $canChange, 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
-                        <div class="pull-left hasTooltip" title="<?php print $displayData["data"]->notes; ?>">
+                        <div class="pull-left">
                             <?php if ($displayData["data"]->checked_out) : ?>
                                 <?php echo HTMLHelper::_('jgrid.checkedout', $displayData["index"], $displayData["data"]->checked_out, $displayData["data"]->checked_out_time, 'customer.', $canCheckin); ?>
                             <?php endif; ?>

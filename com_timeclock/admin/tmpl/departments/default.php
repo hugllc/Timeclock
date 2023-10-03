@@ -6,9 +6,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Layout\FileLayout;
 
-HTMLHelper::_('bootstrap.tooltip');
-HTMLHelper::_('behavior.multiselect');
-
 $row = new FileLayout('row', __DIR__.'/layouts');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
@@ -31,6 +28,9 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                     </th>
                     <th class="text-center hidden-phone">
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_TIMECLOCK_MANAGER', 'manager', $listDirn, $listOrder); ?>
+                    </th>
+                    <th class="hidden-phone">
+                        <?php echo Text::_("COM_TIMECLOCK_DESCRIPTION"); ?>
                     </th>
                     <th width="1%" class="nowrap text-center hidden-phone">
                         <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'd.department_id', $listDirn, $listOrder); ?>

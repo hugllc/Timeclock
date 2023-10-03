@@ -22,7 +22,7 @@ $fancyType  = str_replace("COM_TIMECLOCK_", "", Text::_("COM_TIMECLOCK_".$displa
                         <?php echo HTMLHelper::_('jgrid.published', $displayData["data"]->published, $displayData["index"], 'projects.', $canChange, 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
-                        <div class="pull-left hasTooltip" title="<?php print Text::_($displayData["data"]->description); ?>">
+                        <div class="pull-left" title="<?php print Text::_($displayData["data"]->description); ?>">
                             <?php if ($displayData["data"]->checked_out) : ?>
                                 <?php echo HTMLHelper::_('jgrid.checkedout', $displayData["index"], $displayData["data"]->checked_out, $displayData["data"]->checked_out_time, 'project.', $canCheckin); ?>
                             <?php endif; ?>

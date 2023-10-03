@@ -16,7 +16,7 @@ $name       = substr($displayData["data"]->notes, 0, 60);
                         <?php echo HTMLHelper::_('grid.id', $displayData["index"], $displayData["data"]->timesheet_id, false, "timesheet_id", 'cb'); ?>
                     </td>
                     <td class="nowrap has-context">
-                        <div class="pull-left hasTooltip" title="<?php print $displayData["data"]->notes; ?>">
+                        <div class="pull-left" title="<?php print $displayData["data"]->notes; ?>">
                             <?php if ($canEdit || $canEditOwn): ?>
                                 <a href="<?php echo Route::_('index.php?option=com_timeclock&task=timesheet.edit&timesheet_id='.(int) $displayData["data"]->timesheet_id); ?>">
                                 <?php echo $name; ?></a>
