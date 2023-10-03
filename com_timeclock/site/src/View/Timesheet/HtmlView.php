@@ -69,14 +69,15 @@ class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $layout = $this->getLayout();
 
+        $model = $this->getModel();
         $this->params    = ComponentHelper::getParams('com_timeclock');
-        $this->payperiod = $this->getModel()->getPayperiod();
+        $this->payperiod = $model->getPayperiod();
         $this->payperiod->view = "timesheet";
         $this->actions   = TimeclockHelper::getActions();
-        $this->user      = $this->getModel()->getUser();
-        $this->data      = $this->getModel()->listItems();
-        $this->projects  = $this->getModel()->listProjects();
-        $this->counts    = $this->getModel()->counts();
+        $this->user      = $model->getUser();
+        $this->data      = $model->listItems();
+        $this->projects  = $model->listProjects();
+        $this->counts    = $model->counts();
 
         if (!$this->user->me) {
             $this->payperiod->user_id = $this->user->id;
@@ -93,23 +94,13 @@ class HtmlView extends BaseHtmlView
         );
 
         if (($layout == "addhours") || ($layout == "modal")) {
-            $this->addhours($tpl);
+            if (!$this->user->me) {
+                throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
+            }
+    
+            $this->date      = $this->getModel()->getState('date');
         }
         return parent::display();
-    }
-    /**
-    * Renders this view
-    *
-    * @return unknown
-    */
-    function addhours($tpl)
-    {
-        if (!$this->user->me) {
-            throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
-        }
-
-        $this->date      = $this->getModel()->getState('date');
-        
     }
 }
 ?>
