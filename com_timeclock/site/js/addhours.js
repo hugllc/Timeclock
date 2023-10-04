@@ -12,7 +12,6 @@ var Addhours = {
         jQuery("form.addhours fieldset.addhours").each(function(ind,elem) {
             self.validateFieldset(jQuery(elem));
         });
-        //jQuery("form.addhours input.hours").on("blur", this.validateHours);
     },
     /**
      * This submits the form
@@ -208,7 +207,7 @@ var Addhours = {
         if (max < total) {
             ret = false;
         }
-        fieldset.find("input.hours").each(function(ind, elem) {
+        fieldset.find("input.hours,select.hours").each(function(ind, elem) {
             var res = self._validateHours(elem);
             ret = ret && res;
         });
