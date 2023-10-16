@@ -12,7 +12,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>prices@hugllc.com</authorEmail>
 	<authorUrl>www.hugllc.com</authorUrl>
-    <version>0.9.24</version>
+    <version>0.9.25</version>
 	<description>PLG_USER_TIMECLOCK_DESC</description>
 
 	<files>
