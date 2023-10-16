@@ -175,6 +175,7 @@ Factory::getDocument()->setTitle(
         $user->user_id = $user->id;
         $user->payperiod = $this->payperiod;
         $user->data = array();
+        $user->decimals = $this->params->get("decimalPlaces");
         foreach ($allproj as $proj_id => $proj) {
             if (!isset($this->data[$proj_id])) {
                 continue;

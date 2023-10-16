@@ -11,7 +11,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 <?php foreach ($displayData->data as $proj_id => $proj) : ?>
     <h3><?php print $proj["project_name"]; ?></h3>
     <?php foreach ($proj["worked"] as $date => $row) : ?>
-        <div class="noteheader"><?php print HTMLHelper::_("date", $date); ?> (<?php print $row->hours; ?> <?php print Text::_("COM_TIMECLOCK_HOURS"); ?>)</div>
+        <div class="noteheader"><?php print HTMLHelper::_("date", $date); ?> (<?php print round($row->hours, $displayData->decimals); ?> <?php print Text::_("COM_TIMECLOCK_HOURS"); ?>)</div>
         <div class="note"><?php print $row->notes; ?></div>
     <?php endforeach; ?>
 <?php endforeach; ?>
