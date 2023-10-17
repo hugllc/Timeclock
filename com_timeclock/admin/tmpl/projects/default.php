@@ -6,6 +6,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Layout\FileLayout;
 
+HTMLHelper::_("jquery.framework");
+
 $row = new FileLayout('row', __DIR__.'/layouts');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));

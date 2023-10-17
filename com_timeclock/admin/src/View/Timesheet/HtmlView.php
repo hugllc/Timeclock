@@ -98,7 +98,7 @@ class HtmlView extends BaseHtmlView
         $toolbar    = Toolbar::getInstance();
 
         ToolbarHelper::title(
-            Text::sprintf("COM_TIMECLOCK_HOLIDAY_EDIT_TITLE", $title), "clock"
+            Text::sprintf("COM_TIMECLOCK_TIMESHEET_EDIT_TITLE", $title), "clock"
         );
         $toolbar->apply('timesheet.apply');
         $toolbar->save('timesheet.save');

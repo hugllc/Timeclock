@@ -7,6 +7,9 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Language\Text;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 use HUGLLC\Component\Timeclock\Administrator\Helper\ViewHelper;
+
+HTMLHelper::_("jquery.framework");
+
 ?>
 <form action="<?php echo Route::_("index.php?option=com_timeclock&controller=timesheet"); ?>" method="post" id="adminForm" name="adminForm">
     <div class="row">

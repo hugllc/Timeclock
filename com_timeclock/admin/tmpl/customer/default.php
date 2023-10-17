@@ -5,6 +5,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Layout\LayoutHelper;
 
+HTMLHelper::_("jquery.framework");
+
 ?>
 <form action="<?php echo Route::_("index.php?option=com_timeclock&controller=customer"); ?>" method="post" id="adminForm" name="adminForm">
     <div class="row">

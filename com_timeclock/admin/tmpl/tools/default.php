@@ -38,6 +38,9 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_("jquery.framework");
 
 $baseUrl = Route::_("index.php?option=com_timeclock&view=tools&action=dbcheck");
 ?>

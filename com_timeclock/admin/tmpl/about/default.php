@@ -35,6 +35,10 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_("jquery.framework");
+
 ?>
 <form id="adminForm">
 <div id="j-sidebar-container" class="span2">

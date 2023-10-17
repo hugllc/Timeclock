@@ -129,7 +129,7 @@ class HtmlView extends BaseHtmlView
         // Get the toolbar object instance
         $bar = ToolBar::getInstance();
         ToolbarHelper::title(
-            Text::_("COM_TIMECLOCK_TIMECLOCK_HOLIDAYS"), "clock"
+            Text::_("COM_TIMECLOCK_TIMECLOCK_TIMESHEETS"), "clock"
         );
         if ($actions->get('core.create')) {
             ToolbarHelper::addNew('timesheet.add');

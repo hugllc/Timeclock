@@ -37,6 +37,9 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_("jquery.framework");
 
 $baseUrl = "index.php?option=com_timeclock&controller=tools";
 ?>

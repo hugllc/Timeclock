@@ -52,6 +52,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die();
 /**
@@ -92,6 +93,7 @@ class plgUserTimeclock extends CMSPlugin
     public function onContentPrepareData($context, $data)
     {
         FormHelper::addFieldPrefix('HUGLLC\\Component\\Timeclock\\Administrator\\Field');
+        HTMLHelper::_("jquery.framework");
 
         // Check we are manipulating a valid form.
         if (!in_array($context, array('com_users.timeclock','com_users.user', 'com_users.profile'))) {

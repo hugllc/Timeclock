@@ -70,7 +70,7 @@ class TimeclockUserProjectsField extends FormField
         $displayData["outOptions"] = array();
         $displayData["inOptions"] = array();
         $model = new ProjectsModel();
-        $projects = $model->getItems(array("p.published=1", "p.type <> 'CATEGORY'"), null, false);
+        $projects = $model->getItemsWhere(array("p.published=1", "p.type <> 'CATEGORY'"), null, false);
         foreach ($projects as $row) {
             $displayData["outOptions"][$row->project_id] = HtmlHelper::_(
                 'select.option', 
