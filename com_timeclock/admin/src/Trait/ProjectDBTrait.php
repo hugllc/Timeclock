@@ -240,7 +240,7 @@ trait ProjectDBTrait
         foreach ($users as $user) {
             $values[] = $db->quote((int)$project_id).", ".$db->quote((int)$user);
         }
-        return $this->_addUser($values);
+        return $this->_addUsers($values);
     }
     /**
     * Adds users to this project
@@ -249,7 +249,7 @@ trait ProjectDBTrait
     * 
     * @return bool
     */
-    private function _addUser($values)
+    private function _addUsers($values)
     {
         if (count($values) < 1) {
             return true;
@@ -261,6 +261,46 @@ trait ProjectDBTrait
         foreach ($values as $val) {
             $query->values($val);
         }
+        $db->setQuery($query);
+        return $db->execute();
+    }
+    /**
+    * Adds users to this project
+    *
+    * @param array $values array of strings of data
+    * 
+    * @return bool
+    */
+    public function addUser($user_id, $project_id)
+    {
+        $this->removeUser($user_id, $project_id);
+        $db = Factory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->insert($db->quoteName('#__timeclock_users'));
+        $query->columns($db->quoteName(array("project_id", "user_id")));
+        $query->values($db->quote((int)$project_id).", ".$db->quote((int)$user_id));
+        $db->setQuery($query);
+        return $db->execute();
+
+    }
+    /**
+    * Adds users to this project
+    *
+    * @param array $values array of strings of data
+    * 
+    * @return bool
+    */
+    public function removeUser($user_id, $project_id)
+    {
+        $db = Factory::getDBO();
+        $query = $db->getQuery(TRUE);
+        $query->delete($db->quoteName('#__timeclock_users'));
+        $query->where(
+            array(
+                $db->quoteName("project_id")." = ".$db->quote((int)$project_id), 
+                $db->quoteName("user_id")." = ".$db->quote((int)$user_id), 
+            )
+        );
         $db->setQuery($query);
         return $db->execute();
     }

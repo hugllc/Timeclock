@@ -72,8 +72,12 @@ class TimeclockHistoryField extends FormField
             $this->value = array("timestamps" => array());
         }
         $ts = $this->value["timestamps"];
-        krsort($ts);
-        $this->value["timestamps"] = $ts;
+        if (is_array($ts)) {
+            krsort($ts);
+            $this->value["timestamps"] = $ts;
+        } else {
+            $this->value["timestamps"] = [];
+        }
         foreach ($this->value["timestamps"] as $date => $user) {
             if (empty($date)) {
                 continue;

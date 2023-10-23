@@ -40,7 +40,7 @@ check:
 	fi;
 	@./fixini.php
 	
-archive package: rel/pkg_timeclock.zip rel/${PKG_WITH_VERSION} clean
+archive package: clean rel/pkg_timeclock.zip rel/${PKG_WITH_VERSION}
 
 	
 rel/pkg_timeclock.zip: build/pkg_timeclock/pkg_timeclock.xml build/pkg_timeclock/packages/com_timeclock.zip build/pkg_timeclock/packages/plg_user_timeclock.zip build/pkg_timeclock/packages/mod_timeclockinfo.zip 

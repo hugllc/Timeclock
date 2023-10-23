@@ -262,7 +262,7 @@ class plgUserTimeclock extends CMSPlugin
         $model = TimeclockHelper::getModel('project');
         if (isset($data['addProject']) && isset($data['addProject']['out'])) {
             foreach ((array)$data['addProject']['out'] as $proj) {
-                $model->removeUsers((int)$id, (int)$proj);
+                $model->removeUser((int)$id, (int)$proj);
             }
         }
         unset($data['addProject']['out']);
@@ -280,7 +280,7 @@ class plgUserTimeclock extends CMSPlugin
         $model = TimeclockHelper::getModel('project');
         if (isset($data['addProject']) && isset($data['addProject']['in'])) {
             foreach ((array)$data['addProject']['in'] as $proj) {
-                $model->addUsers((int)$id, (int)$proj);
+                $model->addUser((int)$id, (int)$proj);
             }
         }
         unset($data['addProject']['in']);
@@ -299,7 +299,7 @@ class plgUserTimeclock extends CMSPlugin
             $model = TimeclockHelper::getModel('project');
             $projects = $model->listUserProjects($data['addProjFromUser']);
             foreach (array_keys((array)$projects) as $proj) {
-                $model->addUsers((int)$id, (int)$proj);
+                $model->addUser((int)$id, (int)$proj);
             }
 
         }

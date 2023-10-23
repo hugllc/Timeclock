@@ -115,7 +115,6 @@
                 description="PLG_USER_TIMECLOCK_ADD_PROJECTS_DESC"
                 default=""
                 size="10"
-                multiple="true"
                 required="false"
                 />
             <field
