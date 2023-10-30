@@ -176,7 +176,7 @@ class ReportModel extends DefaultModel
         $datatype = $this->getState("datatype");
         foreach ($list as $row) {
             $this->checkTimesheet($row);
-            $proj_id                     = (int)$row->project_id;
+            $proj_id = (int)$row->project_id;
             $user_id = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
             if ($row->hours == 0) {
                 continue;
