@@ -389,23 +389,21 @@ trait PtoDBTrait
             return true;
         }
         
-        $row = new stdClass();
         $d = DateHelper::explodeDate($date);
-        if (!is_object($row)) {
-            return false;
-        }
-        $row->pto_id     = $this->find($id, $date);
-        $row->type       = "ACCRUAL";
-        $row->user_id    = $id;
-        $row->hours      = $hours;
-        $row->valid_from = $date;
-        $row->valid_to   = $d["y"]."-12-31";
-        $row->created_by = Factory::getUser()->id;
-        $row->created    = date("Y-m-d H:i:s");
-        $row->modified   = $row->created;
-        $row->notes      = "Automatic Accrual";
-        
-        return parent::store($row);
+        $now = Factory::getDate()->toSql();
+        $row = array(
+            "pto_id"     => $this->find($id, $date),
+            "type"       => "ACCRUAL",
+            "user_id"    => $id,
+            "hours"      => $hours,
+            "valid_from" => $date,
+            "valid_to"   => $d["y"]."-12-31",
+            "created_by" => Factory::getUser()->id,
+            "created"    => $now,
+            "notes"      => "Automatic Accrual",
+        );
+
+        return $this->save($row);
     }
     /**
     * Sets an accrual record for the
@@ -429,7 +427,7 @@ trait PtoDBTrait
             $status = TimeclockHelper::getUserParam('status', $id);
             $hpy    = ($status == "FULLTIME") ? 2080 : 1040;
             $decimals  = (int)TimeclockHelper::getParam("decimalPlaces");
-            $timesheet = TimeclockHelper::getModel("Timesheet");
+            $timesheet = TimeclockHelper::getModel("Timesheet", false);
             $worked    = (float)$timesheet->periodTotal($user->id, $start, $end, true);
             $hours     = ($rate / $hpy) * $worked;
             if (($hours + $ytd) > $rate) {

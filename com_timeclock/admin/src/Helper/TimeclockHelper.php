@@ -43,6 +43,7 @@ use Joomla\CMS\Helper\ContentHelper;
 use HUGLLC\Component\Timeclock\Administrator\Model\ToolsModel;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 use Joomla\CMS\Language\Text;
+use HUGLLC\Component\Timeclock\Site\Helper\DateHelper;
 
 require_once JPATH_ROOT."/plugins/user/timeclock/timeclock.php";
 
@@ -260,7 +261,7 @@ class TimeclockHelper
         if ($service == 0) {
             return 0;
         }
-        if (!TimeclockHelpersDate::checkEmploymentDates($start, $end, $date)) {
+        if (!DateHelper::checkEmploymentDates($start, $end, $date)) {
             return 0;
         }
         if (!isset($rates[$status]) || !is_array($rates[$status])) {
