@@ -85,6 +85,7 @@ class HtmlView extends BaseHtmlView
         $this->filter->start     = $this->start;
         $this->filter->end       = $this->end;
         $this->filter->datatype  = $this->datatype;
+        $this->filter->users     = $this->users;
         $this->export   = array(
             "CSV" => "csv",
             "Excel" => "xlsx",

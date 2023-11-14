@@ -64,10 +64,11 @@ use HUGLLC\Component\Timeclock\Administrator\Model\CustomersModel;
         'filter_proj_manager_id',
         HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->proj_manager_id, true)
     );
+    $useroptions = ViewHelper::getUsersOptions($displayData->users);
     Sidebar::addFilter(
         Text::_('COM_TIMECLOCK_SELECT_USER'),
         'filter_user_id',
-        HTMLHelper::_('select.options', $options, 'value', 'text', $displayData->user_id, true)
+        HTMLHelper::_('select.options', $useroptions, 'value', 'text', $displayData->user_id, true)
     );
     $typeoptions = array(
         JHTML::_('select.option', "hours", Text::_("COM_TIMECLOCK_HOURS")),

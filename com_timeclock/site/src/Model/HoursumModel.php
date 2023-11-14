@@ -84,13 +84,18 @@ class HoursumModel extends ReportModel
             $user_id         = !is_null($row->user_id) ? (int)$row->user_id : (int)$row->worked_by;
             $proj_id         = (int)$row->project_id;
 
+            
             $proj_manager_id = (int)$row->proj_manager_id;
             $user_manager_id = (isset($users[$user_id]->timeclock["manager"])) ? (int)$users[$user_id]->timeclock["manager"] : 0;
             $department_id   = (int)$row->department_id;
             $customer_id     = (int)$row->customer_id;
             $cat_id          = (int)$row->cat_id;
             $project_type    = $row->project_type;
-            
+
+            $this->extraUser($user_id);
+            $this->extraUser($proj_manager_id);
+            $this->extraUser($user_manager_id);
+
             foreach ($ids as $key => $var) {
                 $return[$key]        = isset($return[$key]) ? $return[$key] : array();
                 $return[$key][$$var] = isset($return[$key][$$var]) ? $return[$key][$$var] : 0;

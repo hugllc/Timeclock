@@ -171,16 +171,18 @@ class ViewHelper
     *
     * @return array of HTML options
     */
-    static function getUsersOptions()
+    static function getUsersOptions($users = null)
     {
-        $users = TimeclockHelper::getUsers();
+        $users = $users ? $users : TimeclockHelper::getUsers();
         $options = array();
         foreach ($users as $user) {
-            $options[] = HTMLHelper::_(
-                'select.option', 
-                $user->user_id, 
-                $user->name
-            );
+            if ($user->id !== 0) {
+                $options[] = HTMLHelper::_(
+                    'select.option', 
+                    $user->id, 
+                    $user->name
+                );
+            }
         }
         return $options;
     }
