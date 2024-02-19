@@ -148,6 +148,10 @@ table.report .employee .complete.no, table.report .employee .approved.no {
     background-color: #d99696; 
 }
 
+table.report .employee.error .total {
+    background-color: #d99696 !important; 
+}
+
 table.report th {
     background-color: #CCC !important;
     font-weight: bold;

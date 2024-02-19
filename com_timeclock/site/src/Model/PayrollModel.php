@@ -321,7 +321,7 @@ class PayrollModel extends ReportModel
                     $wk->overtime = $wk->worked - $fulltime;
                     $wk->worked = $fulltime;
                     $wk->subtotal = $wk->worked + $wk->holiday + $wk->pto + $wk->volunteer;
-                    if (($wk->pto > 0) && ($wk->overtime > 0)) {
+                    if ((($wk->pto > 0) || ($wk->volunteer > 0)) && ($wk->overtime > 0)) {
                         $user->error .= Text::_("COM_TIMECLOCK_ERROR_PTO_AND_OVERTIME");
                     }
                 } else {
