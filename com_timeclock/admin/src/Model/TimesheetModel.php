@@ -155,10 +155,6 @@ class TimesheetModel extends AdminModel
     */
     public function save($data)
     {
-        print "<pre>";
-        var_dump($data);
-        print "</pre>";
-        die();
         $data['modified'] = Factory::getDate()->toSql();
         return parent::save($data);
     }
