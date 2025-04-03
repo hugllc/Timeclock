@@ -189,6 +189,7 @@ Factory::getDocument()->setTitle(
         print "<h2>Notes:</h2>";
         print $notes->render($user);
     }
+    $allproj = ($allproj) ? $allproj : array();
 ?>
     <script type="text/JavaScript">
         jQuery( document ).ready(function() {
