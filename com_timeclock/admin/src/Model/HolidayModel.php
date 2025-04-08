@@ -99,12 +99,16 @@ class HolidayModel extends AdminModel
         $db = Factory::getDBO();
 
         $id = $id ? $id : Factory::getApplication()->getInput()->getInt("timesheet_id");
-        $query = $this->_buildQuery();
-        $query->where('t.timesheet_id = ' . (int) $id);
-        $db->setQuery($query);
+        if ($id != NULL) {
+            $query = $this->_buildQuery();
+            $query->where('t.timesheet_id = ' . (int) $id);
+            $db->setQuery($query);
 
-        $item = $db->loadObject();
-
+            $item = $db->loadObject();
+        } else {
+            $item = (object)array(
+            );
+        }
         return $item;
     }
 

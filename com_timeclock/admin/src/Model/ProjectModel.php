@@ -99,12 +99,23 @@ class ProjectModel extends AdminModel
         $db = Factory::getDBO();
 
         $id = $id ? $id : Factory::getApplication()->getInput()->getInt("project_id");
-        $query = $this->_buildQuery();
-        $query->where('p.project_id = ' . (int) $id);
-        $db->setQuery($query);
+        if ($id != NULL) {
+            $query = $this->_buildQuery();
+            $query->where('p.project_id = ' . (int) $id);
+            $db->setQuery($query);
 
-        $item = $db->loadObject();
-
+            $item = $db->loadObject();
+        } else {
+            $item = (object) array(
+               'research' => 0,
+               'type' => 'PROJECT',
+               'max_daily_hours' => 0,
+               'min_daily_hours' => 0,
+               'max_yearly_hours' => 0,
+               'published' => 1,
+               'category' => 'COM_TIMECLOCK_GENERAL',
+            );
+        }
         return $item;
     }
 
