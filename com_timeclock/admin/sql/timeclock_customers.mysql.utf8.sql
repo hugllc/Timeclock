@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `#__timeclock_customers` (
-  `customer_id` int NOT NULL,
+  `customer_id` int NOT NULL AUTO_INCREMENT,
   `company` varchar(64) NOT NULL DEFAULT '',
   `name` varchar(64) NOT NULL DEFAULT '',
   `address1` varchar(64) NOT NULL DEFAULT '',

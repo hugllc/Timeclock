@@ -26,7 +26,7 @@ Factory::getDocument()->setTitle(
 );
 ?>
 <div id="timeclock">
-<form action="index.php?option=com_timeclock&controller=timesheet" method="post" name="userform" autocomplete="off" class="addhours">
+<form action="index.php/timeclock?" method="post" name="userform" autocomplete="off" class="addhours">
     <div class="page-header">
         <h3 itemprop="name">
             <?php printf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, HTMLHelper::_("date", $this->date)); ?>

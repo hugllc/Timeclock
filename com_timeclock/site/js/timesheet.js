@@ -105,7 +105,7 @@ var Timesheet = {
     {
         var self = this;
         jQuery.ajax({
-            url: 'index.php?option=com_timeclock&controller=timesheet&task=complete&format=json',
+            url: 'index.php/timeclock?task=timesheeet.complete&format=json',
             type: 'GET',
             data: self._formData(),
             dataType: 'JSON',
@@ -152,7 +152,7 @@ var Timesheet = {
     refresh: function ()
     {
         var self = this;
-        var url = 'index.php?option=com_timeclock&view=timesheet&format=json&date='+self.payperiod.start;
+        var url = 'index.php/timeclock&view=timesheet&format=json&date='+self.payperiod.start;
         jQuery.ajax({
             url,
             type: 'GET',

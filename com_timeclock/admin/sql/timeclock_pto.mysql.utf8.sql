@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `#__timeclock_pto` (
-  `pto_id` int NOT NULL,
+  `pto_id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(16) NOT NULL DEFAULT 'ACCRUAL',
   `user_id` int NOT NULL,
   `hours` float NOT NULL DEFAULT '0',

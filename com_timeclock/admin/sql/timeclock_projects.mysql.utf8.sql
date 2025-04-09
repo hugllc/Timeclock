@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `#__timeclock_projects` (
-  `project_id` int NOT NULL,
+  `project_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   `created_by` int DEFAULT NULL,

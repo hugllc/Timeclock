@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `#__timeclock_timesheet` (
-  `timesheet_id` int NOT NULL,
+  `timesheet_id` int NOT NULL AUTO_INCREMENT,
   `project_id` int NOT NULL DEFAULT '0',
   `user_id` int NOT NULL DEFAULT '0',
   `hours1` float NOT NULL DEFAULT '0',
