@@ -6,7 +6,7 @@
         <element>com_timeclock</element>
         <type>component</type>
         <version>0.9.32</version>
-        <infourl title="Timeclock URL">https://github.com/hugllc.com/Timeclock</infourl>
+        <infourl title="Timeclock URL">https://github.com/hugllc/Timeclock</infourl>
         <tags>
             <tag>stable</tag>
         </tags>
