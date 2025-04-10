@@ -152,7 +152,7 @@ var Timesheet = {
     refresh: function ()
     {
         var self = this;
-        var url = 'index.php/timeclock&view=timesheet&format=json&date='+self.payperiod.start;
+        var url = 'index.php/timeclock?view=timesheet&format=json&date='+self.payperiod.start;
         jQuery.ajax({
             url,
             type: 'GET',

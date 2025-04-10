@@ -81,7 +81,7 @@ class ReportModel extends DefaultModel
     public function __construct()
     {
         $app = Factory::getApplication();
-        $this->_user = Factory::getUser();
+        $this->_user = $this->getCurrentUser();
         $this->context = $this->type;
         parent::__construct(); 
     }
@@ -443,7 +443,7 @@ class ReportModel extends DefaultModel
         $datatype = $app->getUserStateFromRequest($context.'.datatype', 'datatype', 'hours');
         $this->setState("datatype", $datatype);
         
-        $user = Factory::getUser();
+        $user = $this->getCurrentUser();
 
         $date = DateHelper::fixDate(
             $app->input->get('date', date("Y-m-d"), "raw")
@@ -491,7 +491,7 @@ class ReportModel extends DefaultModel
         $proj_type = $app->getUserStateFromRequest($context.'.filter.project_type', 'filter_project_type', '');
         $this->setState("filter.project_type", $proj_type);
 
-        $user = Factory::getUser();
+        $user = $this->getCurrentUser();
         if ((!$user->authorise('core.edit.state', 'com_timeclock')) 
             &&  (!$user->authorise('core.edit', 'com_timeclock'))
         ) {

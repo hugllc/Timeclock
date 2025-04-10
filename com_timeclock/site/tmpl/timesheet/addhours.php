@@ -12,7 +12,7 @@ HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/addhours.js");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
 
-$user = Factory::getUser();
+$user = $this->getCurrentUser();
 $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
 $cols = $this->payperiod->days + 2 + $subtotalcols;
 $this->payperiod->cols = $cols;

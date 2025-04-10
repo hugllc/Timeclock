@@ -203,7 +203,7 @@ Factory::getDocument()->setTitle(
         Timesheet.data         = <?php print json_encode($this->data); ?>;
         Timeclock.params       = <?php print json_encode($this->params->toArray()); ?>;
         Timeclock.me           = <?php print (int)$this->user->me; ?>;
-        Timeclock.approve      = <?php print (int)(!$this->user->me && Factory::getUser()->authorise("timeclock.timesheet.approve", "com_timeclock")) ?>;
+        Timeclock.approve      = <?php print (int)(!$this->user->me && $this->getCurrentUser()->authorise("timeclock.timesheet.approve", "com_timeclock")) ?>;
 
     </script>
 </div>

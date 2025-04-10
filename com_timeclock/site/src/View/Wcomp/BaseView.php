@@ -127,7 +127,7 @@ class BaseView extends HtmlView
     */
     protected function setup($file)
     {
-        $user = Factory::getUser();
+        $user = $this->getCurrentUser();
         // Create new PHPExcel object
         $this->phpexcel = new Spreadsheet();
         // Set document properties

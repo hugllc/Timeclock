@@ -275,7 +275,7 @@ class DefaultModel extends BaseDatabaseModel
         if (!isset($this->_user[$id])) {
             $this->_user[$id] = Factory::getUser($id);
             $this->_user[$id]->timeclock = TimeclockHelper::getUserParams($this->_user[$id]->id);
-            $this->_user[$id]->me = is_null($id) || ($id == Factory::getUser()->id);
+            $this->_user[$id]->me = is_null($id) || ($id == $this->getCurrentUser()->id);
         }
         return $this->_user[$id];
     }

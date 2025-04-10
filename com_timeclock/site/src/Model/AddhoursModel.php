@@ -96,10 +96,10 @@ class AddhoursModel extends TimesheetModel
         }
         $row->modified = $date;
         if ($row->created_by <= 0) {
-            $row->created_by = Factory::getUser()->id;
+            $row->created_by = $this->getCurrentUser()->id;
             $row->created    = $date;
         }
-        $row->user_id = Factory::getUser()->id;
+        $row->user_id = $this->getCurrentUser()->id;
         $row->checked_out_time = !empty($row->checked_out_time) ? $row->checked_out_time : '0000-00-00 00:00:00';
 
         // Make sure the record is valid

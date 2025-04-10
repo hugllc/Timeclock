@@ -93,7 +93,7 @@ class YtdModel extends ReportModel
                 continue;
             }
             if (!isset($users[$user_id])) {
-                $users[$user_id] = Factory::getUser($user_id);
+                $users[$user_id] = $this->getUser($user_id);
                 $this->checkUser($users[$user_id]);
             }
             $this->checkUserRow($users[$user_id], $row);

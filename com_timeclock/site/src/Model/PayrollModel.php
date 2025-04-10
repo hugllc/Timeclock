@@ -69,7 +69,7 @@ class PayrollModel extends ReportModel
     public function __construct()
     {
         $app = Factory::getApplication();
-        $this->_user = Factory::getUser();
+        $this->_user = $this->getCurrentUser();
         parent::__construct(); 
     }
     /**
@@ -245,7 +245,7 @@ class PayrollModel extends ReportModel
         foreach ($users as $key => $user) {
             $key = (int)$user->timeclock["manager"];
             if (!isset($managers[$key])) {
-                $managers[$key] = clone Factory::getUser($user->timeclock["manager"]);
+                $managers[$key] = clone $this->getUser($user->timeclock["manager"]);
                 $managers[$key]->counts = array("done" => array(), "notdone" => array());
                 $managers[$key]->users = array();
             }
@@ -283,7 +283,7 @@ class PayrollModel extends ReportModel
         $user->approved = DateHelper::compareDates($timesheetApproved, $start) >= 0;
         $eend = !empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
 
-        $user->manager = Factory::getUser($user->timeclock["manager"]);
+        $user->manager = $this->getUser($user->timeclock["manager"]);
 
         if (($user->block) && ($eend == 0)) {
             $user->error .= Text::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
@@ -357,7 +357,7 @@ class PayrollModel extends ReportModel
 
         $app = Factory::getApplication();
 
-        $user = Factory::getUser();
+        $user = $this->getCurrentUser();
 
         $date = DateHelper::fixDate(
             $app->input->get('date', date("Y-m-d"), "raw")
