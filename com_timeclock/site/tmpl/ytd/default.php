@@ -31,7 +31,7 @@ Factory::getDocument()->setTitle(
 
 ?>
 <div id="timeclock" class="container-fluid">
-<form action="<?php Route::_("index.php?option=com_timeclock&controller=ytd"); ?>" method="post" name="userform" class="report">
+<form action="<?php Route::_("index.php?controller=ytd"); ?>" method="post" name="userform" class="report">
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>

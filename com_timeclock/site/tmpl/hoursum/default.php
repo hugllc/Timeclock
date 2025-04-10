@@ -35,7 +35,7 @@ foreach ($this->projects as $cat) {
 }
 ?>
 <div id="timeclock" class="container-fluid">
-<form action="<?php Route::_("index.php?option=com_timeclock&controller=hoursum"); ?>" method="post" name="userform" class="report">
+<form action="<?php Route::_("index.php?controller=hoursum"); ?>" method="post" name="userform" class="report">
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
@@ -55,7 +55,7 @@ foreach ($this->projects as $cat) {
     <?php
         print $export->render(
             (object)array(
-                "url" => Route::_('&option=com_timeclock&controller=hoursum'),
+                "url" => Route::_('&controller=hoursum'),
                 "export" => $this->export,
             )
         );

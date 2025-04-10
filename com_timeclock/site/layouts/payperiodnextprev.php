@@ -10,7 +10,7 @@ if (property_exists($displayData, "user_id")) {
     $id = "";
 }
 
-$baseurl = 'index.php?option=com_timeclock&view='.$displayData->view;
+$baseurl = 'index.php?view='.$displayData->view;
 $url = Route::_($baseurl.'&date=now'.$id);
 $today = '<a href="'.$url.'">'.Text::_("COM_TIMECLOCK_TODAY").'</a>';
 

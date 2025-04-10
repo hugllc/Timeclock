@@ -5,8 +5,8 @@ use Joomla\CMS\Language\Text;
 use HUGLLC\Component\Timeclock\Administrator\Helper\TimeclockHelper;
 
 defined('_JEXEC') or die(); 
-$url = "index.php?option=com_timeclock&controller=timesheet&id=".$displayData->user->id."&date=".$displayData->payperiod->start;
-$payroll = "index.php?option=com_timeclock&view=payroll&date=".$displayData->payperiod->start;
+$url = "index.php/timeclock?controller=timesheet&id=".$displayData->user->id."&date=".$displayData->payperiod->start;
+$payroll = "index.php/timeclock?view=payroll&date=".$displayData->payperiod->start;
 ?>
 <div class="toolbar" style="clear: both;">
 <?php if ($displayData->user->me && !$displayData->payperiod->approved): ?>

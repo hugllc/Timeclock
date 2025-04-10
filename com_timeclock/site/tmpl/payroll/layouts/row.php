@@ -33,7 +33,7 @@ for ($w = 0; $w < $displayData->payperiod->subtotals; $w++) {
 }
 $overtimeclass = ($overtime > 0) ? "highlight" : "";
 $total = $subtotal + $overtime;
-$timesheeturl = Route::_('index.php?&option=com_timeclock&view=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
+$timesheeturl = Route::_('index.php?view=timesheet&id='.$user_id."&date=".$displayData->payperiod->start);
 if (!empty($displayData->error)) {
     $errorClass   = "error hasTooltip";
     $errorTooltip = ' title="'.$displayData->error.'"';

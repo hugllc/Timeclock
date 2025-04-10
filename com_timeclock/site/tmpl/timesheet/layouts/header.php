@@ -15,7 +15,7 @@ $d = 0;
 foreach ($displayData->dates as $date => $timeentry) :
     $class = "";
     if ($timeentry) {
-        $url = Route::_('index.php?&option=com_timeclock&controller=timesheet&task=addhours&date='.urlencode($date));
+        $url = Route::_('index.php/timeclock?task=timesheet.addhours&date='.urlencode($date));
         $tipTitle = Text::_("COM_TIMECLOCK_ADD_HOURS");
         $tip = "on ".JHTML::_('date', $date, Text::_("DATE_FORMAT_LC1"));
     } else {

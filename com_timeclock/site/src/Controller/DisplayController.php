@@ -82,7 +82,7 @@ class DisplayController extends BaseController
         $view = $this->input->get('view', NULL);
         $controller = $this->input->get('controller', NULL);
         if (is_null($view) && is_null($controller)) {
-            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=timesheet', false));
+            $this->setRedirect(Route::_('index.php?view=timesheet', false));
             return false;
         }
         return parent::display($cachable, $urlparams);

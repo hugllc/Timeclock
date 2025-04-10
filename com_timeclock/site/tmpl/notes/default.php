@@ -21,7 +21,7 @@ Factory::getDocument()->setTitle(
 );
 ?>
 <div id="timeclock" class="container-fluid">
-<form action="<?php Route::_("index.php?option=com_timeclock&controller=notes"); ?>" method="post" name="userform" class="report">
+<form action="<?php Route::_("index.php?controller=notes"); ?>" method="post" name="userform" class="report">
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
@@ -41,7 +41,7 @@ Factory::getDocument()->setTitle(
     <?php 
         print $this->_export->render(
             (object)array(
-                "url" => Route::_('&option=com_timeclock&controller=notes'),
+                "url" => Route::_('&controller=notes'),
                 "export" => $this->export,
             )
         ); 

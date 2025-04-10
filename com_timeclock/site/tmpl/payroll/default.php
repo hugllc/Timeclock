@@ -59,7 +59,7 @@ Factory::getDocument()->setTitle(
     <?php 
         print $export->render(
             (object)array(
-                "url" => 'index.php?option=com_timeclock',
+                "url" => Route::_('index.php'),
                 "export" => $this->export,
             )
         ); 

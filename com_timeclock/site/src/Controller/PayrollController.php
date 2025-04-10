@@ -80,7 +80,7 @@ class PayrollController extends ReportController
         if ($date) {
             $date = "&date=".$date;
         }
-        $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll'.$date));
+        $this->setRedirect(Route::_('index.php?view=payroll'.$date));
         return false;
     }
     /**
@@ -109,9 +109,9 @@ class PayrollController extends ReportController
         $model->setAccrual();
 
         if ($model->lock()) {
-            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Lock Succeeded");
+            $this->setRedirect(Route::_('index.php?view=payroll&date='.$date), "Lock Succeeded");
         } else {
-            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Lock Failed", 'error');
+            $this->setRedirect(Route::_('index.php?view=payroll&date='.$date), "Lock Failed", 'error');
         }
         return true;
     }
@@ -131,9 +131,9 @@ class PayrollController extends ReportController
         $model = new PayrollModel();
 
         if ($model->unlock()) {
-            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Unlock Succeeded");
+            $this->setRedirect(Route::_('index.php?view=payroll&date='.$date), "Unlock Succeeded");
         } else {
-            $this->setRedirect(Route::_('index.php?option=com_timeclock&view=payroll&date='.$date), "Unlock Failed", 'error');
+            $this->setRedirect(Route::_('index.php?view=payroll&date='.$date), "Unlock Failed", 'error');
         }
         return true;
     }

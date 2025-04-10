@@ -229,8 +229,8 @@ class TimesheetModel extends DefaultModel
             'userid'      => $by->id,
             'username'    => $by->username,
             'userlink' => 'index.php?option=com_users&task=user.edit&id=' . $by->id,
-            'timesheetlink' => Route::link('site', 'index.php?option=com_timeclock&view=timesheet&date='.$start.'&id=' . $for->id),
-            'payrolllink' => Route::link('site', 'index.php?option=com_timeclock&view=payroll&date='.$start),
+            'timesheetlink' => Route::link('site', 'index.php?view=timesheet&date='.$start.'&id=' . $for->id),
+            'payrolllink' => Route::link('site', 'index.php?view=payroll&date='.$start),
             'payperiodstart' => $start,
         ];
         return $message;

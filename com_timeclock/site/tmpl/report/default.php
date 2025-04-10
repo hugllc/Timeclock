@@ -29,7 +29,7 @@ Factory::getDocument()->setTitle(
 );
 ?>
 <div id="timeclock" class="container-fluid">
-<form action="<?php JROUTE::_("index.php?option=com_timeclock&controller=report"); ?>" method="post" name="userform" class="timeclock_report">
+<form action="<?php JROUTE::_("index.php?controller=report"); ?>" method="post" name="userform" class="timeclock_report">
     <div class="page-header row">
         <h2 itemprop="name">
             <a id="timeclocktop"></a>
@@ -49,7 +49,7 @@ Factory::getDocument()->setTitle(
     <?php 
         print $export->render(
             (object)array(
-                "url" => Route::_('&option=com_timeclock&controller=report'),
+                "url" => Route::_('&controller=report'),
                 "export" => $this->export,
             )
         ); 
