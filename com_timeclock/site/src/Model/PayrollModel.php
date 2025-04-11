@@ -283,8 +283,11 @@ class PayrollModel extends ReportModel
         $user->approved = DateHelper::compareDates($timesheetApproved, $start) >= 0;
         $eend = !empty($user->timeclock["endDate"]) ? $user->timeclock["endDate"] : 0;
 
-        $user->manager = $this->getUser($user->timeclock["manager"]);
-
+        // This creates an infinite if the user is their own manager
+        if ((int)$user->timeclock["manager"] != (int)$user->id) {
+            $user->manager = $this->getUser($user->timeclock["manager"]);
+        }
+        
         if (($user->block) && ($eend == 0)) {
             $user->error .= Text::_("COM_TIMECLOCK_ERROR_USER_DISABLED_NO_END");
         }
