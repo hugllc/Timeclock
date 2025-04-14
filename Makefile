@@ -12,34 +12,9 @@ include Version.mk
 
 PKG_WITH_VERSION := pkg_timeclock-${PACKAGE_VERSION}.zip
 
-all: check copy_from_dev
+all: clean archive
 
-asdf:
-	echo ${PKG_WITH_VERSION}
 
-copy_from_dev: check copy-com_timeclock copy-mod_timeclockinfo copy-plg_user_timeclock
-
-copy-com_timeclock:
-	rsync -av --delete --include="contrib/index.html" --exclude="contrib/*" ${SRC}/com_timeclock/site/* ${DEST}/components/com_timeclock/
-	rsync -av --delete ${SRC}/com_timeclock/admin/* ${DEST}/administrator/components/com_timeclock/
-	rsync -av ${SRC}/com_timeclock/admin/languages/en-GB/* ${DEST}/administrator/language/en-GB/
-	rsync -av ${SRC}/com_timeclock/site/languages/en-GB/* ${DEST}/language/en-GB/
-
-copy-mod_timeclockinfo:
-	rsync -av --delete ${SRC}/mod_timeclockinfo/* ${DEST}/modules/mod_timeclockinfo/
-	rsync -av ${SRC}/mod_timeclockinfo/language/en-GB/* ${DEST}/language/en-GB/
-	
-copy-plg_user_timeclock:
-	rsync -av --delete ${SRC}/plg_user_timeclock/* ${DEST}/plugins/user/timeclock/
-	rsync -av ${SRC}/plg_user_timeclock/language/en-GB/* ${DEST}/administrator/language/en-GB/
-
-check:
-	@if [[ ! -d "Joomla/components" || ! -d "Joomla/administrator/components" ]]; then \
-	    echo "Joomla 3.x needs to be installed in the Joomla subdirectory"; \
-	    exit 1; \
-	fi;
-	@./fixini.php
-	
 archive package: clean rel/pkg_timeclock.zip rel/${PKG_WITH_VERSION}
 
 	
@@ -71,10 +46,7 @@ clean:
 
 dist-clean: clean
 	rm -Rf rel/*.zip 
-	
-joomla-clean:
-	rm -Rf Joomla/components/com_timeclock Joomla/administrator/components/com_timeclock
-	
+		
 style:
 	${PHPCS} -n com_timeclock plg_user_timeclock mod_timeclockinfo
 
@@ -90,6 +62,4 @@ phpgraph: rel/phpgraph.zip
 test: check all
 	@phpunit
 
-phpexcel: rel/phpexcel.zip
-	
 .PHONY: all check package style clean copy_from_dev bin
