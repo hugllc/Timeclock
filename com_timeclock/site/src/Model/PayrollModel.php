@@ -130,7 +130,6 @@ class PayrollModel extends ReportModel
         $list = $this->_getList($query);
         $worked = array();
         $notes  = array();
-        $users  = array();
         foreach ($list as $row) {
             $worked[$row->worked][] = $row;
         }
@@ -143,11 +142,6 @@ class PayrollModel extends ReportModel
             "notes"  => $notes,
             "managers" => array(),
         );
-        /*
-        $all = TimeclockHelper::getActions()->get('timeclock.payroll.all');
-        $some = TimeclockHelper::getActions()->get('timeclock.payroll');
-        $me = (int)$this->getCurrentUser()->id;
-        */
     
         foreach (array_keys($dates) as $date) {
             if (($days++ % $split) == 0) {
@@ -204,15 +198,13 @@ class PayrollModel extends ReportModel
                     "worked" => array(),
                 );
                 $notes[$user_id][$row->project_id]["worked"][$row->worked] = $row;
-                if (!isset($users[$user_id])) {
-                    $users[$user_id] = $this->getTimesheetUser($user_id);
-                }                
             }
         }
         $return["notes"] = $notes;
-        $return["users"] = $this->_fixUsers($users);
+        $return["users"] = $this->_getUsers();
         $return["managers"] = $this->_getManagers($return["users"]);
 
+        $this->_checkPermissions($return);
         $this->_checkOvertime($return);
         return $return;
     }
@@ -223,12 +215,10 @@ class PayrollModel extends ReportModel
      * 
      * @return void
      */
-    private function _fixUsers(&$users) 
+    private function _getUsers() 
     {
         foreach ($this->listUsers() as $key => $user) {
-            if (!isset($users[(int)$key])) {
-                $users[(int)$key] = $this->getTimesheetUser($key);
-            }
+            $users[(int)$key] = $this->getTimesheetUser($key);
         }
         uasort(
             $users,
@@ -299,7 +289,28 @@ class PayrollModel extends ReportModel
         }
         return $user;
     }
+    /**
+    * This checks for permission to see these items
+    *
+    * @param array $data The data to check
+    * 
+    * @return array An array of results.
+    */
+    private function _checkPermissions(&$data)
+    {
+        if (TimeclockHelper::getActions()->get('timeclock.payroll.all')) {
+            return;
+        }
+        $some = TimeclockHelper::getActions()->get('timeclock.payroll');
+        $me = (int)$this->getCurrentUser()->id;
+        foreach ($data["users"] as $user_id => &$user) {
+            if (!$some || ((int)$user->timeclock["manager"] != $me)) {
+                unset($data[$user_id]);
+                unset($data["users"][$user_id]);
+            }
 
+        }
+    }
 
     /**
     * This checks for overtime and sets the overtime field if there is any
