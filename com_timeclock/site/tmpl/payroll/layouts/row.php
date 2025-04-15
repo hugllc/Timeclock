@@ -59,18 +59,23 @@ $modalParams['closeButton'] = true;
 ?>
             <tr class="employee <?php print $errorClass; ?>"<?php print $errorTooltip; ?>>
                 <td>
-                    <?php echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams, $body); ?>
                     <div>
-                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>"><?php print $name ?></button>
+                        <?php if ($displayData->viewauth): ?>
+                            <?php echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams, $body); ?>
+                            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>"><?php print $name ?></button>
+                        <?php else: ?>
+                            <?php print $name ?>                    
+                        <?php endif; ?>
                     </div>
+                        
                 </td>
                 <td class="complete <?php print $displayData->done ? "yes" : "no"; ?>">
                     <?php if ($displayData->viewauth): ?>
                         <a href="<?php print $timesheeturl; ?>" class="hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_CLICK_TO_VIEW_TIMESHEET"); ?>">
-                    <?php endif; ?>
-                    <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
-                    <?php if ($displayData->viewauth): ?>
+                            <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
                         </a>
+                    <?php else: ?>
+                        <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
                     <?php endif; ?>
                 </td>
                 <td class="approved <?php print $displayData->approved ? "yes" : "no"; ?> hasToolTip" title="<?php print $displayData->manager->name; ?>">
