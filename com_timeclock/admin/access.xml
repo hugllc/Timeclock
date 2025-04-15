@@ -12,8 +12,11 @@
         <action name="timeclock.reports" title="COM_TIMECLOCK_ACTION_REPORTS" description="COM_TIMECLOCK_ACCESS_REPORTS_DESC" />
         <action name="timeclock.timesheet" title="COM_TIMECLOCK_ACTION_TIMESHEET" description="COM_TIMECLOCK_ACCESS_TIMESHEET_DESC" />
         <action name="timeclock.timesheet.approve" title="COM_TIMECLOCK_ACTION_TIMESHEET_APPROVE" description="COM_TIMECLOCK_ACCESS_TIMESHEET_APPROVE_DESC" />
+        <action name="timeclock.timesheet.approve.all" title="COM_TIMECLOCK_ACTION_TIMESHEET_APPROVE_ALL" description="COM_TIMECLOCK_ACCESS_TIMESHEET_APPROVE_ALL_DESC" />
         <action name="timeclock.timesheet.others" title="COM_TIMECLOCK_ACTION_TIMESHEET_OTHERS" description="COM_TIMECLOCK_ACCESS_TIMESHEET_OTHERS_DESC" />
+        <action name="timeclock.timesheet.others.all" title="COM_TIMECLOCK_ACTION_TIMESHEET_ALL_OTHERS" description="COM_TIMECLOCK_ACCESS_TIMESHEET_ALL_OTHERS_DESC" />
         <action name="timeclock.payroll" title="COM_TIMECLOCK_ACTION_PAYROLL" description="COM_TIMECLOCK_ACCESS_PAYROLL_DESC" />
+        <action name="timeclock.payroll.all" title="COM_TIMECLOCK_ACTION_PAYROLL_ALL" description="COM_TIMECLOCK_ACCESS_PAYROLL_ALL_DESC" />
         <action name="timeclock.payroll.lock" title="COM_TIMECLOCK_ACTION_PAYROLL_LOCK" description="COM_TIMECLOCK_ACCESS_PAYROLL_LOCK_DESC" />
     </section>
 </access>

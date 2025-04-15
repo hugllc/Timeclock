@@ -5,7 +5,10 @@
     <author>Scott Price</author>
     <authorEmail>prices@hugllc.com</authorEmail>
     <authorUrl>http://dev.hugllc.com/index.php/Project:Timeclock</authorUrl>
-    <copyright>2016 Hunt Utilities Group, LLC</copyright>
+    <copyright>
+        (C) 2025 Hunt Utilities Group, LLC
+        2016 Hunt Utilities Group, LLC
+    </copyright>
     <license>GNU Public License V3</license>
     <version>0.9.32</version>
     <description>COM_TIMECLOCK_DESCRIPTION</description>
