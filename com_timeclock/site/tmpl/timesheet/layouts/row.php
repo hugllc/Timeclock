@@ -20,7 +20,7 @@ use Joomla\CMS\HTML\HTMLHelper;
         if ($timeentry) {
             $tipTitle           = Text::_("COM_TIMECLOCK_ADD_HOURS");
             $tip                = "for ".$displayData->name." on ".JHTML::_('date', $date, Text::_("DATE_FORMAT_LC1"));
-            $link = Route::_('index.php/timeclock?task=timesheet.addhours&layout=modal&tmpl=component&project_id='.$displayData->project_id.'&date='.$date);
+            $link = Route::_('index.php?task=timesheet.addhours&layout=modal&tmpl=component&project_id='.$displayData->project_id.'&date='.$date);
         } else {
             $tipTitle = Text::_("COM_TIMECLOCK_NO_HOURS");
             if ($employed) {
