@@ -84,7 +84,11 @@ class HtmlView extends BaseHtmlView
             $this->getModel()->logAccess();
         }
 
-        if (!$this->user->me && !$this->actions->get('timeclock.timesheet.others')) {
+
+        $authorized = $this->actions->get('timeclock.timesheet.others.all') 
+            || ($this->actions->get('timeclock.timesheet') && ((int)$this->user->timeclock["manager"] == (int)$this->getCurrentUser()->id));
+            
+        if (!$this->user->me && !$authorized) {
             throw new \Exception(Text::_('JGLOBAL_AUTH_ACCESS_DENIED'));
         }
 
