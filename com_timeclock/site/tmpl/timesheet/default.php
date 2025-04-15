@@ -47,7 +47,7 @@ Factory::getDocument()->setTitle(
             <?php endif; ?>
         </h2>
     </div>
-    <?php print $toolbar->render((object)array("user" => $this->user, "payperiod" => $this->payperiod)); ?>
+    <?php print $toolbar->render((object)array("user" => $this->user, "payperiod" => $this->payperiod, "me" => $this->getCurrentUser())); ?>
     <?php print $nextprev->render($this->payperiod); ?>
     <div class="dateheader">
         <strong>
