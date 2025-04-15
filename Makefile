@@ -53,6 +53,12 @@ style:
 bin:
 	$(MAKE) -C bin
 
+up:
+	docker compose up
+
+down:
+	docker compose down
+
 tests/unit:
 	svn co https://github.com/joomla/joomla-cms/trunk/tests/unit
 
