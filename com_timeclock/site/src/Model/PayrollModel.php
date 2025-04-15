@@ -143,6 +143,12 @@ class PayrollModel extends ReportModel
             "notes"  => $notes,
             "managers" => array(),
         );
+        /*
+        $all = TimeclockHelper::getActions()->get('timeclock.payroll.all');
+        $some = TimeclockHelper::getActions()->get('timeclock.payroll');
+        $me = (int)$this->getCurrentUser()->id;
+        */
+    
         foreach (array_keys($dates) as $date) {
             if (($days++ % $split) == 0) {
                 $period++;
@@ -200,7 +206,7 @@ class PayrollModel extends ReportModel
                 $notes[$user_id][$row->project_id]["worked"][$row->worked] = $row;
                 if (!isset($users[$user_id])) {
                     $users[$user_id] = $this->getTimesheetUser($user_id);
-                }
+                }                
             }
         }
         $return["notes"] = $notes;
