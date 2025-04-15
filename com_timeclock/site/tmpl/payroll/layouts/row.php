@@ -65,9 +65,13 @@ $modalParams['closeButton'] = true;
                     </div>
                 </td>
                 <td class="complete <?php print $displayData->done ? "yes" : "no"; ?>">
-                    <a href="<?php print $timesheeturl; ?>" class="hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_CLICK_TO_VIEW_TIMESHEET"); ?>">
+                    <?php if ($displayData->viewauth): ?>
+                        <a href="<?php print $timesheeturl; ?>" class="hasTooltip" title="<?php print Text::_("COM_TIMECLOCK_CLICK_TO_VIEW_TIMESHEET"); ?>">
+                    <?php endif; ?>
                     <?php print $displayData->done ? Text::_("JYES") : Jtext::_("JNO"); ?>
-                    </a>
+                    <?php if ($displayData->viewauth): ?>
+                        </a>
+                    <?php endif; ?>
                 </td>
                 <td class="approved <?php print $displayData->approved ? "yes" : "no"; ?> hasToolTip" title="<?php print $displayData->manager->name; ?>">
                     <?php print $displayData->approved ? Text::_("JYES") : Jtext::_("JNO"); ?>

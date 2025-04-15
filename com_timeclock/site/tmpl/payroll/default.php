@@ -85,6 +85,10 @@ Factory::getDocument()->setTitle(
         $user->payperiod = $this->payperiod;
         $user->data = isset($this->data[$user_id]) ? $this->data[$user_id] : array();
         $user->notes = isset($this->data["notes"][$user_id]) ? $this->data["notes"][$user_id] : array();
+        $user->viewauth = $this->actions->get('timeclock.timesheet.others.all') 
+        || ($this->actions->get('timeclock.timesheet') && ((int)$user->timeclock["manager"] == (int)$this->getCurrentUser()->id))
+        || ($user->me);
+
         print $row->render($user);
     }
 ?>
