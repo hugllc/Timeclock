@@ -69,7 +69,9 @@ class JsonView extends BaseJsonView
         $projects  = $this->getModel()->listProjects();
         
         echo new JsonResponse(
-            $data,
+            array(
+                "data" => $data,
+            ),
             "",     // Message
             false,  // Error
             false    // Ignore Message Queue

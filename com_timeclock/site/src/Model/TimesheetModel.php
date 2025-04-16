@@ -370,8 +370,9 @@ class TimesheetModel extends DefaultModel
     {
         $entry->nohours = 1;
         $entry->nonewhours = 1;
-        $max       = (int)$entry->max_yearly_hours;
-        $hours_ytd = (int)$entry->hours_ytd;
+        $max        = (int)$entry->max_yearly_hours;
+        $hours_ytd  = (int)$entry->hours_ytd;
+        $hours_nytd = (int)$entry->hours_nytd;
         if (($max != 0) && ($max <= $hours_ytd)) {
             $entry->nonewhours = 0;
         } else {
@@ -624,9 +625,11 @@ class TimesheetModel extends DefaultModel
 
         $y     = (int)explode("-", $this->getState("date"))[0];
         $year  = "(".$db->quoteName("worked")." >= ".$db->quote($y."-01-01")." AND ".$db->quoteName("worked")." < ".$db->quote(($y + 1)."-01-01").")";
+        $nextyear  = "(".$db->quoteName("worked")." >= ".$db->quote(($y+1)."-01-01")." AND ".$db->quoteName("worked")." < ".$db->quote(($y + 2)."-01-01").")";
 
         $query->select('q.project_id as project_id, q.user_id as user_id');
         $query->select('(SELECT SUM(hours1 + hours2 + hours3 + hours4 + hours5 + hours6) from #__timeclock_timesheet where project_id = q.project_id and user_id='.$db->quote($this->_user_id).' AND '.$year.') as hours_ytd');
+        $query->select('(SELECT SUM(hours1 + hours2 + hours3 + hours4 + hours5 + hours6) from #__timeclock_timesheet where project_id = q.project_id and user_id='.$db->quote($this->_user_id).' AND '.$nextyear.') as hours_nytd');
         $query->from('#__timeclock_users as q');
         $query->select('p.project_id as project_id, 1 as mine, 
             p.name as name, p.parent_id as parent_id, p.description as description,

@@ -131,6 +131,7 @@ var Timesheet = {
         var hours;
         var date;
         var self = this;
+        console.log(self.data);
         jQuery.each(self.allprojs, function(ind,proj) {
             jQuery.each(self.dates, function(ind2,date) {
                 hours = (self.data[proj] && self.data[proj][date]) ? parseFloat(self.data[proj][date].hours) : 0;
@@ -165,7 +166,7 @@ var Timesheet = {
                     // for new records, as the primary key must be set or another
                     // record will be entered into the database when save is pressed
                     // again.
-                    self.data = ret.data;
+                    self.data = ret.data.data;
                     self.update();
                 }
             },
