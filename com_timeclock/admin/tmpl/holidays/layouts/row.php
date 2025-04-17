@@ -10,6 +10,7 @@ $canEdit    = $user->authorise('core.edit',       'com_timeclock');
 $canEditOwn = $user->authorise('core.edit.own',   'com_timeclock') && $displayData["data"]->created_by == $user->id;
 $canChange  = $user->authorise('core.edit.state', 'com_timeclock');
 $name       = substr($displayData["data"]->notes, 0, 60);
+$name       = empty($name) ? "No Notes" : $name;
 ?>
                 <tr class="row<?php echo $displayData["index"] % 2; ?>" sortable-group-id="<?php echo $displayData["data"]->timesheet_id?>">
                     <td class="text-center">
