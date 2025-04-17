@@ -7,7 +7,7 @@
             label="COM_TIMECLOCK_WORK_DATE"
             description="COM_TIMECLOCK_WORK_DATE_NAME_TIMESHEET_DESC"
             class=""
-            default="0000-00-00"
+            default="today"
             format="%Y-%m-%d"
             size="40"
             required="true"/>
@@ -28,7 +28,7 @@
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
-            required="true" />
+            required="false" />
         <field
             name="hours2"
             type="text"
@@ -36,7 +36,7 @@
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
-            required="true" />
+            required="false" />
         <field
             name="hours3"
             type="text"
@@ -44,7 +44,7 @@
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
-            required="true" />
+            required="false" />
         <field
             name="hours4"
             type="text"
@@ -52,7 +52,7 @@
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
-            required="true" />
+            required="false" />
         <field
             name="hours5"
             type="text"
@@ -60,7 +60,7 @@
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
-            required="true" />
+            required="false" />
         <field
             name="hours6"
             type="text"
@@ -68,7 +68,7 @@
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
-            required="true" />
+            required="false" />
         
     </fieldset>
     <fieldset name="hours">
@@ -79,7 +79,7 @@
             label="COM_TIMECLOCK_HOURS"
             description="COM_TIMECLOCK_HOURS_TIMESHEET_DESC"
             size="8"
-            required="true" />
+            required="false" />
     </fieldset>
     <fieldset name="sidebar" label="COM_TIMECLOCK_EDIT_TIMESHEET">
         <field
@@ -87,7 +87,6 @@
             type="TimeclockProject"
             class="form-select"
             default="1"
-            onchange="Joomla.submitbutton('update');"
             size="1"
             label="COM_TIMECLOCK_PROJECT"
             required="true"

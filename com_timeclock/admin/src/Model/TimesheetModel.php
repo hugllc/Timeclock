@@ -160,6 +160,11 @@ class TimesheetModel extends AdminModel
     */
     public function save($data)
     {
+
+        if (!$data['created_by']) {
+            $data['created_by'] = $this->getCurrentUser()->id;
+            $data['created'] = Factory::getDate()->toSql();
+        }
         $data['modified'] = Factory::getDate()->toSql();
         return parent::save($data);
     }
