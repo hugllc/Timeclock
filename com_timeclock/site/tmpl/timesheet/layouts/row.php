@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     $split = empty($displayData->payperiod->splitdays) ? 31 : $displayData->payperiod->splitdays;
     foreach ($displayData->payperiod->dates as $date => $employed):
         $hours = isset($displayData->data[$date]) ? $displayData->data[$date]->hours : 0;
-        $timeentry = !$displayData->payperiod->approved && $employed && $displayData->mine && (!$displayData->nohours || (!$displayData->nonewhours && ($hours > 0)));
+        $timeentry = !$displayData->payperiod->approved && $employed && $displayData->mine && !$displayData->nohours;
         
         if ($timeentry) {
             $tipTitle           = Text::_("COM_TIMECLOCK_ADD_HOURS");
@@ -51,15 +51,20 @@ use Joomla\CMS\HTML\HTMLHelper;
 ';
 ?>
                 <td class="hours">
-                    <?php if ($timeentry) echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams); ?>
-                    <div class="hasTooltip" title="<?php print $tooltip; ?>">
-                    <?php if ($timeentry) : ?>
-                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
-                    <?php endif; ?>
-                    <span id="hours-<?php print $displayData->project_id."-".$date; ?>" class="<?php print $class;?> ">-</span>
-                    <?php if ($timeentry) : ?>
-                    </button>
-                    <?php endif; ?>
+                    <div id="hoursdiv-<?php print $displayData->project_id."-".$date; ?>-fixed" style="display: <?php echo ($timeentry) ? "none" : "block"?>;" >
+                        <span id="hours-<?php print $displayData->project_id."-".$date; ?>-fixed" class="<?php print $class;?> ">-</span>
+                    </div>
+                    <div id="hoursdiv-<?php print $displayData->project_id."-".$date; ?>-mod" style="display: <?php echo ($timeentry) ? "block" : "none"?>;">
+                        <?php if ($timeentry) echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams); ?>
+                        <div class="hasTooltip" title="<?php print $tooltip; ?>">
+                        <?php if ($timeentry) : ?>
+                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
+                        <?php endif; ?>
+                        <span id="hours-<?php print $displayData->project_id."-".$date; ?>-mod">-</span>
+                        <?php if ($timeentry) : ?>
+                        </button>
+                        <?php endif; ?>
+                        </div>
                     </div>
                 </td>
     <?php 

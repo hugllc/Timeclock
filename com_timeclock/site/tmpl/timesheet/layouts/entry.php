@@ -61,7 +61,7 @@ $left = ($ytdmax > 0) ? $ytdmax - $ytdhours : $max;
             $field->input  = '<select class="span2 hours" ';
             $field->input .= 'name="hours'.$i.'" onchange="Addhours.validateHours(this);">';
             $field->input .= '<option value="0"'.(($hours == 0) ? ' selected="selected"' : '').'>0</option>';
-            if ($left) {
+            if ($left || ($hours > 0)) {
                 $field->input .= '<option value="'.$min.'"'.(($hours != 0) ? ' selected="selected"' : '').'>'.$min.'</option>';
             }
             $field->input .= '</select>';

@@ -71,6 +71,7 @@ class JsonView extends BaseJsonView
         echo new JsonResponse(
             array(
                 "data" => $data,
+                "projects" => $projects,
             ),
             "",     // Message
             false,  // Error

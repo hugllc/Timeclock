@@ -125,18 +125,49 @@ var Timesheet = {
         });
         
     },
+    findProjs: function ()
+    {
+        var self = this;
+        var found = null;
+        self.projs = {};
+        jQuery.each(self.projects, function(ind,p) {
+            self.projs = {...self.progs, ...p.proj};
+        });
+        return found;
+    },
     update: function ()
     {
-        var proj;
+        var p;
         var hours;
         var date;
+        var hours_ytd = 0;
+        var thisyear = null;
         var self = this;
-        console.log(self.data);
-        jQuery.each(self.allprojs, function(ind,proj) {
+        self.findProjs();
+        jQuery.each(self.allprojs, function(ind,p) {
+            const proj = self.projs[p];
             jQuery.each(self.dates, function(ind2,date) {
-                hours = (self.data[proj] && self.data[proj][date]) ? parseFloat(self.data[proj][date].hours) : 0;
-                
-                jQuery("table.timesheet #hours-"+proj+"-"+date).text(self.round(hours));
+                hours = (self.data[p] && self.data[p][date]) ? parseFloat(self.data[p][date].hours) : 0;
+                let mod = true;
+                const d = new Date(date);
+                if (thisyear === null) {
+                    thisyear = d.getUTCFullYear();
+                }
+                if (proj && proj.max_yearly_hours > 0) {
+                    if (thisyear === d.getUTCFullYear()) {
+                        mod = (proj.max_yearly_hours > proj.hours_ytd) || (hours > 0);
+                    } else {
+                        // This covers only the case where the payperiod starts in one year and goes into the next
+                        hours_ytd += self.round(hours);
+                        mod = proj.max_yearly_hours > hours_ytd;
+                    }
+                }
+                // Set both places where the hours are stored.  One fixed, one that can be modified.
+                jQuery("table.timesheet #hours-"+p+"-"+date+"-fixed").text(self.round(hours));
+                jQuery("table.timesheet #hours-"+p+"-"+date+"-mod").text(self.round(hours));
+                // Set one to diplay and one to not display
+                jQuery("table.timesheet #hoursdiv-"+p+"-"+date+"-fixed").css("display", mod ? "none" : "block");
+                jQuery("table.timesheet #hoursdiv-"+p+"-"+date+"-mod").css("display", mod ? "block" : "none");
             });
         });
         var d = new Date();
@@ -167,6 +198,7 @@ var Timesheet = {
                     // record will be entered into the database when save is pressed
                     // again.
                     self.data = ret.data.data;
+                    self.projects = ret.data.projects;
                     self.update();
                 }
             },
