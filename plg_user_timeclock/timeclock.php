@@ -297,7 +297,7 @@ class plgUserTimeclock extends CMSPlugin
     {
         if (isset($data['addProjFromUser']) && !empty($data['addProjFromUser'])) {
             $model = TimeclockHelper::getModel('project');
-            $projects = $model->listUserProjects($data['addProjFromUser']);
+            $projects = $model->listUserProjects((int)$data['addProjFromUser']);
             foreach (array_keys((array)$projects) as $proj) {
                 $model->addUser((int)$id, (int)$proj);
             }
@@ -478,8 +478,8 @@ class plgUserTimeclock extends CMSPlugin
             }
             // Do the stuff not related to this table
             $this->addProjects($userId, $data['timeclock']);
-            $this->addUserProjects($userId, $data['timeclock']);
             $this->removeProjects($userId, $data['timeclock']);
+            $this->addUserProjects($userId, $data['timeclock']);
             // get the history before it is encoded
             if (isset($data['timeclock']['history'])) {
                 $history = $data['timeclock']['history'];
