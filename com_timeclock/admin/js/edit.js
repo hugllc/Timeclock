@@ -13,7 +13,7 @@ Joomla.Timeclock.submitbutton = function (task, controller)
         jQuery("#adminForm").submit();
     } else if ((task == "apply") || (task == "update")) {
         var data = {};
-        jQuery("#adminForm :input").each(function(ind,elem){
+        jQuery("#adminForm :input").each((ind,elem) => {
             data[jQuery(elem).attr('name')] = jQuery(elem).val();
         });
         data.task = "apply";
@@ -22,7 +22,7 @@ Joomla.Timeclock.submitbutton = function (task, controller)
             type: 'POST',
             data: data,
             dataType: 'JSON',
-            success: function(data)
+            success: (data) =>
             {
                 //console.log(data);
                 if ( data.success ){
@@ -42,7 +42,7 @@ Joomla.Timeclock.submitbutton = function (task, controller)
                     Joomla.renderMessages({error: [data.message]});
                 }
             },
-            error: function(data)
+            error: (data) =>
             {
                 Joomla.renderMessages({error: ["Save Failed"]});
             }
