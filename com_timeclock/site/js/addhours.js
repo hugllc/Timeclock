@@ -5,12 +5,11 @@ var Addhours = {
     hoursoffset: 0,   // The offset for the daily hours calculation
     setup: function ()
     {
-        var self = this;
         this.decimals = (Timeclock.params.decimalPlaces) ? Timeclock.params.decimalPlaces : 2;
         this.calculateHourTotal();
         // Immedately validate everything.
-        jQuery("form.addhours fieldset.addhours").each(function(ind,elem) {
-            self.validateFieldset(jQuery(elem));
+        jQuery("form.addhours fieldset.addhours").each((ind,elem) => {
+            this.validateFieldset(jQuery(elem));
         });
     },
     /**
@@ -26,7 +25,7 @@ var Addhours = {
         this.date = date;
         var total = 0;
         var sel = ".hours .date-"+date+":not(.proj-"+proj_id+")";
-        jQuery(sel, context).each(function(ind,elem){
+        jQuery(sel, context).each((ind,elem) => {
             var hours = parseFloat(jQuery(elem).text());
             if (!isNaN(hours)) {
                 total += hours;
@@ -48,20 +47,19 @@ var Addhours = {
         // Hide all of the alerts
         var div = jQuery("form.addhours div.alert").hide();
         // Do the rest of the stuff
-        var self = this;
         var worked = jQuery('form.addhours [name="worked"]').val();
         var post = {};
         // Collect the base information from the form
         var base = {};
-        jQuery("form.addhours fieldset#extra").find(":input").each(function(ind,elem) {
+        jQuery("form.addhours fieldset#extra").find(":input").each((ind,elem) => {
             var name = jQuery(elem).attr('name');
             var value = jQuery(elem).val();
             base[name] = value;
         });
         // Collect the timesheet data from each fieldset in the form
-        jQuery("form.addhours fieldset.addhours").each(function(ind,elem) {
+        jQuery("form.addhours fieldset.addhours").each((ind,elem) => {
             var data = jQuery.extend({}, base);
-            jQuery(elem).find(":input").each(function(ind,elem) {
+            jQuery(elem).find(":input").each((ind,elem) => {
                 var name = jQuery(elem).attr('name');
                 var value = jQuery(elem).val();
                 if (value != "") {
@@ -71,7 +69,7 @@ var Addhours = {
             data.worked = worked;
             var id = parseInt(data.timesheet_id, 10);
             data.timesheet_id = (isNaN(id)) ? 0 : id;
-            var total = self.getHours(jQuery(elem));
+            var total = this.getHours(jQuery(elem));
             // Only post this if it already has a timesheet_id or it has hours
             if ((total > 0) || (data.timesheet_id != 0)) {
                 post[data.project_id] = data;
@@ -90,16 +88,15 @@ var Addhours = {
      */
     postall: function (data, task)
     {
-        var self = this;
         this.total = Object.keys(data).length;
         this.count = 0;
-        jQuery.each(data, function (ind, elem) {
+        jQuery.each(data, (ind, elem) => {
             var fieldset = jQuery('fieldset#addhours-'+elem.project_id);
-            if (!self.validateFieldset(fieldset)) {
-                self.message(elem.project_id, "Check the field values", "danger");
-                // fieldset.find('[name="notes"]').on("keypress", self.validateNotes);
+            if (!this.validateFieldset(fieldset)) {
+                this.message(elem.project_id, "Check the field values", "danger");
+                // fieldset.find('[name="notes"]').on("keypress", this.validateNotes);
             } else {
-                self.post(elem, task);
+                this.post(elem, task);
             }
         });
     },
@@ -115,13 +112,12 @@ var Addhours = {
     {
         var url = jQuery("form.addhours").attr('action')+'&format=json&task=timesheet.apply'
         var method = jQuery("form.addhours").attr('method');
-        var self = this;
         jQuery.ajax({
             url: url,
             type: method,
             data: elem,
             dataType: 'JSON',
-            success: function(data)
+            success: (data) =>
             {
                 if ( data.success ){
                     // This puts the new values into the form.  This is required
@@ -134,10 +130,10 @@ var Addhours = {
                         fieldset.find('[name="'+key+'"]').val(data.data[key]);
                     }
                     // Set the complete flag to 0
-                    self.message(elem.project_id, data.message, "success");
-                    fieldset.find('[name="notes"]').off("keypress", self.validateNotes);
-                    self.count++;
-                    if (self.count >= self.total) {
+                    this.message(elem.project_id, data.message, "success");
+                    fieldset.find('[name="notes"]').off("keypress", this.validateNotes);
+                    this.count++;
+                    if (this.count >= this.total) {
                         if (typeof Timesheet !== 'undefined') {
                             Timesheet.refresh();
                             Timesheet.setComplete(0);
@@ -145,7 +141,7 @@ var Addhours = {
                         if (task == 'save') {
                             if (typeof Timesheet === 'undefined') {
                                 // Full page
-                                window.location.href = "index.php?option=com_timeclock&view=timesheet&date="+self.payperiod.start;
+                                window.location.href = "index.php?option=com_timeclock&view=timesheet&date="+this.payperiod.start;
                             } else {
                                 // Modal
                                 parent.jQuery('.modal').modal('hide');
@@ -153,12 +149,12 @@ var Addhours = {
                         }
                     }
                 } else {
-                    self.message(elem.project_id, data.message, "danger");
+                    this.message(elem.project_id, data.message, "danger");
                 }
             },
-            error: function(data)
+            error: (data) =>
             {
-                self.message(elem.project_id, "Save Failed", "danger");
+                this.message(elem.project_id, "Save Failed", "danger");
             }
         });
     },
@@ -186,7 +182,7 @@ var Addhours = {
      * 
      * @return null
      */
-    calculateHourTotal: function() {
+    calculateHourTotal: function () {
         var total = this.getHours();
         jQuery('#hoursTotal').text(this.round(total));
     },
@@ -200,19 +196,18 @@ var Addhours = {
     validateFieldset: function (fieldset)
     {
         var ret = true;
-        var self = this;
         var max = Timeclock.params.maxDailyHours;
         var total = this.getHours();
 
         if (max < total) {
             ret = false;
         }
-        fieldset.find("input.hours,select.hours").each(function(ind, elem) {
-            var res = self._validateHours(elem);
+        fieldset.find("input.hours,select.hours").each((ind, elem) => {
+            var res = this._validateHours(elem);
             ret = ret && res;
         });
-        fieldset.find('[name="notes"]').each(function(ind, elem) {
-            var res = self._validateNotes(elem);
+        fieldset.find('[name="notes"]').each((ind, elem) => {
+            var res = this._validateNotes(elem);
             ret = ret && res;
         });
         return ret;
@@ -224,7 +219,7 @@ var Addhours = {
      * 
      * @return null
      */
-    validateHours: function(self)
+    validateHours: function (self)
     {
         if (typeof self === "undefined") {
             var self = this;
@@ -240,7 +235,7 @@ var Addhours = {
      * 
      * @return null
      */
-    maxHoursMessage: function(fieldset, max)
+    maxHoursMessage: function (fieldset, max)
     {
         if (max == undefined) {
             max = Timeclock.params.maxDailyHours;
@@ -258,7 +253,7 @@ var Addhours = {
      * 
      * @return null
      */
-    maxYearlyHoursMessage: function(fieldset, hours, max)
+    maxYearlyHoursMessage: function (fieldset, hours, max)
     {
         this.message(
             fieldset.find('[name="project_id"]').val(), 
@@ -273,7 +268,7 @@ var Addhours = {
      * 
      * @return null
      */
-    minHoursMessage: function(fieldset, min)
+    minHoursMessage: function (fieldset, min)
     {
         if (min != undefined) {
             this.message(
@@ -290,7 +285,7 @@ var Addhours = {
      * 
      * @return null
      */
-    _validateHours: function(obj)
+    _validateHours: function (obj)
     {
         var ret = true;
         var fieldset = jQuery(obj).closest("fieldset");
@@ -409,7 +404,7 @@ var Addhours = {
      * 
      * @return null
      */
-    validateNotes: function(self)
+    validateNotes: function (self)
     {
         if (typeof self === "undefined") {
             var self = this;
@@ -423,7 +418,7 @@ var Addhours = {
      * 
      * @return null
      */
-    _validateNotes: function(obj)
+    _validateNotes: function (obj)
     {
         var fieldset = jQuery(obj).closest("fieldset");
         var parent   = jQuery(obj).closest(".control-group");
@@ -448,14 +443,14 @@ var Addhours = {
      * 
      * @return float The number of hours found
      */
-    getHours: function(group)
+    getHours: function (group)
     {
         if (typeof group === "undefined") {
             // Get everything if nothing is given.
             var group = jQuery("form.addhours");
         }
         var hours = 0;
-        group.find("input.hours,select.hours").each(function(ind, elem) {
+        group.find("input.hours,select.hours").each((ind, elem) => {
             var hrs = parseFloat(jQuery(elem).val());
             if (!isNaN(hrs)) {
                 hours += hrs;

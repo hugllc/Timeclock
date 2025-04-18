@@ -38,7 +38,7 @@ var Timesheet = {
     _subtotalDates: function (key, sel)
     {
         var total = 0;
-        jQuery("table."+sel+" .hours .date-"+key).each(function(ind,elem){
+        jQuery("table."+sel+" .hours .date-"+key).each((ind,elem) => {
             var hours = parseFloat(jQuery(elem).text());
             if (!isNaN(hours)) {
                 total += hours;
@@ -51,7 +51,7 @@ var Timesheet = {
         var total = 0;
         for (var i = 1; i <= parts; i++) {
             var subtotal = 0;
-            jQuery("table."+sel+" .hours .proj-"+i+"-"+key).each(function(ind,elem){
+            jQuery("table."+sel+" .hours .proj-"+i+"-"+key).each((ind,elem) => {
                 var hours = parseFloat(jQuery(elem).text());
                 if (!isNaN(hours)) {
                     subtotal += hours;
@@ -67,7 +67,7 @@ var Timesheet = {
         var total = 0;
         for (var i = 1; i <= parts; i++) {
             var subtotal = 0;
-            jQuery("table."+sel+" .subtotal .subtotal-proj-"+i).each(function(ind,elem){
+            jQuery("table."+sel+" .subtotal .subtotal-proj-"+i).each((ind,elem) => {
                 var hours = parseFloat(jQuery(elem).text());
                 if (!isNaN(hours)) {
                     subtotal += hours;
@@ -80,19 +80,18 @@ var Timesheet = {
     },
     total: function (sel)
     {
-        var self = this;
-        jQuery.each(self.dates, function(ind,key) {
-            self._subtotalDates(key, sel);
+        jQuery.each(this.dates, (ind,key) => {
+            this._subtotalDates(key, sel);
         });
-        jQuery.each(self.allprojs, function(ind,key) {
-            self._subtotalProj(key, self.subtotalcols, sel);
+        jQuery.each(this.allprojs, (ind,key) => {
+            this._subtotalProj(key, this.subtotalcols, sel);
         });
-        self._psubtotal(self.subtotalcols, sel);
-        self.hilightholiday(sel);
+        this._psubtotal(this.subtotalcols, sel);
+        this.hilightholiday(sel);
     },
     hilightholiday: function (sel)
     {
-        jQuery("table."+sel+" .holiday td.hours").each(function(ind,elem){
+        jQuery("table."+sel+" .holiday td.hours").each((ind,elem) => {
             var hours = parseFloat(jQuery(elem).text());
             if (isNaN(hours) || (hours == 0)) {
                 jQuery(elem).removeClass("holiday");
@@ -103,22 +102,21 @@ var Timesheet = {
     },
     complete: function ()
     {
-        var self = this;
         jQuery.ajax({
             url: 'index.php/timeclock?task=timesheeet.complete&format=json',
             type: 'GET',
-            data: self._formData(),
+            data: this._formData(),
             dataType: 'JSON',
-            success: function(ret)
+            success: (ret) =>
             {
                 if ( ret.success ){
                     //Joomla.renderMessages({'success': [ret.message]});
-                    self.setComplete(true);
+                    this.setComplete(true);
                 } else {
                     Joomla.renderMessages({'error': [ret.message]});
                 }
             },
-            error: function(ret)
+            error: (ret) =>
             {
                 Joomla.renderMessages({'error': ['Setting as complete failed']});
             }
@@ -127,11 +125,10 @@ var Timesheet = {
     },
     findProjs: function ()
     {
-        var self = this;
         var found = null;
-        self.projs = {};
-        jQuery.each(self.projects, function(ind,p) {
-            self.projs = {...self.progs, ...p.proj};
+        this.projs = {};
+        jQuery.each(this.projects, (ind,p) => {
+            this.projs = {...this.progs, ...p.proj};
         });
         return found;
     },
@@ -142,12 +139,11 @@ var Timesheet = {
         var date;
         var hours_ytd = 0;
         var thisyear = null;
-        var self = this;
-        self.findProjs();
-        jQuery.each(self.allprojs, function(ind,p) {
-            const proj = self.projs[p];
-            jQuery.each(self.dates, function(ind2,date) {
-                hours = (self.data[p] && self.data[p][date]) ? parseFloat(self.data[p][date].hours) : 0;
+        this.findProjs();
+        jQuery.each(this.allprojs, (ind,p) => {
+            const proj = this.projs[p];
+            jQuery.each(this.dates, (ind2,date) => {
+                hours = (this.data[p] && this.data[p][date]) ? parseFloat(this.data[p][date].hours) : 0;
                 let mod = true;
                 const d = new Date(date);
                 if (thisyear === null) {
@@ -158,13 +154,13 @@ var Timesheet = {
                         mod = (proj.max_yearly_hours > proj.hours_ytd) || (hours > 0);
                     } else {
                         // This covers only the case where the payperiod starts in one year and goes into the next
-                        hours_ytd += self.round(hours);
+                        hours_ytd += this.round(hours);
                         mod = proj.max_yearly_hours > hours_ytd;
                     }
                 }
                 // Set both places where the hours are stored.  One fixed, one that can be modified.
-                jQuery("table.timesheet #hours-"+p+"-"+date+"-fixed").text(self.round(hours));
-                jQuery("table.timesheet #hours-"+p+"-"+date+"-mod").text(self.round(hours));
+                jQuery("table.timesheet #hours-"+p+"-"+date+"-fixed").text(this.round(hours));
+                jQuery("table.timesheet #hours-"+p+"-"+date+"-mod").text(this.round(hours));
                 // Set one to diplay and one to not display
                 jQuery("table.timesheet #hoursdiv-"+p+"-"+date+"-fixed").css("display", mod ? "none" : "block");
                 jQuery("table.timesheet #hoursdiv-"+p+"-"+date+"-mod").css("display", mod ? "block" : "none");
@@ -183,26 +179,25 @@ var Timesheet = {
     },
     refresh: function ()
     {
-        var self = this;
-        var url = 'index.php/timeclock?view=timesheet&format=json&date='+self.payperiod.start;
+        var url = 'index.php/timeclock?view=timesheet&format=json&date='+this.payperiod.start;
         jQuery.ajax({
             url,
             type: 'GET',
             data: {},
             dataType: 'JSON',
-            success: function(ret)
+            success: (ret) =>
             {
                 if ( ret.success ){
                     // This puts the new values into the form.  This is required
                     // for new records, as the primary key must be set or another
                     // record will be entered into the database when save is pressed
                     // again.
-                    self.data = ret.data.data;
-                    self.projects = ret.data.projects;
-                    self.update();
+                    this.data = ret.data.data;
+                    this.projects = ret.data.projects;
+                    this.update();
                 }
             },
-            error: function(ret)
+            error: (ret) =>
             {
             }
         });
@@ -212,7 +207,7 @@ var Timesheet = {
     {
         // Collect the base information from the form
         var base = {};
-        jQuery("form.timesheet").find(":input").each(function(ind,elem) {
+        jQuery("form.timesheet").find(":input").each((ind,elem) => {
             var name = jQuery(elem).attr('name');
             var value = jQuery(elem).val();
             base[name] = value;

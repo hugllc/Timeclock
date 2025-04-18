@@ -54,7 +54,7 @@ var Report = {
     {
         // Collect the base information from the form
         var base = {};
-        jQuery("form.timeclock_report").find(":input").each(function(ind,elem) {
+        jQuery("form.timeclock_report").find(":input").each((ind,elem) => {
             var name = jQuery(elem).attr('name');
             var value = jQuery(elem).val();
             base[name] = value;
