@@ -17,6 +17,6 @@
         __SHA256__
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
-        <targetplatform name="joomla" version="4.*"/>
+        <targetplatform name="joomla" version="5.*"/>
     </update>
 </updates>
