@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `#__timeclock_projects` (
   `modified` datetime DEFAULT NULL,
   `manager_id` int NOT NULL DEFAULT '0',
   `research` smallint NOT NULL DEFAULT '0',
-  `type` enum('PROJECT','CATEGORY','PTO','HOLIDAY','UNPAID','FLOATING_HOLIDAY', 'VOLUNTEER') NOT NULL DEFAULT 'PROJECT',
+  `type` enum('PROJECT','CATEGORY','PTO','HOLIDAY','UNPAID','FLOATING_HOLIDAY','VOLUNTEER') NOT NULL DEFAULT 'PROJECT',
   `parent_id` int NOT NULL DEFAULT '0',
   `wcCode1` int NOT NULL DEFAULT '8803',
   `wcCode2` int NOT NULL DEFAULT '0',
