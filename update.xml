@@ -5,16 +5,16 @@
         <description>Timetracking software</description>
         <element>com_timeclock</element>
         <type>component</type>
-        <version>0.9.32</version>
+        <version>0.9.33</version>
         <infourl title="Timeclock URL">https://github.com/hugllc/Timeclock</infourl>
         <tags>
             <tag>stable</tag>
         </tags>
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.32/pkg_timeclock-0.9.32.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/hugllc/Timeclock/releases/download/v0.9.33/pkg_timeclock-0.9.33.zip</downloadurl>
         </downloads>
-        <sha512>8490d129c86784c3b393ab9464414ae0c88f61d5f034a832cbd1e0d6b490cfa778b0f64576e04306f2bb7b1bb76b260dfe77af192240cacc721e749e695747dc</sha512>
-        <sha256>93f9a2b9e0a231f8dcff2cc87b4e5dcd0409f3961133104c8aaa975ed9a8ee73</sha256>
+        <sha512>72573c244c6335427b0b2f3d00646b2a35f5f63c8e0a8a43847da22b9a349232d37a8395e6c2de0c8653e074668bccccbfa102a5697f0562d6eb3c845e98e6d4</sha512>
+        <sha256>3e5c4b4d9594a5201935d3affe624dad2d4df3b0fd3d39452bfee15ff97598cd</sha256>
         <maintainer>Scott Price</maintainer>
         <maintainerurl>https://github.com/hugllc/Timeclock/</maintainerurl>
         <targetplatform name="joomla" version="4.*"/>
