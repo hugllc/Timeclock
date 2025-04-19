@@ -31,7 +31,7 @@ $allproj = array();
 
 </script>
 <div id="timeclock">
-<form action="index.php/timeclock?" method="post" name="userform" autocomplete="off" class="addhours">
+<form action="index.php?option=com_timeclock" method="post" name="userform" autocomplete="off" class="addhours">
     <div class="">
         <fieldset class="form-horizontal">
             <input type="hidden" name="worked" value="<?php print $this->date; ?>" />

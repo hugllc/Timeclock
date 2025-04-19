@@ -1,6 +1,8 @@
 <?php 
 use Joomla\CMS\Language\Text; 
-$url = 'index.php/timeclock?controller=payroll&date='.$displayData->payperiod->start;
+use Joomla\CMS\Router\Route;
+
+$url = Route::_('index.php?option=com_timeclock&controller=payroll&date='.$displayData->payperiod->start);
 ?>
 
 <div class="toolbar" style="clear: both;">

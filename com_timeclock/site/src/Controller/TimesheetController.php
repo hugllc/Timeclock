@@ -209,7 +209,7 @@ class TimesheetController extends DisplayController
             $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_DISAPPROVAL_FAILED");
             $type = "error";
         }
-        $url = 'index.php/timeclock?view=timesheet&date='.$date.'&id='.$id;
+        $url = 'index.php?option=com_timeclock&view=timesheet&date='.$date.'&id='.$id;
         $this->setRedirect($url, $msg, $type);
         return true;
     }
@@ -234,7 +234,7 @@ class TimesheetController extends DisplayController
         $this->checkMe($model);
         if ($model->isApproved()) {
             $date = $app->getInput()->get('date', '');
-            $this->setRedirect('index.php/timeclock?option=com_timeclock&view=timesheet&date='.$date, Text::_('COM_TIMECLOCK_NOT_ALLOWED'), "error");
+            $this->setRedirect('index.php?option=com_timeclock&option=com_timeclock&view=timesheet&date='.$date, Text::_('COM_TIMECLOCK_NOT_ALLOWED'), "error");
         }
         $view = $this->getView("Timesheet", 'html');
         $view->setLayout($layoutName);
