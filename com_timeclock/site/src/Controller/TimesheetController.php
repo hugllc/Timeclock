@@ -177,7 +177,7 @@ class TimesheetController extends DisplayController
                 $type = "error";
             }
         }
-        $url = 'index.php?view=timesheet&date='.$date.'&id='.$id;
+        $url = Route::_('index.php?option=com_timeclock&view=timesheet&date='.$date.'&id='.$id);
         $this->setRedirect($url, $msg, $type);
         return true;
     }
@@ -209,7 +209,7 @@ class TimesheetController extends DisplayController
             $msg = Text::_("COM_TIMECLOCK_PAYPERIOD_DISAPPROVAL_FAILED");
             $type = "error";
         }
-        $url = 'index.php?option=com_timeclock&view=timesheet&date='.$date.'&id='.$id;
+        $url = Route::_('index.php?option=com_timeclock&view=timesheet&date='.$date.'&id='.$id);
         $this->setRedirect($url, $msg, $type);
         return true;
     }
