@@ -5,12 +5,18 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Router\Route;
 
 $entry = new FileLayout('entry', __DIR__.'/layouts');
 
 HTMLHelper::_("jquery.framework");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/addhours.js");
 HTMLHelper::script(Uri::base()."components/com_timeclock/js/timeclock.js");
+
+// $url = Route::_("index.php?option=com_timeclock&view=timesheet");
+$url = Uri::getInstance();
+$url->delVar('task');
+$url->delVar('date');
 
 $user = $this->getCurrentUser();
 $subtotalcols = (int)($this->payperiod->days / $this->payperiod->splitdays);
@@ -26,7 +32,7 @@ Factory::getDocument()->setTitle(
 );
 ?>
 <div id="timeclock">
-<form action="index.php?option=com_timeclock" method="post" name="userform" autocomplete="off" class="addhours">
+<form action="<?php echo $url->toString() ?>" method="post" name="userform" autocomplete="off" class="addhours">
     <div class="page-header">
         <h3 itemprop="name">
             <?php printf(Text::_("COM_TIMECLOCK_ADD_HOURS_TITLE"), $user->name, HTMLHelper::_("date", $this->date)); ?>
